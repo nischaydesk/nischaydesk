@@ -329,7 +329,6 @@ function handleAiEnter(event) {
     sendQuestionToGroq();
   }
 }
-
 async function sendQuestionToGroq() {
   const inputField = document.getElementById('aiUserInput');
   const chatBody = document.getElementById('aiChatBody');
@@ -345,43 +344,52 @@ async function sendQuestionToGroq() {
   chatBody.innerHTML += `<div class="ai-msg bot-msg" id="${loadingId}">उत्तर तैयार हो रहा है... ⏳</div>`;
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  try {
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${GROQ_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-       model: "model: "llama3-8b-8192",
+  // Groq के हमेशा एक्टिव रहने वाले मॉडल्स की लिस्ट
+  const models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"];
+  let success = false;
 
-        messages: [
-          {
-            role: "system",
-            content: "You are NischayDesk AI, an academic study assistant created by Prince Kumar for Bihar Board students (Class 10th & 11th PCM+B). Introduce yourself as NischayDesk AI. Answer clearly in Hindi/Hinglish."
-          },
-          { role: "user", content: userText }
-        ],
-        temperature: 0.6
-      })
-    });
+  for (const currentModel of models) {
+    try {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: currentModel,
+          messages: [
+            {
+              role: "system",
+              content: "You are NischayDesk AI, an academic study assistant created by Prince Kumar for Bihar Board students (Class 10th & 11th PCM+B). Introduce yourself as NischayDesk AI. Answer clearly in Hindi/Hinglish."
+            },
+            { role: "user", content: userText }
+          ],
+          temperature: 0.6
+        })
+      });
 
-    const data = await response.json();
-    const loadingElem = document.getElementById(loadingId);
-    if (loadingElem) loadingElem.remove();
+      const data = await response.json();
 
-    if (data.choices && data.choices[0]?.message?.content) {
-      const botReply = data.choices[0].message.content;
-      chatBody.innerHTML += `<div class="ai-msg bot-msg">${botReply}</div>`;
-    } else {
-      chatBody.innerHTML += `<div class="ai-msg bot-msg">API एरर: ${data.error ? data.error.message : 'रिस्पॉन्स नहीं मिला'}</div>`;
+      if (response.ok && data.choices && data.choices[0]?.message?.content) {
+        const loadingElem = document.getElementById(loadingId);
+        if (loadingElem) loadingElem.remove();
+
+        const botReply = data.choices[0].message.content;
+        chatBody.innerHTML += `<div class="ai-msg bot-msg">${botReply}</div>`;
+        success = true;
+        break; // जवाब मिल गया, लूप से बाहर
+      }
+    } catch (err) {
+      console.warn(`Model ${currentModel} failed, trying next...`);
     }
-  } catch (error) {
-    console.error("AI Error:", error);
+  }
+
+  if (!success) {
     const loadingElem = document.getElementById(loadingId);
     if (loadingElem) loadingElem.remove();
-    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई।</div>`;
+    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई या API Key इनवैलिड है। कृपया पुनः प्रयास करें।</div>`;
   }
 
   chatBody.scrollTop = chatBody.scrollHeight;
-    }
+}
