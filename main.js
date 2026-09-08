@@ -295,7 +295,39 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-}); // DOMContentLoaded बंद
+  // ==========================================================================
+  // 5. Light / Dark Theme Controller (Navbar & Drawer Sync)
+  // ==========================================================================
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const drawerThemeToggleBtn = document.getElementById('drawerThemeToggleBtn');
+  const drawerThemeIcon = document.getElementById('drawerThemeIcon');
+
+  function updateThemeIcons(isLight) {
+    const iconChar = isLight ? '☀️' : '🌙';
+    if (themeIcon) themeIcon.innerText = iconChar;
+    if (drawerThemeIcon) drawerThemeIcon.innerText = iconChar;
+  }
+
+  const savedTheme = localStorage.getItem('nischaydesk_theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-theme');
+    updateThemeIcons(true);
+  } else {
+    document.body.classList.remove('light-theme');
+    updateThemeIcons(false);
+  }
+
+  function toggleThemeMode() {
+    const isLight = document.body.classList.toggle('light-theme');
+    localStorage.setItem('nischaydesk_theme', isLight ? 'light' : 'dark');
+    updateThemeIcons(isLight);
+  }
+
+  if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleThemeMode);
+  if (drawerThemeToggleBtn) drawerThemeToggleBtn.addEventListener('click', toggleThemeMode);
+
+}); // End of DOMContentLoaded
 
 // =================== AI DOUBT SOLVER ENGINE ===================
 const PART_A = "gsk_"; 
@@ -357,7 +389,7 @@ async function sendQuestionToGroq() {
         if (valid) selectedModel = valid.id;
       }
     } catch (e) {
-      console.warn("Model list fetch failed, using fallback:", selectedModel);
+      console.warn("Model fetch failed, fallback:", selectedModel);
     }
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -397,33 +429,3 @@ async function sendQuestionToGroq() {
 
   chatBody.scrollTop = chatBody.scrollHeight;
 }
-// =================== THEME TOGGLE LOGIC ===================
-(function initTheme() {
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const savedTheme = localStorage.getItem('nischaydesk_theme');
-
-  // पहले से सेव थीम लागू करें
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-theme');
-    if (themeIcon) themeIcon.innerText = '☀️';
-  } else {
-    document.body.classList.remove('light-theme');
-    if (themeIcon) themeIcon.innerText = '🌙';
-  }
-
-  // बटन क्लिक पर टॉगल
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', function () {
-      const isLight = document.body.classList.toggle('light-theme');
-      if (isLight) {
-        localStorage.setItem('nischaydesk_theme', 'light');
-        if (themeIcon) themeIcon.innerText = '☀️';
-      } else {
-        localStorage.setItem('nischaydesk_theme', 'dark');
-        if (themeIcon) themeIcon.innerText = '🌙';
-      }
-    });
-  }
-})();
-
