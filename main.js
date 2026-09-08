@@ -329,19 +329,7 @@ function handleAiEnter(event) {
     sendQuestionToGroq();
   }
 }
-    } catch (err) {
-      console.warn(`Model ${currentModel} failed, trying next...`);
-    }
-  }
 
-  if (!success) {
-    const loadingElem = document.getElementById(loadingId);
-    if (loadingElem) loadingElem.remove();
-    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई या API Key इनवैलिड है। कृपया पुनः प्रयास करें।</div>`;
-  }
-
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
 async function sendQuestionToGroq() {
   const inputField = document.getElementById('aiUserInput');
   const chatBody = document.getElementById('aiChatBody');
@@ -358,15 +346,13 @@ async function sendQuestionToGroq() {
   chatBody.scrollTop = chatBody.scrollHeight;
 
   try {
-    // 1. पहले Groq से पूछो कि तुम्हारी Key पर कौन-कौन से मॉडल एक्टिव हैं
-    let selectedModel = "llama-3.1-8b-instant"; // डिफ़ॉल्ट
+    let selectedModel = "llama-3.1-8b-instant";
     try {
       const modelRes = await fetch("https://api.groq.com/openai/v1/models", {
         headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
       });
       const modelData = await modelRes.json();
       if (modelData && modelData.data && modelData.data.length > 0) {
-        // जो भी पहला एक्टिव टेक्स्ट मॉडल मिले, उसे चुन लो
         const valid = modelData.data.find(m => m.id.includes("llama") || m.id.includes("mixtral") || m.id.includes("gemma"));
         if (valid) selectedModel = valid.id;
       }
@@ -374,7 +360,6 @@ async function sendQuestionToGroq() {
       console.warn("Model list fetch failed, using fallback:", selectedModel);
     }
 
-    // 2. उसी एक्टिव मॉडल से सवाल का जवाब माँगो
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -412,5 +397,3 @@ async function sendQuestionToGroq() {
 
   chatBody.scrollTop = chatBody.scrollHeight;
 }
-
-
