@@ -12,14 +12,26 @@ document.addEventListener('DOMContentLoaded', function () {
   const sideDrawer = document.getElementById('sideDrawer');
 
   function openDrawer() {
-    if (sideDrawer) sideDrawer.classList.add('active');
-    if (drawerScrim) drawerScrim.classList.add('active');
+    if (sideDrawer) {
+      sideDrawer.classList.add('active');
+      sideDrawer.classList.add('open');
+    }
+    if (drawerScrim) {
+      drawerScrim.classList.add('active');
+      drawerScrim.classList.add('open');
+    }
     document.body.style.overflow = 'hidden';
   }
 
   function closeDrawer() {
-    if (sideDrawer) sideDrawer.classList.remove('active');
-    if (drawerScrim) drawerScrim.classList.remove('active');
+    if (sideDrawer) {
+      sideDrawer.classList.remove('active');
+      sideDrawer.classList.remove('open');
+    }
+    if (drawerScrim) {
+      drawerScrim.classList.remove('active');
+      drawerScrim.classList.remove('open');
+    }
     document.body.style.overflow = '';
   }
 
@@ -196,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pdf.addImage(base64Data, 'JPEG', posX, posY, renderWidth, renderHeight);
           }
 
-          // Direct Download (फोन में सीधे सेव होगी)
+          // Direct Download
           pdf.save(`NischayDesk_Notes_${Date.now()}.pdf`);
 
           selectedFilesCount.innerText = "✓ PDF सफलतापूर्वक डाउनलोड हो गई!";
@@ -282,8 +294,10 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
+
+}); // DOMContentLoaded बंद
+
 // =================== AI DOUBT SOLVER ENGINE ===================
-// अपनी नई Key का 'gsk_' छोड़कर बाकी का हिस्सा PART_B में डालना
 const PART_A = "gsk_"; 
 const PART_B = "e1BcEL68Yappj4GGdHVPWGdyb3FYhPPwZCHxLiBBRzC019iq7NBF"; 
 const GROQ_API_KEY = PART_A + PART_B;
@@ -291,10 +305,18 @@ const GROQ_API_KEY = PART_A + PART_B;
 function openAiDoubtModal() {
   const modal = document.getElementById('aiDoubtModal');
   if (modal) modal.style.display = 'flex';
+  
   const drawer = document.getElementById('sideDrawer');
   const scrim = document.getElementById('drawerScrim');
-  if (drawer) drawer.classList.remove('open');
-  if (scrim) scrim.classList.remove('active');
+  if (drawer) {
+    drawer.classList.remove('open');
+    drawer.classList.remove('active');
+  }
+  if (scrim) {
+    scrim.classList.remove('open');
+    scrim.classList.remove('active');
+  }
+  document.body.style.overflow = '';
 }
 
 function closeAiDoubtModal() {
@@ -311,7 +333,7 @@ function handleAiEnter(event) {
 async function sendQuestionToGroq() {
   const inputField = document.getElementById('aiUserInput');
   const chatBody = document.getElementById('aiChatBody');
-  const userText = inputField.value.trim();
+  const userText = inputField ? inputField.value.trim() : '';
 
   if (!userText) return;
 
