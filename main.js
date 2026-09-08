@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // =================== AI DOUBT SOLVER ENGINE ===================
 const PART_A = "gsk_"; 
-const PART_B = "e1BcEL68Yappj4GGdHVPWGdyb3FYhPPwZCHxLiBBRzC019iq7NBF"; 
+const PART_B = "StnNwQAxenQgUvvGF7FQWGdyb3FYuYVf0AqrswWcTFYX9lJYCYFU"; 
 const GROQ_API_KEY = PART_A + PART_B;
 
 function openAiDoubtModal() {
@@ -353,7 +353,7 @@ async function sendQuestionToGroq() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-       model: "llama-3.1-8b-instant",
+       model: "model: "llama3-8b-8192",
 
         messages: [
           {
