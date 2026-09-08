@@ -277,3 +277,58 @@ body.app-body {
   background-color: var(--success);
   box-shadow: 0 0 6px var(--success);
 }
+/* --- Theme Toggle Button Styling --- */
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* --- Light Mode Color Overrides --- */
+body.light-theme {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .app-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+body.light-theme .brand-name,
+body.light-theme .hero-headline,
+body.light-theme .section-headline,
+body.light-theme .card-title {
+  color: #0f172a !important;
+}
+
+body.light-theme .grid-card,
+body.light-theme .quick-tool-card,
+body.light-theme .side-drawer {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .hero-subline,
+body.light-theme .card-desc,
+body.light-theme .section-subheadline {
+  color: #475569 !important;
+}
+
+body.light-theme .theme-toggle-btn {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
