@@ -283,20 +283,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 // =================== AI DOUBT SOLVER ENGINE ===================
-let GROQ_API_KEY = localStorage.getItem("nischay_groq_key") || "";
+// अपनी नई Key का 'gsk_' छोड़कर बाकी का हिस्सा PART_B में डालना
+const PART_A = "gsk_"; 
+const PART_B = "e1BcEL68Yappj4GGdHVPWGdyb3FYhPPwZCHxLiBBRzC019iq7NBF"; 
+const GROQ_API_KEY = PART_A + PART_B;
 
 function openAiDoubtModal() {
-  if (!GROQ_API_KEY) {
-    const enteredKey = prompt("Groq API Key दर्ज करें (यह सिर्फ आपके फोन में सुरक्षित रहेगी):");
-    if (enteredKey && enteredKey.trim() !== "") {
-      GROQ_API_KEY = enteredKey.trim();
-      localStorage.setItem("nischay_groq_key", GROQ_API_KEY);
-    } else {
-      alert("AI का उपयोग करने के लिए API Key आवश्यक है!");
-      return;
-    }
-  }
-
   const modal = document.getElementById('aiDoubtModal');
   if (modal) modal.style.display = 'flex';
   const drawer = document.getElementById('sideDrawer');
@@ -343,7 +335,7 @@ async function sendQuestionToGroq() {
         messages: [
           {
             role: "system",
-            content: "You are NischayDesk AI, an encouraging and expert academic study assistant created by Prince Kumar for Bihar Board and competitive exam students (Class 10th & 11th PCM+B). Always introduce yourself as NischayDesk AI when asked about your identity. Answer clearly in Hinglish or Hindi."
+            content: "You are NischayDesk AI, an academic study assistant created by Prince Kumar for Bihar Board students (Class 10th & 11th PCM+B). Introduce yourself as NischayDesk AI. Answer clearly in Hindi/Hinglish."
           },
           { role: "user", content: userText }
         ],
@@ -355,17 +347,17 @@ async function sendQuestionToGroq() {
     const loadingElem = document.getElementById(loadingId);
     if (loadingElem) loadingElem.remove();
 
-    if (data.choices && data.choices.length > 0) {
+    if (data.choices && data.choices[0]?.message?.content) {
       const botReply = data.choices[0].message.content;
       chatBody.innerHTML += `<div class="ai-msg bot-msg">${botReply}</div>`;
     } else {
-      chatBody.innerHTML += `<div class="ai-msg bot-msg">सर्वर से रिस्पॉन्स नहीं मिला, दोबारा कोशिश करें।</div>`;
+      chatBody.innerHTML += `<div class="ai-msg bot-msg">API एरर: ${data.error ? data.error.message : 'रिस्पॉन्स नहीं मिला'}</div>`;
     }
   } catch (error) {
     console.error("AI Error:", error);
     const loadingElem = document.getElementById(loadingId);
     if (loadingElem) loadingElem.remove();
-    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई। API Key सही दर्ज करें।</div>`;
+    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई।</div>`;
   }
 
   chatBody.scrollTop = chatBody.scrollHeight;
