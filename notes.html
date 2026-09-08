@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>स्टडी नोट्स लाइब्रेरी | NischayDesk - Smart EdTech Platform</title>
+
+  <!-- Typography: Plus Jakarta Sans & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Flat CSS Links (Same Directory) -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="app-body">
+
+  <!-- TOP NAVBAR -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <a href="index.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">By Prince Kumar</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-links-desktop">
+        <a href="index.html" class="nav-item">डैशबोर्ड</a>
+        <a href="notes.html" class="nav-item active">स्टडी नोट्स हब</a>
+        <a href="test.html" class="nav-item">मॉक टेस्ट सीरीज</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-auth-primary" id="headerAuthBtn">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Sign in with Google</span>
+        </button>
+
+        <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
+          <div class="user-info-text">
+            <span class="user-display-name" id="userDisplayName">छात्र</span>
+            <span class="user-session-badge">VIP Member</span>
+          </div>
+          <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MOBILE SLIDE-OUT DRAWER -->
+  <div class="drawer-scrim" id="drawerScrim"></div>
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-badge-icon sm">N</div>
+        <span>NischayDesk</span>
+      </div>
+      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+    </div>
+
+    <nav class="drawer-nav-list">
+      <a href="index.html" class="drawer-nav-item">
+        <span class="icon">📊</span> मुख्य डैशबोर्ड
+      </a>
+      <a href="notes.html" class="drawer-nav-item active">
+        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th & 11th)
+      </a>
+      <a href="test.html" class="drawer-nav-item">
+        <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
+      </a>
+    </nav>
+
+    <div class="drawer-footer">
+      <span class="platform-meta">वर्जन 2.0.4 प्रोडक्शन</span>
+      <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
+    </div>
+  </aside>
+
+  <!-- MAIN NOTES EXPLORER -->
+  <main class="dashboard-viewport">
+
+    <!-- HERO SEARCH & FILTER BANNER -->
+    <section class="notes-header-banner">
+      <div class="status-pill">
+        <span class="pulsing-dot"></span> वेरीफाइड सिलेबस रिपॉजिटरी
+      </div>
+      <h1 class="notes-headline">
+        स्मार्ट <span class="gradient-text">स्टडी नोट्स</span> हब
+      </h1>
+      <p class="notes-subheadline">
+        क्लास 10th (मैट्रिक) एवं 11th साइंस (NCERT/BSEB) के हस्तलिखित थ्योरी नोट्स और फॉर्मूला शीट्स।
+      </p>
+
+      <!-- Search Input Box -->
+      <div class="search-bar-wrap">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="notesSearchInput" 
+          class="notes-search-field" 
+          placeholder="चैप्टर या विषय का नाम खोजें (उदा: मात्रक, त्रिकोणमिति, प्रकाश...)" 
+        />
+      </div>
+
+      <!-- Class & Subject Filter Pills -->
+      <div class="filter-pill-container" id="filterPillContainer">
+        <button class="filter-btn active" data-filter="all">सभी नोट्स</button>
+        <button class="filter-btn" data-filter="11-physics">11th भौतिकी (Physics)</button>
+        <button class="filter-btn" data-filter="11-chemistry">11th रसायन (Chemistry)</button>
+        <button class="filter-btn" data-filter="11-biology">11th जीव विज्ञान (Biology)</button>
+        <button class="filter-btn" data-filter="11-math">11th गणित (Math)</button>
+        <button class="filter-btn" data-filter="10-science">10th विज्ञान (Science)</button>
+        <button class="filter-btn" data-filter="10-math">10th गणित (Math)</button>
+      </div>
+    </section>
+
+    <!-- NOTES CARDS GRID -->
+    <section class="dashboard-section">
+      <div class="notes-grid-catalog" id="notesCatalogGrid">
+        <!-- JavaScript (syllabus-data.js & notes-viewer.js) dynamically renders cards here -->
+        <div class="loading-state-box">
+          <div class="spinner"></div>
+          <p>नोट्स डेटाबेस लोड हो रहा है...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- IN-BUILT STUDIO MODAL PDF VIEWER (Direct On-Screen Reading) -->
+  <div class="pdf-modal-backdrop" id="pdfStudioModal">
+    <div class="pdf-modal-window">
+      <!-- Studio Header Controls -->
+      <div class="pdf-studio-header">
+        <div class="pdf-doc-meta">
+          <span class="pdf-doc-badge" id="modalDocBadge">Class 11 Science</span>
+          <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
+        </div>
+        <div class="pdf-studio-actions">
+          <a href="#" id="modalDirectDownloadBtn" target="_blank" class="btn-studio-action" download title="डिवाइस में डाउनलोड करें">
+            📥 <span>डाउनलोड</span>
+          </a>
+          <button class="btn-studio-action" id="modalFullscreenBtn" title="फुल-स्क्रीन मोड">
+            ⛶
+          </button>
+          <button class="btn-studio-close" id="modalCloseBtn" title="बंद करें">&times;</button>
+        </div>
+      </div>
+
+      <!-- Embedded Iframe Stage -->
+      <div class="pdf-frame-stage" id="pdfFrameStage">
+        <iframe src="" id="studioPdfFrame" frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <!-- Studio Footer Bar -->
+      <div class="pdf-studio-footer">
+        <span>NischayDesk Secure In-App Reader</span>
+        <span class="reading-hint">नोट्स को जूम करने के लिए पिंच करें या +/- दबाएं</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL BRAND FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="brand-badge-icon sm">N</div>
+          <span class="brand-title">NischayDesk</span>
+        </div>
+        <p class="footer-summary">
+          100% ओरिजिनल एवं वेरीफाइड सिलेबस हैंड-नोट्स।
+        </p>
+        <div class="founder-identity-box">
+          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">मुख्य डैशबोर्ड</a></li>
+          <li><a href="test.html">लाइव टेस्ट पोर्टल</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 NischayDesk. ऑल राइट्स रिजर्व्ड।</span>
+      <span class="server-status-tag"><span class="green-indicator"></span> Cloud Storage Active</span>
+    </div>
+  </footer>
+
+  <!-- Flat Script Dependencies -->
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="syllabus-data.js"></script>
+  <script src="notes-viewer.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

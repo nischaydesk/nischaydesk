@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal</title>
+
+  <!-- Typography: Plus Jakarta Sans & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Flat CSS Links (No folders) -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+
+  <!-- Firebase Modular Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="app-body">
+
+  <!-- 1. TOP ENTERPRISE NAVBAR -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <a href="index.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">By Prince Kumar</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-links-desktop">
+        <a href="index.html" class="nav-item active">डैशबोर्ड</a>
+        <a href="notes.html" class="nav-item">स्टडी नोट्स हब</a>
+        <a href="test.html" class="nav-item">मॉक टेस्ट सीरीज</a>
+        <a href="#quickTools" class="nav-item">स्मार्ट टूल्स</a>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Google Sign-In Button -->
+        <button class="btn-auth-primary" id="headerAuthBtn">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Sign in with Google</span>
+        </button>
+
+        <!-- Logged-in User Widget -->
+        <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
+          <div class="user-info-text">
+            <span class="user-display-name" id="userDisplayName">छात्र</span>
+            <span class="user-session-badge">VIP Member</span>
+          </div>
+          <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 2. MOBILE SLIDE-OUT DRAWER -->
+  <div class="drawer-scrim" id="drawerScrim"></div>
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-badge-icon sm">N</div>
+        <span>NischayDesk</span>
+      </div>
+      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+    </div>
+
+    <div class="drawer-user-card" id="drawerUserCard">
+      <p class="drawer-user-prompt">क्लाउड सिंक और टेस्ट ट्रैकिंग के लिए लॉगिन करें।</p>
+    </div>
+
+    <nav class="drawer-nav-list">
+      <a href="index.html" class="drawer-nav-item active">
+        <span class="icon">📊</span> मुख्य डैशबोर्ड
+      </a>
+      <a href="notes.html" class="drawer-nav-item">
+        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th & 11th)
+      </a>
+      <a href="test.html" class="drawer-nav-item">
+        <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
+      </a>
+      <a href="#quickTools" class="drawer-nav-item">
+        <span class="icon">🛠️</span> यूटिलिटी इंजन
+      </a>
+    </nav>
+
+    <div class="drawer-footer">
+      <span class="platform-meta">वर्जन 2.0.4 प्रोडक्शन</span>
+      <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
+    </div>
+  </aside>
+
+  <!-- 3. MAIN DASHBOARD VIEWPORT -->
+  <main class="dashboard-viewport">
+
+    <!-- HERO METRIC BANNER -->
+    <section class="hero-studio-banner">
+      <div class="hero-content">
+        <div class="status-pill">
+          <span class="pulsing-dot"></span> बिहार बोर्ड & कंपीटिटिव एग्जाम हब
+        </div>
+        <h1 class="hero-headline">
+          सफलता का सटीक इरादा, <br />
+          <span class="gradient-text">NischayDesk</span> के साथ।
+        </h1>
+        <p class="hero-subline">
+          क्लास 10th एवं 11th (PCM+B) के वेरीफाइड नोट्स, लाइव परीक्षा टाइमर सिमुलेशन, और ऑल-इन-वन क्लाइंट-साइड डॉक्यूमेंट इंजन।
+        </p>
+
+        <div class="hero-action-group">
+          <a href="notes.html" class="btn-cta-primary">📚 नोट्स पढ़ना शुरू करें</a>
+          <a href="test.html" class="btn-cta-secondary">⚡ लाइव टेस्ट दें</a>
+        </div>
+      </div>
+
+      <div class="hero-stats-panel">
+        <div class="stat-glass-card">
+          <div class="stat-icon">📖</div>
+          <div class="stat-numeric" id="totalNotesCount">14+</div>
+          <div class="stat-label">वेरीफाइड चैप्टर्स</div>
+        </div>
+        <div class="stat-glass-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-numeric" id="totalQuizCount">500+</div>
+          <div class="stat-label">प्रैक्टिस प्रश्न</div>
+        </div>
+        <div class="stat-glass-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-numeric">0 ms</div>
+          <div class="stat-label">सर्वर लैग (Instant)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVE USER PROGRESS & CLOUD LOCKER -->
+    <section class="dashboard-section">
+      <div class="section-title-wrap">
+        <div>
+          <h2 class="section-headline">आपका पर्सनलाइज्ड हब</h2>
+          <p class="section-subheadline">Google Cloud Firestore द्वारा सुरक्षित और रियल-टाइम सिंक</p>
+        </div>
+        <span class="realtime-indicator" id="syncStatus">क्लाउड से जुड़ा हुआ</span>
+      </div>
+
+      <div class="dashboard-grid-cards">
+        <!-- Academic Track Card -->
+        <div class="grid-card live-track-card">
+          <div class="card-head">
+            <span class="card-tag">वर्तमान सत्र</span>
+            <span class="card-action-link" onclick="location.href='notes.html'">सभी देखें &rarr;</span>
+          </div>
+          <h3 class="card-title">11th साइंस: फिजिक्स, केमिस्ट्री, बायो, मैथ्स</h3>
+          <p class="card-desc">NCERT व स्टेट बोर्ड आधारित संपूर्ण थ्योरी और न्यूमेरिकल सूत्र संग्रह।</p>
+          
+          <div class="progress-container">
+            <div class="progress-meta">
+              <span>सिलेबस कवरेज</span>
+              <span id="syllabusPercent">68%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" style="width: 68%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test Performance Card -->
+        <div class="grid-card test-track-card">
+          <div class="card-head">
+            <span class="card-tag alert-tag">लाइव एग्जाम पोर्टल</span>
+            <span class="card-action-link" onclick="location.href='test.html'">टेस्ट पोर्टल &rarr;</span>
+          </div>
+          <h3 class="card-title">डेली 15-मिनट स्पीड टेस्ट</h3>
+          <p class="card-desc">नेगेटिव मार्किंग और ऑल-इंडिया रैंक सिमुलेटर के साथ वास्तविक परीक्षा माहौल।</p>
+          
+          <div class="test-quick-stat">
+            <div class="stat-pill-sm">
+              <span class="stat-val" id="userLastScore">--</span>
+              <span class="stat-desc">अंतिम स्कोर</span>
+            </div>
+            <div class="stat-pill-sm">
+              <span class="stat-val" id="userAccuracy">--%</span>
+              <span class="stat-desc">सटीकता</span>
+            </div>
+            <a href="test.html" class="btn-start-test-sm">टेस्ट शुरू करें</a>
+          </div>
+        </div>
+
+        <!-- VIP Cloud Locker Card -->
+        <div class="grid-card locker-card">
+          <div class="card-head">
+            <span class="card-tag premium-tag">VIP क्लाउड लॉकर</span>
+            <span class="badge-lock">🔒 एन्क्रिप्टेड</span>
+          </div>
+          <h3 class="card-title">सुरक्षित रिकॉर्ड्स व डॉक्स</h3>
+          <p class="card-desc">आपके द्वारा तैयार की गई मार्कशीट, PDF और टेस्ट स्कोर कार्ड का क्लाउड इतिहास।</p>
+          
+          <div class="locker-history-feed" id="cloudLockerFeed">
+            <div class="empty-feed-placeholder">
+              <span>डेटा सिंक करने के लिए Google से साइन इन करें।</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK UTILITIES ENGINE -->
+    <section class="dashboard-section" id="quickTools">
+      <div class="section-title-wrap">
+        <div>
+          <h2 class="section-headline">स्टूडेंट यूटिलिटी इंजन</h2>
+          <p class="section-subheadline">हाई-परफॉर्मन्स इन-ब्राउज़र टूल्स</p>
+        </div>
+      </div>
+
+      <div class="quick-tools-grid">
+        <!-- 1. Notes Reader -->
+        <a href="notes.html" class="quick-tool-card">
+          <div class="tool-icon-box">📚</div>
+          <h4>इन-बिल्ट नोट्स रीडर</h4>
+          <p>बिना ऐप डाउनलोड किए सीधे स्क्रीन पर PDF पढ़ें।</p>
+        </a>
+
+        <!-- 2. Exam Timer -->
+        <a href="test.html" class="quick-tool-card">
+          <div class="tool-icon-box">⏱️</div>
+          <h4>एग्जाम टाइमर टेस्ट</h4>
+          <p>ऑब्जेक्टिव प्रश्नों का वास्तविक समय आधारित टेस्ट।</p>
+        </a>
+
+        <!-- 3. HD Doc Converter (Popup Trigger) -->
+        <div class="quick-tool-card" id="openDocConverterBtn">
+          <div class="tool-icon-box">📄</div>
+          <h4>HD डॉक कनवर्टर</h4>
+          <p>1:1 लॉसलेस इमेज टू PDF इंजन।</p>
+        </div>
+
+        <!-- 4. Eligibility Checker (Popup Trigger) -->
+        <div class="quick-tool-card" id="openEligibilityBtn">
+          <div class="tool-icon-box">🎯</div>
+          <h4>एलिजिबिलिटी चेकर</h4>
+          <p>सरकारी भर्ती एवं प्रवेश परीक्षा पात्रता जांचें।</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== TOOL 1: DOC CONVERTER MODAL =================== -->
+    <div class="pdf-modal-backdrop" id="docConverterModal">
+      <div class="pdf-modal-window" style="max-width: 550px; height: auto; padding: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <h3 style="color:var(--text-pure); font-size:1.2rem;">📄 HD इमेज टू PDF कनवर्टर</h3>
+          <button class="btn-studio-close" id="closeConverterBtn">&times;</button>
+        </div>
+        
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
+          अपने हाथ से लिखे नोट्स या असाइनमेंट की फोटो चुनें और सिंगल PDF में बदलें:
+        </p>
+
+        <div style="border: 2px dashed var(--border-strong); border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 16px; background: var(--surface-elevated);">
+          <input type="file" id="converterFileInput" accept="image/*" multiple style="display:none;" />
+          <button type="button" class="btn-stage-primary" onclick="document.getElementById('converterFileInput').click();">
+            📷 गैलरी / कैमरे से फोटो चुनें
+          </button>
+          <div id="selectedFilesCount" style="margin-top: 10px; font-size: 0.8rem; color: var(--brand-accent);">
+            कोई फोटो नहीं चुनी गई
+          </div>
+        </div>
+
+        <button id="generatePdfBtn" class="btn-start-exam" style="width:100%; max-width:100%;" disabled>
+          ⚡ PDF जेनरेट और डाउनलोड करें
+        </button>
+      </div>
+    </div>
+
+    <!-- =================== TOOL 2: ELIGIBILITY CHECKER MODAL =================== -->
+    <div class="pdf-modal-backdrop" id="eligibilityModal">
+      <div class="pdf-modal-window" style="max-width: 600px; height: auto; padding: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+          <h3 style="color:var(--text-pure); font-size:1.2rem;">🎯 परीक्षा एलिजिबिलिटी चेकर</h3>
+          <button class="btn-studio-close" id="closeEligibilityBtn">&times;</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div>
+            <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">आपकी क्लास:</label>
+            <select id="elClass" class="exam-dropdown">
+              <option value="10">10th (मैट्रिक)</option>
+              <option value="11" selected>11th साइंस</option>
+              <option value="12">12th साइंस</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">सब्जेक्ट स्ट्रीम:</label>
+            <select id="elStream" class="exam-dropdown">
+              <option value="pcm">Physics, Chemistry, Math</option>
+              <option value="pcb">Physics, Chemistry, Biology</option>
+              <option value="pcmb">PCMB (Math + Bio दोनों)</option>
+              <option value="gen">सामान्य / मैट्रिक</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="checkEligibilityBtn" class="btn-stage-primary" style="width:100%; margin-bottom:16px;">
+          पात्रता जांचें (Check Eligibility)
+        </button>
+
+        <div id="eligibilityResultsBox" style="background:var(--bg-secondary); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; max-height:240px; overflow-y:auto; font-size:0.85rem; line-height:1.6;">
+          <span style="color:var(--text-muted);">विवरण चुनकर "पात्रता जांचें" पर क्लिक करें।</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 4. FOOTER BRANDING -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="brand-badge-icon sm">N</div>
+          <span class="brand-title">NischayDesk</span>
+        </div>
+        <p class="footer-summary">
+          भारतीय छात्रों के लिए समर्पित नेक्स्ट-जेनरेशन अध्ययन और डिजिटल सेवा आर्किटेक्चर। शून्य लैग, 100% प्राइवेसी।
+        </p>
+        <div class="founder-identity-box">
+          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">एकैडमिक्स</h4>
+        <ul class="footer-nav">
+          <li><a href="notes.html">क्लास 10th मैट्रिक नोट्स</a></li>
+          <li><a href="notes.html">क्लास 11th साइंस नोट्स</a></li>
+          <li><a href="test.html">NTA / बोर्ड टेस्ट सीरीज</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">प्लेटफ़ॉर्म</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">मुख्य डैशबोर्ड</a></li>
+          <li><a href="notes.html">क्लाउड लॉकर</a></li>
+          <li><a href="#quickTools">यूटिलिटी टूल्स</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
+      <span class="server-status-tag"><span class="green-indicator"></span> Firebase Cloud Connected</span>
+    </div>
+  </footer>
+
+  <!-- Flat Script Links (No folders) -->
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html>

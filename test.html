@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>मॉक टेस्ट सीरीज पोर्टल | NischayDesk - Smart Exam Engine</title>
+
+  <!-- Typography: Plus Jakarta Sans & Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Flat CSS Links (Direct same-folder links) -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="test-engine.css" />
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="app-body">
+
+  <!-- TOP NAVBAR -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <a href="index.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">By Prince Kumar</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-links-desktop">
+        <a href="index.html" class="nav-item">डैशबोर्ड</a>
+        <a href="notes.html" class="nav-item">स्टडी नोट्स हब</a>
+        <a href="test.html" class="nav-item active">मॉक टेस्ट सीरीज</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-auth-primary" id="headerAuthBtn">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Sign in with Google</span>
+        </button>
+
+        <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
+          <div class="user-info-text">
+            <span class="user-display-name" id="userDisplayName">छात्र</span>
+            <span class="user-session-badge">VIP Member</span>
+          </div>
+          <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MOBILE SLIDE-OUT DRAWER -->
+  <div class="drawer-scrim" id="drawerScrim"></div>
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-badge-icon sm">N</div>
+        <span>NischayDesk</span>
+      </div>
+      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+    </div>
+
+    <nav class="drawer-nav-list">
+      <a href="index.html" class="drawer-nav-item">
+        <span class="icon">📊</span> मुख्य डैशबोर्ड
+      </a>
+      <a href="notes.html" class="drawer-nav-item">
+        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th & 11th)
+      </a>
+      <a href="test.html" class="drawer-nav-item active">
+        <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
+      </a>
+    </nav>
+
+    <div class="drawer-footer">
+      <span class="platform-meta">वर्जन 2.0.4 प्रोडक्शन</span>
+      <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
+    </div>
+  </aside>
+
+  <!-- MAIN EXAM PORTAL WRAPPER -->
+  <main class="test-portal-container">
+
+    <!-- SCREEN 1: TEST SELECTION & INSTRUCTIONS SCREEN -->
+    <section class="test-view-panel active" id="testLobbyScreen">
+      <div class="lobby-card">
+        <div class="status-pill">
+          <span class="pulsing-dot"></span> रियल-टाइम टेस्ट सिमुलेटर
+        </div>
+        <h1 class="lobby-title">NTA व बिहार बोर्ड <span class="gradient-text">मॉक टेस्ट</span> पोर्टल</h1>
+        <p class="lobby-subtitle">
+          असली परीक्षा माहौल में समय प्रबंधन, सटीकता (Accuracy) और विषयवार ज्ञान की त्वरित परीक्षा।
+        </p>
+
+        <!-- Test Selector Controls -->
+        <div class="test-selection-grid">
+          <div class="select-field-box">
+            <label for="testClassSelect">कक्षा (Class):</label>
+            <select id="testClassSelect" class="exam-dropdown">
+              <option value="11">Class 11th (साइंस)</option>
+              <option value="10">Class 10th (मैट्रिक)</option>
+            </select>
+          </div>
+
+          <div class="select-field-box">
+            <label for="testSubjectSelect">विषय (Subject):</label>
+            <select id="testSubjectSelect" class="exam-dropdown">
+              <option value="physics">भौतिकी (Physics)</option>
+              <option value="chemistry">रसायन विज्ञान (Chemistry)</option>
+              <option value="biology">जीव विज्ञान (Biology)</option>
+              <option value="math">गणित (Mathematics)</option>
+            </select>
+          </div>
+
+          <div class="select-field-box">
+            <label for="testPatternSelect">परीक्षा प्रारूप (Pattern):</label>
+            <select id="testPatternSelect" class="exam-dropdown">
+              <option value="speed">क्विक स्पीड टेस्ट (10 प्रश्न / 10 मिनट)</option>
+              <option value="board">बोर्ड फुल टेस्ट (20 प्रश्न / 20 मिनट)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Exam Guidelines Box -->
+        <div class="instructions-box">
+          <h3>📌 परीक्षा निर्देश:</h3>
+          <ul>
+            <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
+            <li>नेगेटिव मार्किंग: प्रत्येक गलत उत्तर पर <strong>-1 अंक</strong> काटा जाएगा।</li>
+            <li>टाइमर समाप्त होते ही टेस्ट स्वतः सबमिट हो जाएगा।</li>
+            <li>स्क्रीन छोड़ने या बैक करने पर टेस्ट रद्द माना जा सकता है।</li>
+          </ul>
+        </div>
+
+        <button class="btn-start-exam" id="startExamBtn">
+          ⚡ टेस्ट शुरू करें (Start Test)
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: LIVE RUNNING EXAM SCREEN -->
+    <section class="test-view-panel" id="testRunningScreen">
+      
+      <!-- Top Live StatusBar -->
+      <div class="exam-status-bar">
+        <div class="exam-active-subject">
+          <span class="subject-badge" id="liveExamBadge">11th Physics</span>
+          <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 10</span>
+        </div>
+
+        <!-- Live Countdown Timer -->
+        <div class="exam-timer-box" id="examTimerBox">
+          <span class="timer-icon">⏳</span>
+          <span class="timer-digits" id="timerDigits">10:00</span>
+        </div>
+
+        <button class="btn-submit-exam-early" id="submitExamEarlyBtn">
+          फाइनल सबमिट करें ✓
+        </button>
+      </div>
+
+      <!-- Center Question + Palette Grid -->
+      <div class="exam-workspace-grid">
+        
+        <!-- Left: Question Paper Stage -->
+        <div class="question-stage-box">
+          <div class="question-header">
+            <span class="q-number-pill" id="displayQNumber">Q.1</span>
+            <span class="q-marks-tag">+4.0, -1.0</span>
+          </div>
+
+          <div class="question-text" id="displayQText">
+            लोड हो रहा है...
+          </div>
+
+          <!-- Options Container -->
+          <div class="options-group" id="displayOptionsGroup">
+            <!-- Dynamically populated options by quiz-engine.js -->
+          </div>
+
+          <!-- Bottom Stage Navigation Controls -->
+          <div class="stage-nav-bar">
+            <button class="btn-stage-secondary" id="prevQBtn" disabled>&larr; पिछला</button>
+            <button class="btn-stage-ghost" id="clearSelectionBtn">विकल्प हटाएं</button>
+            <button class="btn-stage-primary" id="nextQBtn">अगला प्रश्न &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Right: OMR Question Palette Grid (NTA Style) -->
+        <aside class="question-palette-box">
+          <h4 class="palette-title">प्रश्न पैलेट (Question Status)</h4>
+          <div class="palette-legend">
+            <span><span class="dot-legend answered"></span> हल किया</span>
+            <span><span class="dot-legend unanswered"></span> शेष</span>
+          </div>
+          <div class="palette-buttons-grid" id="paletteButtonsGrid">
+            <!-- 1, 2, 3... buttons generated by quiz-engine.js -->
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- SCREEN 3: DETAILED RESULT & SCORECARD SCREEN -->
+    <section class="test-view-panel" id="testResultScreen">
+      <div class="result-card-container">
+        
+        <div class="result-header-badge">
+          <span class="trophy-icon">🏆</span>
+          <h2>टेस्ट परिणाम स्कोरकार्ड</h2>
+          <p id="resultSubMeta">11th Physics - स्पीड टेस्ट</p>
+        </div>
+
+        <!-- Main Stats 3D Tiles -->
+        <div class="result-tiles-grid">
+          <div class="res-tile score-tile">
+            <span class="tile-label">कुल प्राप्तांक</span>
+            <span class="tile-val" id="resTotalMarks">0 / 40</span>
+          </div>
+          <div class="res-tile accuracy-tile">
+            <span class="tile-label">सटीकता (Accuracy)</span>
+            <span class="tile-val" id="resAccuracy">0%</span>
+          </div>
+          <div class="res-tile correct-tile">
+            <span class="tile-label">सही उत्तर</span>
+            <span class="tile-val" id="resCorrectCount">0</span>
+          </div>
+          <div class="res-tile wrong-tile">
+            <span class="tile-label">गलत उत्तर</span>
+            <span class="tile-val" id="resWrongCount">0</span>
+          </div>
+        </div>
+
+        <!-- Solutions & Detailed Review -->
+        <div class="solutions-review-section">
+          <h3 class="solutions-heading">📖 विस्तृत उत्तर एवं हल (Answer Key):</h3>
+          <div class="solutions-accordion-list" id="solutionsAccordionList">
+            <!-- Populated dynamically by quiz-engine.js -->
+          </div>
+        </div>
+
+        <!-- Actions: Retest or Dashboard -->
+        <div class="result-actions-footer">
+          <button class="btn-cta-primary" id="restartTestBtn">🔄 पुनः टेस्ट दें</button>
+          <a href="index.html" class="btn-cta-secondary">📊 डैशबोर्ड पर जाएं</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PROFESSIONAL BRAND FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <div class="brand-badge-icon sm">N</div>
+          <span class="brand-title">NischayDesk</span>
+        </div>
+        <p class="footer-summary">
+          रियल-टाइम NTA सिमुलेटर और बोर्ड एग्जाम स्पीड टेस्ट पोर्टल।
+        </p>
+        <div class="founder-identity-box">
+          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">मुख्य डैशबोर्ड</a></li>
+          <li><a href="notes.html">स्टडी नोट्स हब</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 NischayDesk. ऑल राइट्स रिजर्व्ड।</span>
+      <span class="server-status-tag"><span class="green-indicator"></span> Exam Server Ready</span>
+    </div>
+  </footer>
+
+  <!-- Flat Script Dependencies -->
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="syllabus-data.js"></script>
+  <script src="quiz-engine.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
