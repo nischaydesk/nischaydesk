@@ -1,11 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// NischayDesk Cloud Configuration (Compat Mode Bridge)
 const firebaseConfig = {
   apiKey: "AIzaSyCIZ3G_mJ2NdQxwFPSMKyQ5qSwt1Y_5w-U",
   authDomain: "nischaydesk.firebaseapp.com",
@@ -16,6 +9,30 @@ const firebaseConfig = {
   measurementId: "G-WXM8RJ080H"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Global App State & Database Containers
+window.NischayConfig = {
+  isCloudReady: false,
+  authInstance: null,
+  dbInstance: null,
+  platformVersion: "2.0.4 Enterprise",
+  founder: "Prince Kumar"
+};
+
+(function initCloudBackend() {
+  try {
+    if (typeof firebase !== 'undefined') {
+      const hasRealKeys = firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('YOUR_ACTUAL');
+      if (hasRealKeys) {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        window.NischayConfig.authInstance = firebase.auth();
+        window.NischayConfig.dbInstance = firebase.firestore();
+        window.NischayConfig.isCloudReady = true;
+        console.log("⚡ [NischayDesk] Google Firebase Cloud Engine Active & Connected!");
+      }
+    }
+  } catch (error) {
+    console.error("❌ [NischayDesk] Cloud Initialization Error:", error);
+  }
+})();
