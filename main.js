@@ -285,3 +285,81 @@ document.addEventListener('DOMContentLoaded', function () {
 
   console.log("🚀 [NischayDesk] Application Engine Successfully Initialized!");
 });
+// =================== AI DOUBT SOLVER ENGINE ===================
+const GROQ_API_KEY = "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"; // अपनी असली की यहाँ कोट्स में पेस्ट करना
+
+function openAiDoubtModal() {
+  const modal = document.getElementById('aiDoubtModal');
+  if (modal) modal.style.display = 'flex';
+  const drawer = document.getElementById('sideDrawer');
+  const scrim = document.getElementById('drawerScrim');
+  if (drawer) drawer.classList.remove('open');
+  if (scrim) scrim.classList.remove('active');
+}
+
+function closeAiDoubtModal() {
+  const modal = document.getElementById('aiDoubtModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function handleAiEnter(event) {
+  if (event.key === 'Enter') {
+    sendQuestionToGroq();
+  }
+}
+
+async function sendQuestionToGroq() {
+  const inputField = document.getElementById('aiUserInput');
+  const chatBody = document.getElementById('aiChatBody');
+  const userText = inputField.value.trim();
+
+  if (!userText) return;
+
+  chatBody.innerHTML += `<div class="ai-msg user-msg">${userText}</div>`;
+  inputField.value = '';
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  const loadingId = 'loading-' + Date.now();
+  chatBody.innerHTML += `<div class="ai-msg bot-msg" id="${loadingId}">उत्तर तैयार हो रहा है... ⏳</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${GROQ_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          {
+            role: "system",
+            content: "You are NischayDesk AI, an encouraging and expert academic study assistant created by Prince Kumar for Bihar Board and competitive exam students (Class 10th & 11th PCM+B). Always introduce yourself as NischayDesk AI when asked about your identity. Answer clearly in Hinglish or Hindi."
+          },
+          { role: "user", content: userText }
+        ],
+        temperature: 0.6
+      })
+    });
+
+    const data = await response.json();
+    const loadingElem = document.getElementById(loadingId);
+    if (loadingElem) loadingElem.remove();
+
+    if (data.choices && data.choices.length > 0) {
+      const botReply = data.choices[0].message.content;
+      chatBody.innerHTML += `<div class="ai-msg bot-msg">${botReply}</div>`;
+    } else {
+      chatBody.innerHTML += `<div class="ai-msg bot-msg">सर्वर से रिस्पॉन्स नहीं मिला, दोबारा कोशिश करें।</div>`;
+    }
+  } catch (error) {
+    console.error("AI Error:", error);
+    const loadingElem = document.getElementById(loadingId);
+    if (loadingElem) loadingElem.remove();
+    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई। API की या इंटरनेट चेक करें।</div>`;
+  }
+
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
