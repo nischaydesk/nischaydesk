@@ -1,57 +1,21 @@
-/* ==========================================================================
-   NischayDesk Backend Cloud Configuration (Firebase / Firestore)
-   Engineered by Prince Kumar
-   ========================================================================== */
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-/**
- * Global Firebase Configuration
- * नोट: जब तुम Firebase Console (console.firebase.google.com) पर फ्री प्रोजेक्ट बनाओगे,
- * तो वहाँ से मिलने वाली अपनी असली Keys को यहाँ नीचे रिप्लेस कर देना।
- */
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSy_YOUR_ACTUAL_FIREBASE_API_KEY_HERE",
-  authDomain: "nischaydesk-portal.firebaseapp.com",
-  projectId: "nischaydesk-portal",
-  storageBucket: "nischaydesk-portal.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef123456"
+  apiKey: "AIzaSyCIZ3G_mJ2NdQxwFPSMKyQ5qSwt1Y_5w-U",
+  authDomain: "nischaydesk.firebaseapp.com",
+  projectId: "nischaydesk",
+  storageBucket: "nischaydesk.firebasestorage.app",
+  messagingSenderId: "204191555286",
+  appId: "1:204191555286:web:dac02d45e0be4c13117377",
+  measurementId: "G-WXM8RJ080H"
 };
 
-// Global App State & Database Containers
-window.NischayConfig = {
-  isCloudReady: false,
-  authInstance: null,
-  dbInstance: null,
-  platformVersion: "2.0.4 Enterprise",
-  founder: "Prince Kumar"
-};
-
-(function initCloudBackend() {
-  try {
-    // Check if Firebase Library is loaded
-    // @ts-ignore
-    if (typeof firebase !== 'undefined') {
-      // Validate if dummy keys or real keys are present
-      const hasRealKeys = firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('YOUR_ACTUAL');
-
-      if (hasRealKeys) {
-        // @ts-ignore
-        if (!firebase.apps.length) {
-          // @ts-ignore
-          firebase.initializeApp(firebaseConfig);
-        }
-        // @ts-ignore
-        window.NischayConfig.authInstance = firebase.auth();
-        // @ts-ignore
-        window.NischayConfig.dbInstance = firebase.firestore();
-        window.NischayConfig.isCloudReady = true;
-
-        console.log("⚡ [NischayDesk] Google Firebase Cloud Engine Active & Connected!");
-      } else {
-        console.warn("⚠️ [NischayDesk] Real Firebase API keys not detected. Running in Intelligent Local-Sync Mode.");
-      }
-    }
-  } catch (error) {
-    console.error("❌ [NischayDesk] Cloud Initialization Error:", error);
-  }
-})();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
