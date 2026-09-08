@@ -282,13 +282,21 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
-  console.log("🚀 [NischayDesk] Application Engine Successfully Initialized!");
-});
 // =================== AI DOUBT SOLVER ENGINE ===================
-const GROQ_API_KEY = "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"; // अपनी असली की यहाँ कोट्स में पेस्ट करना
+let GROQ_API_KEY = localStorage.getItem("nischay_groq_key") || "";
 
 function openAiDoubtModal() {
+  if (!GROQ_API_KEY) {
+    const enteredKey = prompt("Groq API Key दर्ज करें (यह सिर्फ आपके फोन में सुरक्षित रहेगी):");
+    if (enteredKey && enteredKey.trim() !== "") {
+      GROQ_API_KEY = enteredKey.trim();
+      localStorage.setItem("nischay_groq_key", GROQ_API_KEY);
+    } else {
+      alert("AI का उपयोग करने के लिए API Key आवश्यक है!");
+      return;
+    }
+  }
+
   const modal = document.getElementById('aiDoubtModal');
   if (modal) modal.style.display = 'flex';
   const drawer = document.getElementById('sideDrawer');
@@ -357,9 +365,8 @@ async function sendQuestionToGroq() {
     console.error("AI Error:", error);
     const loadingElem = document.getElementById(loadingId);
     if (loadingElem) loadingElem.remove();
-    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई। API की या इंटरनेट चेक करें।</div>`;
+    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन में समस्या आई। API Key सही दर्ज करें।</div>`;
   }
 
   chatBody.scrollTop = chatBody.scrollHeight;
 }
-
