@@ -353,7 +353,7 @@ async function sendQuestionToGroq() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-       model: "model: "llama3-8b-8192",
+       model: "llama3-8b-8192",
 
         messages: [
           {
