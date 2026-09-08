@@ -353,7 +353,7 @@ async function sendQuestionToGroq() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-       model: "llama3-8b-8192",
+       model: "model: "llama3-8b-8192",
 
         messages: [
           {
@@ -384,4 +384,4 @@ async function sendQuestionToGroq() {
   }
 
   chatBody.scrollTop = chatBody.scrollHeight;
-}
+    }
