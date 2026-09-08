@@ -397,3 +397,33 @@ async function sendQuestionToGroq() {
 
   chatBody.scrollTop = chatBody.scrollHeight;
 }
+// =================== THEME TOGGLE LOGIC ===================
+(function initTheme() {
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const savedTheme = localStorage.getItem('nischaydesk_theme');
+
+  // पहले से सेव थीम लागू करें
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-theme');
+    if (themeIcon) themeIcon.innerText = '☀️';
+  } else {
+    document.body.classList.remove('light-theme');
+    if (themeIcon) themeIcon.innerText = '🌙';
+  }
+
+  // बटन क्लिक पर टॉगल
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', function () {
+      const isLight = document.body.classList.toggle('light-theme');
+      if (isLight) {
+        localStorage.setItem('nischaydesk_theme', 'light');
+        if (themeIcon) themeIcon.innerText = '☀️';
+      } else {
+        localStorage.setItem('nischaydesk_theme', 'dark');
+        if (themeIcon) themeIcon.innerText = '🌙';
+      }
+    });
+  }
+})();
+
