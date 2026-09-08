@@ -4,7 +4,7 @@
    ========================================================================== */
 
 :root {
-  /* Surface & Base Colors */
+  /* Surface & Base Colors (Dark Default) */
   --bg-primary: #070d1e;
   --bg-secondary: #0b1530;
   --surface-card: #0f1c3d;
@@ -70,6 +70,7 @@ body.app-body {
   flex-direction: column;
   line-height: 1.55;
   overflow-x: hidden;
+  transition: background-color var(--transition-smooth), color var(--transition-smooth);
 }
 
 /* 2. Universal Utility Elements */
@@ -163,6 +164,7 @@ body.app-body {
   border-top: 1px solid var(--border-strong);
   padding: 48px 20px 24px;
   margin-top: auto;
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
 }
 
 .footer-container {
@@ -277,58 +279,120 @@ body.app-body {
   background-color: var(--success);
   box-shadow: 0 0 6px var(--success);
 }
-/* --- Theme Toggle Button Styling --- */
+
+/* ==========================================================================
+   6. Theme Toggle UI Component
+   ========================================================================== */
 .theme-toggle-btn {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
   font-size: 1.1rem;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  color: var(--text-pure);
+  transition: var(--transition-smooth);
 }
 
 .theme-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
 }
 
-/* --- Light Mode Color Overrides --- */
+/* ==========================================================================
+   7. Comprehensive Light Theme Override Rules
+   ========================================================================== */
 body.light-theme {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --surface-card: #ffffff;
+  --surface-elevated: #f1f5f9;
+  --surface-subtle: #e2e8f0;
+  --text-pure: #0f172a;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-strong: #cbd5e1;
+
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
 }
 
 body.light-theme .app-header {
-  background: #ffffff !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid var(--border-strong) !important;
+  backdrop-filter: blur(12px);
 }
 
 body.light-theme .brand-name,
 body.light-theme .hero-headline,
 body.light-theme .section-headline,
-body.light-theme .card-title {
-  color: #0f172a !important;
-}
-
-body.light-theme .grid-card,
-body.light-theme .quick-tool-card,
-body.light-theme .side-drawer {
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+body.light-theme .card-title,
+body.light-theme .footer-heading,
+body.light-theme .brand-title,
+body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4 {
+  color: var(--text-pure) !important;
 }
 
 body.light-theme .hero-subline,
 body.light-theme .card-desc,
-body.light-theme .section-subheadline {
-  color: #475569 !important;
+body.light-theme .section-subheadline,
+body.light-theme .footer-summary,
+body.light-theme .footer-nav a {
+  color: var(--text-secondary) !important;
+}
+
+body.light-theme .grid-card,
+body.light-theme .quick-tool-card,
+body.light-theme .side-drawer,
+body.light-theme .pdf-modal-window,
+body.light-theme .drawer-user-card {
+  background: #ffffff !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.light-theme .stat-glass-card {
+  background: #ffffff !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05) !important;
+}
+
+body.light-theme .stat-numeric {
+  color: var(--brand-primary) !important;
+}
+
+body.light-theme .btn-cta-secondary {
+  background: #ffffff !important;
+  color: var(--brand-primary) !important;
+  border: 1px solid var(--border-strong) !important;
 }
 
 body.light-theme .theme-toggle-btn {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
 }
 
+body.light-theme .app-footer {
+  background: #f1f5f9 !important;
+  border-top: 1px solid var(--border-strong) !important;
+}
+
+body.light-theme .founder-identity-box {
+  background: #ffffff !important;
+  border-color: var(--border-strong) !important;
+}
+
+body.light-theme .exam-dropdown,
+body.light-theme input,
+body.light-theme select,
+body.light-theme textarea {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid var(--border-strong) !important;
+}
