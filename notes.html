@@ -99,9 +99,9 @@
       <a href="index.html#quickTools" class="drawer-nav-item">
         <span class="icon">🛠️</span> यूटिलिटी इंजन
       </a>
-      <a href="javascript:void(0)" onclick="openAiDoubtModal()" class="drawer-nav-item">
+      <button type="button" onclick="openAiDoubtModal()" class="drawer-nav-item" style="background:none; border:none; width:100%; text-align:left; cursor:pointer; font-family:inherit;">
         <span class="icon">🤖</span> AI डाउट सॉल्वर
-      </a>
+      </button>
 
       <!-- ON/OFF Blue Switch Theme Row -->
       <div class="drawer-theme-row">
@@ -231,7 +231,7 @@
     </div>
   </footer>
 
-  <!-- =================== AI DOUBT SOLVER MODAL =================== -->
+  <!-- 6. AI DOUBT SOLVER MODAL (Single & Pure) -->
   <div id="aiDoubtModal" class="ai-modal-overlay" style="display: none;">
     <div class="ai-modal-content">
       <div class="ai-modal-header">
@@ -259,27 +259,5 @@
   <script src="syllabus-data.js"></script>
   <script src="notes-viewer.js"></script>
   <script src="main.js"></script>
-    <!-- AI DOUBT SOLVER BOX -->
-  <div id="aiDoubtModal" class="ai-modal-overlay" style="display: none;">
-    <div class="ai-modal-content">
-      <div class="ai-modal-header">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span>🤖</span>
-          <h3 style="margin:0; font-size:1.1rem; color:#fff;">NischayDesk AI</h3>
-        </div>
-        <button onclick="closeAiDoubtModal()" class="ai-close-btn">&times;</button>
-      </div>
-      <div class="ai-chat-body" id="aiChatBody">
-        <div class="ai-msg bot-msg">
-          नमस्ते! मैं NischayDesk AI हूँ। फिजिक्स, केमिस्ट्री, मैथ्स या बायो का कोई भी डाउट हो, यहाँ पूछिए! 🚀
-        </div>
-      </div>
-      <div class="ai-chat-footer">
-        <input type="text" id="aiUserInput" placeholder="अपना सवाल यहाँ टाइप करें..." onkeypress="handleAiEnter(event)">
-        <button onclick="sendQuestionToGroq()">भेजें</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
