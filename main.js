@@ -1,3 +1,24 @@
+// सबसे पहले थीम लागू करो (बिना किसी रुकावट के)
+(function() {
+  const saved = localStorage.getItem('nischay_theme');
+  if (saved === 'light') {
+    document.documentElement.classList.add('light-mode');
+  }
+})();
+
+document.addEventListener('click', function(e) {
+  // अगर थीम बटन या उसके अंदर का आइकॉन क्लिक हुआ
+  if (e.target.closest('#themeToggleBtn') || e.target.closest('#drawerThemeToggleBtn')) {
+    const isLight = document.documentElement.classList.toggle('light-mode');
+    localStorage.setItem('nischay_theme', isLight ? 'light' : 'dark');
+    
+    // आइकॉन बदलो
+    document.querySelectorAll('#themeIcon, #drawerThemeIcon').forEach(el => {
+      el.innerText = isLight ? '☀️' : '🌙';
+    });
+  }
+});
+
 /* ==========================================================================
    NischayDesk Global App Orchestrator & UI Controller
    Engineered & Architected by Prince Kumar
@@ -293,139 +314,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
-  }
-
-  // ==========================================================================
-  // 5. Light / Dark Theme Controller (Navbar & Drawer Sync)
-  // ==========================================================================
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const drawerThemeToggleBtn = document.getElementById('drawerThemeToggleBtn');
-  const drawerThemeIcon = document.getElementById('drawerThemeIcon');
-
-  function updateThemeIcons(isLight) {
-    const iconChar = isLight ? '☀️' : '🌙';
-    if (themeIcon) themeIcon.innerText = iconChar;
-    if (drawerThemeIcon) drawerThemeIcon.innerText = iconChar;
-  }
-
-  const savedTheme = localStorage.getItem('nischaydesk_theme');
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-theme');
-    updateThemeIcons(true);
-  } else {
-    document.body.classList.remove('light-theme');
-    updateThemeIcons(false);
-  }
-
-  function toggleThemeMode() {
-    const isLight = document.body.classList.toggle('light-theme');
-    localStorage.setItem('nischaydesk_theme', isLight ? 'light' : 'dark');
-    updateThemeIcons(isLight);
-  }
-
-  if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleThemeMode);
-  if (drawerThemeToggleBtn) drawerThemeToggleBtn.addEventListener('click', toggleThemeMode);
-
-}); // End of DOMContentLoaded
-
-// =================== AI DOUBT SOLVER ENGINE ===================
-const PART_A = "gsk_"; 
-const PART_B = "StnNwQAxenQgUvvGF7FQWGdyb3FYuYVf0AqrswWcTFYX9lJYCYFU"; 
-const GROQ_API_KEY = PART_A + PART_B;
-
-function openAiDoubtModal() {
-  const modal = document.getElementById('aiDoubtModal');
-  if (modal) modal.style.display = 'flex';
   
-  const drawer = document.getElementById('sideDrawer');
-  const scrim = document.getElementById('drawerScrim');
-  if (drawer) {
-    drawer.classList.remove('open');
-    drawer.classList.remove('active');
-  }
-  if (scrim) {
-    scrim.classList.remove('open');
-    scrim.classList.remove('active');
-  }
-  document.body.style.overflow = '';
-}
-
-function closeAiDoubtModal() {
-  const modal = document.getElementById('aiDoubtModal');
-  if (modal) modal.style.display = 'none';
-}
-
-function handleAiEnter(event) {
-  if (event.key === 'Enter') {
-    sendQuestionToGroq();
-  }
-}
-
-async function sendQuestionToGroq() {
-  const inputField = document.getElementById('aiUserInput');
-  const chatBody = document.getElementById('aiChatBody');
-  const userText = inputField ? inputField.value.trim() : '';
-
-  if (!userText) return;
-
-  chatBody.innerHTML += `<div class="ai-msg user-msg">${userText}</div>`;
-  inputField.value = '';
-  chatBody.scrollTop = chatBody.scrollHeight;
-
-  const loadingId = 'loading-' + Date.now();
-  chatBody.innerHTML += `<div class="ai-msg bot-msg" id="${loadingId}">उत्तर तैयार हो रहा है... ⏳</div>`;
-  chatBody.scrollTop = chatBody.scrollHeight;
-
-  try {
-    let selectedModel = "llama-3.1-8b-instant";
-    try {
-      const modelRes = await fetch("https://api.groq.com/openai/v1/models", {
-        headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
-      });
-      const modelData = await modelRes.json();
-      if (modelData && modelData.data && modelData.data.length > 0) {
-        const valid = modelData.data.find(m => m.id.includes("llama") || m.id.includes("mixtral") || m.id.includes("gemma"));
-        if (valid) selectedModel = valid.id;
-      }
-    } catch (e) {
-      console.warn("Model fetch failed, fallback:", selectedModel);
-    }
-
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${GROQ_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: selectedModel,
-        messages: [
-          {
-            role: "system",
-            content: "You are NischayDesk AI, an academic assistant created by Prince Kumar for Bihar Board students. Answer clearly in Hindi/Hinglish."
-          },
-          { role: "user", content: userText }
-        ],
-        temperature: 0.6
-      })
-    });
-
-    const data = await response.json();
-    const loadingElem = document.getElementById(loadingId);
-    if (loadingElem) loadingElem.remove();
-
-    if (response.ok && data.choices && data.choices[0]?.message?.content) {
-      chatBody.innerHTML += `<div class="ai-msg bot-msg">${data.choices[0].message.content}</div>`;
-    } else {
-      const errMsg = data.error?.message || `HTTP एरर: ${response.status}`;
-      chatBody.innerHTML += `<div class="ai-msg bot-msg">Groq एरर: ${errMsg}</div>`;
-    }
-  } catch (err) {
-    const loadingElem = document.getElementById(loadingId);
-    if (loadingElem) loadingElem.remove();
-    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन एरर: ${err.message}</div>`;
-  }
-
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
