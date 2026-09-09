@@ -10,7 +10,7 @@
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(7, 13, 30, 0.88);
+  background: rgba(7, 13, 30, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* 2. Brand Identity Group */
@@ -158,8 +158,8 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-shrink: 0; /* सिकुड़ने से बचाएगा */
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .btn-auth-primary {
@@ -185,10 +185,12 @@
   transform: translateY(-1px);
 }
 
-/* 480px से छोटे फोन पर गूगल बटन कॉम्पैक्ट हो जाएगा ताकि कभी न कटे */
 @media (max-width: 480px) {
   .brand-tagline {
-    display: none; /* जगह बचाने के लिए टैगलाइन हाइड */
+    display: none;
+  }
+  .brand-name {
+    font-size: 1.05rem;
   }
   .btn-auth-primary {
     padding: 6px 10px;
@@ -200,16 +202,16 @@
 .user-profile-widget {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
-  padding: 4px 12px 4px 6px;
+  padding: 4px 10px 4px 6px;
   border-radius: var(--radius-pill);
 }
 
 .user-avatar-img {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid var(--brand-accent);
@@ -221,14 +223,18 @@
 }
 
 .user-display-name {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--text-pure);
   line-height: 1.1;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-session-badge {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--brand-accent);
   font-weight: 600;
 }
@@ -241,7 +247,7 @@
   font-size: 1rem;
   line-height: 1;
   padding: 2px 4px;
-  margin-left: 4px;
+  margin-left: 2px;
   border-radius: 50%;
   transition: var(--transition-quick);
 }
@@ -284,7 +290,7 @@
   padding: 20px 16px;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
   transition: transform var(--transition-smooth);
-  overflow-y: auto; /* छोटे स्क्रीन पर ड्रॉवर स्क्रॉल हो सके */
+  overflow-y: auto;
 }
 
 .side-drawer.active,
@@ -296,7 +302,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 16px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
 }
@@ -381,60 +387,49 @@
 .drawer-footer strong {
   color: var(--brand-accent);
 }
+
 /* ==========================================================================
-   MOBILE NAVBAR OVERLAP & DRAWER USER TEXT FIX
+   6. NAVBAR & DRAWER LIGHT MODE OVERRIDES
    ========================================================================== */
 
-/* 1. मोबाइल स्क्रीन पर नाम और लोगो को टकराने से रोकें */
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+html.light-mode .drawer-nav-item {
+  color: #1e293b !important;
 }
 
-.brand-entity {
-  min-width: 0;
-  flex-shrink: 1;
+html.light-mode .drawer-nav-item.active {
+  background: rgba(2, 132, 199, 0.12) !important;
+  color: #0284c7 !important;
+  border: 1px solid rgba(2, 132, 199, 0.25) !important;
 }
 
-.brand-name {
-  font-size: 1.05rem !important;
-  white-space: nowrap;
+html.light-mode .drawer-nav-item:hover {
+  background: #f1f5f9 !important;
+  color: #0284c7 !important;
 }
 
-/* मोबाइल पर वीआईपी बॉक्स को कॉम्पैक्ट करें */
-.user-profile-widget {
-  padding: 4px 8px !important;
-  gap: 6px !important;
-  max-width: 155px;
-  flex-shrink: 0;
-}
-
-.user-display-name {
-  font-size: 0.78rem !important;
-  max-width: 80px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-session-badge {
-  font-size: 0.62rem !important;
-  padding: 1px 4px !important;
-}
-
-/* 2. लाइट मोड में साइड ड्रॉवर के अंदर नाम को साफ़ काला/गहरा करें */
-html.light-mode .drawer-user-card div[style*="font-size:0.88rem"],
-html.light-mode .drawer-user-card span,
-html.light-mode .drawer-user-card div {
+html.light-mode .brand-name {
   color: #0f172a !important;
 }
 
-/* 3. लाइट मोड में प्रोफाइल कार्ड का बैकग्राउंड साफ़ दिखे */
+html.light-mode .brand-tagline {
+  color: #64748b !important;
+}
+
+html.light-mode .drawer-brand span {
+  color: #0f172a !important;
+}
+
+html.light-mode .user-display-name {
+  color: #0f172a !important;
+}
+
 html.light-mode .user-profile-widget {
   background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
 }
 
+html.light-mode .drawer-user-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
