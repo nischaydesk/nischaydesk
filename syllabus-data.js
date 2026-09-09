@@ -219,8 +219,8 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "10th गणित (Mathematics)",
       chapters: [
-        { no: 1, name: "वास्तविक संख्याएं (Real Numbers)", status: "Ready", pdfUrl: "https://drive.google.com/file/d/1Uno3gNHr5I--BnYkPKLE9J5kONpdVAd3/view?usp=drivesdk", pages: "11", desc: "अंकगणित की आधारभूत प्रमेय, अभाज्य गुणनखंड विधि एवं अपरिमेय संख्या सिद्ध करना।" },
-        { no: 2, name: "बहुपद (Polynomials)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "शून्यकों का ज्यामितीय अर्थ एवं द्विघात बहुपद के शून्यक और गुणांकों में संबंध।" },
+{ no: 1, name: "वास्तविक संख्याएं (Real Numbers)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Uno3gNHr5I--BnYkPKLE9J5kONpdVAd3/preview", pages: "हैंडनोट्स", desc: "अंकगणित की आधारभूत प्रमेय, अभाज्य गुणनखंड विधि एवं अपरिमेय संख्या सिद्ध करना।" },
+{ no: 2, name: "बहुपद (Polynomials)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "शून्यकों का ज्यामितीय अर्थ एवं द्विघात बहुपद के शून्यक और गुणांकों में संबंध।" },
         { no: 3, name: "दो चर वाले रैखिक समीकरण युग्म (Linear Equations in Two Variables)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "ग्राफीय विधि, प्रतिस्थापन विधि एवं विलोपन विधि।" },
         { no: 4, name: "द्विघात समीकरण (Quadratic Equations)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "गुणनखंड विधि, द्विघाती सूत्र (श्रीधराचार्य सूत्र) एवं मूलों की प्रकृति।" },
         { no: 5, name: "समांतर श्रेढियाँ (Arithmetic Progressions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "n-वाँ पद ज्ञात करना और प्रथम n पदों का योगफल सूत्र।" },
