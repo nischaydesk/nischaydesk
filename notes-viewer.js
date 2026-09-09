@@ -1,213 +1,199 @@
 /* ==========================================================================
-   NischayDesk Direct Render Notes Engine (Instant Fix)
+   NischayDesk Notes Catalog Explorer & In-App PDF Studio
+   Architecture & Logic: Prince Kumar
    ========================================================================== */
 
-(function initNotesViewer() {
-  function startEngine() {
-    const notesCatalogGrid = document.getElementById('notesCatalogGrid');
-    const notesSearchInput = document.getElementById('notesSearchInput');
-    const filterPillContainer = document.getElementById('filterPillContainer');
-    
-    const pdfStudioModal = document.getElementById('pdfStudioModal');
-    const studioPdfFrame = document.getElementById('studioPdfFrame');
-    const modalDocTitle = document.getElementById('modalDocTitle');
-    const modalDocBadge = document.getElementById('modalDocBadge');
-    const modalDirectDownloadBtn = document.getElementById('modalDirectDownloadBtn');
-    const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
+document.addEventListener('DOMContentLoaded', function () {
 
-    if (!notesCatalogGrid) return;
+  const notesCatalogGrid = document.getElementById('notesCatalogGrid');
+  const notesSearchInput = document.getElementById('notesSearchInput');
+  const filterPillContainer = document.getElementById('filterPillContainer');
 
-    let activeFilter = 'all';
-    let searchQuery = '';
+  // Modal Elements
+  const pdfStudioModal = document.getElementById('pdfStudioModal');
+  const studioPdfFrame = document.getElementById('studioPdfFrame');
+  const modalDocBadge = document.getElementById('modalDocBadge');
+  const modalDocTitle = document.getElementById('modalDocTitle');
+  const modalDirectDownloadBtn = document.getElementById('modalDirectDownloadBtn');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
 
-    // Data Checker
-    const subjects = (window.NischaySyllabus && window.NischaySyllabus.subjects) ? window.NischaySyllabus.subjects : [];
+  // Guard: Only execute on notes.html
+  if (!notesCatalogGrid) return;
 
-    if (subjects.length === 0) {
+  let allChaptersMaster = [];
+  let currentFilter = 'all';
+
+  // 1. Flatten Chapters from syllabus-data.js into a clean array
+  function extractAllChapters() {
+    allChaptersMaster = [];
+    if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) return;
+
+    window.NischaySyllabus.subjects.forEach(function (subject) {
+      if (subject.chapters && Array.isArray(subject.chapters)) {
+        subject.chapters.forEach(function (ch) {
+          allChaptersMaster.push({
+            subjectId: subject.id,
+            classTitle: subject.classTitle,
+            subjectTitle: subject.subjectTitle,
+            no: ch.no,
+            name: ch.name,
+            status: ch.status || 'pending',
+            pdfUrl: ch.pdfUrl || '',
+            pages: ch.pages || 'हैंडनोट्स',
+            desc: ch.desc || ''
+          });
+        });
+      }
+    });
+  }
+
+  // 2. Render Note Cards in Catalog Grid
+  function renderNotes(chapters) {
+    notesCatalogGrid.innerHTML = '';
+
+    if (!chapters || chapters.length === 0) {
       notesCatalogGrid.innerHTML = `
-        <div class="loading-state-box">
-          <p style="color:var(--danger); font-weight:700;">⚠️ 'syllabus-data.js' लोड नहीं हुई।</p>
+        <div class="loading-state-box" style="grid-column: 1 / -1; padding: 40px 10px; text-align: center;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">📭</div>
+          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">कोई नोट्स नहीं मिले!</h3>
+          <p style="color: var(--text-secondary); font-size: 0.85rem;">कृपया दूसरा विषय चुनें या सर्च में सही कीवर्ड टाइप करें।</p>
         </div>
       `;
       return;
     }
 
-    // 1. Build Filter Pills (No duplicates)
-    if (filterPillContainer) {
-      let pillsHtml = `<button class="filter-btn active" data-filter="all">सभी विषय</button>`;
-      subjects.forEach(function (sub) {
-        const cleanName = sub.subjectTitle.startsWith(sub.classTitle.replace('Class ', ''))
-          ? sub.subjectTitle
-          : `${sub.classTitle.replace('Class ', '')} ${sub.subjectTitle}`;
+    chapters.forEach(function (ch) {
+      const card = document.createElement('div');
+      card.className = 'note-item-card';
 
-        pillsHtml += `<button class="filter-btn" data-filter="${sub.id}">${cleanName}</button>`;
-      });
+      const isReady = (ch.status === 'ready' && ch.pdfUrl && ch.pdfUrl.trim() !== '');
 
-      filterPillContainer.innerHTML = pillsHtml;
-
-      filterPillContainer.querySelectorAll('.filter-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          filterPillContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeFilter = btn.getAttribute('data-filter') || 'all';
-          renderAllCards();
-        });
-      });
-    }
-
-    // 2. Direct Render Cards Function
-    function renderAllCards() {
-      const q = searchQuery.toLowerCase();
-      let displayList = subjects;
-
-      if (activeFilter !== 'all') {
-        displayList = displayList.filter(s => s.id === activeFilter);
-      }
-
-      let html = '';
-      let matchFound = 0;
-
-      displayList.forEach(function (subject) {
-        const matchingChapters = subject.chapters.filter(function (ch) {
-          return ch.name.toLowerCase().includes(q) || (ch.desc && ch.desc.toLowerCase().includes(q));
-        });
-
-        if (matchingChapters.length === 0) return;
-        matchFound += matchingChapters.length;
-
-        const pureSubjectName = subject.subjectTitle.replace(/^10th\s*|^11th\s*|^12th\s*/i, '').trim();
-
-        html += `
-          <div style="grid-column: 1 / -1; margin-top: 24px; margin-bottom: 8px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="background:var(--brand-primary); color:#fff; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:4px;">${subject.classTitle}</span>
-              <h2 style="font-size:1.25rem; color:var(--text-pure); font-weight:800;">${pureSubjectName}</h2>
-            </div>
+      card.innerHTML = `
+        <div>
+          <div class="note-badge-row">
+            <span class="note-badge-class">${ch.classTitle} • ${ch.subjectTitle}</span>
+            <span class="note-badge-pages">${ch.pages}</span>
           </div>
-        `;
+          <h3>अध्याय ${ch.no}: ${ch.name}</h3>
+          <p>${ch.desc || 'बोर्ड परीक्षा 2026-2028 के लिए टॉपर्स एवं अनुभवी शिक्षकों द्वारा तैयार सटीक नोट्स।'}</p>
+        </div>
+        <div class="note-btn-group">
+          ${isReady 
+            ? `<button type="button" class="btn-read-note" data-url="${ch.pdfUrl}" data-title="${ch.name}" data-badge="${ch.classTitle} • ${ch.subjectTitle}">📖 नोट्स पढ़ें</button>`
+            : `<button type="button" class="btn-read-note" style="opacity:0.6; cursor:not-allowed;" disabled>⏳ जल्द आ रहा है</button>`
+          }
+          ${isReady 
+            ? `<a href="${ch.pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn-download-note" download title="डाउनलोड करें">📥 डाउनलोड</a>`
+            : `<span class="btn-download-note" style="opacity:0.5; pointer-events:none;">🔒 लॉक्ड</span>`
+          }
+        </div>
+      `;
 
-        matchingChapters.forEach(function (ch) {
-          const isReady = (ch.status === 'ready' && ch.pdfUrl && ch.pdfUrl.trim() !== "");
-
-          html += `
-            <div class="note-item-card">
-              <div>
-                <div class="note-badge-row">
-                  <span class="note-badge-class">अध्याय ${ch.no}</span>
-                  <span class="note-badge-pages" style="${isReady ? 'color:var(--success); font-weight:700;' : 'color:var(--warning);'}">
-                    ${isReady ? '● उपलब्ध' : '⏳ जल्द आ रहा है'}
-                  </span>
-                </div>
-                <h3 style="margin-bottom:8px;">${ch.name}</h3>
-                <p style="font-size:0.84rem; color:var(--text-secondary); line-height:1.45; margin-bottom:18px;">${ch.desc || ''}</p>
-              </div>
-
-              <div class="note-btn-group">
-                ${isReady ? `
-                  <button class="btn-read-note" data-sub="${subject.id}" data-chno="${ch.no}">📖 नोट्स खोलें</button>
-                  <a href="${ch.pdfUrl}" target="_blank" class="btn-download-note" download>📥 PDF</a>
-                ` : `
-                  <button class="btn-stage-secondary" style="grid-column: 1 / -1; width:100%; opacity:0.6; cursor:not-allowed;" disabled>
-                    अपलोडिंग जारी है...
-                  </button>
-                `}
-              </div>
-            </div>
-          `;
-        });
-      });
-
-      if (matchFound === 0) {
-        html = `
-          <div class="loading-state-box">
-            <div style="font-size:2rem; margin-bottom:8px;">🔍</div>
-            <p>कोई चैप्टर नहीं मिला।</p>
-          </div>
-        `;
-      }
-
-      // Force Overwrite (Removes the stuck loading text instantly)
-      notesCatalogGrid.innerHTML = html;
-
-      // Attach Click events to PDF buttons
-      notesCatalogGrid.querySelectorAll('.btn-read-note').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const subId = btn.getAttribute('data-sub');
-          const chNo = parseInt(btn.getAttribute('data-chno') || '0', 10);
-          openPdf(subId, chNo);
-        });
-      });
-    }
-
-    // 3. Open In-App PDF Studio
-    function openPdf(subId, chNo) {
-      const sub = subjects.find(s => s.id === subId);
-      if (!sub) return;
-      const ch = sub.chapters.find(c => c.no === chNo);
-      if (!ch || !ch.pdfUrl) return;
-
-      const pureSubName = sub.subjectTitle.replace(/^10th\s*|^11th\s*|^12th\s*/i, '').trim();
-
-      if (modalDocTitle) modalDocTitle.innerText = ch.name;
-      if (modalDocBadge) modalDocBadge.innerText = `${sub.classTitle} - ${pureSubName}`;
-      if (modalDirectDownloadBtn) modalDirectDownloadBtn.href = ch.pdfUrl;
-
-      if (studioPdfFrame) studioPdfFrame.src = ch.pdfUrl;
-      if (pdfStudioModal) pdfStudioModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-
-      if (window.NischayAuth && typeof window.NischayAuth.saveToCloudLocker === 'function') {
-        window.NischayAuth.saveToCloudLocker('नोट्स पढ़े', `${pureSubName}: ${ch.name}`);
-      }
-    }
-
-    // Modal Close Events
-    function closePdf() {
-      if (!pdfStudioModal || !studioPdfFrame) return;
-      pdfStudioModal.classList.remove('active');
-      studioPdfFrame.src = '';
-      document.body.style.overflow = '';
-    }
-
-    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePdf);
-    if (pdfStudioModal) {
-      pdfStudioModal.addEventListener('click', function (e) {
-        if (e.target === pdfStudioModal) closePdf();
-      });
-    }
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closePdf();
+      notesCatalogGrid.appendChild(card);
     });
 
-    if (modalFullscreenBtn) {
-      modalFullscreenBtn.addEventListener('click', function () {
-        const stage = document.getElementById('pdfFrameStage');
-        if (!stage) return;
-        if (!document.fullscreenElement) {
-          stage.requestFullscreen().catch(err => alert("फुल स्क्रीन एरर: " + err.message));
-        } else {
-          document.exitFullscreen();
+    // Attach Click Events to "Read Note" buttons
+    document.querySelectorAll('.btn-read-note').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const pdfUrl = this.getAttribute('data-url');
+        const docTitle = this.getAttribute('data-title');
+        const docBadge = this.getAttribute('data-badge');
+        if (pdfUrl) {
+          openPdfStudio(pdfUrl, docTitle, docBadge);
         }
       });
-    }
+    });
+  }
 
-    // Search Input Event
-    if (notesSearchInput) {
-      notesSearchInput.addEventListener('input', function () {
-        searchQuery = notesSearchInput.value.trim();
-        renderAllCards();
+  // 3. Filter and Search Combined Engine
+  function applyFilterAndSearch() {
+    const query = notesSearchInput ? notesSearchInput.value.toLowerCase().trim() : '';
+
+    const filtered = allChaptersMaster.filter(function (ch) {
+      // Filter Match
+      const matchesFilter = (currentFilter === 'all') || 
+                            (ch.subjectId === currentFilter) ||
+                            (currentFilter === '10-science' && ch.subjectId.startsWith('10-science')) ||
+                            (currentFilter === '10-math' && ch.subjectId === '10-math') ||
+                            (currentFilter === '10-sst' && ch.subjectId === '10-sst') ||
+                            (currentFilter === '10-sanskrit' && ch.subjectId === '10-sanskrit');
+
+      // Search Match
+      const matchesSearch = !query || 
+                            ch.name.toLowerCase().includes(query) ||
+                            ch.subjectTitle.toLowerCase().includes(query) ||
+                            ch.desc.toLowerCase().includes(query);
+
+      return matchesFilter && matchesSearch;
+    });
+
+    renderNotes(filtered);
+  }
+
+  // 4. In-Built Studio PDF Viewer Controls
+  function openPdfStudio(url, title, badge) {
+    if (!pdfStudioModal || !studioPdfFrame) return;
+
+    if (modalDocTitle) modalDocTitle.innerText = title || 'अध्याय नोट्स';
+    if (modalDocBadge) modalDocBadge.innerText = badge || 'NischayDesk Verified';
+    if (modalDirectDownloadBtn) modalDirectDownloadBtn.href = url;
+
+    studioPdfFrame.src = url;
+    pdfStudioModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePdfStudio() {
+    if (!pdfStudioModal || !studioPdfFrame) return;
+    studioPdfFrame.src = '';
+    pdfStudioModal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', closePdfStudio);
+  }
+
+  if (pdfStudioModal) {
+    pdfStudioModal.addEventListener('click', function (e) {
+      if (e.target === pdfStudioModal) {
+        closePdfStudio();
+      }
+    });
+  }
+
+  if (modalFullscreenBtn) {
+    modalFullscreenBtn.addEventListener('click', function () {
+      if (!document.fullscreenElement) {
+        pdfStudioModal.requestFullscreen().catch(function (err) {
+          console.warn("Fullscreen Error:", err);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  }
+
+  // 5. Setup Filter Pill Button Clicks
+  if (filterPillContainer) {
+    filterPillContainer.querySelectorAll('.filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        filterPillContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilter = this.getAttribute('data-filter') || 'all';
+        applyFilterAndSearch();
       });
-    }
-
-    // Direct Instant Render Call
-    renderAllCards();
+    });
   }
 
-  // Double check execution for DOM Readiness
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startEngine);
-  } else {
-    startEngine();
+  // 6. Setup Search Input Event
+  if (notesSearchInput) {
+    notesSearchInput.addEventListener('input', applyFilterAndSearch);
   }
-})();
+
+  // 7. Initial Catalog Extraction & Render
+  extractAllChapters();
+  renderNotes(allChaptersMaster);
+
+});
