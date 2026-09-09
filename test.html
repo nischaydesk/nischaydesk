@@ -10,88 +10,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Flat CSS Links -->
+  <!-- Core Theme & Test Engine Stylesheets -->
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="dashboard.css" />
   <link rel="stylesheet" href="test-engine.css" />
 
-  <!-- Premium Mobile & Exam Interface Overrides -->
-  <style>
-    .test-selection-grid-modern {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin: 20px 0;
-    }
-    .select-field-box {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-align: left;
-    }
-    .select-field-box label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #94a3b8;
-    }
-    .exam-dropdown {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: #0f172a;
-      color: #f8fafc;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .exam-dropdown:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-    }
-    .btn-start-exam-modern {
-      width: 100%;
-      padding: 16px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      color: #ffffff;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
-      transition: transform 0.2s ease, opacity 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .btn-start-exam-modern:hover {
-      transform: translateY(-2px);
-    }
-    .instructions-box-modern {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(56, 189, 248, 0.15);
-      border-radius: 12px;
-      padding: 16px;
-      margin: 16px 0 24px;
-      text-align: left;
-    }
-    .instructions-box-modern h3 {
-      margin: 0 0 8px 0;
-      font-size: 0.95rem;
-      color: #38bdf8;
-    }
-    .instructions-box-modern ul {
-      margin: 0;
-      padding-left: 20px;
-      color: #cbd5e1;
-      font-size: 0.82rem;
-      line-height: 1.6;
-    }
-  </style>
-
-  <!-- Firebase Compat SDKs -->
+  <!-- Firebase Modular Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -126,6 +51,7 @@
       </div>
 
       <div class="nav-actions">
+        <!-- Google Sign-In Button -->
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
@@ -136,6 +62,7 @@
           <span id="authBtnLabel">Sign in with Google</span>
         </button>
 
+        <!-- Logged-in User Widget -->
         <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
@@ -209,10 +136,10 @@
           वास्तविक परीक्षा माहौल, समय प्रबंधन, निगेटिव मार्किंग और विस्तृत समाधान के साथ अपनी तैयारी जांचें।
         </p>
 
-        <!-- Dynamic Controls -->
-        <div class="test-selection-grid-modern">
+        <!-- Dynamic Selection Controls Grid -->
+        <div class="test-selection-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
           
-          <!-- Class Select -->
+          <!-- 1. Class Select -->
           <div class="select-field-box">
             <label for="testClassSelect">1. कक्षा (Class):</label>
             <select id="testClassSelect" class="exam-dropdown">
@@ -222,56 +149,46 @@
             </select>
           </div>
 
-          <!-- Subject Select (All Subjects including SST & Sanskrit) -->
+          <!-- 2. Subject Select -->
           <div class="select-field-box">
             <label for="testSubjectSelect">2. विषय (Subject):</label>
             <select id="testSubjectSelect" class="exam-dropdown">
-              <option value="physics" selected>भौतिकी (Physics)</option>
-              <option value="chemistry">रसायन विज्ञान (Chemistry)</option>
-              <option value="math">गणित (Mathematics)</option>
-              <option value="biology">जीव विज्ञान (Biology)</option>
-              <option value="sst">सामाजिक विज्ञान (SST)</option>
-              <option value="sanskrit">संस्कृत (Sanskrit)</option>
-              <option value="hindi">हिंदी (Hindi)</option>
+              <!-- Dynamically populated by JS based on class -->
             </select>
           </div>
 
-          <!-- Chapter Select Filter -->
+          <!-- 3. Dynamic Chapter Filter -->
           <div class="select-field-box">
             <label for="testChapterSelect">3. अध्याय (Chapter):</label>
             <select id="testChapterSelect" class="exam-dropdown">
-              <option value="all" selected>संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>
-              <option value="ch1">अध्याय 1: प्रकाश का परावर्तन व अपवर्तन</option>
-              <option value="ch2">अध्याय 2: मानव नेत्र एवं रंगबिरंगा संसार</option>
-              <option value="ch3">अध्याय 3: विद्युत (Electricity)</option>
-              <option value="ch4">अध्याय 4: विद्युत धारा के चुंबकीय प्रभाव</option>
-              <option value="ch5">अध्याय 5: ऊर्जा के स्रोत</option>
+              <option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>
+              <!-- Dynamically populated by JS based on subject -->
             </select>
           </div>
 
-          <!-- Exam Pattern -->
+          <!-- 4. Exam Pattern -->
           <div class="select-field-box">
             <label for="testPatternSelect">4. परीक्षा प्रारूप:</label>
             <select id="testPatternSelect" class="exam-dropdown">
-              <option value="speed">क्विक स्पीड टेस्ट (15 मिनट)</option>
+              <option value="speed" selected>क्विक स्पीड टेस्ट (15 मिनट)</option>
               <option value="board">बोर्ड फुल टेस्ट (30 मिनट / 30 प्रश्न)</option>
             </select>
           </div>
 
         </div>
 
-        <!-- Instructions -->
-        <div class="instructions-box-modern">
+        <!-- Instructions Box -->
+        <div class="instructions-box">
           <h3>📌 परीक्षा के सामान्य नियम:</h3>
           <ul>
             <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
             <li>नेगेटिव मार्किंग: प्रत्येक गलत उत्तर पर <strong>-1 अंक</strong> काटा जाएगा।</li>
             <li>टाइमर पूरा होते ही आपका टेस्ट स्वतः सबमिट हो जाएगा।</li>
-            <li>सबमिट करने के तुरंत बाद आपको रैंक, अंक और हर प्रश्न की व्याख्या दिखाई जाएगी।</li>
+            <li>सबमिट करने के बाद आपको स्कोरकार्ड और हर प्रश्न की विस्तृत व्याख्या मिलेगी।</li>
           </ul>
         </div>
 
-        <button class="btn-start-exam-modern" id="startExamBtn">
+        <button class="btn-start-exam" id="startExamBtn" style="margin: 0 auto; display: block;">
           ⚡ टेस्ट शुरू करें (Start Exam)
         </button>
       </div>
@@ -281,7 +198,7 @@
     <section class="test-view-panel" id="testRunningScreen">
       <div class="exam-status-bar">
         <div class="exam-active-subject">
-          <span class="subject-badge" id="liveExamBadge">Class 10th - PHYSICS</span>
+          <span class="subject-badge" id="liveExamBadge">Class 10th</span>
           <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 30</span>
         </div>
 
@@ -333,7 +250,7 @@
         <div class="result-header-badge">
           <span class="trophy-icon">🏆</span>
           <h2>टेस्ट परिणाम स्कोरकार्ड</h2>
-          <p id="resultSubMeta">Class 10th Physics - स्कोर रिपोर्ट</p>
+          <p id="resultSubMeta">स्कोर रिपोर्ट</p>
         </div>
 
         <div class="result-tiles-grid">
@@ -361,8 +278,8 @@
         </div>
 
         <div class="result-actions-footer">
-          <button class="btn-cta-primary" id="restartTestBtn">🔄 दूसरा टेस्ट दें</button>
-          <a href="index.html" class="btn-cta-secondary">📊 डैशबोर्ड पर जाएं</a>
+          <button class="btn-start-exam" id="restartTestBtn">🔄 दूसरा टेस्ट दें</button>
+          <a href="index.html" class="btn-stage-primary" style="text-decoration:none; display:inline-flex; align-items:center;">📊 डैशबोर्ड पर जाएं</a>
         </div>
 
       </div>
@@ -371,40 +288,105 @@
   </main>
 
   <!-- 4. FOOTER -->
-  <footer class="app-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 30px 20px;">
+  <footer class="app-footer">
     <div class="footer-container">
       <div class="footer-col brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
           <span class="brand-title">NischayDesk</span>
         </div>
-        <p class="footer-summary" style="color:#94a3b8; font-size:0.85rem;">
+        <p class="footer-summary">
           बिहार बोर्ड मैट्रिक व इंटर परीक्षा की तैयारी के लिए समर्पित डिजिटल सिमुलेटर।
         </p>
-        <div class="founder-identity-box" style="color:#e2e8f0; font-size:0.85rem;">
-          संस्थापक एवं डेवलपर: <strong style="color:#38bdf8;">Prince Kumar</strong>
+        <div class="founder-identity-box">
+          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
         </div>
       </div>
       <div class="footer-col">
-        <h4 class="footer-heading" style="color:#fff;">नेविगेशन</h4>
-        <ul class="footer-nav" style="list-style:none; padding:0; line-height:2;">
-          <li><a href="index.html" style="color:#94a3b8; text-decoration:none;">➔ मुख्य डैशबोर्ड</a></li>
-          <li><a href="notes.html" style="color:#94a3b8; text-decoration:none;">➔ नोट्स हब</a></li>
-          <li><a href="ai-desk.html" style="color:#94a3b8; text-decoration:none;">➔ AI डाउट स्टूडियो</a></li>
+        <h4 class="footer-heading">नेविगेशन</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="notes.html">➔ नोट्स हब</a></li>
+          <li><a href="ai-desk.html">➔ AI डाउट स्टूडियो</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom-bar" style="margin-top:20px; font-size:0.8rem; color:#64748b;">
+    <div class="footer-bottom-bar">
       <span>&copy; 2026 NischayDesk. ऑल राइट्स रिजर्व्ड।</span>
-      <span class="server-status-tag" style="color:#38bdf8;">● एग्जाम इंजन लाइव है</span>
+      <span class="server-status-tag">● एग्जाम इंजन लाइव है</span>
     </div>
   </footer>
 
-  <!-- Scripts: quiz-engine या engine.js जो भी आप इस्तेमाल कर रहे हैं -->
+  <!-- Scripts -->
   <script src="config.js"></script>
   <script src="auth.js"></script>
   <script src="syllabus-data.js"></script>
   <script src="quiz-engine.js"></script>
   <script src="main.js"></script>
+
+  <!-- DYNAMIC SUBJECT & CHAPTER SYNC SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const classSelect = document.getElementById('testClassSelect');
+      const subjectSelect = document.getElementById('testSubjectSelect');
+      const chapterSelect = document.getElementById('testChapterSelect');
+
+      if (!classSelect || !subjectSelect || !chapterSelect) return;
+
+      const classSubjectsMap = {
+        "10": [
+          { id: "physics", syllabusId: "10-science-phy", name: "भौतिकी (Physics)" },
+          { id: "chemistry", syllabusId: "10-science-chem", name: "रसायन विज्ञान (Chemistry)" },
+          { id: "biology", syllabusId: "10-science-bio", name: "जीव विज्ञान (Biology)" },
+          { id: "math", syllabusId: "10-math", name: "गणित (Mathematics)" },
+          { id: "sst", syllabusId: "10-sst", name: "सामाजिक विज्ञान (SST)" },
+          { id: "sanskrit", syllabusId: "10-sanskrit", name: "संस्कृत (Sanskrit)" }
+        ],
+        "11": [
+          { id: "physics", syllabusId: "11-physics", name: "भौतिक विज्ञान (Physics)" },
+          { id: "chemistry", syllabusId: "11-chemistry", name: "रसायन विज्ञान (Chemistry)" },
+          { id: "math", syllabusId: "11-math", name: "गणित (Mathematics)" },
+          { id: "biology", syllabusId: "11-biology", name: "जीव विज्ञान (Biology)" }
+        ],
+        "12": [
+          { id: "physics", syllabusId: "12-physics", name: "भौतिक विज्ञान (Physics)" },
+          { id: "chemistry", syllabusId: "12-chemistry", name: "रसायन विज्ञान (Chemistry)" },
+          { id: "math", syllabusId: "12-math", name: "गणित (Mathematics)" },
+          { id: "biology", syllabusId: "12-biology", name: "जीव विज्ञान (Biology)" }
+        ]
+      };
+
+      function updateSubjects() {
+        const cls = classSelect.value;
+        const subjects = classSubjectsMap[cls] || [];
+        subjectSelect.innerHTML = subjects.map(s => `<option value="${s.id}" data-sylid="${s.syllabusId}">${s.name}</option>`).join('');
+        updateChapters();
+      }
+
+      function updateChapters() {
+        chapterSelect.innerHTML = '<option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>';
+        const selectedOpt = subjectSelect.options[subjectSelect.selectedIndex];
+        if (!selectedOpt || !window.NischaySyllabus || !window.NischaySyllabus.subjects) return;
+
+        const sylId = selectedOpt.getAttribute('data-sylid');
+        const subData = window.NischaySyllabus.subjects.find(s => s.id === sylId);
+
+        if (subData && subData.chapters) {
+          subData.chapters.forEach(ch => {
+            const opt = document.createElement('option');
+            opt.value = `ch${ch.no}`;
+            opt.textContent = `अध्याय ${ch.no}: ${ch.name}`;
+            chapterSelect.appendChild(opt);
+          });
+        }
+      }
+
+      classSelect.addEventListener('change', updateSubjects);
+      subjectSelect.addEventListener('change', updateChapters);
+
+      // Initial Call
+      updateSubjects();
+    });
+  </script>
 </body>
 </html>
