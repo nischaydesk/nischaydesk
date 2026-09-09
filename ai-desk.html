@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- Markdown Parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -15,7 +15,7 @@
   <!-- MathJax Engine -->
   <script>
     window.MathJax = {
-      tex: {
+      tex: { 
         inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
@@ -28,13 +28,13 @@
     :root {
       --bg: #f8fafc;
       --surface: #ffffff;
-      --card-bg: #ffffff;
-      --border: #cbd5e1;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
       --accent: #0284c7;
       --primary: #0284c7;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -49,31 +49,25 @@
       overflow: hidden;
     }
 
-    /* Top App Header */
+    /* Header */
     .app-header {
-      padding: 12px 18px;
+      padding: 14px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       z-index: 100;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-back-home {
+    .btn-back {
       background: #e0f2fe;
       border: 1px solid #bae6fd;
       color: #0369a1;
       padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       text-decoration: none;
       display: flex;
@@ -88,532 +82,389 @@
     }
     .brand-title span { color: var(--accent); }
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-circle {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.2s;
-    }
-    .btn-circle:hover { background: #e2e8f0; color: var(--text-main); }
-
     /* Viewport */
     .viewport {
       flex: 1;
       overflow-y: auto;
-      padding: 24px 16px 130px;
+      padding: 24px 16px 150px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
     }
 
-    /* Hero Home Screen */
-    .gemini-hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .hero-box {
       text-align: center;
-      gap: 22px;
-      max-width: 650px;
-      margin: 0 auto;
+      padding: 35px 10px;
+    }
+    .hero-box h2 { font-size: 1.7rem; color: var(--text-main); font-weight: 800; margin-bottom: 16px; line-height: 1.4; }
+    .hero-box span { color: var(--accent); }
+
+    .suggestion-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .hero-gemini-logo {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #0284c7, #38bdf8, #818cf8, #c084fc);
-      clip-path: polygon(50% 0%, 63% 37%, 100% 50%, 63% 63%, 50% 100%, 37% 63%, 0% 50%, 37% 37%);
-      box-shadow: 0 0 25px rgba(2, 132, 199, 0.3);
-    }
-
-    .hero-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      line-height: 1.35;
-      color: var(--text-main);
-    }
-    .hero-title span { color: var(--accent); }
-
-    .hero-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      width: 100%;
-      margin-top: 8px;
-    }
-
-    .hero-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 16px;
-      border-radius: 16px;
-      text-align: left;
+    .sug-chip {
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      color: #0369a1;
+      padding: 9px 16px;
+      border-radius: 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      box-shadow: var(--shadow);
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      transition: all 0.2s;
     }
-    .hero-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .sug-chip:hover { background: #e0f2fe; border-color: var(--accent); transform: translateY(-2px); }
 
-    .hero-card .icon { font-size: 1.3rem; }
-    .hero-card .heading { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
-    .hero-card .sub { font-size: 0.75rem; color: var(--text-muted); }
-
-    /* Active Chat Stream */
-    .chat-stream {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      max-width: 850px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .user-entry {
-      align-self: flex-end;
+    /* Chat Messages */
+    .user-msg {
       background: var(--primary);
-      color: #fff;
-      padding: 12px 18px;
+      color: white;
+      padding: 14px 18px;
       border-radius: 18px;
       border-bottom-right-radius: 4px;
-      font-size: 0.95rem;
-      max-width: 85%;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      align-self: flex-end;
+      max-width: 88%;
+      font-size: 1rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
       word-break: break-word;
     }
 
-    .ai-document-response {
-      width: 100%;
+    .ai-msg {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+      border: 1px solid var(--border-strong);
+      padding: 22px;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
       color: var(--text-main);
-      font-size: 0.96rem;
-      line-height: 1.75;
+      font-size: 1.02rem;
+      line-height: 1.8;
       box-shadow: var(--shadow);
+      width: 100%;
       word-break: break-word;
     }
 
-    /* Typing Wave Loader */
-    .typing-wave {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 0;
-    }
-
-    .wave-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: dotPulse 1.3s infinite ease-in-out;
-    }
-    .wave-dot:nth-child(2) { animation-delay: 0.2s; }
-    .wave-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes dotPulse {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
-      30% { transform: translateY(-8px); opacity: 1; }
-    }
+    .ai-msg p { margin-bottom: 12px; }
+    .ai-msg ul, .ai-msg ol { margin-left: 20px; margin-bottom: 12px; }
+    .ai-msg li { margin-bottom: 6px; }
 
     /* Tables */
-    .table-wrapper {
+    .table-wrap {
       width: 100%;
       overflow-x: auto;
-      margin: 16px 0;
-      border-radius: 10px;
-      border: 1px solid var(--border);
+      margin: 18px 0;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
-    .ai-document-response table {
+    table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
-      background: #ffffff;
-      white-space: nowrap;
+      table-layout: auto;
     }
-
-    .ai-document-response th, .ai-document-response td {
+    th, td {
       border: 1px solid var(--border);
-      padding: 10px 14px;
+      padding: 12px 16px;
       text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      word-break: normal;
+      overflow-wrap: normal;
+      white-space: normal;
+      min-width: 120px;
     }
+    th { background: #f1f5f9; color: var(--accent); font-weight: 700; }
+    tr:nth-child(even) { background: #f8fafc; }
 
-    .ai-document-response th {
-      background: #f1f5f9;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    /* Code Block with Copy Button */
-    .code-container {
-      position: relative;
-      background: #0f172a;
-      border-radius: 10px;
-      margin: 16px 0;
-      overflow: hidden;
-    }
-
-    .code-header {
-      background: #1e293b;
-      padding: 6px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #94a3b8;
-      font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .copy-snippet-btn {
-      background: transparent;
-      border: none;
-      color: #38bdf8;
-      cursor: pointer;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .code-container pre {
-      padding: 14px;
-      overflow-x: auto;
-      color: #38bdf8;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.86rem;
-    }
-
-    .response-footer-actions {
-      display: flex;
-      gap: 16px;
-      margin-top: 14px;
-      padding-top: 10px;
+    .action-row {
+      margin-top: 16px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
     }
 
-    .footer-action-btn {
+    .act-btn {
       background: #f1f5f9;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       color: var(--text-muted);
-      padding: 6px 12px;
+      padding: 7px 14px;
       border-radius: 8px;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: 0.2s;
     }
-    .footer-action-btn:hover { background: #e2e8f0; color: var(--accent); }
+    .act-btn:hover { color: var(--accent); background: #e2e8f0; }
 
     /* Floating Capsule Dock */
-    .dock-wrapper {
+    .dock {
       position: fixed;
       bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 24px);
-      max-width: 720px;
+      max-width: 780px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 40px;
+      padding: 10px 14px 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
       z-index: 100;
     }
 
-    .pill-dock {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 40px;
-      padding: 8px 10px 8px 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .pill-input {
+    .dock input {
       flex: 1;
       background: transparent;
       border: none;
       outline: none;
-      color: var(--text-main);
-      font-size: 0.96rem;
+      padding: 8px 0;
+      font-size: 1.02rem;
       font-family: inherit;
-      padding: 8px 2px;
+      color: var(--text-main);
     }
-    .pill-input::placeholder { color: var(--text-muted); }
+    .dock input::placeholder { color: var(--text-muted); }
 
     .dock-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.15rem;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .dock-btn:hover { color: var(--accent); background: #f1f5f9; }
-
-    /* Voice Equalizer Bars */
-    .voice-bars {
-      display: none;
-      align-items: center;
-      gap: 3px;
-      height: 20px;
-      padding: 0 4px;
-    }
-    .voice-bars.listening { display: flex; }
-
-    .v-bar {
-      width: 3px;
-      border-radius: 3px;
-      animation: voiceWave 0.8s infinite ease-in-out alternate;
-    }
-    .v-bar:nth-child(1) { height: 6px; background: #0284c7; animation-delay: 0.1s; }
-    .v-bar:nth-child(2) { height: 18px; background: #38bdf8; animation-delay: 0.3s; }
-    .v-bar:nth-child(3) { height: 12px; background: #6366f1; animation-delay: 0.2s; }
-    .v-bar:nth-child(4) { height: 6px; background: #ec4899; animation-delay: 0.4s; }
-
-    @keyframes voiceWave {
-      from { height: 4px; }
-      to { height: 22px; }
-    }
-
-    .send-pill-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
       width: 40px;
       height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      font-weight: 800;
+      font-size: 1.15rem;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-      transition: transform 0.2s;
     }
-    .send-pill-btn:active { transform: scale(0.92); }
+    .dock-btn:hover { color: var(--accent); background: #f1f5f9; }
+
+    /* Voice Wave */
+    .voice-bars {
+      display: none;
+      align-items: center;
+      gap: 3px;
+      height: 18px;
+      padding: 0 4px;
+    }
+    .voice-bars.listening { display: flex; }
+    .v-bar {
+      width: 3px;
+      border-radius: 3px;
+      animation: voiceWave 0.8s infinite ease-in-out alternate;
+      background: var(--accent);
+    }
+    .v-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+    .v-bar:nth-child(2) { height: 16px; animation-delay: 0.3s; }
+    .v-bar:nth-child(3) { height: 10px; animation-delay: 0.2s; }
+
+    @keyframes voiceWave {
+      from { height: 4px; }
+      to { height: 20px; }
+    }
+
+    .send-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+    }
   </style>
 </head>
 <body>
 
-  <!-- App Header -->
   <header class="app-header">
-    <div class="header-left">
-      <a href="index.html" class="btn-back-home">⬅ डैशबोर्ड</a>
-      <div class="brand-title">Nischay<span>Desk</span> AI</div>
-    </div>
-    <div class="nav-actions">
-      <button class="btn-circle" onclick="startFreshSession()" title="नया चैट">➕</button>
-    </div>
+    <a href="index.html" class="btn-back">⬅ डैशबोर्ड</a>
+    <div class="brand-title">Nischay<span>Desk</span> AI</div>
+    <button onclick="location.reload()" style="background:none; border:none; font-size: 1.2rem; cursor:pointer;" title="रीफ्रेश">🔄</button>
   </header>
 
-  <!-- Main Viewport -->
-  <main class="viewport" id="mainViewport">
-    <div class="gemini-hero" id="geminiHero">
-      <div class="hero-gemini-logo"></div>
-      <h2 class="hero-title">नमस्ते प्रिंस!<br>आज <span>क्या हल</span> करना है?</h2>
-      
-      <div class="hero-cards-grid">
-        <div class="hero-card" onclick="promptDirect('चाल और वेग में क्या अंतर है? टेबल बनाकर समझाएं।')">
-          <span class="icon">📊</span>
-          <span class="heading">चाल vs वेग अंतर</span>
-          <span class="sub">पूरी टेबल और मात्रक तुलना</span>
-        </div>
-        <div class="hero-card" onclick="promptDirect('न्यूटन के द्वितीय नियम सूत्र F = ma का पूरा डेरिवेशन चरणबद्ध तरीके से समझाइए।')">
-          <span class="icon">🍎</span>
-          <span class="heading">F = ma निगमन</span>
-          <span class="sub">कक्षा 11th भौतिकी का मुख्य सूत्र</span>
-        </div>
-        <div class="hero-card" onclick="promptDirect('प्रकाश वर्ष क्या है और इसका मान मीटर में कितना होता है?')">
-          <span class="icon">🌌</span>
-          <span class="heading">प्रकाश वर्ष मान</span>
-          <span class="sub">परिभाषा और गणना</span>
-        </div>
-        <div class="hero-card" onclick="promptDirect('SI मात्रक क्या है? सभी 7 मूल मात्रकों की टेबल दीजिए।')">
-          <span class="icon">📐</span>
-          <span class="heading">7 मूल SI मात्रक</span>
-          <span class="sub">भौतिक राशियाँ और संकेत</span>
-        </div>
+  <main class="viewport" id="viewport">
+    <div class="hero-box" id="heroBox">
+      <h2>नमस्ते प्रिंस! आज <span>क्या हल</span> करना है?</h2>
+      <div class="suggestion-row">
+        <div class="sug-chip" onclick="askQuick('(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।')">📐 (A+B)^2 फॉर्मूला</div>
+        <div class="sug-chip" onclick="askQuick('चाल और वेग में क्या अंतर है? विस्तार से समझाएं।')">📊 चाल vs वेग</div>
+        <div class="sug-chip" onclick="askQuick('न्यूटन के द्वितीय नियम F = ma का निगमन करें।')">🍎 F = ma निगमन</div>
+        <div class="sug-chip" onclick="askQuick('आपको किसने बनाया है और आपके बारे में बताएं?')">🤖 आपको किसने बनाया?</div>
       </div>
     </div>
 
-    <div class="chat-stream" id="chatStream" style="display: none;"></div>
+    <div id="chatFeed" style="display:flex; flex-direction:column; gap:22px;"></div>
   </main>
 
-  <!-- Floating Dock -->
-  <footer class="dock-wrapper">
-    <div class="pill-dock">
-      <button class="dock-btn" onclick="startFreshSession()" title="साफ़ करें">🗑️</button>
-      <input type="text" id="mainInput" class="pill-input" placeholder="NischayDesk से पूछें..." onkeypress="if(event.key==='Enter') executeDoubt()">
-      
-      <div class="voice-bars" id="voiceBars">
-        <div class="v-bar"></div>
-        <div class="v-bar"></div>
-        <div class="v-bar"></div>
-        <div class="v-bar"></div>
-      </div>
-
-      <button class="dock-btn" id="micBtn" onclick="triggerVoice()" title="माइक">🎙️</button>
-      <button class="send-pill-btn" onclick="executeDoubt()" title="भेजें">➔</button>
+  <footer class="dock">
+    <button class="dock-btn" onclick="document.getElementById('chatFeed').innerHTML=''; document.getElementById('heroBox').style.display='block';" title="नया चैट">🗑️</button>
+    <input type="text" id="userInput" placeholder="NischayDesk से कोई भी सवाल पूछें..." onkeypress="if(event.key==='Enter') sendQuery()">
+    
+    <div class="voice-bars" id="voiceBars">
+      <div class="v-bar"></div>
+      <div class="v-bar"></div>
+      <div class="v-bar"></div>
     </div>
+
+    <button class="dock-btn" id="micBtn" onclick="triggerVoice()" title="माइक">🎙️</button>
+    <button class="send-btn" onclick="sendQuery()">➔</button>
   </footer>
 
   <script>
-    const GROQ_KEY = "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";
-    const ACTIVE_MODEL = "openai/gpt-oss-20b"; // 100% फिक्स्ड और टेस्टेड मॉडल
+    const API_KEY = "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";
 
-    const SYSTEM_PROMPT = `
-You are "NischayDesk AI", a premier study companion built by Prince Kumar for Bihar Board Class 10th & 11th Science students.
-Rules:
-1. Always state you are NischayDesk AI, created by Prince Kumar.
-2. For all math/physics equations, use standard LaTeX enclosed strictly in $inline$ or $$display$$.
-3. For comparisons, provide clean Markdown Tables.
-`;
-
-    function startFreshSession() {
-      document.getElementById('geminiHero').style.display = 'flex';
-      const stream = document.getElementById('chatStream');
-      stream.style.display = 'none';
-      stream.innerHTML = '';
-      document.getElementById('mainInput').value = '';
-    }
-
-    function promptDirect(q) {
-      document.getElementById('mainInput').value = q;
-      executeDoubt();
+    function askQuick(q) {
+      document.getElementById('userInput').value = q;
+      sendQuery();
     }
 
     function sanitizeFormulas(text) {
-      return text.replace(/\\\[(.*?)\\\]/gs, '$$$$1$$')
-                 .replace(/\\\((.*?)\\\)/gs, '$$$1$$')
-                 .replace(/\[\s*(\\vec|\\boxed|\\text|\\frac|v|p|F)(.*?)\]/gs, '$$$1$2$$');
+      return text.replace(/\\\[(.*?)\\\]/gs, '$$$1$$')
+                 .replace(/\\\((.*?)\\\)/gs, '$$$1$$');
     }
 
-    // Advanced Natural Speech Engine (High Quality Hindi/Clear Voice Priority)
-    function speakText(btn) {
-      if (!('speechSynthesis' in window)) {
-        alert("आपके ब्राउज़र में आवाज़ का फीचर उपलब्ध नहीं है।");
-        return;
-      }
-      window.speechSynthesis.cancel();
-
-      const container = btn.closest('.ai-document-response');
-      let rawText = container ? container.innerText : '';
-      let cleanText = rawText.replace(/🔊 सुनाएँ|📋 कॉपी करें/g, '').trim();
-
-      if (!cleanText) return;
-
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.lang = 'hi-IN';
-      utterance.rate = 0.95; // स्पष्ट और नेचुरल गति
-      utterance.pitch = 1.0;
-
-      let voices = window.speechSynthesis.getVoices();
-      let bestVoice = voices.find(v => v.lang === 'hi-IN' && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Female') || v.name.includes('Kalpana'))) ||
-                      voices.find(v => v.lang === 'hi-IN') ||
-                      voices.find(v => v.lang === 'en-IN' && v.name.includes('Female'));
-
-      if (bestVoice) utterance.voice = bestVoice;
-      window.speechSynthesis.speak(utterance);
-    }
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-    }
-
-    function copyText(btn) {
-      const text = btn.closest('.ai-document-response').innerText.replace(/🔊 सुनाएँ|📋 कॉपी करें/g, '').trim();
-      navigator.clipboard.writeText(text);
-      alert("उत्तर कॉपी हो गया! 📋");
-    }
-
-    // Code Snippet Copy Helper
-    function copyCodeSnippet(btn) {
-      const code = btn.closest('.code-container').querySelector('pre').innerText;
-      navigator.clipboard.writeText(code);
-      btn.innerText = "✓ Copied!";
-      setTimeout(() => { btn.innerText = "📋 Copy Code"; }, 2000);
-    }
-
-    // Smooth Typewriter Stream Effect
+    // Typewriter Effect
     function streamTypewriter(element, text, onComplete) {
       let index = 0;
       element.innerHTML = '';
-      const step = Math.max(1, Math.floor(text.length / 60));
+      const step = Math.max(1, Math.floor(text.length / 50));
 
       function typeNext() {
         if (index < text.length) {
           index += step;
           const currentText = text.substring(0, index);
           const cleaned = sanitizeFormulas(currentText);
-          const parsed = marked.parse(cleaned);
-          element.innerHTML = parsed;
-          document.getElementById('viewport').scrollTop = document.getElementById('viewport').scrollHeight;
+          element.innerHTML = marked.parse(cleaned);
+          scrollToBottom();
           requestAnimationFrame(typeNext);
         } else {
           const cleanedFinal = sanitizeFormulas(text);
           const parsedFinal = marked.parse(cleanedFinal);
-          const wrappedFinal = parsedFinal.replace(/<table>/g, '<div class="table-wrapper"><table>').replace(/<\/table>/g, '</table></div>');
+          const finalHTML = parsedFinal.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
           
-          element.innerHTML = wrappedFinal;
-
-          // Enhance Code Blocks
-          const pres = element.querySelectorAll('pre');
-          pres.forEach(pre => {
-            if (pre.parentElement.classList.contains('code-container')) return;
-            const wrap = document.createElement('div');
-            wrap.className = 'code-container';
-            wrap.innerHTML = `<div class="code-header"><span>Code Block</span><button class="copy-snippet-btn" onclick="copyCodeSnippet(this)">📋 Copy Code</button></div>`;
-            pre.parentNode.insertBefore(wrap, pre);
-            wrap.appendChild(pre);
-          });
+          element.innerHTML = finalHTML;
 
           if (window.MathJax && window.MathJax.typesetPromise) {
             window.MathJax.typesetPromise([element]);
           }
-          document.getElementById('viewport').scrollTop = document.getElementById('viewport').scrollHeight;
+          scrollToBottom();
           if (onComplete) onComplete();
         }
       }
       typeNext();
     }
 
-    // Voice recognition
+    async function sendQuery() {
+      const input = document.getElementById('userInput');
+      const feed = document.getElementById('chatFeed');
+      const hero = document.getElementById('heroBox');
+      const query = input.value.trim();
+
+      if (!query) return;
+
+      hero.style.display = 'none';
+      feed.style.display = 'flex';
+
+      // User Message
+      feed.innerHTML += `<div class="user-msg">${query}</div>`;
+      input.value = '';
+      scrollToBottom();
+
+      // Loading Card
+      const loadId = 'load-' + Date.now();
+      feed.innerHTML += `
+        <div class="ai-msg" id="${loadId}">
+          <div style="color:var(--text-muted); font-size:1rem;">उत्तर तैयार हो रहा है... ⏳</div>
+        </div>
+      `;
+      scrollToBottom();
+
+      try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + API_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "openai/gpt-oss-20b",
+            messages: [
+              { role: "system", content: "You are NischayDesk AI, a smart study assistant for Bihar Board students, powered by OpenAI/Groq language model technology. STRICT RULES: 1. Do NOT introduce yourself or mention your creator in regular academic answers. 2. ONLY mention your creator (Prince Kumar, founder of NischayDesk and a Class 11th Science student) and that you are built on OpenAI/Groq technology if the user explicitly asks 'Who created you?', 'तुम्हें किसने बनाया है?', 'तुम कौन हो?', or similar identity questions. 3. Format all math and physics equations strictly in LaTeX format using $ or $$ so MathJax can render them correctly." },
+              { role: "user", content: query }
+            ],
+            temperature: 0.3,
+            max_tokens: 2048
+          })
+        });
+
+        const data = await response.json();
+        const loadElem = document.getElementById(loadId);
+
+        if (data.choices && data.choices[0]?.message?.content) {
+          const rawText = data.choices[0].message.content;
+
+          loadElem.innerHTML = `
+            <div class="stream-content"></div>
+            <div class="action-row" style="display:none;">
+              <button class="act-btn" onclick="speakAnswer(this)">🔊 सुनाएँ</button>
+              <button class="act-btn" onclick="copyAnswer(this)">📋 कॉपी करें</button>
+            </div>
+          `;
+
+          const contentBox = loadElem.querySelector('.stream-content');
+          const actionBox = loadElem.querySelector('.action-row');
+
+          streamTypewriter(contentBox, rawText, () => {
+            actionBox.style.display = 'flex';
+          });
+
+        } else {
+          loadElem.innerHTML = `<span style="color:red;">⚠️ एरर: उत्तर प्राप्त नहीं हुआ। कृपया पुनः प्रयास करें।</span>`;
+        }
+      } catch (err) {
+        document.getElementById(loadId).innerHTML = `<span style="color:red;">⚠️ नेटवर्क कनेक्शन फेल! कृपया इंटरनेट चेक करें।</span>`;
+      }
+      scrollToBottom();
+    }
+
+    // Voice Input via Mic
     let recognizer;
     let isListening = false;
 
     function triggerVoice() {
       const bars = document.getElementById('voiceBars');
       const micBtn = document.getElementById('micBtn');
-      const input = document.getElementById('mainInput');
+      const input = document.getElementById('userInput');
 
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("कृपया मोबाइल में Google Chrome का उपयोग करें।");
+        alert("कृपया मोबाइल में Google Chrome ब्राउज़र का उपयोग करें।");
         return;
       }
 
@@ -635,14 +486,14 @@ Rules:
 
       recognizer.onresult = (e) => {
         input.value = e.results[0][0].transcript;
-        executeDoubt();
+        sendQuery();
       };
 
       recognizer.onerror = recognizer.onend = () => {
         isListening = false;
         bars.classList.remove('listening');
         micBtn.style.color = '';
-        input.placeholder = "NischayDesk से पूछें...";
+        input.placeholder = "NischayDesk से कोई भी सवाल पूछें...";
       };
 
       try {
@@ -652,81 +503,38 @@ Rules:
       }
     }
 
-    async function executeDoubt() {
-      const input = document.getElementById('mainInput');
-      const hero = document.getElementById('geminiHero');
-      const stream = document.getElementById('chatStream');
-      const text = input.value.trim();
-
-      if (!text) return;
-
-      hero.style.display = 'none';
-      stream.style.display = 'flex';
-
-      stream.innerHTML += `<div class="user-entry">${text}</div>`;
-      input.value = '';
-      document.getElementById('viewport').scrollTop = document.getElementById('viewport').scrollHeight;
-
-      const loaderId = "wave-" + Date.now();
-      stream.innerHTML += `
-        <div class="ai-document-response" id="${loaderId}">
-          <div class="typing-wave">
-            <span class="wave-dot"></span>
-            <span class="wave-dot"></span>
-            <span class="wave-dot"></span>
-          </div>
-        </div>
-      `;
-      document.getElementById('viewport').scrollTop = document.getElementById('viewport').scrollHeight;
-
-      try {
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Authorization": "Bearer " + GROQ_KEY,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            model: ACTIVE_MODEL,
-            messages: [
-              { role: "system", content: SYSTEM_PROMPT },
-              { role: "user", content: text }
-            ],
-            temperature: 0.3
-          })
-        });
-
-        const data = await response.json();
-        const loaderElem = document.getElementById(loaderId);
-
-        if (data.choices && data.choices[0]?.message?.content) {
-          const rawResult = data.choices[0].message.content;
-
-          loaderElem.innerHTML = `
-            <div class="stream-body"></div>
-            <div class="response-footer-actions" style="display:none;">
-              <button class="footer-action-btn" onclick="speakText(this)">🔊 सुनाएँ</button>
-              <button class="footer-action-btn" onclick="copyText(this)">📋 कॉपी करें</button>
-            </div>
-          `;
-
-          const bodyBox = loaderElem.querySelector('.stream-body');
-          const actionsBox = loaderElem.querySelector('.response-footer-actions');
-
-          // Smooth Typewriter Stream Effect
-          streamTypewriter(bodyBox, rawResult, () => {
-            actionsBox.style.display = 'flex';
-          });
-
-        } else if (data.error) {
-          loaderElem.innerHTML = `<span style="color:#ef4444;">⚠️ Groq एरर: ${data.error.message}</span>`;
-        }
-      } catch (err) {
-        const loaderElem = document.getElementById(loaderId);
-        if (loaderElem) loaderElem.innerHTML = `<span style="color:#ef4444;">⚠️ नेटवर्क समस्या!</span>`;
+    function speakAnswer(btn) {
+      if (!('speechSynthesis' in window)) {
+        alert("आपके ब्राउज़र में आवाज़ का फीचर उपलब्ध नहीं है।");
+        return;
       }
+      window.speechSynthesis.cancel();
+      
+      const card = btn.closest('.ai-msg');
+      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी करें', '').trim();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      utterance.rate = 0.95;
+      
+      let voices = window.speechSynthesis.getVoices();
+      let bestVoice = voices.find(v => v.lang === 'hi-IN' && (v.name.includes('Google') || v.name.includes('Female'))) ||
+                      voices.find(v => v.lang === 'hi-IN');
+      if (bestVoice) utterance.voice = bestVoice;
 
-      document.getElementById('viewport').scrollTop = document.getElementById('viewport').scrollHeight;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function copyAnswer(btn) {
+      const card = btn.closest('.ai-msg');
+      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी करें', '').trim();
+      navigator.clipboard.writeText(text);
+      alert("उत्तर सफलतापूर्वक कॉपी हो गया! 📋");
+    }
+
+    function scrollToBottom() {
+      const vp = document.getElementById('viewport');
+      vp.scrollTop = vp.scrollHeight;
     }
   </script>
 </body>
