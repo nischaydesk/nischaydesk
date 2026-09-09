@@ -1,10 +1,10 @@
 /* ==========================================================================
-   NischayDesk Global Design System
+   NischayDesk Global Design System & Core Theme Architecture
    Architecture & Styling: Prince Kumar
    ========================================================================== */
 
 :root {
-  /* Surface & Base Colors (Dark Default) */
+  /* Surface & Base Colors (Dark Mode Default) */
   --bg-primary: #070d1e;
   --bg-secondary: #0b1530;
   --surface-card: #0f1c3d;
@@ -26,7 +26,7 @@
   --warning: #f59e0b;
   --info: #06b6d4;
 
-  /* Text & Typography */
+  /* Text & Typography (Pure Contrast) */
   --text-pure: #ffffff;
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
@@ -48,7 +48,7 @@
   --transition-smooth: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 1. Global Resets */
+/* 1. Global Reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -280,9 +280,7 @@ body.app-body {
   box-shadow: 0 0 6px var(--success);
 }
 
-/* ==========================================================================
-   6. Side-Drawer iOS Toggle Switch Styling
-   ========================================================================== */
+/* 6. Side-Drawer iOS Toggle Switch */
 .drawer-theme-row {
   display: flex;
   align-items: center;
@@ -340,7 +338,6 @@ body.app-body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* चालू (ON) होने पर नीला रंग */
 input:checked + .slider {
   background-color: #0284c7;
 }
@@ -350,47 +347,42 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
-   7. COMPLETE LIGHT MODE SYSTEM (HIGH PRIORITY)
+   7. COMPLETE LIGHT MODE SYSTEM (PRECISION CONTRAST OVERRIDES)
    ========================================================================== */
 
-/* बेस बॉडी और बैकग्राउंड */
 html.light-mode body {
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
-/* हेडर नेवबार */
 html.light-mode .app-header {
   background: rgba(255, 255, 255, 0.95) !important;
   border-bottom: 1px solid #cbd5e1 !important;
 }
 
-html.light-mode .brand-name {
-  color: #0f172a !important;
-}
-
-/* मुख्य हीरो बैनर */
 html.light-mode .hero-studio-banner {
   background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%) !important;
   border-color: #cbd5e1 !important;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
 }
 
-/* सभी प्रकार के कार्ड्स (होमपेज, टूल्स, और नोट्स लाइब्रेरी) */
 html.light-mode .stat-glass-card,
 html.light-mode .grid-card,
 html.light-mode .quick-tool-card,
 html.light-mode .side-drawer,
 html.light-mode .drawer-user-card,
 html.light-mode .pdf-modal-window,
-html.light-mode .note-item-card {
+html.light-mode .note-item-card,
+html.light-mode .lobby-card,
+html.light-mode .question-stage-box,
+html.light-mode .question-palette-box,
+html.light-mode .result-card-container {
   background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   color: #0f172a !important;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* सभी हेडिंग्स और टाइटल्स (अक्षर साफ़ काले दिखेंगे) */
 html.light-mode h1, 
 html.light-mode h2, 
 html.light-mode h3, 
@@ -400,41 +392,33 @@ html.light-mode .stat-numeric,
 html.light-mode .card-title,
 html.light-mode .brand-title,
 html.light-mode .footer-heading,
-html.light-mode .note-item-card h3 {
+html.light-mode .note-item-card h3,
+html.light-mode .question-text,
+html.light-mode .palette-title,
+html.light-mode .solutions-heading {
   color: #0f172a !important;
 }
 
-/* सभी विवरण और पैराग्राफ टेक्स्ट */
 html.light-mode p,
 html.light-mode .hero-subline,
 html.light-mode .stat-label,
 html.light-mode .card-desc,
 html.light-mode .footer-summary,
 html.light-mode .section-subheadline,
-html.light-mode .note-item-card p {
+html.light-mode .note-item-card p,
+html.light-mode .lobby-subtitle {
   color: #475569 !important;
 }
 
-/* साइड मेनू का ऑन/ऑफ स्विच एरिया */
-html.light-mode .drawer-theme-row {
-  background: #f8fafc !important;
-  border: 1px solid #cbd5e1 !important;
-}
-
-html.light-mode .theme-label {
-  color: #0f172a !important;
-}
-
-/* सर्च बार और इनपुट फील्ड्स */
 html.light-mode select,
 html.light-mode input,
+html.light-mode .exam-dropdown,
 html.light-mode .notes-search-field {
   background: #ffffff !important;
   color: #0f172a !important;
   border: 1px solid #cbd5e1 !important;
 }
 
-/* फ़िल्टर बटन */
 html.light-mode .filter-btn {
   background: #ffffff !important;
   color: #475569 !important;
@@ -447,74 +431,7 @@ html.light-mode .filter-btn.active {
   border-color: var(--brand-primary) !important;
 }
 
-/* फुटर */
 html.light-mode .app-footer {
   background: #f8fafc !important;
   border-top: 1px solid #cbd5e1 !important;
 }
-/* ==========================================================================
-   DRAWER, NAVBAR & USER PROFILE LIGHT MODE FIX
-   ========================================================================== */
-
-/* 1. मेनू के सारे टेक्स्ट एकदम साफ़ और गहरे दिखें */
-html.light-mode .drawer-nav-item {
-  color: #1e293b !important;
-  font-weight: 600 !important;
-}
-
-/* 2. एक्टिव मेनू बटन का प्रीमियम लुक */
-html.light-mode .drawer-nav-item.active {
-  background: rgba(2, 132, 199, 0.12) !important;
-  color: #0284c7 !important;
-  border: 1px solid rgba(2, 132, 199, 0.25) !important;
-}
-
-html.light-mode .drawer-nav-item:hover {
-  background: #f1f5f9 !important;
-  color: #0284c7 !important;
-}
-
-/* 3. वेबसाइट का मुख्य नाम (NischayDesk) और टैगलाइन */
-html.light-mode .brand-name {
-  color: #0f172a !important;
-}
-
-html.light-mode .brand-tagline {
-  color: #64748b !important;
-}
-
-html.light-mode .drawer-brand span {
-  color: #0f172a !important;
-}
-
-/* 4. लॉगिन के बाद छात्र का नाम (जैसे: प्रिंस कुमार) */
-html.light-mode .user-display-name {
-  color: #0f172a !important;
-  font-weight: 700 !important;
-}
-
-/* 5. VIP Member वाला बैज */
-html.light-mode .user-session-badge {
-  background: rgba(2, 132, 199, 0.12) !important;
-  color: #0284c7 !important;
-  border: 1px solid rgba(2, 132, 199, 0.3) !important;
-  font-weight: 600 !important;
-}
-
-/* 6. लॉगआउट बटन और फुटर टेक्स्ट */
-html.light-mode .btn-logout {
-  color: #64748b !important;
-}
-
-html.light-mode .btn-logout:hover {
-  color: #ef4444 !important;
-}
-
-html.light-mode .platform-meta {
-  color: #64748b !important;
-}
-
-html.light-mode .founder-meta {
-  color: #334155 !important;
-}
-
