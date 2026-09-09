@@ -10,145 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Flat CSS Links -->
+  <!-- Core Theme & Layout Stylesheets -->
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="navbar.css" />
   <link rel="stylesheet" href="dashboard.css" />
-
-  <!-- Inline Premium Enhancements for Instant Polish -->
-  <style>
-    /* Hero Action Buttons - Balanced & Full Width on Mobile */
-    .hero-action-group {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    .btn-cta-primary, .btn-cta-secondary {
-      flex: 1 1 200px;
-      padding: 14px 20px;
-      border-radius: 12px;
-      font-weight: 700;
-      text-align: center;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .btn-cta-primary {
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      color: #ffffff;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
-      border: none;
-    }
-    .btn-cta-secondary {
-      background: #0f172a;
-      color: #f8fafc;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-    .btn-cta-primary:hover, .btn-cta-secondary:hover {
-      transform: translateY(-2px);
-    }
-
-    /* 2x2 Balanced Hero Stats Grid */
-    .hero-stats-panel-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 24px;
-    }
-    .stat-glass-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 14px;
-      padding: 14px 12px;
-      text-align: center;
-      backdrop-filter: blur(8px);
-    }
-    .stat-icon { font-size: 1.4rem; margin-bottom: 4px; }
-    .stat-numeric { font-size: 1.3rem; font-weight: 800; color: #38bdf8; }
-    .stat-label { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
-
-    /* Compact 2-Column Utility Engine */
-    .quick-tools-grid-2col {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-    .quick-tool-card-modern {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.18);
-      border-radius: 14px;
-      padding: 16px 12px;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .quick-tool-card-modern:hover {
-      border-color: #38bdf8;
-      transform: translateY(-2px);
-      background: rgba(30, 41, 59, 0.8);
-    }
-    .tool-icon-box-sm {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: rgba(56, 189, 248, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-    .quick-tool-card-modern h4 {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #f8fafc;
-      font-weight: 700;
-    }
-    .quick-tool-card-modern p {
-      margin: 0;
-      font-size: 0.72rem;
-      color: #94a3b8;
-      line-height: 1.3;
-    }
-
-    /* Subject Pills for Class 10th & 11th */
-    .subject-pill-row {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 6px 0;
-      margin-top: 10px;
-      scrollbar-width: none;
-    }
-    .sub-pill {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 20px;
-      padding: 6px 12px;
-      font-size: 0.78rem;
-      color: #e2e8f0;
-      white-space: nowrap;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .sub-pill.active-pill {
-      background: rgba(56, 189, 248, 0.2);
-      border-color: #38bdf8;
-      color: #38bdf8;
-      font-weight: 600;
-    }
-  </style>
 
   <!-- Firebase Modular Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -157,7 +22,7 @@
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP NAVBAR -->
+  <!-- 1. TOP ENTERPRISE NAVBAR -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -279,8 +144,8 @@
         </div>
       </div>
 
-      <!-- 2x2 Clean Balanced Stats Grid -->
-      <div class="hero-stats-panel-grid">
+      <!-- 2x2 Balanced Hero Stats Grid -->
+      <div class="hero-stats-panel" style="grid-template-columns: repeat(2, 1fr);">
         <div class="stat-glass-card">
           <div class="stat-icon">📖</div>
           <div class="stat-numeric" id="totalNotesCount">14+</div>
@@ -304,40 +169,37 @@
       </div>
     </section>
 
-    <!-- CLASS 10TH MATRIC HUB (INCLUDING SST & SANSKRIT) -->
+    <!-- CLASS 10TH MATRIC SECTION -->
     <section class="dashboard-section">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">कक्षा 10वीं (मैट्रिक) सम्पूर्ण हब</h2>
           <p class="section-subheadline">बिहार बोर्ड मैट्रिक परीक्षा के सभी 5 अनिवार्य विषय</p>
         </div>
-        <a href="notes.html" class="realtime-indicator" style="text-decoration:none; color:#38bdf8;">सभी विषय देखें &rarr;</a>
+        <a href="notes.html" class="realtime-indicator" style="text-decoration:none;">सभी विषय देखें &rarr;</a>
       </div>
 
       <div class="dashboard-grid-cards">
-        <!-- 10th All Subjects Card -->
-        <div class="grid-card live-track-card">
+        <div class="grid-card">
           <div class="card-head">
             <span class="card-tag">मैट्रिक 2026-2027</span>
-            <span class="card-action-link" onclick="location.href='notes.html'">नोट्स खोलें &rarr;</span>
+            <a href="notes.html" class="card-action-link">नोट्स खोलें &rarr;</a>
           </div>
           <h3 class="card-title">गणित, विज्ञान, सामाजिक विज्ञान एवं संस्कृत</h3>
           <p class="card-desc">टॉपर्स द्वारा तैयार हस्तलिखित थ्योरी नोट्स, महत्वपूर्ण ऑब्जेक्टिव और प्रश्नोत्तर।</p>
           
-          <div class="subject-pill-row">
-            <a href="notes.html" class="sub-pill active-pill">📐 गणित (14 अध्याय)</a>
-            <a href="notes.html" class="sub-pill">🧪 विज्ञान (Phy+Chem+Bio)</a>
-            <a href="notes.html" class="sub-pill">🌍 सामाजिक विज्ञान (SST)</a>
-            <a href="notes.html" class="sub-pill">📜 संस्कृत (व्याकरण सहित)</a>
-            <a href="notes.html" class="sub-pill">🇮🇳 हिंदी (गोधूलि)</a>
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding: 6px 0;">
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">📐 गणित</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🧪 विज्ञान</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🌍 सामाजिक विज्ञान (SST)</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">📜 संस्कृत</a>
           </div>
         </div>
 
-        <!-- 10th Test Simulator Card -->
-        <div class="grid-card test-track-card">
+        <div class="grid-card">
           <div class="card-head">
             <span class="card-tag alert-tag">ऑनलाइन टेस्ट पोर्टल</span>
-            <span class="card-action-link" onclick="location.href='test.html'">टेस्ट शुरू करें &rarr;</span>
+            <a href="test.html" class="card-action-link">टेस्ट शुरू करें &rarr;</a>
           </div>
           <h3 class="card-title">डेली बोर्ड स्पीड टेस्ट</h3>
           <p class="card-desc">नेगेटिव मार्किंग, टाइमर और तुरंत व्याख्या सहित विस्तृत रिज़ल्ट रिपोर्ट।</p>
@@ -357,69 +219,77 @@
       </div>
     </section>
 
-    <!-- CLASS 11TH SCIENCE HUB -->
+    <!-- CLASS 11TH & 12TH SCIENCE SECTION -->
     <section class="dashboard-section">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">कक्षा 11वीं एवं 12वीं साइंस (PCM + Bio)</h2>
           <p class="section-subheadline">NCERT और स्टेट बोर्ड आधारित थ्योरी, न्यूमेरिकल एवं फॉर्मूला बुक्स</p>
         </div>
+        <span class="realtime-indicator" id="syncStatus">क्लाउड से जुड़ा हुआ</span>
       </div>
 
-      <div class="grid-card live-track-card" style="margin-bottom: 24px;">
+      <div class="grid-card" style="margin-bottom: 24px;">
         <div class="card-head">
-          <span class="card-tag">बोर्ड + JEE/NEET फाउंडेशन</span>
-          <span class="card-action-link" onclick="location.href='notes.html'">स्टडी हब &rarr;</span>
+          <span class="card-tag premium-tag">बोर्ड + JEE/NEET फाउंडेशन</span>
+          <a href="notes.html" class="card-action-link">स्टडी हब &rarr;</a>
         </div>
         <h3 class="card-title">भौतिकी, रसायन विज्ञान, जीव विज्ञान और गणित</h3>
         <p class="card-desc">गहराई से समझे गए कॉन्सेप्ट्स, शॉर्ट ट्रिक्स और बोर्ड परीक्षा में पूछे जाने वाले महत्वपूर्ण प्रश्न।</p>
         
         <div class="progress-container">
           <div class="progress-meta">
-            <span>कंटेंट अपलोड प्रोग्रेस</span>
+            <span>सिलेबस कंटेंट प्रोग्रेस</span>
             <span id="syllabusPercent">अपलोड जारी है...</span>
           </div>
           <div class="progress-track">
             <div class="progress-bar" style="width: 75%;"></div>
           </div>
         </div>
+
+        <!-- Cloud Locker Feed container (Safe for auth.js sync) -->
+        <div class="locker-history-feed" id="cloudLockerFeed" style="margin-top: 14px;">
+          <div class="empty-feed-placeholder">
+            <span>डेटा सिंक और टेस्ट ट्रैकिंग के लिए Google से साइन इन करें।</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- QUICK UTILITIES ENGINE (2-COLUMN MODERN APP GRID) -->
+    <!-- QUICK UTILITIES ENGINE (NATIVE DASHBOARD CSS GRID) -->
     <section class="dashboard-section" id="quickTools">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">स्टूडेंट स्मार्ट टूल्स</h2>
-          <p class="section-subheadline">छात्रों के दैनिक अध्ययन को आसान बनाने वाले टूल्स</p>
+          <p class="section-subheadline">छात्रों के दैनिक अध्ययन को आसान बनाने वाले इन-ब्राउज़र टूल्स</p>
         </div>
       </div>
 
-      <div class="quick-tools-grid-2col">
+      <div class="quick-tools-grid">
         <!-- 1. Notes Reader -->
-        <a href="notes.html" class="quick-tool-card-modern">
-          <div class="tool-icon-box-sm">📚</div>
-          <h4>नोट्स रीडर</h4>
+        <a href="notes.html" class="quick-tool-card">
+          <div class="tool-icon-box">📚</div>
+          <h4>इन-बिल्ट नोट्स रीडर</h4>
           <p>बिना डाउनलोड किए सीधे स्क्रीन पर PDF पढ़ें।</p>
         </a>
 
         <!-- 2. Exam Timer -->
-        <a href="test.html" class="quick-tool-card-modern">
-          <div class="tool-icon-box-sm">⏱️</div>
-          <h4>एग्जाम टेस्ट</h4>
-          <p>वास्तविक समय और टाइमर आधारित टेस्ट।</p>
+        <a href="test.html" class="quick-tool-card">
+          <div class="tool-icon-box">⏱️</div>
+          <h4>एग्जाम टाइमर टेस्ट</h4>
+          <p>ऑब्जेक्टिव प्रश्नों का वास्तविक समय आधारित टेस्ट।</p>
         </a>
 
         <!-- 3. HD Doc Converter -->
-        <div class="quick-tool-card-modern" id="openDocConverterBtn">
-          <div class="tool-icon-box-sm">📄</div>
-          <h4>इमेज टू PDF</h4>
-          <p>असाइनमेंट फोटो को HD PDF में बदलें।</p>
+        <div class="quick-tool-card" id="openDocConverterBtn">
+          <div class="tool-icon-box">📄</div>
+          <h4>HD डॉक कनवर्टर</h4>
+          <p>हाथ से लिखे नोट्स को सीधे PDF में बदलें।</p>
         </div>
 
         <!-- 4. Eligibility Checker -->
-        <div class="quick-tool-card-modern" id="openEligibilityBtn">
-          <div class="tool-icon-box-sm">🎯</div>
+        <div class="quick-tool-card" id="openEligibilityBtn">
+          <div class="tool-icon-box">🎯</div>
           <h4>पात्रता चेकर</h4>
           <p>10वीं/12वीं के बाद सही करियर व प्रवेश परीक्षा देखें।</p>
         </div>
@@ -428,7 +298,7 @@
 
     <!-- =================== TOOL 1: DOC CONVERTER MODAL =================== -->
     <div class="pdf-modal-backdrop" id="docConverterModal">
-      <div class="pdf-modal-window" style="max-width: 520px; height: auto; padding: 22px;">
+      <div class="pdf-modal-window" style="max-width: 520px; height: auto; padding: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3 style="color:var(--text-pure); font-size:1.15rem;">📄 इमेज टू PDF कनवर्टर</h3>
           <button class="btn-studio-close" id="closeConverterBtn">&times;</button>
@@ -438,17 +308,17 @@
           अपने हाथ से लिखे नोट्स या असाइनमेंट की फोटो चुनें और तुरंत एक सिंगल PDF बनाएं:
         </p>
 
-        <div style="border: 2px dashed rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 22px; text-align: center; margin-bottom: 16px; background: rgba(15, 23, 42, 0.5);">
+        <div style="border: 2px dashed var(--border-strong); border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 16px; background: var(--surface-elevated);">
           <input type="file" id="converterFileInput" accept="image/*" multiple style="display:none;" />
-          <button type="button" class="btn-cta-primary" style="font-size:0.85rem; padding:10px 18px;" onclick="document.getElementById('converterFileInput').click();">
+          <button type="button" class="btn-stage-primary" onclick="document.getElementById('converterFileInput').click();">
             📷 फोटो चुनें (गैलरी से)
           </button>
-          <div id="selectedFilesCount" style="margin-top: 10px; font-size: 0.8rem; color: #38bdf8;">
+          <div id="selectedFilesCount" style="margin-top: 10px; font-size: 0.8rem; color: var(--brand-accent);">
             कोई फोटो नहीं चुनी गई
           </div>
         </div>
 
-        <button id="generatePdfBtn" class="btn-cta-primary" style="width:100%; border-radius:10px;" disabled>
+        <button id="generatePdfBtn" class="btn-cta-primary" style="width:100%; border-radius:var(--radius-md);" disabled>
           ⚡ PDF डाउनलोड करें
         </button>
       </div>
@@ -456,7 +326,7 @@
 
     <!-- =================== TOOL 2: ELIGIBILITY CHECKER MODAL =================== -->
     <div class="pdf-modal-backdrop" id="eligibilityModal">
-      <div class="pdf-modal-window" style="max-width: 560px; height: auto; padding: 22px;">
+      <div class="pdf-modal-window" style="max-width: 560px; height: auto; padding: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3 style="color:var(--text-pure); font-size:1.15rem;">🎯 करियर एवं परीक्षा पात्रता चेकर</h3>
           <button class="btn-studio-close" id="closeEligibilityBtn">&times;</button>
@@ -465,7 +335,7 @@
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
           <div>
             <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">आपकी क्लास:</label>
-            <select id="elClass" class="exam-dropdown" style="width:100%; padding:8px; border-radius:8px; background:#0f172a; color:#fff; border:1px solid #334155;">
+            <select id="elClass" class="exam-dropdown">
               <option value="10">10th (मैट्रिक)</option>
               <option value="11" selected>11th साइंस</option>
               <option value="12">12th साइंस</option>
@@ -473,7 +343,7 @@
           </div>
           <div>
             <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">सब्जेक्ट स्ट्रीम:</label>
-            <select id="elStream" class="exam-dropdown" style="width:100%; padding:8px; border-radius:8px; background:#0f172a; color:#fff; border:1px solid #334155;">
+            <select id="elStream" class="exam-dropdown">
               <option value="pcm">Physics, Chemistry, Math</option>
               <option value="pcb">Physics, Chemistry, Biology</option>
               <option value="pcmb">PCMB (Math + Bio दोनों)</option>
@@ -482,12 +352,12 @@
           </div>
         </div>
 
-        <button id="checkEligibilityBtn" class="btn-cta-primary" style="width:100%; border-radius:10px; margin-bottom:16px;">
+        <button id="checkEligibilityBtn" class="btn-cta-primary" style="width:100%; border-radius:var(--radius-md); margin-bottom:16px;">
           पात्रता जांचें (Check Eligibility)
         </button>
 
-        <div id="eligibilityResultsBox" style="background:#0b1329; border:1px solid rgba(56, 189, 248, 0.25); border-radius:12px; padding:14px; max-height:220px; overflow-y:auto; font-size:0.85rem; line-height:1.6;">
-          <span style="color:#94a3b8;">अपनी क्लास और स्ट्रीम चुनकर 'पात्रता जांचें' पर क्लिक करें।</span>
+        <div id="eligibilityResultsBox" style="background:var(--surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; max-height:220px; overflow-y:auto; font-size:0.85rem; line-height:1.6; color:var(--text-pure);">
+          <span style="color:var(--text-muted);">विवरण चुनकर 'पात्रता जांचें' पर क्लिक करें।</span>
         </div>
       </div>
     </div>
@@ -495,48 +365,49 @@
   </main>
 
   <!-- 4. FOOTER BRANDING -->
-  <footer class="app-footer" style="margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 30px;">
+  <footer class="app-footer">
     <div class="footer-container">
       <div class="footer-col brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
           <span class="brand-title">NischayDesk</span>
         </div>
-        <p class="footer-summary" style="color:#94a3b8; font-size:0.85rem; line-height:1.6;">
+        <p class="footer-summary">
           बिहार बोर्ड एवं प्रतियोगी परीक्षाओं के छात्रों के लिए समर्पित अध्ययन प्लेटफॉर्म। 100% फ्री एवं विज्ञापन-मुक्त अध्ययन।
         </p>
-        <div class="founder-identity-box" style="margin-top:10px; font-size:0.85rem; color:#e2e8f0;">
-          संस्थापक एवं डेवलपर: <strong style="color:#38bdf8;">Prince Kumar</strong>
+        <div class="founder-identity-box">
+          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
         </div>
       </div>
 
       <div class="footer-col">
-        <h4 class="footer-heading" style="color:#f8fafc; font-size:0.95rem; margin-bottom:12px;">एकैडमिक्स</h4>
-        <ul class="footer-nav" style="list-style:none; padding:0; line-height:2;">
-          <li><a href="notes.html" style="color:#94a3b8; text-decoration:none;">➔ क्लास 10th मैट्रिक नोट्स</a></li>
-          <li><a href="notes.html" style="color:#94a3b8; text-decoration:none;">➔ क्लास 11th साइंस नोट्स</a></li>
-          <li><a href="test.html" style="color:#94a3b8; text-decoration:none;">➔ ऑनलाइन टेस्ट सीरीज</a></li>
+        <h4 class="footer-heading">एकैडमिक्स</h4>
+        <ul class="footer-nav">
+          <li><a href="notes.html">➔ क्लास 10th मैट्रिक नोट्स</a></li>
+          <li><a href="notes.html">➔ क्लास 11th साइंस नोट्स</a></li>
+          <li><a href="test.html">➔ ऑनलाइन टेस्ट सीरीज</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4 class="footer-heading" style="color:#f8fafc; font-size:0.95rem; margin-bottom:12px;">प्लेटफ़ॉर्म</h4>
-        <ul class="footer-nav" style="list-style:none; padding:0; line-height:2;">
-          <li><a href="index.html" style="color:#94a3b8; text-decoration:none;">➔ मुख्य डैशबोर्ड</a></li>
-          <li><a href="ai-desk.html" style="color:#94a3b8; text-decoration:none;">➔ AI डाउट सॉल्वर</a></li>
-          <li><a href="#quickTools" style="color:#94a3b8; text-decoration:none;">➔ स्मार्ट टूल्स</a></li>
+        <h4 class="footer-heading">प्लेटफ़ॉर्म</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="ai-desk.html">➔ AI डाउट स्टूडियो</a></li>
+          <li><a href="#quickTools">➔ स्मार्ट टूल्स</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="footer-bottom-bar" style="margin-top:24px; padding-top:16px; border-top: 1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; font-size:0.78rem; color:#64748b; flex-wrap:wrap; gap:10px;">
+    <div class="footer-bottom-bar">
       <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
-      <span class="server-status-tag" style="color:#38bdf8;">● सिस्टम सुपरफास्ट व सक्रिय है</span>
+      <span class="server-status-tag">● सिस्टम सुपरफास्ट व सक्रिय है</span>
     </div>
   </footer>
 
   <!-- Flat Script Links -->
   <script src="config.js"></script>
+  <script src="syllabus-data.js"></script>
   <script src="auth.js"></script>
   <script src="main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
