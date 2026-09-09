@@ -62,11 +62,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const selectedSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
     const selectedPattern = testPatternSelect ? testPatternSelect.value : "speed";
-    const selectedClass = testClassSelect ? testClassSelect.value : "11";
+    const selectedClass = testClassSelect ? testClassSelect.value : "10";
 
-    const rawBank = window.NischaySyllabus.questionBank[selectedSubject] || [];
+    // क्लास और सब्जेक्ट को मिलाकर खोजना (जैसे "10-physics" या "11-physics")
+    const classSubjectKey = `${selectedClass}-${selectedSubject}`;
+    const rawBank = window.NischaySyllabus.questionBank[classSubjectKey] || 
+                    window.NischaySyllabus.questionBank[selectedSubject] || [];
+
     if (rawBank.length === 0) {
-      alert("इस विषय के लिए प्रश्न जल्द ही जोड़े जा रहे हैं। कृपया भौतिकी (Physics) या रसायन चुनें!");
+      alert(`कक्षा ${selectedClass} के ${selectedSubject.toUpperCase()} विषय के लिए प्रश्न जल्द ही जोड़े जा रहे हैं!`);
       return;
     }
 
@@ -76,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     currentQuestionIndex = 0;
     remainingSeconds = (selectedPattern === 'board') ? 1200 : (activeQuestions.length * 60);
 
-    currentSubjectName = `Class ${selectedClass} - ${selectedSubject.toUpperCase()}`;
+    currentSubjectName = `Class ${selectedClass}th - ${selectedSubject.toUpperCase()}`;
     if (liveExamBadge) liveExamBadge.innerText = currentSubjectName;
 
     // Switch to Exam Screen
