@@ -381,3 +381,60 @@
 .drawer-footer strong {
   color: var(--brand-accent);
 }
+/* ==========================================================================
+   MOBILE NAVBAR OVERLAP & DRAWER USER TEXT FIX
+   ========================================================================== */
+
+/* 1. मोबाइल स्क्रीन पर नाम और लोगो को टकराने से रोकें */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-entity {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.brand-name {
+  font-size: 1.05rem !important;
+  white-space: nowrap;
+}
+
+/* मोबाइल पर वीआईपी बॉक्स को कॉम्पैक्ट करें */
+.user-profile-widget {
+  padding: 4px 8px !important;
+  gap: 6px !important;
+  max-width: 155px;
+  flex-shrink: 0;
+}
+
+.user-display-name {
+  font-size: 0.78rem !important;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-session-badge {
+  font-size: 0.62rem !important;
+  padding: 1px 4px !important;
+}
+
+/* 2. लाइट मोड में साइड ड्रॉवर के अंदर नाम को साफ़ काला/गहरा करें */
+html.light-mode .drawer-user-card div[style*="font-size:0.88rem"],
+html.light-mode .drawer-user-card span,
+html.light-mode .drawer-user-card div {
+  color: #0f172a !important;
+}
+
+/* 3. लाइट मोड में प्रोफाइल कार्ड का बैकग्राउंड साफ़ दिखे */
+html.light-mode .user-profile-widget {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+}
+
