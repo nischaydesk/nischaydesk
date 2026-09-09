@@ -452,3 +452,69 @@ html.light-mode .app-footer {
   background: #f8fafc !important;
   border-top: 1px solid #cbd5e1 !important;
 }
+/* ==========================================================================
+   DRAWER, NAVBAR & USER PROFILE LIGHT MODE FIX
+   ========================================================================== */
+
+/* 1. मेनू के सारे टेक्स्ट एकदम साफ़ और गहरे दिखें */
+html.light-mode .drawer-nav-item {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+/* 2. एक्टिव मेनू बटन का प्रीमियम लुक */
+html.light-mode .drawer-nav-item.active {
+  background: rgba(2, 132, 199, 0.12) !important;
+  color: #0284c7 !important;
+  border: 1px solid rgba(2, 132, 199, 0.25) !important;
+}
+
+html.light-mode .drawer-nav-item:hover {
+  background: #f1f5f9 !important;
+  color: #0284c7 !important;
+}
+
+/* 3. वेबसाइट का मुख्य नाम (NischayDesk) और टैगलाइन */
+html.light-mode .brand-name {
+  color: #0f172a !important;
+}
+
+html.light-mode .brand-tagline {
+  color: #64748b !important;
+}
+
+html.light-mode .drawer-brand span {
+  color: #0f172a !important;
+}
+
+/* 4. लॉगिन के बाद छात्र का नाम (जैसे: प्रिंस कुमार) */
+html.light-mode .user-display-name {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* 5. VIP Member वाला बैज */
+html.light-mode .user-session-badge {
+  background: rgba(2, 132, 199, 0.12) !important;
+  color: #0284c7 !important;
+  border: 1px solid rgba(2, 132, 199, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+/* 6. लॉगआउट बटन और फुटर टेक्स्ट */
+html.light-mode .btn-logout {
+  color: #64748b !important;
+}
+
+html.light-mode .btn-logout:hover {
+  color: #ef4444 !important;
+}
+
+html.light-mode .platform-meta {
+  color: #64748b !important;
+}
+
+html.light-mode .founder-meta {
+  color: #334155 !important;
+}
+
