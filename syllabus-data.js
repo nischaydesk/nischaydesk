@@ -219,10 +219,10 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "10th गणित (Mathematics)",
       chapters: [
-{ no: 1, name: "वास्तविक संख्याएं (Real Numbers)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Uno3gNHr5I--BnYkPKLE9J5kONpdVAd3/preview", pages: "हैंडनोट्स", desc: "अंकगणित की आधारभूत प्रमेय, अभाज्य गुणनखंड विधि एवं अपरिमेय संख्या सिद्ध करना।" },
-{ no: 2, name: "बहुपद (Polynomials)", status:"ready", pdfUrl: "https://drive.google.com/file/d/1_asa9-YszkjBrldCU66_jidBU3Tb0W8W/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "शून्यकों का ज्यामितीय अर्थ एवं द्विघात बहुपद के शून्यक और गुणांकों में संबंध।" },
+        { no: 1, name: "वास्तविक संख्याएं (Real Numbers)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Uno3gNHr5I--BnYkPKLE9J5kONpdVAd3/preview", pages: "हैंडनोट्स", desc: "अंकगणित की आधारभूत प्रमेय, अभाज्य गुणनखंड विधि एवं अपरिमेय संख्या सिद्ध करना।" },
+        { no: 2, name: "बहुपद (Polynomials)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1_asa9-YszkjBrldCU66_jidBU3Tb0W8W/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "शून्यकों का ज्यामितीय अर्थ एवं द्विघात बहुपद के शून्यक और गुणांकों में संबंध।" },
         { no: 3, name: "दो चर वाले रैखिक समीकरण युग्म (Linear Equations in Two Variables)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Ar1u29vAepNQB6cOVu5kiUNTZEKkKBwA/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "ग्राफीय विधि, प्रतिस्थापन विधि एवं विलोपन विधि।" },
-        { no: 4, name: "द्विघात समीकरण (Quadratic Equations)", status:"ready", pdfUrl: "https://drive.google.com/file/d/1KbFUEHgbx4TGD6_Xdk42lsWiAyATmQzZ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "गुणनखंड विधि, द्विघाती सूत्र (श्रीधराचार्य सूत्र) एवं मूलों की प्रकृति।" },
+        { no: 4, name: "द्विघात समीकरण (Quadratic Equations)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1KbFUEHgbx4TGD6_Xdk42lsWiAyATmQzZ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "गुणनखंड विधि, द्विघाती सूत्र (श्रीधराचार्य सूत्र) एवं मूलों की प्रकृति।" },
         { no: 5, name: "समांतर श्रेढियाँ (Arithmetic Progressions)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1wxz59lnNJV4Nab4ich_W57UFz4ROrXJI/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "n-वाँ पद ज्ञात करना और प्रथम n पदों का योगफल सूत्र।" },
         { no: 6, name: "त्रिभुज (Triangles)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1klkRCKN3LpDpaIo2_CQCezE7YTUrZyVE/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "थेल्स प्रमेय (आधारभूत आनुपातिकता प्रमेय) एवं समरूपता की कसौटियां।" },
         { no: 7, name: "निर्देशांक ज्यामिति (Coordinate Geometry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1KsB1_jabJCoFjs40x0wpBFfGDz355hyS/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "दूरी सूत्र, विभाजन सूत्र एवं मध्य बिंदु सूत्र।" },
@@ -236,8 +236,13 @@ window.NischaySyllabus = {
       ]
     }
   ],
-     // प्रश्न बैंक (Class 10th Matrix Bank)
+
+  // प्रश्न बैंक (Class-Wise Segregated Verified Question Bank)
   questionBank: {
+
+    // ========================================================================
+    // CLASS 10TH MATRIC QUESTIONS
+    // ========================================================================
     "10-physics": [
       {
         id: "q_10_p_01",
@@ -308,6 +313,76 @@ window.NischaySyllabus = {
         options: ["जूल", "एम्पीयर", "ओम (Ω)", "वाट"],
         correctIndex: 2,
         explanation: "प्रतिरोध का SI मात्रक ओम (Ω) होता है।"
+      },
+      {
+        id: "q_10_p_11",
+        question: "दीर्घ-दृष्टि दोष (Hypermetropia) के निवारण के लिए किस लेंस का उपयोग होता है?",
+        options: ["उत्तल लेंस", "अवतल लेंस", "समतल लेंस", "बेलनाकार लेंस"],
+        correctIndex: 0,
+        explanation: "दूर दृष्टि दोष को दूर करने के लिए उत्तल लेंस का चश्मा लगाया जाता है।"
+      },
+      {
+        id: "q_10_p_12",
+        question: "श्वेत प्रकाश जब प्रिज्म से गुजरता है, तो किस रंग का विचलन सबसे अधिक होता है?",
+        options: ["लाल", "पीला", "बैंगनी", "हरा"],
+        correctIndex: 2,
+        explanation: "बैंगनी रंग की तरंगदैर्ध्य सबसे कम होने के कारण इसका विचलन सबसे अधिक होता है।"
+      },
+      {
+        id: "q_10_p_13",
+        question: "आकाश का रंग नीला दिखाई देने का मुख्य कारण क्या है?",
+        options: ["प्रकाश का परावर्तन", "प्रकाश का अपवर्तन", "प्रकाश का प्रकीर्णन", "प्रकाश का वर्ण-विक्षेपण"],
+        correctIndex: 2,
+        explanation: "वायुमंडल में सूक्ष्म कण नीले रंग के प्रकाश का सबसे अधिक प्रकीर्णन करते हैं।"
+      },
+      {
+        id: "q_10_p_14",
+        question: "विद्युत धारा (Electric Current) मापने वाले यंत्र को क्या कहा जाता है?",
+        options: ["आमीटर (Ammeter)", "वोल्टमीटर", "गैल्वेनोमीटर", "पोटेंशियोमीटर"],
+        correctIndex: 0,
+        explanation: "विद्युत धारा मापने के लिए आमीटर को परिपथ में श्रेणीक्रम में जोड़ा जाता है।"
+      },
+      {
+        id: "q_10_p_15",
+        question: "विभवांतर (Potential Difference) मापने वाले यंत्र को क्या कहते हैं?",
+        options: ["आमीटर", "वोल्टमीटर", "मैनोमीटर", "थर्मामीटर"],
+        correctIndex: 1,
+        explanation: "विभवांतर मापने के लिए वोल्टमीटर को समांतर क्रम में जोड़ा जाता है।"
+      },
+      {
+        id: "q_10_p_16",
+        question: "ओम के नियम का गणितीय रूप क्या है?",
+        options: ["V = I / R", "V = I × R", "I = V × R", "R = V × I"],
+        correctIndex: 1,
+        explanation: "जॉर्ज साइमन ओम के अनुसार विभवांतर धारा के समानुपाती होता है (V = IR)।"
+      },
+      {
+        id: "q_10_p_17",
+        question: "विद्युत बल्ब का तंतु (फिलामेंट) किस धातु का बना होता है?",
+        options: ["तांबा", "लोहा", "टंगस्टन", "नाइक्रोम"],
+        correctIndex: 2,
+        explanation: "टंगस्टन का गलनांक अत्यंत उच्च होने के कारण इसका फिलामेंट बनाया जाता है।"
+      },
+      {
+        id: "q_10_p_18",
+        question: "विद्युत हीटर की कुंडली (Coil) किस तार की बनी होती है?",
+        options: ["नाइक्रोम", "टंगस्टन", "तांबा", "जस्ता"],
+        correctIndex: 0,
+        explanation: "नाइक्रोम की प्रतिरोधकता और गलनांक दोनों उच्च होते हैं।"
+      },
+      {
+        id: "q_10_p_19",
+        question: "विद्युत शक्ति (Electric Power) का SI मात्रक क्या है?",
+        options: ["वाट (W)", "जूल", "कूलॉम", "एम्पीयर"],
+        correctIndex: 0,
+        explanation: "विद्युत शक्ति का SI मात्रक वाट (Watt) होता है।"
+      },
+      {
+        id: "q_10_p_20",
+        question: "1 किलोवाट घंटा (1 kWh) कितने जूल के बराबर होता है?",
+        options: ["3.6 × 10⁵ J", "3.6 × 10⁶ J", "3.6 × 10⁷ J", "36 × 10⁶ J"],
+        correctIndex: 1,
+        explanation: "1 kWh = 1000 W × 3600 s = 3.6 × 10⁶ जूल (यह 1 यूनिट विद्युत ऊर्जा है)।"
       }
     ],
 
@@ -381,14 +456,155 @@ window.NischaySyllabus = {
         options: ["2", "3", "4", "1"],
         correctIndex: 2,
         explanation: "कार्बन के बाहरी कोश में 4 इलेक्ट्रॉन होते हैं, अतः यह चतुःसंयोजी (4) तत्व है।"
+      },
+      {
+        id: "q_10_c_11",
+        question: "चाकू से आसानी से काटी जा सकने वाली धातुएं कौन सी हैं?",
+        options: ["लोहा और तांबा", "सोडियम और पोटैशियम", "एल्युमिनियम और जस्ता", "सोना और चांदी"],
+        correctIndex: 1,
+        explanation: "सोडियम और पोटैशियम बहुत मुलायम धातुएं हैं, इन्हें चाकू से काटा जा सकता है।"
+      },
+      {
+        id: "q_10_c_12",
+        question: "चींटी के डंक में कौन सा अम्ल पाया जाता है?",
+        options: ["एसिटिक अम्ल", "साइट्रिक अम्ल", "मेथेनॉइक अम्ल (फॉर्मिक अम्ल)", "ऑक्सालिक अम्ल"],
+        correctIndex: 2,
+        explanation: "चींटी के डंक में मेथेनॉइक अम्ल (फॉर्मिक अम्ल) होता है।"
+      },
+      {
+        id: "q_10_c_13",
+        question: "लोहे पर जंग लगने की क्रिया से बचाने के लिए जस्ते की परत चढ़ाना क्या कहलाता है?",
+        options: ["विद्युत अपघटन", "यशदलेपन (Galvanization)", "संक्षारण", "मिश्रण"],
+        correctIndex: 1,
+        explanation: "जस्ते (Zinc) की परत चढ़ाने की प्रक्रिया यशदलेपन (गैल्वनीकरण) कहलाती है।"
+      },
+      {
+        id: "q_10_c_14",
+        question: "सीसा (Lead) और टिन (Tin) की मिश्रधातु को क्या कहते हैं?",
+        options: ["सोल्डर (Solder)", "पीतल", "कांसा", "स्टील"],
+        correctIndex: 0,
+        explanation: "सोल्डर सीसा और टिन की मिश्रधातु होती है।"
+      },
+      {
+        id: "q_10_c_15",
+        question: "पीतल (Brass) किन दो धातुओं की मिश्रधातु है?",
+        options: ["तांबा और टिन", "तांबा और जस्ता (Cu + Zn)", "लोहा और कार्बन", "सीसा और जस्ता"],
+        correctIndex: 1,
+        explanation: "पीतल कॉपर और जिंक (Cu + Zn) की मिश्रधातु है।"
+      },
+      {
+        id: "q_10_c_16",
+        question: "सरलतम हाइड्रोकार्बन कौन सा है?",
+        options: ["मीथेन (CH₄)", "ईथेन (C₂H₆)", "प्रोपेन (C₃H₈)", "ब्यूटेन (C₄H₁₀)"],
+        correctIndex: 0,
+        explanation: "मीथेन (CH₄) केवल एक कार्बन वाला सबसे सरल हाइड्रोकार्बन है।"
+      },
+      {
+        id: "q_10_c_17",
+        question: "एल्केन (Alkane) श्रेणी का सामान्य रासायनिक सूत्र क्या है?",
+        options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnH2n+1"],
+        correctIndex: 0,
+        explanation: "संतृप्त हाइड्रोकार्बन (एल्केन) का सूत्र CnH2n+2 होता है।"
+      },
+      {
+        id: "q_10_c_18",
+        question: "एल्कीन (Alkene) श्रेणी का सामान्य सूत्र क्या है?",
+        options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnHn"],
+        correctIndex: 1,
+        explanation: "द्वि-आबंध वाले एल्कीन का सामान्य सूत्र CnH2n होता है।"
+      },
+      {
+        id: "q_10_c_19",
+        question: "सिरका (Vinegar) में कितने प्रतिशत एसिटिक अम्ल होता है?",
+        options: ["10-20%", "5-8%", "50%", "100%"],
+        correctIndex: 1,
+        explanation: "जल में 5% से 8% एसिटिक अम्ल का तनु घोल सिरका कहलाता है।"
+      },
+      {
+        id: "q_10_c_20",
+        question: "मेंडलीव की आवर्त सारणी में तत्वों को किस आधार पर सजाया गया था?",
+        options: ["परमाणु क्रमांक", "परमाणु द्रव्यमान", "परमाणु त्रिज्या", "इलेक्ट्रॉन संख्या"],
+        correctIndex: 1,
+        explanation: "मेंडलीव का आवर्त नियम तत्वों के परमाणु द्रव्यमान पर आधारित था।"
       }
-    ]
-  }
+    ],
 
-  
- // ------------------------------------------------------------------------
+    "10-math": [
+      {
+        id: "q_10_m_01",
+        question: "यदि tan θ = 4/3, तो sin θ का मान क्या होगा?",
+        options: ["3/5", "4/5", "5/4", "3/4"],
+        correctIndex: 1,
+        explanation: "लंब = 4, आधार = 3, अतः कर्ण = 5। sin θ = लंब/कर्ण = 4/5।"
+      },
+      {
+        id: "q_10_m_02",
+        question: "द्विघात समीकरण ax² + bx + c = 0 के मूल वास्तविक और समान होंगे यदि:",
+        options: ["b² - 4ac > 0", "b² - 4ac = 0", "b² - 4ac < 0", "b² + 4ac = 0"],
+        correctIndex: 1,
+        explanation: "जब विविक्तकर D = b² - 4ac = 0 होता है, तो मूल वास्तविक और बराबर होते हैं।"
+      },
+      {
+        id: "q_10_m_03",
+        question: "समांतर श्रेढ़ी (A.P.) 2, 7, 12, ... का 10वाँ पद क्या होगा?",
+        options: ["45", "47", "49", "52"],
+        correctIndex: 1,
+        explanation: "a = 2, d = 5। a₁₀ = a + 9d = 2 + 9×5 = 47।"
+      },
+      {
+        id: "q_10_m_04",
+        question: "मूल बिंदु (0, 0) से बिंदु P(x, y) की दूरी क्या होती है?",
+        options: ["√(x + y)", "√(x² - y²)", "√(x² + y²)", "x² + y²"],
+        correctIndex: 2,
+        explanation: "मूल बिंदु से किसी बिंदु की दूरी सूत्र d = √(x² + y²) होता है।"
+      },
+      {
+        id: "q_10_m_05",
+        question: "निम्न में से कौन सी अपरिमेय संख्या (Irrational Number) है?",
+        options: ["√9", "√16", "√2", "4/5"],
+        correctIndex: 2,
+        explanation: "√2 एक अपरिमेय संख्या है क्योंकि इसका दशमलव प्रसार अशांत अनावर्ती होता है।"
+      },
+      {
+        id: "q_10_m_06",
+        question: "एक वृत्त की कितनी स्पर्श रेखाएं (Tangent Lines) हो सकती हैं?",
+        options: ["1", "2", "अनंत (अपरिमित रूप से अनेक)", "शून्य"],
+        correctIndex: 2,
+        explanation: "वृत्त के प्रत्येक बिंदु पर एक स्पर्श रेखा खींची जा सकती है, अतः वृत्त की अनंत स्पर्श रेखाएं हो सकती हैं।"
+      },
+      {
+        id: "q_10_m_07",
+        question: "दो समरूप त्रिभुजों की भुजाओं का अनुपात 4 : 9 है, तो उनके क्षेत्रफलों का अनुपात क्या होगा?",
+        options: ["2 : 3", "4 : 9", "16 : 81", "81 : 16"],
+        correctIndex: 2,
+        explanation: "समरूप त्रिभुजों के क्षेत्रफलों का अनुपात उनकी संगत भुजाओं के वर्गों के अनुपात के बराबर होता है: (4/9)² = 16/81।"
+      },
+      {
+        id: "q_10_m_08",
+        question: "sin² 45° + cos² 45° का मान क्या होगा?",
+        options: ["0", "1", "1/2", "2"],
+        correctIndex: 1,
+        explanation: "सर्वसमिका sin² θ + cos² θ = 1 होती है।"
+      },
+      {
+        id: "q_10_m_09",
+        question: "निश्चित घटना (Sure Event) की प्रायिकता (Probability) कितनी होती है?",
+        options: ["0", "1", "0.5", "अनंत"],
+        correctIndex: 1,
+        explanation: "जो घटना निश्चित रूप से घटती है उसकी प्रायिकता हमेशा 1 होती है।"
+      },
+      {
+        id: "q_10_m_10",
+        question: "प्रथम पाँच प्राकृतिक संख्याओं (1, 2, 3, 4, 5) का माध्य क्या होगा?",
+        options: ["2", "3", "4", "5"],
+        correctIndex: 1,
+        explanation: "माध्य = (1 + 2 + 3 + 4 + 5) / 5 = 15 / 5 = 3।"
+      }
+    ],
+
+    // ========================================================================
     // CLASS 11TH SCIENCE QUESTIONS
-    // ------------------------------------------------------------------------
+    // ========================================================================
     "11-physics": [
       {
         id: "q_11_p_01",
@@ -427,5 +643,3 @@ window.NischaySyllabus = {
     ]
   }
 };
-
-   
