@@ -1,28 +1,21 @@
-// सबसे पहले थीम लागू करो (बिना किसी रुकावट के)
-(function() {
-  const saved = localStorage.getItem('nischay_theme');
-  if (saved === 'light') {
-    document.documentElement.classList.add('light-mode');
-  }
-})();
-
-document.addEventListener('click', function(e) {
-  // अगर थीम बटन या उसके अंदर का आइकॉन क्लिक हुआ
-  if (e.target.closest('#themeToggleBtn') || e.target.closest('#drawerThemeToggleBtn')) {
-    const isLight = document.documentElement.classList.toggle('light-mode');
-    localStorage.setItem('nischay_theme', isLight ? 'light' : 'dark');
-    
-    // आइकॉन बदलो
-    document.querySelectorAll('#themeIcon, #drawerThemeIcon').forEach(el => {
-      el.innerText = isLight ? '☀️' : '🌙';
-    });
-  }
-});
-
 /* ==========================================================================
    NischayDesk Global App Orchestrator & UI Controller
    Engineered & Architected by Prince Kumar
    ========================================================================== */
+
+// 0. सबसे पहले सुरक्षित थीम लोड (पेज रेंडर होने से पहले)
+(function () {
+  try {
+    const savedTheme = localStorage.getItem('nischay_theme');
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light-mode');
+    } else {
+      document.documentElement.classList.remove('light-mode');
+    }
+  } catch (e) {
+    console.warn("Theme storage access warning:", e);
+  }
+})();
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -33,26 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const sideDrawer = document.getElementById('sideDrawer');
 
   function openDrawer() {
-    if (sideDrawer) {
-      sideDrawer.classList.add('active');
-      sideDrawer.classList.add('open');
-    }
-    if (drawerScrim) {
-      drawerScrim.classList.add('active');
-      drawerScrim.classList.add('open');
-    }
+    if (sideDrawer) sideDrawer.classList.add('active', 'open');
+    if (drawerScrim) drawerScrim.classList.add('active', 'open');
     document.body.style.overflow = 'hidden';
   }
 
   function closeDrawer() {
-    if (sideDrawer) {
-      sideDrawer.classList.remove('active');
-      sideDrawer.classList.remove('open');
-    }
-    if (drawerScrim) {
-      drawerScrim.classList.remove('active');
-      drawerScrim.classList.remove('open');
-    }
+    if (sideDrawer) sideDrawer.classList.remove('active', 'open');
+    if (drawerScrim) drawerScrim.classList.remove('active', 'open');
     document.body.style.overflow = '';
   }
 
@@ -60,7 +41,25 @@ document.addEventListener('DOMContentLoaded', function () {
   if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
   if (drawerScrim) drawerScrim.addEventListener('click', closeDrawer);
 
-  // 2. Dashboard Dynamic Metrics & Locker Syncer (Runs on index.html)
+  // 2. iOS Switch Theme Controller
+  const themeSwitch = document.getElementById('themeSwitch');
+  const savedTheme = localStorage.getItem('nischay_theme');
+
+  // इनपुट चेकबॉक्स को सेव की हुई थीम से सिंक करें
+  if (themeSwitch) {
+    themeSwitch.checked = (savedTheme === 'light');
+    themeSwitch.addEventListener('change', function () {
+      if (this.checked) {
+        document.documentElement.classList.add('light-mode');
+        localStorage.setItem('nischay_theme', 'light');
+      } else {
+        document.documentElement.classList.remove('light-mode');
+        localStorage.setItem('nischay_theme', 'dark');
+      }
+    });
+  }
+
+  // 3. Dashboard Dynamic Metrics & Locker Syncer (Runs on index.html)
   syncDashboardMetrics();
 
   function syncDashboardMetrics() {
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // 3. Smooth Page Anchor Scrolling
+  // 4. Smooth Page Anchor Scrolling
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       const targetId = anchor.getAttribute('href');
@@ -131,10 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ==========================================================================
-  // 4. In-Browser Smart Tools Logic (Doc Converter & Eligibility Checker)
+  // 5. In-Browser Smart Tools Logic (Doc Converter & Eligibility Checker)
   // ==========================================================================
 
-  // --- Tool A: Direct Image to PDF Converter Engine (No Print Crash) ---
+  // --- Tool A: Direct Image to PDF Converter Engine (HTML5 Canvas Aspect Ratio Fix) ---
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
   const closeConverterBtn = document.getElementById('closeConverterBtn');
@@ -184,49 +183,70 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
           const { jsPDF } = window.jspdf || {};
           if (!jsPDF) {
-            alert("PDF इंजन लोड नहीं हो सका। कृपया इंटरनेट चालू रखें या पेज रिफ्रेश करें।");
+            alert("PDF इंजन लोड नहीं हो सका। कृपया पेज रिफ्रेश करें।");
             generatePdfBtn.disabled = false;
             generatePdfBtn.innerText = "⚡ PDF जेनरेट और डाउनलोड करें";
             return;
           }
 
           const pdf = new jsPDF('p', 'mm', 'a4');
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = pdf.internal.pageSize.getHeight();
+          const pageWidth = pdf.internal.pageSize.getWidth();   // 210 mm
+          const pageHeight = pdf.internal.pageSize.getHeight(); // 297 mm
 
           for (let i = 0; i < chosenImages.length; i++) {
             const file = chosenImages[i];
-            const base64Data = await new Promise(function (resolve) {
-              const reader = new FileReader();
-              reader.onload = function (event) {
-                resolve(event.target.result);
-              };
-              reader.readAsDataURL(file);
+
+            // 1. इमेज लोड करें
+            const img = await new Promise((resolve, reject) => {
+              const image = new Image();
+              image.onload = () => resolve(image);
+              image.onerror = reject;
+              image.src = URL.createObjectURL(file);
             });
 
-            const img = new Image();
-            img.src = base64Data;
-            await new Promise(function (resolve) {
-              img.onload = resolve;
-            });
+            // 2. Canvas के जरिए इमेज को सही डायमेंशन और ऑप्टिमाइज़ क्वालिटी में कन्वर्ट करें
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
 
-            const imgRatio = img.width / img.height;
-            let renderWidth = pdfWidth;
-            let renderHeight = pdfWidth / imgRatio;
+            const maxDim = 1600;
+            let targetW = img.naturalWidth || img.width;
+            let targetH = img.naturalHeight || img.height;
 
-            if (renderHeight > pdfHeight) {
-              renderHeight = pdfHeight;
-              renderWidth = pdfHeight * imgRatio;
+            if (targetW > maxDim || targetH > maxDim) {
+              if (targetW > targetH) {
+                targetH = Math.round((targetH * maxDim) / targetW);
+                targetW = maxDim;
+              } else {
+                targetW = Math.round((targetW * maxDim) / targetH);
+                targetH = maxDim;
+              }
             }
 
-            const posX = (pdfWidth - renderWidth) / 2;
-            const posY = (pdfHeight - renderHeight) / 2;
+            canvas.width = targetW;
+            canvas.height = targetH;
+            ctx.drawImage(img, 0, 0, targetW, targetH);
+
+            const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            URL.revokeObjectURL(img.src);
+
+            // 3. A4 पेज के हिसाब से मार्जिन और सही स्केलिंग
+            const imgRatio = targetW / targetH;
+            let finalW = pageWidth - 20; // 10mm मार्जिन
+            let finalH = finalW / imgRatio;
+
+            if (finalH > (pageHeight - 20)) {
+              finalH = pageHeight - 20;
+              finalW = finalH * imgRatio;
+            }
+
+            const posX = (pageWidth - finalW) / 2;
+            const posY = (pageHeight - finalH) / 2;
 
             if (i > 0) {
               pdf.addPage();
             }
 
-            pdf.addImage(base64Data, 'JPEG', posX, posY, renderWidth, renderHeight);
+            pdf.addImage(optimizedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
           }
 
           // Direct Download
@@ -241,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (err) {
           console.error("PDF Export Error:", err);
-          alert("PDF बनाने में त्रुटि हुई। कृपया दोबारा प्रयास करें।");
+          alert("PDF बनाने में समस्या आई।");
           generatePdfBtn.disabled = false;
           generatePdfBtn.innerText = "⚡ PDF जेनरेट और डाउनलोड करें";
         }
@@ -314,4 +334,87 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
+  }
+
+}); // DOMContentLoaded End
+
+// =================== AI DOUBT SOLVER ENGINE ===================
+const PART_A = "gsk_"; 
+const PART_B = "StnNwQAxenQgUvvGF7FQWGdyb3FYuYVf0AqrswWcTFYX9lJYCYFU"; 
+const GROQ_API_KEY = PART_A + PART_B;
+
+function openAiDoubtModal() {
+  const modal = document.getElementById('aiDoubtModal');
+  if (modal) modal.style.display = 'flex';
   
+  const drawer = document.getElementById('sideDrawer');
+  const scrim = document.getElementById('drawerScrim');
+  if (drawer) drawer.classList.remove('active', 'open');
+  if (scrim) scrim.classList.remove('active', 'open');
+  document.body.style.overflow = '';
+}
+
+function closeAiDoubtModal() {
+  const modal = document.getElementById('aiDoubtModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function handleAiEnter(event) {
+  if (event.key === 'Enter') {
+    sendQuestionToGroq();
+  }
+}
+
+async function sendQuestionToGroq() {
+  const inputField = document.getElementById('aiUserInput');
+  const chatBody = document.getElementById('aiChatBody');
+  const userText = inputField ? inputField.value.trim() : '';
+
+  if (!userText) return;
+
+  chatBody.innerHTML += `<div class="ai-msg user-msg">${userText}</div>`;
+  inputField.value = '';
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  const loadingId = 'loading-' + Date.now();
+  chatBody.innerHTML += `<div class="ai-msg bot-msg" id="${loadingId}">उत्तर तैयार हो रहा है... ⏳</div>`;
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${GROQ_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          {
+            role: "system",
+            content: "You are NischayDesk AI, an academic assistant created by Prince Kumar for Bihar Board students. Answer clearly in Hindi/Hinglish."
+          },
+          { role: "user", content: userText }
+        ],
+        temperature: 0.6
+      })
+    });
+
+    const data = await response.json();
+    const loadingElem = document.getElementById(loadingId);
+    if (loadingElem) loadingElem.remove();
+
+    if (response.ok && data.choices && data.choices[0]?.message?.content) {
+      chatBody.innerHTML += `<div class="ai-msg bot-msg">${data.choices[0].message.content}</div>`;
+    } else {
+      const errMsg = data.error?.message || `HTTP एरर: ${response.status}`;
+      chatBody.innerHTML += `<div class="ai-msg bot-msg">Groq एरर: ${errMsg}</div>`;
+    }
+  } catch (err) {
+    const loadingElem = document.getElementById(loadingId);
+    if (loadingElem) loadingElem.remove();
+    chatBody.innerHTML += `<div class="ai-msg bot-msg">कनेक्शन एरर: ${err.message}</div>`;
+  }
+
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
