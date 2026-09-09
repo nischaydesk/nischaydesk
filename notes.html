@@ -10,10 +10,98 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Flat CSS Links (Same Directory) -->
+  <!-- Flat CSS Links -->
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="navbar.css" />
   <link rel="stylesheet" href="dashboard.css" />
+
+  <!-- Premium In-line Enhancements for Notes Explorer -->
+  <style>
+    .notes-header-banner {
+      padding: 24px 16px 16px;
+      text-align: center;
+    }
+    .search-bar-wrap {
+      position: relative;
+      max-width: 600px;
+      margin: 18px auto 14px;
+    }
+    .notes-search-field {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      border-radius: 12px;
+      background: #0f172a;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #f8fafc;
+      font-size: 0.95rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .notes-search-field:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: #94a3b8;
+    }
+    /* Horizontal Scrolling Filter Pills for Mobile */
+    .filter-pill-container {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 4px 6px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
+      max-width: 100%;
+    }
+    .filter-pill-container::-webkit-scrollbar {
+      display: none;
+    }
+    .filter-btn {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      white-space: nowrap;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .filter-btn:hover {
+      border-color: #38bdf8;
+      color: #f8fafc;
+      transform: translateY(-1px);
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #ffffff;
+      border-color: #38bdf8;
+      font-weight: 700;
+      box-shadow: 0 3px 12px rgba(37, 99, 235, 0.35);
+    }
+    .section-category-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: #38bdf8;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+  </style>
 
   <!-- Firebase Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -84,7 +172,7 @@
     </div>
 
     <div class="drawer-user-card" id="drawerUserCard">
-      <p class="drawer-user-prompt">क्लाउड सिंक और टेस्ट ट्रैकिंग के लिए लॉगिन करें।</p>
+      <p class="drawer-user-prompt">नोट्स और पसंदीदा चैप्टर्स को सेव करने हेतु लॉगिन करें।</p>
     </div>
 
     <nav class="drawer-nav-list">
@@ -97,15 +185,14 @@
       <a href="test.html" class="drawer-nav-item">
         <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
       </a>
-      <!-- AI स्टूडियो का नया लिंक -->
       <a href="ai-desk.html" class="drawer-nav-item">
         <span class="icon">🤖</span> AI डाउट सॉल्वर स्टूडियो
       </a>
       <a href="index.html#quickTools" class="drawer-nav-item">
-        <span class="icon">🛠️</span> यूटिलिटी इंजन
+        <span class="icon">🛠️</span> स्मार्ट टूल्स
       </a>
 
-      <!-- ON/OFF Blue Switch Theme Row -->
+      <!-- Dark / Light Switch -->
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
         <label class="switch">
@@ -116,7 +203,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">वर्जन 2.0.4 प्रोडक्शन</span>
+      <span class="platform-meta">NischayDesk v2.1 Production</span>
       <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
     </div>
   </aside>
@@ -127,35 +214,40 @@
     <!-- HERO SEARCH & FILTER BANNER -->
     <section class="notes-header-banner">
       <div class="status-pill">
-        <span class="pulsing-dot"></span> वेरीफाइड सिलेबस रिपॉजिटरी
+        <span class="pulsing-dot"></span> बिहार बोर्ड & NCERT सिलेबस रिपॉजिटरी
       </div>
       <h1 class="notes-headline">
         स्मार्ट <span class="gradient-text">स्टडी नोट्स</span> हब
       </h1>
       <p class="notes-subheadline">
-        क्लास 10th (मैट्रिक) एवं 11th साइंस (NCERT/BSEB) के हस्तलिखित थ्योरी नोट्स और फॉर्मूला शीट्स।
+        कक्षा 10वीं (मैट्रिक) के सभी 5 अनिवार्य विषय एवं 11वीं साइंस के हस्तलिखित नोट्स व फॉर्मूला शीट्स।
       </p>
 
-      <!-- Search Input Box -->
+      <!-- Quick Search Bar -->
       <div class="search-bar-wrap">
         <span class="search-icon">🔍</span>
         <input 
           type="text" 
           id="notesSearchInput" 
           class="notes-search-field" 
-          placeholder="चैप्टर या विषय का नाम खोजें (उदा: मात्रक, त्रिकोणमिति, प्रकाश...)" 
+          placeholder="अध्याय या टॉपिक खोजें (उदा: प्रकाश, त्रिकोणमिति, यूरोप में राष्ट्रवाद...)" 
         />
       </div>
 
-      <!-- Class & Subject Filter Pills -->
+      <!-- Class & Subject Filter Pills (Horizontal Scroll on Mobile) -->
       <div class="filter-pill-container" id="filterPillContainer">
-        <button class="filter-btn active" data-filter="all">सभी नोट्स</button>
-        <button class="filter-btn" data-filter="11-physics">11th भौतिकी (Physics)</button>
-        <button class="filter-btn" data-filter="11-chemistry">11th रसायन (Chemistry)</button>
-        <button class="filter-btn" data-filter="11-biology">11th जीव विज्ञान (Biology)</button>
-        <button class="filter-btn" data-filter="11-math">11th गणित (Math)</button>
-        <button class="filter-btn" data-filter="10-science">10th विज्ञान (Science)</button>
-        <button class="filter-btn" data-filter="10-math">10th गणित (Math)</button>
+        <button class="filter-btn active" data-filter="all">🌟 सभी नोट्स</button>
+        <!-- 10th Metric Hub -->
+        <button class="filter-btn" data-filter="10-math">📐 10th गणित</button>
+        <button class="filter-btn" data-filter="10-science">🧪 10th विज्ञान</button>
+        <button class="filter-btn" data-filter="10-sst">🌍 10th सामाजिक विज्ञान (SST)</button>
+        <button class="filter-btn" data-filter="10-sanskrit">📜 10th संस्कृत</button>
+        <button class="filter-btn" data-filter="10-hindi">🇮🇳 10th हिंदी</button>
+        <!-- 11th Science Hub -->
+        <button class="filter-btn" data-filter="11-physics">⚡ 11th भौतिकी</button>
+        <button class="filter-btn" data-filter="11-chemistry">⚗️ 11th रसायन</button>
+        <button class="filter-btn" data-filter="11-math">📊 11th गणित</button>
+        <button class="filter-btn" data-filter="11-biology">🧬 11th जीव विज्ञान</button>
       </div>
     </section>
 
@@ -164,7 +256,7 @@
       <div class="notes-grid-catalog" id="notesCatalogGrid">
         <div class="loading-state-box">
           <div class="spinner"></div>
-          <p>नोट्स डेटाबेस लोड हो रहा है...</p>
+          <p>नोट्स रिपॉजिटरी लोड हो रही है...</p>
         </div>
       </div>
     </section>
@@ -177,7 +269,7 @@
       <!-- Studio Header Controls -->
       <div class="pdf-studio-header">
         <div class="pdf-doc-meta">
-          <span class="pdf-doc-badge" id="modalDocBadge">Class 11 Science</span>
+          <span class="pdf-doc-badge" id="modalDocBadge">Class 10 / 11</span>
           <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
         </div>
         <div class="pdf-studio-actions">
@@ -198,38 +290,39 @@
 
       <!-- Studio Footer Bar -->
       <div class="pdf-studio-footer">
-        <span>NischayDesk Secure In-App Reader</span>
-        <span class="reading-hint">नोट्स को जूम करने के लिए पिंच करें या +/- दबाएं</span>
+        <span>NischayDesk In-App HD Reader</span>
+        <span class="reading-hint">ज़ूम करने के लिए पिंच करें या +/- दबाएं</span>
       </div>
     </div>
   </div>
 
   <!-- 5. PROFESSIONAL BRAND FOOTER -->
-  <footer class="app-footer">
+  <footer class="app-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 30px 20px; margin-top: 40px;">
     <div class="footer-container">
       <div class="footer-col brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
           <span class="brand-title">NischayDesk</span>
         </div>
-        <p class="footer-summary">
-          100% ओरिजिनल एवं वेरीफाइड सिलेबस हैंड-नोट्स।
+        <p class="footer-summary" style="color:#94a3b8; font-size:0.85rem; line-height:1.6;">
+          बिहार बोर्ड मैट्रिक एवं इंटर साइंस के विद्यार्थियों के लिए समर्पित 100% फ्री स्टडी हब।
         </p>
-        <div class="founder-identity-box">
-          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
+        <div class="founder-identity-box" style="margin-top:10px; font-size:0.85rem; color:#e2e8f0;">
+          संस्थापक एवं डेवलपर: <strong style="color:#38bdf8;">Prince Kumar</strong>
         </div>
       </div>
       <div class="footer-col">
-        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
-        <ul class="footer-nav">
-          <li><a href="index.html">मुख्य डैशबोर्ड</a></li>
-          <li><a href="test.html">लाइव टेस्ट पोर्टल</a></li>
+        <h4 class="footer-heading" style="color:#f8fafc; font-size:0.95rem; margin-bottom:12px;">त्वरित नेविगेशन</h4>
+        <ul class="footer-nav" style="list-style:none; padding:0; line-height:2;">
+          <li><a href="index.html" style="color:#94a3b8; text-decoration:none;">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="test.html" style="color:#94a3b8; text-decoration:none;">➔ लाइव टेस्ट पोर्टल</a></li>
+          <li><a href="ai-desk.html" style="color:#94a3b8; text-decoration:none;">➔ AI डाउट स्टूडियो</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom-bar">
+    <div class="footer-bottom-bar" style="margin-top:20px; font-size:0.8rem; color:#64748b;">
       <span>&copy; 2026 NischayDesk. ऑल राइट्स रिजर्व्ड।</span>
-      <span class="server-status-tag"><span class="green-indicator"></span> Cloud Storage Active</span>
+      <span class="server-status-tag" style="color:#38bdf8;">● क्लाउड स्टोरेज सक्रिय है</span>
     </div>
   </footer>
 
