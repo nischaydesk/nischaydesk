@@ -21,40 +21,40 @@
 /* 2. Screen 1: Test Lobby Card */
 .lobby-card {
   max-width: 800px;
-  margin: 20px auto;
+  margin: 16px auto;
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 36px 24px;
+  padding: 28px 20px;
   box-shadow: var(--shadow-md);
   text-align: center;
 }
 
 .lobby-title {
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: var(--text-pure);
   margin-bottom: 8px;
 }
 
 .lobby-subtitle {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .test-selection-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 14px;
   text-align: left;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 @media (min-width: 600px) {
   .test-selection-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -87,13 +87,13 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 18px 20px;
+  padding: 16px 18px;
   text-align: left;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .instructions-box h3 {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--brand-accent);
   margin-bottom: 10px;
 }
@@ -106,7 +106,7 @@
 }
 
 .instructions-box li {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   position: relative;
   padding-left: 18px;
@@ -123,13 +123,13 @@
 
 .btn-start-exam {
   width: 100%;
-  max-width: 360px;
+  max-width: 340px;
   background: var(--brand-gradient);
   color: #fff;
   border: none;
-  padding: 14px 28px;
+  padding: 13px 26px;
   border-radius: var(--radius-pill);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 4px 18px var(--brand-glow);
@@ -145,32 +145,32 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 12px 18px;
+  padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .exam-active-subject {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .subject-badge {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   background: rgba(56, 189, 248, 0.12);
   color: var(--brand-accent);
-  padding: 4px 10px;
+  padding: 4px 8px;
   border-radius: 4px;
 }
 
 .question-counter {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   font-weight: 600;
 }
@@ -181,10 +181,10 @@
   gap: 6px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: var(--radius-pill);
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--brand-accent);
 }
 
@@ -203,9 +203,9 @@
   background: var(--danger);
   color: #fff;
   border: none;
-  padding: 8px 16px;
+  padding: 8px 14px;
   border-radius: var(--radius-sm);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   transition: background var(--transition-quick);
@@ -219,12 +219,12 @@
 .exam-workspace-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: 16px;
 }
 
 @media (min-width: 860px) {
   .exam-workspace-grid {
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1fr 270px;
   }
 }
 
@@ -233,7 +233,7 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -242,46 +242,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .q-number-pill {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--brand-accent);
 }
 
 .q-marks-tag {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   font-weight: 600;
 }
 
 .question-text {
-  font-size: 1.12rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-pure);
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .options-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: 10px;
+  margin-bottom: 24px;
 }
 
 .option-choice-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 12px 16px;
+  padding: 12px 14px;
   cursor: pointer;
   transition: border-color var(--transition-quick), background var(--transition-quick);
 }
@@ -296,14 +296,14 @@
 }
 
 .option-letter {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   display: grid;
   place-items: center;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--text-secondary);
   flex-shrink: 0;
@@ -316,7 +316,7 @@
 }
 
 .option-label-text {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-primary);
 }
 
@@ -326,14 +326,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .btn-stage-primary, .btn-stage-secondary, .btn-stage-ghost {
-  padding: 10px 18px;
+  padding: 9px 16px;
   border-radius: var(--radius-sm);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
   transition: var(--transition-quick);
@@ -376,29 +376,29 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 18px;
+  padding: 16px;
   height: fit-content;
 }
 
 .palette-title {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-pure);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .palette-legend {
   display: flex;
-  gap: 14px;
-  font-size: 0.76rem;
+  gap: 12px;
+  font-size: 0.74rem;
   color: var(--text-secondary);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .dot-legend {
   display: inline-block;
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   margin-right: 4px;
 }
@@ -419,7 +419,7 @@
   border: 1px solid var(--border-strong);
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
   display: grid;
@@ -441,38 +441,38 @@
 /* 6. Screen 3: Result & Scorecard */
 .result-card-container {
   max-width: 800px;
-  margin: 20px auto;
+  margin: 16px auto;
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 32px 24px;
+  padding: 28px 20px;
   box-shadow: var(--shadow-md);
   text-align: center;
 }
 
 .trophy-icon {
-  font-size: 3rem;
+  font-size: 2.6rem;
   display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .result-header-badge h2 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: var(--text-pure);
 }
 
 .result-header-badge p {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .result-tiles-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 32px;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
 @media (min-width: 600px) {
@@ -485,20 +485,20 @@
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 16px 12px;
+  padding: 14px 10px;
   display: flex;
   flex-direction: column;
 }
 
 .tile-label {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--text-secondary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .tile-val {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: var(--text-pure);
 }
@@ -511,13 +511,13 @@
 /* Solutions Section */
 .solutions-review-section {
   text-align: left;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .solutions-heading {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-pure);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .solutions-accordion-list {
@@ -530,18 +530,18 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: 12px 14px;
 }
 
 .sol-q-title {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 6px;
 }
 
 .sol-ans-row {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   margin-bottom: 4px;
 }
 
@@ -549,7 +549,7 @@
 .sol-ans-row.wrong { color: var(--danger); }
 
 .sol-explanation {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
   background: rgba(0, 0, 0, 0.2);
   padding: 8px;
@@ -560,6 +560,6 @@
 .result-actions-footer {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
