@@ -226,7 +226,7 @@ window.NischaySyllabus = {
         { no: 5, name: "समांतर श्रेढियाँ (Arithmetic Progressions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "n-वाँ पद ज्ञात करना और प्रथम n पदों का योगफल सूत्र।" },
         { no: 6, name: "त्रिभुज (Triangles)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "थेल्स प्रमेय (आधारभूत आनुपातिकता प्रमेय) एवं समरूपता की कसौटियां।" },
         { no: 7, name: "निर्देशांक ज्यामिति (Coordinate Geometry)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "दूरी सूत्र, विभाजन सूत्र एवं मध्य बिंदु सूत्र।" },
-        { no: 8, name: "त्रिकोणमिति का परिचय (Introduction to Trigonometry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview", pages: "12 पेज PDF", desc: "त्रिकोणमितीय अनुपात, विशिष्ट कोणों के मान एवं त्रिकोणमितीय सर्वसमिकाएं।" },
+        { no: 8, name: "त्रिकोणमिति का परिचय (Introduction to Trigonometry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1LCcAfYsphh6YR2lXsA6CTGO5ybf3zIX-/view?usp=drivesdk/preview", pages: "12 पेज PDF", desc: "त्रिकोणमितीय अनुपात, विशिष्ट कोणों के मान एवं त्रिकोणमितीय सर्वसमिकाएं।" },
         { no: 9, name: "त्रिकोणमिति के कुछ अनुप्रयोग (Applications of Trigonometry)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उन्नयन कोण, अवनमन कोण एवं ऊंचाई और दूरी पर आधारित महत्वपूर्ण प्रश्न।" },
         { no: 10, name: "वृत्त (Circles)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "स्पर्श रेखा के गुणधर्म एवं बाह्य बिंदु से खींची गई स्पर्श रेखाओं की लंबाई प्रमेय।" },
         { no: 11, name: "वृत्तों से संबंधित क्षेत्रफल (Areas Related to Circles)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "त्रिज्यखंड का क्षेत्रफल, वृत्तखंड का क्षेत्रफल एवं चाप की लंबाई।" },
