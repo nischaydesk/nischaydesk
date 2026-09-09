@@ -310,7 +310,7 @@
 
   <main class="viewport" id="viewport">
     <div class="hero-box" id="heroBox">
-      <h2>नमस्ते प्रिंस! आज <span>क्या हल</span> करना है?</h2>
+      <h2 id="heroGreeting">आज <span>क्या हल</span> करना है?</h2>
       <div class="suggestion-row">
         <div class="sug-chip" onclick="askQuick('(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।')">📐 (A+B)^2 फॉर्मूला</div>
         <div class="sug-chip" onclick="askQuick('चाल और वेग में क्या अंतर है? विस्तार से समझाएं।')">📊 चाल vs वेग</div>
@@ -338,6 +338,37 @@
 
   <script>
     const API_KEY = "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";
+
+    // लॉगिन यूजर का नाम चेक करने और हेडिंग अपडेट करने का फंक्शन
+    (function checkUserLogin() {
+      const greeting = document.getElementById('heroGreeting');
+      if (!greeting) return;
+
+      // सभी संभावित कीज़ से यूजर डेटा खोजना
+      let userData = localStorage.getItem('nischay_user') || 
+                     localStorage.getItem('currentUser') || 
+                     localStorage.getItem('user') || 
+                     localStorage.getItem('google_user') || 
+                     sessionStorage.getItem('user');
+
+      let userName = "";
+
+      if (userData) {
+        try {
+          const parsed = JSON.parse(userData);
+          userName = parsed.name || parsed.displayName || parsed.given_name || "";
+        } catch(e) {
+          userName = userData;
+        }
+      }
+
+      if (userName && userName.trim() !== "") {
+        const firstName = userName.trim().split(" ")[0]; // पहला नाम
+        greeting.innerHTML = `नमस्ते ${firstName}! आज <span>क्या हल</span> करना है?`;
+      } else {
+        greeting.innerHTML = `आज <span>क्या हल</span> करना है?`;
+      }
+    })();
 
     function askQuick(q) {
       document.getElementById('userInput').value = q;
