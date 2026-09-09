@@ -280,9 +280,7 @@ body.app-body {
   box-shadow: 0 0 6px var(--success);
 }
 
-/* ==========================================================================
-   6. Theme Toggle UI Component
-   ========================================================================== */
+/* 6. Theme Toggle UI Component */
 .theme-toggle-btn {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -303,96 +301,64 @@ body.app-body {
 }
 
 /* ==========================================================================
-   7. Comprehensive Light Theme Override Rules
+   7. LIGHT MODE INSTANT OVERRIDE (HIGH PRIORITY)
    ========================================================================== */
-body.light-theme {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --surface-card: #ffffff;
-  --surface-elevated: #f1f5f9;
-  --surface-subtle: #e2e8f0;
-  --text-pure: #0f172a;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-strong: #cbd5e1;
 
-  background-color: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
+html.light-mode body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
 }
 
-body.light-theme .app-header {
-  background: rgba(255, 255, 255, 0.92) !important;
-  border-bottom: 1px solid var(--border-strong) !important;
-  backdrop-filter: blur(12px);
-}
-
-body.light-theme .brand-name,
-body.light-theme .hero-headline,
-body.light-theme .section-headline,
-body.light-theme .card-title,
-body.light-theme .footer-heading,
-body.light-theme .brand-title,
-body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4 {
-  color: var(--text-pure) !important;
-}
-
-body.light-theme .hero-subline,
-body.light-theme .card-desc,
-body.light-theme .section-subheadline,
-body.light-theme .footer-summary,
-body.light-theme .footer-nav a {
-  color: var(--text-secondary) !important;
-}
-
-body.light-theme .grid-card,
-body.light-theme .quick-tool-card,
-body.light-theme .side-drawer,
-body.light-theme .pdf-modal-window,
-body.light-theme .drawer-user-card {
+html.light-mode .app-header {
   background: #ffffff !important;
-  border: 1px solid var(--border-strong) !important;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
+  border-bottom: 1px solid #cbd5e1 !important;
 }
 
-body.light-theme .stat-glass-card {
+html.light-mode .grid-card,
+html.light-mode .quick-tool-card,
+html.light-mode .side-drawer,
+html.light-mode .stat-glass-card,
+html.light-mode .pdf-modal-window,
+html.light-mode .drawer-user-card {
   background: #ffffff !important;
-  border: 1px solid var(--border-strong) !important;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05) !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
 }
 
-body.light-theme .stat-numeric {
-  color: var(--brand-primary) !important;
+html.light-mode h1, 
+html.light-mode h2, 
+html.light-mode h3, 
+html.light-mode h4,
+html.light-mode .brand-name,
+html.light-mode .card-title,
+html.light-mode .brand-title,
+html.light-mode .footer-heading {
+  color: #0f172a !important;
 }
 
-body.light-theme .btn-cta-secondary {
-  background: #ffffff !important;
-  color: var(--brand-primary) !important;
-  border: 1px solid var(--border-strong) !important;
+html.light-mode p,
+html.light-mode .card-desc,
+html.light-mode .hero-subline,
+html.light-mode .footer-summary,
+html.light-mode .section-subheadline {
+  color: #475569 !important;
 }
 
-body.light-theme .theme-toggle-btn {
+html.light-mode .app-footer {
+  background: #f1f5f9 !important;
+  border-top: 1px solid #cbd5e1 !important;
+}
+
+html.light-mode .theme-toggle-btn {
   background: #e2e8f0 !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
-body.light-theme .app-footer {
-  background: #f1f5f9 !important;
-  border-top: 1px solid var(--border-strong) !important;
-}
-
-body.light-theme .founder-identity-box {
-  background: #ffffff !important;
-  border-color: var(--border-strong) !important;
-}
-
-body.light-theme .exam-dropdown,
-body.light-theme input,
-body.light-theme select,
-body.light-theme textarea {
+html.light-mode select,
+html.light-mode input {
   background: #ffffff !important;
   color: #0f172a !important;
-  border: 1px solid var(--border-strong) !important;
+  border: 1px solid #cbd5e1 !important;
 }
