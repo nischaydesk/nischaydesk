@@ -350,67 +350,105 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
-   7. LIGHT MODE INSTANT OVERRIDE (HIGH PRIORITY)
+   7. COMPLETE LIGHT MODE SYSTEM (HIGH PRIORITY)
    ========================================================================== */
 
+/* बेस बॉडी और बैकग्राउंड */
 html.light-mode body {
-  background-color: #f8fafc !important;
+  background-color: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
+/* हेडर नेवबार */
 html.light-mode .app-header {
-  background: #ffffff !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   border-bottom: 1px solid #cbd5e1 !important;
 }
 
+html.light-mode .brand-name {
+  color: #0f172a !important;
+}
+
+/* मुख्य हीरो बैनर */
+html.light-mode .hero-studio-banner {
+  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* सभी प्रकार के कार्ड्स (होमपेज, टूल्स, और नोट्स लाइब्रेरी) */
+html.light-mode .stat-glass-card,
 html.light-mode .grid-card,
 html.light-mode .quick-tool-card,
 html.light-mode .side-drawer,
-html.light-mode .stat-glass-card,
+html.light-mode .drawer-user-card,
 html.light-mode .pdf-modal-window,
-html.light-mode .drawer-user-card {
+html.light-mode .note-item-card {
   background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   color: #0f172a !important;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
 }
 
+/* सभी हेडिंग्स और टाइटल्स (अक्षर साफ़ काले दिखेंगे) */
+html.light-mode h1, 
+html.light-mode h2, 
+html.light-mode h3, 
+html.light-mode h4,
+html.light-mode .hero-headline,
+html.light-mode .stat-numeric,
+html.light-mode .card-title,
+html.light-mode .brand-title,
+html.light-mode .footer-heading,
+html.light-mode .note-item-card h3 {
+  color: #0f172a !important;
+}
+
+/* सभी विवरण और पैराग्राफ टेक्स्ट */
+html.light-mode p,
+html.light-mode .hero-subline,
+html.light-mode .stat-label,
+html.light-mode .card-desc,
+html.light-mode .footer-summary,
+html.light-mode .section-subheadline,
+html.light-mode .note-item-card p {
+  color: #475569 !important;
+}
+
+/* साइड मेनू का ऑन/ऑफ स्विच एरिया */
 html.light-mode .drawer-theme-row {
-  background: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
 }
 
 html.light-mode .theme-label {
   color: #0f172a !important;
 }
 
-html.light-mode h1, 
-html.light-mode h2, 
-html.light-mode h3, 
-html.light-mode h4,
-html.light-mode .brand-name,
-html.light-mode .card-title,
-html.light-mode .brand-title,
-html.light-mode .footer-heading {
-  color: #0f172a !important;
-}
-
-html.light-mode p,
-html.light-mode .card-desc,
-html.light-mode .hero-subline,
-html.light-mode .footer-summary,
-html.light-mode .section-subheadline {
-  color: #475569 !important;
-}
-
-html.light-mode .app-footer {
-  background: #f1f5f9 !important;
-  border-top: 1px solid #cbd5e1 !important;
-}
-
+/* सर्च बार और इनपुट फील्ड्स */
 html.light-mode select,
-html.light-mode input {
+html.light-mode input,
+html.light-mode .notes-search-field {
   background: #ffffff !important;
   color: #0f172a !important;
   border: 1px solid #cbd5e1 !important;
+}
+
+/* फ़िल्टर बटन */
+html.light-mode .filter-btn {
+  background: #ffffff !important;
+  color: #475569 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light-mode .filter-btn.active {
+  background: var(--brand-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--brand-primary) !important;
+}
+
+/* फुटर */
+html.light-mode .app-footer {
+  background: #f8fafc !important;
+  border-top: 1px solid #cbd5e1 !important;
 }
