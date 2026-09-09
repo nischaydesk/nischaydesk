@@ -9,11 +9,11 @@
               linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 36px 24px;
-  margin-bottom: 36px;
+  padding: 32px 20px;
+  margin-bottom: 32px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 28px;
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
@@ -22,16 +22,16 @@
 
 @media (min-width: 900px) {
   .hero-studio-banner {
-    grid-template-columns: 1.4fr 1fr;
-    padding: 48px 36px;
+    grid-template-columns: 1.3fr 1fr;
+    padding: 44px 32px;
     align-items: center;
   }
 }
 
 .hero-headline {
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-pure);
   margin-bottom: 12px;
   letter-spacing: -0.5px;
@@ -39,16 +39,16 @@
 
 @media (min-width: 600px) {
   .hero-headline {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
 }
 
 .hero-subline {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  max-width: 540px;
-  margin-bottom: 24px;
+  max-width: 520px;
+  margin-bottom: 20px;
 }
 
 .hero-action-group {
@@ -57,37 +57,38 @@
   flex-wrap: wrap;
 }
 
-/* Hero Stats Metric Panel */
+/* Hero Stats Metric Panel (2x2 Balanced Grid) */
 .hero-stats-panel {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .stat-glass-card {
-  background: rgba(15, 28, 61, 0.6);
+  background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 16px 12px;
   backdrop-filter: blur(8px);
   text-align: center;
+  box-shadow: var(--shadow-sm);
   transition: transform var(--transition-quick), border-color var(--transition-quick);
 }
 
 .stat-glass-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--brand-accent);
 }
 
 .stat-icon {
-  font-size: 1.4rem;
-  margin-bottom: 6px;
+  font-size: 1.3rem;
+  margin-bottom: 4px;
 }
 
 .stat-numeric {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  color: var(--text-pure);
+  color: var(--brand-accent);
   letter-spacing: -0.5px;
 }
 
@@ -100,45 +101,45 @@
 
 /* 2. Dashboard Sections & Headlines */
 .dashboard-section {
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
 .section-title-wrap {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   flex-wrap: wrap;
   gap: 12px;
 }
 
 .section-headline {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: var(--text-pure);
 }
 
 .section-subheadline {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   margin-top: 2px;
 }
 
 .realtime-indicator {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--success);
-  background: var(--success-bg);
+  color: var(--brand-accent);
+  background: rgba(56, 189, 248, 0.12);
   padding: 4px 10px;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(56, 189, 248, 0.25);
 }
 
 /* 3. Grid Cards System */
 .dashboard-grid-cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 16px;
 }
 
 @media (min-width: 768px) {
@@ -147,17 +148,11 @@
   }
 }
 
-@media (min-width: 1080px) {
-  .dashboard-grid-cards {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 .grid-card {
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
@@ -165,21 +160,21 @@
 }
 
 .grid-card:hover {
-  border-color: rgba(56, 189, 248, 0.4);
+  border-color: var(--brand-accent);
 }
 
 .card-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .card-tag {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
   padding: 3px 8px;
   border-radius: 4px;
   background: rgba(56, 189, 248, 0.12);
@@ -208,24 +203,19 @@
   text-decoration: underline;
 }
 
-.badge-lock {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-
 .card-title {
-  font-size: 1.12rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: var(--text-pure);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.35;
 }
 
 .card-desc {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 /* Progress Tracker */
@@ -236,7 +226,7 @@
 .progress-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 6px;
@@ -244,8 +234,8 @@
 
 .progress-track {
   width: 100%;
-  height: 7px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 6px;
+  background: var(--surface-elevated);
   border-radius: var(--radius-pill);
   overflow: hidden;
 }
@@ -265,7 +255,7 @@
   gap: 10px;
   align-items: center;
   background: var(--surface-elevated);
-  padding: 10px;
+  padding: 10px 12px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
 }
@@ -276,7 +266,7 @@
 }
 
 .stat-pill-sm .stat-val {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--text-pure);
 }
@@ -305,38 +295,33 @@
 /* Cloud Locker History Feed */
 .locker-history-feed {
   margin-top: auto;
-  min-height: 80px;
+  min-height: 60px;
 }
 
 .empty-feed-placeholder {
   display: grid;
   place-items: center;
-  height: 80px;
-  background: rgba(0, 0, 0, 0.2);
+  height: 60px;
+  background: var(--surface-elevated);
   border-radius: var(--radius-sm);
   border: 1px dashed var(--border-strong);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-align: center;
   padding: 8px;
 }
 
-/* 4. Quick Utilities Grid */
+/* 4. Quick Utilities Grid (Modern 2-Column Mobile Layout) */
 .quick-tools-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
-@media (min-width: 600px) {
-  .quick-tools-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 960px) {
+@media (min-width: 900px) {
   .quick-tools-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
   }
 }
 
@@ -344,7 +329,7 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 18px;
+  padding: 16px 14px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -354,60 +339,60 @@
 }
 
 .quick-tool-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--brand-accent);
 }
 
 .tool-icon-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
   background: var(--surface-elevated);
   display: grid;
   place-items: center;
-  font-size: 1.3rem;
-  margin-bottom: 12px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
   border: 1px solid var(--border-subtle);
 }
 
 .quick-tool-card h4 {
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 4px;
 }
 
 .quick-tool-card p {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
-/* 5. Notes Hub Styles (notes.html components) */
+/* 5. Notes Hub Styles */
 .notes-header-banner {
   text-align: center;
-  padding: 30px 16px 20px;
+  padding: 24px 16px 16px;
   max-width: 800px;
-  margin: 0 auto 30px;
+  margin: 0 auto 24px;
 }
 
 .notes-headline {
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: var(--text-pure);
   margin-bottom: 8px;
 }
 
 .notes-subheadline {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .search-bar-wrap {
   position: relative;
   max-width: 600px;
-  margin: 0 auto 20px;
+  margin: 0 auto 16px;
 }
 
 .search-icon {
@@ -415,18 +400,18 @@
   left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.1rem;
-  opacity: 0.7;
+  font-size: 1rem;
+  color: var(--text-muted);
 }
 
 .notes-search-field {
   width: 100%;
-  padding: 14px 16px 14px 46px;
+  padding: 12px 16px 12px 44px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-strong);
   background: var(--surface-card);
   color: var(--text-pure);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   outline: none;
   transition: border-color var(--transition-quick), box-shadow var(--transition-quick);
 }
@@ -441,7 +426,7 @@
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 6px 4px;
+  padding: 6px 2px;
   justify-content: flex-start;
   scrollbar-width: none;
   white-space: nowrap;
@@ -462,9 +447,9 @@
   background: var(--surface-card);
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: var(--radius-pill);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-quick);
@@ -487,7 +472,7 @@
 .notes-grid-catalog {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: 16px;
 }
 
 @media (min-width: 650px) {
@@ -506,15 +491,16 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: var(--shadow-sm);
   transition: transform var(--transition-quick), border-color var(--transition-quick);
 }
 
 .note-item-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--brand-accent);
 }
 
@@ -522,7 +508,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .note-badge-class {
@@ -535,12 +521,12 @@
 }
 
 .note-badge-pages {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 .note-item-card h3 {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 6px;
@@ -548,15 +534,15 @@
 }
 
 .note-item-card p {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   line-height: 1.45;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .note-btn-group {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 8px;
 }
 
@@ -564,9 +550,9 @@
   background: var(--brand-primary);
   color: #fff;
   border: none;
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
@@ -581,9 +567,9 @@
   background: var(--surface-elevated);
   color: var(--brand-accent);
   border: 1px solid var(--border-subtle);
-  padding: 9px 12px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   text-align: center;
@@ -594,17 +580,17 @@
   border-color: var(--brand-accent);
 }
 
-/* Loading & Empty States */
+/* Loading States */
 .loading-state-box {
   grid-column: 1 / -1;
-  padding: 60px 20px;
+  padding: 50px 20px;
   text-align: center;
   color: var(--text-secondary);
 }
 
 .spinner {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: 3px solid rgba(56, 189, 248, 0.2);
   border-top-color: var(--brand-accent);
   border-radius: 50%;
@@ -620,9 +606,9 @@
 .pdf-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(3, 6, 16, 0.88);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(3, 6, 16, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 2000;
   display: none;
   place-items: center;
@@ -638,8 +624,8 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 1050px;
-  height: 92vh;
+  max-width: 1000px;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -647,7 +633,7 @@
 }
 
 .pdf-studio-header {
-  padding: 12px 18px;
+  padding: 12px 16px;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
@@ -663,7 +649,7 @@
 }
 
 .pdf-doc-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-pure);
   font-weight: 700;
 }
@@ -680,7 +666,7 @@
   color: var(--text-secondary);
   padding: 6px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -698,7 +684,7 @@
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
   padding: 0 4px;
@@ -721,25 +707,23 @@
 }
 
 .pdf-studio-footer {
-  padding: 8px 18px;
+  padding: 8px 16px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-/* ==========================================================================
-   7. Utility Modal Specific Components (Doc Converter & Eligibility)
-   ========================================================================== */
+/* 7. Utility Modal Specific Components */
 .btn-stage-primary {
   background: var(--surface-elevated);
   border: 1px solid var(--brand-accent);
   color: var(--brand-accent);
   padding: 10px 18px;
   border-radius: var(--radius-md);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-quick);
@@ -756,7 +740,7 @@
   border: none;
   padding: 12px 20px;
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;
   transition: opacity var(--transition-quick);
@@ -774,32 +758,6 @@
   border: 1px solid var(--border-strong);
   color: var(--text-pure);
   border-radius: var(--radius-sm);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   outline: none;
-}
-
-/* ==========================================================================
-   8. Light Mode Adjustments for Dashboard & Modals
-   ========================================================================== */
-html.light-mode .hero-studio-banner {
-  background: radial-gradient(circle at 80% 20%, rgba(2, 132, 199, 0.08), transparent 50%),
-              linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
-}
-
-html.light-mode .pdf-studio-header,
-html.light-mode .pdf-studio-footer {
-  background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-}
-
-html.light-mode .tool-icon-box {
-  background: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light-mode .empty-feed-placeholder {
-  background: #f8fafc !important;
-  border-color: #cbd5e1 !important;
 }
