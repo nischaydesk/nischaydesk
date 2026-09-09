@@ -1,15 +1,20 @@
-// NischayDesk Cloud Configuration (Compat Mode Bridge)
+/* ==========================================================================
+   NischayDesk Cloud Configuration (Compat Mode Bridge)
+   Engineered & Maintained by Prince Kumar
+   ========================================================================== */
+
+// 1. आपका नया और असली Firebase Config
 const firebaseConfig = {
-  apiKey: "AIzaSyCIZ3G_mJ2NdQxwFPSMKyQ5qSwt1Y_5w-U",
-  authDomain: "nischaydesk.firebaseapp.com",
-  projectId: "nischaydesk",
-  storageBucket: "nischaydesk.firebasestorage.app",
-  messagingSenderId: "204191555286",
-  appId: "1:204191555286:web:dac02d45e0be4c13117377",
-  measurementId: "G-WXM8RJ080H"
+  apiKey: "AIzaSyB3M_FVIR3QabrxdGWwP1VUdA1VEGiRGW8",
+  authDomain: "nischaydesk-95783.firebaseapp.com",
+  projectId: "nischaydesk-95783",
+  storageBucket: "nischaydesk-95783.firebasestorage.app",
+  messagingSenderId: "252942149944",
+  appId: "1:252942149944:web:f7882836dc788d0ba179cd",
+  measurementId: "G-ZM573D4X41"
 };
 
-// Global App State & Database Containers
+// 2. Global Containers
 window.NischayConfig = {
   isCloudReady: false,
   authInstance: null,
@@ -18,19 +23,17 @@ window.NischayConfig = {
   founder: "Prince Kumar"
 };
 
+// 3. Cloud Backend Initializer
 (function initCloudBackend() {
   try {
     if (typeof firebase !== 'undefined') {
-      const hasRealKeys = firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('YOUR_ACTUAL');
-      if (hasRealKeys) {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        window.NischayConfig.authInstance = firebase.auth();
-        window.NischayConfig.dbInstance = firebase.firestore();
-        window.NischayConfig.isCloudReady = true;
-        console.log("⚡ [NischayDesk] Google Firebase Cloud Engine Active & Connected!");
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
       }
+      window.NischayConfig.authInstance = firebase.auth();
+      window.NischayConfig.dbInstance = firebase.firestore();
+      window.NischayConfig.isCloudReady = true;
+      console.log("⚡ [NischayDesk] Google Firebase Cloud Connected Successfully!");
     }
   } catch (error) {
     console.error("❌ [NischayDesk] Cloud Initialization Error:", error);
