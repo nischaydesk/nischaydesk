@@ -17,6 +17,7 @@
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
+  transition: background var(--transition-smooth), border-color var(--transition-smooth);
 }
 
 @media (min-width: 900px) {
@@ -615,7 +616,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* 6. Embedded In-Built Studio PDF Viewer Modal */
+/* 6. Embedded In-Built Studio PDF Viewer & Utility Modals */
 .pdf-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -727,4 +728,78 @@
   justify-content: space-between;
   font-size: 0.74rem;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   7. Utility Modal Specific Components (Doc Converter & Eligibility)
+   ========================================================================== */
+.btn-stage-primary {
+  background: var(--surface-elevated);
+  border: 1px solid var(--brand-accent);
+  color: var(--brand-accent);
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-quick);
+}
+
+.btn-stage-primary:hover {
+  background: var(--brand-primary);
+  color: #ffffff;
+}
+
+.btn-start-exam {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--transition-quick);
+}
+
+.btn-start-exam:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.exam-dropdown {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-pure);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  outline: none;
+}
+
+/* ==========================================================================
+   8. Light Mode Adjustments for Dashboard & Modals
+   ========================================================================== */
+html.light-mode .hero-studio-banner {
+  background: radial-gradient(circle at 80% 20%, rgba(2, 132, 199, 0.08), transparent 50%),
+              linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light-mode .pdf-studio-header,
+html.light-mode .pdf-studio-footer {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light-mode .tool-icon-box {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light-mode .empty-feed-placeholder {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
 }
