@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NischayDesk AI Studio Pro | By Prince Kumar</title>
+  <title>NischayDesk AI Studio | By Prince Kumar</title>
 
+  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,15 +27,31 @@
 
   <style>
     :root {
+      --bg: #070d1e;
+      --surface: #0f1c3d;
+      --surface-elevated: #162650;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: #1e3260;
+      --accent: #38bdf8;
+      --primary: #0284c7;
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+      --gemini-gradient: linear-gradient(135deg, #1a73e8, #8ab4f8);
+    }
+
+    html.light-mode {
       --bg: #f8fafc;
       --surface: #ffffff;
+      --surface-elevated: #f1f5f9;
       --border: #e2e8f0;
       --border-strong: #cbd5e1;
       --accent: #0284c7;
       --primary: #0284c7;
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+      --gemini-gradient: linear-gradient(135deg, #0284c7, #2563eb);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -47,27 +64,33 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      transition: background 0.25s ease, color 0.25s ease;
     }
 
-    /* Header */
+    /* Header Controls */
     .app-header {
-      padding: 14px 20px;
+      padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-strong);
       z-index: 100;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+    }
+
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .btn-back {
-      background: #e0f2fe;
-      border: 1px solid #bae6fd;
-      color: #0369a1;
-      padding: 6px 14px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent);
+      padding: 6px 12px;
       border-radius: 20px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 700;
       text-decoration: none;
       display: flex;
@@ -82,74 +105,123 @@
     }
     .brand-title span { color: var(--accent); }
 
-    /* Viewport */
+    .theme-toggle-pill {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text-main);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Main Viewport */
     .viewport {
       flex: 1;
       overflow-y: auto;
-      padding: 24px 16px 150px;
+      padding: 16px 14px 140px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      max-width: 900px;
+      gap: 16px;
+      max-width: 860px;
       width: 100%;
       margin: 0 auto;
     }
 
     .hero-box {
       text-align: center;
-      padding: 35px 10px;
+      padding: 24px 10px 12px;
     }
-    .hero-box h2 { font-size: 1.7rem; color: var(--text-main); font-weight: 800; margin-bottom: 16px; line-height: 1.4; }
+    .hero-box h2 { font-size: 1.65rem; color: var(--text-main); font-weight: 800; margin-bottom: 14px; }
     .hero-box span { color: var(--accent); }
 
+    /* Filter Bar */
+    .subject-filter-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      justify-content: flex-start;
+      scrollbar-width: none;
+      margin-bottom: 14px;
+    }
+    .subject-filter-bar::-webkit-scrollbar { display: none; }
+    @media (min-width: 600px) {
+      .subject-filter-bar { justify-content: center; }
+    }
+
+    .subject-chip {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .subject-chip.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+
+    /* Suggestions Grid */
     .suggestion-row {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 12px;
+      padding-bottom: 8px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
     .sug-chip {
-      background: #ffffff;
+      background: var(--surface);
       border: 1px solid var(--border-strong);
-      color: #0369a1;
-      padding: 9px 16px;
-      border-radius: 24px;
-      font-size: 0.85rem;
+      color: var(--accent);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
       font-weight: 600;
       white-space: nowrap;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
       transition: all 0.2s;
     }
-    .sug-chip:hover { background: #e0f2fe; border-color: var(--accent); transform: translateY(-2px); }
+    .sug-chip:hover { background: rgba(56, 189, 248, 0.12); border-color: var(--accent); transform: translateY(-1px); }
 
     /* Chat Messages */
     .user-msg {
-      background: var(--primary);
+      background: linear-gradient(135deg, #0284c7, #2563eb);
       color: white;
-      padding: 14px 18px;
-      border-radius: 18px;
+      padding: 12px 18px;
+      border-radius: 20px;
       border-bottom-right-radius: 4px;
       align-self: flex-end;
       max-width: 88%;
-      font-size: 1rem;
+      font-size: 0.96rem;
       font-weight: 500;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
       word-break: break-word;
     }
 
     .ai-msg {
       background: var(--surface);
       border: 1px solid var(--border-strong);
-      padding: 22px;
-      border-radius: 18px;
+      padding: 18px 20px;
+      border-radius: 20px;
       border-bottom-left-radius: 4px;
       color: var(--text-main);
-      font-size: 1.02rem;
-      line-height: 1.8;
+      font-size: 0.98rem;
+      line-height: 1.75;
       box-shadow: var(--shadow);
       width: 100%;
       word-break: break-word;
@@ -159,51 +231,48 @@
     .ai-msg ul, .ai-msg ol { margin-left: 20px; margin-bottom: 12px; }
     .ai-msg li { margin-bottom: 6px; }
 
-    /* Tables */
-    .table-wrap {
+    /* Gemini Floating Wave Animation Lines */
+    .gemini-loader-stage {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 10px 4px;
       width: 100%;
-      overflow-x: auto;
-      margin: 18px 0;
-      border: 1px solid var(--border-strong);
-      border-radius: 12px;
-      background: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: auto;
+    .gemini-line {
+      height: 10px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--surface-elevated) 25%, var(--accent) 50%, var(--surface-elevated) 75%);
+      background-size: 200% 100%;
+      animation: geminiWave 1.6s infinite ease-in-out;
     }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      word-break: normal;
-      overflow-wrap: normal;
-      white-space: normal;
-      min-width: 120px;
-    }
-    th { background: #f1f5f9; color: var(--accent); font-weight: 700; }
-    tr:nth-child(even) { background: #f8fafc; }
+    .gemini-line:nth-child(1) { width: 90%; animation-delay: 0s; }
+    .gemini-line:nth-child(2) { width: 75%; animation-delay: 0.2s; }
+    .gemini-line:nth-child(3) { width: 55%; animation-delay: 0.4s; }
 
+    @keyframes geminiWave {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Action Toolbar */
     .action-row {
-      margin-top: 16px;
-      padding-top: 12px;
+      margin-top: 14px;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
       display: flex;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .act-btn {
-      background: #f1f5f9;
+      background: var(--surface-elevated);
       border: 1px solid var(--border-strong);
       color: var(--text-muted);
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: 8px;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -211,164 +280,300 @@
       gap: 5px;
       transition: 0.2s;
     }
-    .act-btn:hover { color: var(--accent); background: #e2e8f0; }
+    .act-btn:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* Floating Capsule Dock */
-    .dock {
+    /* Gemini Modern Floating Dock (Rounded Card) */
+    .dock-wrapper {
       position: fixed;
-      bottom: 16px;
+      bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 24px);
-      max-width: 780px;
+      max-width: 760px;
       background: var(--surface);
       border: 1px solid var(--border-strong);
-      border-radius: 40px;
-      padding: 10px 14px 10px 20px;
+      border-radius: 28px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       z-index: 100;
     }
 
-    .dock input {
+    .dock-input {
       flex: 1;
       background: transparent;
       border: none;
       outline: none;
-      padding: 8px 0;
-      font-size: 1.02rem;
+      padding: 8px 6px;
+      font-size: 0.98rem;
       font-family: inherit;
       color: var(--text-main);
     }
-    .dock input::placeholder { color: var(--text-muted); }
+    .dock-input::placeholder { color: var(--text-muted); }
 
-    .dock-btn {
+    .icon-action-btn {
       background: transparent;
       border: none;
-      color: var(--text-muted);
       width: 40px;
       height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
       cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
     }
-    .dock-btn:hover { color: var(--accent); background: #f1f5f9; }
+    .icon-action-btn:hover { color: var(--accent); background: var(--surface-elevated); }
 
-    /* Voice Wave */
-    .voice-bars {
+    /* Multi-Bar Gemini Active Voice Animation */
+    .gemini-voice-wave {
       display: none;
       align-items: center;
-      gap: 3px;
-      height: 18px;
-      padding: 0 4px;
+      justify-content: center;
+      gap: 4px;
+      flex: 1;
+      height: 36px;
     }
-    .voice-bars.listening { display: flex; }
-    .v-bar {
-      width: 3px;
-      border-radius: 3px;
-      animation: voiceWave 0.8s infinite ease-in-out alternate;
+    .gemini-voice-wave.active { display: flex; }
+
+    .wave-bar {
+      width: 4px;
+      height: 12px;
       background: var(--accent);
+      border-radius: 4px;
+      animation: barDance 1s ease-in-out infinite alternate;
     }
-    .v-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
-    .v-bar:nth-child(2) { height: 16px; animation-delay: 0.3s; }
-    .v-bar:nth-child(3) { height: 10px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+    .wave-bar:nth-child(6) { animation-delay: 0.6s; }
+    .wave-bar:nth-child(7) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(8) { animation-delay: 0.1s; }
 
-    @keyframes voiceWave {
-      from { height: 4px; }
-      to { height: 20px; }
+    @keyframes barDance {
+      0% { height: 6px; transform: scaleY(0.4); }
+      100% { height: 28px; transform: scaleY(1.3); }
     }
 
-    .send-btn {
-      background: var(--primary);
+    .send-circle-btn {
+      background: #0284c7;
       color: white;
       border: none;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      font-weight: bold;
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      flex-shrink: 0;
+      transition: transform 0.15s ease;
+    }
+    .send-circle-btn:hover { transform: scale(1.05); }
+
+    .stop-square-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
 
+  <!-- TOP HEADER -->
   <header class="app-header">
-    <a href="index.html" class="btn-back">⬅ डैशबोर्ड</a>
-    <div class="brand-title">Nischay<span>Desk</span> AI</div>
-    <button onclick="location.reload()" style="background:none; border:none; font-size: 1.2rem; cursor:pointer;" title="रीफ्रेश">🔄</button>
+    <div class="header-left">
+      <a href="index.html" class="btn-back">⬅ डैशबोर्ड</a>
+      <div class="brand-title">Nischay<span>Desk</span> AI</div>
+    </div>
+    
+    <div class="header-right">
+      <button class="theme-toggle-pill" id="themeTogglePill" onclick="toggleTheme()" title="थीम बदलें">
+        <span id="themeIcon">🌙</span> <span id="themeText">डार्क</span>
+      </button>
+      <button onclick="clearChatHistory()" class="icon-action-btn" title="इतिहास साफ़ करें">
+        <!-- Clean Trash Icon SVG -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
+    </div>
   </header>
 
+  <!-- MAIN CHAT VIEWPORT -->
   <main class="viewport" id="viewport">
+    
     <div class="hero-box" id="heroBox">
       <h2 id="heroGreeting">आज <span>क्या हल</span> करना है?</h2>
-      <div class="suggestion-row">
-        <div class="sug-chip" onclick="askQuick('(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।')">📐 (A+B)^2 फॉर्मूला</div>
-        <div class="sug-chip" onclick="askQuick('चाल और वेग में क्या अंतर है? विस्तार से समझाएं।')">📊 चाल vs वेग</div>
+      
+      <!-- Subject Quick Filters -->
+      <div class="subject-filter-bar">
+        <button class="subject-chip active" onclick="setSubjectMode('all', this)">🌟 सामान्य</button>
+        <button class="subject-chip" onclick="setSubjectMode('physics', this)">⚡ भौतिकी</button>
+        <button class="subject-chip" onclick="setSubjectMode('chemistry', this)">🧪 रसायन</button>
+        <button class="subject-chip" onclick="setSubjectMode('math', this)">📐 गणित</button>
+        <button class="subject-chip" onclick="setSubjectMode('sst_sanskrit', this)">🌍 SST / संस्कृत</button>
+      </div>
+
+      <!-- Suggestion Chips Container -->
+      <div class="suggestion-row" id="suggestionRow">
+        <div class="sug-chip" onclick="askQuick('(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।')">📐 (A+B)^2 सूत्र</div>
+        <div class="sug-chip" onclick="askQuick('प्रकाश के परावर्तन और अपवर्तन के नियम समझाइए।')">💡 प्रकाश के नियम</div>
         <div class="sug-chip" onclick="askQuick('न्यूटन के द्वितीय नियम F = ma का निगमन करें।')">🍎 F = ma निगमन</div>
-        <div class="sug-chip" onclick="askQuick('आपको किसने बनाया है और आपके बारे में बताएं?')">🤖 आपको किसने बनाया?</div>
+        <div class="sug-chip" onclick="askQuick('आपको किसने बनाया है और आपके बारे में बताएं?')">🤖 NischayDesk परिचय</div>
       </div>
     </div>
 
-    <div id="chatFeed" style="display:flex; flex-direction:column; gap:22px;"></div>
+    <!-- Chat Stream Container -->
+    <div id="chatFeed" style="display:flex; flex-direction:column; gap:16px;"></div>
   </main>
 
-  <footer class="dock">
-    <button class="dock-btn" onclick="document.getElementById('chatFeed').innerHTML=''; document.getElementById('heroBox').style.display='block';" title="नया चैट">🗑️</button>
-    <input type="text" id="userInput" placeholder="NischayDesk से कोई भी सवाल पूछें..." onkeypress="if(event.key==='Enter') sendQuery()">
+  <!-- BOTTOM GEMINI DOCK -->
+  <footer class="dock-wrapper">
     
-    <div class="voice-bars" id="voiceBars">
-      <div class="v-bar"></div>
-      <div class="v-bar"></div>
-      <div class="v-bar"></div>
+    <!-- Gemini Voice Active Wave State -->
+    <div class="gemini-voice-wave" id="geminiVoiceWave">
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
     </div>
 
-    <button class="dock-btn" id="micBtn" onclick="triggerVoice()" title="माइक">🎙️</button>
-    <button class="send-btn" onclick="sendQuery()">➔</button>
+    <!-- Main Input Box -->
+    <input type="text" id="userInput" class="dock-input" placeholder="NischayDesk से कोई भी सवाल पूछें..." onkeypress="if(event.key==='Enter') sendQuery()">
+
+    <!-- Gemini Style Realistic Microphone Button -->
+    <button class="icon-action-btn" id="micBtn" onclick="triggerVoice()" title="आवाज़ से पूछें">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <line x1="12" y1="19" x2="12" y2="23"></line>
+        <line x1="8" y1="23" x2="16" y2="23"></line>
+      </svg>
+    </button>
+
+    <!-- Upward Arrow Send Button -->
+    <button class="send-circle-btn" id="sendBtn" onclick="sendQuery()" title="भेजें">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </button>
+
+    <!-- Stop Generation Button -->
+    <button class="stop-square-btn" id="stopBtn" onclick="stopGenerating()" title="रोकें">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+      </svg>
+    </button>
   </footer>
 
   <script>
-    const API_KEY = "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";
+    // 1. Theme Syncer
+    function initTheme() {
+      const savedTheme = localStorage.getItem('nischay_theme');
+      const isLight = (savedTheme === 'light');
+      updateThemeUI(isLight);
+    }
 
-    // लॉगिन यूजर का नाम चेक करने और हेडिंग अपडेट करने का फंक्शन
+    function toggleTheme() {
+      const isCurrentlyLight = document.documentElement.classList.contains('light-mode');
+      const targetLight = !isCurrentlyLight;
+      localStorage.setItem('nischay_theme', targetLight ? 'light' : 'dark');
+      updateThemeUI(targetLight);
+    }
+
+    function updateThemeUI(isLight) {
+      if (isLight) {
+        document.documentElement.classList.add('light-mode');
+        document.getElementById('themeIcon').innerText = '☀️';
+        document.getElementById('themeText').innerText = 'लाइट';
+      } else {
+        document.documentElement.classList.remove('light-mode');
+        document.getElementById('themeIcon').innerText = '🌙';
+        document.getElementById('themeText').innerText = 'डार्क';
+      }
+    }
+    initTheme();
+
+    const API_KEY = "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";
+    let isGenerating = false;
+    let stopGenerationFlag = false;
+
+    // 2. User Greeting (Synced with auth.js)
     (function checkUserLogin() {
       const greeting = document.getElementById('heroGreeting');
       if (!greeting) return;
 
-      // सभी संभावित कीज़ से यूजर डेटा खोजना
-      let userData = localStorage.getItem('nischay_user') || 
-                     localStorage.getItem('currentUser') || 
-                     localStorage.getItem('user') || 
-                     localStorage.getItem('google_user') || 
-                     sessionStorage.getItem('user');
-
-      let userName = "";
-
-      if (userData) {
-        try {
-          const parsed = JSON.parse(userData);
-          userName = parsed.name || parsed.displayName || parsed.given_name || "";
-        } catch(e) {
-          userName = userData;
-        }
-      }
-
+      const userName = localStorage.getItem('nischay_user_name') || "";
       if (userName && userName.trim() !== "") {
-        const firstName = userName.trim().split(" ")[0]; // पहला नाम
+        const firstName = userName.trim().split(" ")[0];
         greeting.innerHTML = `नमस्ते ${firstName}! आज <span>क्या हल</span> करना है?`;
       } else {
         greeting.innerHTML = `आज <span>क्या हल</span> करना है?`;
       }
     })();
+
+    // 3. Subject-Specific Suggestions
+    const promptModes = {
+      all: [
+        { text: "📐 (A+B)^2 सूत्र", q: "(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।" },
+        { text: "💡 प्रकाश के नियम", q: "प्रकाश के परावर्तन और अपवर्तन के नियम समझाइए।" },
+        { text: "🍎 F = ma निगमन", q: "न्यूटन के द्वितीय नियम F = ma का निगमन करें।" },
+        { text: "🤖 NischayDesk परिचय", q: "आपको किसने बनाया है और आपके बारे में बताएं?" }
+      ],
+      physics: [
+        { text: "⚡ ओम का नियम", q: "ओम का नियम क्या है? V = IR का सत्यापन समझाइए।" },
+        { text: "🔭 लेंस सूत्र", q: "गोलीय लेंस के लिए 1/f = 1/v - 1/u सूत्र समझाइए।" },
+        { text: "🧲 फ्लेमिंग वामहस्त नियम", q: "फ्लेमिंग का वामहस्त नियम और इसका उपयोग बताइए।" }
+      ],
+      chemistry: [
+        { text: "⚗️ रासायनिक समीकरण संतुलन", q: "रासायनिक समीकरण को संतुलित करने की आसान विधि समझाइए।" },
+        { text: "🧪 pH मान संकल्पना", q: "pH मान क्या है? अम्ल और क्षार के pH मान का महत्व बताइए।" },
+        { text: "🧼 साबुनीकरण अभिक्रिया", q: "साबुन और अपमार्जक में क्या अंतर है? साबुनीकरण समझाइए।" }
+      ],
+      math: [
+        { text: "📊 द्विघात सूत्र", q: "द्विघात समीकरण ax^2 + bx + c = 0 का श्रीधराचार्य सूत्र सिद्ध करें।" },
+        { text: "📐 थेल्स प्रमेय", q: "थेल्स प्रमेय (आधारभूत आनुपातिकता प्रमेय) को सिद्ध कीजिए।" },
+        { text: "📈 त्रिकोणमितीय सर्वसमिकाएं", q: "sin^2 θ + cos^2 θ = 1 सर्वसमिका को ज्यामितीय विधि से सिद्ध करें।" }
+      ],
+      sst_sanskrit: [
+        { text: "🌍 यूरोप में राष्ट्रवाद", q: "इटली एवं जर्मनी के एकीकरण में मेजिनी और बिस्मार्क का योगदान बताइए।" },
+        { text: "📜 मंगलम् पाठ", q: "संस्कृत के 'मंगलम्' पाठ के आधार पर सत्य के स्वरूप की व्याख्या करें।" },
+        { text: "🇮🇳 जलियांवाला बाग", q: "जलियांवाला बाग हत्याकांड पर एक संक्षिप्त टिप्पणी लिखें।" }
+      ]
+    };
+
+    function setSubjectMode(mode, btn) {
+      document.querySelectorAll('.subject-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+
+      const sugRow = document.getElementById('suggestionRow');
+      const list = promptModes[mode] || promptModes.all;
+      sugRow.innerHTML = list.map(item => `
+        <div class="sug-chip" onclick="askQuick('${item.q}')">${item.text}</div>
+      `).join('');
+    }
 
     function askQuick(q) {
       document.getElementById('userInput').value = q;
@@ -380,13 +585,22 @@
                  .replace(/\\\((.*?)\\\)/gs, '$$$1$$');
     }
 
-    // Typewriter Effect
+    // 4. Smooth Typewriter with Markdown & MathJax
     function streamTypewriter(element, text, onComplete) {
       let index = 0;
       element.innerHTML = '';
-      const step = Math.max(1, Math.floor(text.length / 50));
+      const step = Math.max(1, Math.floor(text.length / 45));
 
       function typeNext() {
+        if (stopGenerationFlag) {
+          element.innerHTML = marked.parse(sanitizeFormulas(text));
+          if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise([element]);
+          }
+          if (onComplete) onComplete();
+          return;
+        }
+
         if (index < text.length) {
           index += step;
           const currentText = text.substring(0, index);
@@ -397,9 +611,7 @@
         } else {
           const cleanedFinal = sanitizeFormulas(text);
           const parsedFinal = marked.parse(cleanedFinal);
-          const finalHTML = parsedFinal.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
-          
-          element.innerHTML = finalHTML;
+          element.innerHTML = parsedFinal;
 
           if (window.MathJax && window.MathJax.typesetPromise) {
             window.MathJax.typesetPromise([element]);
@@ -411,27 +623,39 @@
       typeNext();
     }
 
+    // 5. Query Engine with Gemini 3-Floating-Lines Stage
     async function sendQuery() {
       const input = document.getElementById('userInput');
       const feed = document.getElementById('chatFeed');
       const hero = document.getElementById('heroBox');
+      const sendBtn = document.getElementById('sendBtn');
+      const stopBtn = document.getElementById('stopBtn');
       const query = input.value.trim();
 
-      if (!query) return;
+      if (!query || isGenerating) return;
 
       hero.style.display = 'none';
       feed.style.display = 'flex';
 
-      // User Message
+      // User Bubble
       feed.innerHTML += `<div class="user-msg">${query}</div>`;
       input.value = '';
       scrollToBottom();
 
-      // Loading Card
+      isGenerating = true;
+      stopGenerationFlag = false;
+      sendBtn.style.display = 'none';
+      stopBtn.style.display = 'flex';
+
+      // Three Gemini Floating Lines (No generic text)
       const loadId = 'load-' + Date.now();
       feed.innerHTML += `
         <div class="ai-msg" id="${loadId}">
-          <div style="color:var(--text-muted); font-size:1rem;">उत्तर तैयार हो रहा है... ⏳</div>
+          <div class="gemini-loader-stage">
+            <div class="gemini-line"></div>
+            <div class="gemini-line"></div>
+            <div class="gemini-line"></div>
+          </div>
         </div>
       `;
       scrollToBottom();
@@ -446,7 +670,10 @@
           body: JSON.stringify({
             model: "openai/gpt-oss-20b",
             messages: [
-              { role: "system", content: "You are NischayDesk AI, a smart study assistant for Bihar Board students, powered by OpenAI/Groq language model technology. STRICT RULES: 1. Do NOT introduce yourself or mention your creator in regular academic answers. 2. ONLY mention your creator (Prince Kumar, founder of NischayDesk and a Class 11th Science student) and that you are built on OpenAI/Groq technology if the user explicitly asks 'Who created you?', 'तुम्हें किसने बनाया है?', 'तुम कौन हो?', or similar identity questions. 3. Format all math and physics equations strictly in LaTeX format using $ or $$ so MathJax can render them correctly." },
+              { 
+                role: "system", 
+                content: "You are NischayDesk AI, a dedicated study assistant for Bihar Board students, founded by Prince Kumar. Deliver structured, clear step-by-step solutions. Always format math/physics equations in LaTeX using $ or $$." 
+              },
               { role: "user", content: query }
             ],
             temperature: 0.3,
@@ -464,7 +691,8 @@
             <div class="stream-content"></div>
             <div class="action-row" style="display:none;">
               <button class="act-btn" onclick="speakAnswer(this)">🔊 सुनाएँ</button>
-              <button class="act-btn" onclick="copyAnswer(this)">📋 कॉपी करें</button>
+              <button class="act-btn" onclick="copyAnswer(this)">📋 कॉपी</button>
+              <button class="act-btn" onclick="downloadAnswer(this)">📥 सेव करें</button>
             </div>
           `;
 
@@ -473,29 +701,43 @@
 
           streamTypewriter(contentBox, rawText, () => {
             actionBox.style.display = 'flex';
+            finishGenerating();
           });
 
         } else {
-          loadElem.innerHTML = `<span style="color:red;">⚠️ एरर: उत्तर प्राप्त नहीं हुआ। कृपया पुनः प्रयास करें।</span>`;
+          loadElem.innerHTML = `<span style="color:#ef4444;">⚠️ उत्तर प्राप्त नहीं हुआ। कृपया पुनः प्रयास करें।</span>`;
+          finishGenerating();
         }
       } catch (err) {
-        document.getElementById(loadId).innerHTML = `<span style="color:red;">⚠️ नेटवर्क कनेक्शन फेल! कृपया इंटरनेट चेक करें।</span>`;
+        document.getElementById(loadId).innerHTML = `<span style="color:#ef4444;">⚠️ नेटवर्क एरर! कृपया इंटरनेट जांचें।</span>`;
+        finishGenerating();
       }
       scrollToBottom();
     }
 
-    // Voice Input via Mic
+    function stopGenerating() {
+      stopGenerationFlag = true;
+      finishGenerating();
+    }
+
+    function finishGenerating() {
+      isGenerating = false;
+      document.getElementById('sendBtn').style.display = 'flex';
+      document.getElementById('stopBtn').style.display = 'none';
+    }
+
+    // 6. Gemini Voice Input Engine
     let recognizer;
     let isListening = false;
 
     function triggerVoice() {
-      const bars = document.getElementById('voiceBars');
-      const micBtn = document.getElementById('micBtn');
+      const voiceWave = document.getElementById('geminiVoiceWave');
       const input = document.getElementById('userInput');
+      const micBtn = document.getElementById('micBtn');
 
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
-        alert("कृपया मोबाइल में Google Chrome ब्राउज़र का उपयोग करें।");
+        alert("माइक के लिए कृपया Google Chrome ब्राउज़र का उपयोग करें।");
         return;
       }
 
@@ -510,9 +752,9 @@
 
       recognizer.onstart = () => {
         isListening = true;
-        bars.classList.add('listening');
-        micBtn.style.color = '#0284c7';
-        input.placeholder = "सुन रहा हूँ... बोलिए! 🎙️";
+        input.style.display = 'none';
+        voiceWave.classList.add('active');
+        micBtn.style.color = '#38bdf8';
       };
 
       recognizer.onresult = (e) => {
@@ -522,9 +764,9 @@
 
       recognizer.onerror = recognizer.onend = () => {
         isListening = false;
-        bars.classList.remove('listening');
+        voiceWave.classList.remove('active');
+        input.style.display = 'block';
         micBtn.style.color = '';
-        input.placeholder = "NischayDesk से कोई भी सवाल पूछें...";
       };
 
       try {
@@ -534,33 +776,43 @@
       }
     }
 
+    // 7. Utility Actions: Speak, Copy & Download
     function speakAnswer(btn) {
-      if (!('speechSynthesis' in window)) {
-        alert("आपके ब्राउज़र में आवाज़ का फीचर उपलब्ध नहीं है।");
-        return;
-      }
+      if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
       
       const card = btn.closest('.ai-msg');
-      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी करें', '').trim();
+      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी', '').replace('📥 सेव करें', '').trim();
       
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'hi-IN';
       utterance.rate = 0.95;
-      
-      let voices = window.speechSynthesis.getVoices();
-      let bestVoice = voices.find(v => v.lang === 'hi-IN' && (v.name.includes('Google') || v.name.includes('Female'))) ||
-                      voices.find(v => v.lang === 'hi-IN');
-      if (bestVoice) utterance.voice = bestVoice;
-
       window.speechSynthesis.speak(utterance);
     }
 
     function copyAnswer(btn) {
       const card = btn.closest('.ai-msg');
-      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी करें', '').trim();
+      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी', '').replace('📥 सेव करें', '').trim();
       navigator.clipboard.writeText(text);
-      alert("उत्तर सफलतापूर्वक कॉपी हो गया! 📋");
+      alert("उत्तर कॉपी हो गया! 📋");
+    }
+
+    function downloadAnswer(btn) {
+      const card = btn.closest('.ai-msg');
+      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी', '').replace('📥 सेव करें', '').trim();
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `NischayDesk_Answer_${Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function clearChatHistory() {
+      if (confirm("क्या आप पूरी चैट साफ़ करना चाहते हैं?")) {
+        document.getElementById('chatFeed').innerHTML = '';
+        document.getElementById('heroBox').style.display = 'block';
+      }
     }
 
     function scrollToBottom() {
