@@ -53,21 +53,33 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let currentSubjectName = "";
 
-  // 1. Initialize & Start Exam
-  startExamBtn.addEventListener('click', function () {
-    if (!window.NischaySyllabus || !window.NischaySyllabus.questionBank) {
-      alert("प्रश्न बैंक लोड नहीं हो सका। कृपया 'syllabus-data.js' चेक करें!");
-      return;
-    }
-
+  // 1. Initialize & Start Exam (JSON Loader Integrated)
+  startExamBtn.addEventListener('click', async function () {
     const selectedSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
     const selectedPattern = testPatternSelect ? testPatternSelect.value : "speed";
     const selectedClass = testClassSelect ? testClassSelect.value : "10";
 
-    // क्लास और सब्जेक्ट को मिलाकर खोजना (जैसे "10-physics" या "11-physics")
-    const classSubjectKey = `${selectedClass}-${selectedSubject}`;
-    const rawBank = window.NischaySyllabus.questionBank[classSubjectKey] || 
-                    window.NischaySyllabus.questionBank[selectedSubject] || [];
+    const fileName = `${selectedClass}-${selectedSubject}.json`;
+    const jsonPath = `./data/${fileName}`;
+
+    let rawBank = [];
+
+    // 1. JSON फाइल से फेच करने का प्रयास
+    try {
+      const response = await fetch(jsonPath);
+      if (response.ok) {
+        rawBank = await response.json();
+      }
+    } catch (e) {
+      console.log("JSON लोड नहीं हुआ, लोकल बैकअप चेक कर रहे हैं...");
+    }
+
+    // 2. अगर JSON न मिले तो syllabus-data.js से बैकअप डेटा उठाना
+    if (rawBank.length === 0 && window.NischaySyllabus && window.NischaySyllabus.questionBank) {
+      const classSubjectKey = `${selectedClass}-${selectedSubject}`;
+      rawBank = window.NischaySyllabus.questionBank[classSubjectKey] || 
+                window.NischaySyllabus.questionBank[selectedSubject] || [];
+    }
 
     if (rawBank.length === 0) {
       alert(`कक्षा ${selectedClass} के ${selectedSubject.toUpperCase()} विषय के लिए प्रश्न जल्द ही जोड़े जा रहे हैं!`);
