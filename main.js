@@ -3,7 +3,7 @@
    Engineered & Architected by Prince Kumar
    ========================================================================== */
 
-// 0. सबसे पहले सुरक्षित थीम लोड (पेज रेंडर होने से पहले)
+// 0. सबसे पहले सुरक्षित थीम लोड (पेज लोड होने से पहले फ्लैशिंग रोकने के लिए)
 (function () {
   try {
     const savedTheme = localStorage.getItem('nischay_theme');
@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const themeSwitch = document.getElementById('themeSwitch');
   const savedTheme = localStorage.getItem('nischay_theme');
 
-  // इनपुट चेकबॉक्स को सेव की हुई थीम से सिंक करें
   if (themeSwitch) {
     themeSwitch.checked = (savedTheme === 'light');
     themeSwitch.addEventListener('change', function () {
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. Dashboard Dynamic Metrics & Locker Syncer (Runs on index.html)
+  // 3. Dashboard Dynamic Metrics & Locker Syncer (Runs safely on index.html)
   syncDashboardMetrics();
 
   function syncDashboardMetrics() {
@@ -71,16 +70,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sync counts from syllabus-data.js
     if (window.NischaySyllabus) {
-      if (totalNotesCount) {
-        if (window.NischaySyllabus.subjects) {
-          let count = 0;
-          window.NischaySyllabus.subjects.forEach(function (s) {
+      if (totalNotesCount && window.NischaySyllabus.subjects) {
+        let count = 0;
+        window.NischaySyllabus.subjects.forEach(function (s) {
+          if (s.chapters && Array.isArray(s.chapters)) {
             count += s.chapters.length;
-          });
-          totalNotesCount.innerText = `${count}+`;
-        } else if (window.NischaySyllabus.notesList) {
-          totalNotesCount.innerText = `${window.NischaySyllabus.notesList.length}+`;
-        }
+          }
+        });
+        totalNotesCount.innerText = `${count}+`;
       }
 
       if (totalQuizCount && window.NischaySyllabus.questionBank) {
@@ -133,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 5. In-Browser Smart Tools Logic (Doc Converter & Eligibility Checker)
   // ==========================================================================
 
-  // --- Tool A: Direct Image to PDF Converter Engine (HTML5 Canvas Aspect Ratio Fix) ---
+  // --- Tool A: Direct Image to PDF Converter Engine ---
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
   const closeConverterBtn = document.getElementById('closeConverterBtn');
@@ -185,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (!jsPDF) {
             alert("PDF इंजन लोड नहीं हो सका। कृपया पेज रिफ्रेश करें।");
             generatePdfBtn.disabled = false;
-            generatePdfBtn.innerText = "⚡ PDF जेनरेट और डाउनलोड करें";
+            generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
             return;
           }
 
@@ -196,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
           for (let i = 0; i < chosenImages.length; i++) {
             const file = chosenImages[i];
 
-            // 1. इमेज लोड करें
             const img = await new Promise((resolve, reject) => {
               const image = new Image();
               image.onload = () => resolve(image);
@@ -204,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
               image.src = URL.createObjectURL(file);
             });
 
-            // 2. Canvas के जरिए इमेज को सही डायमेंशन और ऑप्टिमाइज़ क्वालिटी में कन्वर्ट करें
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
@@ -229,9 +224,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
             URL.revokeObjectURL(img.src);
 
-            // 3. A4 पेज के हिसाब से मार्जिन और सही स्केलिंग
             const imgRatio = targetW / targetH;
-            let finalW = pageWidth - 20; // 10mm मार्जिन
+            let finalW = pageWidth - 20; // 10mm Margin
             let finalH = finalW / imgRatio;
 
             if (finalH > (pageHeight - 20)) {
@@ -249,27 +243,27 @@ document.addEventListener('DOMContentLoaded', function () {
             pdf.addImage(optimizedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
           }
 
-          // Direct Download
+          // File Save
           pdf.save(`NischayDesk_Notes_${Date.now()}.pdf`);
 
           selectedFilesCount.innerText = "✓ PDF सफलतापूर्वक डाउनलोड हो गई!";
           setTimeout(function () {
             docConverterModal.classList.remove('active');
             generatePdfBtn.disabled = false;
-            generatePdfBtn.innerText = "⚡ PDF जेनरेट और डाउनलोड करें";
+            generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
           }, 1200);
 
         } catch (err) {
           console.error("PDF Export Error:", err);
-          alert("PDF बनाने में समस्या आई।");
+          alert("PDF बनाने में समस्या आई। कृपया पुनः प्रयास करें।");
           generatePdfBtn.disabled = false;
-          generatePdfBtn.innerText = "⚡ PDF जेनरेट और डाउनलोड करें";
+          generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
         }
       });
     }
   }
 
-  // --- Tool B: Eligibility Checker ---
+  // --- Tool B: Full Career & Exam Eligibility Checker ---
   const openEligibilityBtn = document.getElementById('openEligibilityBtn');
   const eligibilityModal = document.getElementById('eligibilityModal');
   const closeEligibilityBtn = document.getElementById('closeEligibilityBtn');
@@ -300,32 +294,44 @@ document.addEventListener('DOMContentLoaded', function () {
         const cls = clsElem ? clsElem.value : '11';
         const stm = stmElem ? stmElem.value : 'pcm';
 
-        let html = `<b style="color:var(--brand-accent);">आप इन परीक्षाओं और अवसरों के लिए पात्र (Eligible) हैं:</b><ul style="margin-top:8px; padding-left:18px;">`;
+        let html = `<b style="color:var(--brand-accent); font-size: 0.95rem;">🎯 आपके चुने गए विवरण अनुसार उपलब्ध अवसर:</b><ul style="margin-top:10px; padding-left:18px; display:flex; flex-direction:column; gap:8px;">`;
 
         if (cls === '10') {
           html += `
-            <li><b>बिहार बोर्ड / CBSE 10th बोर्ड:</b> योग्य।</li>
-            <li><b>NTSE (राष्ट्रीय प्रतिभा खोज):</b> छात्रवृत्ति परीक्षा के लिए योग्य।</li>
-            <li><b>पॉलिटेक्निक डिप्लोमा प्रवेश परीक्षा (PE):</b> 10वीं के बाद इंजीनियरिंग डिप्लोमा हेतु योग्य।</li>
-            <li><b>ITI प्रवेश परीक्षा:</b> योग्य।</li>
+            <li><b>BSEB / CBSE 10th बोर्ड:</b> वार्षिक मैट्रिक परीक्षा हेतु योग्य।</li>
+            <li><b>11वीं साइंस स्ट्रीम (PCM/PCB):</b> इंजीनियरिंग व मेडिकल फाउंडेशन हेतु प्रवेश योग्य।</li>
+            <li><b>बिहार पॉलिटेक्निक प्रवेश परीक्षा (DCECE - PE):</b> 3-वर्षीय जूनियर इंजीनियरिंग डिप्लोमा।</li>
+            <li><b>ITI प्रवेश परीक्षा (ITICAT):</b> तकनीकी एवं वोकेशनल ट्रेड्स में सरकारी डिप्लोमा।</li>
+            <li><b>NTSE एवं NMMS छात्रवृत्ति परीक्षा:</b> मेधा छात्रवृत्ति योजना।</li>
+            <li><b>डिफेंस भर्ती (Army Agniveer / Navy MR):</b> 10वीं पास शारीरिक व लिखित परीक्षा।</li>
           `;
         } else if (cls === '11' || cls === '12') {
+          html += `<li><b>BSEB इंटरमीडिएट वार्षिक परीक्षा:</b> 12वीं बोर्ड पंजीकरण योग्य।</li>`;
+
           if (stm === 'pcm' || stm === 'pcmb') {
             html += `
-              <li><b>JEE Main & JEE Advanced:</b> IIT, NIT और शीर्ष इंजीनियरिंग संस्थानों हेतु पात्र।</li>
-              <li><b>NDA (National Defence Academy):</b> भारतीय थलसेना, नौसेना व वायुसेना हेतु पात्र।</li>
-              <li><b>BCECE (बिहार संयुक्त प्रवेश परीक्षा):</b> राज्य इंजीनियरिंग कॉलेजों हेतु पात्र।</li>
-              <li><b>CUET UG:</b> केंद्रीय विश्वविद्यालयों (DU, BHU) में B.Sc./B.Tech हेतु पात्र।</li>
+              <li><b>NTA JEE (Main & Advanced):</b> IIT, NIT, IIIT में B.Tech/इंजीनियरिंग प्रवेश।</li>
+              <li><b>NDA & NA (UPSC):</b> भारतीय थलसेना, नौसेना व वायुसेना में सीधे ऑफिसर रैंक (लेफ्टिनेंट)।</li>
+              <li><b>BCECE इंजीनियरिंग:</b> बिहार राज्य के सरकारी इंजीनियरिंग कॉलेजों में प्रवेश।</li>
+              <li><b>CUET (UG):</b> DU, BHU, JNU जैसी केंद्रीय यूनिवर्सिटीज में B.Sc./B.Tech कोर्सेज।</li>
+              <li><b>Airforce Agniveer (X-Group):</b> भारतीय वायुसेना टेक्निकल भर्ती।</li>
             `;
           }
           if (stm === 'pcb' || stm === 'pcmb') {
             html += `
-              <li><b>NEET UG:</b> MBBS, BDS, BAMS और मेडिकल कोर्सेज हेतु पूर्णतः पात्र।</li>
-              <li><b>B.Sc. Nursing & पैरामेडिकल:</b> AIIMS व राज्य स्तरीय नर्सिंग प्रवेश हेतु पात्र।</li>
-              <li><b>ICAR AIEEA:</b> कृषि विज्ञान (B.Sc. Agriculture) हेतु पात्र।</li>
+              <li><b>NTA NEET (UG):</b> MBBS, BDS, BAMS, BHMS मेडिकल कोर्सेज हेतु अखिल भारतीय परीक्षा।</li>
+              <li><b>AIIMS & State B.Sc. Nursing:</b> सरकारी मेडिकल कॉलेजों में 4-वर्षीय नर्सिंग डिग्री।</li>
+              <li><b>ICAR AIEEA:</b> B.Sc. एग्रीकल्चर, हॉर्टिकल्चर एवं डेयरी साइंस।</li>
+              <li><b>पैरामेडिकल डिप्लोमा (DCECE - PM):</b> लैब तकनीशियन, ओटी असिस्टेंट, फार्मेसी।</li>
             `;
           }
-          html += `<li><b>12th बोर्ड परीक्षा:</b> इंटरमीडिएट बोर्ड परीक्षा के लिए पंजीकरण योग्य।</li>`;
+          if (stm === 'gen') {
+            html += `
+              <li><b>CUET (UG) - जनरल टेस्ट:</b> टॉप यूनिवर्सिटीज में BA, B.Com, BBA एडमिशन।</li>
+              <li><b>SSC CHSL / MTS:</b> 12वीं स्तर पर केंद्र सरकार के मंत्रालयों में क्लर्क भर्ती।</li>
+              <li><b>बिहार पुलिस कांस्टेबल भर्ती:</b> 12वीं उत्तीर्ण अभ्यर्थियों के लिए।</li>
+            `;
+          }
         }
 
         html += `</ul>`;
