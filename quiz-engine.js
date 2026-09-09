@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const testSubjectSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testSubjectSelect'));
   const testPatternSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testPatternSelect'));
   const testClassSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testClassSelect'));
+  const testChapterSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testChapterSelect'));
 
   // Live Exam Stage Elements
   const liveExamBadge = document.getElementById('liveExamBadge');
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!startExamBtn || !testRunningScreen) return;
 
   // Exam State Container
-  /** @type {Array<{id: string, question: string, options: string[], correctIndex: number, explanation: string}>} */
+  /** @type {Array<{id: string, question: string, options: string[], correctIndex: number, explanation: string, chapter?: string|number}>} */
   let activeQuestions = [];
   /** @type {number[]} */
   let userResponses = []; // stores selected option index or -1
@@ -53,16 +54,20 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let currentSubjectName = "";
 
-  // 1. Initialize & Start Exam (JSON Loader Integrated)
+  // 1. Initialize & Start Exam (Dynamic Chapter & Fallback Engine)
   startExamBtn.addEventListener('click', async function () {
     const selectedSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
     const selectedPattern = testPatternSelect ? testPatternSelect.value : "speed";
     const selectedClass = testClassSelect ? testClassSelect.value : "10";
-
-    const fileName = `${selectedClass}-${selectedSubject}.json`;
-    const jsonPath = `./data/${fileName}`;
+    const selectedChapter = testChapterSelect ? testChapterSelect.value : "all";
 
     let rawBank = [];
+
+    // पाथ: यदि विशिष्ट अध्याय चुना गया हो तो ch1/ch2 फ़ाइल नहीं तो मुख्य विषय फ़ाइल
+    const fileName = (selectedChapter === "all")
+      ? `${selectedClass}-${selectedSubject}.json`
+      : `${selectedClass}-${selectedSubject}-${selectedChapter}.json`;
+    const jsonPath = `./data/${fileName}`;
 
     // 1. JSON फाइल से फेच करने का प्रयास
     try {
@@ -71,18 +76,27 @@ document.addEventListener('DOMContentLoaded', function () {
         rawBank = await response.json();
       }
     } catch (e) {
-      console.log("JSON लोड नहीं हुआ, लोकल बैकअप चेक कर रहे हैं...");
+      console.log("JSON फ़ाइल सर्वर पर नहीं मिली, लोकल बैकअप लोड किया जा रहा है...");
     }
 
-    // 2. अगर JSON न मिले तो syllabus-data.js से बैकअप डेटा उठाना
+    // 2. अगर JSON न मिले या खाली हो, तो syllabus-data.js से बैकअप डेटा उठाना
     if (rawBank.length === 0 && window.NischaySyllabus && window.NischaySyllabus.questionBank) {
       const classSubjectKey = `${selectedClass}-${selectedSubject}`;
-      rawBank = window.NischaySyllabus.questionBank[classSubjectKey] || 
-                window.NischaySyllabus.questionBank[selectedSubject] || [];
+      let fullBank = window.NischaySyllabus.questionBank[classSubjectKey] || 
+                     window.NischaySyllabus.questionBank[selectedSubject] || [];
+
+      // यदि विशिष्ट अध्याय चुना गया हो और प्रश्नों में chapter प्रॉपर्टी मौजूद हो
+      if (selectedChapter !== "all" && fullBank.length > 0) {
+        const chNum = parseInt(selectedChapter.replace('ch', ''), 10);
+        const filtered = fullBank.filter(q => q.chapter === chNum || q.chapter === selectedChapter);
+        rawBank = filtered.length > 0 ? filtered : fullBank;
+      } else {
+        rawBank = fullBank;
+      }
     }
 
     if (rawBank.length === 0) {
-      alert(`कक्षा ${selectedClass} के ${selectedSubject.toUpperCase()} विषय के लिए प्रश्न जल्द ही जोड़े जा रहे हैं!`);
+      alert(`कक्षा ${selectedClass} के ${selectedSubject.toUpperCase()} विषय के लिए प्रश्न जोड़े जा रहे हैं। कृपया अन्य विषय चुनें!`);
       return;
     }
 
@@ -90,9 +104,12 @@ document.addEventListener('DOMContentLoaded', function () {
     activeQuestions = [...rawBank];
     userResponses = new Array(activeQuestions.length).fill(-1);
     currentQuestionIndex = 0;
-    remainingSeconds = (selectedPattern === 'board') ? 1200 : (activeQuestions.length * 60);
 
-    currentSubjectName = `Class ${selectedClass}th - ${selectedSubject.toUpperCase()}`;
+    // टाइमर: बोर्ड टेस्ट के लिए 30 मिनट (1800s), स्पीड टेस्ट के लिए 15 मिनट (900s)
+    remainingSeconds = (selectedPattern === 'board') ? 1800 : (activeQuestions.length * 60);
+
+    const chapterText = (selectedChapter === "all") ? "संपूर्ण विषय" : `अध्याय ${selectedChapter.replace('ch', '')}`;
+    currentSubjectName = `Class ${selectedClass}th - ${selectedSubject.toUpperCase()} (${chapterText})`;
     if (liveExamBadge) liveExamBadge.innerText = currentSubjectName;
 
     // Switch to Exam Screen
@@ -252,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 6. Test Evaluation & 3D Result Rendering
+  // 6. Test Evaluation & Result Rendering
   function finalizeAndEvaluateTest() {
     clearInterval(timerInterval);
 
@@ -271,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // NTA Marking: +4, -1
+    // NTA / BSEB Marking: +4 for Correct, -1 for Wrong
     const totalMarks = (correct * 4) - (wrong * 1);
     const maxMarks = activeQuestions.length * 4;
     const attemptedCount = correct + wrong;
@@ -284,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (resWrongCount) resWrongCount.innerText = String(wrong);
     if (resultSubMeta) resultSubMeta.innerText = `${currentSubjectName} - स्कोर रिपोर्ट`;
 
-    // Render Solutions & Explanations
+    // Render Solutions & Detailed Explanations
     if (solutionsAccordionList) {
       let solHtml = '';
       activeQuestions.forEach(function (q, idx) {
@@ -298,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <div class="sol-item">
             <div class="sol-q-title">Q.${idx + 1}: ${q.question}</div>
             <div class="sol-ans-row ${statusClass}">
-              आपका उत्तर: <b>${userAns === -1 ? 'कुछ नहीं' : letters[userAns] + ') ' + q.options[userAns]}</b> (${statusText})
+              आपका उत्तर: <b>${userAns === -1 ? 'कोई विकल्प नहीं चुना' : letters[userAns] + ') ' + q.options[userAns]}</b> (${statusText})
             </div>
             <div class="sol-ans-row correct">
               सही उत्तर: <b>${letters[q.correctIndex]}) ${q.options[q.correctIndex]}</b>
@@ -317,12 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
     testResultScreen.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Sync to Cloud Locker / Dashboard
-    if (window.NischayAuth && typeof window.NischayAuth.saveToCloudLocker === 'function') {
-      window.NischayAuth.saveToCloudLocker('मॉक टेस्ट पूर्ण', `${currentSubjectName}: ${totalMarks}/${maxMarks} (${accuracy}% सटीकता)`);
-    }
-
-    // Update Local Dashboard Metrics
+    // Update Local Dashboard Metrics for instant reflection on index.html
     localStorage.setItem('nischaydesk_last_score', `${totalMarks}/${maxMarks}`);
     localStorage.setItem('nischaydesk_last_accuracy', `${accuracy}%`);
   }
