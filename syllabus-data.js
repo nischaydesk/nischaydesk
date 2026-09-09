@@ -185,10 +185,10 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "10th भौतिकी (Physics)",
       chapters: [
-        { no: 1, name: "प्रकाश: परावर्तन तथा अपवर्तन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview", pages: "15 पेज PDF", desc: "दर्पण सूत्र, लेंस सूत्र, आवर्धन, स्नेल का नियम और किरण आरेख।" },
-        { no: 2, name: "मानव नेत्र तथा रंगबिरंगा संसार", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "निकट व दीर्घ दृष्टि दोष, प्रिज्म से अपवर्तन, प्रकीर्णन एवं इंद्रधनुष।" },
-        { no: 3, name: "विद्युत (Electricity)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "विभवांतर, ओम का नियम, प्रतिरोधों का श्रेणी व समांतर संयोजन एवं विद्युत शक्ति।" },
-        { no: 4, name: "विद्युत धारा के चुंबकीय प्रभाव", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "चुंबकीय क्षेत्र रेखाएं, फ्लेमिंग के नियम, विद्युत मोटर एवं परिनालिका।" }
+        { no: 1, name: "प्रकाश: परावर्तन तथा अपवर्तन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1pganUmGnTVBadUgM6et-b-W1DnAQ5KRR/view?usp=drivesdk/preview", pages: "15 पेज PDF", desc: "दर्पण सूत्र, लेंस सूत्र, आवर्धन, स्नेल का नियम और किरण आरेख।" },
+        { no: 2, name: "मानव नेत्र तथा रंगबिरंगा संसार", status:"ready", pdfUrl: "https://drive.google.com/file/d/1YwX3Q0F8mYKgP1itzXnI-uwoAfk7nF-E/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "निकट व दीर्घ दृष्टि दोष, प्रिज्म से अपवर्तन, प्रकीर्णन एवं इंद्रधनुष।" },
+        { no: 3, name: "विद्युत (Electricity)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1JgwguZKIwszDWva9O7uUbuj_noPChTFk/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "विभवांतर, ओम का नियम, प्रतिरोधों का श्रेणी व समांतर संयोजन एवं विद्युत शक्ति।" },
+        { no: 4, name: "विद्युत धारा के चुंबकीय प्रभाव", status: "ready", pdfUrl: "https://drive.google.com/file/d/1OsCB5gz-GAUlpfrFp4LGksYVNPEIne3C/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "चुंबकीय क्षेत्र रेखाएं, फ्लेमिंग के नियम, विद्युत मोटर एवं परिनालिका।" }
       ]
     },
     {
