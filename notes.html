@@ -10,107 +10,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Flat CSS Links -->
+  <!-- Core Theme & Layout Stylesheets -->
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="navbar.css" />
   <link rel="stylesheet" href="dashboard.css" />
 
-  <!-- Premium In-line Enhancements for Notes Explorer -->
-  <style>
-    .notes-header-banner {
-      padding: 24px 16px 16px;
-      text-align: center;
-    }
-    .search-bar-wrap {
-      position: relative;
-      max-width: 600px;
-      margin: 18px auto 14px;
-    }
-    .notes-search-field {
-      width: 100%;
-      padding: 14px 16px 14px 44px;
-      border-radius: 12px;
-      background: #0f172a;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      color: #f8fafc;
-      font-size: 0.95rem;
-      outline: none;
-      box-sizing: border-box;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .notes-search-field:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem;
-      color: #94a3b8;
-    }
-    /* Horizontal Scrolling Filter Pills for Mobile */
-    .filter-pill-container {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 10px 4px 6px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      justify-content: flex-start;
-      max-width: 100%;
-    }
-    .filter-pill-container::-webkit-scrollbar {
-      display: none;
-    }
-    .filter-btn {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-size: 0.82rem;
-      color: #cbd5e1;
-      white-space: nowrap;
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .filter-btn:hover {
-      border-color: #38bdf8;
-      color: #f8fafc;
-      transform: translateY(-1px);
-    }
-    .filter-btn.active {
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      color: #ffffff;
-      border-color: #38bdf8;
-      font-weight: 700;
-      box-shadow: 0 3px 12px rgba(37, 99, 235, 0.35);
-    }
-    .section-category-tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      color: #38bdf8;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-  </style>
-
-  <!-- Firebase Compat SDKs -->
+  <!-- Firebase Modular Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP NAVBAR -->
+  <!-- 1. TOP ENTERPRISE NAVBAR -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -138,6 +50,7 @@
       </div>
 
       <div class="nav-actions">
+        <!-- Google Sign-In Button -->
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
@@ -148,11 +61,12 @@
           <span id="authBtnLabel">Sign in with Google</span>
         </button>
 
+        <!-- Logged-in User Widget -->
         <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
             <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge">VIP Member</span>
+            <span class="user-session-badge">Verified Member</span>
           </div>
           <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
         </div>
@@ -192,7 +106,6 @@
         <span class="icon">🛠️</span> स्मार्ट टूल्स
       </a>
 
-      <!-- Dark / Light Switch -->
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
         <label class="switch">
@@ -223,7 +136,7 @@
         कक्षा 10वीं (मैट्रिक) के सभी 5 अनिवार्य विषय एवं 11वीं साइंस के हस्तलिखित नोट्स व फॉर्मूला शीट्स।
       </p>
 
-      <!-- Quick Search Bar -->
+      <!-- Quick Search Bar (Uses native dashboard.css classes) -->
       <div class="search-bar-wrap">
         <span class="search-icon">🔍</span>
         <input 
@@ -234,18 +147,19 @@
         />
       </div>
 
-      <!-- Class & Subject Filter Pills (Horizontal Scroll on Mobile) -->
+      <!-- Class & Subject Filter Pills (Native dashboard.css classes) -->
       <div class="filter-pill-container" id="filterPillContainer">
         <button class="filter-btn active" data-filter="all">🌟 सभी नोट्स</button>
         <!-- 10th Metric Hub -->
         <button class="filter-btn" data-filter="10-math">📐 10th गणित</button>
-        <button class="filter-btn" data-filter="10-science">🧪 10th विज्ञान</button>
+        <button class="filter-btn" data-filter="10-science-phy">🧪 10th भौतिकी</button>
+        <button class="filter-btn" data-filter="10-science-chem">⚗️ 10th रसायन</button>
+        <button class="filter-btn" data-filter="10-science-bio">🧬 10th जीव विज्ञान</button>
         <button class="filter-btn" data-filter="10-sst">🌍 10th सामाजिक विज्ञान (SST)</button>
         <button class="filter-btn" data-filter="10-sanskrit">📜 10th संस्कृत</button>
-        <button class="filter-btn" data-filter="10-hindi">🇮🇳 10th हिंदी</button>
         <!-- 11th Science Hub -->
         <button class="filter-btn" data-filter="11-physics">⚡ 11th भौतिकी</button>
-        <button class="filter-btn" data-filter="11-chemistry">⚗️ 11th रसायन</button>
+        <button class="filter-btn" data-filter="11-chemistry">🧪 11th रसायन</button>
         <button class="filter-btn" data-filter="11-math">📊 11th गणित</button>
         <button class="filter-btn" data-filter="11-biology">🧬 11th जीव विज्ञान</button>
       </div>
@@ -297,32 +211,32 @@
   </div>
 
   <!-- 5. PROFESSIONAL BRAND FOOTER -->
-  <footer class="app-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 30px 20px; margin-top: 40px;">
+  <footer class="app-footer">
     <div class="footer-container">
       <div class="footer-col brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
           <span class="brand-title">NischayDesk</span>
         </div>
-        <p class="footer-summary" style="color:#94a3b8; font-size:0.85rem; line-height:1.6;">
+        <p class="footer-summary">
           बिहार बोर्ड मैट्रिक एवं इंटर साइंस के विद्यार्थियों के लिए समर्पित 100% फ्री स्टडी हब।
         </p>
-        <div class="founder-identity-box" style="margin-top:10px; font-size:0.85rem; color:#e2e8f0;">
-          संस्थापक एवं डेवलपर: <strong style="color:#38bdf8;">Prince Kumar</strong>
+        <div class="founder-identity-box">
+          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
         </div>
       </div>
       <div class="footer-col">
-        <h4 class="footer-heading" style="color:#f8fafc; font-size:0.95rem; margin-bottom:12px;">त्वरित नेविगेशन</h4>
-        <ul class="footer-nav" style="list-style:none; padding:0; line-height:2;">
-          <li><a href="index.html" style="color:#94a3b8; text-decoration:none;">➔ मुख्य डैशबोर्ड</a></li>
-          <li><a href="test.html" style="color:#94a3b8; text-decoration:none;">➔ लाइव टेस्ट पोर्टल</a></li>
-          <li><a href="ai-desk.html" style="color:#94a3b8; text-decoration:none;">➔ AI डाउट स्टूडियो</a></li>
+        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="test.html">➔ लाइव टेस्ट पोर्टल</a></li>
+          <li><a href="ai-desk.html">➔ AI डाउट स्टूडियो</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom-bar" style="margin-top:20px; font-size:0.8rem; color:#64748b;">
-      <span>&copy; 2026 NischayDesk. ऑल राइट्स रिजर्व्ड।</span>
-      <span class="server-status-tag" style="color:#38bdf8;">● क्लाउड स्टोरेज सक्रिय है</span>
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
+      <span class="server-status-tag">● क्लाउड स्टोरेज सक्रिय है</span>
     </div>
   </footer>
 
