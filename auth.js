@@ -205,7 +205,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       onboardingModal.classList.remove('active');
       applyUserProfile(profilePayload);
-    });
+    alert("✓ आपकी प्रोफ़ाइल सफलतापूर्वक सेव हो गई है!");
+});
   }
 
   // 7. Apply Profile & Class-Lock Filter to UI
