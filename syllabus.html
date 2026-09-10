@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>बोर्ड एवं NCERT सिलेबस हब | NischayDesk</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .filter-container {
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border-subtle, #e2e8f0);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 160px;
+    }
+    .filter-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-secondary, #64748b);
+    }
+    .filter-select {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle, #cbd5e1);
+      background: var(--surface-elevated, #f8fafc);
+      color: var(--text-pure, #0f172a);
+      font-weight: 600;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .chapter-card-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border-subtle, #e2e8f0);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+    .chapter-card-item:hover {
+      border-color: #0284c7;
+      transform: translateY(-2px);
+    }
+    .chapter-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #0284c7;
+      background: rgba(2, 132, 199, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+    .chapter-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-pure, #0f172a);
+    }
+    .btn-read-pdf {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+    /* IN-APP PDF VIEWER MODAL */
+    .pdf-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+    .pdf-modal-box {
+      background: #ffffff;
+      width: 100%;
+      max-width: 900px;
+      height: 90vh;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .pdf-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      background: #0f172a;
+      color: #ffffff;
+    }
+    .pdf-modal-close {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .pdf-modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header style="display:flex; justify-content:space-between; align-items:center; padding:14px 20px; border-bottom:1px solid var(--border-subtle, #e2e8f0); background:var(--surface, #fff);">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+        <span style="background:#0284c7; color:#fff; font-weight:800; padding:6px 10px; border-radius:8px;">N</span>
+        <span style="font-weight:800; font-size:1.1rem; color:var(--text-pure, #0f172a);">NischayDesk</span>
+      </a>
+    </div>
+    <div>
+      <a href="index.html" style="text-decoration:none; font-size:0.85rem; font-weight:700; color:#0284c7;">🏠 होम डैशबोर्ड</a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main style="max-width: 860px; margin: 24px auto; padding: 0 16px;">
+    
+    <div style="margin-bottom: 20px;">
+      <span style="font-size:0.75rem; font-weight:700; color:#0284c7; background:rgba(2,132,199,0.1); padding:4px 10px; border-radius:20px;">आधिकारिक पाठ्यक्रम</span>
+      <h1 style="font-size:1.6rem; font-weight:800; margin-top:8px; color:var(--text-pure,#0f172a);">📋 बोर्ड एवं NCERT सिलेबस हब</h1>
+      <p style="font-size:0.88rem; color:var(--text-secondary,#64748b);">कक्षा और विषय चुनें, नीचे सीधे इन-ऐप रीडर में चैप्टर का आधिकारिक सिलेबस देखें।</p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-container">
+      <div class="filter-group">
+        <label class="filter-label">1. कक्षा चुनें</label>
+        <select id="sylClassFilter" class="filter-select">
+          <option value="10" selected>Class 10th (मैट्रिक)</option>
+          <option value="11">Class 11th साइंस</option>
+          <option value="12">Class 12th साइंस</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">2. विषय चुनें</label>
+        <select id="sylSubjectFilter" class="filter-select">
+          <!-- जावास्क्रिप्ट से खुद लोड होगा -->
+        </select>
+      </div>
+    </div>
+
+    <!-- CHAPTER LIST -->
+    <div id="syllabusChaptersContainer">
+      <!-- चैप्टर्स यहाँ दिखेंगे -->
+    </div>
+
+  </main>
+
+  <!-- IN-APP PDF VIEWER POPUP -->
+  <div class="pdf-modal-backdrop" id="pdfModal">
+    <div class="pdf-modal-box">
+      <div class="pdf-modal-header">
+        <span id="pdfModalTitle" style="font-weight:700; font-size:0.95rem;">चैप्टर व्यूअर</span>
+        <button class="pdf-modal-close" onclick="closePdfModal()">&times;</button>
+      </div>
+      <iframe class="pdf-modal-iframe" id="pdfIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <!-- LOAD SCRIPTS -->
+  <script src="syllabus-hub.js"></script>
+  <script>
+    const classFilter = document.getElementById('sylClassFilter');
+    const subjectFilter = document.getElementById('sylSubjectFilter');
+    const chaptersContainer = document.getElementById('syllabusChaptersContainer');
+    const pdfModal = document.getElementById('pdfModal');
+    const pdfIframe = document.getElementById('pdfIframe');
+    const pdfModalTitle = document.getElementById('pdfModalTitle');
+
+    function populateSubjects() {
+      const selectedClass = classFilter.value;
+      const subjects = window.NischaySyllabusHubData[selectedClass]?.subjects || {};
+      
+      subjectFilter.innerHTML = '';
+      Object.keys(subjects).forEach(key => {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = subjects[key].title;
+        subjectFilter.appendChild(opt);
+      });
+
+      renderChapters();
+    }
+
+    function renderChapters() {
+      const selectedClass = classFilter.value;
+      const selectedSubject = subjectFilter.value;
+      const subjectObj = window.NischaySyllabusHubData[selectedClass]?.subjects[selectedSubject];
+
+      chaptersContainer.innerHTML = '';
+      if (!subjectObj || !subjectObj.chapters || subjectObj.chapters.length === 0) {
+        chaptersContainer.innerHTML = '<p style="text-align:center; color:#64748b; padding:20px;">इस विषय का सिलेबस जल्द जोड़ा जाएगा।</p>';
+        return;
+      }
+
+      subjectObj.chapters.forEach(ch => {
+        const row = document.createElement('div');
+        row.className = 'chapter-card-item';
+        row.innerHTML = `
+          <div>
+            <span class="chapter-tag">अध्याय ${ch.no}</span>
+            <span class="chapter-name">${ch.name}</span>
+          </div>
+          <button class="btn-read-pdf" onclick="openPdfViewer('${ch.pdf}', '${ch.name}')">
+            📖 सिलेबस देखें
+          </button>
+        `;
+        chaptersContainer.appendChild(row);
+      });
+    }
+
+    function openPdfViewer(url, title) {
+      if (!url || url === '#') {
+        alert('इस अध्याय का PDF लिंक जल्द अपडेट होगा!');
+        return;
+      }
+      pdfModalTitle.textContent = title;
+      pdfIframe.src = url;
+      pdfModal.style.display = 'flex';
+    }
+
+    function closePdfModal() {
+      pdfModal.style.display = 'none';
+      pdfIframe.src = '';
+    }
+
+    classFilter.addEventListener('change', populateSubjects);
+    subjectFilter.addEventListener('change', renderChapters);
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.NischaySyllabusHubData) {
+        populateSubjects();
+      }
+    });
+  </script>
+</body>
+</html>
