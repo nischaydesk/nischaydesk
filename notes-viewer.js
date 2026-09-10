@@ -1,5 +1,6 @@
 /* ==========================================================================
    NischayDesk Notes Catalog Explorer & In-App PDF Studio
+   With Automatic Class-Lock Engine (10th / 11th / 12th)
    Architecture & Logic: Prince Kumar
    ========================================================================== */
 
@@ -24,12 +25,25 @@ document.addEventListener('DOMContentLoaded', function () {
   let allChaptersMaster = [];
   let currentFilter = 'all';
 
-  // 1. Flatten Chapters from syllabus-data.js into a clean array
+  // Read student locked class from localStorage (set by auth.js)
+  const studentClass = localStorage.getItem('nischay_student_class') || 'all';
+
+  // 1. Flatten Chapters from syllabus-data.js based on Class Lock
   function extractAllChapters() {
     allChaptersMaster = [];
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) return;
 
     window.NischaySyllabus.subjects.forEach(function (subject) {
+      // Class Lock Rule:
+      // If student is Class 10, skip 11th & 12th subjects
+      if (studentClass === '10' && !subject.id.startsWith('10-')) {
+        return;
+      }
+      // If student is Class 11 or 12, skip 10th matric subjects
+      if ((studentClass === '11' || studentClass === '12') && subject.id.startsWith('10-')) {
+        return;
+      }
+
       if (subject.chapters && Array.isArray(subject.chapters)) {
         subject.chapters.forEach(function (ch) {
           allChaptersMaster.push({
@@ -48,7 +62,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 2. Render Note Cards in Catalog Grid
+  // 2. Adjust Filter Pill Buttons to Only Show Student's Class Subjects
+  function adaptFilterPillsToClass() {
+    if (!filterPillContainer) return;
+
+    const pills = filterPillContainer.querySelectorAll('.filter-btn');
+    pills.forEach(function (btn) {
+      const filterVal = btn.getAttribute('data-filter');
+      if (filterVal === 'all') return;
+
+      if (studentClass === '10') {
+        // 10th student: hide 11th/12th buttons
+        if (!filterVal.startsWith('10-')) {
+          btn.style.display = 'none';
+        } else {
+          btn.style.display = 'inline-block';
+        }
+      } else if (studentClass === '11' || studentClass === '12') {
+        // 11th/12th student: hide 10th buttons
+        if (filterVal.startsWith('10-')) {
+          btn.style.display = 'none';
+        } else {
+          btn.style.display = 'inline-block';
+        }
+      }
+    });
+  }
+
+  // 3. Render Note Cards in Catalog Grid
   function renderNotes(chapters) {
     notesCatalogGrid.innerHTML = '';
 
@@ -56,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
       notesCatalogGrid.innerHTML = `
         <div class="loading-state-box" style="grid-column: 1 / -1; padding: 40px 10px; text-align: center;">
           <div style="font-size: 2.2rem; margin-bottom: 8px;">📭</div>
-          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">कोई नोट्स नहीं मिले!</h3>
-          <p style="color: var(--text-secondary); font-size: 0.85rem;">कृपया दूसरा विषय चुनें या सर्च में सही कीवर्ड टाइप करें।</p>
+          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">आपकी कक्षा के लिए नोट्स तैयार हो रहे हैं!</h3>
+          <p style="color: var(--text-secondary); font-size: 0.85rem;">जल्द ही नए चैप्टर्स अपलोड किए जाएँगे।</p>
         </div>
       `;
       return;
@@ -76,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <span class="note-badge-pages">${ch.pages}</span>
           </div>
           <h3>अध्याय ${ch.no}: ${ch.name}</h3>
-          <p>${ch.desc || 'बोर्ड परीक्षा 2026-2028 के लिए टॉपर्स एवं अनुभवी शिक्षकों द्वारा तैयार सटीक नोट्स।'}</p>
+          <p>${ch.desc || 'बोर्ड परीक्षा एवं प्रतियोगी परीक्षाओं के लिए विशेष हस्तलिखित थ्योरी नोट्स।'}</p>
         </div>
         <div class="note-btn-group">
           ${isReady 
@@ -93,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
       notesCatalogGrid.appendChild(card);
     });
 
-    // Attach Click Events to "Read Note" buttons
+    // Attach In-App PDF Studio Clicks
     document.querySelectorAll('.btn-read-note').forEach(function (btn) {
       btn.addEventListener('click', function () {
         const pdfUrl = this.getAttribute('data-url');
@@ -106,12 +147,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. Filter and Search Combined Engine
+  // 4. Combined Filter and Search Logic
   function applyFilterAndSearch() {
     const query = notesSearchInput ? notesSearchInput.value.toLowerCase().trim() : '';
 
     const filtered = allChaptersMaster.filter(function (ch) {
-      // Filter Match
       const matchesFilter = (currentFilter === 'all') || 
                             (ch.subjectId === currentFilter) ||
                             (currentFilter === '10-science' && ch.subjectId.startsWith('10-science')) ||
@@ -119,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             (currentFilter === '10-sst' && ch.subjectId === '10-sst') ||
                             (currentFilter === '10-sanskrit' && ch.subjectId === '10-sanskrit');
 
-      // Search Match
       const matchesSearch = !query || 
                             ch.name.toLowerCase().includes(query) ||
                             ch.subjectTitle.toLowerCase().includes(query) ||
@@ -131,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderNotes(filtered);
   }
 
-  // 4. In-Built Studio PDF Viewer Controls
+  // 5. In-Built Studio PDF Viewer Controls
   function openPdfStudio(url, title, badge) {
     if (!pdfStudioModal || !studioPdfFrame) return;
 
@@ -151,31 +190,25 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
   }
 
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', closePdfStudio);
-  }
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePdfStudio);
 
   if (pdfStudioModal) {
     pdfStudioModal.addEventListener('click', function (e) {
-      if (e.target === pdfStudioModal) {
-        closePdfStudio();
-      }
+      if (e.target === pdfStudioModal) closePdfStudio();
     });
   }
 
   if (modalFullscreenBtn) {
     modalFullscreenBtn.addEventListener('click', function () {
       if (!document.fullscreenElement) {
-        pdfStudioModal.requestFullscreen().catch(function (err) {
-          console.warn("Fullscreen Error:", err);
-        });
+        pdfStudioModal.requestFullscreen().catch(err => console.warn(err));
       } else {
         document.exitFullscreen();
       }
     });
   }
 
-  // 5. Setup Filter Pill Button Clicks
+  // 6. Pill Button Click Handlers
   if (filterPillContainer) {
     filterPillContainer.querySelectorAll('.filter-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -187,12 +220,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 6. Setup Search Input Event
+  // 7. Search Input Handler
   if (notesSearchInput) {
     notesSearchInput.addEventListener('input', applyFilterAndSearch);
   }
 
-  // 7. Initial Catalog Extraction & Render
+  // 8. Initialize Notes Page
+  adaptFilterPillsToClass();
   extractAllChapters();
   renderNotes(allChaptersMaster);
 
