@@ -3,24 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NischayDesk AI Studio | By Prince Kumar</title>
+  <title>NischayDesk AI Studio Pro | By Prince Kumar</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Markdown Parser -->
+  <!-- Markdown Parser (marked.js) -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <!-- MathJax Engine -->
+  <!-- MathJax Configuration -->
   <script>
     window.MathJax = {
       tex: { 
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
       },
-      svg: { fontCache: 'global' }
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      chtml: {
+        displayAlign: 'left',
+        displayIndent: '0'
+      }
     };
   </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -30,28 +38,32 @@
       --bg: #070d1e;
       --surface: #0f1c3d;
       --surface-elevated: #162650;
-      --border: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.12);
       --border-strong: #1e3260;
       --accent: #38bdf8;
       --primary: #0284c7;
       --text-main: #ffffff;
       --text-muted: #94a3b8;
       --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
-      --gemini-gradient: linear-gradient(135deg, #1a73e8, #8ab4f8);
+      --table-stripe: rgba(255, 255, 255, 0.03);
+      --table-border: #1e3260;
+      --code-bg: #030712;
     }
 
     html.light-mode {
       --bg: #f8fafc;
       --surface: #ffffff;
       --surface-elevated: #f1f5f9;
-      --border: #e2e8f0;
-      --border-strong: #cbd5e1;
+      --border: #cbd5e1;
+      --border-strong: #94a3b8;
       --accent: #0284c7;
       --primary: #0284c7;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
-      --gemini-gradient: linear-gradient(135deg, #0284c7, #2563eb);
+      --table-stripe: #f8fafc;
+      --table-border: #cbd5e1;
+      --code-bg: #f1f5f9;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -59,7 +71,7 @@
     body {
       background: var(--bg);
       color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, sans-serif;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -67,21 +79,22 @@
       transition: background 0.25s ease, color 0.25s ease;
     }
 
-    /* Header Controls */
+    /* Header */
     .app-header {
       padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--surface);
-      border-bottom: 1px solid var(--border-strong);
+      border-bottom: 1px solid var(--border);
       z-index: 100;
+      flex-shrink: 0;
     }
 
     .header-left, .header-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .btn-back {
@@ -99,7 +112,7 @@
     }
 
     .brand-title {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 800;
       color: var(--text-main);
     }
@@ -107,23 +120,39 @@
 
     .theme-toggle-pill {
       background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border);
       color: var(--text-main);
-      padding: 5px 12px;
+      padding: 5px 10px;
       border-radius: 20px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
+
+    .icon-action-btn {
+      background: transparent;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: 0.2s;
+    }
+    .icon-action-btn:hover { color: var(--accent); background: var(--surface-elevated); }
 
     /* Main Viewport */
     .viewport {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 14px 140px;
+      overflow-x: hidden;
+      padding: 16px 14px 150px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -134,80 +163,87 @@
 
     .hero-box {
       text-align: center;
-      padding: 24px 10px 12px;
+      padding: 20px 8px 10px;
     }
-    .hero-box h2 { font-size: 1.65rem; color: var(--text-main); font-weight: 800; margin-bottom: 14px; }
+    .hero-box h2 { font-size: 1.6rem; color: var(--text-main); font-weight: 800; margin-bottom: 12px; }
     .hero-box span { color: var(--accent); }
 
-    /* Filter Bar */
-    .subject-filter-bar {
+    /* Controls */
+    .ai-control-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .subject-filter-bar, .tone-selector-bar {
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      padding-bottom: 8px;
+      padding-bottom: 4px;
       justify-content: flex-start;
       scrollbar-width: none;
-      margin-bottom: 14px;
     }
-    .subject-filter-bar::-webkit-scrollbar { display: none; }
+    .subject-filter-bar::-webkit-scrollbar, .tone-selector-bar::-webkit-scrollbar { display: none; }
     @media (min-width: 600px) {
-      .subject-filter-bar { justify-content: center; }
+      .subject-filter-bar, .tone-selector-bar { justify-content: center; }
     }
 
-    .subject-chip {
+    .subject-chip, .tone-chip {
       background: var(--surface);
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 0.76rem;
       font-weight: 600;
       white-space: nowrap;
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .subject-chip.active {
+    .subject-chip.active, .tone-chip.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
       box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
     }
+    .tone-chip { border-style: dashed; }
 
-    /* Suggestions Grid */
+    /* Suggestions */
     .suggestion-row {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
     .sug-chip {
       background: var(--surface);
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border);
       color: var(--accent);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.82rem;
+      padding: 7px 12px;
+      border-radius: 18px;
+      font-size: 0.78rem;
       font-weight: 600;
       white-space: nowrap;
       cursor: pointer;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
       transition: all 0.2s;
     }
-    .sug-chip:hover { background: rgba(56, 189, 248, 0.12); border-color: var(--accent); transform: translateY(-1px); }
+    .sug-chip:hover { background: rgba(56, 189, 248, 0.12); border-color: var(--accent); }
 
-    /* Chat Messages */
+    /* Bubbles */
     .user-msg {
       background: linear-gradient(135deg, #0284c7, #2563eb);
       color: white;
-      padding: 12px 18px;
-      border-radius: 20px;
+      padding: 12px 16px;
+      border-radius: 18px;
       border-bottom-right-radius: 4px;
       align-self: flex-end;
       max-width: 88%;
-      font-size: 0.96rem;
+      font-size: 0.94rem;
       font-weight: 500;
       box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
       word-break: break-word;
@@ -215,74 +251,178 @@
 
     .ai-msg {
       background: var(--surface);
-      border: 1px solid var(--border-strong);
-      padding: 18px 20px;
-      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 18px;
       border-bottom-left-radius: 4px;
       color: var(--text-main);
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       line-height: 1.75;
       box-shadow: var(--shadow);
       width: 100%;
-      word-break: break-word;
+      max-width: 100%;
+      overflow-x: hidden;
+      word-wrap: break-word;
     }
 
-    .ai-msg p { margin-bottom: 12px; }
-    .ai-msg ul, .ai-msg ol { margin-left: 20px; margin-bottom: 12px; }
-    .ai-msg li { margin-bottom: 6px; }
+    .ai-msg h1, .ai-msg h2, .ai-msg h3, .ai-msg h4 {
+      color: var(--text-main);
+      margin: 14px 0 8px;
+      font-weight: 700;
+    }
+    .ai-msg p { margin-bottom: 10px; }
+    .ai-msg ul, .ai-msg ol { margin-left: 20px; margin-bottom: 10px; }
+    .ai-msg li { margin-bottom: 4px; }
 
-    /* Gemini Floating Wave Animation Lines */
-    .gemini-loader-stage {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 10px 4px;
+    /* Tables */
+    .table-container {
       width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--table-border);
+      border-radius: 8px;
+      background: var(--surface);
+      -webkit-overflow-scrolling: touch;
     }
 
-    .gemini-line {
-      height: 10px;
-      border-radius: 6px;
-      background: linear-gradient(90deg, var(--surface-elevated) 25%, var(--accent) 50%, var(--surface-elevated) 75%);
-      background-size: 200% 100%;
-      animation: geminiWave 1.6s infinite ease-in-out;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto !important;
+      font-size: 0.88rem;
     }
-    .gemini-line:nth-child(1) { width: 90%; animation-delay: 0s; }
-    .gemini-line:nth-child(2) { width: 75%; animation-delay: 0.2s; }
-    .gemini-line:nth-child(3) { width: 55%; animation-delay: 0.4s; }
 
-    @keyframes geminiWave {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
+    th, td {
+      border: 1px solid var(--table-border) !important;
+      padding: 10px 14px !important;
+      text-align: left;
+      vertical-align: middle;
+      word-break: normal !important;
+      overflow-wrap: normal !important;
+      white-space: normal;
+    }
+
+    th {
+      background: var(--surface-elevated);
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap !important;
+    }
+
+    td:first-child, th:first-child {
+      white-space: nowrap;
+      width: 1%;
+      font-weight: 600;
+    }
+
+    td {
+      min-width: 130px;
+    }
+
+    tr:nth-child(even) { background: var(--table-stripe); }
+
+    /* MathJax Container */
+    mjx-container {
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 4px 0 !important;
+      display: inline-block !important;
+    }
+
+    mjx-container[jax="CHTML"][display="true"] {
+      margin: 12px 0 !important;
+      padding: 10px 14px !important;
+      background: var(--surface-elevated) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 8px !important;
+      display: block !important;
+      text-align: left !important;
+    }
+
+    mjx-container::-webkit-scrollbar, .table-container::-webkit-scrollbar {
+      height: 4px;
+    }
+    mjx-container::-webkit-scrollbar-thumb, .table-container::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 4px;
+    }
+
+    /* ==========================================================================
+       GEMINI 3 FLOATING BOUNCING DOTS ANIMATION (FROM SCREENSHOT)
+       ========================================================================== */
+    .gemini-dots-loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 2px;
+      height: 24px;
+    }
+
+    .gemini-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      animation: geminiBounce 1.4s infinite ease-in-out both;
+    }
+
+    .gemini-dot:nth-child(1) { animation-delay: -0.32s; }
+    .gemini-dot:nth-child(2) { animation-delay: -0.16s; }
+    .gemini-dot:nth-child(3) { animation-delay: 0s; }
+
+    @keyframes geminiBounce {
+      0%, 80%, 100% {
+        transform: scale(0.4);
+        opacity: 0.3;
+      }
+      40% {
+        transform: scale(1.15);
+        opacity: 1;
+      }
     }
 
     /* Action Toolbar */
     .action-row {
-      margin-top: 14px;
-      padding-top: 10px;
+      margin-top: 12px;
+      padding-top: 8px;
       border-top: 1px solid var(--border);
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
+      align-items: center;
     }
 
     .act-btn {
       background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.78rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.74rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: 0.2s;
     }
     .act-btn:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* Gemini Modern Floating Dock (Rounded Card) */
+    .bookmark-star {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.15rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    .bookmark-star:hover { transform: scale(1.2); }
+    .bookmark-star.bookmarked { color: #f59e0b; }
+
+    /* Floating Dock */
     .dock-wrapper {
       position: fixed;
       bottom: 12px;
@@ -291,9 +431,9 @@
       width: calc(100% - 24px);
       max-width: 760px;
       background: var(--surface);
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border);
       border-radius: 28px;
-      padding: 8px 12px;
+      padding: 6px 10px 6px 14px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -306,35 +446,19 @@
       background: transparent;
       border: none;
       outline: none;
-      padding: 8px 6px;
-      font-size: 0.98rem;
+      padding: 8px 4px;
+      font-size: 0.95rem;
       font-family: inherit;
       color: var(--text-main);
     }
     .dock-input::placeholder { color: var(--text-muted); }
 
-    .icon-action-btn {
-      background: transparent;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    .icon-action-btn:hover { color: var(--accent); background: var(--surface-elevated); }
-
-    /* Multi-Bar Gemini Active Voice Animation */
+    /* Voice Wave */
     .gemini-voice-wave {
       display: none;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
       flex: 1;
       height: 36px;
     }
@@ -342,7 +466,7 @@
 
     .wave-bar {
       width: 4px;
-      height: 12px;
+      height: 10px;
       background: var(--accent);
       border-radius: 4px;
       animation: barDance 1s ease-in-out infinite alternate;
@@ -353,26 +477,24 @@
     .wave-bar:nth-child(4) { animation-delay: 0.2s; }
     .wave-bar:nth-child(5) { animation-delay: 0.4s; }
     .wave-bar:nth-child(6) { animation-delay: 0.6s; }
-    .wave-bar:nth-child(7) { animation-delay: 0.3s; }
-    .wave-bar:nth-child(8) { animation-delay: 0.1s; }
 
     @keyframes barDance {
-      0% { height: 6px; transform: scaleY(0.4); }
-      100% { height: 28px; transform: scaleY(1.3); }
+      0% { height: 4px; transform: scaleY(0.4); }
+      100% { height: 24px; transform: scaleY(1.3); }
     }
 
     .send-circle-btn {
       background: #0284c7;
       color: white;
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
       flex-shrink: 0;
       transition: transform 0.15s ease;
     }
@@ -382,8 +504,8 @@
       background: #ef4444;
       color: white;
       border: none;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: none;
       align-items: center;
@@ -407,8 +529,7 @@
         <span id="themeIcon">🌙</span> <span id="themeText">डार्क</span>
       </button>
       <button onclick="clearChatHistory()" class="icon-action-btn" title="इतिहास साफ़ करें">
-        <!-- Clean Trash Icon SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="3 6 5 6 21 6"></polyline>
           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
         </svg>
@@ -422,21 +543,29 @@
     <div class="hero-box" id="heroBox">
       <h2 id="heroGreeting">आज <span>क्या हल</span> करना है?</h2>
       
-      <!-- Subject Quick Filters -->
-      <div class="subject-filter-bar">
-        <button class="subject-chip active" onclick="setSubjectMode('all', this)">🌟 सामान्य</button>
-        <button class="subject-chip" onclick="setSubjectMode('physics', this)">⚡ भौतिकी</button>
-        <button class="subject-chip" onclick="setSubjectMode('chemistry', this)">🧪 रसायन</button>
-        <button class="subject-chip" onclick="setSubjectMode('math', this)">📐 गणित</button>
-        <button class="subject-chip" onclick="setSubjectMode('sst_sanskrit', this)">🌍 SST / संस्कृत</button>
+      <!-- AI Control Panel -->
+      <div class="ai-control-panel">
+        <div class="subject-filter-bar">
+          <button class="subject-chip active" onclick="setSubjectMode('all', this)">🌟 सामान्य</button>
+          <button class="subject-chip" onclick="setSubjectMode('physics', this)">⚡ भौतिकी</button>
+          <button class="subject-chip" onclick="setSubjectMode('chemistry', this)">🧪 रसायन</button>
+          <button class="subject-chip" onclick="setSubjectMode('math', this)">📐 गणित</button>
+          <button class="subject-chip" onclick="setSubjectMode('sst_sanskrit', this)">🌍 SST / संस्कृत</button>
+        </div>
+
+        <div class="tone-selector-bar">
+          <button class="tone-chip active" onclick="setToneMode('detailed', this)">📌 बोर्ड विस्तृत हल</button>
+          <button class="tone-chip" onclick="setToneMode('short', this)">⚡ शॉर्ट ट्रिक / फॉर्मूला</button>
+          <button class="tone-chip" onclick="setToneMode('simple', this)">💡 आसान हिंदी भाषा</button>
+        </div>
       </div>
 
-      <!-- Suggestion Chips Container -->
+      <!-- Suggestions -->
       <div class="suggestion-row" id="suggestionRow">
-        <div class="sug-chip" onclick="askQuick('(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।')">📐 (A+B)^2 सूत्र</div>
+        <div class="sug-chip" onclick="askQuick('(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से सिद्ध कीजिए।')">📐 (A+B)^2 सूत्र</div>
         <div class="sug-chip" onclick="askQuick('प्रकाश के परावर्तन और अपवर्तन के नियम समझाइए।')">💡 प्रकाश के नियम</div>
         <div class="sug-chip" onclick="askQuick('न्यूटन के द्वितीय नियम F = ma का निगमन करें।')">🍎 F = ma निगमन</div>
-        <div class="sug-chip" onclick="askQuick('आपको किसने बनाया है और आपके बारे में बताएं?')">🤖 NischayDesk परिचय</div>
+        <div class="sug-chip" onclick="askQuick('द्विघात समीकरण ax^2 + bx + c = 0 का श्रीधराचार्य सूत्र सिद्ध करें।')">📊 श्रीधराचार्य सूत्र</div>
       </div>
     </div>
 
@@ -444,13 +573,11 @@
     <div id="chatFeed" style="display:flex; flex-direction:column; gap:16px;"></div>
   </main>
 
-  <!-- BOTTOM GEMINI DOCK -->
+  <!-- BOTTOM FLOATING DOCK -->
   <footer class="dock-wrapper">
     
-    <!-- Gemini Voice Active Wave State -->
+    <!-- Voice Active Wave State -->
     <div class="gemini-voice-wave" id="geminiVoiceWave">
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
       <div class="wave-bar"></div>
       <div class="wave-bar"></div>
       <div class="wave-bar"></div>
@@ -459,12 +586,11 @@
       <div class="wave-bar"></div>
     </div>
 
-    <!-- Main Input Box -->
     <input type="text" id="userInput" class="dock-input" placeholder="NischayDesk से कोई भी सवाल पूछें..." onkeypress="if(event.key==='Enter') sendQuery()">
 
-    <!-- Gemini Style Realistic Microphone Button -->
+    <!-- Mic Button -->
     <button class="icon-action-btn" id="micBtn" onclick="triggerVoice()" title="आवाज़ से पूछें">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
         <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
         <line x1="12" y1="19" x2="12" y2="23"></line>
@@ -472,24 +598,24 @@
       </svg>
     </button>
 
-    <!-- Upward Arrow Send Button -->
+    <!-- Send Button -->
     <button class="send-circle-btn" id="sendBtn" onclick="sendQuery()" title="भेजें">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="19" x2="12" y2="5"></line>
         <polyline points="5 12 12 5 19 12"></polyline>
       </svg>
     </button>
 
-    <!-- Stop Generation Button -->
+    <!-- Stop Button -->
     <button class="stop-square-btn" id="stopBtn" onclick="stopGenerating()" title="रोकें">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
         <rect x="6" y="6" width="12" height="12" rx="2"></rect>
       </svg>
     </button>
   </footer>
 
   <script>
-    // 1. Theme Syncer
+    // 1. Theme Controller
     function initTheme() {
       const savedTheme = localStorage.getItem('nischay_theme');
       const isLight = (savedTheme === 'light');
@@ -519,8 +645,9 @@
     const API_KEY = "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";
     let isGenerating = false;
     let stopGenerationFlag = false;
+    let currentToneInstruction = "Provide step-by-step mathematical proofs with clear numbered steps. Prefer structured text steps and display math ($$...$$) instead of narrow tables.";
 
-    // 2. User Greeting (Synced with auth.js)
+    // 2. User Greeting
     (function checkUserLogin() {
       const greeting = document.getElementById('heroGreeting');
       if (!greeting) return;
@@ -534,17 +661,31 @@
       }
     })();
 
-    // 3. Subject-Specific Suggestions
+    // 3. Tone Selector Logic
+    function setToneMode(tone, btn) {
+      document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (tone === 'detailed') {
+        currentToneInstruction = "Provide comprehensive step-by-step solutions using numbered steps (चरण 1, चरण 2) and display LaTeX ($$...$$). Avoid cramming long equations into tables.";
+      } else if (tone === 'short') {
+        currentToneInstruction = "Provide concise key formulas, direct steps, and quick review notes.";
+      } else if (tone === 'simple') {
+        currentToneInstruction = "Explain the concepts in clean, lucid Hindi with daily life examples and simple terms.";
+      }
+    }
+
+    // 4. Subject Suggestions
     const promptModes = {
       all: [
-        { text: "📐 (A+B)^2 सूत्र", q: "(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से समझाइए।" },
+        { text: "📐 (A+B)^2 सूत्र", q: "(A+B) का पूर्ण वर्ग (A+B)^2 को विस्तार से सिद्ध कीजिए।" },
         { text: "💡 प्रकाश के नियम", q: "प्रकाश के परावर्तन और अपवर्तन के नियम समझाइए।" },
         { text: "🍎 F = ma निगमन", q: "न्यूटन के द्वितीय नियम F = ma का निगमन करें।" },
-        { text: "🤖 NischayDesk परिचय", q: "आपको किसने बनाया है और आपके बारे में बताएं?" }
+        { text: "📊 श्रीधराचार्य सूत्र", q: "द्विघात समीकरण ax^2 + bx + c = 0 का श्रीधराचार्य सूत्र पूर्ण वर्ग विधि से सिद्ध करें।" }
       ],
       physics: [
         { text: "⚡ ओम का नियम", q: "ओम का नियम क्या है? V = IR का सत्यापन समझाइए।" },
-        { text: "🔭 लेंस सूत्र", q: "गोलीय लेंस के लिए 1/f = 1/v - 1/u सूत्र समझाइए।" },
+        { text: "🔭 लेंस सूत्र", q: "गोलीय लेंस के लिए 1/f = 1/v - 1/u सूत्र निगमित करें।" },
         { text: "🧲 फ्लेमिंग वामहस्त नियम", q: "फ्लेमिंग का वामहस्त नियम और इसका उपयोग बताइए।" }
       ],
       chemistry: [
@@ -581,49 +722,60 @@
     }
 
     function sanitizeFormulas(text) {
-      return text.replace(/\\\[(.*?)\\\]/gs, '$$$1$$')
-                 .replace(/\\\((.*?)\\\)/gs, '$$$1$$');
+      if (!text) return "";
+      return text
+        .replace(/\\\[([\s\S]*?)\\\]/g, '$$$1$$')
+        .replace(/\\\(([\s\S]*?)\\\)/g, '$$$1$$');
     }
 
-    // 4. Smooth Typewriter with Markdown & MathJax
+    function postProcessHTML(rawHtml) {
+      return rawHtml.replace(/<table>([\s\S]*?)<\/table>/g, '<div class="table-container"><table>$1</table></div>');
+    }
+
+    // 5. Stream Typewriter & MathJax Rendering
     function streamTypewriter(element, text, onComplete) {
       let index = 0;
       element.innerHTML = '';
-      const step = Math.max(1, Math.floor(text.length / 45));
+      const step = Math.max(2, Math.floor(text.length / 40));
 
       function typeNext() {
         if (stopGenerationFlag) {
-          element.innerHTML = marked.parse(sanitizeFormulas(text));
-          if (window.MathJax && window.MathJax.typesetPromise) {
-            window.MathJax.typesetPromise([element]);
-          }
-          if (onComplete) onComplete();
+          renderFinalMath(element, text, onComplete);
           return;
         }
 
         if (index < text.length) {
           index += step;
           const currentText = text.substring(0, index);
-          const cleaned = sanitizeFormulas(currentText);
-          element.innerHTML = marked.parse(cleaned);
+          const sanitized = sanitizeFormulas(currentText);
+          element.innerHTML = postProcessHTML(marked.parse(sanitized));
           scrollToBottom();
           requestAnimationFrame(typeNext);
         } else {
-          const cleanedFinal = sanitizeFormulas(text);
-          const parsedFinal = marked.parse(cleanedFinal);
-          element.innerHTML = parsedFinal;
-
-          if (window.MathJax && window.MathJax.typesetPromise) {
-            window.MathJax.typesetPromise([element]);
-          }
-          scrollToBottom();
-          if (onComplete) onComplete();
+          renderFinalMath(element, text, onComplete);
         }
       }
       typeNext();
     }
 
-    // 5. Query Engine with Gemini 3-Floating-Lines Stage
+    function renderFinalMath(element, fullText, onComplete) {
+      const sanitized = sanitizeFormulas(fullText);
+      element.innerHTML = postProcessHTML(marked.parse(sanitized));
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([element])
+          .then(() => {
+            scrollToBottom();
+            if (onComplete) onComplete();
+          })
+          .catch(() => { if (onComplete) onComplete(); });
+      } else {
+        scrollToBottom();
+        if (onComplete) onComplete();
+      }
+    }
+
+    // 6. Query Dispatcher
     async function sendQuery() {
       const input = document.getElementById('userInput');
       const feed = document.getElementById('chatFeed');
@@ -637,8 +789,7 @@
       hero.style.display = 'none';
       feed.style.display = 'flex';
 
-      // User Bubble
-      feed.innerHTML += `<div class="user-msg">${query}</div>`;
+      feed.innerHTML += `<div class="user-msg">${escapeHtml(query)}</div>`;
       input.value = '';
       scrollToBottom();
 
@@ -647,14 +798,14 @@
       sendBtn.style.display = 'none';
       stopBtn.style.display = 'flex';
 
-      // Three Gemini Floating Lines (No generic text)
+      // Gemini 3-Floating Bouncing Dots Loader (As in Screenshot)
       const loadId = 'load-' + Date.now();
       feed.innerHTML += `
         <div class="ai-msg" id="${loadId}">
-          <div class="gemini-loader-stage">
-            <div class="gemini-line"></div>
-            <div class="gemini-line"></div>
-            <div class="gemini-line"></div>
+          <div class="gemini-dots-loader">
+            <span class="gemini-dot"></span>
+            <span class="gemini-dot"></span>
+            <span class="gemini-dot"></span>
           </div>
         </div>
       `;
@@ -672,11 +823,11 @@
             messages: [
               { 
                 role: "system", 
-                content: "You are NischayDesk AI, a dedicated study assistant for Bihar Board students, founded by Prince Kumar. Deliver structured, clear step-by-step solutions. Always format math/physics equations in LaTeX using $ or $$." 
+                content: `You are NischayDesk AI, created by Prince Kumar for Bihar Board students. Rule 1: ${currentToneInstruction} Rule 2: NEVER compress complex math derivations or proofs into 3-column tables. Present mathematical steps sequentially using bold step titles and standalone LaTeX blocks ($$...$$). Rule 3: Use tables only for simple comparisons or clean data.` 
               },
               { role: "user", content: query }
             ],
-            temperature: 0.3,
+            temperature: 0.25,
             max_tokens: 2048
           })
         });
@@ -692,7 +843,8 @@
             <div class="action-row" style="display:none;">
               <button class="act-btn" onclick="speakAnswer(this)">🔊 सुनाएँ</button>
               <button class="act-btn" onclick="copyAnswer(this)">📋 कॉपी</button>
-              <button class="act-btn" onclick="downloadAnswer(this)">📥 सेव करें</button>
+              <button class="act-btn" onclick="downloadAnswer(this)">📥 सेव</button>
+              <button class="bookmark-star" onclick="toggleBookmark(this)" title="बुकमार्क करें">⭐</button>
             </div>
           `;
 
@@ -709,7 +861,7 @@
           finishGenerating();
         }
       } catch (err) {
-        document.getElementById(loadId).innerHTML = `<span style="color:#ef4444;">⚠️ नेटवर्क एरर! कृपया इंटरनेट जांचें।</span>`;
+        document.getElementById(loadId).innerHTML = `<span style="color:#ef4444;">⚠️ नेटवर्क एरर! कृपया इंटरनेट कनेक्शन जांचें।</span>`;
         finishGenerating();
       }
       scrollToBottom();
@@ -726,7 +878,7 @@
       document.getElementById('stopBtn').style.display = 'none';
     }
 
-    // 6. Gemini Voice Input Engine
+    // 7. Voice Input
     let recognizer;
     let isListening = false;
 
@@ -776,14 +928,12 @@
       }
     }
 
-    // 7. Utility Actions: Speak, Copy & Download
+    // 8. Actions
     function speakAnswer(btn) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
-      
       const card = btn.closest('.ai-msg');
-      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी', '').replace('📥 सेव करें', '').trim();
-      
+      let text = card.querySelector('.stream-content').innerText;
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'hi-IN';
       utterance.rate = 0.95;
@@ -792,14 +942,14 @@
 
     function copyAnswer(btn) {
       const card = btn.closest('.ai-msg');
-      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी', '').replace('📥 सेव करें', '').trim();
+      let text = card.querySelector('.stream-content').innerText;
       navigator.clipboard.writeText(text);
       alert("उत्तर कॉपी हो गया! 📋");
     }
 
     function downloadAnswer(btn) {
       const card = btn.closest('.ai-msg');
-      let text = card.innerText.replace('🔊 सुनाएँ', '').replace('📋 कॉपी', '').replace('📥 सेव करें', '').trim();
+      let text = card.querySelector('.stream-content').innerText;
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -808,11 +958,25 @@
       URL.revokeObjectURL(a.href);
     }
 
+    function toggleBookmark(btn) {
+      btn.classList.toggle('bookmarked');
+      if (btn.classList.contains('bookmarked')) {
+        btn.innerText = '⭐';
+        alert("उत्तर बुकमार्क में सेव हो गया! ⭐");
+      } else {
+        btn.innerText = '⭐';
+      }
+    }
+
     function clearChatHistory() {
       if (confirm("क्या आप पूरी चैट साफ़ करना चाहते हैं?")) {
         document.getElementById('chatFeed').innerHTML = '';
         document.getElementById('heroBox').style.display = 'block';
       }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
     function scrollToBottom() {
