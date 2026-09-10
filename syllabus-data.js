@@ -101,7 +101,7 @@ window.NischaySyllabus = {
     {
       id: "12-physics",
       classTitle: "Class 12th",
-      subjectTitle: "12th भौतिक विज्ञान (Physics)",
+      subjectTitle: "भौतिक विज्ञान (Physics)",
       chapters: [
         { no: 1, name: "वैद्युत आवेश तथा क्षेत्र (Electric Charges & Fields)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "कूलॉम नियम, विद्युत क्षेत्र रेखाएं, विद्युत द्विध्रुव एवं गाउस नियम।" },
         { no: 2, name: "स्थिरवैद्युत विभव तथा धारिता (Electrostatic Potential & Capacitance)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "बिंदु आवेश के कारण विभव, समविभव पृष्ठ, संधारित्र एवं परावैद्युत।" },
@@ -122,7 +122,7 @@ window.NischaySyllabus = {
     {
       id: "12-chemistry",
       classTitle: "Class 12th",
-      subjectTitle: "12th रसायन विज्ञान (Chemistry)",
+      subjectTitle: " रसायन विज्ञान (Chemistry)",
       chapters: [
         { no: 1, name: "विलयन (Solutions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "हेनरी नियम, राउल्ट नियम, परासरण दाब, क्वथनांक उन्नयन व वांट हॉफ गुणक।" },
         { no: 2, name: "विद्युतरसायन (Electrochemistry)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "गैल्वेनिक सेल, नेर्नस्ट समीकरण, चालकता, कोलराउश नियम एवं फैराडे नियम।" },
@@ -139,7 +139,7 @@ window.NischaySyllabus = {
     {
       id: "12-biology",
       classTitle: "Class 12th",
-      subjectTitle: "12th जीव विज्ञान (Biology)",
+      subjectTitle: " जीव विज्ञान (Biology)",
       chapters: [
         { no: 1, name: "पुष्पी पादपों में लैंगिक जनन (Sexual Reproduction in Flowering Plants)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "लघुबीजाणुजनन, गुरुबीजाणुजनन, परागण, दोहरा निषेचन एवं असंगजनन।" },
         { no: 2, name: "मानव जनन (Human Reproduction)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "नर व मादा जनन तंत्र, युग्मकजनन, आर्तव चक्र, निषेचन एवं भ्रूणीय परिवर्धन।" },
@@ -159,7 +159,7 @@ window.NischaySyllabus = {
     {
       id: "12-math",
       classTitle: "Class 12th",
-      subjectTitle: "12th गणित (Mathematics)",
+      subjectTitle: " गणित (Mathematics)",
       chapters: [
         { no: 1, name: "संबंध एवं फलन (Relations & Functions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "स्वतुल्य, सममित व संक्रामक संबंध, तुल्यता संबंध एवं द्विआधारी संक्रियाएं।" },
         { no: 2, name: "प्रतिलोम त्रिकोणमितीय फलन (Inverse Trigonometric Functions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "मुख्य मान शाखाएं, प्रांत, परिसर एवं प्रतिलोम सर्वसमिकाएं।" },
@@ -183,7 +183,7 @@ window.NischaySyllabus = {
     {
       id: "10-science-phy",
       classTitle: "Class 10th",
-      subjectTitle: "10th भौतिकी (Physics)",
+      subjectTitle: " भौतिकी (Physics)",
       chapters: [
         { no: 1, name: "प्रकाश: परावर्तन तथा अपवर्तन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1pganUmGnTVBadUgM6et-b-W1DnAQ5KRR/view?usp=drivesdk/preview", pages: "62 page PDF", desc: "दर्पण सूत्र, लेंस सूत्र, आवर्धन, स्नेल का नियम और किरण आरेख।" },
         { no: 2, name: "मानव नेत्र तथा रंगबिरंगा संसार", status:"ready", pdfUrl: "https://drive.google.com/file/d/1YwX3Q0F8mYKgP1itzXnI-uwoAfk7nF-E/view?usp=drivesdk/preview", pages: "19 page PDF", desc: "निकट व दीर्घ दृष्टि दोष, प्रिज्म से अपवर्तन, प्रकीर्णन एवं इंद्रधनुष।" },
@@ -194,7 +194,7 @@ window.NischaySyllabus = {
     {
       id: "10-science-chem",
       classTitle: "Class 10th",
-      subjectTitle: "10th रसायन विज्ञान (Chemistry)",
+      subjectTitle: "रसायन विज्ञान (Chemistry)",
       chapters: [
         { no: 1, name: "रासायनिक अभिक्रियाएँ एवं समीकरण", status: "ready", pdfUrl: "https://drive.google.com/file/d/10PaIJPjKjhNDvyWjQyToPEZu1sLbMHXx/view?usp=drivesdk/preview", pages: "10 पेज PDF", desc: "संयोजन, वियोजन, विस्थापन, रेडॉक्स अभिक्रियाएं और समीकरण संतुलन।" },
         { no: 2, name: "अम्ल, क्षारक एवं लवण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1OBSONia9MRBvp0avrrtvQAVhyfyE9Tc9/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूचक, pH पैमाना, विरंजक चूर्ण, बेकिंग सोडा, धावन सोडा एवं प्लास्टर ऑफ पेरिस।" },
@@ -205,7 +205,7 @@ window.NischaySyllabus = {
     {
       id: "10-science-bio",
       classTitle: "Class 10th",
-      subjectTitle: "10th जीव विज्ञान (Biology)",
+      subjectTitle: " जीव विज्ञान (Biology)",
       chapters: [
         { no: 1, name: "जैव प्रक्रम (Life Processes)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "स्वपोषी/विषमपोषी पोषण, मानव पाचन तंत्र, श्वसन, वहन एवं उत्सर्जन तंत्र।" },
         { no: 2, name: "नियंत्रण एवं समन्वय (Control & Coordination)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "न्यूरॉन, प्रतिवर्ती चाप, मानव मस्तिष्क, पादप हार्मोन एवं अंतःस्रावी ग्रंथियां।" },
@@ -217,7 +217,7 @@ window.NischaySyllabus = {
     {
       id: "10-math",
       classTitle: "Class 10th",
-      subjectTitle: "10th गणित (Mathematics)",
+      subjectTitle: " गणित (Mathematics)",
       chapters: [
         { no: 1, name: "वास्तविक संख्याएं (Real Numbers)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Uno3gNHr5I--BnYkPKLE9J5kONpdVAd3/preview", pages: "हैंडनोट्स", desc: "अंकगणित की आधारभूत प्रमेय, अभाज्य गुणनखंड विधि एवं अपरिमेय संख्या सिद्ध करना।" },
         { no: 2, name: "बहुपद (Polynomials)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1_asa9-YszkjBrldCU66_jidBU3Tb0W8W/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "शून्यकों का ज्यामितीय अर्थ एवं द्विघात बहुपद के शून्यक और गुणांकों में संबंध।" },
@@ -242,7 +242,7 @@ window.NischaySyllabus = {
     {
       id: "10-sst",
       classTitle: "Class 10th",
-      subjectTitle: "10th सामाजिक विज्ञान (SST)",
+      subjectTitle: " सामाजिक विज्ञान (SST)",
       chapters: [
         { no: 1, name: "इतिहास - यूरोप में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "मेजिनी, काउंट कावूर, गैरीबाल्डी, बिस्मार्क एवं इटली-जर्मनी का एकीकरण।" },
         { no: 2, name: "इतिहास - समाजवाद एवं साम्यवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "कार्ल मार्क्स का सिद्धांत, 1917 की रूसी क्रांति और लेनिन की नीतियां।" },
@@ -266,7 +266,7 @@ window.NischaySyllabus = {
     {
       id: "10-sanskrit",
       classTitle: "Class 10th",
-      subjectTitle: "10th संस्कृत (पीयूषम् एवं व्याकरण)",
+      subjectTitle: " संस्कृत (पीयूषम् एवं व्याकरण)",
       chapters: [
         { no: 1, name: "मंगलम् (Mangalam)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "उपनिषदों के मंत्र, सत्यमेव जयते, आत्मा और परमात्मा का रहस्य।" },
         { no: 2, name: "पाटलिपुत्रवैभवम्", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "पटना का प्राचीन इतिहास, मेगस्थनीज, चंद्रगुप्त मौर्य व गुरु गोबिंद सिंह।" },
