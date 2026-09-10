@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Navigation System & Responsive Profile Header
-   Fixed: Mobile Profile Pill, Light Mode Visibility & Truncation
+   NischayDesk Bulletproof Navbar & Drawer Stylesheet
+   Fixed: Mobile Hamburger, Light Mode Colors, Brand Visibility
    ========================================================================== */
 
 .app-header {
@@ -11,32 +11,31 @@
   z-index: 1000;
   background: var(--surface);
   border-bottom: 1px solid var(--border-subtle);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  height: 64px;
+  height: 62px;
+  width: 100%;
 }
 
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 14px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
 }
 
 .nav-brand-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 1;
-  min-width: 0;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
+/* Hamburger Button (Hamesha visible on Mobile) */
 .mobile-menu-trigger {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
   gap: 4px;
@@ -45,40 +44,39 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 6px;
-  border-radius: var(--radius-sm);
+  padding: 4px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
 .mobile-menu-trigger .bar {
-  width: 20px;
-  height: 2px;
-  background-color: var(--text-pure);
+  display: block !important;
+  width: 22px;
+  height: 2.5px;
+  background-color: var(--text-pure) !important;
   border-radius: 2px;
-  transition: all 0.25s ease;
 }
 
+/* Brand Name */
 .brand-entity {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
   gap: 8px;
   text-decoration: none;
-  min-width: 0;
 }
 
 .brand-badge-icon {
   width: 32px;
   height: 32px;
   background: var(--brand-accent);
-  color: #ffffff;
-  border-radius: var(--radius-sm);
+  color: #ffffff !important;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
 }
 
 .brand-badge-icon.sm {
@@ -90,29 +88,27 @@
 .brand-typography {
   display: flex;
   flex-direction: column;
-  min-width: 0;
 }
 
 .brand-name {
   font-size: 1.05rem;
   font-weight: 800;
-  color: var(--text-pure);
-  line-height: 1.15;
+  color: var(--text-pure) !important;
+  line-height: 1.1;
   white-space: nowrap;
 }
 
 .brand-name-accent {
-  color: var(--brand-accent);
+  color: var(--brand-accent) !important;
 }
 
 .brand-tagline {
   font-size: 0.65rem;
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
   font-weight: 600;
-  white-space: nowrap;
 }
 
-/* Desktop Links */
+/* Desktop Navigation */
 .nav-links-desktop {
   display: none;
   align-items: center;
@@ -120,8 +116,8 @@
 }
 
 @media (min-width: 900px) {
-  .mobile-menu-trigger { display: none; }
-  .nav-links-desktop { display: flex; }
+  .mobile-menu-trigger { display: none !important; }
+  .nav-links-desktop { display: flex !important; }
 }
 
 .nav-item {
@@ -130,8 +126,7 @@
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
+  border-radius: 6px;
 }
 
 .nav-item:hover, .nav-item.active {
@@ -139,31 +134,45 @@
   background: var(--surface-elevated);
 }
 
-/* User Widget & Profile Pill */
+/* Nav Actions & Profile Pill */
 .nav-actions {
   display: flex;
   align-items: center;
+  gap: 8px;
   flex-shrink: 0;
+}
+
+.btn-auth-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-pure);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .user-profile-widget {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   padding: 4px 8px 4px 6px;
   border-radius: 30px;
-  max-width: 170px;
+  max-width: 140px;
 }
 
 .user-avatar-img {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  object-fit: cover;
   border: 1.5px solid var(--brand-accent);
-  flex-shrink: 0;
 }
 
 .user-info-text {
@@ -174,21 +183,20 @@
 }
 
 .user-display-name {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  color: var(--text-pure);
+  color: var(--text-pure) !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .user-session-badge {
-  font-size: 0.68rem;
-  color: var(--brand-accent);
+  font-size: 0.65rem;
+  color: var(--brand-accent) !important;
   font-weight: 600;
   white-space: nowrap;
-  line-height: 1.1;
 }
 
 .btn-logout {
@@ -196,32 +204,12 @@
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 2px 4px;
   font-size: 0.85rem;
-  border-radius: 50%;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-logout:hover {
-  color: #ef4444;
-}
-
-/* Mobile Responsiveness Rules */
-@media (max-width: 480px) {
-  .brand-tagline { display: none; }
-  .user-info-text { max-width: 85px; }
-  .user-profile-widget {
-    padding: 3px 6px 3px 4px;
-    gap: 6px;
-    max-width: 135px;
-  }
+  padding: 2px;
 }
 
 /* ==========================================================================
-   DRAWER & LIGHT MODE TEXT FIXES
+   SIDE DRAWER & LIGHT/DARK MODE COLOR REPAIR
    ========================================================================== */
 .side-drawer {
   position: fixed;
@@ -229,13 +217,14 @@
   left: -290px;
   width: 280px;
   height: 100vh;
-  background: var(--surface);
+  background: var(--surface) !important;
   border-right: 1px solid var(--border-subtle);
   z-index: 2000;
-  padding: 20px 16px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 20px rgba(0,0,0,0.15);
 }
 
 .side-drawer.active, .side-drawer.open {
@@ -261,7 +250,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .drawer-brand {
@@ -270,29 +259,27 @@
   gap: 8px;
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--text-pure);
+  color: var(--text-pure) !important;
 }
 
 .drawer-close-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: var(--text-muted);
+  color: var(--text-pure) !important;
   cursor: pointer;
-  padding: 4px;
 }
 
 .drawer-user-card {
-  background: var(--surface-elevated);
+  background: var(--surface-elevated) !important;
   border: 1px solid var(--border-subtle);
   padding: 12px;
-  border-radius: var(--radius-md);
-  margin-bottom: 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  color: var(--text-pure) !important;
 }
 
-.drawer-user-name-text {
-  font-size: 0.9rem;
-  font-weight: 700;
+.drawer-user-card * {
   color: var(--text-pure) !important;
 }
 
@@ -304,29 +291,28 @@
 }
 
 .drawer-nav-item {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
   gap: 12px;
   padding: 10px 12px;
-  border-radius: var(--radius-md);
-  color: var(--text-pure);
+  border-radius: 8px;
+  color: var(--text-pure) !important;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.92rem;
-  transition: background 0.2s;
 }
 
 .drawer-nav-item:hover, .drawer-nav-item.active {
-  background: var(--surface-elevated);
-  color: var(--brand-accent);
+  background: var(--surface-elevated) !important;
+  color: var(--brand-accent) !important;
 }
 
 .drawer-theme-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
   padding: 12px 10px;
-  margin-top: 14px;
+  margin-top: 10px;
   border-top: 1px solid var(--border-subtle);
 }
 
@@ -337,11 +323,15 @@
 }
 
 .drawer-footer {
-  padding-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
+}
+
+@media (max-width: 480px) {
+  .brand-tagline { display: none !important; }
 }
