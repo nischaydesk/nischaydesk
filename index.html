@@ -302,10 +302,12 @@
         </div>
       </div>
     </section>
-
-    <!-- STUDENT ONBOARDING SETUP MODAL -->
+    <!-- STUDENT ONBOARDING SETUP MODAL (WITH CLOSE BUTTON) -->
     <div class="pdf-modal-backdrop" id="onboardingModal">
-      <div class="pdf-modal-window" style="max-width: 500px; height: auto; padding: 24px;">
+      <div class="pdf-modal-window" style="max-width: 500px; height: auto; padding: 24px; position: relative;">
+        <!-- Close button to dismiss anytime -->
+        <button type="button" class="btn-studio-close" id="closeOnboardingBtn" onclick="document.getElementById('onboardingModal').classList.remove('active');" style="position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+        
         <div style="text-align: center; margin-bottom: 16px;">
           <div style="font-size: 2rem; margin-bottom: 6px;">🎓</div>
           <h3 style="color: var(--text-pure); font-size: 1.25rem;">NischayDesk प्रोफ़ाइल सेटअप</h3>
@@ -362,8 +364,7 @@
         </form>
       </div>
     </div>
-
-    <!-- TOOL MODALS -->
+ <!-- TOOL MODALS -->
     <div class="pdf-modal-backdrop" id="docConverterModal">
       <div class="pdf-modal-window" style="max-width: 520px; height: auto; padding: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
