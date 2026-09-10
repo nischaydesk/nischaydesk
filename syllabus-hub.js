@@ -1,8 +1,3 @@
-/* ==========================================================================
-   NischayDesk Dedicated Official Syllabus Data Engine
-   Completely Separated from Notes Data
-   ========================================================================== */
-
 window.NischaySyllabusHubData = {
   "10": {
     name: "Class 10th (मैट्रिक)",
