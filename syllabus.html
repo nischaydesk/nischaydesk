@@ -164,14 +164,12 @@
       <div class="filter-group">
         <label class="filter-label">2. विषय चुनें</label>
         <select id="sylSubjectFilter" class="filter-select">
-          <!-- जावास्क्रिप्ट से खुद लोड होगा -->
         </select>
       </div>
     </div>
 
     <!-- CHAPTER LIST -->
     <div id="syllabusChaptersContainer">
-      <!-- चैप्टर्स यहाँ दिखेंगे -->
     </div>
 
   </main>
@@ -190,79 +188,92 @@
   <!-- LOAD SCRIPTS -->
   <script src="syllabus-hub.js"></script>
   <script>
-    const classFilter = document.getElementById('sylClassFilter');
-    const subjectFilter = document.getElementById('sylSubjectFilter');
-    const chaptersContainer = document.getElementById('syllabusChaptersContainer');
-    const pdfModal = document.getElementById('pdfModal');
-    const pdfIframe = document.getElementById('pdfIframe');
-    const pdfModalTitle = document.getElementById('pdfModalTitle');
+    function startSyllabusApp() {
+      const classFilter = document.getElementById('sylClassFilter');
+      const subjectFilter = document.getElementById('sylSubjectFilter');
+      const chaptersContainer = document.getElementById('syllabusChaptersContainer');
 
-    function populateSubjects() {
-      const selectedClass = classFilter.value;
-      const subjects = window.NischaySyllabusHubData[selectedClass]?.subjects || {};
-      
-      subjectFilter.innerHTML = '';
-      Object.keys(subjects).forEach(key => {
-        const opt = document.createElement('option');
-        opt.value = key;
-        opt.textContent = subjects[key].title;
-        subjectFilter.appendChild(opt);
-      });
-
-      renderChapters();
-    }
-
-    function renderChapters() {
-      const selectedClass = classFilter.value;
-      const selectedSubject = subjectFilter.value;
-      const subjectObj = window.NischaySyllabusHubData[selectedClass]?.subjects[selectedSubject];
-
-      chaptersContainer.innerHTML = '';
-      if (!subjectObj || !subjectObj.chapters || subjectObj.chapters.length === 0) {
-        chaptersContainer.innerHTML = '<p style="text-align:center; color:#64748b; padding:20px;">इस विषय का सिलेबस जल्द जोड़ा जाएगा।</p>';
+      if (!window.NischaySyllabusHubData) {
+        setTimeout(startSyllabusApp, 200);
         return;
       }
 
-      subjectObj.chapters.forEach(ch => {
-        const row = document.createElement('div');
-        row.className = 'chapter-card-item';
-        row.innerHTML = `
-          <div>
-            <span class="chapter-tag">अध्याय ${ch.no}</span>
-            <span class="chapter-name">${ch.name}</span>
-          </div>
-          <button class="btn-read-pdf" onclick="openPdfViewer('${ch.pdf}', '${ch.name}')">
-            📖 सिलेबस देखें
-          </button>
-        `;
-        chaptersContainer.appendChild(row);
-      });
+      function populateSubjects() {
+        const selectedClass = classFilter.value;
+        const subjects = window.NischaySyllabusHubData[selectedClass]?.subjects || {};
+        
+        subjectFilter.innerHTML = '';
+        const keys = Object.keys(subjects);
+
+        if (keys.length === 0) {
+          const opt = document.createElement('option');
+          opt.value = "";
+          opt.textContent = "कोई विषय उपलब्ध नहीं";
+          subjectFilter.appendChild(opt);
+          renderChapters();
+          return;
+        }
+
+        keys.forEach(key => {
+          const opt = document.createElement('option');
+          opt.value = key;
+          opt.textContent = subjects[key].title;
+          subjectFilter.appendChild(opt);
+        });
+
+        renderChapters();
+      }
+
+      function renderChapters() {
+        const selectedClass = classFilter.value;
+        const selectedSubject = subjectFilter.value;
+        const subjectObj = window.NischaySyllabusHubData[selectedClass]?.subjects[selectedSubject];
+
+        chaptersContainer.innerHTML = '';
+        if (!subjectObj || !subjectObj.chapters || subjectObj.chapters.length === 0) {
+          chaptersContainer.innerHTML = '<p style="text-align:center; color:#64748b; padding:20px;">इस विषय का सिलेबस जल्द जोड़ा जाएगा।</p>';
+          return;
+        }
+
+        subjectObj.chapters.forEach(ch => {
+          const row = document.createElement('div');
+          row.className = 'chapter-card-item';
+          row.innerHTML = `
+            <div>
+              <span class="chapter-tag">अध्याय ${ch.no}</span>
+              <span class="chapter-name">${ch.name}</span>
+            </div>
+            <button class="btn-read-pdf" onclick="openPdfViewer('${ch.pdf}', '${ch.name}')">
+              📖 सिलेबस देखें
+            </button>
+          `;
+          chaptersContainer.appendChild(row);
+        });
+      }
+
+      classFilter.addEventListener('change', populateSubjects);
+      subjectFilter.addEventListener('change', renderChapters);
+
+      populateSubjects();
     }
 
     function openPdfViewer(url, title) {
-      if (!url || url === '#') {
+      if (!url || url === '#' || url === '') {
         alert('इस अध्याय का PDF लिंक जल्द अपडेट होगा!');
         return;
       }
-      pdfModalTitle.textContent = title;
-      pdfIframe.src = url;
-      pdfModal.style.display = 'flex';
+      document.getElementById('pdfModalTitle').textContent = title;
+      document.getElementById('pdfIframe').src = url;
+      document.getElementById('pdfModal').style.display = 'flex';
     }
 
     function closePdfModal() {
-      pdfModal.style.display = 'none';
-      pdfIframe.src = '';
+      document.getElementById('pdfModal').style.display = 'none';
+      document.getElementById('pdfIframe').src = '';
     }
 
-    classFilter.addEventListener('change', populateSubjects);
-    subjectFilter.addEventListener('change', renderChapters);
-
-    // Initial load
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.NischaySyllabusHubData) {
-        populateSubjects();
-      }
-    });
+    window.addEventListener('load', startSyllabusApp);
   </script>
 </body>
 </html>
+
