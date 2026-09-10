@@ -844,3 +844,228 @@ window.NischaySyllabus = {
     ]
   }
 };
+
+/* ==========================================================================
+   NischayDesk Master Chapter-Wise Syllabus & In-App Reader Data
+   Covers: Class 10th (Matric), Class 11th & 12th Science (PCM + Biology)
+   Direct Official NCERT & BSEB Integration
+   Architected by: Prince Kumar
+   ========================================================================== */
+
+window.NischaySyllabus = {
+  subjects: [
+    // -------------------------------------------------------------
+    // 1. CLASS 10TH - विज्ञान (SCIENCE)
+    // -------------------------------------------------------------
+    {
+      id: "10-science",
+      classTitle: "Class 10th",
+      subjectTitle: "विज्ञान (Science)",
+      chapters: [
+        { no: 1, name: "रासायनिक अभिक्रियाएँ एवं समीकरण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 2, name: "अम्ल, क्षारक एवं लवण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 3, name: "धातु एवं अधातु", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 4, name: "कार्बन एवं उसके यौगिक", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 5, name: "जैव प्रक्रम (Life Processes)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 6, name: "नियंत्रण एवं समन्वय", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 7, name: "जीव जनन कैसे करते हैं", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 8, name: "आनुवंशिकता एवं जैव विकास", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 9, name: "प्रकाश - परावर्तन तथा अपवर्तन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 10, name: "मानव नेत्र तथा रंगबिरंगा संसार", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 11, name: "विद्युत (Electricity)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 12, name: "विद्युत धारा के चुंबकीय प्रभाव", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 13, name: "हमारा पर्यावरण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 2. CLASS 10TH - गणित (MATHEMATICS)
+    // -------------------------------------------------------------
+    {
+      id: "10-math",
+      classTitle: "Class 10th",
+      subjectTitle: "गणित (Mathematics)",
+      chapters: [
+        { no: 1, name: "वास्तविक संख्याएँ (Real Numbers)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 2, name: "बहुपद (Polynomials)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 3, name: "दो चर वाले रैखिक समीकरण युग्म", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 4, name: "द्विघात समीकरण (Quadratic Eq)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 5, name: "समान्तर श्रेढ़ियाँ (AP)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 6, name: "त्रिभुज (Triangles)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 7, name: "निर्देशांक ज्यामिति", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 8, name: "त्रिकोणमिति का परिचय", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 9, name: "त्रिकोणमिति के अनुप्रयोग (ऊंचाई और दूरी)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 10, name: "वृत्त (Circles)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 11, name: "वृत्तों से संबंधित क्षेत्रफल", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 12, name: "पृष्ठीय क्षेत्रफल और आयतन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 13, name: "सांख्यिकी (Statistics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" },
+        { no: 14, name: "प्रायिकता (Probability)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "BSEB/NCERT" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 3. CLASS 11TH - भौतिकी (PHYSICS)
+    // -------------------------------------------------------------
+    {
+      id: "11-physics",
+      classTitle: "Class 11th",
+      subjectTitle: "भौतिकी (Physics)",
+      chapters: [
+        { no: 1, name: "मात्रक एवं मापन (Units & Measurements)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 2, name: "सरल रेखा में गति (Motion in a Straight Line)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 3, name: "समतल में गति (Motion in a Plane)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 4, name: "गति के नियम (Laws of Motion)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 5, name: "कार्य, ऊर्जा और शक्ति (Work, Energy & Power)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 6, name: "कणों के निकाय तथा घूर्णी गति", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 7, name: "गुरुत्वाकर्षण (Gravitation)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 8, name: "ठोसों के यांत्रिक गुण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 9, name: "तरलों के यांत्रिकी गुण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 10, name: "द्रव्य के तापीय गुण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 11, name: "ऊष्मागतिकी (Thermodynamics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 12, name: "दोलन एवं तरंगें (Oscillations & Waves)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 4. CLASS 11TH - रसायन विज्ञान (CHEMISTRY)
+    // -------------------------------------------------------------
+    {
+      id: "11-chemistry",
+      classTitle: "Class 11th",
+      subjectTitle: "रसायन विज्ञान (Chemistry)",
+      chapters: [
+        { no: 1, name: "रसायन विज्ञान की कुछ मूल अवधारणाएँ", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 2, name: "परमाणु की संरचना (Structure of Atom)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 3, name: "तत्वों का वर्गीकरण एवं गुणधर्मों में आवर्तिता", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 4, name: "रासायनिक आबंधन तथा आण्विक संरचना", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 5, name: "ऊष्मागतिकी (Chemical Thermodynamics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 6, name: "साम्यावस्था (Equilibrium)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 7, name: "रेडॉक्स अभिक्रियाएँ (Redox Reactions)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 8, name: "कार्बनिक रसायन: कुछ आधारभूत सिद्धांत एवं तकनीकें", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" },
+        { no: 9, name: "हाइड्रोकार्बन (Hydrocarbons)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "NCERT Official" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 5. CLASS 11TH - जीव विज्ञान (BIOLOGY) - [NEW ADDED]
+    // -------------------------------------------------------------
+    {
+      id: "11-biology",
+      classTitle: "Class 11th",
+      subjectTitle: "जीव विज्ञान (Biology)",
+      chapters: [
+        { no: 1, name: "जीव जगत (The Living World)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 2, name: "जीव जगत का वर्गीकरण (Biological Classification)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 3, name: "वनस्पति जगत (Plant Kingdom)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 4, name: "प्राणि जगत (Animal Kingdom)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 5, name: "पुष्पी पादपों की आकारिकी", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 6, name: "पुष्पी पादपों का शारीर", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 7, name: "प्राणियों में संरचनात्मक संगठन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 8, name: "कोशिका: जीवन की इकाई (Cell)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 9, name: "जैव अणु (Biomolecules)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 10, name: "कोशिका चक्र और कोशिका विभाजन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 11, name: "उच्च पादपों में प्रकाश-संश्लेषण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 12, name: "पादप में श्वसन (Respiration)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 13, name: "पादप वृद्धि एवं परिवर्धन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 14, name: "श्वसन और गैसों का विनिमय", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 15, name: "शरीर द्रव तथा परिसंचरण (Circulation)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 16, name: "उत्सर्जी उत्पाद एवं उनका निष्कासन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 17, name: "गमन एवं संचलन (Locomotion)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 18, name: "तंत्रकीय नियंत्रण एवं समन्वय", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" },
+        { no: 19, name: "रासायनिक समन्वय तथा एकीकरण", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php?khbo1=0-22", pages: "NCERT Official" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 6. CLASS 12TH - गणित (MATHEMATICS) - [NEW ADDED]
+    // -------------------------------------------------------------
+    {
+      id: "12-math",
+      classTitle: "Class 12th",
+      subjectTitle: "गणित (Mathematics 12th)",
+      chapters: [
+        { no: 1, name: "संबंध एवं फलन (Relations & Functions)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 2, name: "प्रतिलोम त्रिकोणमितीय फलन (ITF)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 3, name: "आव्यूह (Matrices)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 4, name: "सारणिक (Determinants)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 5, name: "सांतत्य तथा अवकलनीयता (Continuity & Diff.)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 6, name: "अवकलज के अनुप्रयोग (AOD)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 7, name: "समाकलन (Integrals)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 8, name: "समाकलनों के अनुप्रयोग (AOI)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 9, name: "अवकल समीकरण (Differential Equations)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 10, name: "सदिश बीजगणित (Vector Algebra)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 11, name: "त्रि-विमीय ज्यामिति (3D Geometry)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 12, name: "रैखिक प्रोग्रामन (Linear Programming)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" },
+        { no: 13, name: "प्रायिकता (Probability)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "12th Board/JEE" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 7. CLASS 12TH - जीव विज्ञान (BIOLOGY) - [NEW ADDED]
+    // -------------------------------------------------------------
+    {
+      id: "12-biology",
+      classTitle: "Class 12th",
+      subjectTitle: "जीव विज्ञान (Biology 12th)",
+      chapters: [
+        { no: 1, name: "पुष्पी पादपों में लैंगिक प्रजनन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 2, name: "मानव जनन (Human Reproduction)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 3, name: "जनन स्वास्थ्य (Reproductive Health)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 4, name: "वंशागति तथा विविधता के सिद्धांत (Genetics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 5, name: "वंशागति के आणविक आधार (Molecular Basis)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 6, name: "विकास (Evolution)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 7, name: "मानव स्वास्थ्य तथा रोग (Health & Disease)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 8, name: "मानव कल्याण में सूक्ष्मजीव (Microbes)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 9, name: "जैव प्रौद्योगिकी: सिद्धांत व प्रक्रम (Biotech)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 10, name: "जैव प्रौद्योगिकी एवं उसके उपयोग", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 11, name: "जीव और समष्टियाँ (Organisms & Populations)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 12, name: "पारितंत्र (Ecosystem)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" },
+        { no: 13, name: "जैव विविधता एवं संरक्षण (Conservation)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board & NEET" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 8. CLASS 12TH - भौतिकी (PHYSICS)
+    // -------------------------------------------------------------
+    {
+      id: "12-physics",
+      classTitle: "Class 12th",
+      subjectTitle: "भौतिकी (Physics 12th)",
+      chapters: [
+        { no: 1, name: "वैद्युत आवेश तथा क्षेत्र (Electric Charges & Fields)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 2, name: "स्थिरवैद्युत विभव तथा धारिता", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 3, name: "विद्युत धारा (Current Electricity)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 4, name: "गतिमान आवेश और चुंबकत्व", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 5, name: "चुंबकत्व एवं द्रव्य", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 6, name: "वैद्युतचुंबकीय प्रेरण (EMI)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 7, name: "प्रत्यावर्ती धारा (Alternating Current)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 8, name: "किरण प्रकाशिकी एवं प्रकाशिक यंत्र (Ray Optics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 9, name: "तरंग प्रकाशिकी (Wave Optics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 10, name: "परमाणु एवं नाभिक", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 11, name: "अर्धचालक इलेक्ट्रॉनिकी (Semiconductors)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" }
+      ]
+    },
+
+    // -------------------------------------------------------------
+    // 9. CLASS 12TH - रसायन विज्ञान (CHEMISTRY)
+    // -------------------------------------------------------------
+    {
+      id: "12-chemistry",
+      classTitle: "Class 12th",
+      subjectTitle: "रसायन विज्ञान (Chemistry 12th)",
+      chapters: [
+        { no: 1, name: "विलयन (Solutions)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 2, name: "वैद्युतरसायन (Electrochemistry)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 3, name: "रासायनिक बलगतिकी (Chemical Kinetics)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 4, name: "d- एवं f- ब्लॉक के तत्व", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 5, name: "उपसहसंयोजन यौगिक (Coordination Compounds)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 6, name: "हैलोएल्केन तथा हैलोएरीन", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 7, name: "ऐल्कोहॉल, फ़ीनॉल एवं ईथर", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 8, name: "एल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 9, name: "ऐमीन (Amines)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" },
+        { no: 10, name: "जैव-अणु (Biomolecules)", status: "ready", pdfUrl: "https://ncert.nic.in/textbook.php", pages: "Board Special" }
+      ]
+    }
+  ]
+};
+
