@@ -1,82 +1,104 @@
 /* ==========================================================================
-   NischayDesk Header, Navigation & Mobile Drawer System
-   Design & Responsive Layout: Prince Kumar
+   NischayDesk Navigation System & Responsive Profile Header
+   Fixed: Mobile Profile Pill, Light Mode Visibility & Truncation
    ========================================================================== */
 
-/* 1. Header Shell */
 .app-header {
   position: sticky;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   z-index: 1000;
-  background: rgba(7, 13, 30, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--surface);
   border-bottom: 1px solid var(--border-subtle);
-  transition: border-color var(--transition-quick), background-color var(--transition-smooth);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  height: 64px;
 }
 
 .nav-container {
-  max-width: 1240px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 10px 16px;
+  padding: 0 16px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* 2. Brand Identity Group */
 .nav-brand-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 1;
   min-width: 0;
+}
+
+.mobile-menu-trigger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.mobile-menu-trigger .bar {
+  width: 20px;
+  height: 2px;
+  background-color: var(--text-pure);
+  border-radius: 2px;
+  transition: all 0.25s ease;
 }
 
 .brand-entity {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
-  color: inherit;
   min-width: 0;
 }
 
 .brand-badge-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--brand-gradient);
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  background: var(--brand-accent);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.05rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
 }
 
 .brand-badge-icon.sm {
   width: 28px;
   height: 28px;
-  border-radius: 8px;
   font-size: 0.95rem;
 }
 
 .brand-typography {
   display: flex;
   flex-direction: column;
-  white-space: nowrap;
+  min-width: 0;
 }
 
 .brand-name {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  letter-spacing: -0.4px;
-  line-height: 1.1;
   color: var(--text-pure);
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .brand-name-accent {
@@ -85,158 +107,88 @@
 
 .brand-tagline {
   font-size: 0.65rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-weight: 600;
-  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
-/* Hamburger Trigger (Mobile Only) */
-.mobile-menu-trigger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
-  transition: var(--transition-quick);
-}
-
-.mobile-menu-trigger:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.mobile-menu-trigger .bar {
-  width: 100%;
-  height: 2.5px;
-  background-color: var(--brand-accent);
-  border-radius: 2px;
-  transition: var(--transition-smooth);
-}
-
-/* 3. Desktop Navigation Links */
+/* Desktop Links */
 .nav-links-desktop {
   display: none;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
-@media (min-width: 860px) {
-  .mobile-menu-trigger {
-    display: none;
-  }
-  .nav-links-desktop {
-    display: flex;
-  }
+@media (min-width: 900px) {
+  .mobile-menu-trigger { display: none; }
+  .nav-links-desktop { display: flex; }
 }
 
 .nav-item {
-  text-decoration: none;
+  padding: 8px 12px;
   color: var(--text-secondary);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  padding: 8px 14px;
-  border-radius: var(--radius-md);
-  transition: var(--transition-quick);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
 }
 
-.nav-item:hover {
+.nav-item:hover, .nav-item.active {
   color: var(--text-pure);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-elevated);
 }
 
-.nav-item.active {
-  color: var(--brand-accent);
-  background: rgba(56, 189, 248, 0.08);
-}
-
-/* 4. Auth & User Profile Widget */
+/* User Widget & Profile Pill */
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
   flex-shrink: 0;
-}
-
-.btn-auth-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #ffffff;
-  color: #1f2937;
-  border: none;
-  padding: 7px 14px;
-  border-radius: var(--radius-md);
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  white-space: nowrap;
-  transition: var(--transition-quick);
-}
-
-.btn-auth-primary:hover {
-  background: #f8fafc;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
-}
-
-@media (max-width: 480px) {
-  .brand-tagline {
-    display: none;
-  }
-  .brand-name {
-    font-size: 1.05rem;
-  }
-  .btn-auth-primary {
-    padding: 6px 10px;
-    font-size: 0.78rem;
-    gap: 6px;
-  }
 }
 
 .user-profile-widget {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-strong);
-  padding: 4px 10px 4px 6px;
-  border-radius: var(--radius-pill);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 8px 4px 6px;
+  border-radius: 30px;
+  max-width: 170px;
 }
 
 .user-avatar-img {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid var(--brand-accent);
+  flex-shrink: 0;
 }
 
 .user-info-text {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .user-display-name {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--text-pure);
-  line-height: 1.1;
-  max-width: 90px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .user-session-badge {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   color: var(--brand-accent);
   font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.1;
 }
 
 .btn-logout {
@@ -244,192 +196,152 @@
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
   padding: 2px 4px;
-  margin-left: 2px;
+  font-size: 0.85rem;
   border-radius: 50%;
-  transition: var(--transition-quick);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-logout:hover {
-  color: var(--danger);
+  color: #ef4444;
 }
 
-/* 5. Mobile Slide-Out Drawer System */
-.drawer-scrim {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1100;
-  transition: opacity var(--transition-smooth);
+/* Mobile Responsiveness Rules */
+@media (max-width: 480px) {
+  .brand-tagline { display: none; }
+  .user-info-text { max-width: 85px; }
+  .user-profile-widget {
+    padding: 3px 6px 3px 4px;
+    gap: 6px;
+    max-width: 135px;
+  }
 }
 
-.drawer-scrim.active,
-.drawer-scrim.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
+/* ==========================================================================
+   DRAWER & LIGHT MODE TEXT FIXES
+   ========================================================================== */
 .side-drawer {
   position: fixed;
   top: 0;
-  left: -320px;
-  width: 290px;
-  max-width: 85vw;
-  height: 100%;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border-strong);
-  z-index: 1101;
+  left: -290px;
+  width: 280px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border-subtle);
+  z-index: 2000;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
-  padding: 20px 16px;
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
-  transition: transform var(--transition-smooth);
-  overflow-y: auto;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.side-drawer.active,
-.side-drawer.open {
-  transform: translateX(320px);
+.side-drawer.active, .side-drawer.open {
+  transform: translateX(290px);
+}
+
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.drawer-scrim.active, .drawer-scrim.open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .drawer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border-subtle);
-  flex-shrink: 0;
+  margin-bottom: 20px;
 }
 
 .drawer-brand {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-pure);
-  font-size: 1.05rem;
 }
 
 .drawer-close-btn {
-  background: transparent;
+  background: none;
   border: none;
-  color: var(--text-secondary);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+  color: var(--text-muted);
   cursor: pointer;
-  line-height: 1;
+  padding: 4px;
 }
 
 .drawer-user-card {
-  margin: 14px 0;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
   padding: 12px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  flex-shrink: 0;
+  margin-bottom: 20px;
 }
 
-.drawer-user-prompt {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
+.drawer-user-name-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-pure) !important;
 }
 
 .drawer-nav-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 6px;
-  flex-grow: 1;
+  flex: 1;
 }
 
 .drawer-nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 600;
+  padding: 10px 12px;
   border-radius: var(--radius-md);
-  transition: var(--transition-quick);
+  color: var(--text-pure);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: background 0.2s;
 }
 
-.drawer-nav-item .icon {
-  font-size: 1.1rem;
-}
-
-.drawer-nav-item:hover,
-.drawer-nav-item.active {
-  background: var(--surface-card);
+.drawer-nav-item:hover, .drawer-nav-item.active {
+  background: var(--surface-elevated);
   color: var(--brand-accent);
-  transform: translateX(4px);
+}
+
+.drawer-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  margin-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.drawer-theme-row .theme-label {
+  color: var(--text-pure) !important;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .drawer-footer {
-  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.drawer-footer strong {
-  color: var(--brand-accent);
-}
-
-/* ==========================================================================
-   6. NAVBAR & DRAWER LIGHT MODE OVERRIDES
-   ========================================================================== */
-
-html.light-mode .drawer-nav-item {
-  color: #1e293b !important;
-}
-
-html.light-mode .drawer-nav-item.active {
-  background: rgba(2, 132, 199, 0.12) !important;
-  color: #0284c7 !important;
-  border: 1px solid rgba(2, 132, 199, 0.25) !important;
-}
-
-html.light-mode .drawer-nav-item:hover {
-  background: #f1f5f9 !important;
-  color: #0284c7 !important;
-}
-
-html.light-mode .brand-name {
-  color: #0f172a !important;
-}
-
-html.light-mode .brand-tagline {
-  color: #64748b !important;
-}
-
-html.light-mode .drawer-brand span {
-  color: #0f172a !important;
-}
-
-html.light-mode .user-display-name {
-  color: #0f172a !important;
-}
-
-html.light-mode .user-profile-widget {
-  background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
-}
-
-html.light-mode .drawer-user-card {
-  background: #ffffff !important;
-  border-color: #cbd5e1 !important;
 }
