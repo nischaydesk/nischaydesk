@@ -66,7 +66,7 @@
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
             <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge">Verified Member</span>
+            <span class="user-session-badge" id="userSessionBadge" onclick="openClassSwitchModal()" style="cursor:pointer;" title="क्लास बदलें">Verified Member ▾</span>
           </div>
           <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
         </div>
@@ -94,7 +94,7 @@
         <span class="icon">📊</span> मुख्य डैशबोर्ड
       </a>
       <a href="notes.html" class="drawer-nav-item">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th & 11th)
+        <span class="icon">📚</span> नोट्स लाइब्रेरी
       </a>
       <a href="test.html" class="drawer-nav-item">
         <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
@@ -116,7 +116,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk v2.1 Production</span>
+      <span class="platform-meta">NischayDesk v2.2 Production</span>
       <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
     </div>
   </aside>
@@ -124,18 +124,30 @@
   <!-- 3. MAIN DASHBOARD VIEWPORT -->
   <main class="dashboard-viewport">
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION WITH PERSONALIZED STUDENT BANNER -->
     <section class="hero-studio-banner">
       <div class="hero-content">
-        <div class="status-pill">
-          <span class="pulsing-dot"></span> बिहार बोर्ड स्पेशल 2026-2028
+        
+        <!-- Personalized User Welcome Box (Displays after Login) -->
+        <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-pure); line-height: 1.2;">
+            नमस्ते, <span id="welcomeUserName" class="gradient-text">छात्र</span>! 🌟
+          </div>
+          <div id="welcomeUserMeta" style="font-size: 0.85rem; color: var(--brand-accent); font-weight: 600; margin-top: 4px;">
+            कक्षा: <span id="displayStudentClass">Class 10th</span> • <span id="displayStudentStream">General</span>
+          </div>
         </div>
+
+        <div class="status-pill" id="heroStatusPill">
+          <span class="pulsing-dot"></span> बिहार बोर्ड स्पेशल
+        </div>
+
         <h1 class="hero-headline">
           सफलता का सटीक इरादा, <br />
           <span class="gradient-text">NischayDesk</span> के साथ।
         </h1>
-        <p class="hero-subline">
-          कक्षा 10वीं (मैट्रिक) एवं 11वीं-12वीं साइंस के हस्तलिखित नोट्स, त्वरित AI डाउट सॉल्वर और सटीक बोर्ड पैटर्न टेस्ट।
+        <p class="hero-subline" id="heroSublineText">
+          हस्तलिखित नोट्स, त्वरित AI डाउट सॉल्वर और सटीक बोर्ड पैटर्न टेस्ट सीरीज।
         </p>
 
         <div class="hero-action-group">
@@ -149,7 +161,7 @@
         <div class="stat-glass-card">
           <div class="stat-icon">📖</div>
           <div class="stat-numeric" id="totalNotesCount">14+</div>
-          <div class="stat-label">मैथ & साइंस चैप्टर्स</div>
+          <div class="stat-label">सब्जेक्ट चैप्टर्स</div>
         </div>
         <div class="stat-glass-card">
           <div class="stat-icon">🎯</div>
@@ -169,20 +181,20 @@
       </div>
     </section>
 
-    <!-- CLASS 10TH MATRIC SECTION -->
-    <section class="dashboard-section">
+    <!-- CLASS 10TH MATRIC SECTION (LOCKED ID) -->
+    <section class="dashboard-section" id="sectionClass10">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">कक्षा 10वीं (मैट्रिक) सम्पूर्ण हब</h2>
           <p class="section-subheadline">बिहार बोर्ड मैट्रिक परीक्षा के सभी 5 अनिवार्य विषय</p>
         </div>
-        <a href="notes.html" class="realtime-indicator" style="text-decoration:none;">सभी विषय देखें &rarr;</a>
+        <a href="notes.html" class="realtime-indicator" style="text-decoration:none;">10th नोट्स &rarr;</a>
       </div>
 
       <div class="dashboard-grid-cards">
         <div class="grid-card">
           <div class="card-head">
-            <span class="card-tag">मैट्रिक 2026-2027</span>
+            <span class="card-tag">मैट्रिक बोर्ड हब</span>
             <a href="notes.html" class="card-action-link">नोट्स खोलें &rarr;</a>
           </div>
           <h3 class="card-title">गणित, विज्ञान, सामाजिक विज्ञान एवं संस्कृत</h3>
@@ -191,7 +203,7 @@
           <div style="display: flex; gap: 8px; overflow-x: auto; padding: 6px 0;">
             <a href="notes.html" class="card-tag" style="text-decoration:none;">📐 गणित</a>
             <a href="notes.html" class="card-tag" style="text-decoration:none;">🧪 विज्ञान</a>
-            <a href="notes.html" class="card-tag" style="text-decoration:none;">🌍 सामाजिक विज्ञान (SST)</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🌍 SST</a>
             <a href="notes.html" class="card-tag" style="text-decoration:none;">📜 संस्कृत</a>
           </div>
         </div>
@@ -201,7 +213,7 @@
             <span class="card-tag alert-tag">ऑनलाइन टेस्ट पोर्टल</span>
             <a href="test.html" class="card-action-link">टेस्ट शुरू करें &rarr;</a>
           </div>
-          <h3 class="card-title">डेली बोर्ड स्पीड टेस्ट</h3>
+          <h3 class="card-title">10th बोर्ड स्पीड टेस्ट</h3>
           <p class="card-desc">नेगेटिव मार्किंग, टाइमर और तुरंत व्याख्या सहित विस्तृत रिज़ल्ट रिपोर्ट।</p>
           
           <div class="test-quick-stat">
@@ -219,11 +231,11 @@
       </div>
     </section>
 
-    <!-- CLASS 11TH & 12TH SCIENCE SECTION -->
-    <section class="dashboard-section">
+    <!-- CLASS 11TH & 12TH SCIENCE SECTION (LOCKED ID) -->
+    <section class="dashboard-section" id="sectionClass11">
       <div class="section-title-wrap">
         <div>
-          <h2 class="section-headline">कक्षा 11वीं एवं 12वीं साइंस (PCM + Bio)</h2>
+          <h2 class="section-headline">कक्षा 11वीं एवं 12वीं साइंस हब</h2>
           <p class="section-subheadline">NCERT और स्टेट बोर्ड आधारित थ्योरी, न्यूमेरिकल एवं फॉर्मूला बुक्स</p>
         </div>
         <span class="realtime-indicator" id="syncStatus">क्लाउड से जुड़ा हुआ</span>
@@ -231,10 +243,10 @@
 
       <div class="grid-card" style="margin-bottom: 24px;">
         <div class="card-head">
-          <span class="card-tag premium-tag">बोर्ड + JEE/NEET फाउंडेशन</span>
+          <span class="card-tag premium-tag">साइंस + फाउंडेशन हब</span>
           <a href="notes.html" class="card-action-link">स्टडी हब &rarr;</a>
         </div>
-        <h3 class="card-title">भौतिकी, रसायन विज्ञान, जीव विज्ञान और गणित</h3>
+        <h3 class="card-title">भौतिकी, रसायन विज्ञान, गणित और जीव विज्ञान</h3>
         <p class="card-desc">गहराई से समझे गए कॉन्सेप्ट्स, शॉर्ट ट्रिक्स और बोर्ड परीक्षा में पूछे जाने वाले महत्वपूर्ण प्रश्न।</p>
         
         <div class="progress-container">
@@ -243,11 +255,10 @@
             <span id="syllabusPercent">अपलोड जारी है...</span>
           </div>
           <div class="progress-track">
-            <div class="progress-bar" style="width: 75%;"></div>
+            <div class="progress-bar" style="width: 85%;"></div>
           </div>
         </div>
 
-        <!-- Cloud Locker Feed container (Safe for auth.js sync) -->
         <div class="locker-history-feed" id="cloudLockerFeed" style="margin-top: 14px;">
           <div class="empty-feed-placeholder">
             <span>डेटा सिंक और टेस्ट ट्रैकिंग के लिए Google से साइन इन करें।</span>
@@ -256,7 +267,7 @@
       </div>
     </section>
 
-    <!-- QUICK UTILITIES ENGINE (NATIVE DASHBOARD CSS GRID) -->
+    <!-- QUICK UTILITIES ENGINE -->
     <section class="dashboard-section" id="quickTools">
       <div class="section-title-wrap">
         <div>
@@ -266,28 +277,24 @@
       </div>
 
       <div class="quick-tools-grid">
-        <!-- 1. Notes Reader -->
         <a href="notes.html" class="quick-tool-card">
           <div class="tool-icon-box">📚</div>
           <h4>इन-बिल्ट नोट्स रीडर</h4>
           <p>बिना डाउनलोड किए सीधे स्क्रीन पर PDF पढ़ें।</p>
         </a>
 
-        <!-- 2. Exam Timer -->
         <a href="test.html" class="quick-tool-card">
           <div class="tool-icon-box">⏱️</div>
           <h4>एग्जाम टाइमर टेस्ट</h4>
           <p>ऑब्जेक्टिव प्रश्नों का वास्तविक समय आधारित टेस्ट।</p>
         </a>
 
-        <!-- 3. HD Doc Converter -->
         <div class="quick-tool-card" id="openDocConverterBtn">
           <div class="tool-icon-box">📄</div>
           <h4>HD डॉक कनवर्टर</h4>
           <p>हाथ से लिखे नोट्स को सीधे PDF में बदलें।</p>
         </div>
 
-        <!-- 4. Eligibility Checker -->
         <div class="quick-tool-card" id="openEligibilityBtn">
           <div class="tool-icon-box">🎯</div>
           <h4>पात्रता चेकर</h4>
@@ -296,18 +303,76 @@
       </div>
     </section>
 
-    <!-- =================== TOOL 1: DOC CONVERTER MODAL =================== -->
+    <!-- STUDENT ONBOARDING SETUP MODAL -->
+    <div class="pdf-modal-backdrop" id="onboardingModal">
+      <div class="pdf-modal-window" style="max-width: 500px; height: auto; padding: 24px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 2rem; margin-bottom: 6px;">🎓</div>
+          <h3 style="color: var(--text-pure); font-size: 1.25rem;">NischayDesk प्रोफ़ाइल सेटअप</h3>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">
+            अपनी कक्षा चुनें ताकि आपको केवल आपकी कक्षा का ही सिलेबस दिखे:
+          </p>
+        </div>
+
+        <form id="onboardingForm" style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">आपका नाम:</label>
+            <input type="text" id="obName" class="exam-dropdown" required placeholder="अपना पूरा नाम लिखें">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">आपकी कक्षा:</label>
+              <select id="obClass" class="exam-dropdown">
+                <option value="10">10th मैट्रिक</option>
+                <option value="11" selected>11th साइंस</option>
+                <option value="12">12th साइंस</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">स्ट्रीम:</label>
+              <select id="obStream" class="exam-dropdown">
+                <option value="PCM" selected>PCM (गणित)</option>
+                <option value="PCB">PCB (बायोलॉजी)</option>
+                <option value="PCMB">PCMB (दोनों)</option>
+                <option value="General">सामान्य (मैट्रिक)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">मुख्य लक्ष्य (Aim / Goal):</label>
+            <select id="obGoal" class="exam-dropdown">
+              <option value="Bihar Board Topper" selected>🏆 बिहार बोर्ड टॉपर (State Rank)</option>
+              <option value="JEE Main & Adv">⚡ IIT JEE (इंजीनियरिंग)</option>
+              <option value="NEET (Medical)">🩺 NEET (मेडिकल / डॉक्टर)</option>
+              <option value="NDA Officer">🇮🇳 NDA (भारतीय सेना में अफ़सर)</option>
+              <option value="Polytechnic / ITI">🛠️ पॉलिटेक्निक / ITI</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">पसंदीदा विषय / रुचि (Hobby):</label>
+            <input type="text" id="obHobby" class="exam-dropdown" placeholder="उदा. भौतिकी, गणित, कोडिंग, क्रिकेट">
+          </div>
+
+          <button type="submit" id="saveProfileBtn" class="btn-cta-primary" style="width: 100%; border-radius: var(--radius-md); margin-top: 8px;">
+            ✓ प्रोफ़ाइल सेव करें
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TOOL MODALS -->
     <div class="pdf-modal-backdrop" id="docConverterModal">
       <div class="pdf-modal-window" style="max-width: 520px; height: auto; padding: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3 style="color:var(--text-pure); font-size:1.15rem;">📄 इमेज टू PDF कनवर्टर</h3>
           <button class="btn-studio-close" id="closeConverterBtn">&times;</button>
         </div>
-        
         <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
-          अपने हाथ से लिखे नोट्स या असाइनमेंट की फोटो चुनें और तुरंत एक सिंगल PDF बनाएं:
+          अपने हाथ से लिखे नोट्स की फोटो चुनें और तुरंत एक सिंगल PDF बनाएं:
         </p>
-
         <div style="border: 2px dashed var(--border-strong); border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 16px; background: var(--surface-elevated);">
           <input type="file" id="converterFileInput" accept="image/*" multiple style="display:none;" />
           <button type="button" class="btn-stage-primary" onclick="document.getElementById('converterFileInput').click();">
@@ -317,21 +382,18 @@
             कोई फोटो नहीं चुनी गई
           </div>
         </div>
-
         <button id="generatePdfBtn" class="btn-cta-primary" style="width:100%; border-radius:var(--radius-md);" disabled>
           ⚡ PDF डाउनलोड करें
         </button>
       </div>
     </div>
 
-    <!-- =================== TOOL 2: ELIGIBILITY CHECKER MODAL =================== -->
     <div class="pdf-modal-backdrop" id="eligibilityModal">
       <div class="pdf-modal-window" style="max-width: 560px; height: auto; padding: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <h3 style="color:var(--text-pure); font-size:1.15rem;">🎯 करियर एवं परीक्षा पात्रता चेकर</h3>
           <button class="btn-studio-close" id="closeEligibilityBtn">&times;</button>
         </div>
-
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
           <div>
             <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">आपकी क्लास:</label>
@@ -346,16 +408,14 @@
             <select id="elStream" class="exam-dropdown">
               <option value="pcm">Physics, Chemistry, Math</option>
               <option value="pcb">Physics, Chemistry, Biology</option>
-              <option value="pcmb">PCMB (Math + Bio दोनों)</option>
+              <option value="pcmb">PCMB (दोनों)</option>
               <option value="gen">सामान्य / मैट्रिक</option>
             </select>
           </div>
         </div>
-
         <button id="checkEligibilityBtn" class="btn-cta-primary" style="width:100%; border-radius:var(--radius-md); margin-bottom:16px;">
           पात्रता जांचें (Check Eligibility)
         </button>
-
         <div id="eligibilityResultsBox" style="background:var(--surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; max-height:220px; overflow-y:auto; font-size:0.85rem; line-height:1.6; color:var(--text-pure);">
           <span style="color:var(--text-muted);">विवरण चुनकर 'पात्रता जांचें' पर क्लिक करें।</span>
         </div>
@@ -373,13 +433,12 @@
           <span class="brand-title">NischayDesk</span>
         </div>
         <p class="footer-summary">
-          बिहार बोर्ड एवं प्रतियोगी परीक्षाओं के छात्रों के लिए समर्पित अध्ययन प्लेटफॉर्म। 100% फ्री एवं विज्ञापन-मुक्त अध्ययन।
+          बिहार बोर्ड एवं प्रतियोगी परीक्षाओं के छात्रों के लिए समर्पित अध्ययन प्लेटफॉर्म। 100% फ्री एवं विज्ञापन-मुक्त।
         </p>
         <div class="founder-identity-box">
           संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
         </div>
       </div>
-
       <div class="footer-col">
         <h4 class="footer-heading">एकैडमिक्स</h4>
         <ul class="footer-nav">
@@ -388,7 +447,6 @@
           <li><a href="test.html">➔ ऑनलाइन टेस्ट सीरीज</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <h4 class="footer-heading">प्लेटफ़ॉर्म</h4>
         <ul class="footer-nav">
@@ -398,14 +456,13 @@
         </ul>
       </div>
     </div>
-
     <div class="footer-bottom-bar">
       <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
       <span class="server-status-tag">● सिस्टम सुपरफास्ट व सक्रिय है</span>
     </div>
   </footer>
 
-  <!-- Flat Script Links -->
+  <!-- Scripts -->
   <script src="config.js"></script>
   <script src="syllabus-data.js"></script>
   <script src="auth.js"></script>
