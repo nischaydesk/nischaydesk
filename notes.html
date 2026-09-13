@@ -118,7 +118,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk v3.0 Production</span>
+      <span class="platform-meta">NischayDesk Production</span>
       <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
     </div>
   </aside>
@@ -150,7 +150,7 @@
       </div>
 
       <!-- Filter Pills (10th, 11th, 12th) -->
-            <div class="filter-pill-container" id="filterPillContainer">
+      <div class="filter-pill-container" id="filterPillContainer">
         <button class="filter-btn active" data-filter="all">सभी विषय (All)</button>
 
         <!-- 10th Matric Filters -->
@@ -178,10 +178,18 @@
         <button class="filter-btn" data-filter="12-biology">🧬 12th जीव विज्ञान</button>
         <button class="filter-btn" data-filter="12-math">📐 12th गणित</button>
       </div>
+    </section>
 
-      
+    <!-- 4. DYNAMIC NOTES CATALOG GRID (यह गायब था, अब वापस जोड़ दिया गया है) -->
+    <section class="notes-display-section" style="margin-top: 24px;">
+      <div class="notes-catalog-grid" id="notesCatalogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+        <!-- जावास्क्रिप्ट द्वारा सारे नोट्स कार्ड्स यहीं लोड होंगे -->
+      </div>
+    </section>
 
-  <!-- 4. IN-BUILT STUDIO MODAL PDF VIEWER -->
+  </main>
+
+  <!-- 5. IN-BUILT STUDIO MODAL PDF VIEWER -->
   <div class="pdf-modal-backdrop" id="pdfStudioModal">
     <div class="pdf-modal-window">
       <div class="pdf-studio-header">
@@ -211,7 +219,7 @@
     </div>
   </div>
 
-  <!-- 5. FOOTER -->
+  <!-- 6. FOOTER -->
   <footer class="app-footer">
     <div class="footer-container">
       <div class="footer-col brand-col">
