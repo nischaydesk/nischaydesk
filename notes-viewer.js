@@ -1,46 +1,52 @@
 /* ==========================================================================
-   NischayDesk Notes Catalog Explorer & In-App PDF Studio
-   With Automatic Class-Lock Engine (10th / 11th / 12th)
-   Architecture & Logic: Prince Kumar
+   NischayDesk Strict Class-Based Notes Viewer & In-App PDF Studio (v3.5)
+   Supports: 10th Matric, 11th Science & 12th Science
+   Architected by: Prince Kumar
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
-
   const notesCatalogGrid = document.getElementById('notesCatalogGrid');
   const notesSearchInput = document.getElementById('notesSearchInput');
   const filterPillContainer = document.getElementById('filterPillContainer');
 
-  // Modal Elements
+  // Modal Studio Elements
   const pdfStudioModal = document.getElementById('pdfStudioModal');
-  const studioPdfFrame = document.getElementById('studioPdfFrame');
   const modalDocBadge = document.getElementById('modalDocBadge');
   const modalDocTitle = document.getElementById('modalDocTitle');
-  const modalDirectDownloadBtn = document.getElementById('modalDirectDownloadBtn');
+  const studioPdfFrame = document.getElementById('studioPdfFrame');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
-
-  // Guard: Only execute on notes.html
-  if (!notesCatalogGrid) return;
+  const modalDirectDownloadBtn = document.getElementById('modalDirectDownloadBtn');
 
   let allChaptersMaster = [];
-  let currentFilter = 'all';
+  let currentFilterSubject = 'all';
+  let searchQuery = '';
 
-  // Read student locked class from localStorage (set by auth.js)
-  const studentClass = localStorage.getItem('nischay_student_class') || 'all';
+  // Get current student class lock (default to 11 if not set)
+  let studentClass = localStorage.getItem('nischay_student_class') || '11';
 
-  // 1. Flatten Chapters from syllabus-data.js based on Class Lock
+  // 1. Extract Chapters strictly based on current Student Class
   function extractAllChapters() {
     allChaptersMaster = [];
-    if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) return;
+    if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
+      setTimeout(extractAllChapters, 150);
+      return;
+    }
+
+    // Update class dynamically if profile updated
+    studentClass = localStorage.getItem('nischay_student_class') || '11';
 
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      // Class Lock Rule:
-      // If student is Class 10, skip 11th & 12th subjects
+      // 10th वाले छात्र को केवल 10- से शुरू होने वाले विषय दिखेंगे
       if (studentClass === '10' && !subject.id.startsWith('10-')) {
         return;
       }
-      // If student is Class 11 or 12, skip 10th matric subjects
-      if ((studentClass === '11' || studentClass === '12') && subject.id.startsWith('10-')) {
+      // 11th वाले छात्र को केवल 11- से शुरू होने वाले विषय दिखेंगे
+      if (studentClass === '11' && !subject.id.startsWith('11-')) {
+        return;
+      }
+      // 12th वाले छात्र को केवल 12- से शुरू होने वाले विषय दिखेंगे
+      if (studentClass === '12' && !subject.id.startsWith('12-')) {
         return;
       }
 
@@ -48,186 +54,185 @@ document.addEventListener('DOMContentLoaded', function () {
         subject.chapters.forEach(function (ch) {
           allChaptersMaster.push({
             subjectId: subject.id,
-            classTitle: subject.classTitle,
-            subjectTitle: subject.subjectTitle,
+            classTitle: subject.classTitle || `Class ${studentClass}th`,
+            subjectTitle: subject.subjectTitle || "सामान्य",
             no: ch.no,
             name: ch.name,
-            status: ch.status || 'pending',
+            status: ch.status || 'available',
             pdfUrl: ch.pdfUrl || '',
             pages: ch.pages || 'हैंडनोट्स',
-            desc: ch.desc || ''
+            desc: ch.desc || 'बोर्ड परीक्षा एवं गहन कॉन्सेप्ट्स के लिए तैयार हस्तलिखित नोट्स।'
           });
         });
       }
     });
+
+    renderPillFilters();
+    renderNotesGrid();
   }
 
-  // 2. Adjust Filter Pill Buttons to Only Show Student's Class Subjects
-  function adaptFilterPillsToClass() {
+  // 2. Render only relevant subject pill filters for the active class
+  function renderPillFilters() {
     if (!filterPillContainer) return;
 
-    const pills = filterPillContainer.querySelectorAll('.filter-btn');
-    pills.forEach(function (btn) {
+    // Filter available buttons by matching class prefix
+    const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
       const filterVal = btn.getAttribute('data-filter');
-      if (filterVal === 'all') return;
-
-      if (studentClass === '10') {
-        // 10th student: hide 11th/12th buttons
-        if (!filterVal.startsWith('10-')) {
-          btn.style.display = 'none';
-        } else {
-          btn.style.display = 'inline-block';
-        }
-      } else if (studentClass === '11' || studentClass === '12') {
-        // 11th/12th student: hide 10th buttons
-        if (filterVal.startsWith('10-')) {
-          btn.style.display = 'none';
-        } else {
-          btn.style.display = 'inline-block';
-        }
+      if (filterVal === 'all') {
+        btn.style.display = 'inline-block';
+      } else if (filterVal.startsWith(studentClass + '-')) {
+        btn.style.display = 'inline-block';
+      } else {
+        btn.style.display = 'none';
       }
     });
   }
 
-  // 3. Render Note Cards in Catalog Grid
-  function renderNotes(chapters) {
-    notesCatalogGrid.innerHTML = '';
+  // 3. Render Notes Cards Grid
+  function renderNotesGrid() {
+    if (!notesCatalogGrid) return;
 
-    if (!chapters || chapters.length === 0) {
+    let filtered = allChaptersMaster.filter(function (item) {
+      // Subject match
+      const matchSubject = (currentFilterSubject === 'all') || (item.subjectId === currentFilterSubject);
+
+      // Search match
+      const q = searchQuery.toLowerCase().trim();
+      const matchSearch = !q || 
+        item.name.toLowerCase().includes(q) || 
+        item.subjectTitle.toLowerCase().includes(q) ||
+        String(item.no).includes(q);
+
+      return matchSubject && matchSearch;
+    });
+
+    if (filtered.length === 0) {
       notesCatalogGrid.innerHTML = `
-        <div class="loading-state-box" style="grid-column: 1 / -1; padding: 40px 10px; text-align: center;">
-          <div style="font-size: 2.2rem; margin-bottom: 8px;">📭</div>
-          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">आपकी कक्षा के लिए नोट्स तैयार हो रहे हैं!</h3>
-          <p style="color: var(--text-secondary); font-size: 0.85rem;">जल्द ही नए चैप्टर्स अपलोड किए जाएँगे।</p>
+        <div class="loading-state-box" style="grid-column: 1 / -1;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">📚</div>
+          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">कोई नोट्स नहीं मिले</h3>
+          <p style="font-size: 0.84rem; color: var(--text-secondary);">
+            कक्षा ${studentClass}वीं के लिए इस विषय का कंटेंट जल्द अपलोड किया जा रहा है।
+          </p>
         </div>
       `;
       return;
     }
 
-    chapters.forEach(function (ch) {
-      const card = document.createElement('div');
-      card.className = 'note-item-card';
+    let htmlBuffer = '';
+    filtered.forEach(function (note) {
+      const hasPdf = note.pdfUrl && note.pdfUrl.trim() !== '' && note.pdfUrl !== '#';
+      const readAction = hasPdf 
+        ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
+        : `onclick="alert('इस अध्याय के हस्तलिखित नोट्स जल्द जोड़े जा रहे हैं!')"`;
 
-      const isReady = (ch.status === 'ready' && ch.pdfUrl && ch.pdfUrl.trim() !== '');
+      const downloadAction = hasPdf
+        ? `href="${note.pdfUrl}" target="_blank" download`
+        : `href="javascript:void(0)" onclick="alert('PDF लिंक जल्द सक्रिय होगा!')"`;
 
-      card.innerHTML = `
-        <div>
-          <div class="note-badge-row">
-            <span class="note-badge-class">${ch.classTitle} • ${ch.subjectTitle}</span>
-            <span class="note-badge-pages">${ch.pages}</span>
+      htmlBuffer += `
+        <div class="note-item-card">
+          <div>
+            <div class="note-badge-row">
+              <span class="note-badge-class">${note.classTitle} • ${note.subjectTitle}</span>
+              <span class="note-badge-pages">अध्याय ${note.no}</span>
+            </div>
+            <h3>${note.name}</h3>
+            <p>${note.desc}</p>
           </div>
-          <h3>अध्याय ${ch.no}: ${ch.name}</h3>
-          <p>${ch.desc || 'बोर्ड परीक्षा एवं प्रतियोगी परीक्षाओं के लिए विशेष हस्तलिखित थ्योरी नोट्स।'}</p>
-        </div>
-        <div class="note-btn-group">
-          ${isReady 
-            ? `<button type="button" class="btn-read-note" data-url="${ch.pdfUrl}" data-title="${ch.name}" data-badge="${ch.classTitle} • ${ch.subjectTitle}">📖 नोट्स पढ़ें</button>`
-            : `<button type="button" class="btn-read-note" style="opacity:0.6; cursor:not-allowed;" disabled>⏳ जल्द आ रहा है</button>`
-          }
-          ${isReady 
-            ? `<a href="${ch.pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn-download-note" download title="डाउनलोड करें">📥 डाउनलोड</a>`
-            : `<span class="btn-download-note" style="opacity:0.5; pointer-events:none;">🔒 लॉक्ड</span>`
-          }
+
+          <div class="note-btn-group">
+            <button class="btn-read-note" ${readAction}>
+              📖 नोट्स पढ़ें
+            </button>
+            <a class="btn-download-note" ${downloadAction}>
+              📥 PDF
+            </a>
+          </div>
         </div>
       `;
-
-      notesCatalogGrid.appendChild(card);
     });
 
-    // Attach In-App PDF Studio Clicks
-    document.querySelectorAll('.btn-read-note').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        const pdfUrl = this.getAttribute('data-url');
-        const docTitle = this.getAttribute('data-title');
-        const docBadge = this.getAttribute('data-badge');
-        if (pdfUrl) {
-          openPdfStudio(pdfUrl, docTitle, docBadge);
-        }
-      });
-    });
+    notesCatalogGrid.innerHTML = htmlBuffer;
   }
 
-  // 4. Combined Filter and Search Logic
-  function applyFilterAndSearch() {
-    const query = notesSearchInput ? notesSearchInput.value.toLowerCase().trim() : '';
-
-    const filtered = allChaptersMaster.filter(function (ch) {
-      const matchesFilter = (currentFilter === 'all') || 
-                            (ch.subjectId === currentFilter) ||
-                            (currentFilter === '10-science' && ch.subjectId.startsWith('10-science')) ||
-                            (currentFilter === '10-math' && ch.subjectId === '10-math') ||
-                            (currentFilter === '10-sst' && ch.subjectId === '10-sst') ||
-                            (currentFilter === '10-sanskrit' && ch.subjectId === '10-sanskrit');
-
-      const matchesSearch = !query || 
-                            ch.name.toLowerCase().includes(query) ||
-                            ch.subjectTitle.toLowerCase().includes(query) ||
-                            ch.desc.toLowerCase().includes(query);
-
-      return matchesFilter && matchesSearch;
-    });
-
-    renderNotes(filtered);
-  }
-
-  // 5. In-Built Studio PDF Viewer Controls
-  function openPdfStudio(url, title, badge) {
+  // 4. Modal Studio Open / Close Engine
+  window.openNoteModal = function (classTitle, title, pdfUrl) {
     if (!pdfStudioModal || !studioPdfFrame) return;
 
-    if (modalDocTitle) modalDocTitle.innerText = title || 'अध्याय नोट्स';
-    if (modalDocBadge) modalDocBadge.innerText = badge || 'NischayDesk Verified';
-    if (modalDirectDownloadBtn) modalDirectDownloadBtn.href = url;
+    if (modalDocBadge) modalDocBadge.innerText = classTitle;
+    if (modalDocTitle) modalDocTitle.innerText = title;
+    
+    // Drive preview embed fix
+    let secureUrl = pdfUrl;
+    if (secureUrl.includes('drive.google.com/file/d/')) {
+      secureUrl = secureUrl.replace('/view?usp=sharing', '/preview').replace('/view', '/preview');
+    }
 
-    studioPdfFrame.src = url;
+    studioPdfFrame.src = secureUrl;
+    if (modalDirectDownloadBtn) modalDirectDownloadBtn.href = pdfUrl;
+
     pdfStudioModal.classList.add('active');
     document.body.style.overflow = 'hidden';
-  }
+  };
 
-  function closePdfStudio() {
+  function closeNoteModal() {
     if (!pdfStudioModal || !studioPdfFrame) return;
-    studioPdfFrame.src = '';
     pdfStudioModal.classList.remove('active');
+    studioPdfFrame.src = '';
     document.body.style.overflow = '';
   }
 
-  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePdfStudio);
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', closeNoteModal);
+  }
 
   if (pdfStudioModal) {
     pdfStudioModal.addEventListener('click', function (e) {
-      if (e.target === pdfStudioModal) closePdfStudio();
+      if (e.target === pdfStudioModal) closeNoteModal();
     });
   }
 
+  // Fullscreen Modal Toggle
   if (modalFullscreenBtn) {
     modalFullscreenBtn.addEventListener('click', function () {
+      const stage = document.getElementById('pdfFrameStage');
       if (!document.fullscreenElement) {
-        pdfStudioModal.requestFullscreen().catch(err => console.warn(err));
+        if (stage.requestFullscreen) stage.requestFullscreen();
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
       }
     });
   }
 
-  // 6. Pill Button Click Handlers
+  // 5. Subject Filter Listeners
   if (filterPillContainer) {
-    filterPillContainer.querySelectorAll('.filter-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        filterPillContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        currentFilter = this.getAttribute('data-filter') || 'all';
-        applyFilterAndSearch();
-      });
+    filterPillContainer.addEventListener('click', function (e) {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+
+      filterPillContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      currentFilterSubject = btn.getAttribute('data-filter');
+      renderNotesGrid();
     });
   }
 
-  // 7. Search Input Handler
+  // 6. Real-Time Search Input
   if (notesSearchInput) {
-    notesSearchInput.addEventListener('input', applyFilterAndSearch);
+    notesSearchInput.addEventListener('input', function () {
+      searchQuery = this.value;
+      renderNotesGrid();
+    });
   }
 
-  // 8. Initialize Notes Page
-  adaptFilterPillsToClass();
-  extractAllChapters();
-  renderNotes(allChaptersMaster);
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  }
 
+  // Initialize
+  extractAllChapters();
 });
