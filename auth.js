@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk User Auth & Class-Lock Personalization Engine
+   NischayDesk User Auth & Instant Class-Lock Personalization Engine (v3.5)
    Supports: Class 10th Matric, 11th Science & 12th Science
    Architected by: Prince Kumar
    ========================================================================== */
@@ -29,10 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const obStream = document.getElementById('obStream');
   const obGoal = document.getElementById('obGoal');
   const obHobby = document.getElementById('obHobby');
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
 
-  // Class Section Blocks on Dashboard
+  // Dashboard Section Blocks
   const sectionClass10 = document.getElementById('sectionClass10');
   const sectionClass11 = document.getElementById('sectionClass11');
+  const sectionClass12 = document.getElementById('sectionClass12');
 
   // Firebase Instances
   const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
@@ -80,16 +82,103 @@ document.addEventListener('DOMContentLoaded', function () {
         auth.signOut().then(() => {
           localStorage.removeItem('nischay_user_name');
           localStorage.removeItem('nischay_user_profile');
+          localStorage.removeItem('nischay_student_class');
           location.reload();
         });
       }
     });
   }
 
-  // 3. User State Change Listener
+  // 3. Global Modal Switcher Function
+  window.openClassSwitchModal = function () {
+    const user = auth.currentUser;
+    openOnboardingModal(user);
+  };
+
+  function openOnboardingModal(user) {
+    if (!onboardingModal) return;
+    
+    // Fill current user data if available
+    const savedProfile = localStorage.getItem('nischay_user_profile');
+    let currentData = null;
+    if (savedProfile) {
+      try { currentData = JSON.parse(savedProfile); } catch (e) {}
+    }
+
+    if (obName) {
+      obName.value = (currentData && currentData.name) 
+                     ? currentData.name 
+                     : ((user && user.displayName) ? user.displayName : "");
+    }
+    if (obClass && currentData && currentData.studentClass) {
+      obClass.value = currentData.studentClass;
+    }
+    if (obStream && currentData && currentData.stream) {
+      obStream.value = currentData.stream;
+    }
+    if (obGoal && currentData && currentData.goal) {
+      obGoal.value = currentData.goal;
+    }
+
+    onboardingModal.classList.add('active');
+  }
+
+  // 4. Save Onboarding Form Data (Instant Response Engine)
+  if (onboardingForm) {
+    onboardingForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      const user = auth.currentUser;
+      const targetUid = user ? user.uid : "local_user";
+      const studentName = obName ? obName.value.trim() : (user ? user.displayName : "छात्र");
+      const selectedClass = obClass ? obClass.value : "11";
+      const selectedStream = obStream ? obStream.value : "PCM";
+      const selectedGoal = obGoal ? obGoal.value : "Bihar Board Topper";
+      const selectedHobby = obHobby ? obHobby.value.trim() : "";
+
+      if (saveProfileBtn) {
+        saveProfileBtn.disabled = true;
+        saveProfileBtn.innerText = "सेव हो रहा है...";
+      }
+
+      const profilePayload = {
+        uid: targetUid,
+        name: studentName,
+        studentClass: selectedClass,
+        stream: selectedStream,
+        goal: selectedGoal,
+        hobby: selectedHobby,
+        updatedAt: new Date().toISOString()
+      };
+
+      // 1. तुरंत LocalStorage में सेव
+      localStorage.setItem('nischay_user_profile', JSON.stringify(profilePayload));
+      localStorage.setItem('nischay_student_class', selectedClass);
+      localStorage.setItem('nischay_user_name', studentName);
+
+      // 2. मोडल बंद और UI अपडेट
+      onboardingModal.classList.remove('active');
+      applyUserProfile(profilePayload);
+
+      // 3. बैकग्राउंड में Firestore पर अपडेट
+      if (db && user) {
+        db.collection('students').doc(user.uid).set(profilePayload, { merge: true })
+          .catch((err) => console.warn("Firestore sync background warning:", err));
+      }
+
+      if (saveProfileBtn) {
+        saveProfileBtn.disabled = false;
+        saveProfileBtn.innerText = "✓ प्रोफ़ाइल सेव करें";
+      }
+
+      // पेज को रीलोड करके नए क्लास के साथ रीफ्रेश कर दें
+      location.reload();
+    });
+  }
+
+  // 5. User State Change Listener
   auth.onAuthStateChanged(async (user) => {
     if (user) {
-      // Header UI Sync
       if (headerAuthBtn) headerAuthBtn.style.display = 'none';
       if (userProfileWidget) userProfileWidget.style.display = 'flex';
 
@@ -100,45 +189,42 @@ document.addEventListener('DOMContentLoaded', function () {
       if (userDisplayName) userDisplayName.innerText = displayName;
       if (userAvatarImg) userAvatarImg.src = photoURL;
 
-      // Drawer Sync
       if (drawerUserCard) {
         drawerUserCard.innerHTML = `
           <div style="display:flex; align-items:center; gap:10px;">
             <img src="${photoURL}" style="width:38px; height:38px; border-radius:50%; border:1.5px solid var(--brand-accent);" alt="${displayName}">
             <div>
               <div style="font-size:0.9rem; font-weight:700; color:var(--text-pure);">${displayName}</div>
-              <div style="font-size:0.72rem; color:var(--success); font-weight:600;">● क्लाउड प्रोफाइल सक्रिय</div>
+              <div style="font-size:0.72rem; color:var(--success); font-weight:600;">● प्रोफ़ाइल सक्रिय</div>
             </div>
           </div>
         `;
       }
 
-      // Check Profile in Firestore / LocalStorage
       await checkAndLoadUserProfile(user);
 
     } else {
-      // Guest State
+      // Guest State (बिना लॉगिन)
       if (headerAuthBtn) headerAuthBtn.style.display = 'inline-flex';
       if (userProfileWidget) userProfileWidget.style.display = 'none';
       if (personalizedWelcomeCard) personalizedWelcomeCard.style.display = 'none';
 
-      // Default: Show both sections for guest visitors
+      // बिना लॉगिन तीनों सेक्शन्स साफ़-साफ़ दिखेंगे
       if (sectionClass10) sectionClass10.style.display = 'block';
       if (sectionClass11) sectionClass11.style.display = 'block';
+      if (sectionClass12) sectionClass12.style.display = 'block';
     }
   });
 
-  // 4. Check & Load Profile Data
+  // 6. Check & Load Profile Data
   async function checkAndLoadUserProfile(user) {
     let profileData = null;
 
-    // A. LocalStorage Check (Instant)
     const localProfile = localStorage.getItem('nischay_user_profile');
     if (localProfile) {
       try { profileData = JSON.parse(localProfile); } catch (e) {}
     }
 
-    // B. Firestore Check
     if (!profileData && db) {
       try {
         const docRef = db.collection('students').doc(user.uid);
@@ -152,61 +238,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // C. If First-Time User ➔ Open Onboarding Modal
     if (!profileData) {
       openOnboardingModal(user);
     } else {
       applyUserProfile(profileData);
     }
-  }
-
-  // 5. Open Onboarding Modal
-  function openOnboardingModal(user) {
-    if (!onboardingModal) return;
-    if (obName) obName.value = user.displayName || "";
-    onboardingModal.classList.add('active');
-  }
-
-  // Window helper to switch class anytime
-  window.openClassSwitchModal = function () {
-    const user = auth.currentUser;
-    if (user) openOnboardingModal(user);
-  };
-
-  // 6. Save Onboarding Form Data
-  if (onboardingForm) {
-    onboardingForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const profilePayload = {
-        uid: user.uid,
-        name: obName ? obName.value.trim() : user.displayName,
-        studentClass: obClass ? obClass.value : "11",
-        stream: obStream ? obStream.value : "PCM",
-        goal: obGoal ? obGoal.value : "Bihar Board Topper",
-        hobby: obHobby ? obHobby.value.trim() : "",
-        updatedAt: new Date().toISOString()
-      };
-
-      // Save Local
-      localStorage.setItem('nischay_user_profile', JSON.stringify(profilePayload));
-      localStorage.setItem('nischay_student_class', profilePayload.studentClass);
-
-      // Save Firestore
-      if (db) {
-        try {
-          await db.collection('students').doc(user.uid).set(profilePayload, { merge: true });
-        } catch (err) {
-          console.error("Firestore Save Error:", err);
-        }
-      }
-
-      onboardingModal.classList.remove('active');
-      applyUserProfile(profilePayload);
-    alert("✓ आपकी प्रोफ़ाइल सफलतापूर्वक सेव हो गई है!");
-});
   }
 
   // 7. Apply Profile & Class-Lock Filter to UI
@@ -218,10 +254,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const sStream = profile.stream || "Science";
     const sGoal = profile.goal || "BSEB Topper";
 
-    // Save class key for notes-viewer.js & quiz-engine.js
     localStorage.setItem('nischay_student_class', sClass);
 
-    // Update Welcome Card
     if (personalizedWelcomeCard) {
       personalizedWelcomeCard.style.display = 'block';
       if (welcomeUserName) welcomeUserName.innerText = sName.split(' ')[0];
@@ -234,31 +268,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ==========================================
-    // CLASS LOCK FILTER ENGINE (10th vs 11th/12th)
+    // PRECISE CLASS LOCK FILTER (10th vs 11th vs 12th)
     // ==========================================
     if (sClass === "10") {
-      // छात्र 10वीं का है ➔ 11th/12th पूरी तरह छिपाएं
       if (sectionClass10) sectionClass10.style.display = 'block';
       if (sectionClass11) sectionClass11.style.display = 'none';
-    } else if (sClass === "11" || sClass === "12") {
-      // छात्र 11वीं या 12वीं का है ➔ 10वीं मैट्रिक पूरी तरह छिपाएं
+      if (sectionClass12) sectionClass12.style.display = 'none';
+    } else if (sClass === "11") {
       if (sectionClass10) sectionClass10.style.display = 'none';
       if (sectionClass11) sectionClass11.style.display = 'block';
-
-      // 12वीं के लिए हेडलाइन अपडेट
-      const s11Headline = sectionClass11 ? sectionClass11.querySelector('.section-headline') : null;
-      if (s11Headline) {
-        s11Headline.innerText = (sClass === "12") 
-          ? "कक्षा 12वीं साइंस सम्पूर्ण हब (बोर्ड स्पेशल)" 
-          : "कक्षा 11वीं साइंस हब (NCERT & फाउंडेशन)";
-      }
+      if (sectionClass12) sectionClass12.style.display = 'none';
+    } else if (sClass === "12") {
+      if (sectionClass10) sectionClass10.style.display = 'none';
+      if (sectionClass11) sectionClass11.style.display = 'none';
+      if (sectionClass12) sectionClass12.style.display = 'block';
     }
 
-    // Cloud Locker Sync Box Update
     if (cloudLockerFeed) {
       cloudLockerFeed.innerHTML = `
         <div style="padding:10px 14px; font-size:0.84rem; color:var(--text-secondary); text-align:center; background:rgba(2, 132, 199, 0.08); border-radius:var(--radius-md); border:1px solid rgba(56, 189, 248, 0.2);">
-          स्वागत है, <b style="color:var(--brand-accent);">${sName}</b>! आपकी कक्षा: <b>Class ${sClass}th (${sStream})</b> लॉक है।
+          स्वागत है, <b style="color:var(--brand-accent);">${sName}</b>! आपकी कक्षा: <b>Class ${sClass}th (${sStream})</b> सेट है।
         </div>
       `;
     }
