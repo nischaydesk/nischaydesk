@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Navigation Architecture & Solid Drawer Engine (v3.5)
-   Design: Prince Kumar
+   NischayDesk Solid Navbar & Slide Drawer Architecture (Fixed v3.6)
+   Fixed: Contrast in Light/Dark Mode & Text Visibility
    ========================================================================== */
 
 /* 1. TOP HEADER */
@@ -34,7 +34,7 @@ html.light-mode .app-header {
   gap: 12px;
 }
 
-/* 2. BRAND & HAMBURGER TRIGGER */
+/* 2. BRAND & MOBILE HAMBURGER */
 .nav-brand-group {
   display: flex !important;
   align-items: center !important;
@@ -191,7 +191,7 @@ html.light-mode .nav-item.active {
   border: 1px solid #bae6fd;
 }
 
-/* 4. NAV ACTIONS & PROFILE */
+/* 4. NAV ACTIONS & PROFILE WIDGET */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -234,12 +234,12 @@ html.light-mode .btn-auth-primary {
   border: 1px solid rgba(56, 189, 248, 0.25);
   padding: 4px 10px 4px 6px;
   border-radius: 30px;
-  max-width: 160px;
+  max-width: 175px;
 }
 
 html.light-mode .user-profile-widget {
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
 }
 
 .user-avatar-img {
@@ -248,6 +248,7 @@ html.light-mode .user-profile-widget {
   border-radius: 50%;
   border: 1.5px solid #38bdf8;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .user-info-text {
@@ -258,7 +259,7 @@ html.light-mode .user-profile-widget {
 }
 
 .user-display-name {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #ffffff !important;
   white-space: nowrap;
@@ -268,7 +269,7 @@ html.light-mode .user-profile-widget {
 }
 
 html.light-mode .user-display-name {
-  color: #0f172a !important;
+  color: #0f172a !important; /* लाइट मोड में साफ़ दिखेगा */
 }
 
 .user-session-badge {
@@ -294,7 +295,7 @@ html.light-mode .user-session-badge {
 .btn-logout:hover { color: #ef4444; }
 
 /* ==========================================================================
-   5. SOLID SIDE DRAWER (100% OPAQUE - NO TRANSPARENCY)
+   5. SOLID SIDE DRAWER (100% OPAQUE)
    ========================================================================== */
 .side-drawer {
   position: fixed !important;
@@ -302,7 +303,7 @@ html.light-mode .user-session-badge {
   left: -320px !important;
   width: 290px !important;
   height: 100vh !important;
-  background-color: #080f24 !important; /* 100% Opaque Solid Dark */
+  background-color: #080f24 !important; /* 100% Solid Dark */
   border-right: 1px solid rgba(56, 189, 248, 0.2) !important;
   z-index: 2000 !important;
   padding: 18px 16px !important;
@@ -313,7 +314,7 @@ html.light-mode .user-session-badge {
 }
 
 html.light-mode .side-drawer {
-  background-color: #ffffff !important; /* 100% Opaque Solid Light */
+  background-color: #ffffff !important; /* 100% Solid Light */
   border-right: 1px solid #cbd5e1 !important;
   box-shadow: 12px 0 40px rgba(15, 23, 42, 0.15) !important;
 }
@@ -400,6 +401,16 @@ html.light-mode .drawer-user-card {
   border: 1px solid #cbd5e1 !important;
 }
 
+.drawer-user-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff !important;
+}
+
+html.light-mode .drawer-user-name {
+  color: #0f172a !important; /* लाइट मोड में नाम साफ़ काला दिखेगा */
+}
+
 .drawer-user-prompt {
   font-size: 0.8rem !important;
   color: #94a3b8 !important;
@@ -444,6 +455,28 @@ html.light-mode .drawer-nav-item {
 html.light-mode .drawer-nav-item:hover, html.light-mode .drawer-nav-item.active {
   background: #e0f2fe !important;
   color: #0284c7 !important;
+}
+
+/* Dark / Light Toggle Container in Drawer */
+.drawer-theme-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 12px 14px !important;
+  margin: 12px 0 !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+.theme-label {
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+
+html.light-mode .theme-label {
+  color: #0f172a !important; /* लाइट मोड में टेक्स्ट साफ़ दिखेगा */
 }
 
 .drawer-footer {
