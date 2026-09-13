@@ -1,351 +1,516 @@
 /* ==========================================================================
-   NischayDesk Real-Time Test Simulation & Scoring Engine
-   Architecture & Logic: Prince Kumar
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v3.5)
+   Supports: Class 10th, 11th & 12th Chapter Assessments & Negative Marking
+   Architected by: Prince Kumar
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
-
   // Screen Panels
   const testLobbyScreen = document.getElementById('testLobbyScreen');
   const testRunningScreen = document.getElementById('testRunningScreen');
   const testResultScreen = document.getElementById('testResultScreen');
 
-  // Lobby Controls
+  // Lobby Inputs
+  const testClassSelect = document.getElementById('testClassSelect');
+  const testSubjectSelect = document.getElementById('testSubjectSelect');
+  const testChapterSelect = document.getElementById('testChapterSelect');
+  const testPatternSelect = document.getElementById('testPatternSelect');
   const startExamBtn = document.getElementById('startExamBtn');
-  const testSubjectSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testSubjectSelect'));
-  const testPatternSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testPatternSelect'));
-  const testClassSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testClassSelect'));
-  const testChapterSelect = /** @type {HTMLSelectElement|null} */ (document.getElementById('testChapterSelect'));
 
-  // Live Exam Stage Elements
+  // Running Exam Elements
   const liveExamBadge = document.getElementById('liveExamBadge');
   const liveQuestionCounter = document.getElementById('liveQuestionCounter');
-  const timerDigits = document.getElementById('timerDigits');
   const examTimerBox = document.getElementById('examTimerBox');
+  const timerDigits = document.getElementById('timerDigits');
   const submitExamEarlyBtn = document.getElementById('submitExamEarlyBtn');
 
   const displayQNumber = document.getElementById('displayQNumber');
   const displayQText = document.getElementById('displayQText');
   const displayOptionsGroup = document.getElementById('displayOptionsGroup');
-  const prevQBtn = /** @type {HTMLButtonElement|null} */ (document.getElementById('prevQBtn'));
-  const nextQBtn = /** @type {HTMLButtonElement|null} */ (document.getElementById('nextQBtn'));
+  const prevQBtn = document.getElementById('prevQBtn');
+  const nextQBtn = document.getElementById('nextQBtn');
   const clearSelectionBtn = document.getElementById('clearSelectionBtn');
   const paletteButtonsGrid = document.getElementById('paletteButtonsGrid');
 
   // Result Elements
+  const resultSubMeta = document.getElementById('resultSubMeta');
   const resTotalMarks = document.getElementById('resTotalMarks');
   const resAccuracy = document.getElementById('resAccuracy');
   const resCorrectCount = document.getElementById('resCorrectCount');
   const resWrongCount = document.getElementById('resWrongCount');
-  const resultSubMeta = document.getElementById('resultSubMeta');
   const solutionsAccordionList = document.getElementById('solutionsAccordionList');
   const restartTestBtn = document.getElementById('restartTestBtn');
 
-  // Guard: Only run if on test.html
-  if (!startExamBtn || !testRunningScreen) return;
-
-  // Exam State Container
-  /** @type {Array<{id: string, question: string, options: string[], correctIndex: number, explanation: string, chapter?: string|number}>} */
-  let activeQuestions = [];
-  /** @type {number[]} */
-  let userResponses = []; // stores selected option index or -1
-  let currentQuestionIndex = 0;
-  let remainingSeconds = 600; // default 10 mins
+  // Internal State
+  let currentQuestions = [];
+  let currentQIndex = 0;
+  let userResponses = {}; // { qIndex: selectedOptionIndex }
   let timerInterval = null;
-  let currentSubjectName = "";
+  let timeRemaining = 900; // in seconds
 
-  // 1. Initialize & Start Exam (Dynamic Chapter & Fallback Engine)
-  startExamBtn.addEventListener('click', async function () {
-    const selectedSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
-    const selectedPattern = testPatternSelect ? testPatternSelect.value : "speed";
-    const selectedClass = testClassSelect ? testClassSelect.value : "10";
-    const selectedChapter = testChapterSelect ? testChapterSelect.value : "all";
-
-    let rawBank = [];
-
-    // पाथ: यदि विशिष्ट अध्याय चुना गया हो तो ch1/ch2 फ़ाइल नहीं तो मुख्य विषय फ़ाइल
-    const fileName = (selectedChapter === "all")
-      ? `${selectedClass}-${selectedSubject}.json`
-      : `${selectedClass}-${selectedSubject}-${selectedChapter}.json`;
-    const jsonPath = `./data/${fileName}`;
-
-    // 1. JSON फाइल से फेच करने का प्रयास
-    try {
-      const response = await fetch(jsonPath);
-      if (response.ok) {
-        rawBank = await response.json();
+  // Comprehensive Question Bank (Categorized strictly by Class, Subject & Chapter)
+  const masterQuestionBank = {
+    // -------------------------------------------------------------
+    // CLASS 10TH QUESTIONS
+    // -------------------------------------------------------------
+    "10": {
+      "physics": {
+        "ch1": [
+          {
+            q: "प्रकाश की किरणें हमेशा किस रेखा में गमन करती हैं?",
+            options: ["सीधी रेखा में", "टेढ़ी-मेढ़ी रेखा में", "वृत्ताकार रेखा में", "अनिश्चित मार्ग में"],
+            correct: 0,
+            exp: "प्रकाश एक सरल रेखीय (सीधी) रेखा में संचरित होता है जिसे प्रकाश का ऋजुरेखीय संचरण कहते हैं।"
+          },
+          {
+            q: "समतल दर्पण द्वारा बना प्रतिबिम्ब हमेशा कैसा होता है?",
+            options: ["वास्तविक", "काल्पनिक (आभासी) एवं सीधा", "उल्टा", "वास्तविक एवं आवर्धित"],
+            correct: 1,
+            exp: "समतल दर्पण सदैव आभासी (काल्पनिक), सीधा और वस्तु के बराबर आकार का प्रतिबिम्ब बनाता है।"
+          },
+          {
+            q: "गोलीय दर्पण की फोकस दूरी (f) और वक्रता त्रिज्या (R) में क्या सम्बंध है?",
+            options: ["f = 2R", "f = R / 2", "f = R + 2", "R = f / 2"],
+            correct: 1,
+            exp: "गोलीय दर्पण की फोकस दूरी उसकी वक्रता त्रिज्या की आधी होती है, अर्थात् f = R/2।"
+          },
+          {
+            q: "दाढ़ी बनाने (हजामत) के लिए किस दर्पण का उपयोग किया जाता है?",
+            options: ["उत्तल दर्पण", "समतल दर्पण", "अवतल दर्पण", "उत्तल लेंस"],
+            correct: 2,
+            exp: "अवतल दर्पण वस्तु को ध्रुव और फोकस के बीच रखने पर उसका सीधा और आवर्धित (बड़ा) प्रतिबिम्ब बनाता है।"
+          },
+          {
+            q: "मोटर गाड़ी के चालक के सामने (साइड मिरर) कौन-सा दर्पण लगा रहता है?",
+            options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "उत्तल लेंस"],
+            correct: 1,
+            exp: "उत्तल दर्पण का दृष्टि क्षेत्र (Field of view) बहुत विस्तृत होता है और यह सीधा प्रतिबिम्ब बनाता है।"
+          }
+        ],
+        "ch2": [
+          {
+            q: "मानव नेत्र के किस भाग पर किसी वस्तु का प्रतिबिम्ब बनता है?",
+            options: ["कॉर्निया", "परितारिका", "पुतली", "रेटिना या दृष्टिपटल"],
+            correct: 3,
+            exp: "मानव नेत्र में प्रवेश करने वाला प्रकाश रेटिना पर वास्तविक और उल्टा प्रतिबिम्ब बनाता है।"
+          },
+          {
+            q: "सामान्य दृष्टि के वयस्क के लिए सुस्पष्ट दर्शन की अल्पतम (न्यूनतम) दूरी कितनी होती है?",
+            options: ["25 मीटर", "2.5 सेंटीमीटर", "25 सेंटीमीटर", "2.5 मीटर"],
+            correct: 2,
+            exp: "स्पष्ट दृष्टि की न्यूनतम दूरी 25 cm होती है, जबकि दूर बिंदु अनंत होता है।"
+          }
+        ]
+      },
+      "chemistry": {
+        "ch1": [
+          {
+            q: "लोहे पर जंग लगना किस प्रकार की रासायनिक अभिक्रिया का उदाहरण है?",
+            options: ["अपचयन", "संक्षारण (ऑक्सीकरण)", "विस्थापन", "द्वि-विस्थापन"],
+            correct: 1,
+            exp: "लोहा नमी और ऑक्सीजन की उपस्थिति में फेरिक ऑक्साइड बनाता है जिसे संक्षारण कहते हैं।"
+          },
+          {
+            q: "श्वसन किस प्रकार की अभिक्रिया है?",
+            options: ["ऊष्माशोषी", "ऊष्माक्षेपी", "संयोजन", "अपघटन"],
+            correct: 1,
+            exp: "श्वसन में ग्लूकोज के विखंडन से ऊर्जा (ऊष्मा) मुक्त होती है, इसलिए यह ऊष्माक्षेपी अभिक्रिया है।"
+          }
+        ]
+      },
+      "math": {
+        "ch1": [
+          {
+            q: "संख्या π (पाई) किस प्रकार की संख्या है?",
+            options: ["परिमेय संख्या", "अपरिमेय संख्या", "पूर्णांक संख्या", "प्राकृत संख्या"],
+            correct: 1,
+            exp: "π एक अपरिमेय संख्या है क्योंकि इसका दशमलव प्रसार अशांत और अनावर्ती होता है।"
+          },
+          {
+            q: "यदि दो संख्याओं का गुणनफल 2166 है एवं उनका म०स० 19 है, तो ल०स० क्या होगा?",
+            options: ["38", "57", "114", "190"],
+            correct: 2,
+            exp: "दो संख्याओं का गुणनफल = ल०स० × म०स० ⇒ ल०स० = 2166 / 19 = 114।"
+          }
+        ]
       }
-    } catch (e) {
-      console.log("JSON फ़ाइल सर्वर पर नहीं मिली, लोकल बैकअप लोड किया जा रहा है...");
+    },
+
+    // -------------------------------------------------------------
+    // CLASS 11TH QUESTIONS
+    // -------------------------------------------------------------
+    "11": {
+      "physics": {
+        "ch1": [
+          {
+            q: "SI पद्धति में मूल भौतिक राशियों (Fundamental Quantities) की संख्या कितनी है?",
+            options: ["5", "6", "7", "9"],
+            correct: 2,
+            exp: "SI मात्रक प्रणाली में 7 मूल राशियां हैं: लंबाई, द्रव्यमान, समय, विद्युत धारा, ताप, ज्योति तीव्रता और पदार्थ की मात्रा।"
+          },
+          {
+            q: "गुरुत्वाकर्षण स्थिरांक (G) की विमीय सूत्र (Dimensional Formula) क्या है?",
+            options: ["[M^-1 L^3 T^-2]", "[M^1 L^2 T^-2]", "[M^-1 L^2 T^-1]", "[M^0 L^3 T^-2]"],
+            correct: 0,
+            exp: "F = G(m1*m2)/r^2 ⇒ G = F*r^2 / m^2 = [M L T^-2][L^2] / [M^2] = [M^-1 L^3 T^-2]।"
+          }
+        ],
+        "ch2": [
+          {
+            q: "यदि किसी वस्तु का विस्थापन समय के वर्ग के समानुपाती है, तो वस्तु किस प्रकार गति कर रही है?",
+            options: ["एकसमान वेग से", "एकसमान त्वरण से", "परिवर्ती त्वरण से", "विरामावस्था में"],
+            correct: 1,
+            exp: "s ∝ t^2 ⇒ s = k*t^2 ⇒ v = ds/dt = 2kt ⇒ a = dv/dt = 2k (स्थिर अर्थात् एकसमान त्वरण)।"
+          },
+          {
+            q: "अधिकतम परास (Maximum Range) प्राप्त करने के लिए प्रक्षेप्य कोण (θ) कितना होना चाहिए?",
+            options: ["30°", "45°", "60°", "90°"],
+            correct: 1,
+            exp: "R = (u^2 * sin 2θ) / g; जब θ = 45° होगा, तब sin(90°) = 1 (अधिकतम)।"
+          }
+        ]
+      },
+      "chemistry": {
+        "ch1": [
+          {
+            q: "आवोग्रादो संख्या (Avogadro's Number, NA) का सही मान क्या है?",
+            options: ["6.022 × 10^23 mol^-1", "6.022 × 10^22 mol^-1", "1.602 × 10^-19 mol^-1", "3.00 × 10^8 mol^-1"],
+            correct: 0,
+            exp: "1 मोल में कणों की संख्या 6.02214 × 10^23 होती है।"
+          }
+        ]
+      },
+      "math": {
+        "ch1": [
+          {
+            q: "यदि किसी समुच्चय A में n अवयव हैं, तो A के उपसमुच्चयों (Subsets) की कुल संख्या कितनी होगी?",
+            options: ["n^2", "2n", "2^n", "2^(n-1)"],
+            correct: 2,
+            exp: "n अवयवों वाले किसी भी समुच्चय के उपसमुच्चयों की कुल संख्या 2^n होती है।"
+          }
+        ]
+      }
+    },
+
+    // -------------------------------------------------------------
+    // CLASS 12TH QUESTIONS
+    // -------------------------------------------------------------
+    "12": {
+      "physics": {
+        "ch1": [
+          {
+            q: "मुक्त आकाश की परावैद्युता (ε0) का मात्रक क्या होता है?",
+            options: ["N m^2 C^-2", "C^2 N^-1 m^-2", "N m C^-1", "C N m^-2"],
+            correct: 1,
+            exp: "F = (1 / 4πε0) * (q1*q2 / r^2) ⇒ ε0 = q1*q2 / (F*r^2) = C^2 N^-1 m^-2 (या F/m)।"
+          },
+          {
+            q: "विद्युत द्विध्रुव आघूर्ण (Electric Dipole Moment, p) की दिशा क्या होती है?",
+            options: ["धनावेश से ऋणावेश की ओर", "ऋणावेश से धनावेश की ओर", "केंद्र से लंबवत", "दिशाहीन"],
+            correct: 1,
+            exp: "विद्युत द्विध्रुव आघूर्ण एक सदिश राशि है जिसकी दिशा ऋण आवेश (-q) से धन आवेश (+q) की ओर होती है।"
+          }
+        ]
+      },
+      "chemistry": {
+        "ch1": [
+          {
+            q: "ताप बढ़ाने पर निम्नलिखित में से किसकी सांद्रता परिवर्तित नहीं होती है?",
+            options: ["मोलरता (Molarity)", "मोललता (Molality)", "सामान्यतया (Normality)", "फॉर्मलता"],
+            correct: 1,
+            exp: "मोललता विलायक के द्रव्यमान पर निर्भर करती है और द्रव्यमान ताप से स्वतंत्र होता है।"
+          }
+        ]
+      }
     }
+  };
 
-    // 2. अगर JSON न मिले या खाली हो, तो syllabus-data.js से बैकअप डेटा उठाना
-    if (rawBank.length === 0 && window.NischaySyllabus && window.NischaySyllabus.questionBank) {
-      const classSubjectKey = `${selectedClass}-${selectedSubject}`;
-      let fullBank = window.NischaySyllabus.questionBank[classSubjectKey] || 
-                     window.NischaySyllabus.questionBank[selectedSubject] || [];
+  // 1. Gather Questions based on User Selection
+  function loadSelectedQuestions() {
+    const sClass = testClassSelect ? testClassSelect.value : "10";
+    const sSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
+    const sChapter = testChapterSelect ? testChapterSelect.value : "all";
 
-      // यदि विशिष्ट अध्याय चुना गया हो और प्रश्नों में chapter प्रॉपर्टी मौजूद हो
-      if (selectedChapter !== "all" && fullBank.length > 0) {
-        const chNum = parseInt(selectedChapter.replace('ch', ''), 10);
-        const filtered = fullBank.filter(q => q.chapter === chNum || q.chapter === selectedChapter);
-        rawBank = filtered.length > 0 ? filtered : fullBank;
-      } else {
-        rawBank = fullBank;
-      }
-    }
+    const classBank = masterQuestionBank[sClass] || {};
+    const subjectBank = classBank[sSubject] || {};
 
-    if (rawBank.length === 0) {
-      alert(`कक्षा ${selectedClass} के ${selectedSubject.toUpperCase()} विषय के लिए प्रश्न जोड़े जा रहे हैं। कृपया अन्य विषय चुनें!`);
-      return;
-    }
+    currentQuestions = [];
 
-    // Set Questions & Timer Duration
-    activeQuestions = [...rawBank];
-    userResponses = new Array(activeQuestions.length).fill(-1);
-    currentQuestionIndex = 0;
-
-    // टाइमर: बोर्ड टेस्ट के लिए 30 मिनट (1800s), स्पीड टेस्ट के लिए 15 मिनट (900s)
-    remainingSeconds = (selectedPattern === 'board') ? 1800 : (activeQuestions.length * 60);
-
-    const chapterText = (selectedChapter === "all") ? "संपूर्ण विषय" : `अध्याय ${selectedChapter.replace('ch', '')}`;
-    currentSubjectName = `Class ${selectedClass}th - ${selectedSubject.toUpperCase()} (${chapterText})`;
-    if (liveExamBadge) liveExamBadge.innerText = currentSubjectName;
-
-    // Switch to Exam Screen
-    testLobbyScreen.classList.remove('active');
-    testResultScreen.classList.remove('active');
-    testRunningScreen.classList.add('active');
-
-    // Build Palette, Render First Question & Start Timer
-    renderPaletteButtons();
-    loadQuestion(0);
-    startCountdownTimer();
-  });
-
-  // 2. Countdown Timer
-  function startCountdownTimer() {
-    clearInterval(timerInterval);
-    updateTimerDisplay();
-
-    timerInterval = setInterval(function () {
-      remainingSeconds--;
-      updateTimerDisplay();
-
-      if (remainingSeconds <= 120 && examTimerBox) {
-        examTimerBox.classList.add('timer-warning');
-      }
-
-      if (remainingSeconds <= 0) {
-        clearInterval(timerInterval);
-        alert("समय समाप्त हो गया है! आपका टेस्ट स्वतः सबमिट किया जा रहा है। ⏱️");
-        finalizeAndEvaluateTest();
-      }
-    }, 1000);
-  }
-
-  function updateTimerDisplay() {
-    if (!timerDigits) return;
-    const mins = Math.floor(remainingSeconds / 60);
-    const secs = remainingSeconds % 60;
-    timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  }
-
-  // 3. Render Question Palette (1, 2, 3...)
-  function renderPaletteButtons() {
-    if (!paletteButtonsGrid) return;
-    paletteButtonsGrid.innerHTML = '';
-
-    activeQuestions.forEach(function (_, idx) {
-      const pBtn = document.createElement('button');
-      pBtn.className = 'palette-btn';
-      pBtn.innerText = String(idx + 1);
-      pBtn.id = `palette_btn_${idx}`;
-      pBtn.addEventListener('click', function () {
-        loadQuestion(idx);
+    if (sChapter === "all") {
+      // Gather all chapters under this subject
+      Object.keys(subjectBank).forEach(chKey => {
+        currentQuestions = currentQuestions.concat(subjectBank[chKey]);
       });
-      paletteButtonsGrid.appendChild(pBtn);
+    } else {
+      // Load selected chapter only
+      if (subjectBank[sChapter]) {
+        currentQuestions = subjectBank[sChapter].slice();
+      }
+    }
+
+    // Fallback if no questions are added for a new chapter yet
+    if (currentQuestions.length === 0) {
+      currentQuestions = [
+        {
+          q: `कक्षा ${sClass}वीं (${sSubject}) के इस चयनित अध्याय के अभ्यास प्रश्न तैयार किए जा रहे हैं। अभ्यास हेतु डेमो प्रश्न: कार्य का मात्रक क्या है?`,
+          options: ["जूल (Joule)", "वाट (Watt)", "न्यूटन (Newton)", "पास्कल (Pascal)"],
+          correct: 0,
+          exp: "कार्य और ऊर्जा का SI मात्रक जूल (Joule) होता है।"
+        }
+      ];
+    }
+
+    // Shuffle questions slightly for dynamic experience
+    currentQuestions.sort(() => Math.random() - 0.5);
+  }
+
+  // 2. Start Exam Trigger
+  if (startExamBtn) {
+    startExamBtn.addEventListener('click', function () {
+      loadSelectedQuestions();
+      userResponses = {};
+      currentQIndex = 0;
+
+      // Timer duration setting
+      const pattern = testPatternSelect ? testPatternSelect.value : "speed";
+      timeRemaining = (pattern === "board") ? 1800 : 900; // 30 min vs 15 min
+
+      // Switch Panels
+      if (testLobbyScreen) testLobbyScreen.classList.remove('active');
+      if (testResultScreen) testResultScreen.classList.remove('active');
+      if (testRunningScreen) testRunningScreen.classList.add('active');
+
+      const cls = testClassSelect ? testClassSelect.value : "10";
+      const subName = testSubjectSelect ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
+      if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subName.split(' ')[0]}`;
+
+      startTimer();
+      renderPalette();
+      renderQuestion(0);
     });
   }
 
-  // 4. Load & Display Question
-  function loadQuestion(index) {
-    if (index < 0 || index >= activeQuestions.length) return;
-    currentQuestionIndex = index;
+  // 3. Render Question on Workspace Stage
+  function renderQuestion(index) {
+    if (index < 0 || index >= currentQuestions.length) return;
+    currentQIndex = index;
 
-    const qData = activeQuestions[index];
+    const qData = currentQuestions[index];
 
-    // Meta & Text
     if (displayQNumber) displayQNumber.innerText = `Q.${index + 1}`;
-    if (displayQText) displayQText.innerText = qData.question;
-    if (liveQuestionCounter) liveQuestionCounter.innerText = `प्रश्न ${index + 1} / ${activeQuestions.length}`;
+    if (liveQuestionCounter) liveQuestionCounter.innerText = `प्रश्न ${index + 1} / ${currentQuestions.length}`;
+    if (displayQText) displayQText.innerText = qData.q;
+
+    if (prevQBtn) prevQBtn.disabled = (index === 0);
+    if (nextQBtn) {
+      nextQBtn.innerText = (index === currentQuestions.length - 1) ? "सबमिट करें ✓" : "अगला प्रश्न →";
+    }
 
     // Render Options
     if (displayOptionsGroup) {
       displayOptionsGroup.innerHTML = '';
       const letters = ['A', 'B', 'C', 'D'];
 
-      qData.options.forEach(function (optText, optIdx) {
-        const isSelected = userResponses[currentQuestionIndex] === optIdx;
-        const optDiv = document.createElement('div');
-        optDiv.className = `option-choice-item ${isSelected ? 'selected' : ''}`;
-        optDiv.innerHTML = `
+      qData.options.forEach((optText, optIdx) => {
+        const isSelected = (userResponses[index] === optIdx);
+        const optCard = document.createElement('div');
+        optCard.className = `option-choice-item ${isSelected ? 'selected' : ''}`;
+        optCard.innerHTML = `
           <span class="option-letter">${letters[optIdx]}</span>
           <span class="option-label-text">${optText}</span>
         `;
-        optDiv.addEventListener('click', function () {
-          selectOption(optIdx);
+        optCard.addEventListener('click', () => {
+          userResponses[index] = optIdx;
+          renderQuestion(index);
+          updatePaletteStatus();
         });
-        displayOptionsGroup.appendChild(optDiv);
+        displayOptionsGroup.appendChild(optCard);
       });
     }
 
-    // Prev / Next button states
-    if (prevQBtn) prevQBtn.disabled = (currentQuestionIndex === 0);
-    if (nextQBtn) {
-      if (currentQuestionIndex === activeQuestions.length - 1) {
-        nextQBtn.innerText = "समीक्षा / सबमिट ✓";
-      } else {
-        nextQBtn.innerText = "अगला प्रश्न →";
-      }
-    }
+    updatePaletteStatus();
+  }
 
-    // Highlight active in palette
-    document.querySelectorAll('.palette-btn').forEach(function (b, i) {
-      b.classList.remove('active');
-      if (i === currentQuestionIndex) b.classList.add('active');
+  // 4. Render NTA / BSEB Style OMR Palette
+  function renderPalette() {
+    if (!paletteButtonsGrid) return;
+    paletteButtonsGrid.innerHTML = '';
+
+    currentQuestions.forEach((_, idx) => {
+      const pBtn = document.createElement('button');
+      pBtn.className = 'palette-btn';
+      pBtn.id = `palette-btn-${idx}`;
+      pBtn.innerText = idx + 1;
+      pBtn.addEventListener('click', () => renderQuestion(idx));
+      paletteButtonsGrid.appendChild(pBtn);
+    });
+
+    updatePaletteStatus();
+  }
+
+  function updatePaletteStatus() {
+    currentQuestions.forEach((_, idx) => {
+      const pBtn = document.getElementById(`palette-btn-${idx}`);
+      if (!pBtn) return;
+
+      pBtn.classList.remove('active', 'answered');
+      if (idx === currentQIndex) pBtn.classList.add('active');
+      if (userResponses[idx] !== undefined) pBtn.classList.add('answered');
     });
   }
 
-  // 5. Select & Clear Option Handler
-  function selectOption(optionIndex) {
-    userResponses[currentQuestionIndex] = optionIndex;
-    loadQuestion(currentQuestionIndex);
-    updatePaletteStatus(currentQuestionIndex, true);
-  }
-
-  if (clearSelectionBtn) {
-    clearSelectionBtn.addEventListener('click', function () {
-      userResponses[currentQuestionIndex] = -1;
-      loadQuestion(currentQuestionIndex);
-      updatePaletteStatus(currentQuestionIndex, false);
-    });
-  }
-
-  function updatePaletteStatus(index, isAnswered) {
-    const pBtn = document.getElementById(`palette_btn_${index}`);
-    if (!pBtn) return;
-    if (isAnswered) {
-      pBtn.classList.add('answered');
-    } else {
-      pBtn.classList.remove('answered');
-    }
-  }
-
-  // Stage Navigation Buttons
+  // 5. Question Stage Actions
   if (prevQBtn) {
-    prevQBtn.addEventListener('click', function () {
-      if (currentQuestionIndex > 0) loadQuestion(currentQuestionIndex - 1);
+    prevQBtn.addEventListener('click', () => {
+      if (currentQIndex > 0) renderQuestion(currentQIndex - 1);
     });
   }
 
   if (nextQBtn) {
-    nextQBtn.addEventListener('click', function () {
-      if (currentQuestionIndex < activeQuestions.length - 1) {
-        loadQuestion(currentQuestionIndex + 1);
+    nextQBtn.addEventListener('click', () => {
+      if (currentQIndex < currentQuestions.length - 1) {
+        renderQuestion(currentQIndex + 1);
       } else {
-        if (confirm("क्या आप अपना टेस्ट फाइनल सबमिट करना चाहते हैं?")) {
-          finalizeAndEvaluateTest();
+        if (confirm("क्या आप अपना टेस्ट समाप्त और सबमिट करना चाहते हैं?")) {
+          finishAndSubmitExam();
         }
       }
     });
   }
 
+  if (clearSelectionBtn) {
+    clearSelectionBtn.addEventListener('click', () => {
+      delete userResponses[currentQIndex];
+      renderQuestion(currentQIndex);
+      updatePaletteStatus();
+    });
+  }
+
   if (submitExamEarlyBtn) {
-    submitExamEarlyBtn.addEventListener('click', function () {
-      if (confirm("क्या आप समय से पहले टेस्ट सबमिट करना चाहते हैं?")) {
-        finalizeAndEvaluateTest();
+    submitExamEarlyBtn.addEventListener('click', () => {
+      if (confirm("क्या आप वाकई समय से पहले टेस्ट सबमिट करना चाहते हैं?")) {
+        finishAndSubmitExam();
       }
     });
   }
 
-  // 6. Test Evaluation & Result Rendering
-  function finalizeAndEvaluateTest() {
+  // 6. Live Timer
+  function startTimer() {
+    clearInterval(timerInterval);
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+      timeRemaining--;
+      updateTimerDisplay();
+
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval);
+        alert("समय समाप्त हो गया है! आपका टेस्ट स्वतः सबमिट हो रहा है।");
+        finishAndSubmitExam();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const mins = Math.floor(timeRemaining / 60);
+    const secs = timeRemaining % 60;
+    const formatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+    if (timerDigits) timerDigits.innerText = formatted;
+
+    if (examTimerBox) {
+      if (timeRemaining <= 120) {
+        examTimerBox.classList.add('timer-warning');
+      } else {
+        examTimerBox.classList.remove('timer-warning');
+      }
+    }
+  }
+
+  // 7. Finish Exam & Calculate Score (with -1.0 Negative Marking)
+  function finishAndSubmitExam() {
     clearInterval(timerInterval);
 
-    let correct = 0;
-    let wrong = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
     let unattempted = 0;
 
-    activeQuestions.forEach(function (q, idx) {
-      const resp = userResponses[idx];
-      if (resp === -1) {
+    currentQuestions.forEach((q, idx) => {
+      const userAns = userResponses[idx];
+      if (userAns === undefined) {
         unattempted++;
-      } else if (resp === q.correctIndex) {
-        correct++;
+      } else if (userAns === q.correct) {
+        correctCount++;
       } else {
-        wrong++;
+        wrongCount++;
       }
     });
 
-    // NTA / BSEB Marking: +4 for Correct, -1 for Wrong
-    const totalMarks = (correct * 4) - (wrong * 1);
-    const maxMarks = activeQuestions.length * 4;
-    const attemptedCount = correct + wrong;
-    const accuracy = attemptedCount > 0 ? Math.round((correct / attemptedCount) * 100) : 0;
+    const totalQuestions = currentQuestions.length;
+    // Marking Scheme: +4 for correct, -1 for wrong
+    const totalScore = (correctCount * 4) - (wrongCount * 1);
+    const maxMarks = totalQuestions * 4;
+    const accuracyVal = (correctCount + wrongCount > 0)
+      ? Math.round((correctCount / (correctCount + wrongCount)) * 100)
+      : 0;
 
-    // Display Results in DOM
-    if (resTotalMarks) resTotalMarks.innerText = `${totalMarks} / ${maxMarks}`;
-    if (resAccuracy) resAccuracy.innerText = `${accuracy}%`;
-    if (resCorrectCount) resCorrectCount.innerText = String(correct);
-    if (resWrongCount) resWrongCount.innerText = String(wrong);
-    if (resultSubMeta) resultSubMeta.innerText = `${currentSubjectName} - स्कोर रिपोर्ट`;
+    // Update Result UI
+    if (resTotalMarks) resTotalMarks.innerText = `${totalScore} / ${maxMarks}`;
+    if (resAccuracy) resAccuracy.innerText = `${accuracyVal}%`;
+    if (resCorrectCount) resCorrectCount.innerText = correctCount;
+    if (resWrongCount) resWrongCount.innerText = wrongCount;
 
-    // Render Solutions & Detailed Explanations
-    if (solutionsAccordionList) {
-      let solHtml = '';
-      activeQuestions.forEach(function (q, idx) {
-        const userAns = userResponses[idx];
-        const isCorrect = (userAns === q.correctIndex);
-        const letters = ['A', 'B', 'C', 'D'];
-        const statusClass = (userAns === -1) ? 'color:var(--text-muted);' : (isCorrect ? 'correct' : 'wrong');
-        const statusText = (userAns === -1) ? 'छोड़ दिया' : (isCorrect ? 'सही (+4)' : 'गलत (-1)');
-
-        solHtml += `
-          <div class="sol-item">
-            <div class="sol-q-title">Q.${idx + 1}: ${q.question}</div>
-            <div class="sol-ans-row ${statusClass}">
-              आपका उत्तर: <b>${userAns === -1 ? 'कोई विकल्प नहीं चुना' : letters[userAns] + ') ' + q.options[userAns]}</b> (${statusText})
-            </div>
-            <div class="sol-ans-row correct">
-              सही उत्तर: <b>${letters[q.correctIndex]}) ${q.options[q.correctIndex]}</b>
-            </div>
-            <div class="sol-explanation">
-              💡 <b>हल/व्याख्या:</b> ${q.explanation}
-            </div>
-          </div>
-        `;
-      });
-      solutionsAccordionList.innerHTML = solHtml;
+    if (resultSubMeta) {
+      const cls = testClassSelect ? testClassSelect.value : "10";
+      resultSubMeta.innerText = `कक्षा ${cls}वीं • कुल प्रश्न: ${totalQuestions} • हल किए: ${correctCount + wrongCount}`;
     }
 
-    // Switch to Result View
-    testRunningScreen.classList.remove('active');
-    testResultScreen.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Build Solutions Review Section
+    if (solutionsAccordionList) {
+      solutionsAccordionList.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
 
-    // Update Local Dashboard Metrics for instant reflection on index.html
-    localStorage.setItem('nischaydesk_last_score', `${totalMarks}/${maxMarks}`);
-    localStorage.setItem('nischaydesk_last_accuracy', `${accuracy}%`);
+      currentQuestions.forEach((q, idx) => {
+        const userAns = userResponses[idx];
+        const isCorrect = (userAns === q.correct);
+        const isAttempted = (userAns !== undefined);
+
+        const solBox = document.createElement('div');
+        solBox.className = 'sol-item';
+
+        let statusText = '';
+        if (!isAttempted) {
+          statusText = `<span style="color:var(--text-muted); font-weight:700;">छोड़ा गया (Unattempted)</span>`;
+        } else if (isCorrect) {
+          statusText = `<span class="sol-ans-row correct">✓ सही उत्तर (+4 अंक)</span>`;
+        } else {
+          statusText = `<span class="sol-ans-row wrong">✗ गलत उत्तर (-1 अंक) • आपका उत्तर: (${letters[userAns]}) ${q.options[userAns]}</span>`;
+        }
+
+        solBox.innerHTML = `
+          <div class="sol-q-title">Q.${idx + 1}: ${q.q}</div>
+          <div style="margin-bottom: 6px;">${statusText}</div>
+          <div style="font-size:0.84rem; color:var(--success); font-weight:700; margin-bottom:4px;">
+            सटीक उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
+          </div>
+          <div class="sol-explanation">
+            <strong>व्याख्या (Explanation):</strong> ${q.exp}
+          </div>
+        `;
+        solutionsAccordionList.appendChild(solBox);
+      });
+    }
+
+    // Switch to Result Screen
+    if (testRunningScreen) testRunningScreen.classList.remove('active');
+    if (testResultScreen) testResultScreen.classList.add('active');
   }
 
-  // Restart Button
+  // 8. Restart / Try Another Exam
   if (restartTestBtn) {
-    restartTestBtn.addEventListener('click', function () {
-      testResultScreen.classList.remove('active');
-      testLobbyScreen.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    restartTestBtn.addEventListener('click', () => {
+      if (testResultScreen) testResultScreen.classList.remove('active');
+      if (testLobbyScreen) testLobbyScreen.classList.add('active');
     });
   }
-
 });
