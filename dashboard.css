@@ -726,3 +726,51 @@
   font-size: 0.84rem;
   outline: none;
 }
+/* ==========================================================================
+   VISIBILITY BUG FIXES (Dark Mode Text & Stats Cards)
+   ========================================================================== */
+
+/* 1. बैनर का मुख्य शीर्षक और विवरण कभी काला नहीं होगा */
+.hero-studio-banner h1,
+.hero-studio-banner .hero-headline,
+.hero-headline {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-studio-banner p,
+.hero-subline {
+  color: #94a3b8 !important;
+}
+
+/* 2. डार्क मोड में 4 स्टेट्स कार्ड्स कभी सफ़ेद नहीं होंगे */
+body:not(.light-mode) .stat-glass-card,
+html:not(.light-mode) .stat-glass-card {
+  background: #0f1c3d !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  color: #ffffff !important;
+}
+
+body:not(.light-mode) .stat-glass-card .stat-numeric,
+html:not(.light-mode) .stat-glass-card .stat-numeric {
+  color: #38bdf8 !important;
+}
+
+body:not(.light-mode) .stat-glass-card .stat-label,
+html:not(.light-mode) .stat-glass-card .stat-label {
+  color: #94a3b8 !important;
+}
+
+/* लाइट मोड में ही ये सफेद दिखेंगे */
+html.light-mode .stat-glass-card {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+html.light-mode .stat-glass-card .stat-numeric {
+  color: #0284c7 !important;
+}
+html.light-mode .stat-glass-card .stat-label {
+  color: #64748b !important;
+}
+
