@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Navigation System & Solid Drawer Engine
-   Fixed: Solid Non-Transparent Drawer, Solid Header, Mobile Menu & Theme Colors
+   NischayDesk Navigation Architecture & Solid Drawer Engine (v3.5)
+   Design: Prince Kumar
    ========================================================================== */
 
 /* 1. TOP HEADER */
@@ -10,29 +10,31 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: #0b132b !important; /* Dark Solid Default */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #080f24 !important; /* 100% Solid Dark */
+  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
   height: 64px;
   width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 html.light-mode .app-header {
-  background-color: #ffffff !important; /* Light Solid Default */
-  border-bottom: 1px solid #e2e8f0;
+  background-color: #ffffff !important; /* 100% Solid Light */
+  border-bottom: 1px solid #cbd5e1;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
 
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 14px;
+  padding: 0 16px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* 2. BRAND & HAMBURGER GROUP */
+/* 2. BRAND & HAMBURGER TRIGGER */
 .nav-brand-group {
   display: flex !important;
   align-items: center !important;
@@ -40,28 +42,38 @@ html.light-mode .app-header {
   flex-shrink: 0;
 }
 
-/* Mobile Hamburger Button (Must Always Show on Mobile) */
 .mobile-menu-trigger {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  gap: 4px !important;
+  gap: 5px !important;
   width: 38px !important;
   height: 38px !important;
-  background: transparent !important;
-  border: none !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
   cursor: pointer !important;
-  padding: 6px !important;
-  border-radius: 6px !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
   flex-shrink: 0 !important;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-trigger:hover {
+  background: rgba(56, 189, 248, 0.18) !important;
 }
 
 .mobile-menu-trigger .bar {
   display: block !important;
-  width: 22px !important;
-  height: 2.5px !important;
+  width: 20px !important;
+  height: 2px !important;
   background-color: #ffffff !important;
   border-radius: 2px !important;
+  transition: all 0.2s ease;
+}
+
+html.light-mode .mobile-menu-trigger {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
 }
 
 html.light-mode .mobile-menu-trigger .bar {
@@ -77,17 +89,24 @@ html.light-mode .mobile-menu-trigger .bar {
 }
 
 .brand-badge-icon {
-  width: 32px;
-  height: 32px;
-  background: #0284c7 !important;
+  width: 34px;
+  height: 34px;
+  background: var(--brand-gradient) !important;
   color: #ffffff !important;
-  border-radius: 8px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
+  box-shadow: 0 2px 10px var(--brand-glow);
+}
+
+.brand-badge-icon.sm {
+  width: 28px;
+  height: 28px;
+  font-size: 0.95rem;
 }
 
 .brand-typography {
@@ -96,10 +115,11 @@ html.light-mode .mobile-menu-trigger .bar {
 }
 
 .brand-name {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #ffffff !important;
   line-height: 1.1;
+  letter-spacing: -0.3px;
   white-space: nowrap;
 }
 
@@ -115,14 +135,21 @@ html.light-mode .brand-name-accent {
   color: #0284c7 !important;
 }
 
+.brand-tagline {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.4px;
+}
+
 /* 3. DESKTOP NAVIGATION */
 .nav-links-desktop {
   display: none;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 992px) {
   .mobile-menu-trigger { display: none !important; }
   .nav-links-desktop { display: flex !important; }
 }
@@ -130,31 +157,45 @@ html.light-mode .brand-name-accent {
 .nav-item {
   padding: 8px 12px;
   color: #94a3b8;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.86rem;
+  font-weight: 700;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 html.light-mode .nav-item {
   color: #64748b;
 }
 
-.nav-item:hover, .nav-item.active {
+.nav-item:hover {
   color: #ffffff;
-  background: #162650;
+  background: rgba(56, 189, 248, 0.12);
 }
 
-html.light-mode .nav-item:hover, html.light-mode .nav-item.active {
+.nav-item.active {
+  color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+html.light-mode .nav-item:hover {
   color: #0284c7;
   background: #f1f5f9;
+}
+
+html.light-mode .nav-item.active {
+  color: #0284c7 !important;
+  background: #e0f2fe !important;
+  border: 1px solid #bae6fd;
 }
 
 /* 4. NAV ACTIONS & PROFILE */
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -162,15 +203,21 @@ html.light-mode .nav-item:hover, html.light-mode .nav-item.active {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #162650;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #13224a;
+  border: 1px solid rgba(56, 189, 248, 0.25);
   color: #ffffff;
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: 20px;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-auth-primary:hover {
+  border-color: #38bdf8;
+  transform: translateY(-1px);
 }
 
 html.light-mode .btn-auth-primary {
@@ -182,12 +229,12 @@ html.light-mode .btn-auth-primary {
 .user-profile-widget {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: #162650;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 8px 4px 6px;
+  gap: 8px;
+  background: #13224a;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 4px 10px 4px 6px;
   border-radius: 30px;
-  max-width: 140px;
+  max-width: 160px;
 }
 
 html.light-mode .user-profile-widget {
@@ -196,10 +243,11 @@ html.light-mode .user-profile-widget {
 }
 
 .user-avatar-img {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 1.5px solid #38bdf8;
+  object-fit: cover;
 }
 
 .user-info-text {
@@ -226,7 +274,7 @@ html.light-mode .user-display-name {
 .user-session-badge {
   font-size: 0.65rem;
   color: #38bdf8 !important;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -241,7 +289,9 @@ html.light-mode .user-session-badge {
   cursor: pointer;
   font-size: 0.85rem;
   padding: 2px;
+  transition: color 0.15s;
 }
+.btn-logout:hover { color: #ef4444; }
 
 /* ==========================================================================
    5. SOLID SIDE DRAWER (100% OPAQUE - NO TRANSPARENCY)
@@ -249,35 +299,36 @@ html.light-mode .user-session-badge {
 .side-drawer {
   position: fixed !important;
   top: 0 !important;
-  left: -300px !important;
-  width: 285px !important;
+  left: -320px !important;
+  width: 290px !important;
   height: 100vh !important;
-  background-color: #0b132b !important; /* 100% Solid Dark */
-  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: #080f24 !important; /* 100% Opaque Solid Dark */
+  border-right: 1px solid rgba(56, 189, 248, 0.2) !important;
   z-index: 2000 !important;
   padding: 18px 16px !important;
   display: flex !important;
   flex-direction: column !important;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 12px 0 40px rgba(0, 0, 0, 0.8) !important;
 }
 
-/* Solid White in Light Mode */
 html.light-mode .side-drawer {
-  background-color: #ffffff !important; /* 100% Solid White */
+  background-color: #ffffff !important; /* 100% Opaque Solid Light */
   border-right: 1px solid #cbd5e1 !important;
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 12px 0 40px rgba(15, 23, 42, 0.15) !important;
 }
 
 .side-drawer.active, .side-drawer.open {
-  transform: translateX(300px) !important;
+  transform: translateX(320px) !important;
 }
 
-/* Black Scrim behind Drawer */
+/* Scrim Background */
 .drawer-scrim {
   position: fixed !important;
   inset: 0 !important;
-  background: rgba(0, 0, 0, 0.65) !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
   z-index: 1999 !important;
   opacity: 0 !important;
   pointer-events: none !important;
@@ -294,6 +345,12 @@ html.light-mode .side-drawer {
   align-items: center !important;
   justify-content: space-between !important;
   margin-bottom: 16px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.light-mode .drawer-header {
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 .drawer-brand {
@@ -310,44 +367,51 @@ html.light-mode .drawer-brand {
 }
 
 .drawer-close-btn {
-  background: none !important;
-  border: none !important;
-  font-size: 1.6rem !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.3rem !important;
   color: #ffffff !important;
   cursor: pointer !important;
 }
 
 html.light-mode .drawer-close-btn {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
   color: #0f172a !important;
 }
 
-/* Drawer User Card */
+/* User Card inside Drawer */
 .drawer-user-card {
-  background: #162650 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #13224a !important;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
   padding: 12px !important;
-  border-radius: 10px !important;
+  border-radius: 12px !important;
   margin-bottom: 16px !important;
-  color: #ffffff !important;
 }
 
 html.light-mode .drawer-user-card {
   background: #f1f5f9 !important;
   border: 1px solid #cbd5e1 !important;
-  color: #0f172a !important;
 }
 
 .drawer-user-prompt {
-  font-size: 0.82rem !important;
-  color: #e2e8f0 !important;
+  font-size: 0.8rem !important;
+  color: #94a3b8 !important;
   margin: 0 !important;
+  line-height: 1.4 !important;
 }
 
 html.light-mode .drawer-user-prompt {
-  color: #334155 !important;
+  color: #475569 !important;
 }
 
-/* Nav Links Inside Drawer */
+/* Nav Links inside Drawer */
 .drawer-nav-list {
   display: flex !important;
   flex-direction: column !important;
@@ -359,58 +423,35 @@ html.light-mode .drawer-user-prompt {
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
-  padding: 10px 12px !important;
-  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
   color: #ffffff !important;
   text-decoration: none !important;
-  font-weight: 600 !important;
-  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease !important;
 }
 
 html.light-mode .drawer-nav-item {
-  color: #0f172a !important; /* Fixed: Text is now strictly dark in light mode */
+  color: #0f172a !important;
 }
 
 .drawer-nav-item:hover, .drawer-nav-item.active {
-  background: #1e3260 !important;
+  background: #13224a !important;
   color: #38bdf8 !important;
 }
 
 html.light-mode .drawer-nav-item:hover, html.light-mode .drawer-nav-item.active {
-  background: #e2e8f0 !important;
+  background: #e0f2fe !important;
   color: #0284c7 !important;
 }
 
-/* Theme Switch Row */
-.drawer-theme-row {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 12px 10px !important;
-  margin-top: 10px !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-html.light-mode .drawer-theme-row {
-  border-top: 1px solid #cbd5e1 !important;
-}
-
-.drawer-theme-row .theme-label {
-  color: #ffffff !important;
-  font-size: 0.9rem !important;
-  font-weight: 600 !important;
-}
-
-html.light-mode .drawer-theme-row .theme-label {
-  color: #0f172a !important;
-}
-
 .drawer-footer {
-  padding-top: 12px !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 3px !important;
+  gap: 4px !important;
   font-size: 0.72rem !important;
   color: #94a3b8 !important;
 }
