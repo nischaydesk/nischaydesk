@@ -1,7 +1,5 @@
 /* ==========================================================================
-   NischayDesk Strict Class-Based Notes Viewer & In-App PDF Studio (v3.9)
-   Supports: 10th (with Complete SST breakdown), 11th Science & 12th Science
-   Architected by: Prince Kumar
+   NischayDesk Safe & Fast Notes Viewer Engine (v4.0)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -9,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const notesSearchInput = document.getElementById('notesSearchInput');
   const filterPillContainer = document.getElementById('filterPillContainer');
 
-  // Modal Studio Elements
   const pdfStudioModal = document.getElementById('pdfStudioModal');
   const modalDocBadge = document.getElementById('modalDocBadge');
   const modalDocTitle = document.getElementById('modalDocTitle');
@@ -22,23 +19,20 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentFilterSubject = 'all';
   let searchQuery = '';
 
-  let studentClass = localStorage.getItem('nischay_student_class') || '10';
-
-  function extractAllChapters() {
-    allChaptersMaster = [];
+  function initNotes() {
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
-      setTimeout(extractAllChapters, 150);
+      // अगर डेटा लोड होने में 1 सेकंड लगे तो दोबारा प्रयास करें
+      setTimeout(initNotes, 200);
       return;
     }
 
-    studentClass = localStorage.getItem('nischay_student_class') || '10';
+    const studentClass = localStorage.getItem('nischay_student_class') || '10';
+    allChaptersMaster = [];
 
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      // 10th वाले छात्र को केवल 10- से शुरू होने वाले विषय दिखेंगे
+      // अगर यूजर 10वीं में है तो सिर्फ 10वीं के विषय लें
       if (studentClass === '10' && !subject.id.startsWith('10-')) return;
-      // 11th वाले को केवल 11- वाले
       if (studentClass === '11' && !subject.id.startsWith('11-')) return;
-      // 12th वाले को केवल 12- वाले
       if (studentClass === '12' && !subject.id.startsWith('12-')) return;
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
@@ -46,40 +40,20 @@ document.addEventListener('DOMContentLoaded', function () {
           allChaptersMaster.push({
             subjectId: subject.id,
             classTitle: subject.classTitle || `Class ${studentClass}th`,
-            subjectTitle: subject.subjectTitle || "सामान्य",
+            subjectTitle: subject.subjectTitle || "विषय",
             no: ch.no,
             name: ch.name,
-            status: ch.status || 'available',
             pdfUrl: ch.pdfUrl || '',
             pages: ch.pages || 'हैंडनोट्स',
-            desc: ch.desc || 'बोर्ड परीक्षा एवं गहन कॉन्सेप्ट्स के लिए तैयार हस्तलिखित नोट्स।'
+            desc: ch.desc || 'बोर्ड परीक्षा के लिए महत्वपूर्ण हस्तलिखित नोट्स।'
           });
         });
       }
     });
 
-    renderPillFilters();
     renderNotesGrid();
   }
 
-  // फ़िल्टर बटन केवल चालू क्लास के हिसाब से दिखाएँ
-  function renderPillFilters() {
-    if (!filterPillContainer) return;
-
-    const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
-    filterButtons.forEach(btn => {
-      const filterVal = btn.getAttribute('data-filter');
-      if (filterVal === 'all') {
-        btn.style.display = 'inline-block';
-      } else if (filterVal.startsWith(studentClass + '-')) {
-        btn.style.display = 'inline-block';
-      } else {
-        btn.style.display = 'none';
-      }
-    });
-  }
-
-  // नोट्स कार्ड्स ग्रिड
   function renderNotesGrid() {
     if (!notesCatalogGrid) return;
 
@@ -88,9 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (currentFilterSubject === 'all') {
         matchSubject = true;
       } else if (currentFilterSubject === '10-sst-all') {
-        // अगर छात्र "पूरा सामाजिक विज्ञान" चुने
-        matchSubject = item.subjectId.startsWith('10-') && 
-          ['10-history', '10-geography', '10-civics', '10-economics', '10-disaster'].includes(item.subjectId);
+        matchSubject = ['10-history', '10-geography', '10-civics', '10-economics', '10-disaster'].includes(item.subjectId);
       } else {
         matchSubject = (item.subjectId === currentFilterSubject);
       }
@@ -98,20 +70,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const q = searchQuery.toLowerCase().trim();
       const matchSearch = !q || 
         item.name.toLowerCase().includes(q) || 
-        item.subjectTitle.toLowerCase().includes(q) ||
-        String(item.no).includes(q);
+        item.subjectTitle.toLowerCase().includes(q);
 
       return matchSubject && matchSearch;
     });
 
     if (filtered.length === 0) {
       notesCatalogGrid.innerHTML = `
-        <div class="loading-state-box" style="grid-column: 1 / -1; padding: 40px 16px; text-align: center;">
-          <div style="font-size: 2.2rem; margin-bottom: 8px;">📚</div>
-          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">कोई नोट्स नहीं मिले</h3>
-          <p style="font-size: 0.84rem; color: var(--text-secondary);">
-            कक्षा ${studentClass}वीं के इस फ़िल्टर के लिए कंटेंट संकलित किया जा रहा है।
-          </p>
+        <div style="grid-column: 1 / -1; padding: 50px 20px; text-align: center; color: var(--text-secondary);">
+          <div style="font-size: 2.5rem; margin-bottom: 10px;">📋</div>
+          <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 6px;">कोई नोट्स नहीं मिले</h3>
+          <p style="font-size: 0.85rem;">कृपया दूसरा विषय चुनें या सर्च बदलें।</p>
         </div>
       `;
       return;
@@ -122,28 +91,28 @@ document.addEventListener('DOMContentLoaded', function () {
       const hasPdf = note.pdfUrl && note.pdfUrl.trim() !== '' && note.pdfUrl !== '#';
       const readAction = hasPdf 
         ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
-        : `onclick="alert('अध्याय ${note.no} के हस्तलिखित नोट्स पीडीएफ शीघ्र जोड़ी जा रही है!')"`;
+        : `onclick="alert('अध्याय ${note.no} के नोट्स जल्द जोड़े जा रहे हैं!')"`;
 
       const downloadAction = hasPdf
-        ? `href="${note.pdfUrl}" target="_blank" download`
-        : `href="javascript:void(0)" onclick="alert('PDF डाउनलोड लिंक जल्द सक्रिय होगा!')"`;
+        ? `href="${note.pdfUrl}" target="_blank"`
+        : `href="javascript:void(0)" onclick="alert('PDF डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
       htmlBuffer += `
-        <div class="note-item-card">
+        <div class="note-item-card" style="background: var(--surface-card, #0c1633); border: 1px solid var(--border-strong, #1e366a); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <div class="note-badge-row">
-              <span class="note-badge-class">${note.subjectTitle}</span>
-              <span class="note-badge-pages">अध्याय ${note.no} • ${note.pages}</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 4px;">${note.subjectTitle}</span>
+              <span style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 600;">अध्याय ${note.no}</span>
             </div>
-            <h3 style="font-size: 1rem; margin: 6px 0; color: var(--text-pure); line-height: 1.35;">${note.name}</h3>
-            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">${note.desc}</p>
+            <h3 style="font-size: 0.95rem; margin: 4px 0 8px; color: var(--text-pure); font-weight: 700; line-height: 1.35;">${note.name}</h3>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 14px;">${note.desc}</p>
           </div>
 
-          <div class="note-btn-group">
-            <button class="btn-read-note" ${readAction}>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-read-note" ${readAction} style="flex: 1; background: #0284c7; color: #fff; border: none; padding: 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
               📖 नोट्स पढ़ें
             </button>
-            <a class="btn-download-note" ${downloadAction}>
+            <a class="btn-download-note" ${downloadAction} style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center;">
               📥 PDF
             </a>
           </div>
@@ -154,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
     notesCatalogGrid.innerHTML = htmlBuffer;
   }
 
-  // इन-ऐप पीडीएफ मोडल
   window.openNoteModal = function (classTitle, title, pdfUrl) {
     if (!pdfStudioModal || !studioPdfFrame) return;
 
@@ -189,18 +157,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  if (modalFullscreenBtn) {
-    modalFullscreenBtn.addEventListener('click', function () {
-      const stage = document.getElementById('pdfFrameStage');
-      if (!document.fullscreenElement) {
-        if (stage.requestFullscreen) stage.requestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-      }
-    });
-  }
-
-  // फ़िल्टर बटन क्लिक
   if (filterPillContainer) {
     filterPillContainer.addEventListener('click', function (e) {
       const btn = e.target.closest('.filter-btn');
@@ -214,7 +170,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // लाइव सर्च
   if (notesSearchInput) {
     notesSearchInput.addEventListener('input', function () {
       searchQuery = this.value;
@@ -227,5 +182,5 @@ document.addEventListener('DOMContentLoaded', function () {
     return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
   }
 
-  extractAllChapters();
+  initNotes();
 });
