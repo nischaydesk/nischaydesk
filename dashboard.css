@@ -773,4 +773,78 @@ html.light-mode .stat-glass-card .stat-numeric {
 html.light-mode .stat-glass-card .stat-label {
   color: #64748b !important;
 }
+/* ==========================================================================
+   STATS & GRID CARDS SOLID DARK THEME (FORCE OVERRIDE)
+   ========================================================================== */
+
+/* 1. स्टेट्स कार्ड्स (100%, 80+, 1000+, फ्री वाले बॉक्स) */
+.stat-glass-card,
+div.stat-glass-card {
+  background: #081229 !important; /* गहरा नेवी-स्पेस बैकग्राउंड */
+  border: 1.5px solid #1e3a8a !important; /* प्रीमियम रॉयल ब्लू बॉर्डर */
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.stat-glass-card:hover {
+  border-color: #38bdf8 !important;
+  transform: translateY(-3px) !important;
+}
+
+/* कार्ड्स के अंदर का नंबर और टेक्स्ट */
+.stat-glass-card .stat-numeric {
+  color: #38bdf8 !important; /* चमकीला आसमानी */
+  font-weight: 800 !important;
+}
+
+.stat-glass-card .stat-label {
+  color: #94a3b8 !important; /* हल्का साफ़ ग्रे */
+  font-weight: 600 !important;
+}
+
+/* 2. ग्रिड कार्ड्स (सिलेबस, नोट्स और टेस्ट वाले मुख्य बॉक्स) */
+.grid-card,
+div.grid-card {
+  background: #0c1838 !important;
+  border: 1.5px solid #1e3a8a !important;
+  border-radius: 18px !important;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+.grid-card:hover {
+  border-color: #38bdf8 !important;
+}
+
+.grid-card .card-title {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+.grid-card .card-desc {
+  color: #94a3b8 !important;
+}
+
+/* 3. सिर्फ और सिर्फ जब आप "लाइट मोड" ऑन करेंगे तभी ये सफ़ेद होंगे */
+html.light-mode .stat-glass-card,
+html.light-mode div.stat-glass-card,
+html.light-mode .grid-card,
+html.light-mode div.grid-card {
+  background: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light-mode .stat-glass-card .stat-numeric {
+  color: #0284c7 !important;
+}
+
+html.light-mode .stat-glass-card .stat-label,
+html.light-mode .grid-card .card-desc {
+  color: #475569 !important;
+}
+
+html.light-mode .grid-card .card-title {
+  color: #0f172a !important;
+}
+
 
