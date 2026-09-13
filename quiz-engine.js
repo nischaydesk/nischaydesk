@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.7 Ultimate Final)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (Master Fix v5.1)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -42,112 +42,126 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // क्लास और विषय के आधार पर बिल्कुल सटीक JSON फाइल का नाम तय करना
+  // सभी विषयों की अचूक मैपिंग (Math, Chem, Bio, Sanskrit, SST, Physics)
   function getTargetJsonFile() {
-    let cls = testClassSelect ? testClassSelect.value.trim() : "10";
-    if (cls !== "10" && cls !== "11" && cls !== "12") {
-      cls = "10";
-    }
+    const cls = testClassSelect ? testClassSelect.value.trim() : "10";
 
-    let val = testSubjectSelect ? testSubjectSelect.value.toLowerCase() : "";
-    let txt = "";
-    if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
-      txt = testSubjectSelect.options[testSubjectSelect.selectedIndex].text.toLowerCase();
-    }
-    let combined = val + " " + txt;
-
-    let subName = "physics";
-    if (combined.includes('phy') || combined.includes('भौतिकी')) {
-      subName = 'physics';
-    } else if (combined.includes('chem') || combined.includes('रसायन')) {
-      subName = 'chemistry';
-    } else if (combined.includes('bio') || combined.includes('जीव')) {
-      subName = 'biology';
-    } else if (combined.includes('math') || combined.includes('गणित')) {
-      subName = 'math';
-    } else if (combined.includes('sans') || combined.includes('संस्कृत')) {
-      subName = 'sanskrit';
-    } else if (combined.includes('sst') || combined.includes('इतिहास') || combined.includes('भूगोल') || combined.includes('सामाजिक') || combined.includes('नागरिक') || combined.includes('अर्थशास्त्र') || combined.includes('आपदा')) {
-      subName = 'sst';
-    }
-
-    // अगर 11वीं या 12वीं चुनी गई है जिसकी फाइलें अभी नहीं हैं
     if (cls !== "10") {
-      return `CLASS_NOT_READY`;
+      return "CLASS_NOT_READY";
     }
 
-    return `${cls}-${subName}.json`;
+    let subVal = "";
+    let subText = "";
+    let sylId = "";
+
+    if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
+      const opt = testSubjectSelect.options[testSubjectSelect.selectedIndex];
+      subVal = (opt.value || "").toLowerCase().trim();
+      subText = (opt.text || "").toLowerCase().trim();
+      sylId = (opt.getAttribute('data-sylid') || "").toLowerCase().trim();
+    }
+
+    const checkStr = `${subVal} ${subText} ${sylId}`;
+
+    if (checkStr.includes('math') || checkStr.includes('गणित')) {
+      return '10-math.json';
+    }
+    if (checkStr.includes('chem') || checkStr.includes('रसायन')) {
+      return '10-chemistry.json';
+    }
+    if (checkStr.includes('bio') || checkStr.includes('जीव')) {
+      return '10-biology.json';
+    }
+    if (checkStr.includes('sans') || checkStr.includes('संस्कृत')) {
+      return '10-sanskrit.json';
+    }
+    if (checkStr.includes('sst') || checkStr.includes('सामाजिक') || checkStr.includes('इतिहास') || checkStr.includes('भूगोल') || checkStr.includes('नागरिक') || checkStr.includes('अर्थशास्त्र')) {
+      return '10-sst.json';
+    }
+    if (checkStr.includes('phy') || checkStr.includes('भौतिकी')) {
+      return '10-physics.json';
+    }
+
+    return '10-physics.json';
   }
 
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
     const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
 
-    if (jsonFile === `CLASS_NOT_READY`) {
+    if (jsonFile === "CLASS_NOT_READY") {
       currentQuestions = [
         {
           chapter: 1,
-          q: `🚀 कक्षा 11वीं और 12वीं का प्रश्न बैंक अभी तैयार किया जा रहा है! चूँकि अभी आप 11वीं साइंस में हैं, यह सेक्शन जल्द ही लाइव होगा। तब तक आप क्लास 10वीं के VVI प्रश्नों का अभ्यास करके अपना बेस मजबूत कर सकते हैं।`,
-          options: ["ठीक है, समझ गया", "क्लास 10वीं का टेस्ट शुरू करें", "होम पेज पर जाएं", "बाद में आऊंगा"],
+          q: "🚀 कक्षा 11वीं और 12वीं का प्रश्न बैंक अभी तैयार किया जा रहा है! यह सेक्शन बहुत जल्द लाइव होगा। तब तक आप क्लास 10वीं के सभी 6 विषयों का टेस्ट दे सकते हैं।",
+          options: ["ठीक है, समझ गया", "क्लास 10वीं का टेस्ट दें", "होम पेज पर जाएं", "बाद में आऊंगा"],
           correct: 0,
-          exp: "प्रिंस भाई, क्लास 11वीं के चैप्टर्स के सवाल भी बहुत जल्द अपलोड कर दिए जाएंगे!"
+          exp: "11वीं-12वीं का पूरा सिलेबस जल्द अपलोड किया जाएगा।"
         }
       ];
       return;
     }
-    
-    // GitHub Pages और लोकल दोनों के लिए सभी संभव सटीक पाथ्स
+
+    // GitHub Pages और लोकल दोनों के लिए सभी सटीक पाथ्स
     const pathsToTry = [
-      `./data/${jsonFile}`,
       `data/${jsonFile}`,
+      `./data/${jsonFile}`,
       `/nischaydesk/data/${jsonFile}`,
-      `https://nischaydesk.github.io/nischaydesk/data/${jsonFile}`
+      `${window.location.origin}/nischaydesk/data/${jsonFile}`
     ];
 
     let rawData = null;
+    let fetchErrorDetail = "";
 
-    for (let p of pathsToTry) {
+    for (const p of pathsToTry) {
       try {
-        let res = await fetch(`${p}?t=${Date.now()}`);
+        const res = await fetch(`${p}?t=${Date.now()}`);
         if (res.ok) {
-          rawData = await res.json();
-          break;
+          try {
+            rawData = await res.json();
+            break;
+          } catch (jsonErr) {
+            fetchErrorDetail = `फ़ाइल मिल गई लेकिन JSON में Syntax Error है (${jsonErr.message})। फ़ाइल में // कमेंट्स या गलत कॉमा चेक करें!`;
+            break;
+          }
+        } else {
+          fetchErrorDetail = `फ़ाइल नहीं मिली (Status: ${res.status})`;
         }
-      } catch (err) {
-        // प्रयास जारी रखेगा
+      } catch (networkErr) {
+        fetchErrorDetail = networkErr.message;
       }
     }
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-      alert(`⚠️ फ़ाइल '${jsonFile}' लोड नहीं हो पाई! कृपया सुनिश्चित करें कि GitHub के data फ़ोल्डर में यह फ़ाइल सही सलामत मौजूद है।`);
+      alert(`⚠️ '${jsonFile}' लोड नहीं हो सकी!\nवजह: ${fetchErrorDetail}`);
       currentQuestions = [
         {
           chapter: 1,
-          q: `डेमो प्रश्न: '${jsonFile}' फ़ाइल नहीं मिल पाई। कृपया GitHub रिपॉजिटरी चेक करें।`,
+          q: `डेमो प्रश्न: '${jsonFile}' लोड नहीं हो पाई।`,
           options: ["ऑप्शन A", "ऑप्शन B", "ऑप्शन C", "ऑप्शन D"],
           correct: 0,
-          exp: "फ़ाइल का नाम और पाथ सही होना चाहिए।"
+          exp: "फ़ाइल का सिंटैक्स या पाथ चेक करें।"
         }
       ];
       return;
     }
 
-    // डेटा को सही फॉर्मेट में ढालना
+    // डेटा नॉर्मलाइज़ेशन
     const allQs = rawData.map(item => ({
       chapter: parseInt(item.chapter) || 1,
-      q: item.q || item.question || 'प्रश्न नहीं मिला',
+      q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
       options: item.options || [],
       correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
-      exp: item.exp || item.explanation || 'व्याख्या उपलब्ध नहीं है।'
+      exp: item.exp || item.explanation || 'व्याख्या शीघ्र उपलब्ध होगी।'
     }));
 
-    // चैप्टर फ़िल्टर करना
-    let chStr = String(chapterVal).toLowerCase();
+    // अध्याय फ़िल्टरिंग
+    const chStr = String(chapterVal).toLowerCase();
     if (chStr === 'all' || chStr.includes('संपूर्ण') || chStr.includes('फुल')) {
       currentQuestions = allQs;
     } else {
-      let match = chStr.match(/\d+/);
-      let targetCh = match ? parseInt(match[0]) : null;
+      const match = chStr.match(/\d+/);
+      const targetCh = match ? parseInt(match[0]) : null;
 
       if (targetCh) {
         currentQuestions = allQs.filter(q => q.chapter === targetCh);
@@ -157,12 +171,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (currentQuestions.length === 0) {
-      currentQuestions = allQs; // यदि चैप्टर मैच न हो तो पूरा विषय दिखाओ
+      currentQuestions = allQs;
     }
 
     currentQuestions.sort(() => Math.random() - 0.5);
   }
 
+  // 2. Start Exam Trigger
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
       startExamBtn.disabled = true;
@@ -171,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
       await loadSelectedQuestions();
 
       startExamBtn.disabled = false;
-      startExamBtn.innerText = "⚡ टेस्ट शुरू करें";
+      startExamBtn.innerText = "⚡ टेस्ट शुरू करें (Start Exam)";
 
       userResponses = {};
       currentQIndex = 0;
@@ -182,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (testRunningScreen) testRunningScreen.classList.add('active');
 
       const cls = testClassSelect ? testClassSelect.value : "10";
-      let subTxt = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
+      const subTxt = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
       if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subTxt.split(' ')[0]}`;
 
       startTimer();
@@ -191,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // 3. Render Question
   function renderQuestion(index) {
     if (index < 0 || index >= currentQuestions.length) return;
     currentQIndex = index;
@@ -228,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePaletteStatus();
   }
 
+  // 4. Palette Logic
   function renderPalette() {
     if (!paletteButtonsGrid) return;
     paletteButtonsGrid.innerHTML = '';
@@ -252,6 +269,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // 5. Controls
   if (prevQBtn) {
     prevQBtn.addEventListener('click', () => {
       if (currentQIndex > 0) renderQuestion(currentQIndex - 1);
@@ -286,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // 6. Timer
   function startTimer() {
     clearInterval(timerInterval);
     updateTimerDisplay();
@@ -306,12 +325,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (timerDigits) timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }
 
+  // 7. Results
   function finishAndSubmitExam() {
     clearInterval(timerInterval);
     let correctCount = 0, wrongCount = 0;
 
     currentQuestions.forEach((q, idx) => {
-      let userAns = userResponses[idx];
+      const userAns = userResponses[idx];
       if (userAns !== undefined) {
         if (userAns === q.correct) correctCount++;
         else wrongCount++;
@@ -330,8 +350,8 @@ document.addEventListener('DOMContentLoaded', function () {
       solutionsAccordionList.innerHTML = '';
       const letters = ['A', 'B', 'C', 'D'];
       currentQuestions.forEach((q, idx) => {
-        let userAns = userResponses[idx];
-        let solBox = document.createElement('div');
+        const userAns = userResponses[idx];
+        const solBox = document.createElement('div');
         solBox.className = 'sol-item';
         solBox.innerHTML = `
           <div class="sol-q-title">Q.${idx + 1}: ${q.q}</div>
