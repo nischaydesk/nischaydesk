@@ -1,54 +1,55 @@
 /* ==========================================================================
-   NischayDesk Global Design System & Core Theme Architecture
+   NischayDesk Global Design System & Core Theme Architecture (v3.5)
    Architecture & Styling: Prince Kumar
    ========================================================================== */
 
 :root {
-  /* Surface & Base Colors (Dark Mode Default) */
-  --bg-primary: #070d1e;
-  --bg-secondary: #0b1530;
-  --surface-card: #0f1c3d;
-  --surface-elevated: #162650;
-  --surface-subtle: #1a2c5b;
+  /* Surface & Base Colors (Deep Space Dark Mode) */
+  --bg-primary: #030712;
+  --bg-secondary: #080f24;
+  --surface-card: #0c1633;
+  --surface-elevated: #13224a;
+  --surface-subtle: #1a2d5f;
 
-  /* Accent & Brand Colors */
+  /* Vibrant Neon-Tech Brand Gradients */
   --brand-primary: #0284c7;
   --brand-secondary: #0369a1;
   --brand-accent: #38bdf8;
-  --brand-glow: rgba(56, 189, 248, 0.28);
-  --brand-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+  --brand-glow: rgba(56, 189, 248, 0.32);
+  --brand-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 60%, #1d4ed8 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #7dd3fc 0%, #0284c7 100%);
 
-  /* State & Utility Colors */
+  /* State & Utility Accents */
   --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.15);
+  --success-bg: rgba(16, 185, 129, 0.14);
   --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.15);
+  --danger-bg: rgba(239, 68, 68, 0.14);
   --warning: #f59e0b;
   --info: #06b6d4;
 
-  /* Text & Typography (Pure Contrast) */
+  /* Typography Colors */
   --text-pure: #ffffff;
-  --text-primary: #f1f5f9;
+  --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-strong: #1e3260;
+  --border-subtle: rgba(56, 189, 248, 0.14);
+  --border-strong: #1e366a;
 
-  /* Radii & Shadows */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  /* Radii & Elevation */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
   --radius-pill: 9999px;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.6);
 
-  /* Animation Timers */
-  --transition-quick: 0.18s ease;
+  /* Micro-Interaction Timers */
+  --transition-quick: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 1. Global Reset */
+/* 1. Global Reset & Performance Layer */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -64,11 +65,11 @@ html {
 body.app-body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  line-height: 1.55;
+  line-height: 1.6;
   overflow-x: hidden;
   transition: background-color var(--transition-smooth), color var(--transition-smooth);
 }
@@ -86,13 +87,14 @@ body.app-body {
   align-items: center;
   gap: 8px;
   background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  border: 1px solid rgba(56, 189, 248, 0.28);
   padding: 6px 14px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--brand-accent);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  backdrop-filter: blur(8px);
 }
 
 .pulsing-dot {
@@ -110,31 +112,31 @@ body.app-body {
   100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
 }
 
-/* 3. Universal CTA & Button Styles */
+/* 3. Universal CTA & Interactive Buttons */
 .btn-cta-primary, .btn-cta-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 12px 24px;
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: all var(--transition-quick);
 }
 
 .btn-cta-primary {
-  background: var(--brand-primary);
+  background: var(--brand-gradient);
   color: var(--text-pure);
-  box-shadow: 0 4px 16px var(--brand-glow);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px var(--brand-glow);
 }
 
 .btn-cta-primary:hover {
-  background: var(--brand-secondary);
+  background: var(--brand-gradient-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--brand-glow);
+  box-shadow: 0 10px 28px var(--brand-glow);
 }
 
 .btn-cta-secondary {
@@ -153,32 +155,32 @@ body.app-body {
 .dashboard-viewport, .test-portal-container {
   flex: 1;
   width: 100%;
-  max-width: 1240px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 16px 60px;
+  padding: 20px 16px 60px;
 }
 
-/* 5. Production Enterprise Footer */
+/* 5. Modern Redesigned Footer */
 .app-footer {
-  background: #030610;
+  background: #020510;
   border-top: 1px solid var(--border-strong);
-  padding: 48px 20px 24px;
+  padding: 44px 20px 24px;
   margin-top: auto;
-  transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+  transition: background-color var(--transition-smooth);
 }
 
 .footer-container {
-  max-width: 1200px;
+  max-width: 1160px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 28px;
 }
 
 @media (min-width: 768px) {
   .footer-container {
     grid-template-columns: 2fr 1fr 1fr;
-    gap: 48px;
+    gap: 40px;
   }
 }
 
@@ -196,9 +198,9 @@ body.app-body {
 }
 
 .footer-summary {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  max-width: 380px;
+  max-width: 360px;
   margin-bottom: 16px;
   line-height: 1.6;
 }
@@ -209,7 +211,7 @@ body.app-body {
   border: 1px solid var(--border-strong);
   padding: 8px 16px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
 }
 
@@ -218,11 +220,11 @@ body.app-body {
 }
 
 .footer-heading {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-pure);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-weight: 700;
 }
 
@@ -230,13 +232,13 @@ body.app-body {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .footer-nav a {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   transition: var(--transition-quick);
 }
 
@@ -246,15 +248,15 @@ body.app-body {
 }
 
 .footer-bottom-bar {
-  max-width: 1200px;
-  margin: 36px auto 0;
-  padding-top: 20px;
+  max-width: 1160px;
+  margin: 32px auto 0;
+  padding-top: 18px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  font-size: 0.8rem;
+  gap: 8px;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
@@ -272,29 +274,20 @@ body.app-body {
   color: var(--text-secondary);
 }
 
-.green-indicator {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--success);
-  box-shadow: 0 0 6px var(--success);
-}
-
-/* 6. Side-Drawer iOS Toggle Switch */
+/* 6. Theme Toggle Control */
 .drawer-theme-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  margin: 12px 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+  padding: 12px 14px;
+  margin: 10px 0;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
 }
 
 .theme-label {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-pure);
 }
@@ -302,8 +295,8 @@ body.app-body {
 .switch {
   position: relative;
   display: inline-block;
-  width: 48px;
-  height: 26px;
+  width: 46px;
+  height: 24px;
   flex-shrink: 0;
 }
 
@@ -316,30 +309,27 @@ body.app-body {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: #334155;
-  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: .25s ease;
   border-radius: 34px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
   left: 3px;
   bottom: 3px;
   background-color: #ffffff;
-  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: .25s ease;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 input:checked + .slider {
-  background-color: #0284c7;
+  background-color: var(--brand-primary);
 }
 
 input:checked + .slider:before {
@@ -347,23 +337,12 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
-   7. COMPLETE LIGHT MODE SYSTEM (PRECISION CONTRAST OVERRIDES)
+   7. HIGH-CONTRAST LIGHT MODE OVERRIDES
    ========================================================================== */
 
 html.light-mode body {
-  background-color: #f1f5f9 !important;
+  background-color: #f8fafc !important;
   color: #0f172a !important;
-}
-
-html.light-mode .app-header {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border-bottom: 1px solid #cbd5e1 !important;
-}
-
-html.light-mode .hero-studio-banner {
-  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%) !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
 }
 
 html.light-mode .stat-glass-card,
@@ -380,7 +359,7 @@ html.light-mode .result-card-container {
   background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   color: #0f172a !important;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
 }
 
 html.light-mode h1, 
@@ -432,6 +411,6 @@ html.light-mode .filter-btn.active {
 }
 
 html.light-mode .app-footer {
-  background: #f8fafc !important;
+  background: #f1f5f9 !important;
   border-top: 1px solid #cbd5e1 !important;
 }
