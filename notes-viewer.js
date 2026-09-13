@@ -1,5 +1,7 @@
 /* ==========================================================================
-   NischayDesk Safe & Fast Notes Viewer Engine (v4.0)
+   NischayDesk Dynamic Role-Based Notes Controller (v4.2)
+   Rule 1: Guest (Not Logged In) -> All Classes (10th, 11th, 12th) Fully Visible
+   Rule 2: Logged In -> Strictly Filter to Student's Selected Class
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -19,27 +21,60 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentFilterSubject = 'all';
   let searchQuery = '';
 
-  function initNotes() {
+  const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
+               ? window.NischayConfig.authInstance 
+               : (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
+
+  // ऑथेंटिकेशन स्टेट को ध्यान में रखकर इनिशियलाइज करें
+  if (auth) {
+    auth.onAuthStateChanged(function (user) {
+      initNotes(user);
+    });
+  } else {
+    initNotes(null);
+  }
+
+  function initNotes(currentUser) {
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
-      // अगर डेटा लोड होने में 1 सेकंड लगे तो दोबारा प्रयास करें
-      setTimeout(initNotes, 200);
+      setTimeout(() => initNotes(currentUser), 200);
       return;
     }
 
-    const studentClass = localStorage.getItem('nischay_student_class') || '10';
-    allChaptersMaster = [];
+    // चेक करें कि यूजर लॉग इन है या गेस्ट
+    const isUserLoggedIn = !!currentUser;
+    let studentClass = null;
 
+    if (isUserLoggedIn) {
+      // लॉग इन यूजर की सेव्ड क्लास निकालें
+      const profile = localStorage.getItem('nischay_user_profile');
+      if (profile) {
+        try {
+          const parsed = JSON.parse(profile);
+          studentClass = parsed.studentClass;
+        } catch (e) {}
+      }
+      if (!studentClass) {
+        studentClass = localStorage.getItem('nischay_student_class') || '10';
+      }
+    }
+
+    // 1. फ़िल्टर बटन (Pills) को यूजर रोल के अनुसार टॉगल करें
+    adjustFilterPills(isUserLoggedIn, studentClass);
+
+    // 2. मास्टर लिस्ट तैयार करें
+    allChaptersMaster = [];
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      // अगर यूजर 10वीं में है तो सिर्फ 10वीं के विषय लें
-      if (studentClass === '10' && !subject.id.startsWith('10-')) return;
-      if (studentClass === '11' && !subject.id.startsWith('11-')) return;
-      if (studentClass === '12' && !subject.id.startsWith('12-')) return;
+      // अगर यूजर लॉग इन है, तो सिर्फ उसकी क्लास का डेटा लोड होगा
+      if (isUserLoggedIn && studentClass) {
+        if (!subject.id.startsWith(studentClass + '-')) return;
+      }
+      // अगर गेस्ट है (लॉग इन नहीं है), तो तीनों क्लास का डेटा लोड होगा
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
         subject.chapters.forEach(function (ch) {
           allChaptersMaster.push({
             subjectId: subject.id,
-            classTitle: subject.classTitle || `Class ${studentClass}th`,
+            classTitle: subject.classTitle || "NischayDesk",
             subjectTitle: subject.subjectTitle || "विषय",
             no: ch.no,
             name: ch.name,
@@ -54,11 +89,40 @@ document.addEventListener('DOMContentLoaded', function () {
     renderNotesGrid();
   }
 
+  // फ़िल्टर बटनों का विजिबिलिटी कंट्रोल
+  function adjustFilterPills(isLoggedIn, sClass) {
+    if (!filterPillContainer) return;
+    const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
+
+    filterButtons.forEach(btn => {
+      const filterVal = btn.getAttribute('data-filter');
+
+      // 'सभी विषय' हमेशा दिखेगा
+      if (filterVal === 'all') {
+        btn.style.display = 'inline-block';
+        return;
+      }
+
+      if (!isLoggedIn) {
+        // गेस्ट मोड: 10th, 11th, 12th के सारे बटन दिखेंगे
+        btn.style.display = 'inline-block';
+      } else {
+        // लॉग इन मोड: सिर्फ और सिर्फ चुनी हुई क्लास वाले बटन दिखेंगे
+        if (filterVal.startsWith(sClass + '-')) {
+          btn.style.display = 'inline-block';
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    });
+  }
+
   function renderNotesGrid() {
     if (!notesCatalogGrid) return;
 
     let filtered = allChaptersMaster.filter(function (item) {
       let matchSubject = false;
+
       if (currentFilterSubject === 'all') {
         matchSubject = true;
       } else if (currentFilterSubject === '10-sst-all') {
@@ -70,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const q = searchQuery.toLowerCase().trim();
       const matchSearch = !q || 
         item.name.toLowerCase().includes(q) || 
-        item.subjectTitle.toLowerCase().includes(q);
+        item.subjectTitle.toLowerCase().includes(q) ||
+        String(item.no).includes(q);
 
       return matchSubject && matchSearch;
     });
@@ -80,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div style="grid-column: 1 / -1; padding: 50px 20px; text-align: center; color: var(--text-secondary);">
           <div style="font-size: 2.5rem; margin-bottom: 10px;">📋</div>
           <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 6px;">कोई नोट्स नहीं मिले</h3>
-          <p style="font-size: 0.85rem;">कृपया दूसरा विषय चुनें या सर्च बदलें।</p>
+          <p style="font-size: 0.85rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
         </div>
       `;
       return;
@@ -89,9 +154,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let htmlBuffer = '';
     filtered.forEach(function (note) {
       const hasPdf = note.pdfUrl && note.pdfUrl.trim() !== '' && note.pdfUrl !== '#';
+      
       const readAction = hasPdf 
         ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
-        : `onclick="alert('अध्याय ${note.no} के नोट्स जल्द जोड़े जा रहे हैं!')"`;
+        : `onclick="alert('अध्याय ${note.no} (${escapeHtml(note.name)}) के नोट्स जल्द जोड़े जा रहे हैं!')"`;
 
       const downloadAction = hasPdf
         ? `href="${note.pdfUrl}" target="_blank"`
@@ -181,6 +247,4 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!str) return '';
     return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
   }
-
-  initNotes();
 });
