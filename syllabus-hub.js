@@ -1,6 +1,15 @@
+/* ==========================================================================
+   NischayDesk Official Syllabus Repository & Interactive Controller
+   Classes: 10th Matric, 11th Science & 12th Science
+   Curated by: Prince Kumar
+   ========================================================================== */
+
 window.NischaySyllabusHubData = {
+  // ========================================================================
+  // CLASS 10TH MATRIC SYLLABUS DIRECTORY
+  // ========================================================================
   "10": {
-    name: "Class 10th (मैट्रिक)",
+    name: "कक्षा 10वीं (मैट्रिक)",
     subjects: {
       "math": {
         title: "गणित (Mathematics)",
@@ -21,7 +30,320 @@ window.NischaySyllabusHubData = {
           { no: 14, name: "सांख्यिकी (Statistics)", pdf: "https://drive.google.com/file/d/12VyIfIEAq3YKkdAM6OppgmehH_CNIJRE/preview" },
           { no: 15, name: "प्रायिकता (Probability)", pdf: "https://drive.google.com/file/d/1_GyVYbW7Fw5ha7ruWhbHW514Qpqeuvnr/preview" }
         ]
+      },
+      "physics": {
+        title: "भौतिकी (Physics)",
+        chapters: [
+          { no: 1, name: "प्रकाश: परावर्तन तथा अपवर्तन", pdf: "" },
+          { no: 2, name: "मानव नेत्र तथा रंगबिरंगा संसार", pdf: "" },
+          { no: 3, name: "विद्युत (Electricity)", pdf: "" },
+          { no: 4, name: "विद्युत धारा के चुंबकीय प्रभाव", pdf: "" },
+          { no: 5, name: "ऊर्जा के स्रोत", pdf: "" }
+        ]
+      },
+      "chemistry": {
+        title: "रसायन विज्ञान (Chemistry)",
+        chapters: [
+          { no: 1, name: "रासायनिक अभिक्रियाएँ एवं समीकरण", pdf: "" },
+          { no: 2, name: "अम्ल, क्षारक एवं लवण", pdf: "" },
+          { no: 3, name: "धातु एवं अधातु", pdf: "" },
+          { no: 4, name: "कार्बन एवं उसके यौगिक", pdf: "" },
+          { no: 5, name: "तत्वों का आवर्त वर्गीकरण", pdf: "" }
+        ]
+      },
+      "biology": {
+        title: "जीव विज्ञान (Biology)",
+        chapters: [
+          { no: 1, name: "जैव प्रक्रम (Life Processes)", pdf: "" },
+          { no: 2, name: "नियंत्रण एवं समन्वय", pdf: "" },
+          { no: 3, name: "जीव जनन कैसे करते हैं?", pdf: "" },
+          { no: 4, name: "आनुवंशिकता एवं जैव विकास", pdf: "" },
+          { no: 5, name: "हमारा पर्यावरण", pdf: "" }
+        ]
+      },
+      "sst": {
+        title: "सामाजिक विज्ञान (SST)",
+        chapters: [
+          { no: 1, name: "इतिहास: यूरोप में राष्ट्रवाद", pdf: "" },
+          { no: 2, name: "इतिहास: समाजवाद एवं साम्यवाद", pdf: "" },
+          { no: 3, name: "इतिहास: भारत में राष्ट्रवाद", pdf: "" },
+          { no: 4, name: "भूगोल: भारत - संसाधन एवं उपयोग", pdf: "" },
+          { no: 5, name: "भूगोल: जल, खनिज एवं ऊर्जा संसाधन", pdf: "" },
+          { no: 6, name: "राजनीति: लोकतंत्र में सत्ता की साझेदारी", pdf: "" },
+          { no: 7, name: "अर्थशास्त्र: अर्थव्यवस्था एवं इसका विकास", pdf: "" },
+          { no: 8, name: "आपदा प्रबंधन: प्राकृतिक आपदा एवं बचाव", pdf: "" }
+        ]
+      },
+      "sanskrit": {
+        title: "संस्कृत (पीयूषम् एवं व्याकरण)",
+        chapters: [
+          { no: 1, name: "मंगलम् (Mangalam)", pdf: "" },
+          { no: 2, name: "पाटलिपुत्रवैभवम्", pdf: "" },
+          { no: 3, name: "अलसकथा", pdf: "" },
+          { no: 4, name: "संस्कृतसाहित्ये लेखिकाः", pdf: "" },
+          { no: 5, name: "भारतमहिमा", pdf: "" },
+          { no: 6, name: "भारतीयसंस्काराः", pdf: "" },
+          { no: 7, name: "नीतिश्लोकाः", pdf: "" },
+          { no: 8, name: "कर्मवीर कथा", pdf: "" },
+          { no: 9, name: "स्वामी दयानन्दः", pdf: "" },
+          { no: 10, name: "व्याघ्रपथिककथा", pdf: "" },
+          { no: 11, name: "कर्णस्य दानवीरता", pdf: "" }
+        ]
+      }
+    }
+  },
+
+  // ========================================================================
+  // CLASS 11TH SCIENCE SYLLABUS DIRECTORY
+  // ========================================================================
+  "11": {
+    name: "कक्षा 11वीं (साइंस)",
+    subjects: {
+      "physics": {
+        title: "भौतिक विज्ञान (Physics)",
+        chapters: [
+          { no: 1, name: "मात्रक और मापन (Units & Measurements)", pdf: "" },
+          { no: 2, name: "सरल रेखा में गति (Motion in a Straight Line)", pdf: "" },
+          { no: 3, name: "समतल में गति (Motion in a Plane)", pdf: "" },
+          { no: 4, name: "गति के नियम (Laws of Motion)", pdf: "" },
+          { no: 5, name: "कार्य, ऊर्जा और शक्ति (Work, Energy & Power)", pdf: "" },
+          { no: 6, name: "कणों के निकाय तथा घूर्णी गति (Rotational Motion)", pdf: "" },
+          { no: 7, name: "गुरुत्वाकर्षण (Gravitation)", pdf: "" },
+          { no: 8, name: "ठोसों के यांत्रिक गुण (Mechanical Properties of Solids)", pdf: "" },
+          { no: 9, name: "तरलों के यांत्रिकी गुण (Fluid Mechanics)", pdf: "" },
+          { no: 10, name: "द्रव्य के तापीय गुण (Thermal Properties)", pdf: "" },
+          { no: 11, name: "ऊष्मागतिकी (Thermodynamics)", pdf: "" },
+          { no: 12, name: "अणुगति सिद्धांत (Kinetic Theory)", pdf: "" },
+          { no: 13, name: "दोलन (Oscillations)", pdf: "" },
+          { no: 14, name: "तरंगें (Waves)", pdf: "" }
+        ]
+      },
+      "chemistry": {
+        title: "रसायन विज्ञान (Chemistry)",
+        chapters: [
+          { no: 1, name: "रसायन विज्ञान की कुछ मूल अवधारणाएँ", pdf: "" },
+          { no: 2, name: "परमाणु की संरचना (Structure of Atom)", pdf: "" },
+          { no: 3, name: "तत्वों का वर्गीकरण एवं आवर्तिता", pdf: "" },
+          { no: 4, name: "रासायनिक आबंधन तथा आण्विक संरचना", pdf: "" },
+          { no: 5, name: "रासायनिक ऊष्मागतिकी (Thermodynamics)", pdf: "" },
+          { no: 6, name: "साम्यावस्था (Equilibrium)", pdf: "" },
+          { no: 7, name: "रेडॉक्स अभिक्रियाएँ (Redox Reactions)", pdf: "" },
+          { no: 8, name: "कार्बनिक रसायन: मूलभूत सिद्धांत एवं तकनीकें", pdf: "" },
+          { no: 9, name: "हाइड्रोकार्बन (Hydrocarbons)", pdf: "" }
+        ]
+      },
+      "math": {
+        title: "गणित (Mathematics)",
+        chapters: [
+          { no: 1, name: "समुच्चय (Sets)", pdf: "" },
+          { no: 2, name: "संबंध एवं फलन (Relations & Functions)", pdf: "" },
+          { no: 3, name: "त्रिकोणमितीय फलन (Trigonometric Functions)", pdf: "" },
+          { no: 4, name: "सम्मिश्र संख्याएँ और द्विघातीय समीकरण", pdf: "" },
+          { no: 5, name: "रैखिक असमिकाएँ (Linear Inequalities)", pdf: "" },
+          { no: 6, name: "क्रमचय और संचय (Permutations & Combinations)", pdf: "" },
+          { no: 7, name: "द्विपद प्रमेय (Binomial Theorem)", pdf: "" },
+          { no: 8, name: "अनुक्रम तथा श्रेणी (Sequences & Series)", pdf: "" },
+          { no: 9, name: "सरल रेखाएँ (Straight Lines)", pdf: "" },
+          { no: 10, name: "शंकु परिच्छेद (Conic Sections)", pdf: "" },
+          { no: 11, name: "त्रिविमीय ज्यामिति का परिचय (3D Geometry)", pdf: "" },
+          { no: 12, name: "सीमा और अवकलज (Limits & Derivatives)", pdf: "" },
+          { no: 13, name: "सांख्यिकी (Statistics)", pdf: "" },
+          { no: 14, name: "प्रायिकता (Probability)", pdf: "" }
+        ]
+      },
+      "biology": {
+        title: "जीव विज्ञान (Biology)",
+        chapters: [
+          { no: 1, name: "जीव जगत (The Living World)", pdf: "" },
+          { no: 2, name: "जीव जगत का वर्गीकरण (Classification)", pdf: "" },
+          { no: 3, name: "वनस्पति जगत (Plant Kingdom)", pdf: "" },
+          { no: 4, name: "प्राणी जगत (Animal Kingdom)", pdf: "" },
+          { no: 5, name: "पुष्पी पादपों की आकारिकी व शारीर", pdf: "" },
+          { no: 6, name: "कोशिका: जीवन की इकाई", pdf: "" },
+          { no: 7, name: "जैव अणु (Biomolecules)", pdf: "" },
+          { no: 8, name: "कोशिका चक्र और विभाजन", pdf: "" },
+          { no: 9, name: "पादप कार्यिकी (Plant Physiology)", pdf: "" },
+          { no: 10, name: "मानव शरीर क्रिया विज्ञान (Human Physiology)", pdf: "" }
+        ]
+      }
+    }
+  },
+
+  // ========================================================================
+  // CLASS 12TH SCIENCE SYLLABUS DIRECTORY
+  // ========================================================================
+  "12": {
+    name: "कक्षा 12वीं (बोर्ड स्पेशल)",
+    subjects: {
+      "physics": {
+        title: "भौतिक विज्ञान (Physics)",
+        chapters: [
+          { no: 1, name: "वैद्युत आवेश तथा क्षेत्र (Electric Charges & Fields)", pdf: "" },
+          { no: 2, name: "स्थिरवैद्युत विभव तथा धारिता", pdf: "" },
+          { no: 3, name: "विद्युत धारा (Current Electricity)", pdf: "" },
+          { no: 4, name: "गतिमान आवेश और चुंबकत्व", pdf: "" },
+          { no: 5, name: "चुंबकत्व एवं द्रव्य (Magnetism & Matter)", pdf: "" },
+          { no: 6, name: "वैद्युतचुंबकीय प्रेरण (EMI)", pdf: "" },
+          { no: 7, name: "प्रत्यावर्ती धारा (Alternating Current)", pdf: "" },
+          { no: 8, name: "वैद्युतचुंबकीय तरंगें (EM Waves)", pdf: "" },
+          { no: 9, name: "किरण प्रकाशिकी एवं प्रकाशिक यंत्र (Ray Optics)", pdf: "" },
+          { no: 10, name: "तरंग प्रकाशिकी (Wave Optics)", pdf: "" },
+          { no: 11, name: "विकिरण तथा द्रव्य की द्वैत प्रकृति", pdf: "" },
+          { no: 12, name: "परमाणु (Atoms)", pdf: "" },
+          { no: 13, name: "नाभिक (Nuclei)", pdf: "" },
+          { no: 14, name: "अर्धचालक इलेक्ट्रॉनिकी (Semiconductors)", pdf: "" }
+        ]
+      },
+      "chemistry": {
+        title: "रसायन विज्ञान (Chemistry)",
+        chapters: [
+          { no: 1, name: "विलयन (Solutions)", pdf: "" },
+          { no: 2, name: "वैद्युतरसायन (Electrochemistry)", pdf: "" },
+          { no: 3, name: "रासायनिक बलगतिकी (Chemical Kinetics)", pdf: "" },
+          { no: 4, name: "d-एवं f-ब्लॉक के तत्व", pdf: "" },
+          { no: 5, name: "उपसहसंयोजन यौगिक (Coordination Compounds)", pdf: "" },
+          { no: 6, name: "हैलोऐल्केन तथा हैलोऐरीन", pdf: "" },
+          { no: 7, name: "ऐल्कोहॉल, फ़ीनॉल एवं ईथर", pdf: "" },
+          { no: 8, name: "ऐल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल", pdf: "" },
+          { no: 9, name: "ऐमीन (Amines)", pdf: "" },
+          { no: 10, name: "जैव-अणु (Biomolecules)", pdf: "" }
+        ]
+      },
+      "math": {
+        title: "गणित (Mathematics)",
+        chapters: [
+          { no: 1, name: "संबंध एवं फलन (Relations & Functions)", pdf: "" },
+          { no: 2, name: "प्रतिलोम त्रिकोणमितीय फलन (Inverse Trig)", pdf: "" },
+          { no: 3, name: "आव्यूह (Matrices)", pdf: "" },
+          { no: 4, name: "सारणिक (Determinants)", pdf: "" },
+          { no: 5, name: "सांतत्य तथा अवकलनीयता (Continuity & Diff)", pdf: "" },
+          { no: 6, name: "अवकलज के अनुप्रयोग (Application of Derivatives)", pdf: "" },
+          { no: 7, name: "समाकलन (Integrals)", pdf: "" },
+          { no: 8, name: "समाकलनों के अनुप्रयोग (Application of Integrals)", pdf: "" },
+          { no: 9, name: "अवकल समीकरण (Differential Equations)", pdf: "" },
+          { no: 10, name: "सदिश बीजगणित (Vector Algebra)", pdf: "" },
+          { no: 11, name: "त्रिविमीय ज्यामिति (3D Geometry)", pdf: "" },
+          { no: 12, name: "रैखिक प्रोग्रामन (Linear Programming)", pdf: "" },
+          { no: 13, name: "प्रायिकता (Probability)", pdf: "" }
+        ]
+      },
+      "biology": {
+        title: "जीव विज्ञान (Biology)",
+        chapters: [
+          { no: 1, name: "पुष्पी पादपों में लैंगिक जनन", pdf: "" },
+          { no: 2, name: "मानव जनन (Human Reproduction)", pdf: "" },
+          { no: 3, name: "जनन स्वास्थ्य (Reproductive Health)", pdf: "" },
+          { no: 4, name: "वंशागति तथा विविधता के सिद्धांत", pdf: "" },
+          { no: 5, name: "वंशागति के आणविक आधार (Molecular Genetics)", pdf: "" },
+          { no: 6, name: "विकास (Evolution)", pdf: "" },
+          { no: 7, name: "मानव स्वास्थ्य तथा रोग", pdf: "" },
+          { no: 8, name: "मानव कल्याण में सूक्ष्मजीव", pdf: "" },
+          { no: 9, name: "जैव प्रौद्योगिकी - सिद्धांत व प्रक्रम", pdf: "" },
+          { no: 10, name: "जैव प्रौद्योगिकी एवं इसके उपयोग", pdf: "" },
+          { no: 11, name: "पारिस्थितिकी एवं पर्यावरण (Ecology)", pdf: "" }
+        ]
       }
     }
   }
 };
+
+// ============================================================================
+// INTERACTIVE DOM CONTROLLER FOR SYLLABUS.HTML
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function () {
+  const classSelect = document.getElementById('syllabusClassSelect');
+  const subjectSelect = document.getElementById('syllabusSubjectSelect');
+  const chaptersContainer = document.getElementById('syllabusChaptersList');
+
+  if (!classSelect || !subjectSelect || !chaptersContainer) return;
+
+  // छात्र की प्रोफ़ाइल क्लास को ऑटो-सेलेक्ट करें
+  const studentLockedClass = localStorage.getItem('nischay_student_class') || '10';
+  if (window.NischaySyllabusHubData[studentLockedClass]) {
+    classSelect.value = studentLockedClass;
+  }
+
+  function populateSubjects() {
+    const selectedClass = classSelect.value;
+    const classData = window.NischaySyllabusHubData[selectedClass];
+
+    subjectSelect.innerHTML = '';
+    if (!classData || !classData.subjects) {
+      subjectSelect.innerHTML = '<option value="">कोई विषय उपलब्ध नहीं</option>';
+      renderChapters([]);
+      return;
+    }
+
+    Object.keys(classData.subjects).forEach(subKey => {
+      const opt = document.createElement('option');
+      opt.value = subKey;
+      opt.textContent = classData.subjects[subKey].title;
+      subjectSelect.appendChild(opt);
+    });
+
+    loadChapters();
+  }
+
+  function loadChapters() {
+    const selectedClass = classSelect.value;
+    const selectedSubject = subjectSelect.value;
+    const classData = window.NischaySyllabusHubData[selectedClass];
+
+    if (classData && classData.subjects && classData.subjects[selectedSubject]) {
+      renderChapters(classData.subjects[selectedSubject].chapters);
+    } else {
+      renderChapters([]);
+    }
+  }
+
+  function renderChapters(chapters) {
+    chaptersContainer.innerHTML = '';
+
+    if (!chapters || chapters.length === 0) {
+      chaptersContainer.innerHTML = `
+        <div style="text-align:center; padding:30px 16px; color:var(--text-secondary);">
+          <div style="font-size:2rem; margin-bottom:8px;">📋</div>
+          <p>इस विषय का सिलेबस शीघ्र अपलोड किया जा रहा है।</p>
+        </div>
+      `;
+      return;
+    }
+
+    chapters.forEach(ch => {
+      const card = document.createElement('div');
+      card.style.cssText = `
+        background: var(--surface-card, #0c1633);
+        border: 1px solid var(--border-strong, #1e366a);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      `;
+
+      const hasPdf = ch.pdf && ch.pdf.trim() !== '' && ch.pdf !== '#';
+      const actionButton = hasPdf
+        ? `<a href="${ch.pdf}" target="_blank" style="background:#0284c7; color:#fff; padding:6px 14px; border-radius:8px; font-size:0.8rem; font-weight:700; text-decoration:none; white-space:nowrap;">📖 सिलेबस देखें</a>`
+        : `<button onclick="alert('अध्याय ${ch.no} का आधिकारिक सिलेबस PDF जल्द लिंक किया जा रहा है!')" style="background:rgba(56,189,248,0.1); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:6px 14px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer; white-space:nowrap;">📖 सिलेबस देखें</button>`;
+
+      card.innerHTML = `
+        <div style="min-width:0;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span style="background:rgba(56,189,248,0.15); color:#38bdf8; font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:4px;">अध्याय ${ch.no}</span>
+          </div>
+          <div style="color:var(--text-pure, #ffffff); font-size:0.92rem; font-weight:700; line-height:1.3;">${ch.name}</div>
+        </div>
+        <div>${actionButton}</div>
+      `;
+
+      chaptersContainer.appendChild(card);
+    });
+  }
+
+  classSelect.addEventListener('change', populateSubjects);
+  subjectSelect.addEventListener('change', loadChapters);
+
+  populateSubjects();
+});
