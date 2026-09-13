@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Global Design System & Core Theme Architecture (v3.5)
-   Architecture & Styling: Prince Kumar
+   NischayDesk Global Design System & Core Theme Architecture (Fixed v3.6)
+   Fixed: Dark-Mode Text Contrast & Card Consistency
    ========================================================================== */
 
 :root {
@@ -32,7 +32,7 @@
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --border-subtle: rgba(56, 189, 248, 0.14);
+  --border-subtle: rgba(56, 189, 248, 0.16);
   --border-strong: #1e366a;
 
   /* Radii & Elevation */
@@ -44,7 +44,6 @@
   --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.6);
 
-  /* Micro-Interaction Timers */
   --transition-quick: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -74,12 +73,36 @@ body.app-body {
   transition: background-color var(--transition-smooth), color var(--transition-smooth);
 }
 
-/* 2. Universal Utility Elements */
+/* 2. Text Visibility Fixes in Dark Mode */
+.hero-headline {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff !important; /* कभी काला नहीं होगा */
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+@media (min-width: 600px) {
+  .hero-headline {
+    font-size: 2.2rem;
+  }
+}
+
+.hero-subline {
+  font-size: 0.88rem;
+  color: #94a3b8 !important; /* साफ़ पढ़ने लायक */
+  line-height: 1.6;
+  max-width: 520px;
+  margin-bottom: 18px;
+}
+
 .gradient-text {
   background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
+  font-weight: 800;
 }
 
 .status-pill {
@@ -92,7 +115,7 @@ body.app-body {
   border-radius: var(--radius-pill);
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--brand-accent);
+  color: var(--brand-accent) !important;
   margin-bottom: 14px;
   backdrop-filter: blur(8px);
 }
@@ -117,9 +140,9 @@ body.app-body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
+  padding: 12px 22px;
   border-radius: var(--radius-md);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
@@ -128,7 +151,7 @@ body.app-body {
 
 .btn-cta-primary {
   background: var(--brand-gradient);
-  color: var(--text-pure);
+  color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 6px 20px var(--brand-glow);
 }
@@ -141,7 +164,7 @@ body.app-body {
 
 .btn-cta-secondary {
   background: var(--surface-elevated);
-  color: var(--brand-accent);
+  color: var(--brand-accent) !important;
   border: 1px solid var(--border-strong);
 }
 
@@ -160,7 +183,7 @@ body.app-body {
   padding: 20px 16px 60px;
 }
 
-/* 5. Modern Redesigned Footer */
+/* 5. Modern Footer */
 .app-footer {
   background: #020510;
   border-top: 1px solid var(--border-strong);
@@ -274,7 +297,7 @@ body.app-body {
   color: var(--text-secondary);
 }
 
-/* 6. Theme Toggle Control */
+/* 6. Theme Toggle Switch */
 .drawer-theme-row {
   display: flex;
   align-items: center;
@@ -288,7 +311,7 @@ body.app-body {
 
 .theme-label {
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-pure);
 }
 
@@ -337,20 +360,25 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
-   7. HIGH-CONTRAST LIGHT MODE OVERRIDES
+   7. PURE LIGHT MODE ONLY OVERRIDES (डार्क मोड को कभी प्रभावित नहीं करेगा)
    ========================================================================== */
 
-html.light-mode body {
+html.light-mode body.app-body {
   background-color: #f8fafc !important;
   color: #0f172a !important;
+}
+
+html.light-mode .hero-headline {
+  color: #0f172a !important;
+}
+
+html.light-mode .hero-subline {
+  color: #475569 !important;
 }
 
 html.light-mode .stat-glass-card,
 html.light-mode .grid-card,
 html.light-mode .quick-tool-card,
-html.light-mode .side-drawer,
-html.light-mode .drawer-user-card,
-html.light-mode .pdf-modal-window,
 html.light-mode .note-item-card,
 html.light-mode .lobby-card,
 html.light-mode .question-stage-box,
@@ -366,8 +394,6 @@ html.light-mode h1,
 html.light-mode h2, 
 html.light-mode h3, 
 html.light-mode h4,
-html.light-mode .hero-headline,
-html.light-mode .stat-numeric,
 html.light-mode .card-title,
 html.light-mode .brand-title,
 html.light-mode .footer-heading,
@@ -379,7 +405,6 @@ html.light-mode .solutions-heading {
 }
 
 html.light-mode p,
-html.light-mode .hero-subline,
 html.light-mode .stat-label,
 html.light-mode .card-desc,
 html.light-mode .footer-summary,
@@ -396,18 +421,6 @@ html.light-mode .notes-search-field {
   background: #ffffff !important;
   color: #0f172a !important;
   border: 1px solid #cbd5e1 !important;
-}
-
-html.light-mode .filter-btn {
-  background: #ffffff !important;
-  color: #475569 !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light-mode .filter-btn.active {
-  background: var(--brand-primary) !important;
-  color: #ffffff !important;
-  border-color: var(--brand-primary) !important;
 }
 
 html.light-mode .app-footer {
