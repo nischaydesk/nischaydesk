@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v3.5)
-   Supports: Class 10th, 11th & 12th Chapter Assessments & Negative Marking
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.0 Dynamic JSON)
+   Supports: Dynamic Fetch from data/*.json, Strict Chapter Filter & Negative Marking
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -48,226 +48,107 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900; // in seconds
 
-  // Comprehensive Question Bank (Categorized strictly by Class, Subject & Chapter)
-  const masterQuestionBank = {
-    // -------------------------------------------------------------
-    // CLASS 10TH QUESTIONS
-    // -------------------------------------------------------------
-    "10": {
-      "physics": {
-        "ch1": [
-          {
-            q: "प्रकाश की किरणें हमेशा किस रेखा में गमन करती हैं?",
-            options: ["सीधी रेखा में", "टेढ़ी-मेढ़ी रेखा में", "वृत्ताकार रेखा में", "अनिश्चित मार्ग में"],
-            correct: 0,
-            exp: "प्रकाश एक सरल रेखीय (सीधी) रेखा में संचरित होता है जिसे प्रकाश का ऋजुरेखीय संचरण कहते हैं।"
-          },
-          {
-            q: "समतल दर्पण द्वारा बना प्रतिबिम्ब हमेशा कैसा होता है?",
-            options: ["वास्तविक", "काल्पनिक (आभासी) एवं सीधा", "उल्टा", "वास्तविक एवं आवर्धित"],
-            correct: 1,
-            exp: "समतल दर्पण सदैव आभासी (काल्पनिक), सीधा और वस्तु के बराबर आकार का प्रतिबिम्ब बनाता है।"
-          },
-          {
-            q: "गोलीय दर्पण की फोकस दूरी (f) और वक्रता त्रिज्या (R) में क्या सम्बंध है?",
-            options: ["f = 2R", "f = R / 2", "f = R + 2", "R = f / 2"],
-            correct: 1,
-            exp: "गोलीय दर्पण की फोकस दूरी उसकी वक्रता त्रिज्या की आधी होती है, अर्थात् f = R/2।"
-          },
-          {
-            q: "दाढ़ी बनाने (हजामत) के लिए किस दर्पण का उपयोग किया जाता है?",
-            options: ["उत्तल दर्पण", "समतल दर्पण", "अवतल दर्पण", "उत्तल लेंस"],
-            correct: 2,
-            exp: "अवतल दर्पण वस्तु को ध्रुव और फोकस के बीच रखने पर उसका सीधा और आवर्धित (बड़ा) प्रतिबिम्ब बनाता है।"
-          },
-          {
-            q: "मोटर गाड़ी के चालक के सामने (साइड मिरर) कौन-सा दर्पण लगा रहता है?",
-            options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "उत्तल लेंस"],
-            correct: 1,
-            exp: "उत्तल दर्पण का दृष्टि क्षेत्र (Field of view) बहुत विस्तृत होता है और यह सीधा प्रतिबिम्ब बनाता है।"
-          }
-        ],
-        "ch2": [
-          {
-            q: "मानव नेत्र के किस भाग पर किसी वस्तु का प्रतिबिम्ब बनता है?",
-            options: ["कॉर्निया", "परितारिका", "पुतली", "रेटिना या दृष्टिपटल"],
-            correct: 3,
-            exp: "मानव नेत्र में प्रवेश करने वाला प्रकाश रेटिना पर वास्तविक और उल्टा प्रतिबिम्ब बनाता है।"
-          },
-          {
-            q: "सामान्य दृष्टि के वयस्क के लिए सुस्पष्ट दर्शन की अल्पतम (न्यूनतम) दूरी कितनी होती है?",
-            options: ["25 मीटर", "2.5 सेंटीमीटर", "25 सेंटीमीटर", "2.5 मीटर"],
-            correct: 2,
-            exp: "स्पष्ट दृष्टि की न्यूनतम दूरी 25 cm होती है, जबकि दूर बिंदु अनंत होता है।"
-          }
-        ]
-      },
-      "chemistry": {
-        "ch1": [
-          {
-            q: "लोहे पर जंग लगना किस प्रकार की रासायनिक अभिक्रिया का उदाहरण है?",
-            options: ["अपचयन", "संक्षारण (ऑक्सीकरण)", "विस्थापन", "द्वि-विस्थापन"],
-            correct: 1,
-            exp: "लोहा नमी और ऑक्सीजन की उपस्थिति में फेरिक ऑक्साइड बनाता है जिसे संक्षारण कहते हैं।"
-          },
-          {
-            q: "श्वसन किस प्रकार की अभिक्रिया है?",
-            options: ["ऊष्माशोषी", "ऊष्माक्षेपी", "संयोजन", "अपघटन"],
-            correct: 1,
-            exp: "श्वसन में ग्लूकोज के विखंडन से ऊर्जा (ऊष्मा) मुक्त होती है, इसलिए यह ऊष्माक्षेपी अभिक्रिया है।"
-          }
-        ]
-      },
-      "math": {
-        "ch1": [
-          {
-            q: "संख्या π (पाई) किस प्रकार की संख्या है?",
-            options: ["परिमेय संख्या", "अपरिमेय संख्या", "पूर्णांक संख्या", "प्राकृत संख्या"],
-            correct: 1,
-            exp: "π एक अपरिमेय संख्या है क्योंकि इसका दशमलव प्रसार अशांत और अनावर्ती होता है।"
-          },
-          {
-            q: "यदि दो संख्याओं का गुणनफल 2166 है एवं उनका म०स० 19 है, तो ल०स० क्या होगा?",
-            options: ["38", "57", "114", "190"],
-            correct: 2,
-            exp: "दो संख्याओं का गुणनफल = ल०स० × म०स० ⇒ ल०स० = 2166 / 19 = 114।"
-          }
-        ]
+  // Helper: विषय के अनुसार सही JSON फाइल का नाम तय करना
+  function resolveJsonFileName(sClass, sSubject) {
+    let sub = sSubject.toLowerCase();
+    
+    // अगर विषय में पहले से क्लास प्रीफिक्स (उदा. 10-physics) है
+    if (sub.startsWith('10-') || sub.startsWith('11-') || sub.startsWith('12-')) {
+      if (sub === '10-science-phy') return '10-physics.json';
+      if (sub === '10-science-chem') return '10-chemistry.json';
+      if (sub === '10-science-bio') return '10-biology.json';
+      if (['10-history', '10-geography', '10-civics', '10-economics', '10-disaster'].includes(sub)) {
+        return '10-sst.json';
       }
-    },
-
-    // -------------------------------------------------------------
-    // CLASS 11TH QUESTIONS
-    // -------------------------------------------------------------
-    "11": {
-      "physics": {
-        "ch1": [
-          {
-            q: "SI पद्धति में मूल भौतिक राशियों (Fundamental Quantities) की संख्या कितनी है?",
-            options: ["5", "6", "7", "9"],
-            correct: 2,
-            exp: "SI मात्रक प्रणाली में 7 मूल राशियां हैं: लंबाई, द्रव्यमान, समय, विद्युत धारा, ताप, ज्योति तीव्रता और पदार्थ की मात्रा।"
-          },
-          {
-            q: "गुरुत्वाकर्षण स्थिरांक (G) की विमीय सूत्र (Dimensional Formula) क्या है?",
-            options: ["[M^-1 L^3 T^-2]", "[M^1 L^2 T^-2]", "[M^-1 L^2 T^-1]", "[M^0 L^3 T^-2]"],
-            correct: 0,
-            exp: "F = G(m1*m2)/r^2 ⇒ G = F*r^2 / m^2 = [M L T^-2][L^2] / [M^2] = [M^-1 L^3 T^-2]।"
-          }
-        ],
-        "ch2": [
-          {
-            q: "यदि किसी वस्तु का विस्थापन समय के वर्ग के समानुपाती है, तो वस्तु किस प्रकार गति कर रही है?",
-            options: ["एकसमान वेग से", "एकसमान त्वरण से", "परिवर्ती त्वरण से", "विरामावस्था में"],
-            correct: 1,
-            exp: "s ∝ t^2 ⇒ s = k*t^2 ⇒ v = ds/dt = 2kt ⇒ a = dv/dt = 2k (स्थिर अर्थात् एकसमान त्वरण)।"
-          },
-          {
-            q: "अधिकतम परास (Maximum Range) प्राप्त करने के लिए प्रक्षेप्य कोण (θ) कितना होना चाहिए?",
-            options: ["30°", "45°", "60°", "90°"],
-            correct: 1,
-            exp: "R = (u^2 * sin 2θ) / g; जब θ = 45° होगा, तब sin(90°) = 1 (अधिकतम)।"
-          }
-        ]
-      },
-      "chemistry": {
-        "ch1": [
-          {
-            q: "आवोग्रादो संख्या (Avogadro's Number, NA) का सही मान क्या है?",
-            options: ["6.022 × 10^23 mol^-1", "6.022 × 10^22 mol^-1", "1.602 × 10^-19 mol^-1", "3.00 × 10^8 mol^-1"],
-            correct: 0,
-            exp: "1 मोल में कणों की संख्या 6.02214 × 10^23 होती है।"
-          }
-        ]
-      },
-      "math": {
-        "ch1": [
-          {
-            q: "यदि किसी समुच्चय A में n अवयव हैं, तो A के उपसमुच्चयों (Subsets) की कुल संख्या कितनी होगी?",
-            options: ["n^2", "2n", "2^n", "2^(n-1)"],
-            correct: 2,
-            exp: "n अवयवों वाले किसी भी समुच्चय के उपसमुच्चयों की कुल संख्या 2^n होती है।"
-          }
-        ]
-      }
-    },
-
-    // -------------------------------------------------------------
-    // CLASS 12TH QUESTIONS
-    // -------------------------------------------------------------
-    "12": {
-      "physics": {
-        "ch1": [
-          {
-            q: "मुक्त आकाश की परावैद्युता (ε0) का मात्रक क्या होता है?",
-            options: ["N m^2 C^-2", "C^2 N^-1 m^-2", "N m C^-1", "C N m^-2"],
-            correct: 1,
-            exp: "F = (1 / 4πε0) * (q1*q2 / r^2) ⇒ ε0 = q1*q2 / (F*r^2) = C^2 N^-1 m^-2 (या F/m)।"
-          },
-          {
-            q: "विद्युत द्विध्रुव आघूर्ण (Electric Dipole Moment, p) की दिशा क्या होती है?",
-            options: ["धनावेश से ऋणावेश की ओर", "ऋणावेश से धनावेश की ओर", "केंद्र से लंबवत", "दिशाहीन"],
-            correct: 1,
-            exp: "विद्युत द्विध्रुव आघूर्ण एक सदिश राशि है जिसकी दिशा ऋण आवेश (-q) से धन आवेश (+q) की ओर होती है।"
-          }
-        ]
-      },
-      "chemistry": {
-        "ch1": [
-          {
-            q: "ताप बढ़ाने पर निम्नलिखित में से किसकी सांद्रता परिवर्तित नहीं होती है?",
-            options: ["मोलरता (Molarity)", "मोललता (Molality)", "सामान्यतया (Normality)", "फॉर्मलता"],
-            correct: 1,
-            exp: "मोललता विलायक के द्रव्यमान पर निर्भर करती है और द्रव्यमान ताप से स्वतंत्र होता है।"
-          }
-        ]
-      }
+      return `${sub}.json`;
     }
-  };
 
-  // 1. Gather Questions based on User Selection
-  function loadSelectedQuestions() {
+    // सामान्य ड्रॉपडाउन वैल्यूज
+    if (sClass === '10') {
+      if (sub.includes('phy') || sub.includes('भौतिकी')) return '10-physics.json';
+      if (sub.includes('chem') || sub.includes('रसायन')) return '10-chemistry.json';
+      if (sub.includes('bio') || sub.includes('जीव')) return '10-biology.json';
+      if (sub.includes('math') || sub.includes('गणित')) return '10-math.json';
+      if (sub.includes('sans') || sub.includes('संस्कृत')) return '10-sanskrit.json';
+      if (sub.includes('sst') || sub.includes('इतिहास') || sub.includes('भूगोल') || sub.includes('सामाजिक')) return '10-sst.json';
+    }
+
+    return `${sClass}-${sub}.json`;
+  }
+
+  // 1. Dynamic Question Loader with Chapter Filter
+  async function loadSelectedQuestions() {
     const sClass = testClassSelect ? testClassSelect.value : "10";
     const sSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
     const sChapter = testChapterSelect ? testChapterSelect.value : "all";
 
-    const classBank = masterQuestionBank[sClass] || {};
-    const subjectBank = classBank[sSubject] || {};
+    const jsonFile = resolveJsonFileName(sClass, sSubject);
 
-    currentQuestions = [];
-
-    if (sChapter === "all") {
-      // Gather all chapters under this subject
-      Object.keys(subjectBank).forEach(chKey => {
-        currentQuestions = currentQuestions.concat(subjectBank[chKey]);
-      });
-    } else {
-      // Load selected chapter only
-      if (subjectBank[sChapter]) {
-        currentQuestions = subjectBank[sChapter].slice();
+    try {
+      const response = await fetch(`data/${jsonFile}?t=${Date.now()}`);
+      if (!response.ok) {
+        throw new Error(`फ़ाइल लोड नहीं हो सकी: data/${jsonFile}`);
       }
+
+      const rawQuestions = await response.json();
+
+      // डेटा नॉर्मलाइज़ेशन (q vs question, correct vs correctIndex)
+      const normalizedList = rawQuestions.map(item => ({
+        id: item.id || '',
+        chapter: parseInt(item.chapter) || 1,
+        q: item.q || item.question || 'प्रश्न अनुपलब्ध',
+        options: item.options || [],
+        correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
+        exp: item.exp || item.explanation || 'इस प्रश्न की व्याख्या शीघ्र जोड़ी जाएगी।'
+      }));
+
+      // स्ट्रिक्ट चैप्टर फ़िल्टरिंग
+      if (sChapter === 'all' || sChapter.includes('संपूर्ण') || sChapter.includes('फुल')) {
+        currentQuestions = normalizedList;
+      } else {
+        // अध्याय संख्या निकालना (जैसे 'ch1', '1', या 'अध्याय 1')
+        const chMatch = String(sChapter).match(/\d+/);
+        const targetChapter = chMatch ? parseInt(chMatch[0]) : null;
+
+        if (targetChapter) {
+          currentQuestions = normalizedList.filter(item => item.chapter === targetChapter);
+        } else {
+          currentQuestions = normalizedList;
+        }
+      }
+
+    } catch (err) {
+      console.warn("JSON fetch error, fallback active:", err);
+      currentQuestions = [];
     }
 
-    // Fallback if no questions are added for a new chapter yet
+    // अगर उस चैप्टर में अभी कोई सवाल न हो
     if (currentQuestions.length === 0) {
       currentQuestions = [
         {
-          q: `कक्षा ${sClass}वीं (${sSubject}) के इस चयनित अध्याय के अभ्यास प्रश्न तैयार किए जा रहे हैं। अभ्यास हेतु डेमो प्रश्न: कार्य का मात्रक क्या है?`,
-          options: ["जूल (Joule)", "वाट (Watt)", "न्यूटन (Newton)", "पास्कल (Pascal)"],
-          correct: 0,
-          exp: "कार्य और ऊर्जा का SI मात्रक जूल (Joule) होता है।"
+          q: `चयनित अध्याय के प्रश्न बैंक को अपडेट किया जा रहा है। टेस्ट इंजन जाँचने हेतु डेमो प्रश्न: प्रकाश का निर्वात में वेग कितना होता है?`,
+          options: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10⁵ km/s", "A और C दोनों"],
+          correct: 3,
+          exp: "प्रकाश का वेग निर्वात में 3 × 10⁸ मीटर/सेकंड अथवा 3 × 10⁵ किमी/सेकंड होता है।"
         }
       ];
+    } else {
+      // प्रश्नों को शफल (Shuffle) करना
+      currentQuestions.sort(() => Math.random() - 0.5);
     }
-
-    // Shuffle questions slightly for dynamic experience
-    currentQuestions.sort(() => Math.random() - 0.5);
   }
 
   // 2. Start Exam Trigger
   if (startExamBtn) {
-    startExamBtn.addEventListener('click', function () {
-      loadSelectedQuestions();
+    startExamBtn.addEventListener('click', async function () {
+      startExamBtn.disabled = true;
+      startExamBtn.innerText = "प्रश्न लोड हो रहे हैं...";
+
+      await loadSelectedQuestions();
+
+      startExamBtn.disabled = false;
+      startExamBtn.innerText = "⚡ टेस्ट शुरू करें";
+
       userResponses = {};
       currentQIndex = 0;
 
