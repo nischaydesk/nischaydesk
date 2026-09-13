@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Strict Class-Based Notes Viewer & In-App PDF Studio (v3.5)
-   Supports: 10th Matric, 11th Science & 12th Science
+   NischayDesk Strict Class-Based Notes Viewer & In-App PDF Studio (v3.9)
+   Supports: 10th (with Complete SST breakdown), 11th Science & 12th Science
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -22,10 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentFilterSubject = 'all';
   let searchQuery = '';
 
-  // Get current student class lock (default to 11 if not set)
-  let studentClass = localStorage.getItem('nischay_student_class') || '11';
+  let studentClass = localStorage.getItem('nischay_student_class') || '10';
 
-  // 1. Extract Chapters strictly based on current Student Class
   function extractAllChapters() {
     allChaptersMaster = [];
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
@@ -33,22 +31,15 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Update class dynamically if profile updated
-    studentClass = localStorage.getItem('nischay_student_class') || '11';
+    studentClass = localStorage.getItem('nischay_student_class') || '10';
 
     window.NischaySyllabus.subjects.forEach(function (subject) {
       // 10th वाले छात्र को केवल 10- से शुरू होने वाले विषय दिखेंगे
-      if (studentClass === '10' && !subject.id.startsWith('10-')) {
-        return;
-      }
-      // 11th वाले छात्र को केवल 11- से शुरू होने वाले विषय दिखेंगे
-      if (studentClass === '11' && !subject.id.startsWith('11-')) {
-        return;
-      }
-      // 12th वाले छात्र को केवल 12- से शुरू होने वाले विषय दिखेंगे
-      if (studentClass === '12' && !subject.id.startsWith('12-')) {
-        return;
-      }
+      if (studentClass === '10' && !subject.id.startsWith('10-')) return;
+      // 11th वाले को केवल 11- वाले
+      if (studentClass === '11' && !subject.id.startsWith('11-')) return;
+      // 12th वाले को केवल 12- वाले
+      if (studentClass === '12' && !subject.id.startsWith('12-')) return;
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
         subject.chapters.forEach(function (ch) {
@@ -71,11 +62,10 @@ document.addEventListener('DOMContentLoaded', function () {
     renderNotesGrid();
   }
 
-  // 2. Render only relevant subject pill filters for the active class
+  // फ़िल्टर बटन केवल चालू क्लास के हिसाब से दिखाएँ
   function renderPillFilters() {
     if (!filterPillContainer) return;
 
-    // Filter available buttons by matching class prefix
     const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
       const filterVal = btn.getAttribute('data-filter');
@@ -89,15 +79,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. Render Notes Cards Grid
+  // नोट्स कार्ड्स ग्रिड
   function renderNotesGrid() {
     if (!notesCatalogGrid) return;
 
     let filtered = allChaptersMaster.filter(function (item) {
-      // Subject match
-      const matchSubject = (currentFilterSubject === 'all') || (item.subjectId === currentFilterSubject);
+      let matchSubject = false;
+      if (currentFilterSubject === 'all') {
+        matchSubject = true;
+      } else if (currentFilterSubject === '10-sst-all') {
+        // अगर छात्र "पूरा सामाजिक विज्ञान" चुने
+        matchSubject = item.subjectId.startsWith('10-') && 
+          ['10-history', '10-geography', '10-civics', '10-economics', '10-disaster'].includes(item.subjectId);
+      } else {
+        matchSubject = (item.subjectId === currentFilterSubject);
+      }
 
-      // Search match
       const q = searchQuery.toLowerCase().trim();
       const matchSearch = !q || 
         item.name.toLowerCase().includes(q) || 
@@ -109,11 +106,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (filtered.length === 0) {
       notesCatalogGrid.innerHTML = `
-        <div class="loading-state-box" style="grid-column: 1 / -1;">
+        <div class="loading-state-box" style="grid-column: 1 / -1; padding: 40px 16px; text-align: center;">
           <div style="font-size: 2.2rem; margin-bottom: 8px;">📚</div>
           <h3 style="color: var(--text-pure); font-size: 1.1rem; margin-bottom: 4px;">कोई नोट्स नहीं मिले</h3>
           <p style="font-size: 0.84rem; color: var(--text-secondary);">
-            कक्षा ${studentClass}वीं के लिए इस विषय का कंटेंट जल्द अपलोड किया जा रहा है।
+            कक्षा ${studentClass}वीं के इस फ़िल्टर के लिए कंटेंट संकलित किया जा रहा है।
           </p>
         </div>
       `;
@@ -125,21 +122,21 @@ document.addEventListener('DOMContentLoaded', function () {
       const hasPdf = note.pdfUrl && note.pdfUrl.trim() !== '' && note.pdfUrl !== '#';
       const readAction = hasPdf 
         ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
-        : `onclick="alert('इस अध्याय के हस्तलिखित नोट्स जल्द जोड़े जा रहे हैं!')"`;
+        : `onclick="alert('अध्याय ${note.no} के हस्तलिखित नोट्स पीडीएफ शीघ्र जोड़ी जा रही है!')"`;
 
       const downloadAction = hasPdf
         ? `href="${note.pdfUrl}" target="_blank" download`
-        : `href="javascript:void(0)" onclick="alert('PDF लिंक जल्द सक्रिय होगा!')"`;
+        : `href="javascript:void(0)" onclick="alert('PDF डाउनलोड लिंक जल्द सक्रिय होगा!')"`;
 
       htmlBuffer += `
         <div class="note-item-card">
           <div>
             <div class="note-badge-row">
-              <span class="note-badge-class">${note.classTitle} • ${note.subjectTitle}</span>
-              <span class="note-badge-pages">अध्याय ${note.no}</span>
+              <span class="note-badge-class">${note.subjectTitle}</span>
+              <span class="note-badge-pages">अध्याय ${note.no} • ${note.pages}</span>
             </div>
-            <h3>${note.name}</h3>
-            <p>${note.desc}</p>
+            <h3 style="font-size: 1rem; margin: 6px 0; color: var(--text-pure); line-height: 1.35;">${note.name}</h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px;">${note.desc}</p>
           </div>
 
           <div class="note-btn-group">
@@ -157,17 +154,18 @@ document.addEventListener('DOMContentLoaded', function () {
     notesCatalogGrid.innerHTML = htmlBuffer;
   }
 
-  // 4. Modal Studio Open / Close Engine
+  // इन-ऐप पीडीएफ मोडल
   window.openNoteModal = function (classTitle, title, pdfUrl) {
     if (!pdfStudioModal || !studioPdfFrame) return;
 
     if (modalDocBadge) modalDocBadge.innerText = classTitle;
     if (modalDocTitle) modalDocTitle.innerText = title;
     
-    // Drive preview embed fix
     let secureUrl = pdfUrl;
     if (secureUrl.includes('drive.google.com/file/d/')) {
-      secureUrl = secureUrl.replace('/view?usp=sharing', '/preview').replace('/view', '/preview');
+      secureUrl = secureUrl.replace('/view?usp=sharing', '/preview')
+                           .replace('/view?usp=drivesdk', '/preview')
+                           .replace('/view', '/preview');
     }
 
     studioPdfFrame.src = secureUrl;
@@ -184,17 +182,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = '';
   }
 
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', closeNoteModal);
-  }
-
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeNoteModal);
   if (pdfStudioModal) {
     pdfStudioModal.addEventListener('click', function (e) {
       if (e.target === pdfStudioModal) closeNoteModal();
     });
   }
 
-  // Fullscreen Modal Toggle
   if (modalFullscreenBtn) {
     modalFullscreenBtn.addEventListener('click', function () {
       const stage = document.getElementById('pdfFrameStage');
@@ -206,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 5. Subject Filter Listeners
+  // फ़िल्टर बटन क्लिक
   if (filterPillContainer) {
     filterPillContainer.addEventListener('click', function (e) {
       const btn = e.target.closest('.filter-btn');
@@ -220,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 6. Real-Time Search Input
+  // लाइव सर्च
   if (notesSearchInput) {
     notesSearchInput.addEventListener('input', function () {
       searchQuery = this.value;
@@ -233,6 +227,5 @@ document.addEventListener('DOMContentLoaded', function () {
     return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
   }
 
-  // Initialize
   extractAllChapters();
 });
