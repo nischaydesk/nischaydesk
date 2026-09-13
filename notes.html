@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>स्टडी नोट्स लाइब्रेरी | NischayDesk - Smart EdTech Platform</title>
 
-  <!-- Typography: Plus Jakarta Sans & Noto Sans Devanagari -->
+  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP ENTERPRISE NAVBAR -->
+  <!-- 1. TOP NAVBAR -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -43,14 +43,14 @@
 
       <div class="nav-links-desktop">
         <a href="index.html" class="nav-item">डैशबोर्ड</a>
-        <a href="notes.html" class="nav-item active">स्टडी नोट्स हब</a>
-        <a href="test.html" class="nav-item">मॉक टेस्ट सीरीज</a>
-        <a href="ai-desk.html" class="nav-item">AI स्टूडियो 🤖</a>
-        <a href="index.html#quickTools" class="nav-item">स्मार्ट टूल्स</a>
+        <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
+        <a href="notes.html" class="nav-item active">📚 स्टडी नोट्स हब</a>
+        <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट सीरीज</a>
+        <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
+        <a href="index.html#quickTools" class="nav-item">🛠️ स्मार्ट टूल्स</a>
       </div>
 
       <div class="nav-actions">
-        <!-- Google Sign-In Button -->
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
@@ -58,15 +58,14 @@
             <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
             <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
           </svg>
-          <span id="authBtnLabel">Sign in with Google</span>
+          <span id="authBtnLabel">Google लॉगिन</span>
         </button>
 
-        <!-- Logged-in User Widget -->
         <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
             <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge">Verified Member</span>
+            <span class="user-session-badge" onclick="window.openClassSwitchModal && window.openClassSwitchModal()" style="cursor:pointer;" title="कक्षा बदलें">Verified Member ▾</span>
           </div>
           <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
         </div>
@@ -74,7 +73,7 @@
     </nav>
   </header>
 
-  <!-- 2. MOBILE SLIDE-OUT DRAWER -->
+  <!-- 2. MOBILE DRAWER -->
   <div class="drawer-scrim" id="drawerScrim"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -86,21 +85,24 @@
     </div>
 
     <div class="drawer-user-card" id="drawerUserCard">
-      <p class="drawer-user-prompt">नोट्स और पसंदीदा चैप्टर्स को सेव करने हेतु लॉगिन करें।</p>
+      <p class="drawer-user-prompt">नोट्स सेव करने के लिए लॉगिन करें।</p>
     </div>
 
     <nav class="drawer-nav-list">
       <a href="index.html" class="drawer-nav-item">
         <span class="icon">📊</span> मुख्य डैशबोर्ड
       </a>
+      <a href="syllabus.html" class="drawer-nav-item">
+        <span class="icon">📋</span> बोर्ड सिलेबस हब
+      </a>
       <a href="notes.html" class="drawer-nav-item active">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th & 11th)
+        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th, 11th, 12th)
       </a>
       <a href="test.html" class="drawer-nav-item">
-        <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
+        <span class="icon">📝</span> चैप्टर टेस्ट सीरीज
       </a>
       <a href="ai-desk.html" class="drawer-nav-item">
-        <span class="icon">🤖</span> AI डाउट सॉल्वर स्टूडियो
+        <span class="icon">🤖</span> AI डाउट स्टूडियो
       </a>
       <a href="index.html#quickTools" class="drawer-nav-item">
         <span class="icon">🛠️</span> स्मार्ट टूल्स
@@ -116,7 +118,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk v2.1 Production</span>
+      <span class="platform-meta">NischayDesk v3.0 Production</span>
       <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
     </div>
   </aside>
@@ -127,29 +129,30 @@
     <!-- HERO SEARCH & FILTER BANNER -->
     <section class="notes-header-banner">
       <div class="status-pill">
-        <span class="pulsing-dot"></span> बिहार बोर्ड & NCERT सिलेबस रिपॉजिटरी
+        <span class="pulsing-dot"></span> 10th मैट्रिक, 11th & 12th साइंस हस्तलिखित नोट्स
       </div>
       <h1 class="notes-headline">
         स्मार्ट <span class="gradient-text">स्टडी नोट्स</span> हब
       </h1>
       <p class="notes-subheadline">
-        कक्षा 10वीं (मैट्रिक) के सभी 5 अनिवार्य विषय एवं 11वीं साइंस के हस्तलिखित नोट्स व फॉर्मूला शीट्स।
+        चैप्टर-वाइज थ्योरी, न्यूमेरिकल, फॉर्मूला शीट और इन-ऐप हाई-डेफिनिशन PDF रीडर।
       </p>
 
-      <!-- Quick Search Bar (Uses native dashboard.css classes) -->
+      <!-- Search Field -->
       <div class="search-bar-wrap">
         <span class="search-icon">🔍</span>
         <input 
           type="text" 
           id="notesSearchInput" 
           class="notes-search-field" 
-          placeholder="अध्याय या टॉपिक खोजें (उदा: प्रकाश, त्रिकोणमिति, यूरोप में राष्ट्रवाद...)" 
+          placeholder="अध्याय या टॉपिक खोजें (उदा: प्रकाश, त्रिकोणमिति, गति के नियम, विलयन...)" 
         />
       </div>
 
-      <!-- Class & Subject Filter Pills (Native dashboard.css classes) -->
+      <!-- Filter Pills (10th, 11th, 12th) -->
       <div class="filter-pill-container" id="filterPillContainer">
         <button class="filter-btn active" data-filter="all">🌟 सभी नोट्स</button>
+        
         <!-- 10th Metric Hub -->
         <button class="filter-btn" data-filter="10-math">📐 10th गणित</button>
         <button class="filter-btn" data-filter="10-science-phy">🧪 10th भौतिकी</button>
@@ -157,11 +160,18 @@
         <button class="filter-btn" data-filter="10-science-bio">🧬 10th जीव विज्ञान</button>
         <button class="filter-btn" data-filter="10-sst">🌍 10th सामाजिक विज्ञान (SST)</button>
         <button class="filter-btn" data-filter="10-sanskrit">📜 10th संस्कृत</button>
+
         <!-- 11th Science Hub -->
         <button class="filter-btn" data-filter="11-physics">⚡ 11th भौतिकी</button>
         <button class="filter-btn" data-filter="11-chemistry">🧪 11th रसायन</button>
         <button class="filter-btn" data-filter="11-math">📊 11th गणित</button>
         <button class="filter-btn" data-filter="11-biology">🧬 11th जीव विज्ञान</button>
+
+        <!-- 12th Science Hub -->
+        <button class="filter-btn" data-filter="12-physics">⚡ 12th भौतिकी</button>
+        <button class="filter-btn" data-filter="12-chemistry">🧪 12th रसायन</button>
+        <button class="filter-btn" data-filter="12-math">📊 12th गणित</button>
+        <button class="filter-btn" data-filter="12-biology">🧬 12th जीव विज्ञान</button>
       </div>
     </section>
 
@@ -180,10 +190,9 @@
   <!-- 4. IN-BUILT STUDIO MODAL PDF VIEWER -->
   <div class="pdf-modal-backdrop" id="pdfStudioModal">
     <div class="pdf-modal-window">
-      <!-- Studio Header Controls -->
       <div class="pdf-studio-header">
         <div class="pdf-doc-meta">
-          <span class="pdf-doc-badge" id="modalDocBadge">Class 10 / 11</span>
+          <span class="pdf-doc-badge" id="modalDocBadge">Class 10 / 11 / 12</span>
           <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
         </div>
         <div class="pdf-studio-actions">
@@ -197,12 +206,10 @@
         </div>
       </div>
 
-      <!-- Embedded Iframe Stage -->
       <div class="pdf-frame-stage" id="pdfFrameStage">
         <iframe src="" id="studioPdfFrame" frameborder="0" allowfullscreen></iframe>
       </div>
 
-      <!-- Studio Footer Bar -->
       <div class="pdf-studio-footer">
         <span>NischayDesk In-App HD Reader</span>
         <span class="reading-hint">ज़ूम करने के लिए पिंच करें या +/- दबाएं</span>
@@ -210,7 +217,7 @@
     </div>
   </div>
 
-  <!-- 5. PROFESSIONAL BRAND FOOTER -->
+  <!-- 5. FOOTER -->
   <footer class="app-footer">
     <div class="footer-container">
       <div class="footer-col brand-col">
@@ -229,6 +236,7 @@
         <h4 class="footer-heading">त्वरित नेविगेशन</h4>
         <ul class="footer-nav">
           <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="syllabus.html">➔ आधिकारिक सिलेबस</a></li>
           <li><a href="test.html">➔ लाइव टेस्ट पोर्टल</a></li>
           <li><a href="ai-desk.html">➔ AI डाउट स्टूडियो</a></li>
         </ul>
@@ -240,7 +248,7 @@
     </div>
   </footer>
 
-  <!-- Flat Script Dependencies -->
+  <!-- Scripts -->
   <script src="config.js"></script>
   <script src="auth.js"></script>
   <script src="syllabus-data.js"></script>
