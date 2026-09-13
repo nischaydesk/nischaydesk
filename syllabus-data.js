@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk 100% Complete Official Academic Directory
+   NischayDesk 100% Complete Official Academic Directory & Question Bank
    Classes: 10th Matric, 11th Science & 12th Science (PCM + Biology)
    Curated & Verified by Prince Kumar
    ========================================================================== */
@@ -122,7 +122,7 @@ window.NischaySyllabus = {
     {
       id: "12-chemistry",
       classTitle: "Class 12th",
-      subjectTitle: " रसायन विज्ञान (Chemistry)",
+      subjectTitle: "रसायन विज्ञान (Chemistry)",
       chapters: [
         { no: 1, name: "विलयन (Solutions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "हेनरी नियम, राउल्ट नियम, परासरण दाब, क्वथनांक उन्नयन व वांट हॉफ गुणक।" },
         { no: 2, name: "विद्युतरसायन (Electrochemistry)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "गैल्वेनिक सेल, नेर्नस्ट समीकरण, चालकता, कोलराउश नियम एवं फैराडे नियम।" },
@@ -139,7 +139,7 @@ window.NischaySyllabus = {
     {
       id: "12-biology",
       classTitle: "Class 12th",
-      subjectTitle: " जीव विज्ञान (Biology)",
+      subjectTitle: "जीव विज्ञान (Biology)",
       chapters: [
         { no: 1, name: "पुष्पी पादपों में लैंगिक जनन (Sexual Reproduction in Flowering Plants)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "लघुबीजाणुजनन, गुरुबीजाणुजनन, परागण, दोहरा निषेचन एवं असंगजनन।" },
         { no: 2, name: "मानव जनन (Human Reproduction)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "नर व मादा जनन तंत्र, युग्मकजनन, आर्तव चक्र, निषेचन एवं भ्रूणीय परिवर्धन।" },
@@ -159,7 +159,7 @@ window.NischaySyllabus = {
     {
       id: "12-math",
       classTitle: "Class 12th",
-      subjectTitle: " गणित (Mathematics)",
+      subjectTitle: "गणित (Mathematics)",
       chapters: [
         { no: 1, name: "संबंध एवं फलन (Relations & Functions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "स्वतुल्य, सममित व संक्रामक संबंध, तुल्यता संबंध एवं द्विआधारी संक्रियाएं।" },
         { no: 2, name: "प्रतिलोम त्रिकोणमितीय फलन (Inverse Trigonometric Functions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "मुख्य मान शाखाएं, प्रांत, परिसर एवं प्रतिलोम सर्वसमिकाएं।" },
@@ -183,12 +183,13 @@ window.NischaySyllabus = {
     {
       id: "10-science-phy",
       classTitle: "Class 10th",
-      subjectTitle: " भौतिकी (Physics)",
+      subjectTitle: "भौतिकी (Physics)",
       chapters: [
         { no: 1, name: "प्रकाश: परावर्तन तथा अपवर्तन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1pganUmGnTVBadUgM6et-b-W1DnAQ5KRR/view?usp=drivesdk/preview", pages: "62 page PDF", desc: "दर्पण सूत्र, लेंस सूत्र, आवर्धन, स्नेल का नियम और किरण आरेख।" },
         { no: 2, name: "मानव नेत्र तथा रंगबिरंगा संसार", status:"ready", pdfUrl: "https://drive.google.com/file/d/1YwX3Q0F8mYKgP1itzXnI-uwoAfk7nF-E/view?usp=drivesdk/preview", pages: "19 page PDF", desc: "निकट व दीर्घ दृष्टि दोष, प्रिज्म से अपवर्तन, प्रकीर्णन एवं इंद्रधनुष।" },
         { no: 3, name: "विद्युत (Electricity)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1JgwguZKIwszDWva9O7uUbuj_noPChTFk/view?usp=drivesdk/preview", pages:"25 page PDF", desc: "विभवांतर, ओम का नियम, प्रतिरोधों का श्रेणी व समांतर संयोजन एवं विद्युत शक्ति।" },
-        { no: 4, name: "विद्युत धारा के चुंबकीय प्रभाव", status: "ready", pdfUrl: "https://drive.google.com/file/d/1OsCB5gz-GAUlpfrFp4LGksYVNPEIne3C/view?usp=drivesdk/preview", pages: "14 page PDF ", desc: "चुंबकीय क्षेत्र रेखाएं, फ्लेमिंग के नियम, विद्युत मोटर एवं परिनालिका।" }
+        { no: 4, name: "विद्युत धारा के चुंबकीय प्रभाव", status: "ready", pdfUrl: "https://drive.google.com/file/d/1OsCB5gz-GAUlpfrFp4LGksYVNPEIne3C/view?usp=drivesdk/preview", pages: "14 page PDF ", desc: "चुंबकीय क्षेत्र रेखाएं, फ्लेमिंग के नियम, विद्युत मोटर एवं परिनालिका।" },
+        { no: 5, name: "ऊर्जा के स्रोत", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "पारंपरिक व गैर-पारंपरिक ऊर्जा स्रोत, सौर ऊर्जा एवं नाभिकीय ऊर्जा।" }
       ]
     },
     {
@@ -199,29 +200,31 @@ window.NischaySyllabus = {
         { no: 1, name: "रासायनिक अभिक्रियाएँ एवं समीकरण", status: "ready", pdfUrl: "https://drive.google.com/file/d/10PaIJPjKjhNDvyWjQyToPEZu1sLbMHXx/view?usp=drivesdk/preview", pages: "10 पेज PDF", desc: "संयोजन, वियोजन, विस्थापन, रेडॉक्स अभिक्रियाएं और समीकरण संतुलन।" },
         { no: 2, name: "अम्ल, क्षारक एवं लवण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1OBSONia9MRBvp0avrrtvQAVhyfyE9Tc9/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूचक, pH पैमाना, विरंजक चूर्ण, बेकिंग सोडा, धावन सोडा एवं प्लास्टर ऑफ पेरिस।" },
         { no: 3, name: "धातु एवं अधातु", status: "ready", pdfUrl: "https://drive.google.com/file/d/1WZEghQNsIZpGVuX97iotx5SCuVnoFOWK/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "भौतिक व रासायनिक गुण, सक्रियता श्रेणी, आयनिक यौगिक एवं धातुकर्म।" },
-        { no: 4, name: "कार्बन एवं उसके यौगिक", status: "ready", pdfUrl: "https://drive.google.com/file/d/1srQSitWJmHK2sbEldnn9NWyLzDchFcQv/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सहसंयोजी आबंध, हाइड्रोकार्बन, प्रकार्यात्मक समूह, एथेनॉल एवं साबुनीकरण।" }
+        { no: 4, name: "कार्बन एवं उसके यौगिक", status: "ready", pdfUrl: "https://drive.google.com/file/d/1srQSitWJmHK2sbEldnn9NWyLzDchFcQv/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सहसंयोजी आबंध, हाइड्रोकार्बन, प्रकार्यात्मक समूह, एथेनॉल एवं साबुनीकरण।" },
+        { no: 5, name: "तत्वों का आवर्त वर्गीकरण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "डोबेराइनर, न्यूलैंड्स अष्टक नियम, मेंडलीव एवं आधुनिक आवर्त सारणी।" }
       ]
     },
     {
       id: "10-science-bio",
       classTitle: "Class 10th",
-      subjectTitle: " जीव विज्ञान (Biology)",
+      subjectTitle: "जीव विज्ञान (Biology)",
       chapters: [
         { no: 1, name: "जैव प्रक्रम (Life Processes)", status:"ready", pdfUrl: "https://drive.google.com/file/d/129B8o5NQHi9Xzw_N0eTF09HvF18KUWvS/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "स्वपोषी/विषमपोषी पोषण, मानव पाचन तंत्र, श्वसन, वहन एवं उत्सर्जन तंत्र।" },
         { no: 2, name: "नियंत्रण एवं समन्वय (Control & Coordination)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1CbVTjqDP2qMtiktL6FgvSPIjhxKbcOxZ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "न्यूरॉन, प्रतिवर्ती चाप, मानव मस्तिष्क, पादप हार्मोन एवं अंतःस्रावी ग्रंथियां।" },
         { no: 3, name: "जीव जनन कैसे करते हैं? (How do Organisms Reproduce?)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1pnDVp8ZzZQLvkGJOgk_Aslpx0Nmi81z3/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "अलैंगिक जनन की विधियां, पुष्पी पादपों में जनन एवं मानव जनन तंत्र।" },
         { no: 4, name: "आनुवंशिकता (Heredity)", status: "ready", pdfUrl: "https://drive.google.com/file/d/15GmUrNcLGk1GZFHXCPgIQ8t5aIB0kJtq/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "मेंडल के नियम, एकल व द्वि-संकरण क्रॉस एवं मानव में लिंग निर्धारण।" },
-        { no: 5, name: "हमारा पर्यावरण (Our Environment)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "पारितंत्र के घटक, आहार श्रृंखला, पोषी स्तर, जैव आवर्धन एवं ओजोन परत।" }
+        { no: 5, name: "हमारा पर्यावरण (Our Environment)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "पारितंत्र के घटक, आहार श्रृंखला, पोषी स्तर, जैव आवर्धन एवं ओजोन परत।" },
+        { no: 6, name: "प्राकृतिक संसाधनों का संपोषित प्रबंधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "वन, वन्यजीव, जल संचयन, कोयला और पेट्रोलियम का संरक्षण।" }
       ]
     },
     {
       id: "10-math",
       classTitle: "Class 10th",
-      subjectTitle: " गणित (Mathematics)",
+      subjectTitle: "गणित (Mathematics)",
       chapters: [
         { no: 1, name: "वास्तविक संख्याएं (Real Numbers)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Uno3gNHr5I--BnYkPKLE9J5kONpdVAd3/preview", pages: "हैंडनोट्स", desc: "अंकगणित की आधारभूत प्रमेय, अभाज्य गुणनखंड विधि एवं अपरिमेय संख्या सिद्ध करना।" },
         { no: 2, name: "बहुपद (Polynomials)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1_asa9-YszkjBrldCU66_jidBU3Tb0W8W/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "शून्यकों का ज्यामितीय अर्थ एवं द्विघात बहुपद के शून्यक और गुणांकों में संबंध।" },
-        { no: 3, name: "दो चर वाले रैखिक समीकरण युग्म (Linear Equations in Two Variables)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Ar1u29vAepNQB6cOVu5kiUNTZEKkKBwA/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "ग्राफीय विधि, प्रतिस्थापन विधि एवं विलोपन विधि।" },
+        { no: 3, name: "दो चर वाले रैखिक समीकरण युग्म (Linear Equations)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Ar1u29vAepNQB6cOVu5kiUNTZEKkKBwA/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "ग्राफीय विधि, प्रतिस्थापन विधि एवं विलोपन विधि।" },
         { no: 4, name: "द्विघात समीकरण (Quadratic Equations)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1KbFUEHgbx4TGD6_Xdk42lsWiAyATmQzZ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "गुणनखंड विधि, द्विघाती सूत्र (श्रीधराचार्य सूत्र) एवं मूलों की प्रकृति।" },
         { no: 5, name: "समांतर श्रेढियाँ (Arithmetic Progressions)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1wxz59lnNJV4Nab4ich_W57UFz4ROrXJI/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "n-वाँ पद ज्ञात करना और प्रथम n पदों का योगफल सूत्र।" },
         { no: 6, name: "त्रिभुज (Triangles)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1klkRCKN3LpDpaIo2_CQCezE7YTUrZyVE/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "थेल्स प्रमेय (आधारभूत आनुपातिकता प्रमेय) एवं समरूपता की कसौटियां।" },
@@ -229,44 +232,97 @@ window.NischaySyllabus = {
         { no: 8, name: "त्रिकोणमिति का परिचय (Introduction to Trigonometry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1LCcAfYsphh6YR2lXsA6CTGO5ybf3zIX-/view?usp=drivesdk/preview", pages: "12 पेज PDF", desc: "त्रिकोणमितीय अनुपात, विशिष्ट कोणों के मान एवं त्रिकोणमितीय सर्वसमिकाएं।" },
         { no: 9, name: "त्रिकोणमिति के कुछ अनुप्रयोग (Applications of Trigonometry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1tIMTYnXWFZO5I8pTWPav23vA-j2cAzbD/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "उन्नयन कोण, अवनमन कोण एवं ऊंचाई और दूरी पर आधारित महत्वपूर्ण प्रश्न।" },
         { no: 10, name: "वृत्त (Circles)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1_HP9hrz0SukFW3TovTTn-E4xNQix4gjC/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "स्पर्श रेखा के गुणधर्म एवं बाह्य बिंदु से खींची गई स्पर्श रेखाओं की लंबाई प्रमेय।" },
-        { no: 11, name: "वृत्तों से संबंधित क्षेत्रफल (Areas Related to Circles)", status: "ready", pdfUrl: "https://drive.google.com/file/d/15D1vlgmDeGVxq9mKJnUdd66KG9FPVZaD/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "त्रिज्यखंड का क्षेत्रफल, वृत्तखंड का क्षेत्रफल एवं चाप की लंबाई।" },
-        { no: 12, name: "पृष्ठीय क्षेत्रफल और आयतन (Surface Areas & Volumes)", status: "ready", pdfUrl: "https://drive.google.com/file/d/18XhNfKbSJy4NaHLqPLQyMxQVbMTVRklj/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "ठोसों के संयोजन (बेलन, शंकु, गोला, अर्धगोला) का पृष्ठीय क्षेत्रफल और आयतन।" },
-        { no: 13, name: "सांख्यिकी (Statistics)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1NUvmBH8aIIQtvfBi8tnnLTgGsMJK18t_/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "वर्गीकृत आंकड़ों का माध्य (प्रत्यक्ष व कल्पित माध्य विधि), बहुलक एवं माध्यक।" },
-        { no: 14, name: "प्रायिकता (Probability)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1JLVmAlMogIIIMXyrce_5HdIkbj9nkkMe/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सैद्धांतिक प्रायिकता, सिक्के, पासे और ताश की गड्डी पर आधारित प्रश्न।" }
+        { no: 11, name: "रचनाएँ (Constructions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रेखाखंड का विभाजन एवं वृत्त पर स्पर्श रेखाओं की रचना।" },
+        { no: 12, name: "वृत्तों से संबंधित क्षेत्रफल (Areas Related to Circles)", status: "ready", pdfUrl: "https://drive.google.com/file/d/15D1vlgmDeGVxq9mKJnUdd66KG9FPVZaD/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "त्रिज्यखंड का क्षेत्रफल, वृत्तखंड का क्षेत्रफल एवं चाप की लंबाई।" },
+        { no: 13, name: "पृष्ठीय क्षेत्रफल और आयतन (Surface Areas & Volumes)", status: "ready", pdfUrl: "https://drive.google.com/file/d/18XhNfKbSJy4NaHLqPLQyMxQVbMTVRklj/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "ठोसों के संयोजन (बेलन, शंकु, गोला, अर्धगोला) का पृष्ठीय क्षेत्रफल और आयतन।" },
+        { no: 14, name: "सांख्यिकी (Statistics)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1NUvmBH8aIIQtvfBi8tnnLTgGsMJK18t_/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "वर्गीकृत आंकड़ों का माध्य (प्रत्यक्ष व कल्पित माध्य विधि), बहुलक एवं माध्यक।" },
+        { no: 15, name: "प्रायिकता (Probability)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1JLVmAlMogIIIMXyrce_5HdIkbj9nkkMe/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सैद्धांतिक प्रायिकता, सिक्के, पासे और ताश की गड्डी पर आधारित प्रश्न।" }
       ]
     },
 
     // ========================================================================
-    // CLASS 10TH MATRIC - सामाजिक विज्ञान (SST)
+    // CLASS 10TH MATRIC - सामाजिक विज्ञान (संपूर्ण खंडवार विभाजन)
     // ========================================================================
     {
-      id: "10-sst",
+      id: "10-history",
       classTitle: "Class 10th",
-      subjectTitle: " सामाजिक विज्ञान (SST)",
+      subjectTitle: "इतिहास (भारत और समकालीन विश्व-II)",
       chapters: [
-        { no: 1, name: "इतिहास - यूरोप में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "मेजिनी, काउंट कावूर, गैरीबाल्डी, बिस्मार्क एवं इटली-जर्मनी का एकीकरण।" },
-        { no: 2, name: "इतिहास - समाजवाद एवं साम्यवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "कार्ल मार्क्स का सिद्धांत, 1917 की रूसी क्रांति और लेनिन की नीतियां।" },
-        { no: 3, name: "इतिहास - भारत में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "जलियांवाला बाग हत्याकांड, असहयोग आंदोलन, सविनय अवज्ञा एवं दांडी यात्रा।" },
-        { no: 4, name: "भूगोल - भारत: संसाधन एवं उपयोग", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "संसाधनों का वर्गीकरण, सतत पोषणीय विकास, मृदा अपरदन एवं संरक्षण।" },
-        { no: 5, name: "भूगोल - जल, खनिज एवं ऊर्जा संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बहुउद्देशीय परियोजनाएं, धात्विक-अधात्विक खनिज एवं पारंपरिक-गैरपारंपरिक ऊर्जा।" },
-        { no: 6, name: "भूगोल - कृषि एवं उद्योग", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रबी, खरीफ व जायद फसलें, सूती वस्त्र एवं लौह-इस्पात उद्योग।" },
-        { no: 7, name: "राजनीति - लोकतंत्र में सत्ता की साझेदारी", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "सामाजिक विभाजन, लैंगिक मसले, जाति और राजनीति का संबंध।" },
-        { no: 8, name: "राजनीति - सत्ता में साझेदारी की कार्यप्रणाली", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "संघीय व्यवस्था, स्थानीय स्वशासन, बिहार पंचायती राज अधिनियम 2006।" },
-        { no: 9, name: "राजनीति - लोकतंत्र की चुनौतियां", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "मौलिक अधिकार, सूचना का अधिकार कानून एवं लोकतंत्र का सुदृढ़ीकरण।" },
-        { no: 10, name: "अर्थशास्त्र - अर्थव्यवस्था एवं इसके विकास का इतिहास", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राथमिक, द्वितीयक, तृतीयक क्षेत्र, प्रति व्यक्ति आय एवं समावेशी विकास।" },
-        { no: 11, name: "अर्थशास्त्र - राज्य एवं राष्ट्र की आय", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सकल घरेलू उत्पाद (GDP), राष्ट्रीय आय एवं गणना की कठिनाइयां।" },
-        { no: 12, name: "अर्थशास्त्र - मुद्रा, बचत एवं साख", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "मुद्रा के कार्य, स्वयं सहायता समूह (SHG) एवं व्यावसायिक बैंक।" },
-        { no: 13, name: "आपदा प्रबंधन - प्राकृतिक आपदा: परिचय व जोखिम", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बाढ़, सूखा, भूकंप, सुनामी एवं इनसे बचाव के तात्कालिक उपाय।" }
+        { no: 1, name: "यूरोप में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "मेजिनी, काउंट कावूर, गैरीबाल्डी, बिस्मार्क एवं इटली-जर्मनी का एकीकरण।" },
+        { no: 2, name: "समाजवाद एवं साम्यवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "कार्ल मार्क्स का सिद्धांत, 1917 की रूसी क्रांति और लेनिन की नीतियां।" },
+        { no: 3, name: "हिंद-चीन में राष्ट्रवादी आंदोलन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "फ्रांसीसी उपनिवेश, हो ची मिन्ह, नरोत्तम सिंहानुक एवं जिनेवा समझौता।" },
+        { no: 4, name: "भारत में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "रॉलेट एक्ट, जलियांवाला बाग हत्याकांड, खिलाफत, असहयोग एवं सविनय अवज्ञा आंदोलन।" },
+        { no: 5, name: "अर्थव्यवस्था और आजीविका", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "औद्योगीकरण का युग, फैक्ट्री प्रणाली, फ्लाइंग शटल एवं भारतीय सूती वस्त्र उद्योग।" },
+        { no: 6, name: "शहरीकरण एवं शहरी जीवन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "लंदन व बंबई का विकास, सामाजिक बदलाव एवं नगर नियोजन।" },
+        { no: 7, name: "व्यापार और भूमंडलीकरण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राचीन रेशम मार्ग, महामंदी (1929), ब्रेटन वुड्स संस्थाएं व बहुराष्ट्रीय कंपनियां।" },
+        { no: 8, name: "प्रेस-संस्कृति एवं राष्ट्रवाद", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "गुटेनबर्ग प्रिंटिंग प्रेस, भारत में समाचार पत्रों का विकास एवं वर्नाक्युलर प्रेस एक्ट।" }
+      ]
+    },
+    {
+      id: "10-geography",
+      classTitle: "Class 10th",
+      subjectTitle: "भूगोल (भारत: संसाधन एवं उपयोग)",
+      chapters: [
+        { no: 1, name: "संसाधन एवं विकास (प्राकृतिक संसाधन)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "संसाधनों का वर्गीकरण, सतत पोषणीय विकास, मृदा अपरदन एवं संरक्षण।" },
+        { no: 2, name: "जल संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बहुउद्देशीय नदी घाटी परियोजनाएं, वर्षा जल संचयन एवं जल संकट।" },
+        { no: 3, name: "वन एवं वन्य जीव संसाधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "वन्यजीव संरक्षण अधिनियम, राष्ट्रीय उद्यान एवं चिपको आंदोलन।" },
+        { no: 4, name: "खनिज संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "धात्विक व अधात्विक खनिज, लौह अयस्क, मैंगनीज, बॉक्साइट एवं अभ्रक।" },
+        { no: 5, name: "शक्ति (ऊर्जा) संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "कोयला, पेट्रोलियम, जलविद्युत एवं सौर/पवन ऊर्जा।" },
+        { no: 6, name: "कृषि (Agriculture)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रबी, खरीफ व जायद फसलें, चावल, गेहूं, गन्ना, चाय एवं कपास की खेती।" },
+        { no: 7, name: "निर्माण उद्योग", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सूती वस्त्र उद्योग, लौह-इस्पात उद्योग, सीमेंट उद्योग एवं औद्योगिक प्रदूषण।" },
+        { no: 8, name: "परिवहन, संचार एवं व्यापार", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सड़क मार्ग (स्वर्णिम चतुर्भुज), रेलवे, जलमार्ग एवं अंतरराष्ट्रीय व्यापार।" },
+        { no: 9, name: "बिहार: कृषि एवं वन संसाधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "बिहार में कृषि की स्थिति, सिंचाई के साधन एवं वन क्षेत्र का विस्तार।" },
+        { no: 10, name: "बिहार: खनिज, ऊर्जा एवं उद्योग", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "बरौनी रिफाइनरी, कांटी ताप विद्युत एवं बिहार में खनिज संपदा।" },
+        { no: 11, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
+      ]
+    },
+    {
+      id: "10-civics",
+      classTitle: "Class 10th",
+      subjectTitle: "राजनीति शास्त्र (लोकतांत्रिक राजनीति-II)",
+      chapters: [
+        { no: 1, name: "लोकतंत्र में सत्ता की साझेदारी", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "सामाजिक विभाजन, लैंगिक मसले, धर्म, संप्रदाय और राजनीति का अंतर्संबंध।" },
+        { no: 2, name: "सत्ता में साझेदारी की कार्यप्रणाली", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "संघीय व्यवस्था, राज्य सूची, केंद्र सूची, समवर्ती सूची एवं पंचायती राज व्यवस्था।" },
+        { no: 3, name: "लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "राजनीतिक दल, दबाव समूह, जन आंदोलन एवं बिहार छात्र आंदोलन (1974)।" },
+        { no: 4, name: "लोकतंत्र की उपलब्धियां", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उत्तरदायी व वैध शासन, आर्थिक समानता एवं सामाजिक विविधताओं में सामंजस्य।" },
+        { no: 5, name: "लोकतंत्र की चुनौतियां", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "परिवारवाद, जातिवाद, भ्रष्टाचार, सूचना का अधिकार कानून एवं चुनावी सुधार।" }
+      ]
+    },
+    {
+      id: "10-economics",
+      classTitle: "Class 10th",
+      subjectTitle: "अर्थशास्त्र (हमारी अर्थव्यवस्था-II)",
+      chapters: [
+        { no: 1, name: "अर्थव्यवस्था एवं इसके विकास का इतिहास", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राथमिक, द्वितीयक, तृतीयक क्षेत्र, प्रति व्यक्ति आय एवं सतत विकास।" },
+        { no: 2, name: "राज्य एवं राष्ट्र की आय", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "सकल घरेलू उत्पाद (GDP), राष्ट्रीय आय, प्रति व्यक्ति आय एवं गणना विधियां।" },
+        { no: 3, name: "मुद्रा, बचत एवं साख", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "वस्तु विनिमय प्रणाली की कठिनाइयां, मुद्रा के कार्य एवं साख पत्र।" },
+        { no: 4, name: "हमारी वित्तीय संस्थाएं", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "व्यावसायिक बैंक, भारतीय रिजर्व बैंक (RBI), नाबार्ड एवं स्वयं सहायता समूह (SHG)।" },
+        { no: 5, name: "रोजगार एवं सेवाएं", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "आर्थिक आधारभूत संरचना, सेवा क्षेत्र की भूमिका एवं आउटसोर्सिंग (बाह्यस्रोतन)।" },
+        { no: 6, name: "वैश्वीकरण (Globalisation)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उदारीकरण, निजीकरण, विश्व व्यापार संगठन (WTO) एवं बहुराष्ट्रीय कंपनियां।" },
+        { no: 7, name: "उपभोक्ता जागरण एवं संरक्षण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उपभोक्ता अधिकार, जागो ग्राहक जागो, कोपरा (COPRA) कानून 1986।" }
+      ]
+    },
+    {
+      id: "10-disaster",
+      classTitle: "Class 10th",
+      subjectTitle: "आपदा प्रबंधन (Disaster Management)",
+      chapters: [
+        { no: 1, name: "प्राकृतिक आपदा: एक परिचय", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "आपदा की परिभाषा, प्राकृतिक एवं मानव जनित आपदाओं में अंतर।" },
+        { no: 2, name: "बाढ़ और सुखाड़", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बाढ़ के कारण, उत्तर बिहार की बाढ़ विभीषिका, सुखाड़ के कारण एवं प्रबंधन।" },
+        { no: 3, name: "भूकंप एवं सुनामी", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "भूकंपीय तरंगे (P, S, L), रिएक्टर पैमाना, भूकंप जोन एवं सुनामी से बचाव।" },
+        { no: 4, name: "जीवन रक्षक आकस्मिक प्रबंधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राथमिक उपचार, अग्निकांड से बचाव एवं मलबे में दबे लोगों की खोज।" },
+        { no: 5, name: "आपदा काल में वैकल्पिक संचार व्यवस्था", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रेडियो, हैम रेडियो, उपग्रह संचार प्रणाली की उपयोगिता।" },
+        { no: 6, name: "आपदा और सह-अस्तित्व", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "भूकंपरोधी मकानों का निर्माण, सामुदायिक प्रबंधन एवं पूर्व चेतावनी।" }
       ]
     },
 
     // ========================================================================
-    // CLASS 10TH MATRIC - संस्कृत (SANSKRIT)
+    // CLASS 10TH MATRIC - संस्कृत
     // ========================================================================
     {
       id: "10-sanskrit",
       classTitle: "Class 10th",
-      subjectTitle: " संस्कृत (पीयूषम् एवं व्याकरण)",
+      subjectTitle: "संस्कृत (पीयूषम् एवं व्याकरण)",
       chapters: [
         { no: 1, name: "मंगलम् (Mangalam)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "उपनिषदों के मंत्र, सत्यमेव जयते, आत्मा और परमात्मा का रहस्य।" },
         { no: 2, name: "पाटलिपुत्रवैभवम्", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "पटना का प्राचीन इतिहास, मेगस्थनीज, चंद्रगुप्त मौर्य व गुरु गोबिंद सिंह।" },
@@ -280,569 +336,686 @@ window.NischaySyllabus = {
         { no: 10, name: "मन्दाकिनीवर्णनम्", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "वाल्मीकि रामायण, चित्रकूट में श्रीराम द्वारा सीता को मंदाकिनी नदी का वर्णन।" },
         { no: 11, name: "व्याघ्रपथिककथा", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "हितोपदेश, सोने का कंगन, लोभ का दुष्परिणाम एवं वृद्ध बाघ।" },
         { no: 12, name: "कर्णस्य दानवीरता", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "भास रचित कर्णभार, इंद्र को कवच और कुंडल का सहर्ष दान।" },
-        { no: 13, name: "संस्कृत व्याकरण: संधि, समास एवं कारक", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "स्वर/व्यंजन संधि, तत्पुरुष, द्वन्द्व, बहुव्रीहि एवं विभक्ति सूत्र।" },
-        { no: 14, name: "संस्कृत व्याकरण: प्रत्यय एवं शब्दरूप/धातुरूप", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "क्त्वा, तुमुन्, ल्यप्, तव्यत्, बालक/लता/नदी शब्दरूप एवं लट्/लृट् लकार।" }
+        { no: 13, name: "विश्वशांतिः", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "अशांति के कारण (द्वेष व असहिष्णुता), निवारण के उपाय एवं वसुधैव कुटुम्बकम्।" },
+        { no: 14, name: "शास्त्रकाराः", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "वेदांग (शिक्षा, कल्प, व्याकरण, निरुक्त, छंद, ज्योतिष) एवं षड्दर्शन के प्रवर्तक।" },
+        { no: 15, name: "संस्कृत व्याकरण: संधि, समास, कारक एवं प्रत्यय", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "स्वर/व्यंजन/विसर्ग संधि, तत्पुरुष/द्वन्द्व समास, कारक सूत्र एवं कृत्/तद्धित प्रत्यय।" }
       ]
     }
   ],
 
-  // प्रश्न बैंक (Class-Wise Segregated Verified Question Bank)
+  // ==========================================================================
+  // QUESTION BANK (चैप्टर-वाइज सत्यापित प्रश्न बैंक)
+  // ==========================================================================
   questionBank: {
 
-    // ========================================================================
-    // CLASS 10TH MATRIC QUESTIONS
-    // ========================================================================
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: भौतिकी (PHYSICS)
+    // ------------------------------------------------------------------------
     "10-physics": [
       {
         id: "q_10_p_01",
-        question: "प्रकाश के परावर्तन के कितने नियम हैं?",
+        chapter: 1,
+        question: "प्रकाश के परावर्तन के कितने नियम होते हैं?",
         options: ["1", "2", "3", "4"],
         correctIndex: 1,
-        explanation: "प्रकाश के परावर्तन के मुख्य रूप से दो नियम होते हैं।"
+        explanation: "प्रकाश के परावर्तन के दो नियम होते हैं: (1) आपतित किरण, परावर्तित किरण तथा अभिलंब एक ही तल में होते हैं। (2) आपतन कोण, परावर्तन कोण के बराबर होता है।"
       },
       {
         id: "q_10_p_02",
-        question: "समतल दर्पण द्वारा बना प्रतिबिंब हमेशा कैसा होता है?",
+        chapter: 1,
+        question: "समतल दर्पण द्वारा बना प्रतिबिंब सदैव कैसा होता है?",
         options: ["वास्तविक", "काल्पनिक (आभासी) एवं सीधा", "उल्टा", "इनमें से कोई नहीं"],
         correctIndex: 1,
-        explanation: "समतल दर्पण सदैव आभासी, सीधा और वस्तु के बराबर आकार का प्रतिबिंब बनाता है।"
+        explanation: "समतल दर्पण सदैव आभासी, सीधा और वस्तु के समान आकार का प्रतिबिंब बनाता है।"
       },
       {
         id: "q_10_p_03",
+        chapter: 1,
         question: "दाढ़ी बनाने (हजामत) के लिए किस दर्पण का उपयोग किया जाता है?",
         options: ["उत्तल दर्पण", "अवतल दर्पण", "समतल दर्पण", "उत्तलावतल दर्पण"],
         correctIndex: 1,
-        explanation: "अवतल दर्पण निकट रखी वस्तु का सीधा और बड़ा प्रतिबिंब बनाता है।"
+        explanation: "अवतल दर्पण वस्तु को ध्रुव और फोकस के बीच रखने पर उसका सीधा और आवर्धित (बड़ा) प्रतिबिंब बनाता है।"
       },
       {
         id: "q_10_p_04",
+        chapter: 1,
         question: "गोलीय दर्पण की फोकस दूरी (f) और उसकी वक्रता त्रिज्या (R) में क्या संबंध है?",
         options: ["f = R", "f = R/2", "f = 2R", "R = f/2"],
         correctIndex: 1,
-        explanation: "गोलीय दर्पण की फोकस दूरी वक्रता त्रिज्या की आधी होती है (f = R/2)।"
+        explanation: "गोलीय दर्पण की फोकस दूरी वक्रता त्रिज्या की आधी होती है, अर्थात् f = R/2।"
       },
       {
         id: "q_10_p_05",
+        chapter: 1,
         question: "वाहनों के पश्च-दृश्य (Side Mirror) के रूप में किस दर्पण का उपयोग होता है?",
         options: ["उत्तल दर्पण", "अवतल दर्पण", "समतल दर्पण", "उत्तल लेंस"],
         correctIndex: 0,
-        explanation: "उत्तल दर्पण का दृष्टि क्षेत्र विस्तृत होता है और यह सीधा प्रतिबिंब बनाता है।"
+        explanation: "उत्तल दर्पण का दृष्टि क्षेत्र (Field of view) विस्तृत होता है और यह सीधा व छोटा प्रतिबिंब बनाता है।"
       },
       {
         id: "q_10_p_06",
+        chapter: 1,
         question: "लेंस की क्षमता (Power of Lens) का SI मात्रक क्या होता है?",
         options: ["मीटर", "डाइऑप्टर (D)", "सेंटीमीटर", "ल्यूमेन"],
         correctIndex: 1,
-        explanation: "लेंस की क्षमता का SI मात्रक प्रति मीटर यानी डाइऑप्टर (D) होता है।"
+        explanation: "लेंस की क्षमता P = 1/f (मीटर में) होती है, इसका SI मात्रक m⁻¹ या डाइऑप्टर (D) है।"
       },
       {
         id: "q_10_p_07",
-        question: "सामान्य दृष्टि के वयस्क के लिए स्पष्ट दर्शन की अल्पतम दूरी कितनी होती है?",
-        options: ["25 मीटर", "2.5 सेमी", "25 सेमी", "2.5 मीटर"],
-        correctIndex: 2,
-        explanation: "स्वस्थ आँख के लिए स्पष्ट दृष्टि की न्यूनतम दूरी लगभग 25 सेमी होती है।"
+        chapter: 2,
+        question: "मानव नेत्र के किस भाग पर किसी वस्तु का प्रतिबिंब बनता है?",
+        options: ["कॉर्निया", "परितारिका", "पुतली", "रेटिना या दृष्टिपटल"],
+        correctIndex: 3,
+        explanation: "मानव नेत्र में प्रवेश करने वाला प्रकाश रेटिना पर वास्तविक और उल्टा प्रतिबिंब बनाता है।"
       },
       {
         id: "q_10_p_08",
-        question: "निकट-दृष्टि दोष (Myopia) को दूर करने के लिए किस लेंस का उपयोग किया जाता है?",
-        options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी लेंस", "बेलनाकार लेंस"],
-        correctIndex: 1,
-        explanation: "निकट-दृष्टि दोष के निवारण के लिए अवतल लेंस का उपयोग होता है।"
+        chapter: 2,
+        question: "सामान्य दृष्टि के वयस्क के लिए स्पष्ट दर्शन की अल्पतम (न्यूनतम) दूरी कितनी होती है?",
+        options: ["25 मीटर", "2.5 सेमी", "25 सेमी", "2.5 मीटर"],
+        correctIndex: 2,
+        explanation: "स्वस्थ आँख के लिए स्पष्ट दृष्टि की न्यूनतम दूरी 25 सेमी होती है, जबकि दूर बिंदु अनंत होता है।"
       },
       {
         id: "q_10_p_09",
-        question: "विद्युत आवेश (Electric Charge) का SI मात्रक क्या है?",
-        options: ["वोल्ट", "एम्पीयर", "कूलॉम (C)", "ओम"],
-        correctIndex: 2,
-        explanation: "विद्युत आवेश का SI मात्रक कूलॉम (C) होता है।"
+        chapter: 2,
+        question: "निकट-दृष्टि दोष (Myopia) को दूर करने के लिए किस लेंस का उपयोग किया जाता है?",
+        options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी लेंस", "बेलनाकार लेंस"],
+        correctIndex: 1,
+        explanation: "निकट-दृष्टि दोष में दूर की वस्तु स्पष्ट नहीं दिखती, इसके निवारण के लिए अवतल लेंस का उपयोग होता है।"
       },
       {
         id: "q_10_p_10",
+        chapter: 2,
+        question: "श्वेत प्रकाश जब प्रिज्म से गुजरता है, तो किस रंग का विचलन सबसे अधिक होता है?",
+        options: ["लाल", "पीला", "बैंगनी", "हरा"],
+        correctIndex: 2,
+        explanation: "बैंगनी रंग की तरंगदैर्ध्य सबसे कम होने के कारण इसका विचलन (झुकाव) सबसे अधिक होता है।"
+      },
+      {
+        id: "q_10_p_11",
+        chapter: 2,
+        question: "आकाश का रंग नीला दिखाई देने का मुख्य कारण क्या है?",
+        options: ["प्रकाश का परावर्तन", "प्रकाश का अपवर्तन", "प्रकाश का प्रकीर्णन", "प्रकाश का वर्ण-विक्षेपण"],
+        correctIndex: 2,
+        explanation: "वायुमंडल में उपस्थित सूक्ष्म धूलकण नीले रंग के प्रकाश का सबसे अधिक प्रकीर्णन करते हैं।"
+      },
+      {
+        id: "q_10_p_12",
+        chapter: 3,
+        question: "विद्युत आवेश (Electric Charge) का SI मात्रक क्या होता है?",
+        options: ["वोल्ट", "एम्पीयर", "कूलॉम (C)", "ओम"],
+        correctIndex: 2,
+        explanation: "विद्युत आवेश का SI मात्रक कूलॉम (Coulomb) होता है।"
+      },
+      {
+        id: "q_10_p_13",
+        chapter: 3,
         question: "विद्युत प्रतिरोध (Resistance) का SI मात्रक क्या होता है?",
         options: ["जूल", "एम्पीयर", "ओम (Ω)", "वाट"],
         correctIndex: 2,
         explanation: "प्रतिरोध का SI मात्रक ओम (Ω) होता है।"
       },
       {
-        id: "q_10_p_11",
-        question: "दीर्घ-दृष्टि दोष (Hypermetropia) के निवारण के लिए किस लेंस का उपयोग होता है?",
-        options: ["उत्तल लेंस", "अवतल लेंस", "समतल लेंस", "बेलनाकार लेंस"],
-        correctIndex: 0,
-        explanation: "दूर दृष्टि दोष को दूर करने के लिए उत्तल लेंस का चश्मा लगाया जाता है।"
-      },
-      {
-        id: "q_10_p_12",
-        question: "श्वेत प्रकाश जब प्रिज्म से गुजरता है, तो किस रंग का विचलन सबसे अधिक होता है?",
-        options: ["लाल", "पीला", "बैंगनी", "हरा"],
-        correctIndex: 2,
-        explanation: "बैंगनी रंग की तरंगदैर्ध्य सबसे कम होने के कारण इसका विचलन सबसे अधिक होता है।"
-      },
-      {
-        id: "q_10_p_13",
-        question: "आकाश का रंग नीला दिखाई देने का मुख्य कारण क्या है?",
-        options: ["प्रकाश का परावर्तन", "प्रकाश का अपवर्तन", "प्रकाश का प्रकीर्णन", "प्रकाश का वर्ण-विक्षेपण"],
-        correctIndex: 2,
-        explanation: "वायुमंडल में सूक्ष्म कण नीले रंग के प्रकाश का सबसे अधिक प्रकीर्णन करते हैं।"
-      },
-      {
         id: "q_10_p_14",
-        question: "विद्युत धारा (Electric Current) मापने वाले यंत्र को क्या कहा जाता है?",
+        chapter: 3,
+        question: "विद्युत धारा मापने वाले यंत्र को क्या कहा जाता है?",
         options: ["आमीटर (Ammeter)", "वोल्टमीटर", "गैल्वेनोमीटर", "पोटेंशियोमीटर"],
         correctIndex: 0,
         explanation: "विद्युत धारा मापने के लिए आमीटर को परिपथ में श्रेणीक्रम में जोड़ा जाता है।"
       },
       {
         id: "q_10_p_15",
-        question: "विभवांतर (Potential Difference) मापने वाले यंत्र को क्या कहते हैं?",
-        options: ["आमीटर", "वोल्टमीटर", "मैनोमीटर", "थर्मामीटर"],
-        correctIndex: 1,
-        explanation: "विभवांतर मापने के लिए वोल्टमीटर को समांतर क्रम में जोड़ा जाता है।"
-      },
-      {
-        id: "q_10_p_16",
-        question: "ओम के नियम का गणितीय रूप क्या है?",
-        options: ["V = I / R", "V = I × R", "I = V × R", "R = V × I"],
-        correctIndex: 1,
-        explanation: "जॉर्ज साइमन ओम के अनुसार विभवांतर धारा के समानुपाती होता है (V = IR)।"
-      },
-      {
-        id: "q_10_p_17",
+        chapter: 3,
         question: "विद्युत बल्ब का तंतु (फिलामेंट) किस धातु का बना होता है?",
         options: ["तांबा", "लोहा", "टंगस्टन", "नाइक्रोम"],
         correctIndex: 2,
-        explanation: "टंगस्टन का गलनांक अत्यंत उच्च होने के कारण इसका फिलामेंट बनाया जाता है।"
+        explanation: "टंगस्टन का गलनांक अत्यंत उच्च (लगभग 3400°C) होता है, जिससे यह उच्च ताप पर भी नहीं पिघलता।"
+      },
+      {
+        id: "q_10_p_16",
+        chapter: 3,
+        question: "1 किलोवाट घंटा (1 kWh) कितने जूल के बराबर होता है?",
+        options: ["3.6 × 10⁵ J", "3.6 × 10⁶ J", "3.6 × 10⁷ J", "36 × 10⁴ J"],
+        correctIndex: 1,
+        explanation: "1 kWh = 1000 W × 3600 s = 3.6 × 10⁶ जूल (इसे 1 यूनिट विद्युत ऊर्जा भी कहते हैं)।"
+      },
+      {
+        id: "q_10_p_17",
+        chapter: 4,
+        question: "विद्युत धारा उत्पन्न करने वाली युक्ति को क्या कहते हैं?",
+        options: ["जनित्र (Generator)", "गैल्वेनोमीटर", "आमीटर", "मोटर"],
+        correctIndex: 0,
+        explanation: "विद्युत जनित्र (डायनेमो) यांत्रिक ऊर्जा को विद्युत ऊर्जा में रूपांतरित करता है।"
       },
       {
         id: "q_10_p_18",
-        question: "विद्युत हीटर की कुंडली (Coil) किस तार की बनी होती है?",
-        options: ["नाइक्रोम", "टंगस्टन", "तांबा", "जस्ता"],
+        chapter: 4,
+        question: "विद्युत फ्यूज विद्युत धारा के किस प्रभाव पर कार्य करता है?",
+        options: ["ऊष्मीय प्रभाव", "चुंबकीय प्रभाव", "रासायनिक प्रभाव", "इनमें से कोई नहीं"],
         correctIndex: 0,
-        explanation: "नाइक्रोम की प्रतिरोधकता और गलनांक दोनों उच्च होते हैं।"
-      },
-      {
-        id: "q_10_p_19",
-        question: "विद्युत शक्ति (Electric Power) का SI मात्रक क्या है?",
-        options: ["वाट (W)", "जूल", "कूलॉम", "एम्पीयर"],
-        correctIndex: 0,
-        explanation: "विद्युत शक्ति का SI मात्रक वाट (Watt) होता है।"
-      },
-      {
-        id: "q_10_p_20",
-        question: "1 किलोवाट घंटा (1 kWh) कितने जूल के बराबर होता है?",
-        options: ["3.6 × 10⁵ J", "3.6 × 10⁶ J", "3.6 × 10⁷ J", "36 × 10⁶ J"],
-        correctIndex: 1,
-        explanation: "1 kWh = 1000 W × 3600 s = 3.6 × 10⁶ जूल (यह 1 यूनिट विद्युत ऊर्जा है)।"
+        explanation: "विद्युत फ्यूज धारा के ऊष्मीय प्रभाव (Heating effect) पर कार्य करता है और परिपथ को सुरक्षित रखता है।"
       }
     ],
 
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: रसायन विज्ञान (CHEMISTRY)
+    // ------------------------------------------------------------------------
     "10-chemistry": [
       {
         id: "q_10_c_01",
+        chapter: 1,
         question: "रासायनिक अभिक्रिया के दौरान किसी पदार्थ में ऑक्सीजन का योग क्या कहलाता है?",
         options: ["अपचयन (Reduction)", "उपचयन (Oxidation)", "संक्षारण", "अपघटन"],
         correctIndex: 1,
-        explanation: "ऑक्सीजन का जुड़ना उपचयन (ऑक्सीकरण) कहलाता है।"
+        explanation: "ऑक्सीजन का जुड़ना या हाइड्रोजन का निकलना उपचयन (ऑक्सीकरण) कहलाता है।"
       },
       {
         id: "q_10_c_02",
-        question: "संगमरमर (Marble) का रासायनिक सूत्र क्या है?",
-        options: ["CaCO₃", "CaO", "Ca(OH)₂", "CaCl₂"],
-        correctIndex: 0,
-        explanation: "कैल्शियम कार्बोनेट (CaCO₃) को संगमरमर या चूना पत्थर कहा जाता है।"
+        chapter: 1,
+        question: "श्वसन किस प्रकार की रासायनिक अभिक्रिया है?",
+        options: ["ऊष्माशोषी", "ऊष्माक्षेपी", "संयोजन", "अपघटन"],
+        correctIndex: 1,
+        explanation: "श्वसन क्रिया में ग्लूकोज के ऑक्सीकरण से ऊर्जा (ऊष्मा) मुक्त होती है, इसलिए यह ऊष्माक्षेपी अभिक्रिया है।"
       },
       {
         id: "q_10_c_03",
+        chapter: 2,
         question: "शुद्ध जल का pH मान 25°C पर कितना होता है?",
         options: ["0", "7", "14", "1"],
         correctIndex: 1,
-        explanation: "शुद्ध जल उदासीन होता है, इसका pH मान ठीक 7 होता है।"
+        explanation: "शुद्ध जल उदासीन होता है, इसलिए इसका pH मान ठीक 7 होता है।"
       },
       {
         id: "q_10_c_04",
-        question: "अम्लीय विलयन का pH मान कितना होता है?",
-        options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"],
-        correctIndex: 0,
-        explanation: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।"
-      },
-      {
-        id: "q_10_c_05",
+        chapter: 2,
         question: "विरंजक चूर्ण (Bleaching Powder) का रासायनिक सूत्र क्या है?",
         options: ["CaOCl₂", "Ca(OH)₂", "NaHCO₃", "Na₂CO₃·10H₂O"],
         correctIndex: 0,
-        explanation: "विरंजक चूर्ण का रासायनिक सूत्र CaOCl₂ होता है।"
+        explanation: "कैल्शियम ऑक्सीक्लोराइड (CaOCl₂) को विरंजक चूर्ण कहते हैं।"
+      },
+      {
+        id: "q_10_c_05",
+        chapter: 2,
+        question: "प्लास्टर ऑफ पेरिस (POP) का रासायनिक सूत्र क्या है?",
+        options: ["CaSO₄·2H₂O", "CaSO₄·½H₂O", "FeSO₄·7H₂O", "CuSO₄·5H₂O"],
+        correctIndex: 1,
+        explanation: "जिप्सम को 373 K पर गर्म करने पर CaSO₄·½H₂O (प्लास्टर ऑफ पेरिस) प्राप्त होता है।"
       },
       {
         id: "q_10_c_06",
-        question: "प्लास्टर ऑफ पेरिस (Plaster of Paris) का रासायनिक सूत्र क्या है?",
-        options: ["CaSO₄·2H₂O", "CaSO₄·½H₂O", "FeSO₄·7H₂O", "CuSO₄·5H₂O"],
-        correctIndex: 1,
-        explanation: "प्लास्टर ऑफ पेरिस का सूत्र CaSO₄·½H₂O होता है।"
-      },
-      {
-        id: "q_10_c_07",
-        question: "बेकिंग सोडा (खाने का सोडा) का रासायनिक सूत्र क्या है?",
-        options: ["Na₂CO₃", "NaHCO₃", "NaCl", "NaOH"],
-        correctIndex: 1,
-        explanation: "सोडियम हाइड्रोजन कार्बोनेट (NaHCO₃) को बेकिंग सोडा कहते हैं।"
-      },
-      {
-        id: "q_10_c_08",
-        question: "कमरे के ताप पर द्रव अवस्था में पाई जाने वाली एकमात्र धातु कौन सी है?",
-        options: ["पारा (Mercury)", "ब्रोमीन", "सोडियम", "पोटैशियम"],
-        correctIndex: 0,
-        explanation: "पारा (Hg) एकमात्र ऐसी धातु है जो कमरे के ताप पर द्रव रूप में रहती है।"
-      },
-      {
-        id: "q_10_c_09",
-        question: "कमरे के ताप पर द्रव अवस्था में पाई जाने वाली एकमात्र अधातु कौन सी है?",
-        options: ["पारा", "ब्रोमीन (Bromine)", "आयोडीन", "क्लोरीन"],
-        correctIndex: 1,
-        explanation: "ब्रोमीन (Br) एकमात्र अधातु है जो कमरे के ताप पर द्रव होती है।"
-      },
-      {
-        id: "q_10_c_10",
-        question: "कार्बन की संयोजकता (Valency) कितनी होती है?",
-        options: ["2", "3", "4", "1"],
-        correctIndex: 2,
-        explanation: "कार्बन के बाहरी कोश में 4 इलेक्ट्रॉन होते हैं, अतः यह चतुःसंयोजी (4) तत्व है।"
-      },
-      {
-        id: "q_10_c_11",
-        question: "चाकू से आसानी से काटी जा सकने वाली धातुएं कौन सी हैं?",
-        options: ["लोहा और तांबा", "सोडियम और पोटैशियम", "एल्युमिनियम और जस्ता", "सोना और चांदी"],
-        correctIndex: 1,
-        explanation: "सोडियम और पोटैशियम बहुत मुलायम धातुएं हैं, इन्हें चाकू से काटा जा सकता है।"
-      },
-      {
-        id: "q_10_c_12",
+        chapter: 2,
         question: "चींटी के डंक में कौन सा अम्ल पाया जाता है?",
         options: ["एसिटिक अम्ल", "साइट्रिक अम्ल", "मेथेनॉइक अम्ल (फॉर्मिक अम्ल)", "ऑक्सालिक अम्ल"],
         correctIndex: 2,
-        explanation: "चींटी के डंक में मेथेनॉइक अम्ल (फॉर्मिक अम्ल) होता है।"
+        explanation: "चींटी और नेटल के डंक में मेथेनॉइक अम्ल (HCOOH) पाया जाता है।"
       },
       {
-        id: "q_10_c_13",
-        question: "लोहे पर जंग लगने की क्रिया से बचाने के लिए जस्ते की परत चढ़ाना क्या कहलाता है?",
-        options: ["विद्युत अपघटन", "यशदलेपन (Galvanization)", "संक्षारण", "मिश्रण"],
-        correctIndex: 1,
-        explanation: "जस्ते (Zinc) की परत चढ़ाने की प्रक्रिया यशदलेपन (गैल्वनीकरण) कहलाती है।"
-      },
-      {
-        id: "q_10_c_14",
-        question: "सीसा (Lead) और टिन (Tin) की मिश्रधातु को क्या कहते हैं?",
-        options: ["सोल्डर (Solder)", "पीतल", "कांसा", "स्टील"],
+        id: "q_10_c_07",
+        chapter: 3,
+        question: "कमरे के ताप पर द्रव अवस्था में रहने वाली एकमात्र धातु कौन सी है?",
+        options: ["पारा (Mercury)", "ब्रोमीन", "सोडियम", "पोटैशियम"],
         correctIndex: 0,
-        explanation: "सोल्डर सीसा और टिन की मिश्रधातु होती है।"
+        explanation: "पारा (Hg) एकमात्र ऐसी धातु है जो कमरे के सामान्य तापमान पर द्रव अवस्था में रहती है।"
       },
       {
-        id: "q_10_c_15",
-        question: "पीतल (Brass) किन दो धातुओं की मिश्रधातु है?",
-        options: ["तांबा और टिन", "तांबा और जस्ता (Cu + Zn)", "लोहा और कार्बन", "सीसा और जस्ता"],
+        id: "q_10_c_08",
+        chapter: 3,
+        question: "चाकू से आसानी से काटी जा सकने वाली धातुएं कौन सी हैं?",
+        options: ["लोहा और तांबा", "सोडियम और पोटैशियम", "एल्युमिनियम और जस्ता", "सोना और चांदी"],
         correctIndex: 1,
-        explanation: "पीतल कॉपर और जिंक (Cu + Zn) की मिश्रधातु है।"
+        explanation: "सोडियम (Na) और पोटैशियम (K) अत्यंत मुलायम क्षारीय धातुएं हैं, जिन्हें साधारण चाकू से काटा जा सकता है।"
       },
       {
-        id: "q_10_c_16",
-        question: "सरलतम हाइड्रोकार्बन कौन सा है?",
-        options: ["मीथेन (CH₄)", "ईथेन (C₂H₆)", "प्रोपेन (C₃H₈)", "ब्यूटेन (C₄H₁₀)"],
-        correctIndex: 0,
-        explanation: "मीथेन (CH₄) केवल एक कार्बन वाला सबसे सरल हाइड्रोकार्बन है।"
+        id: "q_10_c_09",
+        chapter: 4,
+        question: "कार्बन की संयोजकता (Valency) कितनी होती है?",
+        options: ["2", "3", "4", "1"],
+        correctIndex: 2,
+        explanation: "कार्बन का परमाणु क्रमांक 6 (इलेक्ट्रॉनिक विन्यास: 2, 4) होता है, अतः यह चतुःसंयोजी (4) होता है।"
       },
       {
-        id: "q_10_c_17",
+        id: "q_10_c_10",
+        chapter: 4,
         question: "एल्केन (Alkane) श्रेणी का सामान्य रासायनिक सूत्र क्या है?",
         options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnH2n+1"],
         correctIndex: 0,
-        explanation: "संतृप्त हाइड्रोकार्बन (एल्केन) का सूत्र CnH2n+2 होता है।"
-      },
-      {
-        id: "q_10_c_18",
-        question: "एल्कीन (Alkene) श्रेणी का सामान्य सूत्र क्या है?",
-        options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnHn"],
-        correctIndex: 1,
-        explanation: "द्वि-आबंध वाले एल्कीन का सामान्य सूत्र CnH2n होता है।"
-      },
-      {
-        id: "q_10_c_19",
-        question: "सिरका (Vinegar) में कितने प्रतिशत एसिटिक अम्ल होता है?",
-        options: ["10-20%", "5-8%", "50%", "100%"],
-        correctIndex: 1,
-        explanation: "जल में 5% से 8% एसिटिक अम्ल का तनु घोल सिरका कहलाता है।"
-      },
-      {
-        id: "q_10_c_20",
-        question: "मेंडलीव की आवर्त सारणी में तत्वों को किस आधार पर सजाया गया था?",
-        options: ["परमाणु क्रमांक", "परमाणु द्रव्यमान", "परमाणु त्रिज्या", "इलेक्ट्रॉन संख्या"],
-        correctIndex: 1,
-        explanation: "मेंडलीव का आवर्त नियम तत्वों के परमाणु द्रव्यमान पर आधारित था।"
+        explanation: "संतृप्त हाइड्रोकार्बन (एल्केन) का सामान्य सूत्र CnH2n+2 होता है।"
       }
     ],
 
-    "10-math": [
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: इतिहास (HISTORY)
+    // ------------------------------------------------------------------------
+    "10-history": [
       {
-        id: "q_10_m_01",
-        question: "यदि tan θ = 4/3, तो sin θ का मान क्या होगा?",
-        options: ["3/5", "4/5", "5/4", "3/4"],
-        correctIndex: 1,
-        explanation: "लंब = 4, आधार = 3, अतः कर्ण = 5। sin θ = लंब/कर्ण = 4/5।"
-      },
-      {
-        id: "q_10_m_02",
-        question: "द्विघात समीकरण ax² + bx + c = 0 के मूल वास्तविक और समान होंगे यदि:",
-        options: ["b² - 4ac > 0", "b² - 4ac = 0", "b² - 4ac < 0", "b² + 4ac = 0"],
-        correctIndex: 1,
-        explanation: "जब विविक्तकर D = b² - 4ac = 0 होता है, तो मूल वास्तविक और बराबर होते हैं।"
-      },
-      {
-        id: "q_10_m_03",
-        question: "समांतर श्रेढ़ी (A.P.) 2, 7, 12, ... का 10वाँ पद क्या होगा?",
-        options: ["45", "47", "49", "52"],
-        correctIndex: 1,
-        explanation: "a = 2, d = 5। a₁₀ = a + 9d = 2 + 9×5 = 47।"
-      },
-      {
-        id: "q_10_m_04",
-        question: "मूल बिंदु (0, 0) से बिंदु P(x, y) की दूरी क्या होती है?",
-        options: ["√(x + y)", "√(x² - y²)", "√(x² + y²)", "x² + y²"],
-        correctIndex: 2,
-        explanation: "मूल बिंदु से किसी बिंदु की दूरी सूत्र d = √(x² + y²) होता है।"
-      },
-      {
-        id: "q_10_m_05",
-        question: "निम्न में से कौन सी अपरिमेय संख्या (Irrational Number) है?",
-        options: ["√9", "√16", "√2", "4/5"],
-        correctIndex: 2,
-        explanation: "√2 एक अपरिमेय संख्या है क्योंकि इसका दशमलव प्रसार अशांत अनावर्ती होता है।"
-      },
-      {
-        id: "q_10_m_06",
-        question: "एक वृत्त की कितनी स्पर्श रेखाएं (Tangent Lines) हो सकती हैं?",
-        options: ["1", "2", "अनंत (अपरिमित रूप से अनेक)", "शून्य"],
-        correctIndex: 2,
-        explanation: "वृत्त के प्रत्येक बिंदु पर एक स्पर्श रेखा खींची जा सकती है, अतः वृत्त की अनंत स्पर्श रेखाएं हो सकती हैं।"
-      },
-      {
-        id: "q_10_m_07",
-        question: "दो समरूप त्रिभुजों की भुजाओं का अनुपात 4 : 9 है, तो उनके क्षेत्रफलों का अनुपात क्या होगा?",
-        options: ["2 : 3", "4 : 9", "16 : 81", "81 : 16"],
-        correctIndex: 2,
-        explanation: "समरूप त्रिभुजों के क्षेत्रफलों का अनुपात उनकी संगत भुजाओं के वर्गों के अनुपात के बराबर होता है: (4/9)² = 16/81।"
-      },
-      {
-        id: "q_10_m_08",
-        question: "sin² 45° + cos² 45° का मान क्या होगा?",
-        options: ["0", "1", "1/2", "2"],
-        correctIndex: 1,
-        explanation: "सर्वसमिका sin² θ + cos² θ = 1 होती है।"
-      },
-      {
-        id: "q_10_m_09",
-        question: "निश्चित घटना (Sure Event) की प्रायिकता (Probability) कितनी होती है?",
-        options: ["0", "1", "0.5", "अनंत"],
-        correctIndex: 1,
-        explanation: "जो घटना निश्चित रूप से घटती है उसकी प्रायिकता हमेशा 1 होती है।"
-      },
-      {
-        id: "q_10_m_10",
-        question: "प्रथम पाँच प्राकृतिक संख्याओं (1, 2, 3, 4, 5) का माध्य क्या होगा?",
-        options: ["2", "3", "4", "5"],
-        correctIndex: 1,
-        explanation: "माध्य = (1 + 2 + 3 + 4 + 5) / 5 = 15 / 5 = 3।"
-      }
-    ],
-
-    // ========================================================================
-    // CLASS 10TH MATRIC - सामाजिक विज्ञान (SST QUESTIONS)
-    // ========================================================================
-    "10-sst": [
-      {
-        id: "q_10_sst_01",
-        question: "इटली एवं जर्मनी के एकीकरण के विरुद्ध निम्न में कौन सा देश था?",
+        id: "q_10_h_01",
+        chapter: 1,
+        question: "इटली एवं जर्मनी के एकीकरण के विरुद्ध निम्नलिखित में से कौन सा देश था?",
         options: ["इंग्लैंड", "रूस", "ऑस्ट्रिया", "प्रशा"],
         correctIndex: 2,
-        explanation: "ऑस्ट्रिया इटली और जर्मनी दोनों के एकीकरण का सबसे बड़ा विरोधी था।"
+        explanation: "ऑस्ट्रिया का चांसलर मेटरनिख इटली और जर्मनी दोनों के एकीकरण का सबसे बड़ा विरोधी था।"
       },
       {
-        id: "q_10_sst_02",
-        question: "जर्मन राइन राज्य का निर्माण किसने किया था?",
-        options: ["लुई 18वाँ", "नेपोलियन बोनापार्ट", "नेपोलियन III", "बिस्मार्क"],
+        id: "q_10_h_02",
+        chapter: 1,
+        question: "यंग इटली (Young Italy) नामक संस्था की स्थापना किसने की थी?",
+        options: ["मेजिनी", "कावूर", "गैरीबाल्डी", "बिस्मार्क"],
+        correctIndex: 0,
+        explanation: "1831 में जोसेफ मेजिनी ने इटली के राष्ट्रीय एकीकरण हेतु 'यंग इटली' की स्थापना की थी।"
+      },
+      {
+        id: "q_10_h_03",
+        chapter: 1,
+        question: "रक्त एवं लौह (Blood and Iron) की नीति का अवलंबन किसने किया था?",
+        options: ["हिटलर", "विलियम प्रथम", "बिस्मार्क", "मेजिनी"],
+        correctIndex: 2,
+        explanation: "प्रशा के चांसलर ऑटो वॉन बिस्मार्क ने जर्मनी के एकीकरण के लिए रक्त और लौह की नीति अपनाई।"
+      },
+      {
+        id: "q_10_h_04",
+        chapter: 2,
+        question: "दास कैपिटल (Das Kapital) नामक विश्वप्रसिद्ध पुस्तक की रचना किसने की थी?",
+        options: ["फ्रेडरिक एंगेल्स", "कार्ल मार्क्स", "टॉलस्टॉय", "लेनिन"],
         correctIndex: 1,
-        explanation: "नेपोलियन बोनापार्ट ने 39 राज्यों को मिलाकर 'जर्मन राइन संघ' की स्थापना की थी।"
+        explanation: "कार्ल मार्क्स ने 1867 में 'दास कैपिटल' की रचना की, जिसे समाजवादियों का धर्मग्रंथ कहा जाता है।"
       },
       {
-        id: "q_10_sst_03",
+        id: "q_10_h_05",
+        chapter: 2,
+        question: "रूस में बोल्शेविक क्रांति का नेतृत्व किसने किया था?",
+        options: ["कार्ल मार्क्स", "लेनिन", "स्तालिन", "ट्रॉटस्की"],
+        correctIndex: 1,
+        explanation: "नवंबर 1917 की रूसी क्रांति (बोल्शेविक क्रांति) का सफल नेतृत्व व्लादिमीर लेनिन ने किया था।"
+      },
+      {
+        id: "q_10_h_06",
+        chapter: 3,
+        question: "हिंद-चीन में कोलोन (Colons) किन्हें कहा जाता था?",
+        options: ["विद्यार्थियों को", "सैनिकों को", "फ्रांसीसी नागरिकों को", "चीनी व्यापारियों को"],
+        correctIndex: 2,
+        explanation: "वियतनाम (हिंद-चीन) में रहने वाले फ्रांसीसी नागरिकों को कोलोन कहा जाता था।"
+      },
+      {
+        id: "q_10_h_07",
+        chapter: 4,
         question: "जलियांवाला बाग हत्याकांड किस तिथि को हुआ था?",
         options: ["13 अप्रैल 1919", "14 अप्रैल 1919", "15 अप्रैल 1919", "16 अप्रैल 1919"],
         correctIndex: 0,
-        explanation: "अमृतसर के जलियांवाला बाग में जनरल डायर ने 13 अप्रैल 1919 को निहत्थी भीड़ पर गोलियां चलवाई थीं।"
+        explanation: "अमृतसर के जलियांवाला बाग में डॉ. सत्यपाल और सैफुद्दीन किचलू की गिरफ्तारी के विरोध में जुटी भीड़ पर जनरल डायर ने 13 अप्रैल 1919 को गोलियां चलवाई थीं।"
       },
       {
-        id: "q_10_sst_04",
-        question: "दास कैपिटल (Das Kapital) पुस्तक की रचना किसने की थी?",
-        options: ["एंगेल्स", "दोस्तोवस्की", "कार्ल मार्क्स", "टॉलस्टॉय"],
+        id: "q_10_h_08",
+        chapter: 4,
+        question: "गांधीजी ने सविनय अवज्ञा आंदोलन की शुरुआत किस प्रसिद्ध यात्रा से की थी?",
+        options: ["चंपारण सत्याग्रह", "खेड़ा यात्रा", "दांडी यात्रा", "बारदोली यात्रा"],
         correctIndex: 2,
-        explanation: "कार्ल मार्क्स ने 1867 में 'दास कैपिटल' की रचना की, जिसे समाजवादियों की बाइबिल कहा जाता है।"
+        explanation: "12 मार्च 1930 को साबरमती से शुरू होकर 6 अप्रैल 1930 को दांडी पहुंचकर नमक कानून तोड़कर सविनय अवज्ञा आंदोलन आरंभ हुआ।"
       },
       {
-        id: "q_10_sst_05",
-        question: "काली मृदा (Black Soil) का दूसरा नाम क्या है?",
-        options: ["बलुई मृदा", "रेगुर मृदा", "लाल मृदा", "पर्वतीय मृदा"],
+        id: "q_10_h_09",
+        chapter: 5,
+        question: "भारत में पहली सूती कपड़ा मिल 1854 में कहाँ स्थापित की गई थी?",
+        options: ["मद्रास", "बंबई (मुंबई)", "अहमदाबाद", "कोलकाता"],
+        correctIndex: 1,
+        explanation: "कावासजी डाबर द्वारा 1854 में बंबई में पहली सफल आधुनिक सूती वस्त्र मिल लगाई गई थी।"
+      },
+      {
+        id: "q_10_h_10",
+        chapter: 8,
+        question: "वर्नाक्युलर प्रेस एक्ट किस वायसराय के कार्यकाल में पारित किया गया था?",
+        options: ["लॉर्ड रिपन", "लॉर्ड लिटन", "लॉर्ड कर्जन", "लॉर्ड डलहौजी"],
+        correctIndex: 1,
+        explanation: "1878 में लॉर्ड लिटन ने भारतीय भाषाई समाचार पत्रों पर प्रतिबंध लगाने के लिए वर्नाक्युलर प्रेस एक्ट लागू किया था।"
+      }
+    ],
+
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: भूगोल (GEOGRAPHY)
+    // ------------------------------------------------------------------------
+    "10-geography": [
+      {
+        id: "q_10_g_01",
+        chapter: 1,
+        question: "'संसाधन होते नहीं, बनते हैं'—यह प्रसिद्ध कथन किसका है?",
+        options: ["महात्मा गांधी", "जिम्मरमैन", "संदीप पांडे", "मेधा पाटकर"],
+        correctIndex: 1,
+        explanation: "प्रसिद्ध भूगोलवेत्ता जिम्मरमैन ने कहा था कि प्राकृतिक वस्तुएं मानवीय ज्ञान और तकनीक से संसाधन बनती हैं।"
+      },
+      {
+        id: "q_10_g_02",
+        chapter: 1,
+        question: "काली मिट्टी (Black Soil) का दूसरा स्थानीय नाम क्या है?",
+        options: ["बलुई मिट्टी", "रेगुर मिट्टी", "लाल मिट्टी", "लैटेराइट मिट्टी"],
         correctIndex: 1,
         explanation: "काली मिट्टी को रेगुर मिट्टी भी कहा जाता है, जो कपास की खेती के लिए सर्वोत्तम होती है।"
       },
       {
-        id: "q_10_sst_06",
-        question: "भारत के किस राज्य में वन का सबसे अधिक विस्तार है?",
+        id: "q_10_g_03",
+        chapter: 2,
+        question: "बृहत् क्षेत्र में जल की उपस्थिति के कारण पृथ्वी को क्या कहा जाता है?",
+        options: ["उजला ग्रह", "नीला ग्रह", "लाल ग्रह", "हरा ग्रह"],
+        correctIndex: 1,
+        explanation: "पृथ्वी के लगभग 71% भाग पर जल होने के कारण अंतरिक्ष से यह नीली दिखाई देती है, अतः इसे नीला ग्रह कहते हैं।"
+      },
+      {
+        id: "q_10_g_04",
+        chapter: 3,
+        question: "भारत के किस राज्य में वन का सबसे अधिक विस्तार (क्षेत्रफल अनुसार) पाया जाता है?",
         options: ["केरल", "कर्नाटक", "मध्य प्रदेश", "उत्तर प्रदेश"],
         correctIndex: 2,
-        explanation: "क्षेत्रफल की दृष्टि से मध्य प्रदेश में भारत के सबसे अधिक वन पाए जाते हैं।"
+        explanation: "क्षेत्रफल की दृष्टि से मध्य प्रदेश में भारत के सबसे अधिक सघन वन पाए जाते हैं।"
       },
       {
-        id: "q_10_sst_07",
-        question: "भारत का पहला राष्ट्रीय तेल शोधक कारखाना (Oil Refinery) कहाँ स्थापित हुआ था?",
-        options: ["मथुरा", "डिगबोई (असम)", "बरौनी", "गुवाहाटी"],
-        correctIndex: 1,
-        explanation: "1901 में असम के डिगबोई में भारत का पहला तेल शोधक कारखाना स्थापित किया गया था।"
-      },
-      {
-        id: "q_10_sst_08",
-        question: "बिहार का कौन सा क्षेत्र बाढ़ग्रस्त क्षेत्र माना जाता है?",
-        options: ["पूर्वी बिहार", "दक्षिणी बिहार", "पश्चिमी बिहार", "उत्तरी बिहार"],
-        correctIndex: 3,
-        explanation: "उत्तरी बिहार कोसी और गंडक नदियों के कारण प्रतिवर्ष अत्यधिक बाढ़ से प्रभावित होता है।"
-      },
-      {
-        id: "q_10_sst_09",
-        question: "भारत में वित्तीय वर्ष (Financial Year) की अवधि क्या होती है?",
-        options: ["1 जनवरी से 31 दिसंबर", "1 जुलाई से 30 जून", "1 अप्रैल से 31 मार्च", "1 सितंबर से 31 अगस्त"],
+        id: "q_10_g_05",
+        chapter: 4,
+        question: "सर्वोत्तम किस्म का लौह अयस्क कौन सा है?",
+        options: ["एंथ्रेसाइट", "हेमेटाइट", "मैग्नेटाइट", "लिमोनाइट"],
         correctIndex: 2,
-        explanation: "भारत में आधिकारिक वित्तीय वर्ष 1 अप्रैल से 31 मार्च तक चलता है।"
+        explanation: "मैग्नेटाइट (Fe₃O₄) में 70% से अधिक लोहा पाया जाता है और इसमें प्राकृतिक चुंबकीय गुण होते हैं।"
       },
       {
-        id: "q_10_sst_10",
-        question: "सूचना का अधिकार अधिनियम (RTI Act) कब लागू हुआ था?",
+        id: "q_10_g_06",
+        chapter: 5,
+        question: "भारत का प्रथम तेल शोधक कारखाना (Oil Refinery) कहाँ स्थापित किया गया था?",
+        options: ["मथुरा", "डिगबोई (असम)", "बरौनी (बिहार)", "हल्दिया"],
+        correctIndex: 1,
+        explanation: "1901 में असम के डिगबोई में भारत का पहला खनिज तेल शोधनशाला स्थापित किया गया था।"
+      },
+      {
+        id: "q_10_g_07",
+        chapter: 6,
+        question: "निम्नलिखित में से कौन सी रबी फसल (Rabi Crop) का उदाहरण है?",
+        options: ["धान", "गेहूं", "मक्का", "कपास"],
+        correctIndex: 1,
+        explanation: "गेहूं शीत ऋतु (अक्टूबर-नवंबर) में बोई जाती है और मार्च-अप्रैल में काटी जाती है, अतः यह रबी फसल है।"
+      },
+      {
+        id: "q_10_g_08",
+        chapter: 7,
+        question: "टाटा आयरन एंड स्टील कंपनी (TISCO) की स्थापना जमशेदजी टाटा द्वारा कब की गई थी?",
+        options: ["1854", "1907", "1915", "1923"],
+        correctIndex: 1,
+        explanation: "1907 में झारखंड के साकची (वर्तमान जमशेदपुर) में टिस्को की स्थापना हुई थी।"
+      },
+      {
+        id: "q_10_g_09",
+        chapter: 8,
+        question: "स्वर्णिम चतुर्भुज महामार्ग (Golden Quadrilateral) किन चार महानगरों को जोड़ता है?",
+        options: ["दिल्ली, मुंबई, चेन्नई, कोलकाता", "दिल्ली, जयपुर, पुणे, हैदराबाद", "पटना, रांची, कोलकाता, दिल्ली", "चेन्नई, बेंगलुरु, मुंबई, आगरा"],
+        correctIndex: 0,
+        explanation: "स्वर्णिम चतुर्भुज छह लेन वाला राष्ट्रीय राजमार्ग है जो दिल्ली, मुंबई, चेन्नई और कोलकाता को जोड़ता है।"
+      },
+      {
+        id: "q_10_g_10",
+        chapter: 10,
+        question: "बिहार में स्थित एकमात्र तेल शोधक कारखाना कहाँ है?",
+        options: ["दरभंगा", "पटना", "बरौनी", "गया"],
+        correctIndex: 2,
+        explanation: "बिहार के बेगूसराय जिले के बरौनी में 1964 में सोवियत संघ के सहयोग से रिफाइनरी स्थापित की गई थी।"
+      }
+    ],
+
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: राजनीति शास्त्र (CIVICS)
+    // ------------------------------------------------------------------------
+    "10-civics": [
+      {
+        id: "q_10_pol_01",
+        chapter: 1,
+        question: "भारत में औरतों के लिए आरक्षण की व्यवस्था किस संस्था में की गई है?",
+        options: ["लोकसभा", "विधानसभा", "मंत्रिमंडल", "पंचायती राज संस्थाएं"],
+        correctIndex: 3,
+        explanation: "73वें संविधान संशोधन द्वारा पंचायती राज संस्थाओं में महिलाओं के लिए आरक्षण अनिवार्य किया गया है (बिहार में यह 50% है)।"
+      },
+      {
+        id: "q_10_pol_02",
+        chapter: 2,
+        question: "भारतीय संविधान की 8वीं अनुसूची में कुल कितनी भाषाओं को मान्यता दी गई है?",
+        options: ["18", "20", "22", "24"],
+        correctIndex: 2,
+        explanation: "भारतीय संविधान की आठवीं अनुसूची में वर्तमान में 22 आधिकारिक भाषाओं को शामिल किया गया है।"
+      },
+      {
+        id: "q_10_pol_03",
+        chapter: 2,
+        question: "समवर्ती सूची (Concurrent List) के विषयों पर कानून बनाने का अधिकार किसे प्राप्त है?",
+        options: ["केवल केंद्र को", "केवल राज्य को", "केंद्र और राज्य दोनों को", "राष्ट्रपति को"],
+        correctIndex: 2,
+        explanation: "समवर्ती सूची पर केंद्र और राज्य दोनों कानून बना सकते हैं, विवाद की स्थिति में केंद्र का कानून मान्य होता है।"
+      },
+      {
+        id: "q_10_pol_04",
+        chapter: 3,
+        question: "1974 में बिहार छात्र आंदोलन का नेतृत्व किसने किया था?",
+        options: ["जयप्रकाश नारायण", "कर्पूरी ठाकुर", "मोरारजी देसाई", "इन्दिरा गांधी"],
+        correctIndex: 0,
+        explanation: "लोकनायक जयप्रकाश नारायण (JP) ने बिहार से 'संपूर्ण क्रांति' का आह्वान किया था।"
+      },
+      {
+        id: "q_10_pol_05",
+        chapter: 3,
+        question: "चिपको आंदोलन निम्नलिखित में से किससे संबंधित है?",
+        options: ["पेड़ों की कटाई रोकने से", "आर्थिक शोषण से", "शराबबंदी से", "कांग्रेस पार्टी के विरोध से"],
+        correctIndex: 0,
+        explanation: "उत्तराखंड में सुंदरलाल बहुगुणा और चंडी प्रसाद भट्ट के नेतृत्व में वनों की कटाई रोकने हेतु चिपको आंदोलन चलाया गया।"
+      },
+      {
+        id: "q_10_pol_06",
+        chapter: 3,
+        question: "लोकतंत्र का 'प्राण' किसे कहा जाता है?",
+        options: ["सरकार को", "न्यायपालिका को", "संविधान को", "राजनीतिक दलों को"],
+        correctIndex: 3,
+        explanation: "राजनीतिक दल जनता और सरकार के बीच सेतु का कार्य करते हैं, इसलिए इन्हें लोकतंत्र का प्राण कहा जाता है।"
+      },
+      {
+        id: "q_10_pol_07",
+        chapter: 5,
+        question: "सूचना का अधिकार अधिनियम (RTI Act) पूरे भारत में किस वर्ष लागू हुआ था?",
         options: ["2004", "2005", "2006", "2007"],
         correctIndex: 1,
-        explanation: "भारत की संसद द्वारा सूचना का अधिकार अधिनियम 2005 में पारित और लागू किया गया था।"
+        explanation: "संसद द्वारा पारित सूचना का अधिकार कानून अक्टूबर 2005 में लागू हुआ, जिससे नागरिकों को सरकारी सूचनाएं प्राप्त करने का अधिकार मिला।"
       }
     ],
 
-    // ========================================================================
-    // CLASS 10TH MATRIC - संस्कृत (SANSKRIT QUESTIONS)
-    // ========================================================================
-    "10-sanskrit": [
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: अर्थशास्त्र (ECONOMICS)
+    // ------------------------------------------------------------------------
+    "10-economics": [
       {
-        id: "q_10_sk_01",
-        question: "'सत्यमेव जयते' किस उपनिषद् का मूल मंत्र है?",
-        options: ["ईशावास्योपनिषद्", "कठोपनिषद्", "मुण्डकोपनिषद्", "श्वेताश्वतरोपनिषद्"],
+        id: "q_10_eco_01",
+        chapter: 1,
+        question: "कृषि, पशुपालन और मत्स्य पालन अर्थव्यवस्था के किस क्षेत्र के अंतर्गत आते हैं?",
+        options: ["प्राथमिक क्षेत्र", "द्वितीयक क्षेत्र", "तृतीयक क्षेत्र", "सेवा क्षेत्र"],
+        correctIndex: 0,
+        explanation: "प्राकृतिक संसाधनों से सीधे जुड़े कार्य प्राथमिक क्षेत्र (कृषि क्षेत्र) कहलाते हैं।"
+      },
+      {
+        id: "q_10_eco_02",
+        chapter: 1,
+        question: "भारत में योजना आयोग (वर्तमान में नीति आयोग) का गठन कब किया गया था?",
+        options: ["15 मार्च 1950", "15 सितंबर 1950", "15 अक्टूबर 1951", "1 जनवरी 2015"],
+        correctIndex: 0,
+        explanation: "योजना आयोग की स्थापना 15 मार्च 1950 को हुई थी (जिसे 1 जनवरी 2015 को नीति आयोग में बदल दिया गया)।"
+      },
+      {
+        id: "q_10_eco_03",
+        chapter: 2,
+        question: "भारत में वित्तीय वर्ष (Financial Year) की समयावधि क्या होती है?",
+        options: ["1 जनवरी से 31 दिसंबर", "1 जुलाई से 30 जून", "1 अप्रैल से 31 मार्च", "1 सितंबर से 31 अगस्त"],
         correctIndex: 2,
-        explanation: "भारत का राष्ट्रीय आदर्श वाक्य 'सत्यमेव जयते' मुण्डकोपनिषद् से लिया गया है।"
+        explanation: "भारत सरकार का आधिकारिक वित्तीय वर्ष 1 अप्रैल से प्रारंभ होकर 31 मार्च तक चलता है।"
       },
       {
-        id: "q_10_sk_02",
-        question: "पाटलिपुत्र (पटना) किसके समय में प्रियदर्शी अशोक के समय कैसा था?",
-        options: ["समृद्धम् (अत्यधिक समृद्ध)", "उजाड़", "छोटा", "मध्यम"],
+        id: "q_10_eco_04",
+        chapter: 2,
+        question: "बिहार के किस जिले की प्रति व्यक्ति आय (Per Capita Income) सबसे अधिक है?",
+        options: ["पटना", "गया", "शिवहर", "नालंदा"],
         correctIndex: 0,
-        explanation: "अशोक के शासनकाल में पाटलिपुत्र नगर अत्यंत समृद्ध और वैभवशाली (सुतरां समृद्धम्) था।"
+        explanation: "राजधानी पटना जिले की प्रति व्यक्ति आय बिहार के सभी जिलों में सर्वाधिक है।"
       },
       {
-        id: "q_10_sk_03",
-        question: "'अलसकथा' पाठ के रचयिता कौन हैं?",
-        options: ["कालिदास", "विद्यापति", "विष्णु शर्मा", "नारायण पंडित"],
-        correctIndex: 1,
-        explanation: "मैथिली कोकिल महाकवि विद्यापति 'अलसकथा' पाठ के रचयिता हैं।"
-      },
-      {
-        id: "q_10_sk_04",
-        question: "नीतिकार आलस्य को क्या मानते हैं?",
-        options: ["शत्रु (रिपु)", "मित्र", "सहयोगी", "बल"],
-        correctIndex: 0,
-        explanation: "नीतिकारों के अनुसार आलस्य मनुष्य के शरीर में स्थित सबसे बड़ा शत्रु (महान् रिपुः) है।"
-      },
-      {
-        id: "q_10_sk_05",
-        question: "भारतीय संस्कार कुल कितने होते हैं?",
-        options: ["12", "14", "16 (षोडश)", "18"],
+        id: "q_10_eco_05",
+        chapter: 3,
+        question: "भारत का केंद्रीय बैंक (Central Bank of India) कौन सा है?",
+        options: ["भारतीय स्टेट बैंक (SBI)", "पंजाब नेशनल बैंक (PNB)", "भारतीय रिजर्व बैंक (RBI)", "बैंक ऑफ बड़ौदा"],
         correctIndex: 2,
-        explanation: "भारतीय सनातन परंपरा में कुल 16 (षोडश) संस्कार मान्य हैं।"
+        explanation: "भारतीय रिजर्व बैंक (RBI) देश की मौद्रिक नीति, नोट निर्गमन और बैंकिंग प्रणाली को नियंत्रित करता है।"
       },
       {
-        id: "q_10_sk_06",
-        question: "विदुरनीति किस ग्रंथ का विशेष अंश है?",
-        options: ["रामायण", "महाभारत", "भगवद्गीता", "विष्णुपुराण"],
+        id: "q_10_eco_06",
+        chapter: 4,
+        question: "दीर्घकालीन ऋण (Long-term Loan) प्रदान करने वाली प्रमुख संस्था कौन सी है?",
+        options: ["कृषक महाजन", "भूमि विकास बैंक", "प्राथमिक साख समिति", "व्यावसायिक बैंक"],
         correctIndex: 1,
-        explanation: "विदुरनीति महाभारत के उद्योग पर्व का एक अत्यंत महत्वपूर्ण और नीतिपरक अध्याय है।"
+        explanation: "भूमि विकास बैंक किसानों को भूमि सुधार, ट्रैक्टर आदि के लिए दीर्घकालीन ऋण प्रदान करता है।"
       },
       {
-        id: "q_10_sk_07",
-        question: "स्वामी दयानंद सरस्वती ने किस संस्था की स्थापना की थी?",
-        options: ["ब्रह्म समाज", "आर्य समाज", "प्रार्थना समाज", "रामकृष्ण मिशन"],
+        id: "q_10_eco_07",
+        chapter: 6,
+        question: "विश्व व्यापार संगठन (WTO) की स्थापना किस वर्ष हुई थी?",
+        options: ["1991", "1995", "2000", "2005"],
         correctIndex: 1,
-        explanation: "स्वामी दयानंद ने 1875 में मुंबई में 'आर्य समाज' की स्थापना की थी।"
+        explanation: "1 जनवरी 1995 को जिनेवा (स्विट्जरलैंड) में विश्व व्यापार संगठन (WTO) का गठन हुआ था।"
       },
       {
-        id: "q_10_sk_08",
-        question: "'कर्णस्य दानवीरता' पाठ किस नाटक से संकलित है?",
-        options: ["कर्णभारम्", "अभिज्ञानशाकुन्तलम्", "स्वप्नवासवदत्तम्", "मुद्राराक्षसम्"],
+        id: "q_10_eco_08",
+        chapter: 7,
+        question: "राष्ट्रीय उपभोक्ता हेल्पलाइन नंबर (National Consumer Helpline) क्या है?",
+        options: ["100", "1915", "1098", "1800-11-4000"],
+        correctIndex: 1,
+        explanation: "उपभोक्ता शिकायतों के लिए राष्ट्रीय शॉर्टकोड हेल्पलाइन 1915 उपलब्ध है।"
+      }
+    ],
+
+    // ------------------------------------------------------------------------
+    // CLASS 10TH: आपदा प्रबंधन (DISASTER MANAGEMENT)
+    // ------------------------------------------------------------------------
+    "10-disaster": [
+      {
+        id: "q_10_dis_01",
+        chapter: 1,
+        question: "निम्नलिखित में से कौन सी प्राकृतिक आपदा (Natural Disaster) नहीं है?",
+        options: ["सुनामी", "बाढ़", "भूकंप", "आतंकवाद"],
+        correctIndex: 3,
+        explanation: "आतंकवाद मानव-जनित आपदा है, जबकि सुनामी, बाढ़ और भूकंप प्राकृतिक आपदाएं हैं।"
+      },
+      {
+        id: "q_10_dis_02",
+        chapter: 2,
+        question: "बिहार का कौन सा भाग सर्वाधिक बाढ़ग्रस्त (Flood prone) माना जाता है?",
+        options: ["पूर्वी बिहार", "दक्षिणी बिहार", "पश्चिमी बिहार", "उत्तरी बिहार"],
+        correctIndex: 3,
+        explanation: "उत्तरी बिहार कोसी, गंडक, बागमती आदि हिमालयी नदियों के कारण प्रतिवर्ष भीषण बाढ़ की चपेट में आता है।"
+      },
+      {
+        id: "q_10_dis_03",
+        chapter: 2,
+        question: "बिहार का 'शोक' (Sorrow of Bihar) किस नदी को कहा जाता है?",
+        options: ["गंगा", "कोसी", "सोन", "पुनपुन"],
+        correctIndex: 1,
+        explanation: "कोसी नदी अपने मार्ग परिवर्तन और अचानक बाढ़ लाने के कारण बिहार का शोक कहलाती है।"
+      },
+      {
+        id: "q_10_dis_04",
+        chapter: 3,
+        question: "महासागर की तली में होने वाले कंपन को किस नाम से जाना जाता है?",
+        options: ["भूकंप", "चक्रवात", "सुनामी", "ज्वालामुखी"],
+        correctIndex: 2,
+        explanation: "समुद्र के भीतर भूकंप आने से उत्पन्न विशाल विनाशकारी जल तरंगों को 'सुनामी' कहते हैं।"
+      },
+      {
+        id: "q_10_dis_05",
+        chapter: 3,
+        question: "भूकंप की तीव्रता मापने वाले यंत्र को क्या कहा जाता है?",
+        options: ["बैरोमीटर", "सिस्मोग्राफ (Seismograph)", "थर्मामीटर", "हाइड्रोमीटर"],
+        correctIndex: 1,
+        explanation: "सिस्मोग्राफ द्वारा भूकंपीय तरंगों का अंकन किया जाता है तथा रिक्टर स्केल पर परिमाण मापा जाता है।"
+      }
+    ],
+
+    // ------------------------------------------------------------------------
+    // CLASS 12TH: भौतिक विज्ञान (PHYSICS)
+    // ------------------------------------------------------------------------
+    "12-physics": [
+      {
+        id: "q_12_p_01",
+        chapter: 1,
+        question: "मुक्त आकाश की विद्युतशीलता (Permittivity of Free Space, ε₀) का मान कितना होता है?",
+        options: ["9 × 10⁹ N m²/C²", "8.85 × 10⁻¹² C²/N m²", "1.6 × 10⁻¹⁹ C", "6.67 × 10⁻¹¹ N m²/kg²"],
+        correctIndex: 1,
+        explanation: "ε₀ का मान 8.854 × 10⁻¹² F/m (या C² N⁻¹ m⁻²) होता है।"
+      },
+      {
+        id: "q_12_p_02",
+        chapter: 1,
+        question: "विद्युत क्षेत्र की तीव्रता (Electric Field Intensity) का SI मात्रक क्या होता है?",
+        options: ["N/C (या V/m)", "J/C", "C/m", "N m"],
         correctIndex: 0,
-        explanation: "यह रूपक महाकवि भास द्वारा विरचित 'कर्णभारम्' एकांकी से लिया गया है।"
+        explanation: "E = F/q ⇒ न्यूटन प्रति कूलॉम (N/C) अथवा वोल्ट प्रति मीटर (V/m)।"
       },
       {
-        id: "q_10_sk_09",
-        question: "'देव + आलयः' की संधि क्या होगी?",
-        options: ["देवालयः", "देवालया", "देवलाय", "देवलयः"],
+        id: "q_12_p_03",
+        chapter: 2,
+        question: "समानांतर पट्टिका संधारित्र की धारिता (Capacitance) बढ़ाने के लिए क्या किया जाता है?",
+        options: ["पट्टिकाओं के बीच की दूरी बढ़ाई जाती है", "पट्टिकाओं का क्षेत्रफल बढ़ाया जाता है", "परावैद्युत हटा दिया जाता है", "विभवांतर घटाया जाता है"],
+        correctIndex: 1,
+        explanation: "C = (K ε₀ A)/d; क्षेत्रफल (A) बढ़ाने पर धारिता बढ़ती है।"
+      },
+      {
+        id: "q_12_p_04",
+        chapter: 3,
+        question: "किरचॉफ का प्रथम नियम (संधि नियम) किस संरक्षण सिद्धांत पर आधारित है?",
+        options: ["ऊर्जा संरक्षण", "आवेश संरक्षण", "संवेग संरक्षण", "द्रव्यमान संरक्षण"],
+        correctIndex: 1,
+        explanation: "किरचॉफ का धारा नियम (KCL) आवेश के संरक्षण के नियम पर आधारित है।"
+      },
+      {
+        id: "q_12_p_05",
+        chapter: 3,
+        question: "व्हीटस्टोन सेतु (Wheatstone Bridge) का उपयोग किसे मापने के लिए किया जाता है?",
+        options: ["अज्ञात उच्च एवं निम्न प्रतिरोध", "विद्युत धारा", "विभवांतर", "विद्युत वाहक बल"],
         correctIndex: 0,
-        explanation: "अ + आ = आ (दीर्घ स्वर संधि के नियमानुसार 'देवालयः' बनता है)।"
+        explanation: "संतुलित अवस्था (P/Q = R/S) में व्हीटस्टोन सेतु से अज्ञात प्रतिरोध का सटीक मान ज्ञात किया जाता है।"
       },
       {
-        id: "q_10_sk_10",
-        question: "'गम्' धातु का लट् लकार प्रथम पुरुष एकवचन में क्या रूप होगा?",
-        options: ["गमिष्यति", "गच्छति", "अगच्छत्", "गच्छतु"],
-        correctIndex: 1,
-        explanation: "'गम्' (जाना) धातु का वर्तमान काल (लट् लकार) प्रथम पुरुष एकवचन में 'गच्छति' होता है।"
+        id: "q_12_p_06",
+        chapter: 7,
+        question: "प्रत्यावर्ती धारा परिपथ में शक्ति गुणांक (Power Factor) का अधिकतम मान कितना होता है?",
+        options: ["0", "0.5", "1", "अनंत"],
+        correctIndex: 2,
+        explanation: "शुद्ध प्रतिरोधी परिपथ अथवा अनुनाद (Resonance) की स्थिति में cos φ = 1 (अधिकतम) होता है।"
       }
     ],
 
-    // ========================================================================
-    // CLASS 11TH SCIENCE QUESTIONS
-    // ========================================================================
-    "11-physics": [
+    // ------------------------------------------------------------------------
+    // CLASS 12TH: रसायन विज्ञान (CHEMISTRY)
+    // ------------------------------------------------------------------------
+    "12-chemistry": [
       {
-        id: "q_11_p_01",
-        question: "कार्य (Work) और ऊर्जा (Energy) का विमीय सूत्र क्या है?",
-        options: ["[M L T⁻¹]", "[M L² T⁻²]", "[M L⁻¹ T⁻²]", "[M² L² T⁻¹]"],
-        correctIndex: 1,
-        explanation: "कार्य = बल × विस्थापन = [M L T⁻²] × [L] = [M L² T⁻²]। ऊर्जा और कार्य की विमा समान होती है।"
+        id: "q_12_c_01",
+        chapter: 1,
+        question: "निम्नलिखित में से कौन सा अणुसंख्य गुणधर्म (Colligative Property) है?",
+        options: ["श्यानता", "पृष्ठ तनाव", "परासरण दाब (Osmotic Pressure)", "अपवर्तनांक"],
+        correctIndex: 2,
+        explanation: "परासरण दाब विलेय के कणों की संख्या पर निर्भर करता है, अतः यह अणुसंख्य गुणधर्म है।"
       },
       {
-        id: "q_11_p_02",
-        question: "एक पारसेक (Parsec) निम्नलिखित में से किसका मात्रक है?",
-        options: ["समय", "खगोलीय दूरी", "चमक", "कोणीय वेग"],
-        correctIndex: 1,
-        explanation: "पारसेक बहुत लंबी खगोलीय दूरियों को मापने का मात्रक है। 1 पारसेक ≈ 3.26 प्रकाश वर्ष।"
-      }
-    ],
-
-    "11-chemistry": [
+        id: "q_12_c_02",
+        chapter: 2,
+        question: "फैराडे के विद्युत अपघटन का प्रथम नियम किस सूत्र द्वारा व्यक्त किया जाता है?",
+        options: ["W = Z I t", "W = I / t", "E = m c²", "V = I R"],
+        correctIndex: 0,
+        explanation: "मुक्त पदार्थ का द्रव्यमान W = Z·Q = Z·I·t होता है (जहाँ Z विद्युत रासायनिक तुल्यांक है)।"
+      },
       {
-        id: "q_11_c_01",
-        question: "STP पर किसी भी आदर्श गैस के 1 मोल का आयतन कितना होता है?",
-        options: ["20.4 L", "22.4 L", "24.2 L", "11.2 L"],
-        correctIndex: 1,
-        explanation: "मानक ताप एवं दाब (STP) पर किसी भी आदर्श गैस के 1 मोल का आयतन 22.4 लीटर होता है।"
-      }
-    ],
-
-    "11-biology": [
-      {
-        id: "q_11_b_01",
-        question: "पाँच जगत वर्गीकरण प्रणाली किसने दी थी?",
-        options: ["लिनियस", "आर. एच. व्हिटेकर", "अरिस्तू", "मेंडल"],
-        correctIndex: 1,
-        explanation: "1969 में आर. एच. व्हिटेकर ने पाँच जगत वर्गीकरण प्रस्तावित किया था।"
+        id: "q_12_c_03",
+        chapter: 3,
+        question: "प्रथम कोटि की अभिक्रिया (First Order Reaction) के लिए वेग स्थिरांक k का मात्रक क्या होता है?",
+        options: ["mol L⁻¹ s⁻¹", "L mol⁻¹ s⁻¹", "s⁻¹ (समय⁻¹)", "mol² L⁻² s⁻¹"],
+        correctIndex: 2,
+        explanation: "प्रथम कोटि अभिक्रिया का वेग स्थिरांक केवल समय के व्युत्क्रम (s⁻¹ या min⁻¹) पर निर्भर करता है।"
       }
     ]
   }
 };
-
-
