@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.5 Bulletproof Absolute Path)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.7 Ultimate Final)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -42,8 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // विषय की पहचान
+  // क्लास और विषय के आधार पर बिल्कुल सटीक JSON फाइल का नाम तय करना
   function getTargetJsonFile() {
+    let cls = testClassSelect ? testClassSelect.value.trim() : "10";
+    if (cls !== "10" && cls !== "11" && cls !== "12") {
+      cls = "10";
+    }
+
     let val = testSubjectSelect ? testSubjectSelect.value.toLowerCase() : "";
     let txt = "";
     if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
@@ -51,28 +56,53 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     let combined = val + " " + txt;
 
-    if (combined.includes('phy') || combined.includes('भौतिकी')) return '10-physics.json';
-    if (combined.includes('chem') || combined.includes('रसायन')) return '10-chemistry.json';
-    if (combined.includes('bio') || combined.includes('जीव')) return '10-biology.json';
-    if (combined.includes('math') || combined.includes('गणित')) return '10-math.json';
-    if (combined.includes('sans') || combined.includes('संस्कृत')) return '10-sanskrit.json';
-    if (combined.includes('sst') || combined.includes('इतिहास') || combined.includes('भूगोल') || combined.includes('सामाजिक') || combined.includes('नागरिक') || combined.includes('अर्थशास्त्र') || combined.includes('आपदा')) return '10-sst.json';
+    let subName = "physics";
+    if (combined.includes('phy') || combined.includes('भौतिकी')) {
+      subName = 'physics';
+    } else if (combined.includes('chem') || combined.includes('रसायन')) {
+      subName = 'chemistry';
+    } else if (combined.includes('bio') || combined.includes('जीव')) {
+      subName = 'biology';
+    } else if (combined.includes('math') || combined.includes('गणित')) {
+      subName = 'math';
+    } else if (combined.includes('sans') || combined.includes('संस्कृत')) {
+      subName = 'sanskrit';
+    } else if (combined.includes('sst') || combined.includes('इतिहास') || combined.includes('भूगोल') || combined.includes('सामाजिक') || combined.includes('नागरिक') || combined.includes('अर्थशास्त्र') || combined.includes('आपदा')) {
+      subName = 'sst';
+    }
 
-    return '10-physics.json';
+    // अगर 11वीं या 12वीं चुनी गई है जिसकी फाइलें अभी नहीं हैं
+    if (cls !== "10") {
+      return `CLASS_NOT_READY`;
+    }
+
+    return `${cls}-${subName}.json`;
   }
 
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
     const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
+
+    if (jsonFile === `CLASS_NOT_READY`) {
+      currentQuestions = [
+        {
+          chapter: 1,
+          q: `🚀 कक्षा 11वीं और 12वीं का प्रश्न बैंक अभी तैयार किया जा रहा है! चूँकि अभी आप 11वीं साइंस में हैं, यह सेक्शन जल्द ही लाइव होगा। तब तक आप क्लास 10वीं के VVI प्रश्नों का अभ्यास करके अपना बेस मजबूत कर सकते हैं।`,
+          options: ["ठीक है, समझ गया", "क्लास 10वीं का टेस्ट शुरू करें", "होम पेज पर जाएं", "बाद में आऊंगा"],
+          correct: 0,
+          exp: "प्रिंस भाई, क्लास 11वीं के चैप्टर्स के सवाल भी बहुत जल्द अपलोड कर दिए जाएंगे!"
+        }
+      ];
+      return;
+    }
     
-    // ऑटोमैटिक बेस पाथ निर्धारण (लोकल और GitHub Pages दोनों के लिए अचूक)
-    let basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-    if (!basePath.endsWith('/')) basePath += '/';
-    
-    const absolutePath = `${window.location.origin}${basePath}data/${jsonFile}`;
-    const relativePath = `data/${jsonFile}`;
-    
-    const pathsToTry = [absolutePath, relativePath, `./data/${jsonFile}`, `/nischaydesk/data/${jsonFile}`];
+    // GitHub Pages और लोकल दोनों के लिए सभी संभव सटीक पाथ्स
+    const pathsToTry = [
+      `./data/${jsonFile}`,
+      `data/${jsonFile}`,
+      `/nischaydesk/data/${jsonFile}`,
+      `https://nischaydesk.github.io/nischaydesk/data/${jsonFile}`
+    ];
 
     let rawData = null;
 
@@ -89,13 +119,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-      alert(`⚠️ फ़ाइल '${jsonFile}' लोड नहीं हो पाई! कृपया सुनिश्चित करें कि GitHub पर data/${jsonFile} सही सलामत मौजूद है।`);
+      alert(`⚠️ फ़ाइल '${jsonFile}' लोड नहीं हो पाई! कृपया सुनिश्चित करें कि GitHub के data फ़ोल्डर में यह फ़ाइल सही सलामत मौजूद है।`);
       currentQuestions = [
         {
-          q: `डेमो प्रश्न: ${jsonFile} लोड नहीं हो पाई।`,
+          chapter: 1,
+          q: `डेमो प्रश्न: '${jsonFile}' फ़ाइल नहीं मिल पाई। कृपया GitHub रिपॉजिटरी चेक करें।`,
           options: ["ऑप्शन A", "ऑप्शन B", "ऑप्शन C", "ऑप्शन D"],
           correct: 0,
-          exp: "कृपया JSON फ़ाइल का फॉर्मेट चेक करें।"
+          exp: "फ़ाइल का नाम और पाथ सही होना चाहिए।"
         }
       ];
       return;
