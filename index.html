@@ -120,7 +120,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk v3.0 Production</span>
+      <span class="platform-meta">NischayDesk Production</span>
       <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
     </div>
   </aside>
@@ -128,61 +128,67 @@
   <!-- 3. MAIN DASHBOARD VIEWPORT -->
   <main class="dashboard-viewport">
 
-    <!-- HERO BANNER -->
-    <section class="hero-studio-banner">
+    <!-- HERO BANNER (FIXED: High-Contrast Navy/Cyan Solid Engine) -->
+    <section class="hero-studio-banner" style="background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18), transparent 55%), linear-gradient(180deg, #080f24 0%, #0c1633 100%) !important; border: 1.5px solid #1e3a8a !important; border-radius: 20px; padding: 26px 20px; margin-bottom: 28px;">
       <div class="hero-content">
         
         <!-- Personalized User Welcome Box -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
-          <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-pure); line-height: 1.2;">
-            नमस्ते, <span id="welcomeUserName" class="gradient-text">छात्र</span>! 🌟
+          <div style="font-size: 1.5rem; font-weight: 800; color: #ffffff !important; line-height: 1.2;">
+            नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span>! 🌟
           </div>
-          <div id="welcomeUserMeta" style="font-size: 0.85rem; color: var(--brand-accent); font-weight: 600; margin-top: 4px;">
-            चयनित: <span id="displayStudentClass">Class 10th</span> • <span id="displayStudentStream">General</span>
-            <button onclick="window.openClassSwitchModal && window.openClassSwitchModal()" style="margin-left:8px; background:rgba(56,189,248,0.15); border:1px solid var(--brand-accent); color:var(--brand-accent); border-radius:4px; padding:2px 6px; font-size:0.75rem; cursor:pointer;">बदलें ⚙️</button>
+          <div id="welcomeUserMeta" style="font-size: 0.85rem; color: #38bdf8 !important; font-weight: 600; margin-top: 4px;">
+            चयनित: <span id="displayStudentClass" style="color: #ffffff;">Class 10th</span> • <span id="displayStudentStream" style="color: #94a3b8;">General</span>
+            <button onclick="window.openClassSwitchModal && window.openClassSwitchModal()" style="margin-left:8px; background:rgba(56,189,248,0.15); border:1px solid #38bdf8; color:#38bdf8; border-radius:4px; padding:2px 8px; font-size:0.75rem; cursor:pointer;">बदलें ⚙️</button>
           </div>
         </div>
 
-        <div class="status-pill" id="heroStatusPill">
-          <span class="pulsing-dot"></span> बिहार बोर्ड & NCERT स्पेशल 2026-2027
+        <div class="status-pill" id="heroStatusPill" style="color: #38bdf8 !important; background: rgba(56, 189, 248, 0.1) !important; border: 1px solid rgba(56, 189, 248, 0.3) !important;">
+          <span class="pulsing-dot"></span> बिहार बोर्ड & NCERT स्पेशल 2026–2027
         </div>
 
-        <h1 class="hero-headline">
+        <!-- मुख्य हेडिंग: डार्क मोड में 100% साफ़ सफ़ेद और चमकदार नीला -->
+        <h1 class="hero-headline" style="color: #ffffff !important; font-size: 1.85rem; font-weight: 800; line-height: 1.3; margin: 12px 0 8px 0;">
           सफलता का सटीक निश्चय, <br />
-          <span class="gradient-text">NischayDesk</span> के साथ।
+          <span style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NischayDesk</span> के साथ।
         </h1>
-        <p class="hero-subline" id="heroSublineText">
+
+        <!-- सब-हेडिंग: साफ़ स्काई-ग्रे रंग -->
+        <p class="hero-subline" id="heroSublineText" style="color: #94a3b8 !important; font-size: 0.88rem; line-height: 1.6; margin-bottom: 20px;">
           आधिकारिक बोर्ड सिलेबस, चैप्टर-वाइज हस्तलिखित नोट्स और टाइमर टेस्ट सिमुलेटर।
         </p>
 
-        <div class="hero-action-group">
-          <a href="syllabus.html" class="btn-cta-primary">📋 ऑफिशियल सिलेबस देखें</a>
-          <a href="notes.html" class="btn-cta-secondary">📚 चैप्टर नोट्स पढ़ें</a>
-          <a href="test.html" class="btn-cta-secondary">⚡ टेस्ट दें</a>
+        <div class="hero-action-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="syllabus.html" class="btn-cta-primary" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #ffffff !important; text-decoration: none; padding: 10px 18px; border-radius: 12px; font-weight: 700;">📋 ऑफिशियल सिलेबस देखें</a>
+          <a href="notes.html" class="btn-cta-secondary" style="background: #13224a; color: #38bdf8 !important; border: 1px solid #1e3a8a; text-decoration: none; padding: 10px 16px; border-radius: 12px; font-weight: 700;">📚 चैप्टर नोट्स पढ़ें</a>
+          <a href="test.html" class="btn-cta-secondary" style="background: #13224a; color: #38bdf8 !important; border: 1px solid #1e3a8a; text-decoration: none; padding: 10px 16px; border-radius: 12px; font-weight: 700;">⚡ टेस्ट दें</a>
         </div>
       </div>
 
-      <!-- 2x2 Stats Grid -->
-      <div class="hero-stats-panel">
-        <div class="stat-glass-card">
-          <div class="stat-icon">📋</div>
-          <div class="stat-numeric">100%</div>
-          <div class="stat-label">आधिकारिक सिलेबस</div>
+      <!-- 2x2 Stats Grid (FIXED: नेवी-स्पेस बैकग्राउंड, कभी सफेद नहीं चमकेगा) -->
+      <div class="hero-stats-panel" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 22px;">
+        <div class="stat-glass-card" style="background: #081229 !important; border: 1.5px solid #1e3a8a !important; border-radius: 16px; padding: 14px 10px; text-align: center;">
+          <div class="stat-icon" style="font-size: 1.4rem;">📋</div>
+          <div class="stat-numeric" style="color: #38bdf8 !important; font-size: 1.35rem; font-weight: 800;">100%</div>
+          <div class="stat-label" style="color: #94a3b8 !important; font-size: 0.74rem; font-weight: 600;">आधिकारिक सिलेबस</div>
         </div>
-        <div class="stat-glass-card">
-          <div class="stat-icon">📖</div>
-          <div class="stat-numeric" id="totalNotesCount">80+</div>
-          <div class="stat-label">सब्जेक्ट चैप्टर्स</div>
+
+        <div class="stat-glass-card" style="background: #081229 !important; border: 1.5px solid #1e3a8a !important; border-radius: 16px; padding: 14px 10px; text-align: center;">
+          <div class="stat-icon" style="font-size: 1.4rem;">📖</div>
+          <div class="stat-numeric" id="totalNotesCount" style="color: #38bdf8 !important; font-size: 1.35rem; font-weight: 800;">80+</div>
+          <div class="stat-label" style="color: #94a3b8 !important; font-size: 0.74rem; font-weight: 600;">सब्जेक्ट चैप्टर्स</div>
         </div>
-        <div class="stat-glass-card">
-          <div class="stat-icon">🎯</div>
-          <div class="stat-numeric" id="totalQuizCount">1000+</div>
-          <div class="stat-label">चैप्टर-वाइज प्रश्न</div>
+
+        <div class="stat-glass-card" style="background: #081229 !important; border: 1.5px solid #1e3a8a !important; border-radius: 16px; padding: 14px 10px; text-align: center;">
+          <div class="stat-icon" style="font-size: 1.4rem;">🎯</div>
+          <div class="stat-numeric" id="totalQuizCount" style="color: #38bdf8 !important; font-size: 1.35rem; font-weight: 800;">1000+</div>
+          <div class="stat-label" style="color: #94a3b8 !important; font-size: 0.74rem; font-weight: 600;">चैप्टर-वाइज प्रश्न</div>
         </div>
-        <div class="stat-glass-card">
-          <div class="stat-icon">💎</div>
-          <div class="stat-numeric">फ्री</div>
-          <div class="stat-label">छात्र सेवा पोर्टल</div>
+
+        <div class="stat-glass-card" style="background: #081229 !important; border: 1.5px solid #1e3a8a !important; border-radius: 16px; padding: 14px 10px; text-align: center;">
+          <div class="stat-icon" style="font-size: 1.4rem;">💎</div>
+          <div class="stat-numeric" style="color: #38bdf8 !important; font-size: 1.35rem; font-weight: 800;">फ्री</div>
+          <div class="stat-label" style="color: #94a3b8 !important; font-size: 0.74rem; font-weight: 600;">छात्र सेवा पोर्टल</div>
         </div>
       </div>
     </section>
@@ -191,7 +197,7 @@
     <section class="dashboard-section">
       <div class="grid-card" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.12), rgba(15, 28, 61, 0.6)); border: 1.5px solid var(--brand-accent);">
         <div class="card-head">
-          <span class="card-tag alert-tag">नया अपडेट</span>
+          <span class="card-tag alert-tag">ऑफिशियल रिपॉजिटरी</span>
           <a href="syllabus.html" class="card-action-link" style="font-weight:700;">पूरा सिलेबस खोलें &rarr;</a>
         </div>
         <h3 class="card-title" style="font-size:1.2rem;">📋 बोर्ड एवं NCERT आधिकारिक सिलेबस हब</h3>
@@ -274,11 +280,11 @@
           <p class="card-desc">मात्रक एवं मापन, गति के नियम, मोल संकल्पना, जगत मोनेरा के संपूर्ण नोट्स।</p>
           <div class="progress-container" style="margin-top:12px;">
             <div class="progress-meta">
-              <span>सिलेबस स्टेटस</span>
-              <span>अपलोड जारी है...</span>
+              <span>सिलेबस कवरेज</span>
+              <span style="color: var(--brand-accent); font-weight: 700;">पूर्ण संकलित</span>
             </div>
             <div class="progress-track">
-              <div class="progress-bar" style="width: 75%;"></div>
+              <div class="progress-bar" style="width: 100%;"></div>
             </div>
           </div>
         </div>
@@ -317,11 +323,11 @@
           <p class="card-desc">टॉपर्स द्वारा तैयार हस्तलिखित नोट्स, 5-मार्क्स महत्वपूर्ण प्रश्न और फॉर्मूला शीट।</p>
           <div class="progress-container" style="margin-top:12px;">
             <div class="progress-meta">
-              <span>12th कंटेंट प्रोग्रेस</span>
-              <span>तैयारी जारी...</span>
+              <span>12th बोर्ड कवरेज</span>
+              <span style="color: var(--brand-accent); font-weight: 700;">सक्रिय मॉड्यूल</span>
             </div>
             <div class="progress-track">
-              <div class="progress-bar" style="width: 60%;"></div>
+              <div class="progress-bar" style="width: 100%;"></div>
             </div>
           </div>
         </div>
