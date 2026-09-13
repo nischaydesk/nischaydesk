@@ -1,19 +1,19 @@
 /* ==========================================================================
-   NischayDesk Dashboard & Notes Studio Styling
+   NischayDesk Dashboard & Notes Studio Styling (v3.5)
    Layout & Component Architecture: Prince Kumar
    ========================================================================== */
 
 /* 1. Hero Studio Banner */
 .hero-studio-banner {
-  background: radial-gradient(circle at 80% 20%, rgba(2, 132, 199, 0.15), transparent 50%),
-              linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18), transparent 55%),
+              linear-gradient(180deg, var(--bg-secondary) 0%, var(--surface-card) 100%);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 32px 20px;
-  margin-bottom: 32px;
+  padding: 28px 18px;
+  margin-bottom: 28px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 28px;
+  gap: 24px;
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
@@ -22,38 +22,38 @@
 
 @media (min-width: 900px) {
   .hero-studio-banner {
-    grid-template-columns: 1.3fr 1fr;
-    padding: 44px 32px;
+    grid-template-columns: 1.25fr 1fr;
+    padding: 38px 30px;
     align-items: center;
   }
 }
 
 .hero-headline {
-  font-size: 1.85rem;
+  font-size: 1.75rem;
   font-weight: 800;
   line-height: 1.25;
   color: var(--text-pure);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   letter-spacing: -0.5px;
 }
 
 @media (min-width: 600px) {
   .hero-headline {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
   }
 }
 
 .hero-subline {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.6;
   max-width: 520px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .hero-action-group {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -61,14 +61,14 @@
 .hero-stats-panel {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
 .stat-glass-card {
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 16px 12px;
+  padding: 14px 10px;
   backdrop-filter: blur(8px);
   text-align: center;
   box-shadow: var(--shadow-sm);
@@ -82,18 +82,18 @@
 
 .stat-icon {
   font-size: 1.3rem;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .stat-numeric {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--brand-accent);
   letter-spacing: -0.5px;
 }
 
 .stat-label {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
   font-weight: 600;
   margin-top: 2px;
@@ -101,33 +101,33 @@
 
 /* 2. Dashboard Sections & Headlines */
 .dashboard-section {
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 .section-title-wrap {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .section-headline {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--text-pure);
 }
 
 .section-subheadline {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   margin-top: 2px;
 }
 
 .realtime-indicator {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-weight: 700;
   color: var(--brand-accent);
   background: rgba(56, 189, 248, 0.12);
   padding: 4px 10px;
@@ -152,7 +152,7 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
@@ -161,6 +161,7 @@
 
 .grid-card:hover {
   border-color: var(--brand-accent);
+  transform: translateY(-2px);
 }
 
 .card-head {
@@ -171,7 +172,7 @@
 }
 
 .card-tag {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -194,7 +195,7 @@
 .card-action-link {
   font-size: 0.8rem;
   color: var(--brand-accent);
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   text-decoration: none;
 }
@@ -204,7 +205,7 @@
 }
 
 .card-title {
-  font-size: 1.08rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 6px;
@@ -212,10 +213,10 @@
 }
 
 .card-desc {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 /* Progress Tracker */
@@ -226,7 +227,7 @@
 .progress-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: var(--text-secondary);
   margin-bottom: 6px;
@@ -244,7 +245,7 @@
   height: 100%;
   background: var(--brand-gradient);
   border-radius: var(--radius-pill);
-  transition: width 0.6s ease;
+  transition: width 0.5s ease;
 }
 
 /* Test Quick Stat Widget */
@@ -252,7 +253,7 @@
   margin-top: auto;
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   background: var(--surface-elevated);
   padding: 10px 12px;
@@ -266,7 +267,7 @@
 }
 
 .stat-pill-sm .stat-val {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--text-pure);
 }
@@ -280,7 +281,7 @@
   background: var(--brand-primary);
   color: #fff;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
@@ -292,26 +293,7 @@
   background: var(--brand-secondary);
 }
 
-/* Cloud Locker History Feed */
-.locker-history-feed {
-  margin-top: auto;
-  min-height: 60px;
-}
-
-.empty-feed-placeholder {
-  display: grid;
-  place-items: center;
-  height: 60px;
-  background: var(--surface-elevated);
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--border-strong);
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 8px;
-}
-
-/* 4. Quick Utilities Grid (Modern 2-Column Mobile Layout) */
+/* 4. Quick Utilities Grid */
 .quick-tools-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -329,7 +311,7 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 16px 14px;
+  padding: 16px 12px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -344,26 +326,26 @@
 }
 
 .tool-icon-box {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
   background: var(--surface-elevated);
   display: grid;
   place-items: center;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
   border: 1px solid var(--border-subtle);
 }
 
 .quick-tool-card h4 {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 4px;
 }
 
 .quick-tool-card p {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
   line-height: 1.35;
 }
@@ -371,47 +353,47 @@
 /* 5. Notes Hub Styles */
 .notes-header-banner {
   text-align: center;
-  padding: 24px 16px 16px;
+  padding: 20px 14px 14px;
   max-width: 800px;
-  margin: 0 auto 24px;
+  margin: 0 auto 20px;
 }
 
 .notes-headline {
-  font-size: 1.85rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--text-pure);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .notes-subheadline {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--text-secondary);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .search-bar-wrap {
   position: relative;
-  max-width: 600px;
+  max-width: 580px;
   margin: 0 auto 16px;
 }
 
 .search-icon {
   position: absolute;
-  left: 16px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
 }
 
 .notes-search-field {
   width: 100%;
-  padding: 12px 16px 12px 44px;
+  padding: 11px 16px 11px 40px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-strong);
   background: var(--surface-card);
   color: var(--text-pure);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   outline: none;
   transition: border-color var(--transition-quick), box-shadow var(--transition-quick);
 }
@@ -424,9 +406,9 @@
 /* Filter Pills Container */
 .filter-pill-container {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
-  padding: 6px 2px;
+  padding: 4px 2px;
   justify-content: flex-start;
   scrollbar-width: none;
   white-space: nowrap;
@@ -447,9 +429,9 @@
   background: var(--surface-card);
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
-  padding: 7px 14px;
+  padding: 6px 12px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-quick);
@@ -472,7 +454,7 @@
 .notes-grid-catalog {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 14px;
 }
 
 @media (min-width: 650px) {
@@ -491,7 +473,7 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -508,25 +490,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .note-badge-class {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   background: rgba(56, 189, 248, 0.12);
   color: var(--brand-accent);
-  padding: 3px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
 }
 
 .note-badge-pages {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
 .note-item-card h3 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 6px;
@@ -534,25 +516,25 @@
 }
 
 .note-item-card p {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
   line-height: 1.45;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .note-btn-group {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 8px;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 6px;
 }
 
 .btn-read-note {
   background: var(--brand-primary);
   color: #fff;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
@@ -567,9 +549,9 @@
   background: var(--surface-elevated);
   color: var(--brand-accent);
   border: 1px solid var(--border-subtle);
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
   text-align: center;
@@ -583,32 +565,32 @@
 /* Loading States */
 .loading-state-box {
   grid-column: 1 / -1;
-  padding: 50px 20px;
+  padding: 40px 16px;
   text-align: center;
   color: var(--text-secondary);
 }
 
 .spinner {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: 3px solid rgba(56, 189, 248, 0.2);
   border-top-color: var(--brand-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin: 0 auto 12px;
+  margin: 0 auto 10px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* 6. Embedded In-Built Studio PDF Viewer & Utility Modals */
+/* 6. Embedded Studio PDF Viewer & Utility Modals */
 .pdf-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(3, 6, 16, 0.85);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 2000;
   display: none;
   place-items: center;
@@ -624,8 +606,8 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 1000px;
-  height: 90vh;
+  max-width: 950px;
+  height: 88vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -633,23 +615,23 @@
 }
 
 .pdf-studio-header {
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .pdf-doc-badge {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--brand-accent);
   font-weight: 700;
 }
 
 .pdf-doc-title {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--text-pure);
   font-weight: 700;
 }
@@ -657,22 +639,22 @@
 .pdf-studio-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .btn-studio-action {
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .btn-studio-action:hover {
@@ -684,7 +666,7 @@
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
   padding: 0 4px;
@@ -707,23 +689,23 @@
 }
 
 .pdf-studio-footer {
-  padding: 8px 16px;
+  padding: 6px 14px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
-/* 7. Utility Modal Specific Components */
+/* 7. Utility Modal Components */
 .btn-stage-primary {
   background: var(--surface-elevated);
   border: 1px solid var(--brand-accent);
   color: var(--brand-accent);
-  padding: 10px 18px;
+  padding: 9px 16px;
   border-radius: var(--radius-md);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-quick);
@@ -734,30 +716,13 @@
   color: #ffffff;
 }
 
-.btn-start-exam {
-  background: var(--brand-gradient);
-  color: #ffffff;
-  border: none;
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
-  font-size: 0.92rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity var(--transition-quick);
-}
-
-.btn-start-exam:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
 .exam-dropdown {
   width: 100%;
-  padding: 10px 12px;
+  padding: 9px 12px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-strong);
   color: var(--text-pure);
   border-radius: var(--radius-sm);
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   outline: none;
 }
