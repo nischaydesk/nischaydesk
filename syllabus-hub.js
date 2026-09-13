@@ -58,20 +58,72 @@ window.NischaySyllabusHubData = {
           { no: 2, name: "नियंत्रण एवं समन्वय", pdf: "" },
           { no: 3, name: "जीव जनन कैसे करते हैं?", pdf: "" },
           { no: 4, name: "आनुवंशिकता एवं जैव विकास", pdf: "" },
-          { no: 5, name: "हमारा पर्यावरण", pdf: "" }
+          { no: 5, name: "हमारा पर्यावरण", pdf: "" },
+          { no: 6, name: "प्राकृतिक संसाधनों का प्रबंधन", pdf: "" }
         ]
       },
-      "sst": {
-        title: "सामाजिक विज्ञान (SST)",
+
+      // सामाजिक विज्ञान के सभी खंड अलग-अलग:
+      "history": {
+        title: "इतिहास (History - भारत और समकालीन विश्व)",
         chapters: [
-          { no: 1, name: "इतिहास: यूरोप में राष्ट्रवाद", pdf: "" },
-          { no: 2, name: "इतिहास: समाजवाद एवं साम्यवाद", pdf: "" },
-          { no: 3, name: "इतिहास: भारत में राष्ट्रवाद", pdf: "" },
-          { no: 4, name: "भूगोल: भारत - संसाधन एवं उपयोग", pdf: "" },
-          { no: 5, name: "भूगोल: जल, खनिज एवं ऊर्जा संसाधन", pdf: "" },
-          { no: 6, name: "राजनीति: लोकतंत्र में सत्ता की साझेदारी", pdf: "" },
-          { no: 7, name: "अर्थशास्त्र: अर्थव्यवस्था एवं इसका विकास", pdf: "" },
-          { no: 8, name: "आपदा प्रबंधन: प्राकृतिक आपदा एवं बचाव", pdf: "" }
+          { no: 1, name: "यूरोप में राष्ट्रवाद (Nationalism in Europe)", pdf: "" },
+          { no: 2, name: "समाजवाद एवं साम्यवाद (Socialism and Communism)", pdf: "" },
+          { no: 3, name: "हिंद-चीन में राष्ट्रवादी आंदोलन", pdf: "" },
+          { no: 4, name: "भारत में राष्ट्रवाद (Nationalism in India)", pdf: "" },
+          { no: 5, name: "अर्थव्यवस्था और आजीविका (औद्योगीकरण का युग)", pdf: "" },
+          { no: 6, name: "शहरीकरण एवं शहरी जीवन", pdf: "" },
+          { no: 7, name: "व्यापार और भूमंडलीकरण (Globalisation)", pdf: "" },
+          { no: 8, name: "प्रेस-संस्कृति एवं राष्ट्रवाद", pdf: "" }
+        ]
+      },
+      "geography": {
+        title: "भूगोल (Geography - भारत: संसाधन एवं उपयोग)",
+        chapters: [
+          { no: 1, name: "संसाधन एवं विकास (प्राकृतिक, भूमि व मृदा संसाधन)", pdf: "" },
+          { no: 2, name: "जल संसाधन (Water Resources)", pdf: "" },
+          { no: 3, name: "वन एवं वन्य जीव संसाधन", pdf: "" },
+          { no: 4, name: "खनिज संसाधन (Mineral Resources)", pdf: "" },
+          { no: 5, name: "ऊर्जा (शक्ति) संसाधन - पारंपरिक एवं गैर-पारंपरिक", pdf: "" },
+          { no: 6, name: "कृषि (Agriculture) - प्रारूप एवं मुख्य फसलें", pdf: "" },
+          { no: 7, name: "निर्माण उद्योग (Manufacturing Industries)", pdf: "" },
+          { no: 8, name: "परिवहन, संचार एवं व्यापार (जीवन रेखाएँ)", pdf: "" },
+          { no: 9, name: "बिहार: कृषि एवं वन संसाधन", pdf: "" },
+          { no: 10, name: "बिहार: खनिज, ऊर्जा, उद्योग एवं जनसंख्या", pdf: "" },
+          { no: 11, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", pdf: "" }
+        ]
+      },
+      "civics": {
+        title: "राजनीति शास्त्र (Democratic Politics - लोकतांत्रिक राजनीति)",
+        chapters: [
+          { no: 1, name: "लोकतंत्र में सत्ता की साझेदारी (Power Sharing)", pdf: "" },
+          { no: 2, name: "सत्ता में साझेदारी की कार्यप्रणाली (संघवाद एवं स्थानीय स्वशासन)", pdf: "" },
+          { no: 3, name: "लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष (जन संघर्ष और आंदोलन)", pdf: "" },
+          { no: 4, name: "लोकतंत्र की उपलब्धियाँ (Outcomes of Democracy)", pdf: "" },
+          { no: 5, name: "लोकतंत्र की चुनौतियाँ (Challenges to Democracy)", pdf: "" }
+        ]
+      },
+      "economics": {
+        title: "अर्थशास्त्र (Economics - हमारी अर्थव्यवस्था)",
+        chapters: [
+          { no: 1, name: "अर्थव्यवस्था एवं इसके विकास का इतिहास", pdf: "" },
+          { no: 2, name: "राज्य एवं राष्ट्र की आय (National Income & GDP)", pdf: "" },
+          { no: 3, name: "मुद्रा, बचत एवं साख (Money and Credit)", pdf: "" },
+          { no: 4, name: "हमारी वित्तीय संस्थाएँ (बैंकिंग व साख व्यवस्था)", pdf: "" },
+          { no: 5, name: "रोजगार एवं सेवाएँ (Employment & Services)", pdf: "" },
+          { no: 6, name: "वैश्वीकरण (Globalisation)", pdf: "" },
+          { no: 7, name: "उपभोक्ता जागरण एवं संरक्षण (Consumer Rights)", pdf: "" }
+        ]
+      },
+      "disaster": {
+        title: "आपदा प्रबंधन (Disaster Management)",
+        chapters: [
+          { no: 1, name: "प्राकृतिक आपदा: एक परिचय", pdf: "" },
+          { no: 2, name: "प्राकृतिक आपदा एवं प्रबंधन: बाढ़ और सुखाड़", pdf: "" },
+          { no: 3, name: "प्राकृतिक आपदा एवं प्रबंधन: भूकंप एवं सुनामी", pdf: "" },
+          { no: 4, name: "जीवन रक्षक आकस्मिक प्रबंधन", pdf: "" },
+          { no: 5, name: "आपदा काल में वैकल्पिक संचार व्यवस्था", pdf: "" },
+          { no: 6, name: "आपदा और सह-अस्तित्व", pdf: "" }
         ]
       },
       "sanskrit": {
@@ -86,8 +138,12 @@ window.NischaySyllabusHubData = {
           { no: 7, name: "नीतिश्लोकाः", pdf: "" },
           { no: 8, name: "कर्मवीर कथा", pdf: "" },
           { no: 9, name: "स्वामी दयानन्दः", pdf: "" },
-          { no: 10, name: "व्याघ्रपथिककथा", pdf: "" },
-          { no: 11, name: "कर्णस्य दानवीरता", pdf: "" }
+          { no: 10, name: "मन्दाकिनीवर्णनम्", pdf: "" },
+          { no: 11, name: "व्याघ्रपथिककथा", pdf: "" },
+          { no: 12, name: "कर्णस्य दानवीरता", pdf: "" },
+          { no: 13, name: "विश्वशांतिः", pdf: "" },
+          { no: 14, name: "शास्त्रकाराः", pdf: "" },
+          { no: 15, name: "संस्कृत व्याकरण: संधि, समास, कारक एवं प्रत्यय", pdf: "" }
         ]
       }
     }
@@ -257,7 +313,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!classSelect || !subjectSelect || !chaptersContainer) return;
 
-  // छात्र की प्रोफ़ाइल क्लास को ऑटो-सेलेक्ट करें
   const studentLockedClass = localStorage.getItem('nischay_student_class') || '10';
   if (window.NischaySyllabusHubData[studentLockedClass]) {
     classSelect.value = studentLockedClass;
