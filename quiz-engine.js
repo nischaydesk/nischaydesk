@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.0 Dynamic JSON)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.2 Bulletproof JSON Fetch)
    Supports: Dynamic Fetch from data/*.json, Strict Chapter Filter & Negative Marking
    Architected by: Prince Kumar
    ========================================================================== */
@@ -48,66 +48,104 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900; // in seconds
 
-  // Helper: विषय के अनुसार सही JSON फाइल का नाम तय करना
+  // Helper: विषय के नाम या वैल्यू से बिल्कुल सही JSON फाइल ढूंढना
   function resolveJsonFileName(sClass, sSubject) {
-    let sub = sSubject.toLowerCase();
+    let subVal = (sSubject || "").toLowerCase().trim();
+    let subText = "";
     
-    // अगर विषय में पहले से क्लास प्रीफिक्स (उदा. 10-physics) है
-    if (sub.startsWith('10-') || sub.startsWith('11-') || sub.startsWith('12-')) {
-      if (sub === '10-science-phy') return '10-physics.json';
-      if (sub === '10-science-chem') return '10-chemistry.json';
-      if (sub === '10-science-bio') return '10-biology.json';
-      if (['10-history', '10-geography', '10-civics', '10-economics', '10-disaster'].includes(sub)) {
-        return '10-sst.json';
-      }
-      return `${sub}.json`;
+    if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
+      subText = (testSubjectSelect.options[testSubjectSelect.selectedIndex].text || "").toLowerCase().trim();
     }
 
-    // सामान्य ड्रॉपडाउन वैल्यूज
-    if (sClass === '10') {
-      if (sub.includes('phy') || sub.includes('भौतिकी')) return '10-physics.json';
-      if (sub.includes('chem') || sub.includes('रसायन')) return '10-chemistry.json';
-      if (sub.includes('bio') || sub.includes('जीव')) return '10-biology.json';
-      if (sub.includes('math') || sub.includes('गणित')) return '10-math.json';
-      if (sub.includes('sans') || sub.includes('संस्कृत')) return '10-sanskrit.json';
-      if (sub.includes('sst') || sub.includes('इतिहास') || sub.includes('भूगोल') || sub.includes('सामाजिक')) return '10-sst.json';
+    let combined = subVal + " " + subText;
+
+    // 1. भौतिकी (Physics)
+    if (combined.includes('phy') || combined.includes('भौतिकी') || combined.includes('संबंधित')) {
+      return '10-physics.json';
+    }
+    // 2. रसायन विज्ञान (Chemistry)
+    if (combined.includes('chem') || combined.includes('रसायन')) {
+      return '10-chemistry.json';
+    }
+    // 3. जीव विज्ञान (Biology)
+    if (combined.includes('bio') || combined.includes('जीव')) {
+      return '10-biology.json';
+    }
+    // 4. गणित (Math)
+    if (combined.includes('math') || combined.includes('गणित')) {
+      return '10-math.json';
+    }
+    // 5. संस्कृत (Sanskrit)
+    if (combined.includes('sans') || combined.includes('संस्कृत')) {
+      return '10-sanskrit.json';
+    }
+    // 6. सामाजिक विज्ञान / इतिहास / भूगोल आदि (SST)
+    if (combined.includes('sst') || combined.includes('इतिहास') || combined.includes('भूगोल') || combined.includes('सामाजिक') || combined.includes('नागरिक') || combined.includes('अर्थशास्त्र') || combined.includes('आपदा') || combined.includes('history') || combined.includes('geo') || combined.includes('civic') || combined.includes('eco') || combined.includes('disaster')) {
+      return '10-sst.json';
     }
 
-    return `${sClass}-${sub}.json`;
+    // डिफ़ॉल्ट फॉलबैक
+    return `${sClass}-physics.json`;
   }
 
-  // 1. Dynamic Question Loader with Chapter Filter
+  // 1. Dynamic Question Loader with Robust Path & Fallback
   async function loadSelectedQuestions() {
     const sClass = testClassSelect ? testClassSelect.value : "10";
-    const sSubject = testSubjectSelect ? testSubjectSelect.value : "physics";
-    const sChapter = testChapterSelect ? testChapterSelect.value : "all";
+    
+    let sSubject = "physics";
+    if (testSubjectSelect) {
+      sSubject = testSubjectSelect.value || "physics";
+    }
 
-    const jsonFile = resolveJsonFileName(sClass, sSubject);
+    let sChapter = "all";
+    if (testChapterSelect) {
+      sChapter = testChapterSelect.value || "all";
+    }
 
-    try {
-      const response = await fetch(`data/${jsonFile}?t=${Date.now()}`);
-      if (!response.ok) {
-        throw new Error(`फ़ाइल लोड नहीं हो सकी: data/${jsonFile}`);
+    const jsonFileName = resolveJsonFileName(sClass, sSubject);
+
+    // अलग-अलग संभावित रिलेटिव पाथ्स ताकि GitHub Pages पर कभी 404 न आए
+    const possiblePaths = [
+      `data/${jsonFileName}`,
+      `./data/${jsonFileName}`,
+      `/nischaydesk/data/${jsonFileName}`,
+      `../data/${jsonFileName}`
+    ];
+
+    let rawQuestions = null;
+
+    for (const path of possiblePaths) {
+      try {
+        const response = await fetch(`${path}?t=${Date.now()}`);
+        if (response.ok) {
+          rawQuestions = await response.json();
+          break; // फाइल मिल गई
+        }
+      } catch (e) {
+        // अगला पाथ ट्राई करेगा
       }
+    }
 
-      const rawQuestions = await response.json();
-
-      // डेटा नॉर्मलाइज़ेशन (q vs question, correct vs correctIndex)
+    if (!rawQuestions || !Array.isArray(rawQuestions)) {
+      console.error("JSON फ़ाइल लोड नहीं हो सकी:", jsonFileName);
+      currentQuestions = [];
+    } else {
+      // डेटा नॉर्मलाइज़ेशन (प्रॉपर्टी नाम की किसी भी भिन्नता को संभालना)
       const normalizedList = rawQuestions.map(item => ({
         id: item.id || '',
         chapter: parseInt(item.chapter) || 1,
-        q: item.q || item.question || 'प्रश्न अनुपलब्ध',
+        q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
         options: item.options || [],
         correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
-        exp: item.exp || item.explanation || 'इस प्रश्न की व्याख्या शीघ्र जोड़ी जाएगी।'
+        exp: item.exp || item.explanation || 'व्याख्या शीघ्र जोड़ी जाएगी।'
       }));
 
       // स्ट्रिक्ट चैप्टर फ़िल्टरिंग
-      if (sChapter === 'all' || sChapter.includes('संपूर्ण') || sChapter.includes('फुल')) {
+      const chString = String(sChapter).toLowerCase();
+      if (chString === 'all' || chString.includes('संपूर्ण') || chString.includes('फुल')) {
         currentQuestions = normalizedList;
       } else {
-        // अध्याय संख्या निकालना (जैसे 'ch1', '1', या 'अध्याय 1')
-        const chMatch = String(sChapter).match(/\d+/);
+        const chMatch = chString.match(/\d+/);
         const targetChapter = chMatch ? parseInt(chMatch[0]) : null;
 
         if (targetChapter) {
@@ -116,24 +154,20 @@ document.addEventListener('DOMContentLoaded', function () {
           currentQuestions = normalizedList;
         }
       }
-
-    } catch (err) {
-      console.warn("JSON fetch error, fallback active:", err);
-      currentQuestions = [];
     }
 
-    // अगर उस चैप्टर में अभी कोई सवाल न हो
+    // अगर उस चैप्टर में प्रश्न न मिलें तो फॉलबैक
     if (currentQuestions.length === 0) {
       currentQuestions = [
         {
-          q: `चयनित अध्याय के प्रश्न बैंक को अपडेट किया जा रहा है। टेस्ट इंजन जाँचने हेतु डेमो प्रश्न: प्रकाश का निर्वात में वेग कितना होता है?`,
+          q: `चयनित अध्याय (${jsonFileName}) के प्रश्न लोड हो रहे हैं या अभी अपडेट हो रहे हैं। जाँच हेतु डेमो प्रश्न: प्रकाश का निर्वात में वेग कितना होता है?`,
           options: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10⁵ km/s", "A और C दोनों"],
           correct: 3,
-          exp: "प्रकाश का वेग निर्वात में 3 × 10⁸ मीटर/सेकंड अथवा 3 × 10⁵ किमी/सेकंड होता है।"
+          exp: "प्रकाश का वेग निर्वात में 3 × 10⁸ मीटर/सेकंड होता है।"
         }
       ];
     } else {
-      // प्रश्नों को शफल (Shuffle) करना
+      // प्रश्नों को शफल करना
       currentQuestions.sort(() => Math.random() - 0.5);
     }
   }
@@ -162,8 +196,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (testRunningScreen) testRunningScreen.classList.add('active');
 
       const cls = testClassSelect ? testClassSelect.value : "10";
-      const subName = testSubjectSelect ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
-      if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subName.split(' ')[0]}`;
+      let subText = "विषय";
+      if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
+        subText = testSubjectSelect.options[testSubjectSelect.selectedIndex].text;
+      }
+      if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subText.split(' ')[0]}`;
 
       startTimer();
       renderPalette();
@@ -328,7 +365,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const totalQuestions = currentQuestions.length;
-    // Marking Scheme: +4 for correct, -1 for wrong
     const totalScore = (correctCount * 4) - (wrongCount * 1);
     const maxMarks = totalQuestions * 4;
     const accuracyVal = (correctCount + wrongCount > 0)
