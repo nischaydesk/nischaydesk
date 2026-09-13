@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Real-Time Test Simulation Engine Stylesheet
+   NischayDesk Real-Time Test Simulation Engine Stylesheet (v3.5)
    Design & Architecture: Prince Kumar
    ========================================================================== */
 
@@ -20,7 +20,7 @@
 
 /* 2. Screen 1: Test Lobby Card */
 .lobby-card {
-  max-width: 800px;
+  max-width: 820px;
   margin: 16px auto;
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
@@ -31,7 +31,7 @@
 }
 
 .lobby-title {
-  font-size: 1.85rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--text-pure);
   margin-bottom: 8px;
@@ -61,8 +61,8 @@
 .select-field-box label {
   display: block;
   font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-weight: 700;
+  color: var(--brand-accent);
   margin-bottom: 6px;
 }
 
@@ -76,11 +76,12 @@
   font-size: 0.9rem;
   outline: none;
   cursor: pointer;
-  transition: border-color var(--transition-quick);
+  transition: border-color var(--transition-quick), box-shadow var(--transition-quick);
 }
 
 .exam-dropdown:focus {
   border-color: var(--brand-accent);
+  box-shadow: 0 0 0 3px var(--brand-glow);
 }
 
 .instructions-box {
@@ -96,6 +97,7 @@
   font-size: 0.92rem;
   color: var(--brand-accent);
   margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .instructions-box ul {
@@ -129,18 +131,19 @@
   border: none;
   padding: 13px 26px;
   border-radius: var(--radius-pill);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 4px 18px var(--brand-glow);
-  transition: transform var(--transition-quick);
+  transition: transform var(--transition-quick), box-shadow var(--transition-quick);
 }
 
 .btn-start-exam:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--brand-glow);
 }
 
-/* 3. Screen 2: Live Running Exam Status Bar */
+/* 3. Screen 2: Running Exam Status Bar */
 .exam-status-bar {
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
@@ -152,6 +155,7 @@
   margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 10px;
+  box-shadow: var(--shadow-sm);
 }
 
 .exam-active-subject {
@@ -162,17 +166,18 @@
 
 .subject-badge {
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 800;
   background: rgba(56, 189, 248, 0.12);
   color: var(--brand-accent);
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
 }
 
 .question-counter {
   font-size: 0.82rem;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .exam-timer-box {
@@ -181,7 +186,7 @@
   gap: 6px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: var(--radius-pill);
   font-weight: 800;
   font-size: 1.05rem;
@@ -191,6 +196,7 @@
 .exam-timer-box.timer-warning {
   color: var(--danger);
   border-color: var(--danger);
+  background: var(--danger-bg);
   animation: timerBlink 1s infinite alternate;
 }
 
@@ -208,7 +214,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background var(--transition-quick);
+  transition: filter var(--transition-quick);
 }
 
 .btn-submit-exam-early:hover {
@@ -224,7 +230,7 @@
 
 @media (min-width: 860px) {
   .exam-workspace-grid {
-    grid-template-columns: 1fr 270px;
+    grid-template-columns: 1fr 280px;
   }
 }
 
@@ -233,9 +239,10 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-sm);
 }
 
 .question-header {
@@ -248,15 +255,15 @@
 }
 
 .q-number-pill {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--brand-accent);
 }
 
 .q-marks-tag {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .question-text {
@@ -264,7 +271,7 @@
   font-weight: 600;
   color: var(--text-pure);
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .options-group {
@@ -277,34 +284,36 @@
 .option-choice-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: border-color var(--transition-quick), background var(--transition-quick);
+  transition: all var(--transition-quick);
 }
 
 .option-choice-item:hover {
   border-color: var(--brand-accent);
+  transform: translateX(3px);
 }
 
 .option-choice-item.selected {
-  background: rgba(56, 189, 248, 0.12);
+  background: rgba(56, 189, 248, 0.14);
   border-color: var(--brand-accent);
+  box-shadow: 0 0 0 1px var(--brand-accent);
 }
 
 .option-letter {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   display: grid;
   place-items: center;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 800;
   color: var(--text-secondary);
   flex-shrink: 0;
 }
@@ -316,8 +325,9 @@
 }
 
 .option-label-text {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--text-primary);
+  line-height: 1.4;
 }
 
 /* Stage Navigation Controls */
@@ -328,10 +338,12 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .btn-stage-primary, .btn-stage-secondary, .btn-stage-ghost {
-  padding: 9px 16px;
+  padding: 10px 18px;
   border-radius: var(--radius-sm);
   font-size: 0.84rem;
   font-weight: 700;
@@ -376,13 +388,14 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 18px;
   height: fit-content;
+  box-shadow: var(--shadow-sm);
 }
 
 .palette-title {
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-pure);
   margin-bottom: 10px;
 }
@@ -392,7 +405,7 @@
   gap: 12px;
   font-size: 0.74rem;
   color: var(--text-secondary);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .dot-legend {
@@ -420,7 +433,7 @@
   color: var(--text-secondary);
   border-radius: var(--radius-sm);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -440,7 +453,7 @@
 
 /* 6. Screen 3: Result & Scorecard */
 .result-card-container {
-  max-width: 800px;
+  max-width: 820px;
   margin: 16px auto;
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
@@ -451,21 +464,21 @@
 }
 
 .trophy-icon {
-  font-size: 2.6rem;
+  font-size: 2.8rem;
   display: inline-block;
   margin-bottom: 6px;
 }
 
 .result-header-badge h2 {
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   font-weight: 800;
   color: var(--text-pure);
 }
 
 .result-header-badge p {
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .result-tiles-grid {
@@ -492,13 +505,13 @@
 
 .tile-label {
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .tile-val {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--text-pure);
 }
@@ -516,6 +529,7 @@
 
 .solutions-heading {
   font-size: 0.95rem;
+  font-weight: 800;
   color: var(--text-pure);
   margin-bottom: 12px;
 }
@@ -530,18 +544,19 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 14px 16px;
 }
 
 .sol-q-title {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-pure);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 .sol-ans-row {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   margin-bottom: 4px;
 }
 
@@ -549,12 +564,14 @@
 .sol-ans-row.wrong { color: var(--danger); }
 
 .sol-explanation {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  background: rgba(0, 0, 0, 0.2);
-  padding: 8px;
-  border-radius: 4px;
-  margin-top: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+  line-height: 1.5;
+  border-left: 3px solid var(--brand-accent);
 }
 
 .result-actions-footer {
