@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.3 Debug Edition)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.4 Final Fix)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // विषय की पहचान को शत-प्रतिशत सटीक बनाने वाला फंक्शन
+  // विषय की पहचान
   function getTargetJsonFile() {
     let val = testSubjectSelect ? testSubjectSelect.value.toLowerCase() : "";
     let txt = "";
@@ -58,44 +58,43 @@ document.addEventListener('DOMContentLoaded', function () {
     if (combined.includes('sans') || combined.includes('संस्कृत')) return '10-sanskrit.json';
     if (combined.includes('sst') || combined.includes('इतिहास') || combined.includes('भूगोल') || combined.includes('सामाजिक') || combined.includes('नागरिक') || combined.includes('अर्थशास्त्र') || combined.includes('आपदा')) return '10-sst.json';
 
-    return '10-physics.json'; // डिफ़ॉल्ट
+    return '10-physics.json';
   }
 
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
     const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
     
-    // हम अलग-अलग पाथ ट्राई करेंगे ताकि 404 न आए
+    // GitHub Pages और लोकल दोनों के लिए सभी संभव पाथ्स
     const pathsToTry = [
       `./data/${jsonFile}`,
       `data/${jsonFile}`,
-      `/nischaydesk/data/${jsonFile}`
+      `/nischaydesk/data/${jsonFile}`,
+      `../data/${jsonFile}`
     ];
 
     let rawData = null;
-    let successPath = "";
 
     for (let p of pathsToTry) {
       try {
         let res = await fetch(`${p}?t=${Date.now()}`);
         if (res.ok) {
           rawData = await res.json();
-          successPath = p;
           break;
         }
       } catch (err) {
-        // اگلا پاتھ چیک کرے گا
+        // ट्राइएंग जारी रखेगा
       }
     }
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-      alert(`⚠️ एरर: '${jsonFile}' फ़ाइल लोड नहीं हो पाई! कृपया जाँचें कि GitHub के data फ़ोल्डर में यह फ़ाइल मौजूद है या नहीं।`);
+      alert(`⚠️ फ़ाइल '${jsonFile}' लोड नहीं हो पाई! कृपया सुनिश्चित करें कि GitHub पर data/${jsonFile} सही सलामत मौजूद है।`);
       currentQuestions = [
         {
           q: `डेमो प्रश्न: ${jsonFile} लोड नहीं हो पाई।`,
           options: ["ऑप्शन A", "ऑप्शन B", "ऑप्शन C", "ऑप्शन D"],
           correct: 0,
-          exp: "फ़ाइल पाथ या JSON फॉर्मेट चेक करें।"
+          exp: "कृपया JSON फ़ाइल का फॉर्मेट चेक करें।"
         }
       ];
       return;
@@ -125,10 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // अगर उस चैप्टर में एक भी सवाल न मिले
     if (currentQuestions.length === 0) {
-      alert(`⚠️ सूचना: '${jsonFile}' में 'अध्याय ${targetCh}' के प्रश्न नहीं मिले! (कुल प्रश्न: ${allQs.length})`);
-      currentQuestions = allQs; // पूरा विषय दिखा दो ताकि खाली न रहे
+      currentQuestions = allQs; // यदि चैप्टर मैच न हो तो पूरा विषय दिखाओ
     }
 
     currentQuestions.sort(() => Math.random() - 0.5);
