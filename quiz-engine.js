@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.4 Final Fix)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (v4.5 Bulletproof Absolute Path)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -65,13 +65,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const jsonFile = getTargetJsonFile();
     const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
     
-    // GitHub Pages और लोकल दोनों के लिए सभी संभव पाथ्स
-    const pathsToTry = [
-      `./data/${jsonFile}`,
-      `data/${jsonFile}`,
-      `/nischaydesk/data/${jsonFile}`,
-      `../data/${jsonFile}`
-    ];
+    // ऑटोमैटिक बेस पाथ निर्धारण (लोकल और GitHub Pages दोनों के लिए अचूक)
+    let basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+    if (!basePath.endsWith('/')) basePath += '/';
+    
+    const absolutePath = `${window.location.origin}${basePath}data/${jsonFile}`;
+    const relativePath = `data/${jsonFile}`;
+    
+    const pathsToTry = [absolutePath, relativePath, `./data/${jsonFile}`, `/nischaydesk/data/${jsonFile}`];
 
     let rawData = null;
 
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
           break;
         }
       } catch (err) {
-        // ट्राइएंग जारी रखेगा
+        // प्रयास जारी रखेगा
       }
     }
 
