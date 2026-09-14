@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (Master Pro v6.0)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (Master Pro v6.1)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // --- 1. डायरेक्ट होम / डैशबोर्ड बटन (थ्री लाइन मेन्यू की ज़रूरत खत्म) ---
+  // --- 1. डायरेक्ट होम / डैशबोर्ड बटन ---
   const headerBrand = document.querySelector('.header-brand, .brand, nav, header');
   if (headerBrand && !document.getElementById('quickHomeNavBtn')) {
     const homeBtn = document.createElement('a');
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const selectedClass = this.value.trim();
       if (selectedClass === '11' || selectedClass === '12') {
         alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट सीरीज और प्रश्न बैंक अभी उपलब्ध नहीं है।\nइस पर काम चल रहा है और यह बहुत जल्द लाइव होगा!\n\nतब तक आप 10वीं के सभी विषयों का टेस्ट दे सकते हैं।`);
-        this.value = '10'; // वापस 10वीं पर सेट कर देगा
+        this.value = '10';
       }
     });
   }
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return '10-physics.json';
   }
 
-  // प्रश्न लोड करना और पैटर्न के अनुसार संख्या सेट करना
+  // प्रश्न लोड करना (चैप्टर-वाइज = 20 प्रश्न, फुल सिलेबस = 30 प्रश्न)
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
     const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return false;
     }
 
-    // डेटा को फॉर्मेट में लाना
+    // डेटा को व्यवस्थित करना
     const allQs = rawData.map(item => ({
       chapter: parseInt(item.chapter) || 1,
       q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
@@ -174,7 +174,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // अध्याय फ़िल्टरिंग
     const chStr = String(chapterVal).toLowerCase();
-    if (chStr === 'all' || chStr.includes('संपूर्ण') || chStr.includes('फुल')) {
+    const isFullSyllabus = (chStr === 'all' || chStr.includes('संपूर्ण') || chStr.includes('फुल'));
+
+    if (isFullSyllabus) {
       currentQuestions = allQs;
     } else {
       const match = chStr.match(/\d+/);
@@ -191,18 +193,11 @@ document.addEventListener('DOMContentLoaded', function () {
       currentQuestions = allQs;
     }
 
-    // सवालों को रैंडम करना
+    // प्रश्नों को रैंडम शफल करना
     currentQuestions.sort(() => Math.random() - 0.5);
 
-    // पैटर्न के अनुसार प्रश्नों की संख्या तय करना
-    const pattern = testPatternSelect ? testPatternSelect.value : 'speed';
-    let questionLimit = 20;
-
-    if (pattern === 'board') {
-      questionLimit = 30; // बोर्ड फुल टेस्ट: 30 प्रश्न
-    } else {
-      questionLimit = 20; // क्विक स्पीड टेस्ट: 20 प्रश्न
-    }
+    // प्रश्नों की संख्या: फुल सिलेबस है तो 30 प्रश्न, चैप्टर-वाइज है तो 20 प्रश्न
+    let questionLimit = isFullSyllabus ? 30 : 20;
 
     if (currentQuestions.length > questionLimit) {
       currentQuestions = currentQuestions.slice(0, questionLimit);
@@ -211,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
-  // --- 3. टेस्ट स्टार्ट और पैटर्न के अनुसार टाइमर सेट ---
+  // --- 3. टेस्ट स्टार्ट और चैप्टर के अनुसार टाइमर सेट ---
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
       const cls = testClassSelect ? testClassSelect.value.trim() : "10";
@@ -233,12 +228,15 @@ document.addEventListener('DOMContentLoaded', function () {
       userResponses = {};
       currentQIndex = 0;
 
-      // पैटर्न के अनुसार टाइमर
-      const pattern = testPatternSelect ? testPatternSelect.value : 'speed';
-      if (pattern === 'board') {
-        timeRemaining = 30 * 60; // 30 मिनट
+      // टाइमर लॉजिक: अगर 'संपूर्ण विषय' है तो 30 मिनट, नहीं तो 15 मिनट
+      const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
+      const chStr = String(chapterVal).toLowerCase();
+      const isFullSyllabus = (chStr === 'all' || chStr.includes('संपूर्ण') || chStr.includes('फुल'));
+
+      if (isFullSyllabus) {
+        timeRemaining = 30 * 60; // 30 मिनट = 1800 सेकंड
       } else {
-        timeRemaining = 15 * 60; // 15 मिनट
+        timeRemaining = 15 * 60; // 15 मिनट = 900 सेकंड
       }
 
       if (testLobbyScreen) testLobbyScreen.classList.remove('active');
