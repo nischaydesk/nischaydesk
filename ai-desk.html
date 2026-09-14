@@ -3,60 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NischayDesk AI Studio Pro | Next-Gen AI Doubt Engine</title>
+  <title>NischayDesk AI Studio</title>
 
-  <!-- Typography -->
+  <!-- Google Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Markdown Parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <!-- MathJax Configuration -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true
-      },
-      options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      },
-      chtml: {
-        displayAlign: 'left'
-      }
-    };
-  </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
   <style>
     :root {
-      --bg: #0b0f19;
-      --surface: #111827;
-      --surface-elevated: #1f2937;
-      --card-bg: #131d33;
-      --border: rgba(56, 189, 248, 0.2);
-      --accent: #38bdf8;
-      --primary: #0284c7;
-      --gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --code-block: #030712;
+      --bg: #131314;
+      --surface: #1e1f20;
+      --surface-elevated: #282a2c;
+      --text-main: #e3e3e3;
+      --text-muted: #c4c7c5;
+      --user-bubble: #282a2c;
+      --border: #333537;
+      --input-bg: #1e1f20;
+      --accent: #a8c7fa;
+      --blue-btn: #1a73e8;
+      --math-bg: #1a2233;
+      --math-border: rgba(66, 133, 244, 0.4);
+      --dock-shadow: rgba(0, 0, 0, 0.5);
+      --menu-bg: #282a2c;
     }
 
     html.light-mode {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-elevated: #f1f5f9;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-      --accent: #0284c7;
-      --primary: #0284c7;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --code-block: #f1f5f9;
+      --bg: #ffffff;
+      --surface: #f0f4f9;
+      --surface-elevated: #e1e3e1;
+      --text-main: #1f1f1f;
+      --text-muted: #444746;
+      --user-bubble: #f0f4f9;
+      --border: #e3e3e3;
+      --input-bg: #f0f4f9;
+      --accent: #0b57d0;
+      --blue-btn: #0b57d0;
+      --math-bg: #edf3fc;
+      --math-border: rgba(11, 87, 208, 0.3);
+      --dock-shadow: rgba(0, 0, 0, 0.08);
+      --menu-bg: #ffffff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -70,351 +64,468 @@
       flex-direction: column;
       overflow: hidden;
       transition: background 0.2s ease, color 0.2s ease;
+      user-select: text;
     }
 
-    /* Top Bar */
-    .app-header {
+    /* Minimal Gemini Top Bar */
+    .gemini-topbar {
       padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      background: var(--bg);
       flex-shrink: 0;
       z-index: 50;
+      border-bottom: 1px solid var(--border);
     }
 
-    .header-left, .header-right {
+    .topbar-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .btn-nav-back {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid var(--border);
-      color: var(--accent);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
+    .btn-back-link {
+      color: var(--text-main);
       text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+    }
+
+    .brand-pill {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sparkle-svg { width: 22px; height: 22px; }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-top-util {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 4px;
     }
 
-    .brand-tag-pill {
-      font-size: 0.72rem;
-      font-weight: 800;
-      background: var(--gradient);
-      color: #fff;
-      padding: 3px 8px;
-      border-radius: 6px;
-    }
-
-    .btn-top-action {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.76rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
     /* Chat Viewport Area */
-    .chat-scroll-viewport {
+    .chat-scroll-area {
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 16px 14px 140px;
+      padding: 16px 14px 210px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      max-width: 820px;
+      gap: 24px;
+      max-width: 780px;
       width: 100%;
       margin: 0 auto;
     }
 
-    /* Hero Guide Card */
-    .hero-guide-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px 14px;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    /* Welcome / Hero Guide */
+    .gemini-welcome {
+      margin-top: 20px;
     }
 
-    .hero-guide-card h2 {
-      font-size: 1.45rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-    .hero-guide-card h2 span {
-      background: var(--gradient);
+    .gemini-welcome h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #4285f4, #9b72cb, #d96570);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero-guide-card p {
-      font-size: 0.82rem;
+    .gemini-welcome p {
+      font-size: 1.02rem;
       color: var(--text-muted);
-      margin-bottom: 14px;
-      line-height: 1.45;
+      margin-bottom: 24px;
     }
 
-    .mode-pills-row {
+    .chips-col {
       display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      scrollbar-width: none;
-      justify-content: flex-start;
+      flex-direction: column;
+      gap: 10px;
     }
-    .mode-pills-row::-webkit-scrollbar { display: none; }
-    @media (min-width: 600px) { .mode-pills-row { justify-content: center; } }
 
-    .mode-pill {
-      background: var(--surface-elevated);
+    .chip-item {
+      background: var(--surface);
       border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 5px 12px;
-      border-radius: 14px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .mode-pill.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    .quick-chips-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
-      text-align: left;
-    }
-
-    .quick-chip-box {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--accent);
-      line-height: 1.35;
-      transition: transform 0.15s ease;
-    }
-    .quick-chip-box:hover { transform: translateY(-2px); border-color: var(--accent); }
-
-    /* Gemini-Style Chat Bubbles */
-    .user-bubble {
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 20px;
-      border-bottom-right-radius: 4px;
-      align-self: flex-end;
-      max-width: 85%;
-      font-size: 0.94rem;
-      font-weight: 500;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
-      word-break: break-word;
-    }
-
-    .ai-bubble {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      border-bottom-left-radius: 4px;
-      padding: 18px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 0.92rem;
       color: var(--text-main);
-      font-size: 0.95rem;
-      line-height: 1.7;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .chip-item:hover { background: var(--surface-elevated); }
+
+    /* Messages */
+    .msg-user-row {
+      display: flex;
+      justify-content: flex-end;
       width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-      overflow-wrap: anywhere;
+      position: relative;
     }
 
-    .ai-badge-row {
+    .msg-user-bubble {
+      background: var(--user-bubble);
+      color: var(--text-main);
+      padding: 12px 18px;
+      border-radius: 22px;
+      border-bottom-right-radius: 4px;
+      max-width: 85%;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      word-break: break-word;
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.2s;
+    }
+    .msg-user-bubble:active {
+      opacity: 0.85;
+    }
+
+    .msg-ai-row {
       display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.72rem;
+      gap: 12px;
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    .ai-sparkle-box {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .ai-render-content {
+      flex: 1;
+      min-width: 0;
+      font-size: 1.02rem;
+      line-height: 1.8;
+      color: var(--text-main);
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .ai-render-content h1, .ai-render-content h2, .ai-render-content h3 {
+      font-size: 1.15rem;
       font-weight: 700;
-      color: var(--accent);
+      margin: 16px 0 8px;
+      color: var(--text-main);
+    }
+
+    .ai-render-content p {
       margin-bottom: 12px;
     }
 
-    .stream-slot {
-      width: 100%;
-      overflow-x: hidden;
+    .ai-render-content ul, .ai-render-content ol {
+      margin-left: 20px;
+      margin-bottom: 12px;
+      padding-left: 2px;
     }
 
-    .ai-bubble h1, .ai-bubble h2, .ai-bubble h3 {
-      font-size: 1.1rem;
-      margin: 14px 0 8px;
-      color: var(--text-main);
-      font-weight: 700;
+    .ai-render-content li {
+      margin-bottom: 12px;
+      min-width: 0;
     }
-    .ai-bubble p { margin-bottom: 10px; }
-    .ai-bubble ul, .ai-bubble ol { margin-left: 20px; margin-bottom: 10px; }
-    .ai-bubble li { margin-bottom: 6px; }
 
-    /* Auto Responsive Equations - कभी स्क्रीन से बाहर नहीं कटेगा */
-    mjx-container {
-      max-width: 100% !important;
+    /* KaTeX Horizontal Scrollable Cards */
+    .katex-display {
+      display: block !important;
+      margin: 8px 0 12px !important;
+      padding: 12px 16px !important;
+      background: var(--math-bg) !important;
+      border: 1px solid var(--math-border) !important;
+      border-left: 4px solid var(--blue-btn) !important;
+      border-radius: 12px !important;
       overflow-x: auto !important;
       overflow-y: hidden !important;
-      display: block !important;
-      padding: 6px 4px !important;
+      -webkit-overflow-scrolling: touch !important;
       scrollbar-width: thin;
-      -webkit-overflow-scrolling: touch;
+      text-align: left !important;
     }
 
-    mjx-container[jax="CHTML"][display="true"] {
-      margin: 10px 0 !important;
-      padding: 12px !important;
-      background: var(--code-block) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 10px !important;
+    .katex-display::-webkit-scrollbar {
+      height: 4px;
+    }
+    .katex-display::-webkit-scrollbar-thumb {
+      background: var(--blue-btn);
+      border-radius: 4px;
     }
 
-    /* Table Scroll Guard */
-    .stream-slot table {
-      width: 100%;
-      display: block;
-      overflow-x: auto;
-      border-collapse: collapse;
-      margin: 12px 0;
-    }
-    .stream-slot th, .stream-slot td {
-      border: 1px solid var(--border);
-      padding: 8px 10px;
-      white-space: nowrap;
+    .katex {
+      font-size: 1.08em !important;
+      color: var(--accent) !important;
     }
 
-    .bubble-actions-row {
-      margin-top: 14px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
+    .typewriter-cursor {
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: var(--blue-btn);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blinkCursor 0.8s infinite;
+    }
+    @keyframes blinkCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Clean Tools Under AI Reply (Only Copy & Voice) */
+    .ai-bottom-tools {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 12px;
+      padding-top: 4px;
     }
 
-    .btn-msg-action {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
+    .btn-tool-icon {
+      background: transparent;
+      border: none;
       color: var(--text-muted);
-      padding: 5px 12px;
-      border-radius: 8px;
-      font-size: 0.74rem;
-      font-weight: 600;
       cursor: pointer;
+      font-size: 1rem;
+      padding: 5px 8px;
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      border-radius: 8px;
+      transition: all 0.15s;
     }
-    .btn-msg-action:hover { color: var(--accent); border-color: var(--accent); }
-
-    .dots-loader-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 2px;
-    }
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: bounce 1.3s infinite ease-in-out both;
-    }
-    .dot:nth-child(1) { animation-delay: -0.32s; }
-    .dot:nth-child(2) { animation-delay: -0.16s; }
-    .dot:nth-child(3) { animation-delay: 0s; }
-
-    @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0.35); opacity: 0.3; }
-      40% { transform: scale(1.1); opacity: 1; }
-    }
-
-    /* Bottom Command Dock */
-    .bottom-command-dock {
-      position: fixed;
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 24px);
-      max-width: 800px;
+    .btn-tool-icon:hover {
+      color: var(--text-main);
       background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 36px;
-      padding: 6px 8px 6px 18px;
+    }
+
+    /* Long-Press Popup Menu */
+    .msg-popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(2px);
+      z-index: 200;
+    }
+    .msg-popup-overlay.active {
+      display: block;
+    }
+
+    .msg-context-menu {
+      position: absolute;
+      background: var(--menu-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      min-width: 190px;
+      z-index: 210;
+      animation: popIn 0.15s cubic-bezier(0, 0, 0.2, 1);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .context-timestamp {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      padding: 4px 6px 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 6px;
+    }
+
+    .context-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      gap: 12px;
+      padding: 10px 8px;
+      color: var(--text-main);
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.15s;
+    }
+    .context-item:hover {
+      background: var(--surface-elevated);
+    }
+    .context-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+    }
+
+    /* Bottom Dock Wrapper */
+    .gemini-bottom-dock-wrapper {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, var(--bg) 80%, transparent);
+      padding: 10px 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       z-index: 100;
     }
 
-    .dock-input {
+    /* In-place Editing Indicator */
+    .edit-mode-indicator {
+      display: none;
+      max-width: 760px;
+      width: 100%;
+      background: var(--surface-elevated);
+      border: 1px solid var(--blue-btn);
+      border-bottom: none;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      justify-content: space-between;
+      align-items: center;
+    }
+    .edit-mode-indicator.active {
+      display: flex;
+    }
+    .btn-cancel-edit {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      padding: 2px 6px;
+    }
+    .btn-cancel-edit:hover { color: #ef4444; }
+
+    .gemini-bottom-card {
+      width: 100%;
+      max-width: 760px;
+      min-height: 54px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 8px 6px 18px;
+      box-shadow: 0 4px 24px var(--dock-shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .gemini-bottom-card.editing {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-color: var(--blue-btn);
+    }
+    .gemini-bottom-card:focus-within {
+      border-color: var(--blue-btn);
+    }
+
+    .dock-input-field {
       flex: 1;
       background: transparent;
       border: none;
       outline: none;
-      padding: 8px 2px;
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-family: inherit;
       color: var(--text-main);
+      padding: 8px 0;
     }
-    .dock-input::placeholder { color: var(--text-muted); }
+    .dock-input-field::placeholder { color: var(--text-muted); }
 
-    .voice-waves {
+    /* Voice waves */
+    .gemini-voice-wave-container {
       display: none;
+      flex: 1;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      flex: 1;
-      height: 36px;
+      gap: 5px;
+      height: 38px;
     }
-    .voice-waves.active { display: flex; }
+    .gemini-voice-wave-container.active {
+      display: flex;
+    }
 
-    .v-bar {
-      width: 4px;
+    .g-wave-bar {
+      width: 3.5px;
       height: 8px;
-      background: var(--accent);
+      background: linear-gradient(180deg, #4285f4, #9b72cb);
       border-radius: 4px;
-      animation: waveDance 1s ease-in-out infinite alternate;
+      animation: geminiWave 1s ease-in-out infinite alternate;
     }
-    .v-bar:nth-child(1) { animation-delay: 0.1s; }
-    .v-bar:nth-child(2) { animation-delay: 0.3s; }
-    .v-bar:nth-child(3) { animation-delay: 0.5s; }
-    .v-bar:nth-child(4) { animation-delay: 0.2s; }
-    .v-bar:nth-child(5) { animation-delay: 0.4s; }
+    .g-wave-bar:nth-child(1) { animation-delay: 0.1s; height: 10px; }
+    .g-wave-bar:nth-child(2) { animation-delay: 0.3s; height: 18px; }
+    .g-wave-bar:nth-child(3) { animation-delay: 0.5s; height: 26px; }
+    .g-wave-bar:nth-child(4) { animation-delay: 0.2s; height: 20px; }
+    .g-wave-bar:nth-child(5) { animation-delay: 0.4s; height: 28px; }
+    .g-wave-bar:nth-child(6) { animation-delay: 0.15s; height: 16px; }
+    .g-wave-bar:nth-child(7) { animation-delay: 0.35s; height: 22px; }
+    .g-wave-bar:nth-child(8) { animation-delay: 0.25s; height: 12px; }
 
-    @keyframes waveDance {
-      0% { height: 4px; }
-      100% { height: 22px; }
+    @keyframes geminiWave {
+      0% { height: 6px; transform: scaleY(0.6); }
+      100% { height: 28px; transform: scaleY(1.3); }
     }
 
-    .btn-mic-round {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid var(--border);
-      color: var(--accent);
+    .btn-dock-icon {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .btn-dock-icon:hover { color: var(--text-main); }
+    
+    .btn-stop-voice {
+      display: none;
+      background: rgba(234, 67, 53, 0.15);
+      border: 1px solid #ea4335;
+      color: #ea4335;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .btn-stop-voice.active {
+      display: flex;
+    }
+
+    .btn-dock-send {
+      background: var(--blue-btn);
+      border: none;
+      color: #ffffff;
       width: 38px;
       height: 38px;
       border-radius: 50%;
@@ -423,229 +534,603 @@
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(26, 115, 232, 0.4);
     }
-    .btn-mic-round.recording {
-      background: #ef4444;
-      color: #fff;
-      border-color: #ef4444;
-    }
+    .btn-dock-send svg { width: 18px; height: 18px; }
 
-    .btn-send-arrow {
-      background: var(--gradient);
-      color: #fff;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+    /* Loader */
+    .loader-dots { display: inline-flex; gap: 5px; padding: 6px 0; }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #4285f4;
+      animation: bounce 1.2s infinite ease-in-out both;
     }
-    .btn-send-arrow svg { width: 20px; height: 20px; }
+    .dot:nth-child(1) { animation-delay: -0.32s; }
+    .dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce { 0%, 80%, 100% { transform: scale(0.4); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <header class="app-header">
-    <div class="header-left">
-      <a href="index.html" class="btn-nav-back">⬅ डैशबोर्ड</a>
-      <span class="brand-tag-pill">AI V3.8 PRO</span>
+  <!-- Top Navigation -->
+  <header class="gemini-topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="btn-back-link" title="होम">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </a>
+      <div class="brand-pill">
+        <svg class="sparkle-svg" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#spGrad)"/>
+          <defs>
+            <linearGradient id="spGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4285f4"/>
+              <stop offset="0.5" stop-color="#9b72cb"/>
+              <stop offset="1" stop-color="#d96570"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Nischay AI</span>
+      </div>
     </div>
-    <div class="header-right">
-      <button class="btn-top-action" onclick="toggleTheme()">
-        <span id="themeIcon">🌙</span> <span id="themeText">डार्क</span>
+    <div class="topbar-right">
+      <button class="btn-top-util" id="voiceToggleBtn" onclick="toggleVoiceOutput()">
+        <span id="voiceIcon">🔊</span> <span id="voiceStatus">आवाज़</span>
       </button>
-      <button class="btn-top-action" onclick="confirmClearChat()">🗑️ साफ़ करें</button>
+      <button class="btn-top-util" id="themeBtn" onclick="toggleTheme()">☀️ लाइट</button>
+      <button class="btn-top-util" onclick="confirmClearChat()">🗑️</button>
     </div>
   </header>
 
   <!-- Viewport -->
-  <main class="chat-scroll-viewport" id="chatViewport">
+  <main class="chat-scroll-area" id="chatArea">
     
-    <!-- Hero Box -->
-    <div class="hero-guide-card" id="heroGuideCard">
-      <h2 id="greetingTitle">स्मार्ट <span>AI डाउट सॉल्वर</span></h2>
-      <p>बातचीत करें, सवाल पूछें या थ्योरी और डेरिवेशन समझें। यह आपके पिछले सवालों को याद रखकर लगातार बातचीत करेगा।</p>
+    <div class="gemini-welcome" id="welcomeBox">
+      <h1 id="userGreetingHeading">नमस्ते!</h1>
+      <p>आज आप क्या समझना या हल करना चाहते हैं?</p>
 
-      <div class="mode-pills-row">
-        <button class="mode-pill active" onclick="setMode('chat', this)">💬 सामान्य बातचीत</button>
-        <button class="mode-pill" onclick="setMode('derivation', this)">📐 स्टेप-बाय-स्टेप हल</button>
-        <button class="mode-pill" onclick="setMode('board', this)">📝 5-अंक बोर्ड उत्तर</button>
-        <button class="mode-pill" onclick="setMode('tricks', this)">⚡ शॉर्ट ट्रिक्स & फॉर्मूला</button>
-      </div>
-
-      <div class="quick-chips-grid">
-        <div class="quick-chip-box" onclick="askQuick('(A+B)^2 का सूत्र चरणबद्ध तरीके से सिद्ध कीजिए।')">
-          📐 (A+B)^2 सूत्र सिद्ध करें
+      <div class="chips-col">
+        <div class="chip-item" onclick="askQuick('(A-B)^2 का सूत्र चरणबद्ध तरीके से सिद्ध कीजिए।')">
+          📐 (A-B)² सूत्र चरणबद्ध तरीके से सिद्ध करें
         </div>
-        <div class="quick-chip-box" onclick="askQuick('गोलीय लेंस के लिए लेंस सूत्र 1/f = 1/v - 1/u का निगमन कीजिए।')">
-          🔭 लेंस सूत्र निगमन (5 मार्क्स)
+        <div class="chip-item" onclick="askQuick('गोलीय लेंस के लिए लेंस सूत्र 1/f = 1/v - 1/u का निगमन कीजिए।')">
+          🔭 लेंस सूत्र का निगमन (5 मार्क्स)
         </div>
-        <div class="quick-chip-box" onclick="askQuick('द्विघात समीकरण ax^2 + bx + c = 0 का श्रीधराचार्य सूत्र सिद्ध करें।')">
-          📊 श्रीधराचार्य सूत्र सिद्ध करें
-        </div>
-        <div class="quick-chip-box" onclick="askQuick('प्रकाश का परावर्तन और अपवर्तन क्या है? इनके नियम बताइए।')">
-          💡 प्रकाश के नियम
+        <div class="chip-item" onclick="askQuick('त्रिकोणमिति के सभी महत्वपूर्ण सूत्र बताइए।')">
+          📊 त्रिकोणमिति के सभी सूत्र
         </div>
       </div>
     </div>
 
-    <!-- Feed -->
-    <div id="chatFeed" style="display:flex; flex-direction:column; gap:18px;"></div>
+    <div id="chatFeed" style="display:flex; flex-direction:column; gap:24px;"></div>
 
   </main>
 
-  <!-- Bottom Command Dock -->
-  <footer class="bottom-command-dock">
-    
-    <div class="voice-waves" id="voiceWaves">
-      <div class="v-bar"></div>
-      <div class="v-bar"></div>
-      <div class="v-bar"></div>
-      <div class="v-bar"></div>
-      <div class="v-bar"></div>
+  <!-- Long Press Overlay & Context Menu -->
+  <div class="msg-popup-overlay" id="popupOverlay" onclick="closeContextMenu()">
+    <div class="msg-context-menu" id="contextMenu" onclick="event.stopPropagation()">
+      <div class="context-timestamp" id="menuTimestamp">Today, 11:11 pm</div>
+      
+      <div class="context-item" onclick="menuActionCopy()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <span>Copy</span>
+      </div>
+
+      <div class="context-item" onclick="menuActionSelect()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="9" x2="15" y2="9"></line>
+          <line x1="9" y1="13" x2="15" y2="13"></line>
+        </svg>
+        <span>Select text</span>
+      </div>
+
+      <div class="context-item" onclick="menuActionEdit()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        <span>Edit message</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Floating Command Bar -->
+  <div class="gemini-bottom-dock-wrapper">
+    <!-- Edit Indicator Bar -->
+    <div class="edit-mode-indicator" id="editIndicator">
+      <span>✏️ संदेश संपादित कर रहे हैं (In-place edit)...</span>
+      <button class="btn-cancel-edit" onclick="cancelEditMode()" title="रद्द करें">✕</button>
     </div>
 
-    <input 
-      type="text" 
-      id="queryInput" 
-      class="dock-input" 
-      placeholder="कुछ भी पूछें (उदा: बोलो भाई, थेल्स प्रमेय सिद्ध करो...)" 
-      onkeypress="if(event.key==='Enter') executeSend()"
-    />
+    <div class="gemini-bottom-card" id="bottomDockCard">
+      <!-- Live Waves -->
+      <div class="gemini-voice-wave-container" id="voiceWavesContainer">
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+        <div class="g-wave-bar"></div>
+      </div>
 
-    <button class="btn-mic-round" id="micButton" onclick="handleVoiceRecord()" title="आवाज़ से पूछें">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-        <line x1="12" y1="19" x2="12" y2="23"></line>
-        <line x1="8" y1="23" x2="16" y2="23"></line>
-      </svg>
-    </button>
+      <!-- Input Field -->
+      <input 
+        type="text" 
+        id="userInput" 
+        class="dock-input-field" 
+        placeholder="Reply to NischayDesk AI..." 
+        onkeypress="if(event.key==='Enter') sendUserQuery()"
+        autocomplete="off"
+      />
 
-    <button class="btn-send-arrow" onclick="executeSend()" title="भेजें">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="12" y1="19" x2="12" y2="5"></line>
-        <polyline points="5 12 12 5 19 12"></polyline>
-      </svg>
-    </button>
-  </footer>
+      <!-- Stop Recording Button -->
+      <button class="btn-stop-voice" id="stopVoiceBtn" onclick="stopVoiceInput()" title="रोकें">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="5" y="5" width="14" height="14" rx="2"></rect>
+        </svg>
+      </button>
+
+      <!-- Mic Button -->
+      <button class="btn-dock-icon" id="micBtn" onclick="toggleVoiceInput()" title="माइक">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+          <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
+      </button>
+
+      <!-- Send Button -->
+      <button class="btn-dock-send" id="sendBtn" onclick="sendUserQuery()" title="भेजें">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"></line>
+          <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
 
   <script>
-    // Theme Engine
+    // 1. Dynamic User Greeting (Strict Logic)
+    (function loadUser() {
+      const stored = localStorage.getItem('nischay_user_name') || 
+                     localStorage.getItem('userName') || 
+                     localStorage.getItem('user_display_name') || "";
+      const head = document.getElementById('userGreetingHeading');
+      if (stored && stored.trim()) {
+        const first = stored.trim().split(' ')[0];
+        head.innerHTML = `नमस्ते, <span>${escapeHtml(first)}</span>!`;
+      } else {
+        head.innerHTML = `नमस्ते!`;
+      }
+    })();
+
+    // 2. Theme Engine
     function syncTheme() {
       const isLight = localStorage.getItem('nischay_theme') === 'light';
       document.documentElement.classList.toggle('light-mode', isLight);
-      document.getElementById('themeIcon').innerText = isLight ? '☀️' : '🌙';
-      document.getElementById('themeText').innerText = isLight ? 'लाइट' : 'डार्क';
+      document.getElementById('themeBtn').innerText = isLight ? '🌙 डार्क' : '☀️ लाइट';
     }
 
     function toggleTheme() {
-      const willBeLight = !document.documentElement.classList.contains('light-mode');
-      localStorage.setItem('nischay_theme', willBeLight ? 'light' : 'dark');
+      const willLight = !document.documentElement.classList.contains('light-mode');
+      localStorage.setItem('nischay_theme', willLight ? 'light' : 'dark');
       syncTheme();
     }
     syncTheme();
 
-    // User Personalization
-    (function setUserGreeting() {
-      const name = localStorage.getItem('nischay_user_name') || "";
-      const cls = localStorage.getItem('nischay_student_class') || "11";
-      if (name) {
-        document.getElementById('greetingTitle').innerHTML = `नमस्ते, <span>${name.split(' ')[0]}</span>! (Class ${cls}th)`;
-      }
-    })();
+    // 3. Natural Speech Engine
+    let isVoiceActive = true;
+    let naturalHindiVoice = null;
 
-    // Groq Cloud Setup
+    function initVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      naturalHindiVoice = 
+        voices.find(v => v.lang === 'hi-IN' && (v.name.includes('Google') || v.name.includes('Neural') || v.name.includes('Natural'))) ||
+        voices.find(v => v.lang === 'hi-IN') ||
+        voices[0];
+    }
+    initVoices();
+    if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = initVoices;
+    }
+
+    function toggleVoiceOutput() {
+      isVoiceActive = !isVoiceActive;
+      const icon = document.getElementById('voiceIcon');
+      const status = document.getElementById('voiceStatus');
+      if (isVoiceActive) {
+        icon.innerText = "🔊";
+        status.innerText = "आवाज़";
+      } else {
+        icon.innerText = "🔇";
+        status.innerText = "म्यूट";
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }
+    }
+
+    function speakText(txt) {
+      if (!isVoiceActive || !('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      const clean = txt
+        .replace(/\$\$(.*?)\$\$/gs, ' ')
+        .replace(/\$(.*?)\$/g, ' ')
+        .replace(/\\\[(.*?)\\\]/gs, ' ')
+        .replace(/\\times/g, ' गुणा ')
+        .replace(/[#*`_~\[\]\\]/g, '')
+        .replace(/\n+/g, '। ')
+        .trim();
+
+      if (!clean) return;
+      const utt = new SpeechSynthesisUtterance(clean);
+      if (naturalHindiVoice) utt.voice = naturalHindiVoice;
+      utt.lang = 'hi-IN';
+      utt.rate = 0.98;
+      utt.pitch = 1.02;
+      window.speechSynthesis.speak(utt);
+    }
+
+    // 4. API & Strict Context Setup
     const API_TOKEN = "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";
     let isBusy = false;
 
-    // Chat Memory Array (याददाश्त इंजन)
-    let chatMemory = [
-      {
-        role: "system",
-        content: `You are NischayDesk AI Studio Pro, built by Prince Kumar for Bihar Board students.
-CRITICAL MOBILE FORMATTING RULES:
-1. NEVER USE MARKDOWN TABLES. Tables get cut off on mobile screens. Always use clean numbered lists (1, 2, 3...) or bullet points.
-2. For mathematical derivations, present step by step vertically. Explain the step in simple Hindi, then put the formula on its own line using display math ($$...$$).
-3. Do not put Hindi words inside LaTeX brackets.
-4. Remember the context of previous messages and answer follow-up questions naturally like Google Gemini.`
+    const SYSTEM_PROMPT = {
+      role: "system",
+      content: `You are NischayDesk AI, a professional academic AI tutor for students (especially Bihar Board BSEB Matric & Intermediate).
+
+CRITICAL RESPONSE RULES:
+1. DIRECT ANSWERING: Jump directly into the answer. Do NOT add unnecessary intro greetings, do NOT repeat your name, and do NOT mention who created you in regular study questions.
+2. CREATOR CONFIDENTIALITY: Mention "Prince Kumar" ONLY AND ONLY IF the user explicitly asks questions like "who made you?", "who created you?", or "developer kaun hai?". Otherwise, NEVER mention Prince Kumar.
+3. NISCHAYDESK PORTAL CONTEXT: If asked about the website/portal, explain that NischayDesk is a dedicated educational platform for Bihar Board students offering chapter-wise notes, test series, question banks, formulas, and 24/7 AI doubt support.
+4. MATHEMATICAL FORMULAS: Put every mathematical formula, derivation, or equation in clean display math blocks:
+$$ (A - B)^2 = A^2 - 2AB + B^2 $$
+Never use raw square brackets like "[ (A-B)... ]". Always wrap in "$$".
+5. TONE: Mature, supportive, direct, and respectful Hindi.`
+    };
+
+    // Chat Memory with LocalStorage
+    let chatMemory = [];
+    try {
+      const saved = localStorage.getItem('nischay_chat_history');
+      if (saved) {
+        chatMemory = JSON.parse(saved);
       }
-    ];
+    } catch(e) {}
 
-    function setMode(mode, btn) {
-      document.querySelectorAll('.mode-pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-
-      let instruction = "Answer friendly in natural Hindi/Hinglish, and remember previous conversation context.";
-      if (mode === 'derivation') {
-        instruction = "Provide step-by-step mathematical proofs vertically. Do NOT use markdown tables. Write the explanation in Hindi and each formula in a separate block ($$...$$).";
-      } else if (mode === 'board') {
-        instruction = "Give 5-mark board exam answers with definition, clear points, and conclusion in clean Hindi. Do NOT use markdown tables.";
-      } else if (mode === 'tricks') {
-        instruction = "Provide rapid memory tricks, shortcut formulas, and revision points in short bullet lists.";
-      }
-
-      chatMemory[0].content = `You are NischayDesk AI Studio Pro, built by Prince Kumar.
-CRITICAL RULES:
-1. NEVER USE MARKDOWN TABLES. Always use numbered lists or bullet points.
-2. Keep math formulas on their own lines inside ($$...$$).
-3. Never put Hindi text inside LaTeX tags.
-4. ${instruction}`;
+    if (!chatMemory || chatMemory.length === 0 || chatMemory[0].role !== 'system') {
+      chatMemory = [SYSTEM_PROMPT];
     }
 
-    function askQuick(text) {
-      document.getElementById('queryInput').value = text;
-      executeSend();
+    function askQuick(q) {
+      document.getElementById('userInput').value = q;
+      sendUserQuery();
     }
 
-    function cleanMathFormatting(raw) {
+    // Formatter
+    function normalizeFormulas(raw) {
       if (!raw) return "";
-      return raw
-        .replace(/\\\[([\s\S]*?)\\\]/g, '$$$1$$')
-        .replace(/\\\(([\s\S]*?)\\\)/g, '$$$1$$');
+      let clean = raw.replace(/(?:^|\n)\s*\[\s*([\s\S]*?)\s*\](?:\s*(?:\n|$))/g, function(match, inner) {
+        if (inner.includes('\\times') || inner.includes('^') || inner.includes('=') || inner.includes('-') || inner.includes('+')) {
+          return '\n\n$$ ' + inner.trim() + ' $$\n\n';
+        }
+        return match;
+      });
+      clean = clean.replace(/\\\[([\s\S]*?)\\\]/g, '\n\n$$ $1 $$\n\n');
+      return clean;
     }
 
-    // Query Dispatcher with Memory
-    async function executeSend() {
-      const input = document.getElementById('queryInput');
+    function renderKaTeXSafe(elem) {
+      if (window.renderMathInElement) {
+        window.renderMathInElement(elem, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    function getFormattedTime() {
+      const now = new Date();
+      let hours = now.getHours();
+      const mins = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12 || 12;
+      return `Today, ${hours}:${mins} ${ampm}`;
+    }
+
+    // Chat UI Renderer
+    function renderFullChatFeed() {
       const feed = document.getElementById('chatFeed');
-      const hero = document.getElementById('heroGuideCard');
-      const query = input.value.trim();
+      const welcome = document.getElementById('welcomeBox');
+      feed.innerHTML = '';
+      
+      const userMsgs = chatMemory.filter(m => m.role === 'user' || m.role === 'assistant');
+      if (userMsgs.length > 0 && welcome) {
+        welcome.style.display = 'none';
+      } else if (welcome) {
+        welcome.style.display = 'block';
+      }
 
-      if (!query || isBusy) return;
+      userMsgs.forEach(m => {
+        if (m.role === 'user') {
+          feed.innerHTML += createUserBubbleHTML(m.content, m.time || getFormattedTime(), m.id);
+        } else if (m.role === 'assistant') {
+          feed.innerHTML += createAIBubbleHTML(m.content, m.id);
+        }
+      });
 
-      hero.style.display = 'none';
-      feed.innerHTML += `<div class="user-bubble">${escapeHtml(query)}</div>`;
+      setTimeout(() => {
+        renderKaTeXSafe(feed);
+        scrollBottom();
+      }, 50);
+    }
+
+    function createUserBubbleHTML(content, time, msgId) {
+      const idAttr = msgId ? `id="user-msg-${msgId}" data-msg-id="${msgId}"` : '';
+      return `
+        <div class="msg-user-row" ${idAttr}>
+          <div class="msg-user-bubble" 
+               data-text="${escapeAttr(content)}" 
+               data-time="${escapeAttr(time)}"
+               data-id="${msgId || ''}"
+               onmousedown="startLongPress(event, this)" 
+               onmouseup="cancelLongPress()" 
+               onmouseleave="cancelLongPress()"
+               ontouchstart="startLongPress(event, this)" 
+               ontouchend="cancelLongPress()" 
+               ontouchcancel="cancelLongPress()">
+            ${escapeHtml(content)}
+          </div>
+        </div>
+      `;
+    }
+
+    function createAIBubbleHTML(content, msgId) {
+      const normalized = normalizeFormulas(content);
+      const safeEscaped = escapeHtml(content.replace(/'/g, "\\'"));
+      const idAttr = msgId ? `id="ai-msg-${msgId}"` : '';
+      return `
+        <div class="msg-ai-row" ${idAttr}>
+          <svg class="ai-sparkle-box" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#spGrad2)"/>
+            <defs>
+              <linearGradient id="spGrad2" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#4285f4"/>
+                <stop offset="0.5" stop-color="#9b72cb"/>
+                <stop offset="1" stop-color="#d96570"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="ai-render-content">
+            <div class="slot-text">${marked.parse(normalized)}</div>
+            <div class="ai-bottom-tools">
+              <button class="btn-tool-icon" onclick="copyAIText(this)" title="Copy">📋 कॉपी</button>
+              <button class="btn-tool-icon" onclick="speakText('${safeEscaped}')" title="Read aloud">🔊 सुनाएँ</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    renderFullChatFeed();
+
+    // 5. Long Press & Context Menu
+    let longPressTimer = null;
+    let selectedBubble = null;
+    let editingMessageId = null;
+
+    function startLongPress(e, elem) {
+      selectedBubble = elem;
+      longPressTimer = setTimeout(() => {
+        openContextMenu(e, elem);
+      }, 450);
+    }
+
+    function cancelLongPress() {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    }
+
+    function openContextMenu(e, elem) {
+      cancelLongPress();
+      const overlay = document.getElementById('popupOverlay');
+      const menu = document.getElementById('contextMenu');
+      const timeBox = document.getElementById('menuTimestamp');
+
+      const msgTime = elem.getAttribute('data-time') || getFormattedTime();
+      timeBox.innerText = msgTime;
+
+      const rect = elem.getBoundingClientRect();
+      const menuWidth = 190;
+      let topPos = rect.bottom + 6;
+      let leftPos = rect.right - menuWidth;
+
+      if (leftPos < 10) leftPos = 10;
+      if (topPos + 180 > window.innerHeight) {
+        topPos = rect.top - 170;
+      }
+
+      menu.style.top = `${topPos}px`;
+      menu.style.left = `${leftPos}px`;
+      overlay.classList.add('active');
+    }
+
+    function closeContextMenu() {
+      document.getElementById('popupOverlay').classList.remove('active');
+    }
+
+    function menuActionCopy() {
+      if (!selectedBubble) return;
+      const txt = selectedBubble.getAttribute('data-text');
+      navigator.clipboard.writeText(txt);
+      closeContextMenu();
+      alert("कॉपी हो गया! 📋");
+    }
+
+    function menuActionSelect() {
+      if (!selectedBubble) return;
+      closeContextMenu();
+      const range = document.createRange();
+      range.selectNodeContents(selectedBubble);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    // In-place Edit Action
+    function menuActionEdit() {
+      if (!selectedBubble) return;
+      const txt = selectedBubble.getAttribute('data-text');
+      const msgId = selectedBubble.getAttribute('data-id');
+      
+      editingMessageId = msgId;
+      const input = document.getElementById('userInput');
+      input.value = txt;
+      input.focus();
+
+      // UI में एडिट इंडिकेटर दिखाएँ
+      document.getElementById('editIndicator').classList.add('active');
+      document.getElementById('bottomDockCard').classList.add('editing');
+      closeContextMenu();
+    }
+
+    function cancelEditMode() {
+      editingMessageId = null;
+      document.getElementById('editIndicator').classList.remove('active');
+      document.getElementById('bottomDockCard').classList.remove('editing');
+      document.getElementById('userInput').value = '';
+    }
+
+    function copyAIText(btn) {
+      const txt = btn.closest('.ai-render-content').querySelector('.slot-text').innerText;
+      navigator.clipboard.writeText(txt);
+      alert("उत्तर कॉपी हो गया! 📋");
+    }
+
+    // 6. Typewriter Engine
+    function startTypewriter(slot, text, onFinish) {
+      let index = 0;
+      const step = Math.max(4, Math.floor(text.length / 60));
+      slot.innerHTML = `<span class="stream-text"></span><span class="typewriter-cursor"></span>`;
+      const txtSpan = slot.querySelector('.stream-text');
+      const curSpan = slot.querySelector('.typewriter-cursor');
+
+      const normalized = normalizeFormulas(text);
+
+      function tick() {
+        if (index < normalized.length) {
+          index += step;
+          txtSpan.innerHTML = marked.parse(normalized.slice(0, index));
+          scrollBottom();
+          requestAnimationFrame(tick);
+        } else {
+          if (curSpan) curSpan.remove();
+          txtSpan.innerHTML = marked.parse(normalized);
+          renderKaTeXSafe(txtSpan);
+          scrollBottom();
+          if (onFinish) onFinish();
+        }
+      }
+      tick();
+    }
+
+    // 7. Query Sender (Handles New Query & In-place Edit)
+    async function sendUserQuery() {
+      const input = document.getElementById('userInput');
+      const feed = document.getElementById('chatFeed');
+      const welcome = document.getElementById('welcomeBox');
+      const q = input.value.trim();
+
+      if (!q || isBusy) return;
+
+      if (welcome) welcome.style.display = 'none';
+
+      let activeUserMsgId = editingMessageId;
+      const currentTime = getFormattedTime();
+
+      if (editingMessageId) {
+        // --- IN-PLACE EDIT MODE ---
+        // मेमोरी में से उस संदेश और उसके आगे के सारे संदेश हटा दें (या एडिट करें)
+        const targetIdx = chatMemory.findIndex(m => m.id === editingMessageId);
+        if (targetIdx !== -1) {
+          chatMemory = chatMemory.slice(0, targetIdx);
+        }
+
+        // स्क्रीन से भी उस एडिटेड संदेश के बाद के सभी UI बबल्स साफ़ करें
+        const targetElem = document.getElementById(`user-msg-${editingMessageId}`);
+        if (targetElem) {
+          let nextElem = targetElem.nextElementSibling;
+          while (nextElem) {
+            const toRemove = nextElem;
+            nextElem = nextElem.nextElementSibling;
+            toRemove.remove();
+          }
+          // उसी पुराने बबल का टेक्स्ट और टाइम अपडेट कर दें (दूसरा नया नहीं बनेगा!)
+          const bubble = targetElem.querySelector('.msg-user-bubble');
+          bubble.setAttribute('data-text', q);
+          bubble.setAttribute('data-time', currentTime);
+          bubble.innerHTML = escapeHtml(q);
+        }
+
+        cancelEditMode();
+      } else {
+        // --- NORMAL NEW MESSAGE MODE ---
+        activeUserMsgId = 'msg-' + Date.now();
+        feed.innerHTML += createUserBubbleHTML(q, currentTime, activeUserMsgId);
+      }
+
       input.value = '';
       scrollBottom();
 
-      // बातचीत याददाश्त में जोड़ें
-      chatMemory.push({ role: "user", content: query });
-
-      // मेमोरी को अधिकतम पिछले 10 संदेशों तक सीमित रखें ताकि टोकन सीमा पार न हो
-      if (chatMemory.length > 12) {
-        chatMemory = [chatMemory[0], ...chatMemory.slice(-10)];
+      // Push to Memory
+      chatMemory.push({ role: "user", content: q, time: currentTime, id: activeUserMsgId });
+      if (chatMemory.length > 18) {
+        chatMemory = [chatMemory[0], ...chatMemory.slice(-16)];
       }
 
       isBusy = true;
       const loadId = 'load-' + Date.now();
+      const aiMsgId = 'ai-' + Date.now();
+
       feed.innerHTML += `
-        <div class="ai-bubble" id="${loadId}">
-          <div class="dots-loader-box">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+        <div class="msg-ai-row" id="${loadId}">
+          <svg class="ai-sparkle-box" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#spGrad2)"/>
+            <defs>
+              <linearGradient id="spGrad2" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#4285f4"/>
+                <stop offset="0.5" stop-color="#9b72cb"/>
+                <stop offset="1" stop-color="#d96570"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="ai-render-content">
+            <div class="loader-dots">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
           </div>
         </div>
       `;
       scrollBottom();
 
       try {
+        const apiMessages = chatMemory.map(m => ({ role: m.role, content: m.content }));
+
         const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -654,129 +1139,119 @@ CRITICAL RULES:
           },
           body: JSON.stringify({
             model: "openai/gpt-oss-20b",
-            messages: chatMemory,
-            temperature: 0.4,
+            messages: apiMessages,
+            temperature: 0.3,
             max_tokens: 2048
           })
         });
 
         const data = await res.json();
-        const loadBox = document.getElementById(loadId);
+        const aiWrapper = document.getElementById(loadId);
 
         if (data.choices && data.choices[0]?.message?.content) {
-          const answerText = data.choices[0].message.content;
+          const ans = data.choices[0].message.content;
+          chatMemory.push({ role: "assistant", content: ans, id: aiMsgId });
+          try {
+            localStorage.setItem('nischay_chat_history', JSON.stringify(chatMemory));
+          } catch(e) {}
 
-          // AI का उत्तर भी याददाश्त में जोड़ें
-          chatMemory.push({ role: "assistant", content: answerText });
-
-          loadBox.innerHTML = `
-            <div class="ai-badge-row">✨ NischayDesk AI Studio</div>
-            <div class="stream-slot">${marked.parse(cleanMathFormatting(answerText))}</div>
-            <div class="bubble-actions-row">
-              <button class="btn-msg-action" onclick="speakText(this)">🔊 सुनाएँ</button>
-              <button class="btn-msg-action" onclick="copyText(this)">📋 कॉपी</button>
-              <button class="btn-msg-action" onclick="downloadText(this)">📥 सेव</button>
+          const safeEscaped = escapeHtml(ans.replace(/'/g, "\\'"));
+          aiWrapper.setAttribute('id', `ai-msg-${aiMsgId}`);
+          aiWrapper.querySelector('.ai-render-content').innerHTML = `
+            <div class="slot-text"></div>
+            <div class="ai-bottom-tools" style="display:none;">
+              <button class="btn-tool-icon" onclick="copyAIText(this)" title="Copy">📋 कॉपी</button>
+              <button class="btn-tool-icon" onclick="speakText('${safeEscaped}')" title="Read aloud">🔊 सुनाएँ</button>
             </div>
           `;
 
-          if (window.MathJax && window.MathJax.typesetPromise) {
-            window.MathJax.typesetPromise([loadBox])
-              .then(() => { scrollBottom(); isBusy = false; })
-              .catch(() => { isBusy = false; });
-          } else {
+          const slot = aiWrapper.querySelector('.slot-text');
+          const tools = aiWrapper.querySelector('.ai-bottom-tools');
+
+          startTypewriter(slot, ans, () => {
+            tools.style.display = 'flex';
             isBusy = false;
-          }
+            if (isVoiceActive) speakText(ans);
+          });
 
         } else {
-          loadBox.innerHTML = `<span style="color:#ef4444;">⚠️ उत्तर प्राप्त नहीं हुआ। कृपया पुनः प्रयास करें।</span>`;
+          aiWrapper.querySelector('.ai-render-content').innerHTML = `<span style="color:#ea4335;">⚠️ उत्तर प्राप्त नहीं हुआ।</span>`;
           isBusy = false;
         }
 
       } catch (e) {
-        document.getElementById(loadId).innerHTML = `<span style="color:#ef4444;">⚠️ नेटवर्क एरर! कनेक्शन जांचें।</span>`;
+        document.getElementById(loadId).querySelector('.ai-render-content').innerHTML = `<span style="color:#ea4335;">⚠️ नेटवर्क त्रुटि!</span>`;
         isBusy = false;
       }
 
       scrollBottom();
     }
 
-    // Voice Engine
-    let recognitionInstance;
-    let isRecording = false;
+    // 8. Gemini Voice Waves Engine
+    let recognition;
+    let isRec = false;
 
-    function handleVoiceRecord() {
+    function toggleVoiceInput() {
       const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!Speech) {
-        alert("कृपया Google Chrome ब्राउज़र का उपयोग करें।");
+        alert("कृपया Google Chrome का उपयोग करें।");
         return;
       }
 
-      const input = document.getElementById('queryInput');
-      const wave = document.getElementById('voiceWaves');
-      const mic = document.getElementById('micButton');
-
-      if (isRecording) {
-        recognitionInstance.stop();
+      if (isRec) {
+        stopVoiceInput();
         return;
       }
 
-      recognitionInstance = new Speech();
-      recognitionInstance.lang = 'hi-IN';
+      recognition = new Speech();
+      recognition.lang = 'hi-IN';
 
-      recognitionInstance.onstart = () => {
-        isRecording = true;
+      const input = document.getElementById('userInput');
+      const waves = document.getElementById('voiceWavesContainer');
+      const micBtn = document.getElementById('micBtn');
+      const stopBtn = document.getElementById('stopVoiceBtn');
+
+      recognition.onstart = () => {
+        isRec = true;
         input.style.display = 'none';
-        wave.classList.add('active');
-        mic.classList.add('recording');
+        micBtn.style.display = 'none';
+        waves.classList.add('active');
+        stopBtn.classList.add('active');
       };
 
-      recognitionInstance.onresult = (e) => {
-        input.value = e.results[0][0].transcript;
-        executeSend();
+      recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        input.value = transcript;
+        stopVoiceInput();
+        sendUserQuery();
       };
 
-      recognitionInstance.onerror = recognitionInstance.onend = () => {
-        isRecording = false;
-        wave.classList.remove('active');
-        input.style.display = 'block';
-        mic.classList.remove('recording');
+      recognition.onerror = recognition.onend = () => {
+        stopVoiceInput();
       };
 
-      recognitionInstance.start();
+      recognition.start();
     }
 
-    // Actions
-    function speakText(btn) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const txt = btn.closest('.ai-bubble').querySelector('.stream-slot').innerText;
-      const utt = new SpeechSynthesisUtterance(txt);
-      utt.lang = 'hi-IN';
-      window.speechSynthesis.speak(utt);
+    function stopVoiceInput() {
+      if (recognition && isRec) {
+        recognition.stop();
+      }
+      isRec = false;
+      document.getElementById('userInput').style.display = 'block';
+      document.getElementById('micBtn').style.display = 'flex';
+      document.getElementById('voiceWavesContainer').classList.remove('active');
+      document.getElementById('stopVoiceBtn').classList.remove('active');
     }
 
-    function copyText(btn) {
-      const txt = btn.closest('.ai-bubble').querySelector('.stream-slot').innerText;
-      navigator.clipboard.writeText(txt);
-      alert("उत्तर कॉपी हो गया! 📋");
-    }
-
-    function downloadText(btn) {
-      const txt = btn.closest('.ai-bubble').querySelector('.stream-slot').innerText;
-      const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `NischayDesk_AI_${Date.now()}.txt`;
-      a.click();
-    }
-
-    // Clear Chat
     function confirmClearChat() {
-      const answer = confirm("क्या आप वाकई पूरी बातचीत मिटाना चाहते हैं?");
-      if (answer) {
+      if (confirm("क्या आप पूरी चैट और पुरानी याददाश्त मिटाना चाहते हैं?")) {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         document.getElementById('chatFeed').innerHTML = '';
-        document.getElementById('heroGuideCard').style.display = 'block';
-        chatMemory = [chatMemory[0]];
+        document.getElementById('welcomeBox').style.display = 'block';
+        chatMemory = [SYSTEM_PROMPT];
+        localStorage.removeItem('nischay_chat_history');
+        cancelEditMode();
       }
     }
 
@@ -784,8 +1259,12 @@ CRITICAL RULES:
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
+    function escapeAttr(str) {
+      return str.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
     function scrollBottom() {
-      const vp = document.getElementById('chatViewport');
+      const vp = document.getElementById('chatArea');
       vp.scrollTop = vp.scrollHeight;
     }
   </script>
