@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (Master Pro v6.1)
+   NischayDesk Real-Time Test Simulation Engine (Exact Logic Fix v6.3)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -11,12 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const testClassSelect = document.getElementById('testClassSelect');
   const testSubjectSelect = document.getElementById('testSubjectSelect');
   const testChapterSelect = document.getElementById('testChapterSelect');
-  const testPatternSelect = document.getElementById('testPatternSelect');
   const startExamBtn = document.getElementById('startExamBtn');
 
   const liveExamBadge = document.getElementById('liveExamBadge');
   const liveQuestionCounter = document.getElementById('liveQuestionCounter');
-  const examTimerBox = document.getElementById('examTimerBox');
   const timerDigits = document.getElementById('timerDigits');
   const submitExamEarlyBtn = document.getElementById('submitExamEarlyBtn');
 
@@ -28,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const clearSelectionBtn = document.getElementById('clearSelectionBtn');
   const paletteButtonsGrid = document.getElementById('paletteButtonsGrid');
 
-  const resultSubMeta = document.getElementById('resultSubMeta');
   const resTotalMarks = document.getElementById('resTotalMarks');
   const resAccuracy = document.getElementById('resAccuracy');
   const resCorrectCount = document.getElementById('resCorrectCount');
@@ -42,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // --- 1. डायरेक्ट होम / डैशबोर्ड बटन ---
+  // 1. डायरेक्ट होम बटन
   const headerBrand = document.querySelector('.header-brand, .brand, nav, header');
   if (headerBrand && !document.getElementById('quickHomeNavBtn')) {
     const homeBtn = document.createElement('a');
@@ -65,67 +62,53 @@ document.addEventListener('DOMContentLoaded', function () {
     headerBrand.appendChild(homeBtn);
   }
 
-  // --- 2. क्लास 11वीं / 12वीं चुनते ही तुरंत अलर्ट ---
+  // 2. 11th और 12th चुनते ही अलर्ट
   if (testClassSelect) {
     testClassSelect.addEventListener('change', function () {
       const selectedClass = this.value.trim();
       if (selectedClass === '11' || selectedClass === '12') {
-        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट सीरीज और प्रश्न बैंक अभी उपलब्ध नहीं है।\nइस पर काम चल रहा है और यह बहुत जल्द लाइव होगा!\n\nतब तक आप 10वीं के सभी विषयों का टेस्ट दे सकते हैं।`);
+        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट अभी उपलब्ध नहीं है!\nइस पर काम चल रहा है, जल्द ही लाइव होगा। तब तक आप 10वीं का टेस्ट दें।`);
         this.value = '10';
       }
     });
   }
 
-  // विषय पहचानना
+  // केवल चुने हुए विषय की ही JSON फाइल उठाना (ताकि कोई दूसरा विषय मिक्स न हो)
   function getTargetJsonFile() {
     const cls = testClassSelect ? testClassSelect.value.trim() : "10";
+    if (cls !== "10") return "CLASS_NOT_READY";
 
-    if (cls !== "10") {
-      return "CLASS_NOT_READY";
-    }
-
-    let subVal = "";
-    let subText = "";
-    let sylId = "";
-
+    let checkStr = "";
     if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
       const opt = testSubjectSelect.options[testSubjectSelect.selectedIndex];
-      subVal = (opt.value || "").toLowerCase().trim();
-      subText = (opt.text || "").toLowerCase().trim();
-      sylId = (opt.getAttribute('data-sylid') || "").toLowerCase().trim();
+      checkStr = `${opt.value || ""} ${opt.text || ""} ${opt.getAttribute('data-sylid') || ""}`.toLowerCase();
     }
 
-    const checkStr = `${subVal} ${subText} ${sylId}`;
-
-    if (checkStr.includes('math') || checkStr.includes('गणित')) {
-      return '10-math.json';
-    }
-    if (checkStr.includes('chem') || checkStr.includes('रसायन')) {
-      return '10-chemistry.json';
-    }
-    if (checkStr.includes('bio') || checkStr.includes('जीव')) {
-      return '10-biology.json';
-    }
-    if (checkStr.includes('sans') || checkStr.includes('संस्कृत')) {
-      return '10-sanskrit.json';
-    }
-    if (checkStr.includes('sst') || checkStr.includes('सामाजिक') || checkStr.includes('इतिहास') || checkStr.includes('भूगोल') || checkStr.includes('नागरिक') || checkStr.includes('अर्थशास्त्र')) {
-      return '10-sst.json';
-    }
-    if (checkStr.includes('phy') || checkStr.includes('भौतिकी')) {
-      return '10-physics.json';
-    }
-
+    if (checkStr.includes('math') || checkStr.includes('गणित')) return '10-math.json';
+    if (checkStr.includes('chem') || checkStr.includes('रसायन')) return '10-chemistry.json';
+    if (checkStr.includes('bio') || checkStr.includes('जीव')) return '10-biology.json';
+    if (checkStr.includes('sans') || checkStr.includes('संस्कृत')) return '10-sanskrit.json';
+    if (checkStr.includes('sst') || checkStr.includes('सामाजिक') || checkStr.includes('इतिहास') || checkStr.includes('भूगोल') || checkStr.includes('नागरिक') || checkStr.includes('अर्थशास्त्र')) return '10-sst.json';
     return '10-physics.json';
   }
 
-  // प्रश्न लोड करना (चैप्टर-वाइज = 20 प्रश्न, फुल सिलेबस = 30 प्रश्न)
+  // फुल सिलेबस चेक
+  function isFullSyllabusSelected() {
+    if (!testChapterSelect) return true;
+    const val = (testChapterSelect.value || "").trim().toLowerCase();
+    const text = testChapterSelect.selectedIndex >= 0 ? (testChapterSelect.options[testChapterSelect.selectedIndex].text || "").trim().toLowerCase() : "";
+    
+    if (val === 'all' || val === '' || val === '0' || text.includes('संपूर्ण') || text.includes('फुल') || text.includes('सभी')) {
+      return true;
+    }
+    return false;
+  }
+
+  // प्रश्न लोड करना
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
-    const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
-
     if (jsonFile === "CLASS_NOT_READY") {
-      alert("कक्षा 11वीं और 12वीं के लिए प्रश्न अभी तैयार किए जा रहे हैं!");
+      alert("कक्षा 11वीं-12वीं का टेस्ट अभी तैयार हो रहा है!");
       return false;
     }
 
@@ -137,81 +120,70 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     let rawData = null;
-    let fetchErrorDetail = "";
+    let fetchError = "";
 
     for (const p of pathsToTry) {
       try {
         const res = await fetch(`${p}?t=${Date.now()}`);
         if (res.ok) {
-          try {
-            rawData = await res.json();
-            break;
-          } catch (jsonErr) {
-            fetchErrorDetail = `JSON Syntax Error: ${jsonErr.message}`;
-            break;
-          }
+          rawData = await res.json();
+          break;
         } else {
-          fetchErrorDetail = `Status: ${res.status}`;
+          fetchError = `Status: ${res.status}`;
         }
-      } catch (networkErr) {
-        fetchErrorDetail = networkErr.message;
+      } catch (e) {
+        fetchError = e.message;
       }
     }
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-      alert(`⚠️ '${jsonFile}' लोड नहीं हो सकी!\nवजह: ${fetchErrorDetail}`);
+      alert(`⚠️ '${jsonFile}' लोड नहीं हो सकी!\n${fetchError}`);
       return false;
     }
 
-    // डेटा को व्यवस्थित करना
     const allQs = rawData.map(item => ({
       chapter: parseInt(item.chapter) || 1,
-      q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
+      q: item.q || item.question || 'प्रश्न लोड नहीं हुआ',
       options: item.options || [],
       correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
       exp: item.exp || item.explanation || 'व्याख्या उपलब्ध नहीं है।'
     }));
 
-    // अध्याय फ़िल्टरिंग
-    const chStr = String(chapterVal).toLowerCase();
-    const isFullSyllabus = (chStr === 'all' || chStr.includes('संपूर्ण') || chStr.includes('फुल'));
+    const isFull = isFullSyllabusSelected();
 
-    if (isFullSyllabus) {
-      currentQuestions = allQs;
+    if (isFull) {
+      // फुल सिलेबस: उसी विषय के सारे के सारे सवाल (जैसे फ़िज़िक्स के पूरे 100 सवाल)
+      currentQuestions = [...allQs];
     } else {
-      const match = chStr.match(/\d+/);
-      const targetCh = match ? parseInt(match[0]) : null;
+      // चैप्टर वाइज: केवल चुने हुए चैप्टर के सवाल
+      const val = testChapterSelect.value;
+      const text = testChapterSelect.options[testChapterSelect.selectedIndex].text;
+      const match = (val + " " + text).match(/\d+/);
+      const targetCh = match ? parseInt(match[0]) : 1;
 
-      if (targetCh) {
-        currentQuestions = allQs.filter(q => q.chapter === targetCh);
-      } else {
+      currentQuestions = allQs.filter(q => q.chapter === targetCh);
+      if (currentQuestions.length === 0) {
         currentQuestions = allQs;
       }
     }
 
-    if (currentQuestions.length === 0) {
-      currentQuestions = allQs;
-    }
-
-    // प्रश्नों को रैंडम शफल करना
+    // प्रश्नों को शफल करना
     currentQuestions.sort(() => Math.random() - 0.5);
 
-    // प्रश्नों की संख्या: फुल सिलेबस है तो 30 प्रश्न, चैप्टर-वाइज है तो 20 प्रश्न
-    let questionLimit = isFullSyllabus ? 30 : 20;
-
-    if (currentQuestions.length > questionLimit) {
-      currentQuestions = currentQuestions.slice(0, questionLimit);
+    // ★ नियम: सिर्फ चैप्टर वाइज में 20 प्रश्न होंगे, फुल सिलेबस में जितने भी हैं सारे (पूरे 100) आएँगे!
+    if (!isFull && currentQuestions.length > 20) {
+      currentQuestions = currentQuestions.slice(0, 20);
     }
 
     return true;
   }
 
-  // --- 3. टेस्ट स्टार्ट और चैप्टर के अनुसार टाइमर सेट ---
+  // 3. स्टार्ट बटन और टाइमर
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
       const cls = testClassSelect ? testClassSelect.value.trim() : "10";
       if (cls === '11' || cls === '12') {
-        alert(`📢 सूचना:\n\nकक्षा ${cls}वीं का टेस्ट अभी उपलब्ध नहीं है! कृपया 10वीं का टेस्ट चुनें।`);
+        alert(`📢 सूचना:\n\nकक्षा ${cls}वीं का टेस्ट अभी उपलब्ध नहीं है!`);
         return;
       }
 
@@ -228,15 +200,12 @@ document.addEventListener('DOMContentLoaded', function () {
       userResponses = {};
       currentQIndex = 0;
 
-      // टाइमर लॉजिक: अगर 'संपूर्ण विषय' है तो 30 मिनट, नहीं तो 15 मिनट
-      const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
-      const chStr = String(chapterVal).toLowerCase();
-      const isFullSyllabus = (chStr === 'all' || chStr.includes('संपूर्ण') || chStr.includes('फुल'));
-
-      if (isFullSyllabus) {
-        timeRemaining = 30 * 60; // 30 मिनट = 1800 सेकंड
+      // टाइमर: फुल सिलेबस = 30 मिनट (1800s), चैप्टर वाइज = 15 मिनट (900s)
+      const isFull = isFullSyllabusSelected();
+      if (isFull) {
+        timeRemaining = 30 * 60; // 30 मिनट
       } else {
-        timeRemaining = 15 * 60; // 15 मिनट = 900 सेकंड
+        timeRemaining = 15 * 60; // 15 मिनट
       }
 
       if (testLobbyScreen) testLobbyScreen.classList.remove('active');
@@ -252,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // प्रश्न दिखाना
+  // 4. सवाल दिखाना
   function renderQuestion(index) {
     if (index < 0 || index >= currentQuestions.length) return;
     currentQIndex = index;
@@ -290,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePaletteStatus();
   }
 
-  // पैलेट
+  // 5. पैलेट
   function renderPalette() {
     if (!paletteButtonsGrid) return;
     paletteButtonsGrid.innerHTML = '';
@@ -349,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // टाइमर
+  // 6. टाइमर
   function startTimer() {
     clearInterval(timerInterval);
     updateTimerDisplay();
@@ -370,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (timerDigits) timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }
 
-  // रिजल्ट
+  // 7. रिजल्ट
   function finishAndSubmitExam() {
     clearInterval(timerInterval);
     let correctCount = 0, wrongCount = 0;
