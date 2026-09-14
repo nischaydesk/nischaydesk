@@ -281,11 +281,11 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "राजनीति शास्त्र (लोकतांत्रिक राजनीति-II)",
       chapters: [
-        { no: 1, name: "लोकतंत्र में सत्ता की साझेदारी", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "सामाजिक विभाजन, लैंगिक मसले, धर्म, संप्रदाय और राजनीति का अंतर्संबंध।" },
-        { no: 2, name: "सत्ता में साझेदारी की कार्यप्रणाली", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "संघीय व्यवस्था, राज्य सूची, केंद्र सूची, समवर्ती सूची एवं पंचायती राज व्यवस्था।" },
-        { no: 3, name: "लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "राजनीतिक दल, दबाव समूह, जन आंदोलन एवं बिहार छात्र आंदोलन (1974)।" },
-        { no: 4, name: "लोकतंत्र की उपलब्धियां", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उत्तरदायी व वैध शासन, आर्थिक समानता एवं सामाजिक विविधताओं में सामंजस्य।" },
-        { no: 5, name: "लोकतंत्र की चुनौतियां", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "परिवारवाद, जातिवाद, भ्रष्टाचार, सूचना का अधिकार कानून एवं चुनावी सुधार।" }
+        { no: 1, name: "लोकतंत्र में सत्ता की साझेदारी", status: "ready", pdfUrl: "https://drive.google.com/file/d/1QlcgDlqBH64noLz2YS9Yehi_d8Cjp_Se/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सामाजिक विभाजन, लैंगिक मसले, धर्म, संप्रदाय और राजनीति का अंतर्संबंध।" },
+        { no: 2, name: "सत्ता में साझेदारी की कार्यप्रणाली", status: "ready", pdfUrl: "https://drive.google.com/file/d/1ki1udTvx-kIqw7cK13Fb6zpekLFjDp_S/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "संघीय व्यवस्था, राज्य सूची, केंद्र सूची, समवर्ती सूची एवं पंचायती राज व्यवस्था।" },
+        { no: 3, name: "लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष",status: "", pdfUrl: "https://drive.google.com/file/d/1_I_vCPPM9u4GVGkpV4IbFpkeI2R7NRtn/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "राजनीतिक दल, दबाव समूह, जन आंदोलन एवं बिहार छात्र आंदोलन (1974)।" },
+        { no: 4, name: "लोकतंत्र की उपलब्धियां", status: "ready", pdfUrl: "https://drive.google.com/file/d/1N1qxB6kQpyZJeair0lXplD0ryOLeFHX0/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "उत्तरदायी व वैध शासन, आर्थिक समानता एवं सामाजिक विविधताओं में सामंजस्य।" },
+        { no: 5, name: "लोकतंत्र की चुनौतियां", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "परिवारवाद, जातिवाद, भ्रष्टाचार, सूचना का अधिकार कानून एवं चुनावी सुधार।" }
       ]
     },
     {
