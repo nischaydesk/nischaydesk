@@ -293,13 +293,13 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "अर्थशास्त्र (हमारी अर्थव्यवस्था-II)",
       chapters: [
-        { no: 1, name: "अर्थव्यवस्था एवं इसके विकास का इतिहास", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राथमिक, द्वितीयक, तृतीयक क्षेत्र, प्रति व्यक्ति आय एवं सतत विकास।" },
-        { no: 2, name: "राज्य एवं राष्ट्र की आय", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "सकल घरेलू उत्पाद (GDP), राष्ट्रीय आय, प्रति व्यक्ति आय एवं गणना विधियां।" },
-        { no: 3, name: "मुद्रा, बचत एवं साख", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "वस्तु विनिमय प्रणाली की कठिनाइयां, मुद्रा के कार्य एवं साख पत्र।" },
-        { no: 4, name: "हमारी वित्तीय संस्थाएं", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "व्यावसायिक बैंक, भारतीय रिजर्व बैंक (RBI), नाबार्ड एवं स्वयं सहायता समूह (SHG)।" },
-        { no: 5, name: "रोजगार एवं सेवाएं", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "आर्थिक आधारभूत संरचना, सेवा क्षेत्र की भूमिका एवं आउटसोर्सिंग (बाह्यस्रोतन)।" },
-        { no: 6, name: "वैश्वीकरण (Globalisation)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उदारीकरण, निजीकरण, विश्व व्यापार संगठन (WTO) एवं बहुराष्ट्रीय कंपनियां।" },
-        { no: 7, name: "उपभोक्ता जागरण एवं संरक्षण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "उपभोक्ता अधिकार, जागो ग्राहक जागो, कोपरा (COPRA) कानून 1986।" }
+        { no: 1, name: "अर्थव्यवस्था एवं इसके विकास का इतिहास", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Qta-LkDWR8mtQlFtehbaW7F97y74Rs0Q/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "प्राथमिक, द्वितीयक, तृतीयक क्षेत्र, प्रति व्यक्ति आय एवं सतत विकास।" },
+        { no: 2, name: "राज्य एवं राष्ट्र की आय", status: "ready", pdfUrl: "https://drive.google.com/file/d/10-CCH8weRP86H-cEQIodQAqwHzjtMK7u/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सकल घरेलू उत्पाद (GDP), राष्ट्रीय आय, प्रति व्यक्ति आय एवं गणना विधियां।" },
+        { no: 3, name: "मुद्रा, बचत एवं साख", status: "ready", pdfUrl: "https://drive.google.com/file/d/1yEiP9HEYN_Dj4JRefvNuS42J_pa8FInE/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "वस्तु विनिमय प्रणाली की कठिनाइयां, मुद्रा के कार्य एवं साख पत्र।" },
+        { no: 4, name: "हमारी वित्तीय संस्थाएं", status: "ready", pdfUrl: "https://drive.google.com/file/d/1t_d5sP1ssWl0XbIYSrgnsJ9N2anTvyVg/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "व्यावसायिक बैंक, भारतीय रिजर्व बैंक (RBI), नाबार्ड एवं स्वयं सहायता समूह (SHG)।" },
+        { no: 5, name: "रोजगार एवं सेवाएं", status: "ready", pdfUrl: "https://drive.google.com/file/d/1__wGhWKVjm22xGySURZ0XJrsbTJ6_ctv/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "आर्थिक आधारभूत संरचना, सेवा क्षेत्र की भूमिका एवं आउटसोर्सिंग (बाह्यस्रोतन)।" },
+        { no: 6, name: "वैश्वीकरण (Globalisation)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Me5qVPVvOt8TOCGHOGp3aj7s2E6Z6ayn/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "उदारीकरण, निजीकरण, विश्व व्यापार संगठन (WTO) एवं बहुराष्ट्रीय कंपनियां।" },
+        { no: 7, name: "उपभोक्ता जागरण एवं संरक्षण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1iMizBypfufzleaSgzwEbFGtMhwjWAcLt/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "उपभोक्ता अधिकार, जागो ग्राहक जागो, कोपरा (COPRA) कानून 1986।" }
       ]
     },
     {
