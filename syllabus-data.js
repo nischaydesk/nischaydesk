@@ -248,8 +248,8 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "इतिहास (भारत और समकालीन विश्व-II)",
       chapters: [
-        { no: 1, name: "यूरोप में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "मेजिनी, काउंट कावूर, गैरीबाल्डी, बिस्मार्क एवं इटली-जर्मनी का एकीकरण।" },
-        { no: 2, name: "समाजवाद एवं साम्यवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "कार्ल मार्क्स का सिद्धांत, 1917 की रूसी क्रांति और लेनिन की नीतियां।" },
+        { no: 1, name: "यूरोप में राष्ट्रवाद", status: "ready", pdfUrl: "https://drive.google.com/file/d/12vQfG8fsWlDMIRlPHKrj8ifW5dZFZJNA/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "मेजिनी, काउंट कावूर, गैरीबाल्डी, बिस्मार्क एवं इटली-जर्मनी का एकीकरण।" },
+        { no: 2, name: "समाजवाद एवं साम्यवाद", status: "ready", pdfUrl: "https://drive.google.com/file/d/1WNpNH_SNlUOb4TnOQgcnx8fpUCT0DjxJ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "कार्ल मार्क्स का सिद्धांत, 1917 की रूसी क्रांति और लेनिन की नीतियां।" },
         { no: 3, name: "हिंद-चीन में राष्ट्रवादी आंदोलन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "फ्रांसीसी उपनिवेश, हो ची मिन्ह, नरोत्तम सिंहानुक एवं जिनेवा समझौता।" },
         { no: 4, name: "भारत में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "रॉलेट एक्ट, जलियांवाला बाग हत्याकांड, खिलाफत, असहयोग एवं सविनय अवज्ञा आंदोलन।" },
         { no: 5, name: "अर्थव्यवस्था और आजीविका", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "औद्योगीकरण का युग, फैक्ट्री प्रणाली, फ्लाइंग शटल एवं भारतीय सूती वस्त्र उद्योग।" },
