@@ -250,12 +250,12 @@ window.NischaySyllabus = {
       chapters: [
         { no: 1, name: "यूरोप में राष्ट्रवाद", status: "ready", pdfUrl: "https://drive.google.com/file/d/12vQfG8fsWlDMIRlPHKrj8ifW5dZFZJNA/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "मेजिनी, काउंट कावूर, गैरीबाल्डी, बिस्मार्क एवं इटली-जर्मनी का एकीकरण।" },
         { no: 2, name: "समाजवाद एवं साम्यवाद", status: "ready", pdfUrl: "https://drive.google.com/file/d/1WNpNH_SNlUOb4TnOQgcnx8fpUCT0DjxJ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "कार्ल मार्क्स का सिद्धांत, 1917 की रूसी क्रांति और लेनिन की नीतियां।" },
-        { no: 3, name: "हिंद-चीन में राष्ट्रवादी आंदोलन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "फ्रांसीसी उपनिवेश, हो ची मिन्ह, नरोत्तम सिंहानुक एवं जिनेवा समझौता।" },
-        { no: 4, name: "भारत में राष्ट्रवाद", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "रॉलेट एक्ट, जलियांवाला बाग हत्याकांड, खिलाफत, असहयोग एवं सविनय अवज्ञा आंदोलन।" },
-        { no: 5, name: "अर्थव्यवस्था और आजीविका", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "औद्योगीकरण का युग, फैक्ट्री प्रणाली, फ्लाइंग शटल एवं भारतीय सूती वस्त्र उद्योग।" },
-        { no: 6, name: "शहरीकरण एवं शहरी जीवन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "लंदन व बंबई का विकास, सामाजिक बदलाव एवं नगर नियोजन।" },
-        { no: 7, name: "व्यापार और भूमंडलीकरण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राचीन रेशम मार्ग, महामंदी (1929), ब्रेटन वुड्स संस्थाएं व बहुराष्ट्रीय कंपनियां।" },
-        { no: 8, name: "प्रेस-संस्कृति एवं राष्ट्रवाद", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "गुटेनबर्ग प्रिंटिंग प्रेस, भारत में समाचार पत्रों का विकास एवं वर्नाक्युलर प्रेस एक्ट।" }
+        { no: 3, name: "हिंद-चीन में राष्ट्रवादी आंदोलन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1iGLsfavbhP_lTGwTPPVRe7BKzBFHdkjL/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "फ्रांसीसी उपनिवेश, हो ची मिन्ह, नरोत्तम सिंहानुक एवं जिनेवा समझौता।" },
+        { no: 4, name: "भारत में राष्ट्रवाद", status: "ready", pdfUrl: "https://drive.google.com/file/d/1hfWle2Ann7dfGgR85b1aCfd9of3iwsjB/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "रॉलेट एक्ट, जलियांवाला बाग हत्याकांड, खिलाफत, असहयोग एवं सविनय अवज्ञा आंदोलन।" },
+        { no: 5, name: "अर्थव्यवस्था और आजीविका", status: "ready", pdfUrl: "https://drive.google.com/file/d/15sHRZaXNw1nnGM1u_20tDzRvNyQFQJyu/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "औद्योगीकरण का युग, फैक्ट्री प्रणाली, फ्लाइंग शटल एवं भारतीय सूती वस्त्र उद्योग।" },
+        { no: 6, name: "शहरीकरण एवं शहरी जीवन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Qy_4dglabGKbm0h--m69RgUHjKgNa1OC/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "लंदन व बंबई का विकास, सामाजिक बदलाव एवं नगर नियोजन।" },
+        { no: 7, name: "व्यापार और भूमंडलीकरण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1jJWgcm22ieYtkr8gCsX6HRdykS2N5T3n/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "प्राचीन रेशम मार्ग, महामंदी (1929), ब्रेटन वुड्स संस्थाएं व बहुराष्ट्रीय कंपनियां।" },
+        { no: 8, name: "प्रेस-संस्कृति एवं राष्ट्रवाद", status: "ready", pdfUrl: "https://drive.google.com/file/d/1YI0VYNFpEZ7tvRYrQKoWf3vKT9gZ1Z8x/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "गुटेनबर्ग प्रिंटिंग प्रेस, भारत में समाचार पत्रों का विकास एवं वर्नाक्युलर प्रेस एक्ट।" }
       ]
     },
     {
