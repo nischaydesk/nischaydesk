@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (Master Fix v5.1)
+   NischayDesk Chapter-Wise Real-Time Test Simulation Engine (Master Pro v6.0)
    Architected by: Prince Kumar
    ========================================================================== */
 
@@ -42,7 +42,41 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // सभी विषयों की अचूक मैपिंग (Math, Chem, Bio, Sanskrit, SST, Physics)
+  // --- 1. डायरेक्ट होम / डैशबोर्ड बटन (थ्री लाइन मेन्यू की ज़रूरत खत्म) ---
+  const headerBrand = document.querySelector('.header-brand, .brand, nav, header');
+  if (headerBrand && !document.getElementById('quickHomeNavBtn')) {
+    const homeBtn = document.createElement('a');
+    homeBtn.id = 'quickHomeNavBtn';
+    homeBtn.href = 'index.html';
+    homeBtn.innerHTML = '🏠 होम';
+    homeBtn.setAttribute('style', `
+      margin-left: 10px;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+    `);
+    headerBrand.appendChild(homeBtn);
+  }
+
+  // --- 2. क्लास 11वीं / 12वीं चुनते ही तुरंत अलर्ट ---
+  if (testClassSelect) {
+    testClassSelect.addEventListener('change', function () {
+      const selectedClass = this.value.trim();
+      if (selectedClass === '11' || selectedClass === '12') {
+        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट सीरीज और प्रश्न बैंक अभी उपलब्ध नहीं है।\nइस पर काम चल रहा है और यह बहुत जल्द लाइव होगा!\n\nतब तक आप 10वीं के सभी विषयों का टेस्ट दे सकते हैं।`);
+        this.value = '10'; // वापस 10वीं पर सेट कर देगा
+      }
+    });
+  }
+
+  // विषय पहचानना
   function getTargetJsonFile() {
     const cls = testClassSelect ? testClassSelect.value.trim() : "10";
 
@@ -85,29 +119,21 @@ document.addEventListener('DOMContentLoaded', function () {
     return '10-physics.json';
   }
 
+  // प्रश्न लोड करना और पैटर्न के अनुसार संख्या सेट करना
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
     const chapterVal = testChapterSelect ? testChapterSelect.value : "all";
 
     if (jsonFile === "CLASS_NOT_READY") {
-      currentQuestions = [
-        {
-          chapter: 1,
-          q: "🚀 कक्षा 11वीं और 12वीं का प्रश्न बैंक अभी तैयार किया जा रहा है! यह सेक्शन बहुत जल्द लाइव होगा। तब तक आप क्लास 10वीं के सभी 6 विषयों का टेस्ट दे सकते हैं।",
-          options: ["ठीक है, समझ गया", "क्लास 10वीं का टेस्ट दें", "होम पेज पर जाएं", "बाद में आऊंगा"],
-          correct: 0,
-          exp: "11वीं-12वीं का पूरा सिलेबस जल्द अपलोड किया जाएगा।"
-        }
-      ];
-      return;
+      alert("कक्षा 11वीं और 12वीं के लिए प्रश्न अभी तैयार किए जा रहे हैं!");
+      return false;
     }
 
-    // GitHub Pages और लोकल दोनों के लिए सभी सटीक पाथ्स
     const pathsToTry = [
       `data/${jsonFile}`,
       `./data/${jsonFile}`,
       `/nischaydesk/data/${jsonFile}`,
-      `${window.location.origin}/nischaydesk/data/${jsonFile}`
+      `https://nischaydesk.github.io/nischaydesk/data/${jsonFile}`
     ];
 
     let rawData = null;
@@ -121,11 +147,11 @@ document.addEventListener('DOMContentLoaded', function () {
             rawData = await res.json();
             break;
           } catch (jsonErr) {
-            fetchErrorDetail = `फ़ाइल मिल गई लेकिन JSON में Syntax Error है (${jsonErr.message})। फ़ाइल में // कमेंट्स या गलत कॉमा चेक करें!`;
+            fetchErrorDetail = `JSON Syntax Error: ${jsonErr.message}`;
             break;
           }
         } else {
-          fetchErrorDetail = `फ़ाइल नहीं मिली (Status: ${res.status})`;
+          fetchErrorDetail = `Status: ${res.status}`;
         }
       } catch (networkErr) {
         fetchErrorDetail = networkErr.message;
@@ -134,25 +160,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
       alert(`⚠️ '${jsonFile}' लोड नहीं हो सकी!\nवजह: ${fetchErrorDetail}`);
-      currentQuestions = [
-        {
-          chapter: 1,
-          q: `डेमो प्रश्न: '${jsonFile}' लोड नहीं हो पाई।`,
-          options: ["ऑप्शन A", "ऑप्शन B", "ऑप्शन C", "ऑप्शन D"],
-          correct: 0,
-          exp: "फ़ाइल का सिंटैक्स या पाथ चेक करें।"
-        }
-      ];
-      return;
+      return false;
     }
 
-    // डेटा नॉर्मलाइज़ेशन
+    // डेटा को फॉर्मेट में लाना
     const allQs = rawData.map(item => ({
       chapter: parseInt(item.chapter) || 1,
       q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
       options: item.options || [],
       correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
-      exp: item.exp || item.explanation || 'व्याख्या शीघ्र उपलब्ध होगी।'
+      exp: item.exp || item.explanation || 'व्याख्या उपलब्ध नहीं है।'
     }));
 
     // अध्याय फ़िल्टरिंग
@@ -174,29 +191,60 @@ document.addEventListener('DOMContentLoaded', function () {
       currentQuestions = allQs;
     }
 
+    // सवालों को रैंडम करना
     currentQuestions.sort(() => Math.random() - 0.5);
+
+    // पैटर्न के अनुसार प्रश्नों की संख्या तय करना
+    const pattern = testPatternSelect ? testPatternSelect.value : 'speed';
+    let questionLimit = 20;
+
+    if (pattern === 'board') {
+      questionLimit = 30; // बोर्ड फुल टेस्ट: 30 प्रश्न
+    } else {
+      questionLimit = 20; // क्विक स्पीड टेस्ट: 20 प्रश्न
+    }
+
+    if (currentQuestions.length > questionLimit) {
+      currentQuestions = currentQuestions.slice(0, questionLimit);
+    }
+
+    return true;
   }
 
-  // 2. Start Exam Trigger
+  // --- 3. टेस्ट स्टार्ट और पैटर्न के अनुसार टाइमर सेट ---
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
+      const cls = testClassSelect ? testClassSelect.value.trim() : "10";
+      if (cls === '11' || cls === '12') {
+        alert(`📢 सूचना:\n\nकक्षा ${cls}वीं का टेस्ट अभी उपलब्ध नहीं है! कृपया 10वीं का टेस्ट चुनें।`);
+        return;
+      }
+
       startExamBtn.disabled = true;
       startExamBtn.innerText = "लोड हो रहा है...";
 
-      await loadSelectedQuestions();
+      const isSuccess = await loadSelectedQuestions();
 
       startExamBtn.disabled = false;
       startExamBtn.innerText = "⚡ टेस्ट शुरू करें (Start Exam)";
 
+      if (!isSuccess) return;
+
       userResponses = {};
       currentQIndex = 0;
-      timeRemaining = 900;
+
+      // पैटर्न के अनुसार टाइमर
+      const pattern = testPatternSelect ? testPatternSelect.value : 'speed';
+      if (pattern === 'board') {
+        timeRemaining = 30 * 60; // 30 मिनट
+      } else {
+        timeRemaining = 15 * 60; // 15 मिनट
+      }
 
       if (testLobbyScreen) testLobbyScreen.classList.remove('active');
       if (testResultScreen) testResultScreen.classList.remove('active');
       if (testRunningScreen) testRunningScreen.classList.add('active');
 
-      const cls = testClassSelect ? testClassSelect.value : "10";
       const subTxt = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
       if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subTxt.split(' ')[0]}`;
 
@@ -206,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. Render Question
+  // प्रश्न दिखाना
   function renderQuestion(index) {
     if (index < 0 || index >= currentQuestions.length) return;
     currentQIndex = index;
@@ -244,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePaletteStatus();
   }
 
-  // 4. Palette Logic
+  // पैलेट
   function renderPalette() {
     if (!paletteButtonsGrid) return;
     paletteButtonsGrid.innerHTML = '';
@@ -269,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 5. Controls
   if (prevQBtn) {
     prevQBtn.addEventListener('click', () => {
       if (currentQIndex > 0) renderQuestion(currentQIndex - 1);
@@ -304,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 6. Timer
+  // टाइमर
   function startTimer() {
     clearInterval(timerInterval);
     updateTimerDisplay();
@@ -325,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (timerDigits) timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }
 
-  // 7. Results
+  // रिजल्ट
   function finishAndSubmitExam() {
     clearInterval(timerInterval);
     let correctCount = 0, wrongCount = 0;
