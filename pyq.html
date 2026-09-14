@@ -21,7 +21,7 @@
     .pyq-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: #1e293b; }
     .btn-group { display: flex; gap: 8px; margin-top: 14px; }
     .btn-view { flex: 1; background: #0284c7; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; }
-    .btn-down { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+    .btn-down { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     
     /* PDF Modal */
     .pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
@@ -50,21 +50,21 @@
 
   <div class="pyq-container">
     <div class="hero-banner">
-      <h1 style="margin:0 0 8px;">📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020-2024)</h1>
-      <p style="margin:0; opacity:0.9; font-size:0.95rem;">पिछले 5 वर्षों के वास्तविक परीक्षा प्रश्न पत्र। टॉपर प्रिंस कुमार (463/500) द्वारा सत्यापित।</p>
+      <h1 style="margin:0 0 8px;">📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020-2026)</h1>
+      <p style="margin:0; opacity:0.9; font-size:0.95rem;">2020 से 2026 तक के वास्तविक परीक्षा प्रश्न पत्र। दोनों पालियों (Shift 1 & 2) के संपूर्ण हल।</p>
     </div>
 
     <!-- फिल्टर्स -->
     <div class="filter-bar">
       <select id="yearFilter">
         <option value="all">सभी वर्ष (2020-2026)</option>
-       <option value ="2026">2026</option>
-        <option value ="2025">2025</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
         <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
       </select>
 
       <select id="subjectFilter">
@@ -74,6 +74,7 @@
         <option value="sst">सामाजिक विज्ञान (SST)</option>
         <option value="sanskrit">संस्कृत (Sanskrit)</option>
         <option value="hindi">हिंदी (Hindi)</option>
+        <option value="english">अंग्रेजी (English)</option>
       </select>
 
       <input type="text" id="searchInput" placeholder="सब्जेक्ट या वर्ष खोजें...">
@@ -110,6 +111,11 @@
 
       pyqGrid.innerHTML = '';
 
+      if (typeof PYQ_DATA === 'undefined') {
+        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:#ef4444;">pyq-data.js फ़ाइल लोड नहीं हुई!</div>`;
+        return;
+      }
+
       const filtered = PYQ_DATA.filter(item => {
         const matchesYear = (year === 'all' || item.year.toString() === year);
         const matchesSub = (sub === 'all' || item.subKey === sub);
@@ -123,6 +129,17 @@
       }
 
       filtered.forEach(item => {
+        const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
+        const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
+
+        const readBtnAction = hasPdf 
+          ? `onclick="openPdfModal('${item.subject} (${item.year} - ${item.shift})', '${item.pdfUrl}')"`
+          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
+
+        const downBtnAction = hasDown 
+          ? `href="${item.downloadUrl}" target="_blank"`
+          : `onclick="alert('डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
+
         const card = document.createElement('div');
         card.className = 'pyq-card';
         card.innerHTML = `
@@ -134,8 +151,8 @@
             <h3>${item.subject}</h3>
           </div>
           <div class="btn-group">
-            <button class="btn-view" onclick="openPdfModal('${item.subject} (${item.year})', '${item.pdfUrl}')">📖 पढ़ें</button>
-            <a href="${item.downloadUrl}" target="_blank" class="btn-down">⬇️ डाउनलोड</a>
+            <button class="btn-view" ${readBtnAction}>📖 पढ़ें</button>
+            <a class="btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
           </div>
         `;
         pyqGrid.appendChild(card);
@@ -144,7 +161,12 @@
 
     function openPdfModal(title, url) {
       document.getElementById('modalDocTitle').innerText = title;
-      document.getElementById('pdfFrame').src = url;
+      // सुरक्षित प्रीव्यू मोड सुनिश्चित करें
+      let safeUrl = url;
+      if (safeUrl.includes('drive.google.com/file/d/')) {
+        safeUrl = safeUrl.replace(/\/view.*$/, '/preview');
+      }
+      document.getElementById('pdfFrame').src = safeUrl;
       document.getElementById('pdfModal').classList.add('active');
     }
 
@@ -162,4 +184,3 @@
   </script>
 </body>
 </html>
-
