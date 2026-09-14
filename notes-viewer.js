@@ -1,7 +1,8 @@
 /* ==========================================================================
-   NischayDesk Dynamic Role-Based Notes Controller (v4.2)
+   NischayDesk Dynamic Role-Based Notes Controller (v4.3 - Zero Gmail Leak)
    Rule 1: Guest (Not Logged In) -> All Classes (10th, 11th, 12th) Fully Visible
    Rule 2: Logged In -> Strictly Filter to Student's Selected Class
+   Rule 3: Clean In-App Viewer (No Drive App Redirects, No Gmail Exposure)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -25,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
                ? window.NischayConfig.authInstance 
                : (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
 
-  // ऑथेंटिकेशन स्टेट को ध्यान में रखकर इनिशियलाइज करें
   if (auth) {
     auth.onAuthStateChanged(function (user) {
       initNotes(user);
@@ -34,18 +34,43 @@ document.addEventListener('DOMContentLoaded', function () {
     initNotes(null);
   }
 
+  // ड्राइव आईडी निकालकर 100% सेफ एम्बेड और डाउनलोड लिंक तैयार करने वाला हेल्पर
+  function extractDriveId(url) {
+    if (!url) return null;
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) return match[1];
+    const matchParam = url.match(/id=([a-zA-Z0-9_-]+)/);
+    return (matchParam && matchParam[1]) ? matchParam[1] : null;
+  }
+
+  function getSafePreviewUrl(rawUrl) {
+    const fileId = extractDriveId(rawUrl);
+    if (fileId) {
+      // यह लिंक सीधे इन-पेज एम्बेड मोड में खुलता है, ड्राइव ऐप कभी ट्रिगर नहीं होता
+      return `https://drive.google.com/file/d/${fileId}/preview`;
+    }
+    return rawUrl;
+  }
+
+  function getSafeDownloadUrl(rawUrl) {
+    const fileId = extractDriveId(rawUrl);
+    if (fileId) {
+      // यह सीधे ब्राउज़र में फ़ाइल डाउनलोड कराएगा, बिना ड्राइव ऐप खोले
+      return `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
+    return rawUrl;
+  }
+
   function initNotes(currentUser) {
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
       setTimeout(() => initNotes(currentUser), 200);
       return;
     }
 
-    // चेक करें कि यूजर लॉग इन है या गेस्ट
     const isUserLoggedIn = !!currentUser;
     let studentClass = null;
 
     if (isUserLoggedIn) {
-      // लॉग इन यूजर की सेव्ड क्लास निकालें
       const profile = localStorage.getItem('nischay_user_profile');
       if (profile) {
         try {
@@ -58,17 +83,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // 1. फ़िल्टर बटन (Pills) को यूजर रोल के अनुसार टॉगल करें
     adjustFilterPills(isUserLoggedIn, studentClass);
 
-    // 2. मास्टर लिस्ट तैयार करें
     allChaptersMaster = [];
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      // अगर यूजर लॉग इन है, तो सिर्फ उसकी क्लास का डेटा लोड होगा
       if (isUserLoggedIn && studentClass) {
         if (!subject.id.startsWith(studentClass + '-')) return;
       }
-      // अगर गेस्ट है (लॉग इन नहीं है), तो तीनों क्लास का डेटा लोड होगा
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
         subject.chapters.forEach(function (ch) {
@@ -89,25 +110,20 @@ document.addEventListener('DOMContentLoaded', function () {
     renderNotesGrid();
   }
 
-  // फ़िल्टर बटनों का विजिबिलिटी कंट्रोल
   function adjustFilterPills(isLoggedIn, sClass) {
     if (!filterPillContainer) return;
     const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
 
     filterButtons.forEach(btn => {
       const filterVal = btn.getAttribute('data-filter');
-
-      // 'सभी विषय' हमेशा दिखेगा
       if (filterVal === 'all') {
         btn.style.display = 'inline-block';
         return;
       }
 
       if (!isLoggedIn) {
-        // गेस्ट मोड: 10th, 11th, 12th के सारे बटन दिखेंगे
         btn.style.display = 'inline-block';
       } else {
-        // लॉग इन मोड: सिर्फ और सिर्फ चुनी हुई क्लास वाले बटन दिखेंगे
         if (filterVal.startsWith(sClass + '-')) {
           btn.style.display = 'inline-block';
         } else {
@@ -122,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let filtered = allChaptersMaster.filter(function (item) {
       let matchSubject = false;
-
       if (currentFilterSubject === 'all') {
         matchSubject = true;
       } else if (currentFilterSubject === '10-sst-all') {
@@ -159,9 +174,11 @@ document.addEventListener('DOMContentLoaded', function () {
         ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
         : `onclick="alert('अध्याय ${note.no} (${escapeHtml(note.name)}) के नोट्स जल्द जोड़े जा रहे हैं!')"`;
 
+      // डाउनलोड बटन पर सेफ डायरेक्ट डाउनलोड लिंक सेट किया गया है
+      const directDownloadUrl = hasPdf ? getSafeDownloadUrl(note.pdfUrl) : 'javascript:void(0)';
       const downloadAction = hasPdf
-        ? `href="${note.pdfUrl}" target="_blank"`
-        : `href="javascript:void(0)" onclick="alert('PDF डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
+        ? `href="${directDownloadUrl}" download`
+        : `onclick="alert('PDF डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
       htmlBuffer += `
         <div class="note-item-card" style="background: var(--surface-card, #0c1633); border: 1px solid var(--border-strong, #1e366a); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
@@ -195,15 +212,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modalDocBadge) modalDocBadge.innerText = classTitle;
     if (modalDocTitle) modalDocTitle.innerText = title;
     
-    let secureUrl = pdfUrl;
-    if (secureUrl.includes('drive.google.com/file/d/')) {
-      secureUrl = secureUrl.replace('/view?usp=sharing', '/preview')
-                           .replace('/view?usp=drivesdk', '/preview')
-                           .replace('/view', '/preview');
-    }
+    // सुरक्षित URL लोड करें
+    const cleanPreview = getSafePreviewUrl(pdfUrl);
+    studioPdfFrame.src = cleanPreview;
 
-    studioPdfFrame.src = secureUrl;
-    if (modalDirectDownloadBtn) modalDirectDownloadBtn.href = pdfUrl;
+    if (modalDirectDownloadBtn) {
+      modalDirectDownloadBtn.href = getSafeDownloadUrl(pdfUrl);
+    }
 
     pdfStudioModal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -220,6 +235,19 @@ document.addEventListener('DOMContentLoaded', function () {
   if (pdfStudioModal) {
     pdfStudioModal.addEventListener('click', function (e) {
       if (e.target === pdfStudioModal) closeNoteModal();
+    });
+  }
+
+  // फुल-स्क्रीन टॉगल
+  if (modalFullscreenBtn) {
+    modalFullscreenBtn.addEventListener('click', function() {
+      const stage = document.getElementById('pdfFrameStage') || studioPdfFrame;
+      if (!document.fullscreenElement) {
+        if (stage.requestFullscreen) stage.requestFullscreen();
+        else if (stage.webkitRequestFullscreen) stage.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
     });
   }
 
