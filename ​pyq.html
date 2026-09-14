@@ -1,1 +1,163 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>बिहार बोर्ड 10th क्वेश्चन बैंक (2020-2024) | NischayDesk</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .pyq-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+    .hero-banner { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: #fff; padding: 24px; border-radius: 14px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: #fff; padding: 14px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .filter-bar select, .filter-bar input { padding: 10px 14px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.92rem; outline: none; }
+    .filter-bar input { flex: 1; min-width: 200px; }
+    .pyq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .pyq-card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.06); border: 1px solid #eee; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
+    .pyq-card:hover { transform: translateY(-3px); }
+    .badge-year { background: #e0f2fe; color: #0284c7; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; display: inline-block; }
+    .badge-shift { background: #f3f4f6; color: #4b5563; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; display: inline-block; margin-left: 6px; }
+    .pyq-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: #1e293b; }
+    .btn-group { display: flex; gap: 8px; margin-top: 14px; }
+    .btn-view { flex: 1; background: #0284c7; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; }
+    .btn-down { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+    
+    /* PDF Modal */
+    .pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
+    .pdf-modal.active { display: flex; }
+    .modal-box { width: 95%; max-width: 900px; height: 90%; background: #fff; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+    .modal-header { padding: 12px 16px; background: #1e293b; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+    .modal-body { flex: 1; }
+    .modal-body iframe { width: 100%; height: 100%; border: none; }
+  </style>
+</head>
+<body>
+
+  <!-- नेविगेशन बार -->
+  <nav class="navbar" style="background:#fff; border-bottom:1px solid #eee; padding:12px 20px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="font-weight:bold; font-size:1.2rem; color:#0284c7;">
+      <a href="index.html" style="text-decoration:none; color:inherit;">NischayDesk</a>
+      <a href="index.html" style="font-size:0.8rem; margin-left:10px; text-decoration:none; background:#f1f5f9; padding:4px 8px; border-radius:6px; color:#334155;">🏠 होम</a>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a href="notes.html" style="text-decoration:none; color:#334155; font-size:0.9rem;">नोट्स</a>
+      <a href="test.html" style="text-decoration:none; color:#334155; font-size:0.9rem;">टेस्ट</a>
+      <a href="model-paper.html" style="text-decoration:none; color:#0284c7; font-size:0.9rem; font-weight:bold;">मॉडल पेपर</a>
+    </div>
+  </nav>
+
+  <div class="pyq-container">
+    <div class="hero-banner">
+      <h1 style="margin:0 0 8px;">📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020-2024)</h1>
+      <p style="margin:0; opacity:0.9; font-size:0.95rem;">पिछले 5 वर्षों के वास्तविक परीक्षा प्रश्न पत्र। टॉपर प्रिंस कुमार (463/500) द्वारा सत्यापित।</p>
+    </div>
+
+    <!-- फिल्टर्स -->
+    <div class="filter-bar">
+      <select id="yearFilter">
+        <option value="all">सभी वर्ष (2020-2024)</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+      </select>
+
+      <select id="subjectFilter">
+        <option value="all">सभी विषय</option>
+        <option value="math">गणित (Math)</option>
+        <option value="science">विज्ञान (Science)</option>
+        <option value="sst">सामाजिक विज्ञान (SST)</option>
+        <option value="sanskrit">संस्कृत (Sanskrit)</option>
+        <option value="hindi">हिंदी (Hindi)</option>
+      </select>
+
+      <input type="text" id="searchInput" placeholder="सब्जेक्ट या वर्ष खोजें...">
+    </div>
+
+    <!-- पेपर्स की ग्रिड -->
+    <div class="pyq-grid" id="pyqGrid"></div>
+  </div>
+
+  <!-- PDF देखने का मोडल -->
+  <div class="pdf-modal" id="pdfModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span id="modalDocTitle" style="font-weight:bold;">PDF Reader</span>
+        <button class="modal-close" onclick="closePdfModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="pdfFrame" src=""></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="pyq-data.js"></script>
+  <script>
+    const pyqGrid = document.getElementById('pyqGrid');
+    const yearFilter = document.getElementById('yearFilter');
+    const subjectFilter = document.getElementById('subjectFilter');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderPyq() {
+      const year = yearFilter.value;
+      const sub = subjectFilter.value;
+      const search = searchInput.value.toLowerCase();
+
+      pyqGrid.innerHTML = '';
+
+      const filtered = PYQ_DATA.filter(item => {
+        const matchesYear = (year === 'all' || item.year.toString() === year);
+        const matchesSub = (sub === 'all' || item.subKey === sub);
+        const matchesSearch = item.subject.toLowerCase().includes(search) || item.year.toString().includes(search);
+        return matchesYear && matchesSub && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:#64748b;">कोई प्रश्न पत्र नहीं मिला!</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'pyq-card';
+        card.innerHTML = `
+          <div>
+            <div>
+              <span class="badge-year">वर्ष ${item.year}</span>
+              <span class="badge-shift">${item.shift}</span>
+            </div>
+            <h3>${item.subject}</h3>
+          </div>
+          <div class="btn-group">
+            <button class="btn-view" onclick="openPdfModal('${item.subject} (${item.year})', '${item.pdfUrl}')">📖 पढ़ें</button>
+            <a href="${item.downloadUrl}" target="_blank" class="btn-down">⬇️ डाउनलोड</a>
+          </div>
+        `;
+        pyqGrid.appendChild(card);
+      });
+    }
+
+    function openPdfModal(title, url) {
+      document.getElementById('modalDocTitle').innerText = title;
+      document.getElementById('pdfFrame').src = url;
+      document.getElementById('pdfModal').classList.add('active');
+    }
+
+    function closePdfModal() {
+      document.getElementById('pdfModal').classList.remove('active');
+      document.getElementById('pdfFrame').src = '';
+    }
+
+    yearFilter.addEventListener('change', renderPyq);
+    subjectFilter.addEventListener('change', renderPyq);
+    searchInput.addEventListener('input', renderPyq);
+
+    // Initial Render
+    document.addEventListener('DOMContentLoaded', renderPyq);
+  </script>
+</body>
+</html>
 
