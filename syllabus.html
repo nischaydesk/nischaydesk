@@ -160,8 +160,8 @@
         <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
         <a href="index.html#quickTools" class="nav-item">🛠️ स्मार्ट टूल्स</a>
         <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
-<a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
- </div>
+        <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
+      </div>
 
       <div class="nav-actions">
         <button class="btn-auth-primary" id="headerAuthBtn">
@@ -217,12 +217,11 @@
         <span class="icon">🛠️</span> स्मार्ट टूल्स
       </a>
       <a href="pyq.html" class="drawer-nav-item">
-  <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
-</a>
-<a href="model-paper.html" class="drawer-nav-item">
-  <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
-</a>
-
+        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
+      </a>
+      <a href="model-paper.html" class="drawer-nav-item">
+        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
+      </a>
 
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
@@ -299,33 +298,51 @@
     </div>
   </div>
 
-  <!-- 4. FOOTER -->
-  <footer class="app-footer">
-    <div class="footer-container">
-      <div class="footer-col brand-col">
-        <div class="footer-brand">
-          <div class="brand-badge-icon sm">N</div>
-          <span class="brand-title">NischayDesk</span>
+  <!-- 4. FOOTER (हेडर टकराव व सफेद पट्टी फिक्स) -->
+  <footer style="background: #080f24 !important; color: #94a3b8; padding: 40px 16px 80px; border-top: 1px solid #1e3a8a; margin-top: 50px; position: relative; z-index: 1;">
+    <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+      
+      <!-- Brand Column -->
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+          <div style="background: #0284c7; color: #fff; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800;">N</div>
+          <span style="color: #fff; font-size: 1.25rem; font-weight: 800;">Nischay<span style="color: #38bdf8;">Desk</span></span>
         </div>
-        <p class="footer-summary">
+        <p style="font-size: 0.85rem; line-height: 1.6; margin: 0 0 14px; color: #94a3b8;">
           बिहार बोर्ड मैट्रिक व इंटर परीक्षा की तैयारी के लिए समर्पित डिजिटल स्टडी डेस्क।
         </p>
-        <div class="founder-identity-box">
-          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
+        <div style="font-size: 0.82rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 12px; border-radius: 6px; display: inline-block;">
+          संस्थापक एवं डेवलपर: <strong style="color: #fff;">Prince Kumar</strong>
         </div>
       </div>
-      <div class="footer-col">
-        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
-        <ul class="footer-nav">
-          <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
-          <li><a href="notes.html">➔ नोट्स हब</a></li>
-          <li><a href="test.html">➔ मॉक टेस्ट सीरीज</a></li>
+
+      <!-- Quick Navigation -->
+      <div>
+        <h4 style="color: #fff; font-size: 1rem; margin: 0 0 14px; font-weight: 700;">त्वरित नेविगेशन</h4>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
+          <li><a href="index.html" style="color: #94a3b8; text-decoration: none;">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="notes.html" style="color: #94a3b8; text-decoration: none;">➔ नोट्स हब</a></li>
+          <li><a href="test.html" style="color: #94a3b8; text-decoration: none;">➔ मॉक टेस्ट सीरीज</a></li>
+          <li><a href="pyq.html" style="color: #94a3b8; text-decoration: none;">➔ क्वेश्चन बैंक</a></li>
+          <li><a href="model-paper.html" style="color: #94a3b8; text-decoration: none;">➔ मॉडल पेपर्स</a></li>
         </ul>
       </div>
+
     </div>
-    <div class="footer-bottom-bar">
-      <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
-      <span class="server-status-tag">● सिलेबस इंजन सक्रिय है</span>
+
+    <!-- Bottom Bar (Direct Deep Links) -->
+    <div style="max-width: 1100px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center;">
+      <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; font-size: 0.85rem;">
+        <a href="privacy.html#about" style="color: #38bdf8; text-decoration: none; font-weight: 600;">संस्थापक परिचय (About Developer)</a>
+        <span style="color: #475569;">•</span>
+        <a href="privacy.html#terms" style="color: #94a3b8; text-decoration: none;">सेवा की शर्तें (Terms)</a>
+        <span style="color: #475569;">•</span>
+        <a href="privacy.html#privacy" style="color: #94a3b8; text-decoration: none;">गोपनीयता नीति (Privacy Policy)</a>
+      </div>
+
+      <div style="font-size: 0.82rem; color: #64748b;">
+        &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● सिलेबस इंजन सक्रिय है</span>
+      </div>
     </div>
   </footer>
 
