@@ -1,10 +1,6 @@
 /* ==========================================================================
-   NischayDesk User Auth & Profile State Management Engine (v4.1)
-   Features:
-   - Synchronized with Modal-based Smooth Logout
-   - 16 Career Goals Integration
-   - Independent Class, Stream & Goal Display Binding
-   - High-Contrast Bright Colors for Sidebar Drawer
+   NischayDesk User Auth & Profile State Management Engine (v4.2)
+   Fixed: Profile Card Name Visibility in Light Mode Sidebar Drawer
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -158,14 +154,14 @@ document.addEventListener('DOMContentLoaded', function () {
       if (userSessionBadge) userSessionBadge.innerText = `Class ${activeClass}th ▾`;
       if (userAvatarImg) userAvatarImg.src = photoURL;
 
-      // साइडबार में हाई-कंट्रास्ट वाइट और ग्रीन कलर्स
+      // साइडबार में डार्क ब्लू बोल्ड नाम (जो लाइट मेनू बैकग्राउंड पर एकदम साफ दिखेगा)
       if (drawerUserCard) {
         drawerUserCard.innerHTML = `
-          <div style="display:flex; align-items:center; gap:10px;">
-            <img src="${photoURL}" style="width:40px; height:40px; border-radius:50%; border:2px solid #38bdf8; object-fit:cover;" alt="${activeName}">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${photoURL}" style="width:42px; height:42px; border-radius:50%; border:2px solid #0284c7; object-fit:cover;" alt="${activeName}">
             <div style="min-width:0; overflow:hidden;">
-              <div style="font-size:0.95rem; font-weight:800; color:#ffffff !important; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${activeName}</div>
-              <div style="font-size:0.75rem; color:#4ade80 !important; font-weight:700; margin-top:3px;">● Class ${activeClass}th सक्रिय (बदलें ▾)</div>
+              <div style="font-size:0.98rem; font-weight:800; color:#0f172a !important; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${activeName}</div>
+              <div style="font-size:0.78rem; color:#15803d !important; font-weight:700; margin-top:3px;">● Class ${activeClass}th सक्रिय (बदलें ▾)</div>
             </div>
           </div>
         `;
@@ -184,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (drawerUserCard) {
         drawerUserCard.innerHTML = `
-          <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #38bdf8; font-weight: 700;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+          <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #0284c7; font-weight: 700;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
         `;
       }
 
