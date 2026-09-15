@@ -1,6 +1,7 @@
 /* ==========================================================================
-   NischayDesk Core Controller, Theme & Smart Utilities Engine (v3.5)
+   NischayDesk Core Controller, Theme & Smart Utilities Engine (v4.0)
    Architected by: Prince Kumar
+   Fixed: Eliminates Blank/White PDF via Image Object Pre-rendering & Dynamic Aspect Ratio
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
   applySavedTheme();
 
   // =========================================================================
-  // 3. SMART TOOL: IMAGE TO PDF CONVERTER
+  // 3. SMART TOOL: HD IMAGE TO PDF CONVERTER (BLANK PDF FIX)
   // =========================================================================
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
@@ -83,7 +84,10 @@ document.addEventListener('DOMContentLoaded', function () {
     selectedImageFiles = [];
     if (converterFileInput) converterFileInput.value = '';
     if (selectedFilesCount) selectedFilesCount.innerText = "कोई फोटो नहीं चुनी गई";
-    if (generatePdfBtn) generatePdfBtn.disabled = true;
+    if (generatePdfBtn) {
+      generatePdfBtn.disabled = true;
+      generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
+    }
   }
 
   if (closeConverterBtn) closeConverterBtn.addEventListener('click', closeConverterModal);
@@ -95,16 +99,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (converterFileInput) {
     converterFileInput.addEventListener('change', function () {
-      selectedImageFiles = Array.from(this.files);
+      selectedImageFiles = Array.from(this.files).filter(f => f.type.startsWith('image/'));
       if (selectedImageFiles.length > 0) {
         if (selectedFilesCount) {
           selectedFilesCount.innerText = `✓ ${selectedImageFiles.length} फोटो चुनी गईं`;
         }
         if (generatePdfBtn) generatePdfBtn.disabled = false;
       } else {
-        if (selectedFilesCount) selectedFilesCount.innerText = "कोई फोटो नहीं चुनी गई";
+        if (selectedFilesCount) selectedFilesCount.innerText = "कृपया केवल वैध फोटो फाइलें चुनें";
         if (generatePdfBtn) generatePdfBtn.disabled = true;
       }
+    });
+  }
+
+  // इमेज को मेमोरी में पूरी तरह लोड करके असली डायमेंशन निकालने वाला फंक्शन
+  function loadHtmlImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          resolve({
+            imgElement: img,
+            dataUrl: e.target.result,
+            width: img.naturalWidth || img.width,
+            height: img.naturalHeight || img.height,
+            format: file.type.includes('png') ? 'PNG' : 'JPEG'
+          });
+        };
+        img.onerror = () => reject(new Error("इमेज रेंडरिंग विफल रही"));
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
   }
 
@@ -112,45 +139,62 @@ document.addEventListener('DOMContentLoaded', function () {
     generatePdfBtn.addEventListener('click', async function () {
       if (!selectedImageFiles || selectedImageFiles.length === 0) return;
 
-      const { jsPDF } = window.jspdf || {};
+      const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
       if (!jsPDF) {
-        alert("PDF लाइब्रेरी लोड हो रही है, कृपया 2 सेकंड बाद पुनः प्रयास करें।");
+        alert("PDF लाइब्रेरी लोड हो रही है, कृपया 2 सेकंड बाद दोबारा कोशिश करें।");
         return;
       }
 
       generatePdfBtn.disabled = true;
-      generatePdfBtn.innerText = "PDF तैयार हो रही है...";
+      generatePdfBtn.innerText = "⏳ HD PDF तैयार हो रहा है...";
 
       try {
-        const doc = new jsPDF();
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+          compress: true
+        });
+
+        const pageWidth = 210;
+        const pageHeight = 297;
+        const margin = 10;
+        const printableWidth = pageWidth - (margin * 2);
+        const printableHeight = pageHeight - (margin * 2);
 
         for (let i = 0; i < selectedImageFiles.length; i++) {
           const file = selectedImageFiles[i];
-          const imgData = await readFileAsDataURL(file);
+          const imgObj = await loadHtmlImage(file);
 
           if (i > 0) doc.addPage();
-          doc.addImage(imgData, 'JPEG', 10, 10, 190, 270);
+
+          // आस्पेक्ट रेशियो सुरक्षित रखना (मैथ नोट्स कटेंगे नहीं और न ब्लैंक होंगे)
+          const imgRatio = imgObj.width / imgObj.height;
+          let renderW = printableWidth;
+          let renderH = printableWidth / imgRatio;
+
+          if (renderH > printableHeight) {
+            renderH = printableHeight;
+            renderW = printableHeight * imgRatio;
+          }
+
+          // पेज के बीचों-बीच सेंटर करना
+          const posX = margin + ((printableWidth - renderW) / 2);
+          const posY = margin + ((printableHeight - renderH) / 2);
+
+          doc.addImage(imgObj.dataUrl, imgObj.format, posX, posY, renderW, renderH, undefined, 'FAST');
         }
 
         doc.save(`NischayDesk_Notes_${Date.now()}.pdf`);
-        alert("✓ PDF सफलतापूर्वक बन गई और डाउनलोड हो चुकी है!");
+        alert("✓ आपकी HD PDF तैयार होकर डाउनलोड हो चुकी है!");
         closeConverterModal();
       } catch (err) {
-        console.error(err);
-        alert("PDF बनाने में त्रुटि आई। कृपया फ़ोटो दोबारा चुनें।");
+        console.error("PDF Converter Error:", err);
+        alert("PDF निर्माण में समस्या आई। कृपया फ़ोटो दोबारा चुनें।");
       } finally {
         generatePdfBtn.disabled = false;
         generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
       }
-    });
-  }
-
-  function readFileAsDataURL(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
     });
   }
 
