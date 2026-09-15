@@ -22,7 +22,7 @@
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP NAVBAR -->
+  <!-- 1. TOP NAVBAR (विथ लाइव इंडिया क्लॉक) -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -52,7 +52,13 @@
         <a href="#quickTools" class="nav-item">🛠️ स्मार्ट टूल्स</a>
       </div>
 
-      <div class="nav-actions">
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 10px;">
+        <!-- 🇮🇳 LIVE INDIA TIME TICKER -->
+        <div id="indiaLiveClockBadge" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 10px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; color: #38bdf8;">
+          <span style="display: inline-block; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></span>
+          <span id="liveClockText">IST --:--:--</span>
+        </div>
+
         <!-- Google Sign-In Button -->
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
@@ -64,7 +70,7 @@
           <span id="authBtnLabel">Google लॉगिन</span>
         </button>
 
-        <!-- Logged-in User Widget (क्लिकेबल प्रोफाइल चिप) -->
+        <!-- Logged-in User Widget -->
         <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none; cursor: pointer; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 12px; border-radius: 20px;">
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" style="width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #38bdf8;" />
           <div class="user-info-text" style="display: flex; flex-direction: column; text-align: left;">
@@ -89,7 +95,7 @@
 
     <!-- Dynamic User Drawer Card -->
     <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="cursor: pointer; padding: 12px 16px; margin: 10px 14px; border-radius: 12px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2);">
-      <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #38bdf8; font-weight: 700;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+      <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #0284c7; font-weight: 700;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
 
     <nav class="drawer-nav-list">
@@ -401,7 +407,7 @@
       </div>
     </section>
 
-    <!-- QUICK UTILITIES ENGINE -->
+    <!-- QUICK UTILITIES ENGINE (3x2 Balanced Grid) -->
     <section class="dashboard-section" id="quickTools">
       <div class="section-title-wrap">
         <div>
@@ -410,7 +416,7 @@
         </div>
       </div>
 
-      <div class="quick-tools-grid">
+      <div class="quick-tools-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
         <a href="syllabus.html" class="quick-tool-card">
           <div class="tool-icon-box">📋</div>
           <h4>सिलेबस हब</h4>
@@ -441,10 +447,10 @@
           <p>BSEB ऑफिशियल मॉडल सेट।</p>
         </a>
 
-        <div class="quick-tool-card" id="openDocConverterBtn">
+        <div class="quick-tool-card" id="openDocConverterBtn" style="cursor: pointer; border: 1.5px solid #0284c7;">
           <div class="tool-icon-box">📄</div>
           <h4>इमेज टू PDF कनवर्टर</h4>
-          <p>नोट्स की फोटो से PDF बनाएं।</p>
+          <p>नोट्स की फोटो से HD PDF बनाएं।</p>
         </div>
       </div>
     </section>
@@ -518,7 +524,7 @@
       </div>
     </div>
 
-    <!-- 5. DEDICATED USER PROFILE & LOGOUT CONFIRMATION MODAL (रंग सुधारा गया) -->
+    <!-- 5. DEDICATED USER PROFILE & LOGOUT CONFIRMATION MODAL -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
         
@@ -529,9 +535,7 @@
           <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
         </div>
 
-        <!-- नाम एकदम साफ और चमकदार वाइट -->
         <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important; letter-spacing: 0.3px;">छात्र नाम</h3>
-        <!-- ईमेल हल्का नीला-सलेटी ताकि साफ दिखे -->
         <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
         <button onclick="closeProfileModal(); window.openClassSwitchModal && window.openClassSwitchModal();" style="width: 100%; background: #13224a; border: 1px solid #1e3a8a; color: #38bdf8; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; margin-bottom: 12px; cursor: pointer;">
@@ -553,7 +557,7 @@
     <div class="pdf-modal-backdrop" id="docConverterModal">
       <div class="pdf-modal-window" style="max-width: 500px; height: auto; padding: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h3 style="color:var(--text-pure); font-size:1.15rem;">📄 इमेज टू PDF कनवर्टर</h3>
+          <h3 style="color:var(--text-pure); font-size:1.15rem;">📄 इमेज टू PDF कनवर्टर (HD)</h3>
           <button class="btn-studio-close" id="closeConverterBtn">&times;</button>
         </div>
         <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
@@ -586,7 +590,7 @@
           <div style="background: #0284c7; color: #fff; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800;">N</div>
           <span style="color: #fff; font-size: 1.25rem; font-weight: 800;">Nischay<span style="color: #38bdf8;">Desk</span></span>
         </div>
-        <p style="font-size: 0.85rem; line-height: 1.6; margin: 0 0 14px; color: #94a3b8;">
+        <p style="font-size: 0.85rem; line-height: 1.6; margin: 0 0 14px; color: #cbd5e1;">
           बिहार बोर्ड एवं प्रतियोगी परीक्षाओं के छात्रों के लिए 100% फ्री एवं समर्पित डिजिटल स्टडी डेस्क।
         </p>
         <div style="font-size: 0.82rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 12px; border-radius: 6px; display: inline-block;">
@@ -594,7 +598,7 @@
         </div>
       </div>
 
-      <!-- Academics Links (हेडिंग वाइट फिक्स) -->
+      <!-- Academics Links -->
       <div>
         <h4 style="color: #ffffff !important; font-size: 1.05rem; margin: 0 0 14px; font-weight: 800; letter-spacing: 0.5px;">एकैडमिक्स</h4>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
@@ -607,7 +611,7 @@
         </ul>
       </div>
 
-      <!-- Platform Links (हेडिंग वाइट फिक्स) -->
+      <!-- Platform Links -->
       <div>
         <h4 style="color: #ffffff !important; font-size: 1.05rem; margin: 0 0 14px; font-weight: 800; letter-spacing: 0.5px;">प्लेटफ़ॉर्म</h4>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
@@ -637,8 +641,25 @@
     </div>
   </footer>
 
-  <!-- Profile & Smooth Logout Modal Control Script -->
+  <!-- Live India Clock Script & Profile Modal Logic -->
   <script>
+    // 🇮🇳 Live Indian Standard Time (IST) Clock
+    function updateLiveIndiaClock() {
+      const clockEl = document.getElementById('liveClockText');
+      if (!clockEl) return;
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+      const formatter = new Intl.DateTimeFormat('en-IN', options);
+      clockEl.textContent = 'IST ' + formatter.format(new Date());
+    }
+    setInterval(updateLiveIndiaClock, 1000);
+    updateLiveIndiaClock();
+
     function openProfileModal() {
       const modal = document.getElementById('customProfileModal');
       if (!modal) return;
@@ -706,7 +727,7 @@
     }
   </script>
 
-  <!-- Flat Script Dependencies -->
+  <!-- Dependencies -->
   <script src="config.js"></script>
   <script src="syllabus-data.js"></script>
   <script src="auth.js"></script>
