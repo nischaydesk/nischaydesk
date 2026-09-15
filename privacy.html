@@ -1,100 +1,35 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>विधिक सूचना, नियम एवं गोपनीयता नीति | NischayDesk</title>
-  <link rel="stylesheet" href="main.css">
-  <link rel="stylesheet" href="navbar.css">
-  <link rel="stylesheet" href="dashboard.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal Terms & Privacy | NischayDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="dashboard.css" />
   <style>
-    .legal-wrapper {
-      max-width: 920px;
-      margin: 30px auto;
-      padding: 0 16px;
+    body {
+      background: #f8fafc;
       color: #334155;
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
       line-height: 1.8;
-    }
-    .legal-card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 24px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    }
-    .legal-card h1 {
-      font-size: 1.8rem;
-      color: #0f172a;
-      margin-bottom: 8px;
-    }
-    .legal-card h2 {
-      font-size: 1.3rem;
-      color: #0284c7;
-      margin: 28px 0 12px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e0f2fe;
-    }
-    .legal-card h3 {
-      font-size: 1.05rem;
-      color: #1e293b;
-      margin: 18px 0 6px;
-    }
-    .founder-profile-card {
-      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-      border: 1px solid #cbd5e1;
-      border-left: 6px solid #0284c7;
-      padding: 24px;
-      border-radius: 14px;
-      margin-top: 18px;
-      display: flex;
-      align-items: flex-start;
-      gap: 22px;
-      flex-wrap: wrap;
-    }
-    .founder-avatar-wrap {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      flex-shrink: 0;
-    }
-    .founder-avatar-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #0284c7;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
-    }
-    .verified-badge {
-      position: absolute;
-      bottom: 4px;
-      right: 4px;
-      background: #0284c7;
-      color: #ffffff;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      border: 2px solid #ffffff;
-    }
-    .founder-meta-list {
-      list-style: none;
+      margin: 0;
       padding: 0;
-      margin: 10px 0;
     }
-    .founder-meta-list li {
-      margin-bottom: 6px;
-      font-size: 0.92rem;
-      color: #334155;
+    .legal-wrapper {
+      max-width: 900px;
+      margin: 24px auto 60px;
+      padding: 0 16px;
     }
-    .last-updated {
-      font-size: 0.85rem;
-      color: #64748b;
+    .top-actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
       margin-bottom: 20px;
     }
     .back-btn {
@@ -107,85 +42,312 @@
       padding: 8px 16px;
       border-radius: 8px;
       font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .lang-switcher {
+      display: inline-flex;
+      background: #e2e8f0;
+      border-radius: 30px;
+      padding: 4px;
+      gap: 4px;
+    }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #475569;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+    }
+    .legal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 32px 24px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    .founder-profile-card {
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid #cbd5e1;
+      border-top: 5px solid #0284c7;
+      padding: 28px 20px;
+      border-radius: 14px;
+      margin: 22px 0 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .founder-avatar-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 14px;
+    }
+    .founder-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #0284c7;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.25);
+    }
+    .verified-badge {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      background: #0284c7;
+      color: #ffffff;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border: 2px solid #ffffff;
+    }
+    .founder-badge-role {
+      font-size: 0.82rem;
+      background: #e0f2fe;
+      color: #0284c7;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    .founder-meta-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px;
+      font-size: 0.94rem;
+      color: #334155;
+      line-height: 1.8;
+      max-width: 650px;
+      text-align: left;
+    }
+    .founder-quote {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #475569;
+      font-style: italic;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 14px;
+      max-width: 600px;
+    }
+    .lang-content {
+      display: none;
+    }
+    .lang-content.active {
+      display: block;
+    }
+    .rtl-text {
+      direction: rtl;
+      text-align: right;
+      font-family: 'Noto Nastaliq Urdu', 'Plus Jakarta Sans', sans-serif;
+      line-height: 2.2;
+    }
+    .rtl-text .founder-meta-list {
+      text-align: right;
+    }
+    .rtl-text h1, .rtl-text h2, .rtl-text h3 {
+      text-align: right;
     }
   </style>
 </head>
-<body style="background: #f8fafc;">
+<body>
 
   <div class="legal-wrapper">
-    <a href="index.html" class="back-btn">← मुख्य डैशबोर्ड</a>
+    
+    <!-- Top Action Bar -->
+    <div class="top-actions-bar">
+      <a href="index.html" class="back-btn" id="topBackBtn">← मुख्य डैशबोर्ड</a>
 
+      <!-- 3 Popular Languages Switcher -->
+      <div class="lang-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('hi')">हिन्दी</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+        <button class="lang-btn" onclick="switchLanguage('ur')">اردو (Urdu)</button>
+      </div>
+    </div>
+
+    <!-- Main Legal Card -->
     <div class="legal-card">
-      <h1>NischayDesk विधिक सूचना (Legal & Terms)</h1>
-      <p class="last-updated">अंतिम अद्यतन: 2026</p>
 
-      <!-- 1. संस्थापक एवं डेवलपर परिचय -->
-      <h2>1. मंच परिचय एवं संस्थापक (About Founder & Developer)</h2>
-      <p><strong>NischayDesk</strong> बिहार बोर्ड (BSEB) के कक्षा 10वीं और 12वीं (साइंस) के विद्यार्थियों के लिए तैयार किया गया एक संपूर्ण, आधुनिक व निःशुल्क डिजिटल अध्ययन मंच है। इसका मुख्य उद्देश्य गुणवत्तापूर्ण शिक्षा, हस्तलिखित नोट्स, मॉडल प्रश्न पत्र और AI तकनीक को हर छात्र की पहुँच में लाना है।</p>
-      
-      <div class="founder-profile-card">
-        <div class="founder-avatar-wrap">
-          <img 
-            src="Prince.jpg" 
-            alt="Prince Kumar - Founder of NischayDesk" 
-            class="founder-avatar-img"
-            onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff&size=128'"
-          />
-          <span class="verified-badge" title="Verified Creator">✓</span>
-        </div>
+      <!-- ==================== 1. HINDI CONTENT ==================== -->
+      <div id="content-hi" class="lang-content active">
+        <h1 style="font-size: 1.75rem; color: #0f172a; margin: 0 0 6px;">NischayDesk विधिक सूचना (Legal & Terms)</h1>
+        <p style="color: #64748b; font-size: 0.85rem; margin: 0 0 24px;">अंतिम अद्यतन: 2026</p>
 
-        <div style="flex: 1; min-width: 260px;">
-          <h3 style="margin: 0 0 6px; font-size: 1.35rem; color: #0f172a; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            प्रिंस कुमार (Prince Kumar)
-            <span style="font-size: 0.78rem; background: #e0f2fe; color: #0284c7; padding: 3px 10px; border-radius: 12px; font-weight: 700;">संस्थापक एवं फुल-स्टैक डेवलपर</span>
-          </h3>
+        <!-- Founder Section (Centered) -->
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">1. मंच परिचय एवं संस्थापक (About Founder)</h2>
+        <p><strong>NischayDesk</strong> बिहार बोर्ड (BSEB) के कक्षा 10वीं और 12वीं (साइंस) के विद्यार्थियों के लिए तैयार किया गया एक संपूर्ण, आधुनिक व निःशुल्क डिजिटल अध्ययन मंच है।</p>
+
+        <div class="founder-profile-card">
+          <div class="founder-avatar-wrap">
+            <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff&size=128'" />
+            <span class="verified-badge" title="Verified Creator">✓</span>
+          </div>
+
+          <h3 style="margin: 0 0 4px; font-size: 1.35rem; color: #0f172a;">प्रिंस कुमार (Prince Kumar)</h3>
+          <span class="founder-badge-role">संस्थापक एवं फुल-स्टैक डेवलपर</span>
 
           <ul class="founder-meta-list">
             <li>📍 <strong>मूल निवास:</strong> जमुई, बिहार (Jamui, Bihar)</li>
-            <li>🏆 <strong>शैक्षणिक उपलब्धि:</strong> बिहार विद्यालय परीक्षा समिति (BSEB) मैट्रिक परीक्षा में <strong>463 / 500 अंक</strong> (92.6%) प्राप्तकर्ता।</li>
-            <li>📚 <strong>वर्तमान अध्ययन:</strong> 12वीं इंटरमीडिएट साइंस (भौतिक विज्ञान, रसायन विज्ञान, गणित एवं जीव विज्ञान - PCMB)।</li>
-            <li>💻 <strong>विजन एवं मिशन:</strong> जमुई की धरती से निकलकर पूरे बिहार के ग्रामीण व शहरी विद्यार्थियों को उच्च-स्तरीय अध्ययन सामग्री, परीक्षा विश्लेषण और AI शिक्षा टूल्स 100% निःशुल्क उपलब्ध कराना।</li>
+            <li>🏆 <strong>मैट्रिक स्कोर:</strong> बिहार बोर्ड (BSEB) में <strong>463 / 500 अंक</strong> (92.6%) टॉपर लिस्ट</li>
+            <li>📚 <strong>अध्ययन:</strong> 12वीं साइंस (PCMB - भौतिकी, रसायन, गणित, जीव विज्ञान)</li>
+            <li>💻 <strong>मिशन:</strong> जमुई से निकलकर पूरे बिहार के हर छात्र तक प्रीमियम बोर्ड नोट्स, मॉडल पेपर और AI शिक्षा 100% फ्री पहुँचाना।</li>
           </ul>
 
-          <p style="margin: 8px 0 0; font-size: 0.88rem; color: #475569; font-style: italic; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
+          <p class="founder-quote">
             "कठिन परिश्रम और सही तकनीक से कोई भी लक्ष्य असंभव नहीं है। NischayDesk बिहार के प्रत्येक छात्र के आत्मविश्वास और सफलता का साथी है।"
           </p>
         </div>
+
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">2. सेवा की शर्तें (Terms of Service)</h2>
+        <h3 style="color: #1e293b; font-size: 1.05rem;">2.1 अध्ययन सामग्री का उपयोग</h3>
+        <p>NischayDesk पर उपलब्ध कराए गए सभी हस्तलिखित नोट्स, मॉडल पेपर, प्रश्न बैंक और टेस्ट केवल विद्यार्थियों के स्व-अध्ययन के लिए 100% निःशुल्क हैं। किसी भी सामग्री का व्यावसायिक पुनर्विक्रय (Commercial Resale) वर्जित है।</p>
+
+        <h3 style="color: #1e293b; font-size: 1.05rem;">2.2 NischayDesk AI का उपयोग</h3>
+        <p>AI डाउट स्टूडियो केवल शैक्षणिक सहायता और बोर्ड परीक्षा के डाउट क्लियर करने हेतु है। इसका उपयोग किसी अनैतिक कार्य के लिए नहीं किया जा सकता।</p>
+
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">3. गोपनीयता नीति (Privacy Policy)</h2>
+        <h3 style="color: #1e293b; font-size: 1.05rem;">3.1 डेटा सुरक्षा व प्राइवेसी</h3>
+        <p>हम छात्रों की प्राइवेसी का 100% सम्मान करते हैं। Google लॉगिन का उपयोग केवल छात्र की पहचान व प्रोफाइल दिखाने के लिए होता है। हम आपका कोई भी डेटा किसी थर्ड पार्टी या विज्ञापन कंपनी को नहीं बेचते।</p>
+
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">4. आधिकारिक अस्वीकरण (Disclaimer)</h2>
+        <p>NischayDesk एक स्वतंत्र शैक्षणिक मंच है और बिहार विद्यालय परीक्षा समिति (BSEB) का आधिकारिक सरकारी पोर्टल नहीं है। परीक्षा तिथियों व सरकारी नियमों के लिए बोर्ड की आधिकारिक वेबसाइट मान्य होगी।</p>
       </div>
 
-      <!-- 2. सेवा की शर्तें -->
-      <h2>2. सेवा की शर्तें (Terms of Service)</h2>
-      
-      <h3>2.1 शैक्षणिक सामग्री का उपयोग</h3>
-      <p>NischayDesk पर उपलब्ध कराए गए सभी हस्तलिखित नोट्स, क्वेश्चन बैंक, मॉडल प्रश्न पत्र और अध्ययन सामग्री केवल विद्यार्थियों के व्यक्तिगत व शैक्षणिक स्व-अध्ययन के लिए पूर्णतः निःशुल्क हैं। किसी भी सामग्री का अनधिकृत व्यावसायिक उपयोग, बिक्री या पुनर्वितरण सख्त वर्जित है।</p>
 
-      <h3>2.2 NischayDesk AI का उपयोग</h3>
-      <p>NischayDesk AI डाउट स्टूडियो का उद्देश्य छात्रों को विज्ञान, गणित और अन्य विषयों के जटिल सिद्धांतों व समीकरणों को समझाने में सहायता करना है। इसका उपयोग केवल शैक्षणिक संदर्भों के लिए किया जाना चाहिए।</p>
+      <!-- ==================== 2. ENGLISH CONTENT ==================== -->
+      <div id="content-en" class="lang-content">
+        <h1 style="font-size: 1.75rem; color: #0f172a; margin: 0 0 6px;">NischayDesk Legal Information & Terms</h1>
+        <p style="color: #64748b; font-size: 0.85rem; margin: 0 0 24px;">Last Updated: 2026</p>
 
-      <h3>2.3 उपयोगकर्ता आचरण एवं उत्तरदायित्व</h3>
-      <p>प्लेटफ़ॉर्म की सेवाओं का उपयोग करते समय किसी भी प्रकार की दुर्भावनापूर्ण गतिविधि, सिस्टम के साथ छेड़छाड़ या सुरक्षा प्रोटोकॉल को तोड़ने का प्रयास प्रतिबंधित है।</p>
+        <!-- Founder Section (Centered) -->
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">1. About Founder & Platform</h2>
+        <p><strong>NischayDesk</strong> is a dedicated and free digital EdTech platform designed for Bihar School Examination Board (BSEB) Class 10th and 12th (Science) students.</p>
 
-      <!-- 3. गोपनीयता नीति -->
-      <h2>3. गोपनीयता नीति (Privacy Policy)</h2>
-      
-      <h3>3.1 डेटा संग्रहण एवं सुरक्षा</h3>
-      <p>हम उपयोगकर्ताओं की व्यक्तिगत गोपनीयता का पूरा सम्मान करते हैं:</p>
-      <ul>
-        <li><strong>Google लॉगिन:</strong> प्रमाणीकरण (Authentication) हेतु केवल बुनियादी प्रोफ़ाइल विवरण (नाम, ईमेल, और अवतार) का सुरक्षित उपयोग किया जाता है।</li>
-        <li><strong>लोकल स्टोरेज (Browser Storage):</strong> चैट का इतिहास, डार्क/लाइट थीम की प्राथमिकता और चयनित कक्षा की जानकारी केवल आपके स्वयं के डिवाइस में सेव रहती है।</li>
-        <li><strong>शून्य डेटा बिक्री नीति:</strong> हम किसी भी उपयोगकर्ता का व्यक्तिगत विवरण किसी तीसरे पक्ष या विज्ञापन एजेंसी को न तो बेचते हैं और न ही साझा करते हैं।</li>
-      </ul>
+        <div class="founder-profile-card">
+          <div class="founder-avatar-wrap">
+            <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff&size=128'" />
+            <span class="verified-badge" title="Verified Creator">✓</span>
+          </div>
 
-      <h3>3.2 थर्ड-पार्टी लाइब्रेरी एवं सेवाएँ</h3>
-      <p>यह प्लेटफ़ॉर्म प्रमाणीकरण हेतु Google Firebase, गणितीय सूत्रों के रेंडरिंग हेतु KaTeX और AI प्रतिक्रियाओं के लिए सुरक्षित API मानकों का उपयोग करता है।</p>
+          <h3 style="margin: 0 0 4px; font-size: 1.35rem; color: #0f172a;">Prince Kumar</h3>
+          <span class="founder-badge-role">Founder & Full-Stack Developer</span>
 
-      <!-- 4. आधिकारिक अस्वीकरण -->
-      <h2>4. आधिकारिक अस्वीकरण (Disclaimer)</h2>
-      <p>NischayDesk एक स्वतंत्र शैक्षणिक पहल है। यह बिहार विद्यालय परीक्षा समिति (BSEB) का आधिकारिक सरकारी पोर्टल नहीं है। परीक्षा फॉर्म, प्रवेश पत्र और आधिकारिक नियमों से संबंधित औपचारिक जानकारियों के लिए विद्यार्थी सदैव बिहार बोर्ड के आधिकारिक पोर्टल का संदर्भ लें।</p>
+          <ul class="founder-meta-list">
+            <li>📍 <strong>Origin:</strong> Jamui, Bihar, India</li>
+            <li>🏆 <strong>Academic Merit:</strong> Scored <strong>463 / 500 Marks</strong> (92.6%) in BSEB Matriculation (Toppers List).</li>
+            <li>📚 <strong>Current Stream:</strong> 12th Science (PCMB - Physics, Chemistry, Math, Biology).</li>
+            <li>💻 <strong>Mission:</strong> To provide top-tier handwritten notes, model papers, and AI-powered learning tools to every student across Bihar completely free of cost.</li>
+          </ul>
+
+          <p class="founder-quote">
+            "With relentless dedication and modern technology, no dream is unattainable. NischayDesk stands as a trusted ally in every Bihar Board student's path to success."
+          </p>
+        </div>
+
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">2. Terms of Service</h2>
+        <h3 style="color: #1e293b; font-size: 1.05rem;">2.1 Permitted Academic Usage</h3>
+        <p>All study material including handwritten PDFs, model papers, question banks, and simulated tests are 100% free for individual learning. Any unauthorized commercial redistribution or sale is strictly forbidden.</p>
+
+        <h3 style="color: #1e293b; font-size: 1.05rem;">2.2 NischayDesk AI Studio</h3>
+        <p>The AI Doubt Studio is built specifically for academic queries and conceptual doubts related to board examinations. Misuse or automated scraping is prohibited.</p>
+
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">3. Privacy Policy</h2>
+        <h3 style="color: #1e293b; font-size: 1.05rem;">3.1 Data Protection & Privacy</h3>
+        <p>We prioritize user confidentiality. Google Authentication is strictly utilized for student profile personalization. We have a zero-data-sale policy and never transfer personal data to third-party ad networks.</p>
+
+        <h2 style="color: #0284c7; font-size: 1.25rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">4. Legal Disclaimer</h2>
+        <p>NischayDesk is an independent student initiative and is not affiliated with or endorsed by the Bihar School Examination Board (BSEB). For legal notifications and examination routines, consult the official BSEB portal.</p>
+      </div>
+
+
+      <!-- ==================== 3. URDU CONTENT ==================== -->
+      <div id="content-ur" class="lang-content rtl-text">
+        <h1 style="font-size: 1.85rem; color: #0f172a; margin: 0 0 6px;">نچے ڈیسک قانونی معلومات اور شرائط (Legal & Terms)</h1>
+        <p style="color: #64748b; font-size: 0.85rem; margin: 0 0 24px;">آخری تجدید: 2026</p>
+
+        <!-- Founder Section (Centered) -->
+        <h2 style="color: #0284c7; font-size: 1.35rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">1. بانی اور پلیٹ فارم کا تعارف (About Founder)</h2>
+        <p><strong>NischayDesk</strong> بہار بورڈ (BSEB) کے دسویں اور بارہویں (سائنس) جماعت کے طلبا کے لیے ایک جدید اور مفت تعلیمی پلیٹ فارم ہے۔</p>
+
+        <div class="founder-profile-card">
+          <div class="founder-avatar-wrap">
+            <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff&size=128'" />
+            <span class="verified-badge" title="Verified Creator">✓</span>
+          </div>
+
+          <h3 style="margin: 0 0 4px; font-size: 1.45rem; color: #0f172a;">پرنس کمار (Prince Kumar)</h3>
+          <span class="founder-badge-role">بانی اور فل اسٹیک ڈویلپر</span>
+
+          <ul class="founder-meta-list">
+            <li>📍 <strong>آبائی مقام:</strong> جموئی، بہار (Jamui, Bihar)</li>
+            <li>🏆 <strong>تعلیمی کارنامہ:</strong> بہار بورڈ میٹرک میں <strong>463 / 500 نمبرات</strong> (92.6%) کے ساتھ ٹاپر لسٹ میں شمولیت۔</li>
+            <li>📚 <strong>موجودہ تعلیم:</strong> 12ویں سائنس (PCMB - فزکس، کیمسٹری، ریاضی، بیالوجی)۔</li>
+            <li>💻 <strong>مشن:</strong> بہار کے ہر طالب علم تک معیاری ہینڈ نوٹس، ماڈل پیپرز اور AI ٹولز بلا معاوضہ فراہم کرنا۔</li>
+          </ul>
+
+          <p class="founder-quote">
+            "سخت محنت اور جدید ٹیکنالوجی کے ذریعے کوئی بھی مقصد ناممکن نہیں ہے۔ نچے ڈیسک ہر طالب علم کی کامیابی کا معتمد ساتھی ہے۔"
+          </p>
+        </div>
+
+        <h2 style="color: #0284c7; font-size: 1.35rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">2. خدمات کی شرائط (Terms of Service)</h2>
+        <h3 style="color: #1e293b; font-size: 1.15rem;">2.1 تعلیمی مواد کا استعمال</h3>
+        <p>نچے ڈیسک پر موجود تمام ہینڈ رائٹنگ نوٹس، سوالیہ بینک اور ماڈل پیپرز صرف طلبا کے ذاتی مطالعے کے لیے 100% مفت ہیں۔ اس مواد کی تجارتی فروخت سختی سے ممنوع ہے۔</p>
+
+        <h3 style="color: #1e293b; font-size: 1.15rem;">2.2 نچے ڈیسک AI کا استعمال</h3>
+        <p>AI ڈاؤٹ اسٹوڈیو صرف امتحانی تیاری اور سائنسی و ریاضی سوالات کو حل کرنے کے لیے وضع کیا گیا ہے۔</p>
+
+        <h2 style="color: #0284c7; font-size: 1.35rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">3. رازداری کی پالیسی (Privacy Policy)</h2>
+        <h3 style="color: #1e293b; font-size: 1.15rem;">3.1 ڈیٹا کا تحفظ اور پرائیویسی</h3>
+        <p>ہم صارف کی پرائیویسی کا مکمل احترام کرتے ہیں۔ لاگ ان کا استعمال صرف طالب علم کی شناخت کے لیے ہوتا ہے۔ ہم کسی تیسرے فریق کو ڈیٹا فروخت نہیں کرتے۔</p>
+
+        <h2 style="color: #0284c7; font-size: 1.35rem; border-bottom: 2px solid #e0f2fe; padding-bottom: 6px;">4. باضابطہ وضاحت (Disclaimer)</h2>
+        <p>نچے ڈیسک ایک آزاد تعلیمی پلیٹ فارم ہے اور یہ بہار اسکول ایگزامینیشن بورڈ (BSEB) کا سرکاری پورٹل نہیں ہے۔ امتحانی تاریخوں کے لیے بورڈ کی سرکاری ویب سائٹ معتبر ہوگی۔</p>
+      </div>
+
     </div>
   </div>
 
+  <script>
+    function switchLanguage(lang) {
+      // Buttons styling
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Hide all language sections
+      document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+
+      // Show selected language section
+      const activeSection = document.getElementById('content-' + lang);
+      if (activeSection) {
+        activeSection.classList.add('active');
+      }
+
+      // Back button text update according to language
+      const backBtn = document.getElementById('topBackBtn');
+      if (lang === 'en') {
+        backBtn.innerText = '← Main Dashboard';
+      } else if (lang === 'ur') {
+        backBtn.innerText = '← مرکزی ڈیش بورڈ';
+      } else {
+        backBtn.innerText = '← मुख्य डैशबोर्ड';
+      }
+    }
+  </script>
 </body>
 </html>
