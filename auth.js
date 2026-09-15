@@ -1,6 +1,10 @@
 /* ==========================================================================
-   NischayDesk User Auth & Complete Guest Mode Unlocking Engine (v3.8)
-   Fixed: Displays All 3 Classes (10th, 11th, 12th) when NOT logged in.
+   NischayDesk User Auth & Profile State Management Engine (v4.0)
+   Features:
+   - Synchronized with Modal-based Smooth Logout (No browser confirm alert)
+   - 16 Career Goals Integration
+   - Independent Class, Stream & Goal Display Binding
+   - Drawer & Navbar Widget Two-Way State Sync
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -9,14 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const userAvatarImg = document.getElementById('userAvatarImg');
   const userDisplayName = document.getElementById('userDisplayName');
   const userSessionBadge = document.getElementById('userSessionBadge');
-  const logoutBtn = document.getElementById('logoutBtn');
   const drawerUserCard = document.getElementById('drawerUserCard');
 
+  // वेलकम कार्ड के एलिमेंट्स
   const personalizedWelcomeCard = document.getElementById('personalizedWelcomeCard');
   const welcomeUserName = document.getElementById('welcomeUserName');
   const displayStudentClass = document.getElementById('displayStudentClass');
   const displayStudentStream = document.getElementById('displayStudentStream');
+  const displayStudentGoal = document.getElementById('displayStudentGoal');
 
+  // ऑनबोर्डिंग / क्लास स्विच मोडल एलिमेंट्स
   const onboardingModal = document.getElementById('onboardingModal');
   const onboardingForm = document.getElementById('onboardingForm');
   const obName = document.getElementById('obName');
@@ -24,9 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const obStream = document.getElementById('obStream');
   const obGoal = document.getElementById('obGoal');
   const obHobby = document.getElementById('obHobby');
-  const saveProfileBtn = document.getElementById('saveProfileBtn');
 
-  // तीनों मुख्य क्लास सेक्शन्स
+  // तीनों मुख्य क्लास सेक्शन्स (होमपेज)
   const sectionClass10 = document.getElementById('sectionClass10');
   const sectionClass11 = document.getElementById('sectionClass11');
   const sectionClass12 = document.getElementById('sectionClass12');
@@ -39,22 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
              ? window.NischayConfig.firestoreInstance
              : (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
 
-  // डिफ़ॉल्ट रूप से तीनों सेक्शन्स को स्क्रीन पर दिखाएं
+  // डिफ़ॉल्ट रूप से तीनों सेक्शन्स को दिखाएं (गेस्ट मोड)
   showAllClasses();
 
   function showAllClasses() {
-    if (sectionClass10) {
-      sectionClass10.style.setProperty('display', 'block', 'important');
-    }
-    if (sectionClass11) {
-      sectionClass11.style.setProperty('display', 'block', 'important');
-    }
-    if (sectionClass12) {
-      sectionClass12.style.setProperty('display', 'block', 'important');
-    }
-    if (personalizedWelcomeCard) {
-      personalizedWelcomeCard.style.setProperty('display', 'none', 'important');
-    }
+    if (sectionClass10) sectionClass10.style.setProperty('display', 'block', 'important');
+    if (sectionClass11) sectionClass11.style.setProperty('display', 'block', 'important');
+    if (sectionClass12) sectionClass12.style.setProperty('display', 'block', 'important');
+    if (personalizedWelcomeCard) personalizedWelcomeCard.style.setProperty('display', 'none', 'important');
   }
 
   if (!auth) return;
@@ -66,26 +63,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (headerAuthBtn) {
     headerAuthBtn.addEventListener('click', function () {
       auth.signInWithPopup(provider).catch(err => {
-        if (err.code !== 'auth/popup-closed-by-user') alert("लॉगिन एरर: " + err.message);
+        if (err.code !== 'auth/popup-closed-by-user') {
+          alert("लॉगिन त्रुटि: " + err.message);
+        }
       });
     });
   }
 
-  // 2. Logout Action
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', function () {
-      if (confirm("क्या आप लॉगआउट करना चाहते हैं?")) {
-        auth.signOut().then(() => {
-          localStorage.removeItem('nischay_user_profile');
-          localStorage.removeItem('nischay_user_name');
-          localStorage.removeItem('nischay_student_class');
-          location.reload();
-        });
-      }
-    });
-  }
-
-  // 3. Class Switch Modal
+  // 2. Class Switch Modal Global Trigger
   window.openClassSwitchModal = function () {
     openOnboardingModal(auth.currentUser);
   };
@@ -106,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     onboardingModal.classList.add('active');
   }
 
-  // 4. Form Submit
+  // 3. Profile Onboarding Form Submit
   if (onboardingForm) {
     onboardingForm.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -115,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const finalName = obName ? obName.value.trim() : (user?.displayName || "छात्र");
       const selectedClass = obClass ? obClass.value : "10";
       const selectedStream = obStream ? obStream.value : "PCM";
-      const selectedGoal = obGoal ? obGoal.value : "Bihar Board Topper";
+      const selectedGoal = obGoal ? obGoal.value : "बिहार बोर्ड टॉपर (State Rank)";
       const selectedHobby = obHobby ? obHobby.value.trim() : "";
 
       const profilePayload = {
@@ -141,10 +126,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 5. User Authentication State Listener
+  // 4. User Authentication State Listener
   auth.onAuthStateChanged(async (user) => {
     if (user) {
-      // छात्र लॉग इन है -> प्रोफाइल दिखाएं और क्लास लॉक लागू करें
       if (headerAuthBtn) headerAuthBtn.style.display = 'none';
       if (userProfileWidget) userProfileWidget.style.display = 'flex';
 
@@ -165,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const activeName = (profileData && profileData.name) ? profileData.name : (user.displayName || "छात्र");
-      const activeClass = (profileData && profileData.studentClass) ? profileData.studentClass : (localStorage.getItem('nischay_student_class') || "10");
+      const activeClass = (profileData && profileData.studentClass) ? profileData.studentClass : (localStorage.getItem('nischay_student_class') || "11");
       const photoURL = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(activeName)}&background=0284c7&color=fff`;
 
       localStorage.setItem('nischay_user_name', activeName);
@@ -174,13 +158,14 @@ document.addEventListener('DOMContentLoaded', function () {
       if (userSessionBadge) userSessionBadge.innerText = `Class ${activeClass}th ▾`;
       if (userAvatarImg) userAvatarImg.src = photoURL;
 
+      // साइडबार में प्रीमियम प्रोफाइल कार्ड
       if (drawerUserCard) {
         drawerUserCard.innerHTML = `
           <div style="display:flex; align-items:center; gap:10px;">
-            <img src="${photoURL}" style="width:38px; height:38px; border-radius:50%; border:1.5px solid var(--brand-accent);" alt="${activeName}">
+            <img src="${photoURL}" style="width:38px; height:38px; border-radius:50%; border:2px solid #0284c7; object-fit:cover;" alt="${activeName}">
             <div style="min-width:0; overflow:hidden;">
-              <div class="drawer-user-name" style="font-size:0.92rem; font-weight:800; line-height:1.2;">${activeName}</div>
-              <div style="font-size:0.72rem; color:var(--success); font-weight:700; margin-top:2px;">● Class ${activeClass}th सक्रिय</div>
+              <div style="font-size:0.92rem; font-weight:700; color:#0f172a; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${activeName}</div>
+              <div style="font-size:0.75rem; color:#16a34a; font-weight:600; margin-top:2px;">● Class ${activeClass}th सक्रिय (बदलें ▾)</div>
             </div>
           </div>
         `;
@@ -193,21 +178,26 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
     } else {
-      // कोई लॉगिन नहीं है (100% शुद्ध गेस्ट मोड) -> तीनों कक्षाएं साफ दिखेंगी!
+      // गेस्ट मोड
       if (headerAuthBtn) headerAuthBtn.style.display = 'inline-flex';
       if (userProfileWidget) userProfileWidget.style.display = 'none';
 
-      // गेस्ट के लिए लोकल क्लास लॉक को क्लीन करें ताकि कोई जबरदस्ती लॉक न हो
+      if (drawerUserCard) {
+        drawerUserCard.innerHTML = `
+          <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #0284c7; font-weight: 600;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+        `;
+      }
+
       showAllClasses();
     }
   });
 
-  // सिर्फ और सिर्फ वेरिफाइड लॉगिन पर ही क्लास फिल्टर होगी
+  // क्लास और गोल डिस्प्ले बाइंडिंग
   function applyClassLock(profile) {
-    const sClass = String(profile.studentClass || "10");
+    const sClass = String(profile.studentClass || "11");
     const sName = profile.name || "छात्र";
-    const sStream = profile.stream || "General";
-    const sGoal = profile.goal || "Bihar Board Topper";
+    const sStream = profile.stream || "PCM";
+    const sGoal = profile.goal || "बिहार बोर्ड टॉपर (State Rank)";
 
     localStorage.setItem('nischay_student_class', sClass);
 
@@ -215,7 +205,8 @@ document.addEventListener('DOMContentLoaded', function () {
       personalizedWelcomeCard.style.setProperty('display', 'block', 'important');
       if (welcomeUserName) welcomeUserName.innerText = sName.split(' ')[0];
       if (displayStudentClass) displayStudentClass.innerText = `Class ${sClass}th`;
-      if (displayStudentStream) displayStudentStream.innerText = `${sStream} • लक्ष्य: ${sGoal}`;
+      if (displayStudentStream) displayStudentStream.innerText = sStream;
+      if (displayStudentGoal) displayStudentGoal.innerText = sGoal;
     }
 
     if (sectionClass10) {
