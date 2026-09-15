@@ -49,8 +49,8 @@
         <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
         <a href="index.html#quickTools" class="nav-item">🛠️ स्मार्ट टूल्स</a>
         <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
-<a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
- </div>
+        <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
+      </div>
 
       <div class="nav-actions">
         <button class="btn-auth-primary" id="headerAuthBtn">
@@ -110,12 +110,12 @@
         <span class="icon">🛠️</span> स्मार्ट टूल्स
       </a>
       <a href="pyq.html" class="drawer-nav-item">
-  <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
-</a>
-<a href="model-paper.html" class="drawer-nav-item">
-  <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
-</a>
- <div class="drawer-theme-row">
+        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
+      </a>
+      <a href="model-paper.html" class="drawer-nav-item">
+        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
+      </a>
+      <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
         <label class="switch">
           <input type="checkbox" id="themeSwitch">
@@ -187,10 +187,10 @@
       </div>
     </section>
 
-    <!-- 4. DYNAMIC NOTES CATALOG GRID (यह गायब था, अब वापस जोड़ दिया गया है) -->
+    <!-- 4. DYNAMIC NOTES CATALOG GRID -->
     <section class="notes-display-section" style="margin-top: 24px;">
       <div class="notes-catalog-grid" id="notesCatalogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
-        <!-- जावास्क्रिप्ट द्वारा सारे नोट्स कार्ड्स यहीं लोड होंगे -->
+        <!-- जावास्क्रिप्ट द्वारा सारे नोट्स कार्ड्स लोड होंगे -->
       </div>
     </section>
 
@@ -248,12 +248,26 @@
           <li><a href="syllabus.html">➔ आधिकारिक सिलेबस</a></li>
           <li><a href="test.html">➔ लाइव टेस्ट पोर्टल</a></li>
           <li><a href="ai-desk.html">➔ AI डाउट स्टूडियो</a></li>
+          <li><a href="privacy.html">➔ विधिक सूचना एवं About</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom-bar">
-      <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
-      <span class="server-status-tag">● क्लाउड स्टोरेज सक्रिय है</span>
+
+    <div class="footer-bottom-bar" style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 16px 0;">
+      <!-- विधिक लिंक्स (Legal & Founder Links) -->
+      <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; font-size: 0.84rem;">
+        <a href="privacy.html" style="color: #94a3b8; text-decoration: none;">गोपनीयता नीति (Privacy Policy)</a>
+        <span style="color: #475569;">•</span>
+        <a href="privacy.html" style="color: #94a3b8; text-decoration: none;">सेवा की शर्तें (Terms)</a>
+        <span style="color: #475569;">•</span>
+        <a href="privacy.html" style="color: #38bdf8; text-decoration: none; font-weight: 600;">संस्थापक परिचय (About Developer)</a>
+      </div>
+
+      <!-- कॉपीराइट व सर्वर स्टेटस -->
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 8px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px;">
+        <span>&copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित।</span>
+        <span class="server-status-tag">● क्लाउड स्टोरेज सक्रिय है</span>
+      </div>
     </div>
   </footer>
 
