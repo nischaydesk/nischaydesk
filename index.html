@@ -64,14 +64,13 @@
           <span id="authBtnLabel">Google लॉगिन</span>
         </button>
 
-        <!-- Logged-in User Widget -->
-        <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
-          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
-          <div class="user-info-text">
-            <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge" id="userSessionBadge" onclick="window.openClassSwitchModal && window.openClassSwitchModal()" style="cursor:pointer;" title="कक्षा बदलें">Class बदलें ▾</span>
+        <!-- Logged-in User Widget (प्रोफेशनल प्रोफाइल चिप - बिना क्रॉस के) -->
+        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none; cursor: pointer; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 12px; border-radius: 20px;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" style="width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #38bdf8;" />
+          <div class="user-info-text" style="display: flex; flex-direction: column; text-align: left;">
+            <span class="user-display-name" id="userDisplayName" style="font-size: 0.8rem; font-weight: 700; color: #fff;">छात्र</span>
+            <span class="user-session-badge" id="userSessionBadge" style="font-size: 0.7rem; color: #38bdf8;">Class 11th ▾</span>
           </div>
-          <button class="btn-logout" id="logoutBtn" title="लॉगआउट">&#x2715;</button>
         </div>
       </div>
     </nav>
@@ -88,8 +87,9 @@
       <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
     </div>
 
-    <div class="drawer-user-card" id="drawerUserCard">
-      <p class="drawer-user-prompt">टेस्ट प्रोग्रेस और नोट्स ट्रैक करने के लिए लॉगिन करें।</p>
+    <!-- Dynamic User Drawer Card -->
+    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="cursor: pointer; padding: 12px 16px; margin: 10px 14px; border-radius: 12px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2);">
+      <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #0284c7; font-weight: 600;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
 
     <nav class="drawer-nav-list">
@@ -141,13 +141,27 @@
       <div class="hero-content">
         
         <!-- Personalized User Welcome Box -->
-        <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
-          <div style="font-size: 1.5rem; font-weight: 800; color: #ffffff !important; line-height: 1.2;">
+        <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 16px;">
+          <div style="font-size: 1.55rem; font-weight: 800; color: #ffffff !important; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span>! 🌟
           </div>
-          <div id="welcomeUserMeta" style="font-size: 0.85rem; color: #38bdf8 !important; font-weight: 600; margin-top: 4px;">
-            चयनित: <span id="displayStudentClass" style="color: #ffffff;">Class 10th</span> • <span id="displayStudentStream" style="color: #94a3b8;">General</span>
-            <button onclick="window.openClassSwitchModal && window.openClassSwitchModal()" style="margin-left:8px; background:rgba(56,189,248,0.15); border:1px solid #38bdf8; color:#38bdf8; border-radius:4px; padding:2px 8px; font-size:0.75rem; cursor:pointer;">बदलें ⚙️</button>
+
+          <div id="welcomeUserMeta" style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-size: 0.85rem;">
+            <!-- पंक्ति 1: कक्षा, स्ट्रीम और बदलें बटन -->
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span style="color: #94a3b8;">चयनित:</span>
+              <span style="color: #ffffff; font-weight: 700; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12);">
+                <span id="displayStudentClass">Class 11th</span> • <span id="displayStudentStream" style="color: #38bdf8;">PCM</span>
+              </span>
+              <button type="button" onclick="openProfileModal()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 3px 8px; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                बदलें ⚙️
+              </button>
+            </div>
+
+            <!-- पंक्ति 2: लक्ष्य (Goal) -->
+            <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 600;">
+              🎯 लक्ष्य: <span id="displayStudentGoal" style="color: #f1f5f9; font-weight: 600;">बिहार बोर्ड टॉपर (State Rank)</span>
+            </div>
           </div>
         </div>
 
@@ -437,16 +451,16 @@
       </div>
     </section>
 
-    <!-- STUDENT ONBOARDING / CLASS SWITCH MODAL -->
+    <!-- STUDENT ONBOARDING / CLASS SWITCH MODAL (16+ लक्ष्य विकल्प) -->
     <div class="pdf-modal-backdrop" id="onboardingModal">
-      <div class="pdf-modal-window" style="max-width: 480px; height: auto; padding: 24px; position: relative;">
+      <div class="pdf-modal-window" style="max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative;">
         <button type="button" class="btn-studio-close" id="closeOnboardingBtn" onclick="document.getElementById('onboardingModal').classList.remove('active');" style="position: absolute; top: 14px; right: 16px; font-size: 1.5rem; cursor: pointer;">&times;</button>
         
         <div style="text-align: center; margin-bottom: 16px;">
           <div style="font-size: 2rem; margin-bottom: 4px;">🎓</div>
           <h3 style="color: var(--text-pure); font-size: 1.25rem;">NischayDesk प्रोफ़ाइल & क्लास चयन</h3>
           <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">
-            अपनी कक्षा चुनें ताकि आपको सिर्फ अपनी कक्षा का ही डैशबोर्ड दिखे:
+            अपनी कक्षा और लक्ष्य चुनें ताकि डैशबोर्ड आपके अनुसार कस्टमाइज़ हो:
           </p>
         </div>
 
@@ -476,13 +490,26 @@
             </div>
           </div>
 
+          <!-- 16 करियर लक्ष्य विकल्प -->
           <div>
-            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">मुख्य लक्ष्य (Goal):</label>
-            <select id="obGoal" class="exam-dropdown">
-              <option value="Bihar Board Topper" selected>🏆 बिहार बोर्ड टॉपर (State Rank)</option>
-              <option value="JEE Main & Adv">⚡ IIT JEE (इंजीनियरिंग)</option>
-              <option value="NEET (Medical)">🩺 NEET (डॉक्टर)</option>
-              <option value="NDA Officer">🇮🇳 NDA (डिफेंस ऑफिसर)</option>
+            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">मुख्य लक्ष्य (Aim / Goal):</label>
+            <select id="obGoal" class="exam-dropdown" style="font-size: 0.9rem;">
+              <option value="बिहार बोर्ड टॉपर (State Rank)" selected>🏆 बिहार बोर्ड टॉपर (State Rank)</option>
+              <option value="IIT JEE (इंजीनियरिंग)">⚡ IIT JEE (इंजीनियरिंग)</option>
+              <option value="NEET (डॉक्टर / AIIMS)">🩺 NEET (डॉक्टर / MBBS)</option>
+              <option value="NDA (डिफेंस ऑफिसर)">🇮🇳 NDA (डिफेंस ऑफिसर / आर्मी / नेवी)</option>
+              <option value="UPSC (IAS / IPS सिविल सेवा)">🏛️ UPSC (IAS / IPS / IFS)</option>
+              <option value="BPSC (बिहार प्रशासनिक सेवा)">🎖️ BPSC (SDM / DSP अफसर)</option>
+              <option value="Airforce / Navy (अग्निवीर)">✈️ भारतीय वायुसेना / नौसेना (Airforce / Navy)</option>
+              <option value="बिहार पुलिस / दरोगा (SI)">👮 बिहार पुलिस / दारोगा (Sub-Inspector)</option>
+              <option value="रेलवे भर्ती (RRB / NTPC / ALP)">🚆 रेलवे परीक्षा (Railway NTPC / Group D / ALP)</option>
+              <option value="SSC (CGL / CHSL सरकारी नौकरी)">📑 SSC (CGL / CHSL / MTS)</option>
+              <option value="CUET (केंद्रीय विश्वविद्यालय प्रवेश)">🎓 CUET (DU / BHU / JNU प्रवेश)</option>
+              <option value="बैंकिंग सेवा (PO / Clerk)">🏦 बैंकिंग (IBPS / SBI PO & Clerk)</option>
+              <option value="सॉफ्टवेयर इंजीनियर / AI कोडर">💻 सॉफ्टवेयर इंजीनियर / कोडर (Tech & AI)</option>
+              <option value="सरकारी शिक्षक (BPSC TRE / CTET)">👨‍🏫 सरकारी शिक्षक (BPSC Teacher / CTET)</option>
+              <option value="पॉलिटेक्निक / ITI डिप्लोमा">⚙️ बिहार पॉलिटेक्निक / ITI डिप्लोमा</option>
+              <option value="सीए / कॉमर्स विशेषज्ञ (CA Foundation)">📊 चार्टर्ड अकाउंटेंट (CA Foundation)</option>
             </select>
           </div>
 
@@ -490,6 +517,35 @@
             ✓ प्रोफ़ाइल सेव करें
           </button>
         </form>
+      </div>
+    </div>
+
+    <!-- 5. DEDICATED USER PROFILE & LOGOUT CONFIRMATION MODAL -->
+    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+      <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative;">
+        
+        <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer;">&times;</button>
+        
+        <div style="position: relative; width: 68px; height: 68px; margin: 0 auto 12px;">
+          <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #0284c7; object-fit: cover;">
+          <span style="position: absolute; bottom: 0; right: 0; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
+        </div>
+
+        <h3 id="modalUserName" style="margin: 0 0 4px; font-size: 1.15rem; color: #ffffff;">छात्र नाम</h3>
+        <p id="modalUserEmail" style="margin: 0 0 16px; font-size: 0.78rem; color: #94a3b8;">student@email.com</p>
+
+        <button onclick="closeProfileModal(); window.openClassSwitchModal && window.openClassSwitchModal();" style="width: 100%; background: #13224a; border: 1px solid #1e3a8a; color: #38bdf8; padding: 10px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; margin-bottom: 10px; cursor: pointer;">
+          ⚙️ कक्षा या लक्ष्य बदलें
+        </button>
+
+        <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 10px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          🚪 लॉगआउट करें (Logout)
+        </button>
+
+        <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b;">
+          ⏳ सुरक्षित लॉगआउट हो रहा है, कृपया प्रतीक्षा करें...
+        </div>
+
       </div>
     </div>
 
@@ -520,7 +576,7 @@
 
   </main>
 
-  <!-- 4. FOOTER -->
+  <!-- 4. FOOTER (हेडर टकराव व सफेद पट्टी फिक्स) -->
   <footer style="background: #080f24 !important; color: #94a3b8; padding: 40px 16px 80px; border-top: 1px solid #1e3a8a; margin-top: 50px; position: relative; z-index: 1;">
     <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08);">
       
@@ -580,6 +636,75 @@
       </div>
     </div>
   </footer>
+
+  <!-- Profile & Smooth Logout Modal Control Script -->
+  <script>
+    function openProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (!modal) return;
+
+      const nameEl = document.getElementById('modalUserName');
+      const emailEl = document.getElementById('modalUserEmail');
+      const imgEl = document.getElementById('modalUserImg');
+
+      const savedProfile = localStorage.getItem('nischay_user_profile');
+      let localName = 'छात्र';
+      if (savedProfile) {
+        try {
+          const parsed = JSON.parse(savedProfile);
+          if (parsed.name) localName = parsed.name;
+        } catch(e){}
+      }
+
+      if (window.firebase && firebase.auth) {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          if (nameEl) nameEl.textContent = user.displayName || localName;
+          if (emailEl) emailEl.textContent = user.email || 'Google Verified';
+          if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(user.displayName || localName) + '&background=0284c7&color=fff');
+        } else {
+          if (nameEl) nameEl.textContent = localName;
+          if (emailEl) emailEl.textContent = 'अतिथि छात्र (Guest)';
+          if (imgEl) imgEl.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(localName) + '&background=0284c7&color=fff';
+        }
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (modal) modal.style.display = 'none';
+      const loader = document.getElementById('logoutLoadingState');
+      if (loader) loader.style.display = 'none';
+      const btn = document.getElementById('btnPerformLogout');
+      if (btn) btn.disabled = false;
+    }
+
+    function handleSlowLogout() {
+      const btn = document.getElementById('btnPerformLogout');
+      const loader = document.getElementById('logoutLoadingState');
+
+      if (btn) btn.disabled = true;
+      if (loader) loader.style.display = 'block';
+
+      setTimeout(() => {
+        if (window.firebase && firebase.auth) {
+          firebase.auth().signOut().finally(() => {
+            localStorage.removeItem('nischay_user_profile');
+            localStorage.removeItem('nischay_student_name');
+            closeProfileModal();
+            window.location.reload();
+          });
+        } else {
+          localStorage.removeItem('nischay_user_profile');
+          localStorage.removeItem('nischay_student_name');
+          closeProfileModal();
+          window.location.reload();
+        }
+      }, 1600);
+    }
+  </script>
 
   <!-- Flat Script Dependencies -->
   <script src="config.js"></script>
