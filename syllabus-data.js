@@ -264,7 +264,7 @@ window.NischaySyllabus = {
       subjectTitle: "भूगोल (भारत: संसाधन एवं उपयोग)",
       chapters: [
        { no: 1, name: "संसाधन एवं विकास", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Nw7s6IB7D3cVLWh2er-9CcdAu_z4S0y1/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "संसाधनों का वर्गीकरण, सतत पोषणीय विकास, मृदा अपरदन एवं संरक्षण।" },
-       { no:2, name:"प्राकृतिक संसाधन(क)", status:"ready"  , pdfUrl: "https://drive.google.com/file/d/1mv8Siz9nY0b_64HWl3qBeg8rUYOVssFl/view?usp=drivesdk/preview" , pages:"हैंडनोट्स" , desc:"प्राकृतिक संसाधन" }    
+       { no:2, name:"प्राकृतिक संसाधन(क)", status:"ready"  , pdfUrl: "https://drive.google.com/file/d/1mv8Siz9nY0b_64HWl3qBeg8rUYOVssFl/view?usp=drivesdk/preview" , pages:"हैंडनोट्स" , desc:"प्राकृतिक संसाधन" },    
        { no: 3, name: "जल संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/10echF6JmDP0jLzpXXwrrElDtnENPIRyS/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बहुउद्देशीय नदी घाटी परियोजनाएं, वर्षा जल संचयन एवं जल संकट।" },
        { no: 4, name: "वन एवं वन्य जीव संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1dF_xWkYMGGLk2xFce9J3VmE2sDtV1QAW/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "वन्यजीव संरक्षण अधिनियम, राष्ट्रीय उद्यान एवं चिपको आंदोलन।" },
        { no:5, name: "खनिज संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1FEhPytcUTdAmbDfF4nDAJbbWXoe4gAA1/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "धात्विक व अधात्विक खनिज, लौह अयस्क, मैंगनीज, बॉक्साइट एवं अभ्रक।" },
