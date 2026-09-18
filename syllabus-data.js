@@ -272,9 +272,9 @@ window.NischaySyllabus = {
        { no:7 , name: "कृषि (Agriculture)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1wktcPitFHSj7JfPWcEtcuEjff5Wcgmpq/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "रबी, खरीफ व जायद फसलें, चावल, गेहूं, गन्ना, चाय एवं कपास की खेती।" },
        { no:8, name: "निर्माण उद्योग", status: "ready", pdfUrl: "https://drive.google.com/file/d/1FfcsGV_og3LB6E467yR4GLTPcLCJlIKU/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूती वस्त्र उद्योग, लौह-इस्पात उद्योग, सीमेंट उद्योग एवं औद्योगिक प्रदूषण।" },
        { no:9 , name: "परिवहन, संचार एवं व्यापार", status: "ready", pdfUrl: "https://drive.google.com/file/d/1uRORWw_mKoG2kAbxllVjrjh-m87X1lQc/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सड़क मार्ग (स्वर्णिम चतुर्भुज), रेलवे, जलमार्ग एवं अंतरराष्ट्रीय व्यापार।" },
-       { no:10, name: "बिहार: कृषि एवं वन संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बिहार में कृषि की स्थिति, सिंचाई के साधन एवं वन क्षेत्र का विस्तार।" },
-       { no:11, name: "बिहार: खनिज, ऊर्जा एवं उद्योग", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बरौनी रिफाइनरी, कांटी ताप विद्युत एवं बिहार में खनिज संपदा।" },
-       { no: 12, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
+       { no:10, name: "बिहार: कृषि एवं वन संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1dBnSWNqoMZstY3yAcn7Y0rx0BAQg3ru7/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बिहार में कृषि की स्थिति, सिंचाई के साधन एवं वन क्षेत्र का विस्तार।" },
+       { no:11, name: "बिहार: खनिज, ऊर्जा एवं उद्योग", status: "ready", pdfUrl: "https://drive.google.com/file/d/16xmOAo4D9ESvFlLsIVIGDvJwdnrMmfTp/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बरौनी रिफाइनरी, कांटी ताप विद्युत एवं बिहार में खनिज संपदा।" },
+       { no:12, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
       ]
     },
     {
