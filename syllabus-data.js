@@ -263,17 +263,18 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "भूगोल (भारत: संसाधन एवं उपयोग)",
       chapters: [
-        { no: 1, name: "संसाधन एवं विकास (प्राकृतिक संसाधन)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "संसाधनों का वर्गीकरण, सतत पोषणीय विकास, मृदा अपरदन एवं संरक्षण।" },
-        { no: 2, name: "जल संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बहुउद्देशीय नदी घाटी परियोजनाएं, वर्षा जल संचयन एवं जल संकट।" },
-        { no: 3, name: "वन एवं वन्य जीव संसाधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "वन्यजीव संरक्षण अधिनियम, राष्ट्रीय उद्यान एवं चिपको आंदोलन।" },
-        { no: 4, name: "खनिज संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "धात्विक व अधात्विक खनिज, लौह अयस्क, मैंगनीज, बॉक्साइट एवं अभ्रक।" },
-        { no: 5, name: "शक्ति (ऊर्जा) संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "कोयला, पेट्रोलियम, जलविद्युत एवं सौर/पवन ऊर्जा।" },
-        { no: 6, name: "कृषि (Agriculture)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रबी, खरीफ व जायद फसलें, चावल, गेहूं, गन्ना, चाय एवं कपास की खेती।" },
-        { no: 7, name: "निर्माण उद्योग", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सूती वस्त्र उद्योग, लौह-इस्पात उद्योग, सीमेंट उद्योग एवं औद्योगिक प्रदूषण।" },
-        { no: 8, name: "परिवहन, संचार एवं व्यापार", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सड़क मार्ग (स्वर्णिम चतुर्भुज), रेलवे, जलमार्ग एवं अंतरराष्ट्रीय व्यापार।" },
-        { no: 9, name: "बिहार: कृषि एवं वन संसाधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "बिहार में कृषि की स्थिति, सिंचाई के साधन एवं वन क्षेत्र का विस्तार।" },
-        { no: 10, name: "बिहार: खनिज, ऊर्जा एवं उद्योग", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "बरौनी रिफाइनरी, कांटी ताप विद्युत एवं बिहार में खनिज संपदा।" },
-        { no: 11, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
+       { no: 1, name: "संसाधन एवं विकास", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Nw7s6IB7D3cVLWh2er-9CcdAu_z4S0y1/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "संसाधनों का वर्गीकरण, सतत पोषणीय विकास, मृदा अपरदन एवं संरक्षण।" },
+       { no:2, name:"प्राकृतिक संसाधन(क)", status:"ready"  , pdfUrl: "https://drive.google.com/file/d/1mv8Siz9nY0b_64HWl3qBeg8rUYOVssFl/view?usp=drivesdk/preview" , pages:"हैंडनोट्स" , desc:"प्राकृतिक संसाधन" }    
+       { no: 3, name: "जल संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/10echF6JmDP0jLzpXXwrrElDtnENPIRyS/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बहुउद्देशीय नदी घाटी परियोजनाएं, वर्षा जल संचयन एवं जल संकट।" },
+       { no: 4, name: "वन एवं वन्य जीव संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1dF_xWkYMGGLk2xFce9J3VmE2sDtV1QAW/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "वन्यजीव संरक्षण अधिनियम, राष्ट्रीय उद्यान एवं चिपको आंदोलन।" },
+       { no:5, name: "खनिज संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1FEhPytcUTdAmbDfF4nDAJbbWXoe4gAA1/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "धात्विक व अधात्विक खनिज, लौह अयस्क, मैंगनीज, बॉक्साइट एवं अभ्रक।" },
+       { no:6, name: "शक्ति (ऊर्जा) संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1PYlvhJm_4mTgWdgZBEXKD-G2HekrSm8A/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "कोयला, पेट्रोलियम, जलविद्युत एवं सौर/पवन ऊर्जा।" },
+       { no:7 , name: "कृषि (Agriculture)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1wktcPitFHSj7JfPWcEtcuEjff5Wcgmpq/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "रबी, खरीफ व जायद फसलें, चावल, गेहूं, गन्ना, चाय एवं कपास की खेती।" },
+       { no:8, name: "निर्माण उद्योग", status: "ready", pdfUrl: "https://drive.google.com/file/d/1FfcsGV_og3LB6E467yR4GLTPcLCJlIKU/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूती वस्त्र उद्योग, लौह-इस्पात उद्योग, सीमेंट उद्योग एवं औद्योगिक प्रदूषण।" },
+       { no:9 , name: "परिवहन, संचार एवं व्यापार", status: "ready", pdfUrl: "https://drive.google.com/file/d/1uRORWw_mKoG2kAbxllVjrjh-m87X1lQc/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सड़क मार्ग (स्वर्णिम चतुर्भुज), रेलवे, जलमार्ग एवं अंतरराष्ट्रीय व्यापार।" },
+       { no:10, name: "बिहार: कृषि एवं वन संसाधन", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बिहार में कृषि की स्थिति, सिंचाई के साधन एवं वन क्षेत्र का विस्तार।" },
+       { no:11, name: "बिहार: खनिज, ऊर्जा एवं उद्योग", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बरौनी रिफाइनरी, कांटी ताप विद्युत एवं बिहार में खनिज संपदा।" },
+       { no: 12, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
       ]
     },
     {
