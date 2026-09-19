@@ -7,7 +7,7 @@
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- Core Theme & Layout Stylesheets -->
@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <!-- 6. IN-BUILT STUDIO MODAL PDF VIEWER -->
+  <!-- 6. IN-BUILT STUDIO MODAL PDF VIEWER (सुरक्षित सैंडबॉक्स के साथ) -->
   <div class="pdf-modal-backdrop" id="pdfStudioModal">
     <div class="pdf-modal-window">
       <div class="pdf-studio-header">
@@ -248,7 +248,14 @@
       </div>
 
       <div class="pdf-frame-stage" id="pdfFrameStage">
-        <iframe src="" id="studioPdfFrame" frameborder="0" allowfullscreen></iframe>
+        <!-- sandbox अटरीब्यूट ऐप रीडायरेक्शन और ओनर इन्फो लीक्स को रोकता है -->
+        <iframe 
+          src="" 
+          id="studioPdfFrame" 
+          frameborder="0" 
+          allowfullscreen 
+          sandbox="allow-scripts allow-same-origin allow-forms">
+        </iframe>
       </div>
 
       <div class="pdf-studio-footer">
@@ -258,7 +265,7 @@
     </div>
   </div>
 
-  <!-- 7. FOOTER (हेडिंग्स वाइट व डीप लिंक्स) -->
+  <!-- 7. FOOTER -->
   <footer style="background: #080f24 !important; color: #94a3b8; padding: 40px 16px 80px; border-top: 1px solid #1e3a8a; margin-top: 50px; position: relative; z-index: 1;">
     <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08);">
       
