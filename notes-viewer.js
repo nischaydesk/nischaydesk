@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Dynamic Role-Based Notes Controller (v4.3 - Zero Gmail Leak)
+   NischayDesk Dynamic Role-Based Notes Controller (v5.0 - Absolute Zero Gmail Leak)
    Rule 1: Guest (Not Logged In) -> All Classes (10th, 11th, 12th) Fully Visible
    Rule 2: Logged In -> Strictly Filter to Student's Selected Class
-   Rule 3: Clean In-App Viewer (No Drive App Redirects, No Gmail Exposure)
+   Rule 3: Clean In-App Viewer via Docs Engine (No Drive Menus, No Gmail Exposure)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,10 +17,22 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
   const modalDirectDownloadBtn = document.getElementById('modalDirectDownloadBtn');
+  const pdfFrameStage = document.getElementById('pdfFrameStage');
 
   let allChaptersMaster = [];
   let currentFilterSubject = 'all';
   let searchQuery = '';
+
+  // इन-ऐप लोडिंग इंडिकेटर (Iframe लोड होते वक्त)
+  let frameLoader = null;
+  if (pdfFrameStage) {
+    frameLoader = document.createElement('div');
+    frameLoader.id = 'pdfInternalLoader';
+    frameLoader.style.cssText = 'position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(11,19,41,0.9); z-index:10; color:#38bdf8; font-family:inherit;';
+    frameLoader.innerHTML = '<div style="width:36px; height:36px; border:3.5px solid rgba(56,189,248,0.2); border-top-color:#38bdf8; border-radius:50%; animation:spinLoader 0.8s linear infinite; margin-bottom:12px;"></div><span style="font-size:0.85rem; font-weight:700;">सुरक्षित नोट्स लोड हो रहे हैं...</span><style>@keyframes spinLoader{to{transform:rotate(360deg)}}</style>';
+    pdfFrameStage.style.position = 'relative';
+    pdfFrameStage.appendChild(frameLoader);
+  }
 
   const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
                ? window.NischayConfig.authInstance 
@@ -34,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initNotes(null);
   }
 
-  // ड्राइव आईडी निकालकर 100% सेफ एम्बेड और डाउनलोड लिंक तैयार करने वाला हेल्पर
+  // ड्राइव आईडी निकालकर 100% सुरक्षित और बिना Gmail वाले लिंक तैयार करना
   function extractDriveId(url) {
     if (!url) return null;
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -43,19 +55,20 @@ document.addEventListener('DOMContentLoaded', function () {
     return (matchParam && matchParam[1]) ? matchParam[1] : null;
   }
 
+  // ZERO GMAIL LEAK: Docs Viewer एम्बेड इंजन (कोई गूगल ड्राइव मेनू या ओनर डिटेल नहीं दिखती)
   function getSafePreviewUrl(rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (fileId) {
-      // यह लिंक सीधे इन-पेज एम्बेड मोड में खुलता है, ड्राइव ऐप कभी ट्रिगर नहीं होता
-      return `https://drive.google.com/file/d/${fileId}/preview`;
+      const directSource = encodeURIComponent(`https://drive.google.com/uc?export=view&id=${fileId}`);
+      return `https://docs.google.com/viewer?url=${directSource}&embedded=true`;
     }
     return rawUrl;
   }
 
+  // सुरक्षित डायरेक्ट डाउनलोड लिंक
   function getSafeDownloadUrl(rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (fileId) {
-      // यह सीधे ब्राउज़र में फ़ाइल डाउनलोड कराएगा, बिना ड्राइव ऐप खोले
       return `https://drive.google.com/uc?export=download&id=${fileId}`;
     }
     return rawUrl;
@@ -174,14 +187,13 @@ document.addEventListener('DOMContentLoaded', function () {
         ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
         : `onclick="alert('अध्याय ${note.no} (${escapeHtml(note.name)}) के नोट्स जल्द जोड़े जा रहे हैं!')"`;
 
-      // डाउनलोड बटन पर सेफ डायरेक्ट डाउनलोड लिंक सेट किया गया है
       const directDownloadUrl = hasPdf ? getSafeDownloadUrl(note.pdfUrl) : 'javascript:void(0)';
       const downloadAction = hasPdf
-        ? `href="${directDownloadUrl}" download`
+        ? `href="${directDownloadUrl}" target="_blank" download`
         : `onclick="alert('PDF डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
       htmlBuffer += `
-        <div class="note-item-card" style="background: var(--surface-card, #0c1633); border: 1px solid var(--border-strong, #1e366a); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="note-item-card" style="background: var(--surface-card, #0c1633); border: 1px solid var(--border-strong, #1e366a); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s ease, border-color 0.2s ease;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
               <span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 4px;">${note.subjectTitle}</span>
@@ -192,11 +204,11 @@ document.addEventListener('DOMContentLoaded', function () {
           </div>
 
           <div style="display: flex; gap: 8px;">
-            <button class="btn-read-note" ${readAction} style="flex: 1; background: #0284c7; color: #fff; border: none; padding: 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer;">
-              📖 नोट्स पढ़ें
+            <button class="btn-read-note" ${readAction} style="flex: 1; background: #0284c7; color: #fff; border: none; padding: 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              📖 <span>नोट्स पढ़ें</span>
             </button>
-            <a class="btn-download-note" ${downloadAction} style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center;">
-              📥 PDF
+            <a class="btn-download-note" ${downloadAction} style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+              📥 <span>PDF</span>
             </a>
           </div>
         </div>
@@ -212,12 +224,20 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modalDocBadge) modalDocBadge.innerText = classTitle;
     if (modalDocTitle) modalDocTitle.innerText = title;
     
-    // सुरक्षित URL लोड करें
+    // लोडर दिखाएं जब तक सुरक्षित डॉक्स व्यूअर लोड हो
+    if (frameLoader) frameLoader.style.display = 'flex';
+
+    // सुरक्षित URL लोड करें (Docs Viewer इंजन)
     const cleanPreview = getSafePreviewUrl(pdfUrl);
     studioPdfFrame.src = cleanPreview;
 
+    studioPdfFrame.onload = function () {
+      if (frameLoader) frameLoader.style.display = 'none';
+    };
+
     if (modalDirectDownloadBtn) {
       modalDirectDownloadBtn.href = getSafeDownloadUrl(pdfUrl);
+      modalDirectDownloadBtn.setAttribute('target', '_blank');
     }
 
     pdfStudioModal.classList.add('active');
@@ -228,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!pdfStudioModal || !studioPdfFrame) return;
     pdfStudioModal.classList.remove('active');
     studioPdfFrame.src = '';
+    if (frameLoader) frameLoader.style.display = 'none';
     document.body.style.overflow = '';
   }
 
@@ -237,6 +258,13 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.target === pdfStudioModal) closeNoteModal();
     });
   }
+
+  // कीबोर्ड 'Esc' बटन दबाते ही मोडल बंद करने का नया फीचर
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && pdfStudioModal && pdfStudioModal.classList.contains('active')) {
+      closeNoteModal();
+    }
+  });
 
   // फुल-स्क्रीन टॉगल
   if (modalFullscreenBtn) {
@@ -276,3 +304,4 @@ document.addEventListener('DOMContentLoaded', function () {
     return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
   }
 });
+
