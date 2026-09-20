@@ -1,7 +1,83 @@
+/* ==========================================================================
+   NischayDesk Core Controller, Theme & Smart Utilities Engine (v5.0 PRO)
+   Architected by: Prince Kumar
+   Features: Live Camera, Rotate, Delete, Magic Filter, Custom Watermark & Anti-Crash
+   ========================================================================== */
+
+// ग्लोबल वैरिएबल्स (रोटेट और डिलीट के लिए)
+let scannedPages = [];
+let renderPagesGridGlobal = null;
+
+window.rotatePage = function (index) {
+  if (scannedPages[index]) {
+    scannedPages[index].rotation = (scannedPages[index].rotation + 90) % 360;
+    if (typeof renderPagesGridGlobal === 'function') renderPagesGridGlobal();
+  }
+};
+
+window.deletePage = function (index) {
+  if (scannedPages[index] !== undefined) {
+    scannedPages.splice(index, 1);
+    if (typeof renderPagesGridGlobal === 'function') renderPagesGridGlobal();
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+
   // =========================================================================
-  // 3. SMART TOOL: ULTIMATE DOC SCANNER & PDF STUDIO (v5.0 PRO)
-  // Architected by: Prince Kumar (NischayDesk)
-  // Features: Live Camera, Rotation, Delete, Magic Filter, Custom Name, Anti-Crash
+  // 1. MOBILE SLIDE-OUT DRAWER ENGINE
+  // =========================================================================
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sideDrawer = document.getElementById('sideDrawer');
+  const drawerScrim = document.getElementById('drawerScrim');
+  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+
+  function openDrawer() {
+    if (sideDrawer) sideDrawer.classList.add('active');
+    if (drawerScrim) drawerScrim.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    if (sideDrawer) sideDrawer.classList.remove('active');
+    if (drawerScrim) drawerScrim.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
+  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+  if (drawerScrim) drawerScrim.addEventListener('click', closeDrawer);
+
+  // =========================================================================
+  // 2. UNIVERSAL DARK / LIGHT THEME ENGINE
+  // =========================================================================
+  const themeSwitch = document.getElementById('themeSwitch');
+
+  function applySavedTheme() {
+    const savedTheme = localStorage.getItem('nischay_theme');
+    const isLight = (savedTheme === 'light');
+
+    if (isLight) {
+      document.documentElement.classList.add('light-mode');
+      if (themeSwitch) themeSwitch.checked = true;
+    } else {
+      document.documentElement.classList.remove('light-mode');
+      if (themeSwitch) themeSwitch.checked = false;
+    }
+  }
+
+  if (themeSwitch) {
+    themeSwitch.addEventListener('change', function () {
+      const willBeLight = this.checked;
+      localStorage.setItem('nischay_theme', willBeLight ? 'light' : 'dark');
+      applySavedTheme();
+    });
+  }
+
+  applySavedTheme();
+
+  // =========================================================================
+  // 3. SMART TOOL: ULTIMATE DOC SCANNER & PDF STUDIO
   // =========================================================================
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
@@ -20,10 +96,9 @@
   const imageFilterSelect = document.getElementById('imageFilterSelect');
   const customPdfNameInput = document.getElementById('customPdfNameInput');
 
-  let scannedPages = []; // हर फोटो का डेटा: { id, originalDataUrl, rotation: 0 }
   let cameraStream = null;
 
-  // 1. मोडल खोलना और बंद करना
+  // 1. मोडल ओपन / क्लोज़
   if (openDocConverterBtn && docConverterModal) {
     openDocConverterBtn.addEventListener('click', () => {
       docConverterModal.classList.add('active');
@@ -56,28 +131,32 @@
     });
   }
 
-  // 2. लाइव बैक कैमरा शुरू करना (Environment Cam)
+  // 2. लाइव कैमरा ऑन
   if (openLiveCameraBtn) {
     openLiveCameraBtn.addEventListener('click', async () => {
       try {
         cameraStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
           audio: false
         });
-        cameraVideo.srcObject = cameraStream;
-        cameraContainer.style.display = 'flex';
+        if (cameraVideo) {
+          cameraVideo.srcObject = cameraStream;
+          cameraContainer.style.display = 'flex';
+        }
       } catch (err) {
-        alert("कैमरा एक्सेस नहीं मिला! कृपया ब्राउज़र परमिशन की जाँच करें या गैलरी बटन का उपयोग करें।");
+        alert("कैमरा परमिशन नहीं मिली! कृपया गैलरी बटन का इस्तेमाल करें।");
       }
     });
   }
 
   if (stopCameraBtn) stopCameraBtn.addEventListener('click', stopLiveCamera);
 
-  // 3. कैमरे से फोटो खींचना
+  // 3. फ़ोटो कैप्चर
   if (capturePhotoBtn) {
     capturePhotoBtn.addEventListener('click', () => {
-      if (!cameraVideo.videoWidth) return;
+      if (!cameraVideo || !cameraVideo.videoWidth) return;
+      if (!cameraCaptureCanvas) return;
+
       cameraCaptureCanvas.width = cameraVideo.videoWidth;
       cameraCaptureCanvas.height = cameraVideo.videoHeight;
       const ctx = cameraCaptureCanvas.getContext('2d');
@@ -91,12 +170,11 @@
       });
 
       renderPagesGrid();
-      // हल्का वाइब्रेशन (क्लिक फील)
-      if (navigator.vibrate) navigator.vibrate(60);
+      if (navigator.vibrate) navigator.vibrate(50);
     });
   }
 
-  // 4. गैलरी से फ़ाइलें चुनना
+  // 4. गैलरी से फ़ोटो लोड
   if (converterFileInput) {
     converterFileInput.addEventListener('change', async function () {
       const files = Array.from(this.files).filter(f => f.type.startsWith('image/'));
@@ -113,7 +191,6 @@
     });
   }
 
-  // फाइल को हल्का और मेमोरी-फ्रेंडली बनाने वाला फंक्शन
   function readFileAsCompressedDataUrl(file) {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -121,7 +198,7 @@
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const maxDim = 1500;
+          const maxDim = 1400;
           let w = img.width, h = img.height;
           if (w > maxDim || h > maxDim) {
             if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
@@ -129,10 +206,10 @@
           }
           canvas.width = w; canvas.height = h;
           const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#fff';
+          ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
-          resolve(canvas.toDataURL('image/jpeg', 0.82));
+          resolve(canvas.toDataURL('image/jpeg', 0.80));
         };
         img.src = e.target.result;
       };
@@ -140,60 +217,54 @@
     });
   }
 
-  // 5. फोटो ग्रिड को स्क्रीन पर सजाना (Preview, Rotate, Delete)
+  // 5. ग्रिड रेंडर
   function renderPagesGrid() {
+    if (!pagesGridContainer) return;
     pagesGridContainer.innerHTML = '';
     const total = scannedPages.length;
 
     if (total === 0) {
-      selectedFilesCount.innerText = "कोई फोटो नहीं जोड़ी गई";
-      clearAllPagesBtn.style.display = 'none';
-      generatePdfBtn.disabled = true;
-      generatePdfBtn.innerText = "⚡ HD PDF डाउनलोड करें (0 पेज)";
+      if (selectedFilesCount) selectedFilesCount.innerText = "कोई फोटो नहीं जोड़ी गई";
+      if (clearAllPagesBtn) clearAllPagesBtn.style.display = 'none';
+      if (generatePdfBtn) {
+        generatePdfBtn.disabled = true;
+        generatePdfBtn.innerText = "⚡ HD PDF डाउनलोड करें (0 पेज)";
+      }
       return;
     }
 
-    selectedFilesCount.innerText = `✓ कुल ${total} पेज तैयार`;
-    clearAllPagesBtn.style.display = 'inline-block';
-    generatePdfBtn.disabled = false;
-    generatePdfBtn.innerText = `⚡ HD PDF डाउनलोड करें (${total} पेज)`;
+    if (selectedFilesCount) selectedFilesCount.innerText = `✓ कुल ${total} पेज तैयार`;
+    if (clearAllPagesBtn) clearAllPagesBtn.style.display = 'inline-block';
+    if (generatePdfBtn) {
+      generatePdfBtn.disabled = false;
+      generatePdfBtn.innerText = `⚡ HD PDF डाउनलोड करें (${total} पेज)`;
+    }
 
     scannedPages.forEach((page, index) => {
       const card = document.createElement('div');
-      card.className = 'page-thumb-card';
+      card.style.cssText = "position:relative; background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:4px; display:flex; flex-direction:column;";
       card.innerHTML = `
-        <span class="badge">P.${index + 1}</span>
-        <img src="${page.dataUrl}" style="transform: rotate(${page.rotation}deg);" alt="Page ${index + 1}">
-        <div class="thumb-actions">
-          <button class="btn-rot" title="90° घुमाएं" onclick="rotatePage(${index})">🔄 घुमाएं</button>
-          <button class="btn-del" title="पेज हटाएं" onclick="deletePage(${index})">🗑️ हटाएं</button>
+        <span style="position:absolute; top:6px; left:6px; background:rgba(15,23,42,0.85); color:#fff; font-size:0.65rem; padding:2px 6px; border-radius:4px;">P.${index + 1}</span>
+        <img src="${page.dataUrl}" style="width:100%; height:85px; object-fit:contain; background:#f1f5f9; border-radius:4px; transform:rotate(${page.rotation}deg);" alt="Page">
+        <div style="display:flex; justify-content:space-between; gap:4px; margin-top:6px;">
+          <button type="button" style="flex:1; background:#e0f2fe; color:#0284c7; border:none; border-radius:4px; padding:4px 0; font-size:0.7rem; font-weight:bold; cursor:pointer;" onclick="window.rotatePage(${index})">🔄</button>
+          <button type="button" style="flex:1; background:#fee2e2; color:#dc2626; border:none; border-radius:4px; padding:4px 0; font-size:0.7rem; font-weight:bold; cursor:pointer;" onclick="window.deletePage(${index})">🗑️</button>
         </div>
       `;
       pagesGridContainer.appendChild(card);
     });
   }
 
-  // ग्लोबल रोटेट और डिलीट फंक्शन्स
-  window.rotatePage = function (index) {
-    scannedPages[index].rotation = (scannedPages[index].rotation + 90) % 360;
-    renderPagesGrid();
-  };
-
-  window.deletePage = function (index) {
-    scannedPages.splice(index, 1);
-    renderPagesGrid();
-  };
+  renderPagesGridGlobal = renderPagesGrid;
 
   if (clearAllPagesBtn) {
     clearAllPagesBtn.addEventListener('click', () => {
-      if (confirm("क्या आप सभी पन्ने हटाना चाहते हैं?")) {
-        scannedPages = [];
-        renderPagesGrid();
-      }
+      scannedPages = [];
+      renderPagesGrid();
     });
   }
 
-  // 6. मैजिक फिल्टर और रोटेशन लागू करके फाइनल कैनवास तैयार करना
+  // 6. इमेज प्रोसेस (फिल्टर + रोटेशन)
   function processFinalImage(page, filterType) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -214,14 +285,12 @@
         ctx.rotate((rot * Math.PI) / 180);
         ctx.drawImage(img, -img.width / 2, -img.height / 2);
 
-        // फिल्टर लागू करें
         if (filterType === 'magic') {
-          // मैजिक व्हाइट फिल्टर: डार्क लिखावट को उभारता है और बैकग्राउंड साफ करता है
           const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const d = imgData.data;
           for (let i = 0; i < d.length; i += 4) {
             let v = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
-            v = v > 155 ? Math.min(255, v * 1.25) : v * 0.85; // कंट्रास्ट बूस्ट
+            v = v > 150 ? Math.min(255, v * 1.22) : v * 0.85;
             d[i] = v; d[i + 1] = v; d[i + 2] = v;
           }
           ctx.putImageData(imgData, 0, 0);
@@ -245,26 +314,26 @@
     });
   }
 
-  // 7. सुपर PDF जनरेशन (वाटरमार्क व नो-क्रैश A4 लेआउट)
+  // 7. PDF जनरेशन
   if (generatePdfBtn) {
     generatePdfBtn.addEventListener('click', async function () {
       if (scannedPages.length === 0) return;
 
       const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
       if (!jsPDF) {
-        alert("PDF इंजन लोड हो रहा है, कृपया 2 सेकंड बाद दबाएं।");
+        alert("PDF लाइब्रेरी लोड हो रही है, 2 सेकंड बाद दबाएं।");
         return;
       }
 
       stopLiveCamera();
       generatePdfBtn.disabled = true;
-      generatePdfBtn.innerText = "⏳ HD PDF बन रहा है...";
+      generatePdfBtn.innerText = "⏳ PDF तैयार हो रहा है...";
 
       try {
         const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
         const pageWidth = 210, pageHeight = 297, margin = 8;
         const printW = pageWidth - (margin * 2);
-        const printH = pageHeight - (margin * 2) - 6; // नीचे वाटरमार्क की जगह
+        const printH = pageHeight - (margin * 2) - 6;
         const selectedFilter = imageFilterSelect ? imageFilterSelect.value : 'original';
 
         for (let i = 0; i < scannedPages.length; i++) {
@@ -285,21 +354,20 @@
 
           doc.addImage(finalImg.dataUrl, 'JPEG', pX, pY, rW, rH, undefined, 'FAST');
 
-          // 🌟 हर पन्ने पर ब्रांडिंग वाटरमार्क
           doc.setFontSize(8);
-          doc.setTextColor(150, 150, 150);
-          doc.text(`NischayDesk Smart Notes • Page ${i + 1} of ${scannedPages.length}`, pageWidth / 2, pageHeight - 4, { align: 'center' });
+          doc.setTextColor(140, 140, 140);
+          doc.text(`NischayDesk • Page ${i + 1} of ${scannedPages.length}`, pageWidth / 2, pageHeight - 4, { align: 'center' });
         }
 
         const rawFileName = customPdfNameInput && customPdfNameInput.value.trim() !== '' 
           ? customPdfNameInput.value.trim() 
           : 'NischayDesk_Notes';
-        
+
         doc.save(`${rawFileName.replace(/[^a-zA-Z0-9_\-]/g, '_')}.pdf`);
-        alert("🎉 बधाई! आपकी सम्पूर्ण HD PDF तैयार होकर डाउनलोड हो चुकी है!");
+        alert("✓ PDF डाउनलोड हो चुकी है!");
         closeConverterModal();
       } catch (err) {
-        console.error("PDF Generate Error:", err);
+        console.error(err);
         alert("PDF बनाने में रुकावट आई। कृपया दोबारा प्रयास करें।");
       } finally {
         generatePdfBtn.disabled = false;
@@ -307,3 +375,5 @@
       }
     });
   }
+
+}); // DOMContentLoaded का क्लोजिंग ब्रैकेट (यह छूटा हुआ था)
