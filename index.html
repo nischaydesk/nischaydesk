@@ -22,7 +22,7 @@
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP NAVBAR (लॉगिन बटन हमेशा पूरा दिखेगा) -->
+  <!-- 1. TOP NAVBAR -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -53,7 +53,12 @@
       </div>
 
       <div class="nav-actions">
-        <!-- Google Sign-In Button (अब कभी नहीं कटेगा) -->
+        <!-- डायरेक्ट WhatsApp चैनल बटन -->
+        <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="btn-whatsapp-header" style="display: inline-flex; align-items: center; gap: 6px; background: #25D366; color: #ffffff; text-decoration: none; padding: 7px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; box-shadow: 0 2px 8px rgba(37,211,102,0.3);">
+          <span>💬 WhatsApp</span>
+        </a>
+
+        <!-- Google Sign-In Button -->
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
@@ -96,6 +101,14 @@
       <a href="index.html" class="drawer-nav-item active">
         <span class="icon">📊</span> मुख्य डैशबोर्ड
       </a>
+      <!-- WhatsApp चैनल लिंक -->
+      <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e; font-weight: 700;">
+        <span class="icon">💬</span> WhatsApp चैनल जुड़ें
+      </a>
+      <!-- वेबसाइट शेयर बटन साइडबार में -->
+      <a href="javascript:void(0)" onclick="shareNischayDeskWebsite()" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
+        <span class="icon">🚀</span> दोस्तों को शेयर करें
+      </a>
       <a href="syllabus.html" class="drawer-nav-item">
         <span class="icon">📋</span> बोर्ड एवं NCERT सिलेबस
       </a>
@@ -137,7 +150,7 @@
   <main class="dashboard-viewport">
 
     <!-- HERO BANNER -->
-    <section class="hero-studio-banner" style="background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18), transparent 55%), linear-gradient(180deg, #080f24 0%, #0c1633 100%) !important; border: 1.5px solid #1e3a8a !important; border-radius: 20px; padding: 26px 20px; margin-bottom: 28px;">
+    <section class="hero-studio-banner" style="background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18), transparent 55%), linear-gradient(180deg, #080f24 0%, #0c1633 100%) !important; border: 1.5px solid #1e3a8a !important; border-radius: 20px; padding: 26px 20px; margin-bottom: 24px;">
       <div class="hero-content">
         
         <!-- Personalized User Welcome Box -->
@@ -163,7 +176,7 @@
           </div>
         </div>
 
-        <!-- स्टेटस पिल + लाइव इंडिया क्लॉक (एक सुंदर पंक्ति में) -->
+        <!-- स्टेटस पिल + लाइव इंडिया क्लॉक -->
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
           <div class="status-pill" id="heroStatusPill" style="color: #38bdf8 !important; background: rgba(56, 189, 248, 0.1) !important; border: 1px solid rgba(56, 189, 248, 0.3) !important; margin: 0;">
             <span class="pulsing-dot"></span> बिहार बोर्ड & NCERT स्पेशल 2026–2027
@@ -185,11 +198,12 @@
           आधिकारिक बोर्ड सिलेबस, टॉपर हस्तलिखित नोट्स, क्वेश्चन बैंक (2020-2026) और टाइमर टेस्ट सिमुलेटर।
         </p>
 
+        <!-- एक्शन बटन्स (WhatsApp और शेयर बटन के साथ) -->
         <div class="hero-action-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
           <a href="syllabus.html" class="btn-cta-primary" style="background: linear-gradient(135deg, #38bdf8, #0284c7); color: #ffffff !important; text-decoration: none; padding: 10px 18px; border-radius: 12px; font-weight: 700;">📋 ऑफिशियल सिलेबस</a>
           <a href="notes.html" class="btn-cta-secondary" style="background: #13224a; color: #38bdf8 !important; border: 1px solid #1e3a8a; text-decoration: none; padding: 10px 16px; border-radius: 12px; font-weight: 700;">📚 चैप्टर नोट्स</a>
-          <a href="pyq.html" class="btn-cta-secondary" style="background: #13224a; color: #38bdf8 !important; border: 1px solid #1e3a8a; text-decoration: none; padding: 10px 16px; border-radius: 12px; font-weight: 700;">📖 क्वेश्चन बैंक</a>
-          <a href="test.html" class="btn-cta-secondary" style="background: #13224a; color: #38bdf8 !important; border: 1px solid #1e3a8a; text-decoration: none; padding: 10px 16px; border-radius: 12px; font-weight: 700;">⚡ टेस्ट दें</a>
+          <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="btn-cta-secondary" style="background: rgba(37,211,102,0.15); color: #4ade80 !important; border: 1px solid #22c55e; text-decoration: none; padding: 10px 16px; border-radius: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">💬 WhatsApp चैनल</a>
+          <button type="button" onclick="shareNischayDeskWebsite()" class="btn-cta-secondary" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8 !important; border: 1px solid #0284c7; padding: 10px 16px; border-radius: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">🚀 दोस्तों को शेयर करें</button>
         </div>
       </div>
 
@@ -452,13 +466,13 @@
 
         <div class="quick-tool-card" id="openDocConverterBtn" style="cursor: pointer; border: 1.5px solid #0284c7;">
           <div class="tool-icon-box">📄</div>
-          <h4>इमेज टू PDF कनवर्टर</h4>
-          <p>नोट्स की फोटो से HD PDF बनाएं।</p>
+          <h4>इमेज टू PDF कनवर्टर Pro</h4>
+          <p>कैमरा व फोटो से HD PDF बनाएं।</p>
         </div>
       </div>
     </section>
 
-    <!-- STUDENT ONBOARDING / CLASS SWITCH MODAL (16+ लक्ष्य विकल्प) -->
+    <!-- STUDENT ONBOARDING / CLASS SWITCH MODAL -->
     <div class="pdf-modal-backdrop" id="onboardingModal">
       <div class="pdf-modal-window" style="max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative;">
         <button type="button" class="btn-studio-close" id="closeOnboardingBtn" onclick="document.getElementById('onboardingModal').classList.remove('active');" style="position: absolute; top: 14px; right: 16px; font-size: 1.5rem; cursor: pointer;">&times;</button>
@@ -497,7 +511,6 @@
             </div>
           </div>
 
-          <!-- 16 करियर लक्ष्य विकल्प -->
           <div>
             <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">मुख्य लक्ष्य (Aim / Goal):</label>
             <select id="obGoal" class="exam-dropdown" style="font-size: 0.9rem;">
@@ -527,7 +540,7 @@
       </div>
     </div>
 
-    <!-- 5. DEDICATED USER PROFILE & LOGOUT CONFIRMATION MODAL -->
+    <!-- 5. DEDICATED USER PROFILE & LOGOUT MODAL -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
         
@@ -556,28 +569,73 @@
       </div>
     </div>
 
-    <!-- TOOL MODAL: PDF CONVERTER -->
+    <!-- 6. UPGRADED SMART TOOL: DOC SCANNER & PDF STUDIO MODAL (CAMSCANNER STYLE) -->
     <div class="pdf-modal-backdrop" id="docConverterModal">
-      <div class="pdf-modal-window" style="max-width: 500px; height: auto; padding: 24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h3 style="color:var(--text-pure); font-size:1.15rem;">📄 इमेज टू PDF कनवर्टर (HD)</h3>
-          <button class="btn-studio-close" id="closeConverterBtn">&times;</button>
+      <div class="pdf-modal-window" style="max-width: 520px; height: auto; max-height: 92vh; padding: 0; overflow: hidden; border-radius: 20px; background: #ffffff;">
+        
+        <!-- स्टूडियो हेडर -->
+        <div style="background: #0f172a; padding: 14px 18px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-size: 1.05rem; margin: 0; color: #fff;">📑 NischayDesk DocScanner Pro</h3>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin: 2px 0 0;">कैमरा से फोटो खींचें, रोटेट करें व HD PDF बनाएं</p>
+          </div>
+          <button class="btn-studio-close" id="closeConverterBtn" style="color: #fff; font-size: 1.6rem; cursor: pointer; background: none; border: none;">&times;</button>
         </div>
-        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
-          हाथ से लिखे नोट्स की फोटो चुनें और सिंगल PDF बनाएं:
-        </p>
-        <div style="border: 2px dashed var(--border-strong); border-radius: var(--radius-md); padding: 24px; text-align: center; margin-bottom: 16px; background: var(--surface-elevated);">
-          <input type="file" id="converterFileInput" accept="image/*" multiple style="display:none;" />
-          <button type="button" class="btn-stage-primary" onclick="document.getElementById('converterFileInput').click();">
-            📷 फोटो चुनें (गैलरी)
+
+        <!-- लाइव कैमरा व्यू बॉक्स -->
+        <div id="cameraContainer" style="display: none; position: relative; background: #000; width: 100%; height: 260px; flex-direction: column;">
+          <video id="cameraVideo" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+          <div style="position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 12px;">
+            <button type="button" id="capturePhotoBtn" style="background: #2563eb; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer;">⚪ फोटो क्लिक करें</button>
+            <button type="button" id="stopCameraBtn" style="background: #ef4444; color: #fff; border: none; padding: 8px 14px; border-radius: 20px; cursor: pointer;">कैमरा बंद</button>
+          </div>
+          <canvas id="cameraCaptureCanvas" style="display: none;"></canvas>
+        </div>
+
+        <!-- इनपुट चयन: गैलरी या कैमरा -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+          <label style="background: #3b82f6; color: #fff; padding: 9px; font-size: 0.82rem; font-weight: bold; border-radius: 8px; text-align: center; cursor: pointer;">
+            📁 गैलरी से चुनें
+            <input type="file" id="converterFileInput" accept="image/*" multiple style="display: none;">
+          </label>
+
+          <button type="button" id="openLiveCameraBtn" style="background: #10b981; color: #fff; border: none; padding: 9px; font-size: 0.82rem; font-weight: bold; border-radius: 8px; cursor: pointer;">
+            📸 लाइव कैमरा खोलें
           </button>
-          <div id="selectedFilesCount" style="margin-top: 10px; font-size: 0.8rem; color: var(--brand-accent);">
-            कोई फोटो नहीं चुनी गई
+        </div>
+
+        <!-- फिल्टर व फाइल सेटिंग्स -->
+        <div style="display: flex; gap: 10px; padding: 8px 16px; background: #ffffff; border-bottom: 1px solid #f1f5f9;">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;">
+            <label style="font-size: 0.72rem; font-weight: bold; color: #64748b;">पेज फिल्टर:</label>
+            <select id="imageFilterSelect" style="padding: 6px 8px; font-size: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+              <option value="original">मूल रंग (Original HD)</option>
+              <option value="magic">✨ मैजिक व्हाइट (नोट्स साफ)</option>
+              <option value="grayscale">ब्लैक & व्हाइट (B&W)</option>
+            </select>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;">
+            <label style="font-size: 0.72rem; font-weight: bold; color: #64748b;">PDF नाम:</label>
+            <input type="text" id="customPdfNameInput" value="NischayDesk_Notes" style="padding: 6px 8px; font-size: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;">
           </div>
         </div>
-        <button id="generatePdfBtn" class="btn-cta-primary" style="width:100%; border-radius:var(--radius-md);" disabled>
-          ⚡ PDF डाउनलोड करें
-        </button>
+
+        <!-- फोटो ग्रिड प्रीव्यू (रोटेट और डिलीट सपोर्ट) -->
+        <div style="max-height: 220px; overflow-y: auto; padding: 12px 16px; background: #f8fafc;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.78rem; font-weight: bold; color: #475569;">
+            <span id="selectedFilesCount">कोई फोटो नहीं जोड़ी गई</span>
+            <button type="button" id="clearAllPagesBtn" style="background: none; border: none; color: #ef4444; font-size: 0.75rem; cursor: pointer; display: none;">सब हटाएं</button>
+          </div>
+          <div id="pagesGridContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;"></div>
+        </div>
+
+        <!-- मुख्य डाउनलोड बटन -->
+        <div style="padding: 12px 16px; background: #ffffff; border-top: 1px solid #e2e8f0;">
+          <button type="button" id="generatePdfBtn" style="width: 100%; padding: 11px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 0.92rem; cursor: pointer;" disabled>
+            ⚡ HD PDF डाउनलोड करें (0 पेज)
+          </button>
+        </div>
+
       </div>
     </div>
 
@@ -619,6 +677,8 @@
         <h4 style="color: #ffffff !important; font-size: 1.05rem; margin: 0 0 14px; font-weight: 800; letter-spacing: 0.5px;">प्लेटफ़ॉर्म</h4>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
           <li><a href="index.html" style="color: #94a3b8; text-decoration: none;">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" style="color: #4ade80; text-decoration: none; font-weight: 700;">➔ WhatsApp चैनल</a></li>
+          <li><a href="javascript:void(0)" onclick="shareNischayDeskWebsite()" style="color: #38bdf8; text-decoration: none; font-weight: 700;">➔ वेबसाइट शेयर करें</a></li>
           <li><a href="syllabus.html" style="color: #94a3b8; text-decoration: none;">➔ बोर्ड सिलेबस हब</a></li>
           <li><a href="pyq.html" style="color: #94a3b8; text-decoration: none;">➔ क्वेश्चन बैंक</a></li>
           <li><a href="model-paper.html" style="color: #94a3b8; text-decoration: none;">➔ मॉडल पेपर्स</a></li>
@@ -628,7 +688,7 @@
 
     </div>
 
-    <!-- Bottom Bar (Direct Deep Links) -->
+    <!-- Bottom Bar -->
     <div style="max-width: 1100px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center;">
       <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; font-size: 0.85rem;">
         <a href="privacy.html#about" style="color: #38bdf8; text-decoration: none; font-weight: 600;">संस्थापक परिचय (About Developer)</a>
@@ -644,7 +704,7 @@
     </div>
   </footer>
 
-  <!-- Live India Clock Script & Profile Modal Logic -->
+  <!-- Live India Clock Script, Profile Modal & Native Web Share Logic -->
   <script>
     // 🇮🇳 Live Indian Standard Time (IST) Clock
     function updateLiveIndiaClock() {
@@ -662,6 +722,23 @@
     }
     setInterval(updateLiveIndiaClock, 1000);
     updateLiveIndiaClock();
+
+    // 🚀 वेबसाइट शेयर करने का फंक्शन (WhatsApp & Phone Share)
+    function shareNischayDeskWebsite() {
+      const shareData = {
+        title: 'NischayDesk - बिहार बोर्ड टॉपर स्टडी पोर्टल',
+        text: '🔥 बिहार बोर्ड मैट्रिक एवं इंटर के सभी विषयों के टॉपर नोट्स, सिलेबस और 2020-2026 क्वेश्चन बैंक अब बिल्कुल फ्री में उपलब्ध हैं! अभी विजिट करें:',
+        url: 'https://nischaydesk.github.io/nischaydesk/'
+      };
+
+      if (navigator.share) {
+        navigator.share(shareData).catch((err) => console.log('Share dismissed', err));
+      } else {
+        // अगर फ़ोन का शेयर मेनू सपोर्ट न करे तो डायरेक्ट WhatsApp पर भेजें
+        const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareData.text + '\n' + shareData.url);
+        window.open(waUrl, '_blank');
+      }
+    }
 
     function openProfileModal() {
       const modal = document.getElementById('customProfileModal');
