@@ -1,75 +1,29 @@
-/* ==========================================================================
-   NischayDesk Core Controller, Theme & Smart Utilities Engine (v4.0)
-   Architected by: Prince Kumar
-   Fixed: Eliminates Blank/White PDF via Image Object Pre-rendering & Dynamic Aspect Ratio
-   ========================================================================== */
-
-document.addEventListener('DOMContentLoaded', function () {
-
   // =========================================================================
-  // 1. MOBILE SLIDE-OUT DRAWER ENGINE
-  // =========================================================================
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const sideDrawer = document.getElementById('sideDrawer');
-  const drawerScrim = document.getElementById('drawerScrim');
-  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
-
-  function openDrawer() {
-    if (sideDrawer) sideDrawer.classList.add('active');
-    if (drawerScrim) drawerScrim.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    if (sideDrawer) sideDrawer.classList.remove('active');
-    if (drawerScrim) drawerScrim.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openDrawer);
-  if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
-  if (drawerScrim) drawerScrim.addEventListener('click', closeDrawer);
-
-  // =========================================================================
-  // 2. UNIVERSAL DARK / LIGHT THEME ENGINE
-  // =========================================================================
-  const themeSwitch = document.getElementById('themeSwitch');
-
-  function applySavedTheme() {
-    const savedTheme = localStorage.getItem('nischay_theme');
-    const isLight = (savedTheme === 'light');
-
-    if (isLight) {
-      document.documentElement.classList.add('light-mode');
-      if (themeSwitch) themeSwitch.checked = true;
-    } else {
-      document.documentElement.classList.remove('light-mode');
-      if (themeSwitch) themeSwitch.checked = false;
-    }
-  }
-
-  if (themeSwitch) {
-    themeSwitch.addEventListener('change', function () {
-      const willBeLight = this.checked;
-      localStorage.setItem('nischay_theme', willBeLight ? 'light' : 'dark');
-      applySavedTheme();
-    });
-  }
-
-  applySavedTheme();
-
-  // =========================================================================
-  // 3. SMART TOOL: HD IMAGE TO PDF CONVERTER (BLANK PDF FIX)
+  // 3. SMART TOOL: ULTIMATE DOC SCANNER & PDF STUDIO (v5.0 PRO)
+  // Architected by: Prince Kumar (NischayDesk)
+  // Features: Live Camera, Rotation, Delete, Magic Filter, Custom Name, Anti-Crash
   // =========================================================================
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
   const closeConverterBtn = document.getElementById('closeConverterBtn');
   const converterFileInput = document.getElementById('converterFileInput');
+  const openLiveCameraBtn = document.getElementById('openLiveCameraBtn');
+  const cameraContainer = document.getElementById('cameraContainer');
+  const cameraVideo = document.getElementById('cameraVideo');
+  const capturePhotoBtn = document.getElementById('capturePhotoBtn');
+  const stopCameraBtn = document.getElementById('stopCameraBtn');
+  const cameraCaptureCanvas = document.getElementById('cameraCaptureCanvas');
+  const pagesGridContainer = document.getElementById('pagesGridContainer');
   const selectedFilesCount = document.getElementById('selectedFilesCount');
+  const clearAllPagesBtn = document.getElementById('clearAllPagesBtn');
   const generatePdfBtn = document.getElementById('generatePdfBtn');
+  const imageFilterSelect = document.getElementById('imageFilterSelect');
+  const customPdfNameInput = document.getElementById('customPdfNameInput');
 
-  let selectedImageFiles = [];
+  let scannedPages = []; // हर फोटो का डेटा: { id, originalDataUrl, rotation: 0 }
+  let cameraStream = null;
 
+  // 1. मोडल खोलना और बंद करना
   if (openDocConverterBtn && docConverterModal) {
     openDocConverterBtn.addEventListener('click', () => {
       docConverterModal.classList.add('active');
@@ -77,17 +31,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  function stopLiveCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream = null;
+    }
+    if (cameraContainer) cameraContainer.style.display = 'none';
+  }
+
   function closeConverterModal() {
     if (!docConverterModal) return;
+    stopLiveCamera();
     docConverterModal.classList.remove('active');
     document.body.style.overflow = '';
-    selectedImageFiles = [];
+    scannedPages = [];
+    renderPagesGrid();
     if (converterFileInput) converterFileInput.value = '';
-    if (selectedFilesCount) selectedFilesCount.innerText = "कोई फोटो नहीं चुनी गई";
-    if (generatePdfBtn) {
-      generatePdfBtn.disabled = true;
-      generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
-    }
   }
 
   if (closeConverterBtn) closeConverterBtn.addEventListener('click', closeConverterModal);
@@ -97,184 +56,254 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  if (converterFileInput) {
-    converterFileInput.addEventListener('change', function () {
-      selectedImageFiles = Array.from(this.files).filter(f => f.type.startsWith('image/'));
-      if (selectedImageFiles.length > 0) {
-        if (selectedFilesCount) {
-          selectedFilesCount.innerText = `✓ ${selectedImageFiles.length} फोटो चुनी गईं`;
-        }
-        if (generatePdfBtn) generatePdfBtn.disabled = false;
-      } else {
-        if (selectedFilesCount) selectedFilesCount.innerText = "कृपया केवल वैध फोटो फाइलें चुनें";
-        if (generatePdfBtn) generatePdfBtn.disabled = true;
+  // 2. लाइव बैक कैमरा शुरू करना (Environment Cam)
+  if (openLiveCameraBtn) {
+    openLiveCameraBtn.addEventListener('click', async () => {
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+          audio: false
+        });
+        cameraVideo.srcObject = cameraStream;
+        cameraContainer.style.display = 'flex';
+      } catch (err) {
+        alert("कैमरा एक्सेस नहीं मिला! कृपया ब्राउज़र परमिशन की जाँच करें या गैलरी बटन का उपयोग करें।");
       }
     });
   }
 
-  // इमेज को मेमोरी में पूरी तरह लोड करके असली डायमेंशन निकालने वाला फंक्शन
-  function loadHtmlImage(file) {
-    return new Promise((resolve, reject) => {
+  if (stopCameraBtn) stopCameraBtn.addEventListener('click', stopLiveCamera);
+
+  // 3. कैमरे से फोटो खींचना
+  if (capturePhotoBtn) {
+    capturePhotoBtn.addEventListener('click', () => {
+      if (!cameraVideo.videoWidth) return;
+      cameraCaptureCanvas.width = cameraVideo.videoWidth;
+      cameraCaptureCanvas.height = cameraVideo.videoHeight;
+      const ctx = cameraCaptureCanvas.getContext('2d');
+      ctx.drawImage(cameraVideo, 0, 0);
+
+      const capturedUrl = cameraCaptureCanvas.toDataURL('image/jpeg', 0.85);
+      scannedPages.push({
+        id: Date.now() + Math.random(),
+        dataUrl: capturedUrl,
+        rotation: 0
+      });
+
+      renderPagesGrid();
+      // हल्का वाइब्रेशन (क्लिक फील)
+      if (navigator.vibrate) navigator.vibrate(60);
+    });
+  }
+
+  // 4. गैलरी से फ़ाइलें चुनना
+  if (converterFileInput) {
+    converterFileInput.addEventListener('change', async function () {
+      const files = Array.from(this.files).filter(f => f.type.startsWith('image/'));
+      for (const file of files) {
+        const compressedBase64 = await readFileAsCompressedDataUrl(file);
+        scannedPages.push({
+          id: Date.now() + Math.random(),
+          dataUrl: compressedBase64,
+          rotation: 0
+        });
+      }
+      renderPagesGrid();
+      this.value = '';
+    });
+  }
+
+  // फाइल को हल्का और मेमोरी-फ्रेंडली बनाने वाला फंक्शन
+  function readFileAsCompressedDataUrl(file) {
+    return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          resolve({
-            imgElement: img,
-            dataUrl: e.target.result,
-            width: img.naturalWidth || img.width,
-            height: img.naturalHeight || img.height,
-            format: file.type.includes('png') ? 'PNG' : 'JPEG'
-          });
+          const canvas = document.createElement('canvas');
+          const maxDim = 1500;
+          let w = img.width, h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+            else { w = Math.round((w * maxDim) / h); h = maxDim; }
+          }
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL('image/jpeg', 0.82));
         };
-        img.onerror = () => reject(new Error("इमेज रेंडरिंग विफल रही"));
         img.src = e.target.result;
       };
-      reader.onerror = reject;
       reader.readAsDataURL(file);
     });
   }
 
+  // 5. फोटो ग्रिड को स्क्रीन पर सजाना (Preview, Rotate, Delete)
+  function renderPagesGrid() {
+    pagesGridContainer.innerHTML = '';
+    const total = scannedPages.length;
+
+    if (total === 0) {
+      selectedFilesCount.innerText = "कोई फोटो नहीं जोड़ी गई";
+      clearAllPagesBtn.style.display = 'none';
+      generatePdfBtn.disabled = true;
+      generatePdfBtn.innerText = "⚡ HD PDF डाउनलोड करें (0 पेज)";
+      return;
+    }
+
+    selectedFilesCount.innerText = `✓ कुल ${total} पेज तैयार`;
+    clearAllPagesBtn.style.display = 'inline-block';
+    generatePdfBtn.disabled = false;
+    generatePdfBtn.innerText = `⚡ HD PDF डाउनलोड करें (${total} पेज)`;
+
+    scannedPages.forEach((page, index) => {
+      const card = document.createElement('div');
+      card.className = 'page-thumb-card';
+      card.innerHTML = `
+        <span class="badge">P.${index + 1}</span>
+        <img src="${page.dataUrl}" style="transform: rotate(${page.rotation}deg);" alt="Page ${index + 1}">
+        <div class="thumb-actions">
+          <button class="btn-rot" title="90° घुमाएं" onclick="rotatePage(${index})">🔄 घुमाएं</button>
+          <button class="btn-del" title="पेज हटाएं" onclick="deletePage(${index})">🗑️ हटाएं</button>
+        </div>
+      `;
+      pagesGridContainer.appendChild(card);
+    });
+  }
+
+  // ग्लोबल रोटेट और डिलीट फंक्शन्स
+  window.rotatePage = function (index) {
+    scannedPages[index].rotation = (scannedPages[index].rotation + 90) % 360;
+    renderPagesGrid();
+  };
+
+  window.deletePage = function (index) {
+    scannedPages.splice(index, 1);
+    renderPagesGrid();
+  };
+
+  if (clearAllPagesBtn) {
+    clearAllPagesBtn.addEventListener('click', () => {
+      if (confirm("क्या आप सभी पन्ने हटाना चाहते हैं?")) {
+        scannedPages = [];
+        renderPagesGrid();
+      }
+    });
+  }
+
+  // 6. मैजिक फिल्टर और रोटेशन लागू करके फाइनल कैनवास तैयार करना
+  function processFinalImage(page, filterType) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const rot = page.rotation;
+
+        if (rot === 90 || rot === 270) {
+          canvas.width = img.height;
+          canvas.height = img.width;
+        } else {
+          canvas.width = img.width;
+          canvas.height = img.height;
+        }
+
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((rot * Math.PI) / 180);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+        // फिल्टर लागू करें
+        if (filterType === 'magic') {
+          // मैजिक व्हाइट फिल्टर: डार्क लिखावट को उभारता है और बैकग्राउंड साफ करता है
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imgData.data;
+          for (let i = 0; i < d.length; i += 4) {
+            let v = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
+            v = v > 155 ? Math.min(255, v * 1.25) : v * 0.85; // कंट्रास्ट बूस्ट
+            d[i] = v; d[i + 1] = v; d[i + 2] = v;
+          }
+          ctx.putImageData(imgData, 0, 0);
+        } else if (filterType === 'grayscale') {
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imgData.data;
+          for (let i = 0; i < d.length; i += 4) {
+            let avg = 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2];
+            d[i] = avg; d[i + 1] = avg; d[i + 2] = avg;
+          }
+          ctx.putImageData(imgData, 0, 0);
+        }
+
+        resolve({
+          dataUrl: canvas.toDataURL('image/jpeg', 0.82),
+          width: canvas.width,
+          height: canvas.height
+        });
+      };
+      img.src = page.dataUrl;
+    });
+  }
+
+  // 7. सुपर PDF जनरेशन (वाटरमार्क व नो-क्रैश A4 लेआउट)
   if (generatePdfBtn) {
     generatePdfBtn.addEventListener('click', async function () {
-      if (!selectedImageFiles || selectedImageFiles.length === 0) return;
+      if (scannedPages.length === 0) return;
 
       const jsPDF = window.jspdf ? window.jspdf.jsPDF : null;
       if (!jsPDF) {
-        alert("PDF लाइब्रेरी लोड हो रही है, कृपया 2 सेकंड बाद दोबारा कोशिश करें।");
+        alert("PDF इंजन लोड हो रहा है, कृपया 2 सेकंड बाद दबाएं।");
         return;
       }
 
+      stopLiveCamera();
       generatePdfBtn.disabled = true;
-      generatePdfBtn.innerText = "⏳ HD PDF तैयार हो रहा है...";
+      generatePdfBtn.innerText = "⏳ HD PDF बन रहा है...";
 
       try {
-        const doc = new jsPDF({
-          orientation: 'portrait',
-          unit: 'mm',
-          format: 'a4',
-          compress: true
-        });
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+        const pageWidth = 210, pageHeight = 297, margin = 8;
+        const printW = pageWidth - (margin * 2);
+        const printH = pageHeight - (margin * 2) - 6; // नीचे वाटरमार्क की जगह
+        const selectedFilter = imageFilterSelect ? imageFilterSelect.value : 'original';
 
-        const pageWidth = 210;
-        const pageHeight = 297;
-        const margin = 10;
-        const printableWidth = pageWidth - (margin * 2);
-        const printableHeight = pageHeight - (margin * 2);
-
-        for (let i = 0; i < selectedImageFiles.length; i++) {
-          const file = selectedImageFiles[i];
-          const imgObj = await loadHtmlImage(file);
-
+        for (let i = 0; i < scannedPages.length; i++) {
           if (i > 0) doc.addPage();
 
-          // आस्पेक्ट रेशियो सुरक्षित रखना (मैथ नोट्स कटेंगे नहीं और न ब्लैंक होंगे)
-          const imgRatio = imgObj.width / imgObj.height;
-          let renderW = printableWidth;
-          let renderH = printableWidth / imgRatio;
+          const finalImg = await processFinalImage(scannedPages[i], selectedFilter);
+          const ratio = finalImg.width / finalImg.height;
+          let rW = printW;
+          let rH = printW / ratio;
 
-          if (renderH > printableHeight) {
-            renderH = printableHeight;
-            renderW = printableHeight * imgRatio;
+          if (rH > printH) {
+            rH = printH;
+            rW = printH * ratio;
           }
 
-          // पेज के बीचों-बीच सेंटर करना
-          const posX = margin + ((printableWidth - renderW) / 2);
-          const posY = margin + ((printableHeight - renderH) / 2);
+          const pX = margin + ((printW - rW) / 2);
+          const pY = margin + ((printH - rH) / 2);
 
-          doc.addImage(imgObj.dataUrl, imgObj.format, posX, posY, renderW, renderH, undefined, 'FAST');
+          doc.addImage(finalImg.dataUrl, 'JPEG', pX, pY, rW, rH, undefined, 'FAST');
+
+          // 🌟 हर पन्ने पर ब्रांडिंग वाटरमार्क
+          doc.setFontSize(8);
+          doc.setTextColor(150, 150, 150);
+          doc.text(`NischayDesk Smart Notes • Page ${i + 1} of ${scannedPages.length}`, pageWidth / 2, pageHeight - 4, { align: 'center' });
         }
 
-        doc.save(`NischayDesk_Notes_${Date.now()}.pdf`);
-        alert("✓ आपकी HD PDF तैयार होकर डाउनलोड हो चुकी है!");
+        const rawFileName = customPdfNameInput && customPdfNameInput.value.trim() !== '' 
+          ? customPdfNameInput.value.trim() 
+          : 'NischayDesk_Notes';
+        
+        doc.save(`${rawFileName.replace(/[^a-zA-Z0-9_\-]/g, '_')}.pdf`);
+        alert("🎉 बधाई! आपकी सम्पूर्ण HD PDF तैयार होकर डाउनलोड हो चुकी है!");
         closeConverterModal();
       } catch (err) {
-        console.error("PDF Converter Error:", err);
-        alert("PDF निर्माण में समस्या आई। कृपया फ़ोटो दोबारा चुनें।");
+        console.error("PDF Generate Error:", err);
+        alert("PDF बनाने में रुकावट आई। कृपया दोबारा प्रयास करें।");
       } finally {
         generatePdfBtn.disabled = false;
-        generatePdfBtn.innerText = "⚡ PDF डाउनलोड करें";
+        generatePdfBtn.innerText = `⚡ HD PDF डाउनलोड करें (${scannedPages.length} पेज)`;
       }
     });
   }
-
-  // =========================================================================
-  // 4. SMART TOOL: CAREER & EXAM ELIGIBILITY CHECKER
-  // =========================================================================
-  const openEligibilityBtn = document.getElementById('openEligibilityBtn');
-  const eligibilityModal = document.getElementById('eligibilityModal');
-  const closeEligibilityBtn = document.getElementById('closeEligibilityBtn');
-  const checkEligibilityBtn = document.getElementById('checkEligibilityBtn');
-  const elClass = document.getElementById('elClass');
-  const elStream = document.getElementById('elStream');
-  const eligibilityResultsBox = document.getElementById('eligibilityResultsBox');
-
-  if (openEligibilityBtn && eligibilityModal) {
-    openEligibilityBtn.addEventListener('click', () => {
-      eligibilityModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  }
-
-  function closeEligibilityModal() {
-    if (!eligibilityModal) return;
-    eligibilityModal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  if (closeEligibilityBtn) closeEligibilityBtn.addEventListener('click', closeEligibilityModal);
-  if (eligibilityModal) {
-    eligibilityModal.addEventListener('click', (e) => {
-      if (e.target === eligibilityModal) closeEligibilityModal();
-    });
-  }
-
-  if (checkEligibilityBtn) {
-    checkEligibilityBtn.addEventListener('click', function () {
-      const cls = elClass ? elClass.value : "11";
-      const stream = elStream ? elStream.value : "pcm";
-
-      let reportHtml = "";
-
-      if (cls === "10") {
-        reportHtml = `
-          <h4 style="color:var(--brand-accent); margin-bottom:6px;">🎯 कक्षा 10वीं के बाद प्रमुख विकल्प:</h4>
-          <p>• <strong>बिहार बोर्ड 11वीं साइंस (PCM/PCB):</strong> इंजीनियरिंग, मेडिकल या डिफेंस के लिए।</p>
-          <p>• <strong>पॉलिटेक्निक (DCECE):</strong> 3-वर्षीय डिप्लोमा इन इंजीनियरिंग।</p>
-          <p>• <strong>ITI कोर्सेज:</strong> तकनीकी ट्रेड्स में शीघ्र रोजगार हेतु।</p>
-          <p>• <strong>NTSE एवं ओलंपियाड्स:</strong> स्कॉलरशिप और राष्ट्रीय स्तर की पहचान।</p>
-        `;
-      } else {
-        if (stream === "pcm" || stream === "pcmb") {
-          reportHtml = `
-            <h4 style="color:var(--brand-accent); margin-bottom:6px;">🎯 PCM (गणित) के लिए राष्ट्रीय परीक्षाएं:</h4>
-            <p>• <strong>JEE Main & Advanced:</strong> IITs, NITs और शीर्ष इंजीनियरिंग कॉलेज।</p>
-            <p>• <strong>NDA (UPSC):</strong> भारतीय सेना, वायुसेना एवं नौसेना में राजपत्रित अधिकारी।</p>
-            <p>• <strong>BCECE (बिहार संयुक्त प्रवेश):</strong> राज्य के सरकारी इंजीनियरिंग कॉलेज।</p>
-            <p>• <strong>CUET UG:</strong> दिल्ली विश्वविद्यालय, BHU व शीर्ष सेंट्रल यूनिवर्सिटी।</p>
-          `;
-        } else if (stream === "pcb") {
-          reportHtml = `
-            <h4 style="color:var(--brand-accent); margin-bottom:6px;">🎯 PCB (बायोलॉजी) के लिए राष्ट्रीय परीक्षाएं:</h4>
-            <p>• <strong>NEET UG:</strong> MBBS, BDS, BAMS, BHMS सरकारी मेडिकल कॉलेज।</p>
-            <p>• <strong>B.Sc नर्सिंग / पैरामेडिकल:</strong> AIIMS एवं राज्य स्तरीय स्वास्थ्य विभाग।</p>
-            <p>• <strong>ICAR AIEEA:</strong> कृषि विज्ञान एवं फॉरेस्ट्री डिग्री कोर्सेज।</p>
-            <p>• <strong>CUET UG:</strong> बायोटेक्नोलॉजी, माइक्रोबायोलॉजी और लाइफ साइंसेज।</p>
-          `;
-        } else {
-          reportHtml = `
-            <h4 style="color:var(--brand-accent); margin-bottom:6px;">🎯 सामान्य व अन्य स्ट्रीम विकल्प:</h4>
-            <p>• <strong>CUET UG:</strong> आर्ट्स, कॉमर्स एवं सामान्य स्नातक कोर्सेज।</p>
-            <p>• <strong>CLAT:</strong> राष्ट्रीय लॉ यूनिवर्सिटीज (NLUs) में वकालत व कानून की पढ़ाई।</p>
-            <p>• <strong>NDA (आर्मी विंग):</strong> 12वीं के बाद डिफेंस सेवा।</p>
-          `;
-        }
-      }
-
-      if (eligibilityResultsBox) {
-        eligibilityResultsBox.innerHTML = reportHtml;
-      }
-    });
-  }
-
-});
