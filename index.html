@@ -22,7 +22,7 @@
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP NAVBAR (हेडर एकदम साफ़ और अन-क्लटर) -->
+  <!-- 1. TOP NAVBAR -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -53,11 +53,22 @@
       </div>
 
       <div class="nav-actions">
-        <!-- Logged-in User Widget -->
-        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: flex; cursor: pointer; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 10px; border-radius: 20px;">
+        <!-- 🟢 जब लॉगिन नहीं होगा तब सिर्फ यह दिखेगा -->
+        <button class="btn-auth-primary" id="headerAuthBtn" style="display: inline-flex; align-items: center; gap: 6px;">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Google लॉगिन</span>
+        </button>
+
+        <!-- 🔵 जब ईमेल से लॉगिन करेगा तब यह एक्टिव होगा और सिर्फ First Name दिखेगा -->
+        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none; cursor: pointer; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 10px; border-radius: 20px;">
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" style="width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #38bdf8;" />
           <div class="user-info-text" style="display: flex; flex-direction: column; text-align: left;">
-            <span class="user-display-name" id="userDisplayName" style="font-size: 0.8rem; font-weight: 700; color: #fff;">Prince</span>
+            <span class="user-display-name" id="userDisplayName" style="font-size: 0.8rem; font-weight: 700; color: #fff;">छात्र</span>
             <span class="user-session-badge" id="userSessionBadge" style="font-size: 0.7rem; color: #38bdf8;">Class 10th ▾</span>
           </div>
         </div>
@@ -76,7 +87,7 @@
       <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
     </div>
 
-    <!-- Dynamic User Drawer Card -->
+    <!-- Dynamic User Drawer Card (सिर्फ लॉगिन पर काम करेगा) -->
     <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="cursor: pointer; padding: 12px 16px; margin: 10px 14px; border-radius: 12px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2);">
       <p class="drawer-user-prompt" style="margin: 0; font-size: 0.84rem; color: #0284c7; font-weight: 700;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
@@ -135,7 +146,7 @@
     <section class="hero-studio-banner" style="background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18), transparent 55%), linear-gradient(180deg, #080f24 0%, #0c1633 100%) !important; border: 1.5px solid #1e3a8a !important; border-radius: 20px; padding: 26px 20px; margin-bottom: 24px;">
       <div class="hero-content">
         
-        <!-- Personalized User Welcome Box -->
+        <!-- Personalized User Welcome Box (लॉगिन करने पर अपने आप एक्टिव होगा) -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 16px;">
           <div style="font-size: 1.55rem; font-weight: 800; color: #ffffff !important; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span>! 🌟
@@ -145,7 +156,7 @@
             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
               <span style="color: #94a3b8;">चयनित:</span>
               <span style="color: #ffffff; font-weight: 700; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12);">
-                <span id="displayStudentClass">Class 11th</span> • <span id="displayStudentStream" style="color: #38bdf8;">PCM</span>
+                <span id="displayStudentClass">Class 10th</span> • <span id="displayStudentStream" style="color: #38bdf8;">PCM</span>
               </span>
               <button type="button" onclick="openProfileModal()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 3px 8px; font-size: 0.76rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
                 बदलें ⚙️
@@ -685,7 +696,7 @@
     </div>
   </footer>
 
-  <!-- Scripts: Live Clock, Profile Modal, Menu Control & Native Share -->
+  <!-- Scripts: Live Clock, Profile Modal, Menu Control, Native Share & Instant Auth Sync -->
   <script>
     // 🇮🇳 Live Indian Standard Time (IST) Clock
     function updateLiveIndiaClock() {
@@ -741,6 +752,45 @@
       }
     }
 
+    // ⚡ 100% सटीक लॉगिन सिंक (सिर्फ फर्स्ट नेम दिखेगा)
+    function syncUserAuthState(user) {
+      const authBtn = document.getElementById('headerAuthBtn');
+      const profileWidget = document.getElementById('userProfileWidget');
+      const welcomeCard = document.getElementById('personalizedWelcomeCard');
+      const userDisplay = document.getElementById('userDisplayName');
+      const welcomeDisplay = document.getElementById('welcomeUserName');
+      const userImg = document.getElementById('userAvatarImg');
+
+      if (user) {
+        // पूरा नाम से सिर्फ FIRST NAME निकालो
+        const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
+        const firstName = rawName.trim().split(' ')[0];
+
+        if (userDisplay) userDisplay.textContent = firstName;
+        if (welcomeDisplay) welcomeDisplay.textContent = firstName;
+        if (userImg) userImg.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
+
+        // लॉगिन बटन छुपाओ और प्रोफाइल कार्ड दिखाओ
+        if (authBtn) authBtn.style.display = 'none';
+        if (profileWidget) profileWidget.style.display = 'flex';
+        if (welcomeCard) welcomeCard.style.display = 'block';
+      } else {
+        // लॉगआउट होने पर सिर्फ लॉगिन बटन दिखेगा
+        if (authBtn) authBtn.style.display = 'inline-flex';
+        if (profileWidget) profileWidget.style.display = 'none';
+        if (welcomeCard) welcomeCard.style.display = 'none';
+      }
+    }
+
+    // Firebase Auth State Listener
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.firebase && firebase.auth) {
+        firebase.auth().onAuthStateChanged((user) => {
+          syncUserAuthState(user);
+        });
+      }
+    });
+
     // प्रोफ़ाइल मॉडल लॉजिक
     function openProfileModal() {
       const modal = document.getElementById('customProfileModal');
@@ -750,25 +800,15 @@
       const emailEl = document.getElementById('modalUserEmail');
       const imgEl = document.getElementById('modalUserImg');
 
-      const savedProfile = localStorage.getItem('nischay_user_profile');
-      let localName = 'छात्र';
-      if (savedProfile) {
-        try {
-          const parsed = JSON.parse(savedProfile);
-          if (parsed.name) localName = parsed.name;
-        } catch(e){}
-      }
-
       if (window.firebase && firebase.auth) {
         const user = firebase.auth().currentUser;
         if (user) {
-          if (nameEl) nameEl.textContent = user.displayName || localName;
+          const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
+          const firstName = rawName.trim().split(' ')[0];
+
+          if (nameEl) nameEl.textContent = firstName;
           if (emailEl) emailEl.textContent = user.email || 'Google Verified';
-          if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(user.displayName || localName) + '&background=0284c7&color=fff');
-        } else {
-          if (nameEl) nameEl.textContent = localName;
-          if (emailEl) emailEl.textContent = 'अतिथि छात्र (Guest)';
-          if (imgEl) imgEl.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(localName) + '&background=0284c7&color=fff';
+          if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
         }
       }
 
@@ -805,7 +845,7 @@
           closeProfileModal();
           window.location.reload();
         }
-      }, 1600);
+      }, 1400);
     }
   </script>
 
