@@ -13,8 +13,20 @@
   <!-- Simulator CSS -->
   <link rel="stylesheet" href="bseb-style.css" />
 
+  <!-- Firebase Modular Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <style>
-    /* स्क्रॉल और लेआउट फिक्स */
+    /* हेडर व लोगो फिक्स */
+    .app-header .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      gap: 8px;
+    }
     .brand-entity {
       display: flex;
       align-items: center;
@@ -47,7 +59,7 @@
       display: block;
     }
 
-    /* मोबाइल स्क्रॉलिंग अनिवार्यता */
+    /* OMR और फाइल स्क्रॉल फिक्स */
     .exam-right-pane {
       display: flex;
       flex-direction: column;
@@ -59,11 +71,6 @@
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
       padding: 10px 10px 80px 10px !important;
-    }
-    .omr-bubbles-scroll-area, .subj-upload-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
     }
   </style>
 </head>
@@ -86,6 +93,12 @@
         <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
           ☀️ लाइट मोड
         </button>
+        <div class="user-profile-widget" id="userProfileWidget" style="display: flex;">
+          <div class="user-avatar-img" id="userAvatarChar">?</div>
+          <div class="user-info-text">
+            <span class="user-display-name" id="simUserFirstName">लोडिंग...</span>
+          </div>
+        </div>
         <a href="index.html" class="btn-home-exit">🏠 होम</a>
       </div>
     </nav>
@@ -99,7 +112,7 @@
         <div class="sim-header-chip">
           <span class="pulsing-dot"></span> NischayDesk • 7-दिवसीय बिहार बोर्ड परीक्षा सिमुलेशन
         </div>
-        <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">सत्यापन एवं एडमिट कार्ड</span></h1>
+        <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">सत्यापन एवं डिजिटल एडमिट कार्ड</span></h1>
         <p class="sim-subtitle">
           असली बोर्ड परीक्षा के अनुसार 1 दिन में सिर्फ 1 परीक्षा होगी। सभी 6 परीक्षाएं समाप्त होने के बाद 7वें दिन सुबह 09:00 AM पर आधिकारिक परिणाम खुलेगा।
         </p>
@@ -107,50 +120,35 @@
         <form id="simVerificationForm" class="sim-entry-form" onsubmit="handleRegistrationSubmit(event)">
           <div class="sim-form-grid">
             <div class="sim-input-group">
-              <label for="regStudentName">परीक्षार्थी का पूरा नाम (Candidate Name) *</label>
-              <input type="text" id="regStudentName" class="sim-input" placeholder="उदा: PRINCE KUMAR" required />
+              <label>परीक्षार्थी का पूरा नाम (Candidate Name)</label>
+              <input type="text" id="regStudentName" class="sim-input" readonly />
             </div>
 
             <div class="sim-input-group">
-              <label for="regFatherName">पिता का नाम (Father's Name) *</label>
-              <input type="text" id="regFatherName" class="sim-input" placeholder="उदा: SURESH SHARMA" required />
-            </div>
-
-            <div class="sim-input-group full-width">
-              <label for="regSchoolName">विद्यालय / कॉलेज का नाम (School Name) *</label>
-              <input type="text" id="regSchoolName" class="sim-input" placeholder="उदा: HIGH SCHOOL TELWA, JHAJHA" required />
-            </div>
-
-            <div class="sim-input-group">
-              <label for="regExamDaySelect">आज की परीक्षा (Day Wise Subject) *</label>
+              <label>आज की परीक्षा (Day Wise Subject) *</label>
               <select id="regExamDaySelect" class="sim-select">
-                <option value="1" selected>Day 1: 101 - हिन्दी (M.I.L)</option>
-                <option value="2">Day 2: 105 - संस्कृत (S.I.L)</option>
-                <option value="3">Day 3: 110 - गणित (Mathematics)</option>
-                <option value="4">Day 4: 112 - विज्ञान (Science)</option>
-                <option value="5">Day 5: 113 - सामाजिक विज्ञान (Social Science)</option>
-                <option value="6">Day 6: 114 - अंग्रेजी (English)</option>
+                <!-- JS द्वारा ऑटो-अपडेट होगा [COMPLETED ✓] के साथ -->
               </select>
             </div>
           </div>
 
-          <div class="sim-ticket-preview" id="simTicketPreview" style="display: none;">
+          <!-- GENERATED CREDENTIALS TICKET -->
+          <div class="sim-ticket-preview" id="simTicketPreview">
             <div class="ticket-header">
-              <span>NISCHAYDESK OFFICIAL ADMIT CARD</span>
+              <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
               <span class="ticket-badge">VERIFIED</span>
             </div>
             <div class="ticket-grid">
               <div><small>Roll Code:</small> <strong id="outRollCode">-----</strong></div>
               <div><small>Roll Number:</small> <strong id="outRollNumber">--------</strong></div>
+              <div><small>Reg. No:</small> <strong id="outRegNo">--------------</strong></div>
               <div><small>Result Date:</small> <strong>7वां दिन (09:00 AM)</strong></div>
             </div>
+            <p class="ticket-warning">★ आपका रोल कोड और रोल नंबर हमेशा के लिए सुरक्षित कर दिया गया है। 7वें दिन इसी से परिणाम खुलेगा।</p>
           </div>
 
           <div class="sim-actions-group">
-            <button type="button" id="btnGenCredentials" class="btn-sim-secondary" onclick="generateCandidateCredentials()">
-              ⚡ रोल नंबर व एडमिट कार्ड जनरेट करें
-            </button>
-            <button type="submit" id="btnEnterExamHall" class="btn-sim-primary" disabled>
+            <button type="submit" id="btnEnterExamHall" class="btn-sim-primary">
               🏛️ परीक्षा कक्ष में प्रवेश करें (Enter Exam Hall) →
             </button>
           </div>
@@ -200,7 +198,6 @@
           <div class="pane-action-bar">
             <div class="pane-title">📄 प्रश्न पत्र (Full Preview)</div>
           </div>
-
           <div class="paper-iframe-wrapper">
             <iframe id="simPaperFrame" src="" frameborder="0" allowfullscreen></iframe>
           </div>
@@ -221,7 +218,7 @@
           <!-- OMR बबल्स -->
           <div class="exam-tab-content" id="tabContentOmr">
             <div class="omr-meta-strip">
-              <span>★ 100 में से किन्हीं 50 प्रश्नों के गोले रंगें</span>
+              <span>★ किन्हीं 50 प्रश्नों के गोले रंगें</span>
               <span>भरे गोले: <strong id="omrFilledCount">0</strong> / 50</span>
             </div>
             <div class="omr-bubbles-scroll-area" id="omrBubblesMatrix"></div>
@@ -230,7 +227,7 @@
           <!-- सब्जेक्टिव अपलोड -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
             <div class="subj-meta-strip">
-              <span>✍️ कॉपी पर उत्तर लिखें और संबंधित सेक्शन की साफ फोटो अपलोड करें।</span>
+              <span>✍️ कॉपी पर हाथ से उत्तर लिखें और साफ फोटो अपलोड करें।</span>
             </div>
 
             <div class="subj-upload-list">
@@ -267,115 +264,136 @@
 
   </main>
 
-  <!-- Scripts -->
+  <!-- Core Scripts -->
+  <script src="config.js"></script>
   <script src="bseb-papers.js"></script>
   <script src="bseb-engine.js"></script>
 
   <script>
+    let currentUser = null;
+    let cloudState = null;
     let activeDay = 1;
-    let currentSubjectKey = "101-hindi";
     let selectedImages = { gadyansh: [], nibandh: [], laghu: [], deergh: [] };
 
-    const daySubjectMap = {
-      1: "101-hindi",
-      2: "105-sanskrit",
-      3: "110-math",
-      4: "112-science",
-      5: "113-sst",
-      6: "114-english"
-    };
-
-    // रिफ्रेश रिकवरी: यदि छात्र पहले से हॉल में है, तो वहीं रखें
     document.addEventListener("DOMContentLoaded", () => {
-      const activeSession = localStorage.getItem("nischay_active_exam_session");
-      if (activeSession) {
-        const sess = JSON.parse(activeSession);
-        activeDay = sess.day;
-        startExamHallUI(sess.student, sess.day);
-      }
+      // 1. अनिवार्य लॉगिन गेट
+      requireAuthStudent(async (user) => {
+        currentUser = user;
+        cloudState = await getCloudExamState(user);
+        cloudState = await enforceCloudAbsence(user, cloudState);
+
+        // हेडर व प्रोफाइल अपडेट
+        document.getElementById("simUserFirstName").textContent = (user.displayName || "परीक्षार्थी").split(" ")[0];
+        document.getElementById("userAvatarChar").textContent = (user.displayName || "U").charAt(0).toUpperCase();
+
+        // एडमिट कार्ड डेटा
+        document.getElementById("regStudentName").value = cloudState.displayName;
+        document.getElementById("outRollCode").textContent = cloudState.rollCode;
+        document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
+        document.getElementById("outRegNo").textContent = cloudState.regNo;
+
+        // ड्रॉपडाउन में [COMPLETED ✓] अपडेट करना
+        updateSubjectDropdownStatus(cloudState);
+
+        // यदि छात्र पहले से किसी चालू परीक्षा में था (रिफ्रेश रिकवरी)
+        if (cloudState.activeSession) {
+          activeDay = cloudState.activeSession.day;
+          resumeExamHall(activeDay);
+        }
+      });
     });
 
-    function generateCandidateCredentials() {
-      const name = document.getElementById("regStudentName").value.trim();
-      const school = document.getElementById("regSchoolName").value.trim();
-      const father = document.getElementById("regFatherName").value.trim();
+    // ड्रॉपडाउन में COMPLETED का ठप्पा
+    function updateSubjectDropdownStatus(state) {
+      const selectEl = document.getElementById("regExamDaySelect");
+      const subjects = [
+        { day: 1, text: "Day 1: 101 - हिन्दी (M.I.L)" },
+        { day: 2, text: "Day 2: 105 - संस्कृत (S.I.L)" },
+        { day: 3, text: "Day 3: 110 - गणित (Mathematics)" },
+        { day: 4, text: "Day 4: 112 - विज्ञान (Science)" },
+        { day: 5, text: "Day 5: 113 - सामाजिक विज्ञान (Social Science)" },
+        { day: 6, text: "Day 6: 114 - अंग्रेजी (English)" }
+      ];
 
-      if (!name || !school) {
-        alert("कृपया पहले अपना नाम और विद्यालय का नाम भरें!");
-        return;
+      selectEl.innerHTML = "";
+      let firstPendingDay = null;
+
+      subjects.forEach(sub => {
+        const opt = document.createElement("option");
+        opt.value = sub.day;
+
+        const record = state.completedDays ? state.completedDays[sub.day] : null;
+
+        if (record && record.status === "COMPLETED") {
+          opt.textContent = `${sub.text} — [COMPLETED ✓]`;
+          opt.disabled = true;
+          opt.style.color = "#22c55e";
+        } else if (record && record.status === "ABSENT") {
+          opt.textContent = `${sub.text} — [ABSENT ❌]`;
+          opt.disabled = true;
+          opt.style.color = "#ef4444";
+        } else {
+          opt.textContent = `${sub.text} (उपलब्ध)`;
+          if (!firstPendingDay) firstPendingDay = sub.day;
+        }
+
+        selectEl.appendChild(opt);
+      });
+
+      if (firstPendingDay) {
+        selectEl.value = firstPendingDay;
       }
-
-      const rollCode = "33" + Math.floor(100 + Math.random() * 900);
-      const rollNumber = "2601" + Math.floor(1000 + Math.random() * 9000);
-      const regNo = "R-330" + Math.floor(10000000 + Math.random() * 90000000) + "-26";
-
-      document.getElementById("outRollCode").textContent = rollCode;
-      document.getElementById("outRollNumber").textContent = rollNumber;
-      document.getElementById("simTicketPreview").style.display = "block";
-      document.getElementById("btnEnterExamHall").disabled = false;
-      document.getElementById("btnGenCredentials").style.display = "none";
-
-      const sessionData = { name, fatherName: father, rollCode, rollNumber, regNo, school };
-      localStorage.setItem("nischay_student_session", JSON.stringify(sessionData));
     }
 
-    function handleRegistrationSubmit(event) {
+    async function handleRegistrationSubmit(event) {
       event.preventDefault();
-      const student = getStudentProfile();
-      if (!student) return;
-
       activeDay = parseInt(document.getElementById("regExamDaySelect").value, 10);
-      
-      // सक्रिय सेशन को सुरक्षित करें ताकि रिफ्रेश पर हटे नहीं
-      localStorage.setItem("nischay_active_exam_session", JSON.stringify({ student, day: activeDay }));
 
-      startExamHallUI(student, activeDay);
+      await updateCloudExamState(currentUser, {
+        activeSession: { day: activeDay, startedAt: new Date().toISOString() }
+      });
+
+      resumeExamHall(activeDay);
     }
 
-    function startExamHallUI(student, day) {
-      currentSubjectKey = daySubjectMap[day] || "101-hindi";
-      const paperData = BSEB_PAPERS_DATABASE[currentSubjectKey];
+    function resumeExamHall(day) {
+      const daySubjectMap = { 1: "101-hindi", 2: "105-sanskrit", 3: "110-math", 4: "112-science", 5: "113-sst", 6: "114-english" };
+      const paperKey = daySubjectMap[day] || "101-hindi";
+      const paperData = BSEB_PAPERS_DATABASE[paperKey];
 
-      document.getElementById("hallDisplayRoll").textContent = `${student.rollCode} - ${student.rollNumber}`;
+      document.getElementById("hallDisplayRoll").textContent = `${cloudState.rollCode} - ${cloudState.rollNumber}`;
       document.getElementById("hallDisplaySub").textContent = paperData.subjectName;
 
+      // Google Drive iframe
       document.getElementById("simPaperFrame").src = paperData.driveLink;
+
       renderOmrBubbles(paperData.subjectCode === "112" || paperData.subjectCode === "113" ? 80 : 100);
 
       document.getElementById("simVerificationStage").classList.remove("active");
       document.getElementById("simExamHallStage").classList.add("active");
 
-      // मोबाइल पर सीधे प्रश्न पत्र खोलें
       toggleMobileView('paper');
-
-      startExamTimer(day, confirmFinalExamSubmission);
+      runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
     }
 
     function renderOmrBubbles(totalQuestions) {
       const container = document.getElementById("omrBubblesMatrix");
       container.innerHTML = "";
-      const saved = getSavedBubbles(activeDay);
+      const saved = (cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : {};
 
       for (let i = 1; i <= totalQuestions; i++) {
         const row = document.createElement("div");
         row.className = "omr-row-item";
-
-        const qNum = document.createElement("span");
-        qNum.className = "omr-q-num";
-        qNum.textContent = `Q.${String(i).padStart(2, '0')}`;
-        row.appendChild(qNum);
+        row.innerHTML = `<span class="omr-q-num">Q.${String(i).padStart(2, '0')}</span>`;
 
         const optsGroup = document.createElement("div");
         optsGroup.className = "omr-options-group";
 
         ["A", "B", "C", "D"].forEach(opt => {
           const bubble = document.createElement("div");
-          bubble.className = "omr-bubble";
+          bubble.className = "omr-bubble" + (saved[i] === opt ? " filled" : "");
           bubble.textContent = opt;
           bubble.id = `bubble_${activeDay}_${i}_${opt}`;
-
-          if (saved[i] === opt) bubble.classList.add("filled");
-
           bubble.onclick = () => selectBubble(i, opt);
           optsGroup.appendChild(bubble);
         });
@@ -383,14 +401,12 @@
         row.appendChild(optsGroup);
         container.appendChild(row);
       }
-      updateOmrCounter();
+      document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
 
     function selectBubble(qNum, opt) {
-      const saved = getSavedBubbles(activeDay);
-      const currentlyFilled = Object.keys(saved).length;
-
-      if (!saved[qNum] && currentlyFilled >= 50) {
+      const saved = (cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : {};
+      if (!saved[qNum] && Object.keys(saved).length >= 50) {
         alert("⚠️ बिहार बोर्ड नियमानुसार अधिकतम 50 प्रश्नों का ही उत्तर दिया जा सकता है!");
         return;
       }
@@ -399,100 +415,68 @@
         const el = document.getElementById(`bubble_${activeDay}_${qNum}_${o}`);
         if (el) el.classList.remove("filled");
       });
+      document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`).classList.add("filled");
 
-      const target = document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`);
-      if (target) target.classList.add("filled");
-
-      saveBubbleChoice(qNum, opt, activeDay);
-      updateOmrCounter();
-    }
-
-    function updateOmrCounter() {
-      const saved = getSavedBubbles(activeDay);
+      syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
+      saved[qNum] = opt;
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
 
     function handleImageSelection(event, section) {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = (e) => {
         selectedImages[section] = [e.target.result];
-        const previewEl = document.getElementById(`preview${section.charAt(0).toUpperCase() + section.slice(1)}`);
-        if (previewEl) previewEl.textContent = `✓ ${file.name} (अपलोड हो गया)`;
+        document.getElementById(`preview${section.charAt(0).toUpperCase() + section.slice(1)}`).textContent = `✓ ${file.name} अपलोड हो गया`;
       };
       reader.readAsDataURL(file);
     }
 
     function switchExamTab(tab) {
-      const tabOmr = document.getElementById("tabContentOmr");
-      const tabSubj = document.getElementById("tabContentSubj");
-      const btnOmr = document.getElementById("tabBtnOmr");
-      const btnSubj = document.getElementById("tabBtnSubj");
-
-      if (tab === "omr") {
-        tabOmr.style.display = "block";
-        tabSubj.style.display = "none";
-        btnOmr.classList.add("active");
-        btnSubj.classList.remove("active");
-      } else {
-        tabOmr.style.display = "none";
-        tabSubj.style.display = "block";
-        btnOmr.classList.remove("active");
-        btnSubj.classList.add("active");
-      }
+      document.getElementById("tabContentOmr").style.display = tab === "omr" ? "block" : "none";
+      document.getElementById("tabContentSubj").style.display = tab === "subj" ? "block" : "none";
+      document.getElementById("tabBtnOmr").classList.toggle("active", tab === "omr");
+      document.getElementById("tabBtnSubj").classList.toggle("active", tab === "subj");
     }
 
     function toggleMobileView(view) {
-      const leftPane = document.getElementById("examLeftPane");
-      const rightPane = document.getElementById("examRightPane");
-      const btnPaper = document.getElementById("btnShowPaper");
-      const btnResp = document.getElementById("btnShowResponse");
-
-      if (view === "paper") {
-        leftPane.style.display = "flex";
-        rightPane.style.display = "none";
-        btnPaper.classList.add("active");
-        btnResp.classList.remove("active");
-      } else {
-        leftPane.style.display = "none";
-        rightPane.style.display = "flex";
-        btnPaper.classList.remove("active");
-        btnResp.classList.add("active");
-      }
+      document.getElementById("examLeftPane").style.display = view === "paper" ? "flex" : "none";
+      document.getElementById("examRightPane").style.display = view === "response" ? "flex" : "none";
+      document.getElementById("btnShowPaper").classList.toggle("active", view === "paper");
+      document.getElementById("btnShowResponse").classList.toggle("active", view === "response");
     }
 
     async function confirmFinalExamSubmission() {
-      if (!confirm("क्या आप आज की परीक्षा जमा करना चाहते हैं?")) return;
+      if (!confirm("क्या आप आज की परीक्षा फाइनल जमा करना चाहते हैं?")) return;
 
-      const paperData = BSEB_PAPERS_DATABASE[currentSubjectKey];
-      const submitBtn = document.querySelector(".btn-submit-board-exam");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "⏳ AI मूल्यांकन जारी...";
+      const daySubjectMap = { 1: "101-hindi", 2: "105-sanskrit", 3: "110-math", 4: "112-science", 5: "113-sst", 6: "114-english" };
+      const paperData = BSEB_PAPERS_DATABASE[daySubjectMap[activeDay]];
+      const btn = document.querySelector(".btn-submit-board-exam");
+      btn.disabled = true;
+      btn.textContent = "⏳ क्लाउड व AI मूल्यांकन...";
 
       try {
-        await submitDailyExam(
-          activeDay, 
-          paperData.subjectName, 
-          paperData.answerKey, 
+        await submitExamToCloud(
+          currentUser,
+          activeDay,
+          paperData.subjectName,
+          paperData.answerKey,
           [
             ...(selectedImages.gadyansh || []),
             ...(selectedImages.nibandh || []),
             ...(selectedImages.laghu || []),
             ...(selectedImages.deergh || [])
-          ]
+          ],
+          cloudState
         );
 
-        // एक्टिव परीक्षा सेशन साफ़ करें
-        localStorage.removeItem("nischay_active_exam_session");
-
-        alert(`✓ Day ${activeDay} की परीक्षा जमा हो चुकी है!\nपरिणाम 7वें दिन सुबह 09:00 AM पर खुलेगा।`);
-        location.href = "bseb-result.html";
+        alert(`✓ Day ${activeDay} (${paperData.subjectName}) की परीक्षा जमा हो गई!\n\nविषय पर [COMPLETED ✓] दर्ज हो गया है।`);
+        location.reload();
       } catch (err) {
-        alert("त्रुटि: " + err.message);
-        submitBtn.disabled = false;
-        submitBtn.textContent = "पुनः प्रयास करें";
+        alert("सबमिशन त्रुटि: " + err.message);
+        btn.disabled = false;
+        btn.textContent = "पुनः प्रयास करें";
       }
     }
   </script>
