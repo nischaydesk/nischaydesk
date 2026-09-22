@@ -247,18 +247,19 @@
             </div>
           </div>
 
+          <!-- डायनामिक एडमिट कार्ड (कोई हार्डकोडेड नंबर नहीं) -->
           <div class="sim-ticket-preview" id="simTicketPreview" style="display: block;">
             <div class="ticket-header">
               <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
               <span class="ticket-badge">VERIFIED</span>
             </div>
             <div class="ticket-grid">
-              <div><small>Roll Code:</small> <strong id="outRollCode">33193</strong></div>
-              <div><small>Roll Number:</small> <strong id="outRollNumber">26017186</strong></div>
-              <div><small>Class / Stream:</small> <strong id="outClassStream">10th Regular</strong></div>
+              <div><small>Roll Code:</small> <strong id="outRollCode">लोड हो रहा है...</strong></div>
+              <div><small>Roll Number:</small> <strong id="outRollNumber">लोड हो रहा है...</strong></div>
+              <div><small>Reg. No:</small> <strong id="outRegNo">लोड हो रहा है...</strong></div>
               <div><small>Result Date:</small> <strong>7वां दिन (09:00 AM)</strong></div>
             </div>
-            <p class="ticket-warning" id="ticketStatusMsg">★ आपका रोल कोड और रोल नंबर Gmail अकाउंट से सुरक्षित है।</p>
+            <p class="ticket-warning" id="ticketStatusMsg">★ आपका रोल कोड और रोल नंबर Gmail अकाउंट से स्थायी रूप से सुरक्षित है।</p>
           </div>
 
           <div class="sim-actions-group">
@@ -331,7 +332,6 @@
             <div class="omr-bubbles-scroll-area" id="omrBubblesMatrix"></div>
           </div>
 
-          <!-- विषय अनुसार डायनामिक सब्जेक्टिव अपलोड कंटेनर -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
             <div class="subj-meta-strip" style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px;">
               <span style="font-size: 0.82rem; color: #fff; line-height: 1.5; display: block;" id="subjGuidanceBanner">
@@ -339,7 +339,6 @@
               </span>
             </div>
 
-            <!-- यह पूरा ढांचा विषय के अनुसार डायनामिकली बनेगा -->
             <div class="subj-upload-list" id="dynamicSubjUploadList"></div>
           </div>
 
@@ -358,7 +357,7 @@
     let cloudState = null;
     let activeDay = 1;
     let selectedClass = "10th";
-    let selectedImages = {}; // डायनामिक ऑब्जेक्ट
+    let selectedImages = {};
 
     const CLASS_SUBJECTS_MAP = {
       "10th": [
@@ -391,7 +390,6 @@
       selectedClass = localStorage.getItem("nd_selected_class") || "10th";
       const classSelectEl = document.getElementById("regStudentClassSelect");
       if (classSelectEl) classSelectEl.value = selectedClass;
-      document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
 
       renderSubjectDropdownForClass(selectedClass, null);
 
@@ -423,11 +421,12 @@
                 if (cloudState.selectedClass) {
                   selectedClass = cloudState.selectedClass;
                   if (classSelectEl) classSelectEl.value = selectedClass;
-                  document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
                 }
 
+                // हर यूजर का अपना अनोखा रोल नंबर व रोल कोड स्क्रीन पर सेट करें
                 document.getElementById("outRollCode").textContent = cloudState.rollCode;
                 document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
+                document.getElementById("outRegNo").textContent = cloudState.regNo;
 
                 renderSubjectDropdownForClass(selectedClass, cloudState);
 
@@ -455,7 +454,6 @@
       const classSelectEl = document.getElementById("regStudentClassSelect");
       selectedClass = classSelectEl.value;
       localStorage.setItem("nd_selected_class", selectedClass);
-      document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
 
       if (currentUser && window.NischayConfig && window.NischayConfig.dbInstance) {
         window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
@@ -503,10 +501,16 @@
       toggleEnterButtonState();
     }
 
+    // 🚀 बटन को 100% एक्टिव करने वाला फंक्शन
     function toggleEnterButtonState() {
-      const isAgreed = document.getElementById("chkAgreeRules").checked;
+      const chk = document.getElementById("chkAgreeRules");
       const enterBtn = document.getElementById("btnEnterExamHall");
-      const chosenDay = parseInt(document.getElementById("regExamDaySelect").value, 10);
+      const selectEl = document.getElementById("regExamDaySelect");
+
+      if (!chk || !enterBtn) return;
+
+      const isAgreed = chk.checked;
+      const chosenDay = selectEl ? parseInt(selectEl.value, 10) : 1;
       const record = (cloudState && cloudState.completedDays) ? cloudState.completedDays[chosenDay] : null;
 
       if (record && record.status === "COMPLETED") {
@@ -557,7 +561,6 @@
       }).catch(e => console.log(e));
     }
 
-    // 🎯 विषय अनुसार डायनामिक अपलोड बॉक्स बनाना (गणित में ज्यादा पन्ने)
     function setupDynamicSubjectiveCards(subObj) {
       const container = document.getElementById("dynamicSubjUploadList");
       const guidance = document.getElementById("subjGuidanceBanner");
@@ -565,7 +568,6 @@
       selectedImages = {};
 
       if (subObj.type === "math") {
-        // गणित के लिए विस्तृत बॉक्स (लघु उत्तरीय 15 सवाल व दीर्घ उत्तरीय 4 सवाल)
         guidance.innerHTML = `📐 <strong>गणित उत्तर पुस्तिका निर्देश:</strong> गणित में स्टेप्स ज्यादा होते हैं। आप <strong>लघु उत्तरीय में अधिकतम 6 पन्ने</strong> और <strong>दीर्घ उत्तरीय में 6 पन्ने</strong> तक अपलोड कर सकते हैं।`;
         
         container.innerHTML = `
@@ -584,7 +586,6 @@
           </div>
         `;
       } else if (subObj.type === "language") {
-        // हिन्दी / संस्कृत / अंग्रेजी
         guidance.innerHTML = `✍️ <strong>भाषा उत्तर पुस्तिका निर्देश:</strong> गद्यांश, व्याकरण, निबंध व प्रश्नों के पन्ने संबंधित बॉक्स में अपलोड करें (अधिकतम 3-4 पन्ने प्रति सेक्शन)।`;
         
         container.innerHTML = `
@@ -610,7 +611,6 @@
           </div>
         `;
       } else {
-        // विज्ञान / सामाजिक विज्ञान
         guidance.innerHTML = `🔬 <strong>उत्तर पुस्तिका निर्देश:</strong> भौतिकी, रसायन, जीवविज्ञान या SST के लघु व दीर्घ उत्तरीय प्रश्नों के पन्ने अपलोड करें (अधिकतम 5 पन्ने प्रति सेक्शन)।`;
 
         container.innerHTML = `
@@ -755,9 +755,7 @@
       document.getElementById("btnShowResponse").classList.toggle("active", view === "response");
     }
 
-    // 🚀 सख्त वैलिडेशन और 1 सेकंड में सुपरफ़ास्ट सबमिशन
     async function confirmFinalExamSubmission() {
-      // 1. OMR प्रश्नों की संख्या जाँचे
       const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
                     ? cloudState.savedOMR[activeDay] : {};
       const omrCount = Object.keys(saved).length;
@@ -769,7 +767,6 @@
         return;
       }
 
-      // 2. सब्जेक्टिव पन्नों की संख्या जाँचे
       let totalImages = 0;
       for (const sec in selectedImages) {
         totalImages += (selectedImages[sec] ? selectedImages[sec].length : 0);
@@ -795,7 +792,6 @@
       }
 
       try {
-        // बिना AI हैंग के तुरंत 1 सेकंड में सबमिट
         await submitExamToCloud(
           currentUser,
           activeDay,
