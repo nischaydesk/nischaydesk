@@ -14,7 +14,7 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: false,
     totalPages: 23,
     // हिन्दी के 23-पेज वाले असली पेपर का लिंक यहाँ डालें
-    driveLink: "https://drive.google.com/file/d/यहाँ_हिन्दी_पेपर_की_DRIVE_ID_डालें/preview",
+    driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/view?usp=drivesdk/preview",
     answerKey: {
       1: "A", 2: "C", 3: "B", 4: "D", 5: "A",
       6: "B", 7: "D", 8: "C", 9: "A", 10: "B",
