@@ -1,5 +1,8 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (All Themes + Direct Access)
+   NischayDesk Complete Notes Controller (v5.0 Ultimate Pro)
+   Architected by: Prince Kumar (NischayDesk)
+   Features: Universal Dark/Light High Contrast, Fast Google Drive Previewer,
+             Dynamic Search & Seamless Class Sync
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -24,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (pdfFrameStage) {
     frameLoader = document.createElement('div');
     frameLoader.id = 'pdfInternalLoader';
-    frameLoader.style.cssText = 'position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(10,17,40,0.92); z-index:15; color:#38bdf8; font-family:inherit;';
+    frameLoader.style.cssText = 'position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(8,15,36,0.92); z-index:15; color:#38bdf8; font-family:inherit;';
     frameLoader.innerHTML = `
       <div style="width:40px; height:40px; border:3.5px solid rgba(56,189,248,0.2); border-top-color:#38bdf8; border-radius:50%; animation:spinDesk 0.75s linear infinite; margin-bottom:12px;"></div>
       <span style="font-size:0.88rem; font-weight:700; color:#ffffff;">नोट्स लोड हो रहे हैं...</span>
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (profile) {
         try {
           const parsed = JSON.parse(profile);
-          studentClass = parsed.studentClass;
+          studentClass = parsed.class || parsed.studentClass;
         } catch (e) {}
       }
       if (!studentClass) {
@@ -167,10 +170,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (filtered.length === 0) {
       notesCatalogGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; padding: 50px 20px; text-align: center; color: var(--text-secondary, #64748b);">
+        <div class="loading-state-box">
           <div style="font-size: 2.5rem; margin-bottom: 10px;">📋</div>
-          <h3 style="color: var(--text-pure, #0f172a); font-size: 1.1rem; margin-bottom: 6px; font-weight: 800;">कोई नोट्स नहीं मिले</h3>
-          <p style="font-size: 0.85rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
+          <h3 class="card-title" style="font-size: 1.15rem; margin-bottom: 6px;">कोई नोट्स नहीं मिले</h3>
+          <p class="card-desc">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
         </div>
       `;
       return;
@@ -189,39 +192,36 @@ document.addEventListener('DOMContentLoaded', function () {
         : `onclick="alert('PDF डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
       htmlBuffer += `
-        <div class="note-item-card" style="background: var(--surface-card, #ffffff); border: 1.5px solid var(--border-subtle, #e2e8f0); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm, 0 4px 12px rgba(0,0,0,0.06)); position: relative; overflow: hidden;">
-          
-          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3.5px; background: linear-gradient(90deg, #0284c7, #38bdf8);"></div>
-
+        <div class="note-item-card">
           <div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <span style="background: rgba(2, 132, 199, 0.1); color: #0284c7; font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 20px;">
+            <div class="note-badge-row">
+              <span class="note-badge-class">
                 ${note.subjectTitle}
               </span>
-              <span style="font-size: 0.72rem; color: var(--text-secondary, #64748b); font-weight: 700; background: var(--bg-surface-alt, #f1f5f9); padding: 3px 8px; border-radius: 6px;">
+              <span class="note-badge-pages">
                 📄 ${note.pages || 'हैंडनोट्स'}
               </span>
             </div>
 
             <div style="display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px;">
-              <div style="background: rgba(2, 132, 199, 0.12); color: #0284c7; min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;">
+              <div style="background: rgba(56, 189, 248, 0.14); color: var(--brand-accent); min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; border: 1px solid var(--border-subtle);">
                 ${note.no}
               </div>
-              <h3 style="font-size: 1rem; margin: 0; color: var(--text-pure, #0f172a); font-weight: 800; line-height: 1.4;">
+              <h3 style="font-size: 1rem; margin: 0; font-weight: 800; line-height: 1.4;">
                 ${note.name}
               </h3>
             </div>
 
-            <p style="font-size: 0.8rem; color: var(--text-secondary, #64748b); line-height: 1.5; margin: 0 0 16px; padding-left: 42px;">
+            <p class="note-desc" style="padding-left: 42px;">
               ${note.desc}
             </p>
           </div>
 
-          <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border-subtle, #f1f5f9);">
-            <button class="btn-read-note" ${readAction} style="flex: 1.3; background: #0284c7; color: #ffffff; border: none; padding: 10px; border-radius: 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <div class="note-btn-group" style="padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+            <button class="btn-read-note" ${readAction}>
               📖 <span>नोट्स पढ़ें</span>
             </button>
-            <button class="btn-download-note" ${downloadAction} style="flex: 1; background: var(--bg-surface-alt, #f8fafc); color: #0284c7; border: 1.5px solid var(--border-subtle, #cbd5e1); padding: 10px; border-radius: 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px;">
+            <button class="btn-download-note" ${downloadAction}>
               📥 <span>PDF</span>
             </button>
           </div>
