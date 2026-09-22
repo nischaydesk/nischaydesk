@@ -1,13 +1,15 @@
 /* ==========================================================================
-   NischayDesk - BSEB Simulator Clean Mobile-Responsive Layout
+   NischayDesk - BSEB Simulator Clean Mobile-Responsive Layout & Dual Theme
    ========================================================================== */
 
-/* 1. Reset & Global Box Model (ताकि कोई भी बॉक्स बाहर न भागे) */
+/* 1. Reset & Global Box Model */
 *, *::before, *::after {
   box-sizing: border-box !important;
 }
 
+/* 2. थीम वेरिएबल्स: डार्क (डिफ़ॉल्ट) और लाइट मोड */
 :root {
+  /* Dark Theme */
   --bseb-bg: #030712;
   --bseb-surface: #0b1329;
   --bseb-surface-card: #0f1c3f;
@@ -16,9 +18,28 @@
   --bseb-accent-dark: #0284c7;
   --bseb-text: #ffffff;
   --bseb-text-muted: #94a3b8;
+  --bseb-input-bg: #060d21;
+  --bseb-item-bg: #071026;
   --bseb-success: #22c55e;
   --bseb-danger: #ef4444;
   --bseb-warning: #f59e0b;
+}
+
+[data-theme="light"] {
+  /* Light Theme */
+  --bseb-bg: #f8fafc;
+  --bseb-surface: #ffffff;
+  --bseb-surface-card: #f1f5f9;
+  --bseb-border: #cbd5e1;
+  --bseb-accent: #0284c7;
+  --bseb-accent-dark: #0369a1;
+  --bseb-text: #0f172a;
+  --bseb-text-muted: #64748b;
+  --bseb-input-bg: #ffffff;
+  --bseb-item-bg: #f8fafc;
+  --bseb-success: #16a34a;
+  --bseb-danger: #dc2626;
+  --bseb-warning: #d97706;
 }
 
 body.bseb-simulator-body {
@@ -29,15 +50,18 @@ body.bseb-simulator-body {
   padding: 0;
   font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 2. Top Navbar Fix for Mobile */
+/* 3. Top Navbar & Theme Toggle Switch */
 .app-header .nav-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
   gap: 8px;
+  background: var(--bseb-surface);
+  border-bottom: 1px solid var(--bseb-border);
 }
 
 .brand-entity {
@@ -45,16 +69,28 @@ body.bseb-simulator-body {
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  color: var(--bseb-text);
+  font-weight: 800;
 }
 
-.user-profile-widget {
+.nav-controls-right {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(56, 189, 248, 0.1);
-  padding: 4px 8px;
+  gap: 8px;
+}
+
+.btn-theme-toggle {
+  background: var(--bseb-surface-card);
+  border: 1px solid var(--bseb-border);
+  color: var(--bseb-text);
+  padding: 6px 12px;
   border-radius: 20px;
-  border: 1px solid rgba(56, 189, 248, 0.25);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .btn-home-exit {
@@ -69,10 +105,10 @@ body.bseb-simulator-body {
   white-space: nowrap;
 }
 
-/* 3. Main Viewport & Card Box */
+/* 4. Main Viewport & Card Box */
 .sim-main-viewport {
   width: 100%;
-  max-width: 850px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 12px 14px 40px;
 }
@@ -97,7 +133,7 @@ body.bseb-simulator-body {
   border-radius: 16px;
   padding: 20px 16px;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .sim-header-chip {
@@ -125,7 +161,7 @@ body.bseb-simulator-body {
   font-size: 1.35rem;
   font-weight: 800;
   margin: 0 0 6px;
-  color: #ffffff;
+  color: var(--bseb-text);
   line-height: 1.3;
 }
 
@@ -140,7 +176,7 @@ body.bseb-simulator-body {
   margin: 0 0 18px;
 }
 
-/* 4. Form Controls Fix (बक्सा अब कभी बाहर नहीं भागेगा) */
+/* 5. Form Controls */
 .sim-entry-form {
   width: 100%;
 }
@@ -169,19 +205,16 @@ body.bseb-simulator-body {
 .sim-input,
 .sim-select {
   width: 100% !important;
-  max-width: 100% !important;
-  background: #060d21;
+  background: var(--bseb-input-bg);
   border: 1.5px solid var(--bseb-border);
   border-radius: 8px;
   padding: 12px 14px;
   font-size: 0.88rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--bseb-text);
   outline: none;
   font-family: inherit;
   transition: border-color 0.2s;
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 .sim-input:focus,
@@ -190,7 +223,7 @@ body.bseb-simulator-body {
   box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
 }
 
-/* 5. Buttons Group Fix */
+/* 6. Action Buttons */
 .sim-actions-group {
   display: flex;
   flex-direction: column;
@@ -232,75 +265,9 @@ body.bseb-simulator-body {
   color: var(--bseb-accent);
 }
 
-.sim-direct-search-box {
-  margin-top: 20px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 0.78rem;
-  color: var(--bseb-text-muted);
-  flex-wrap: wrap;
-  text-align: center;
-}
-
-.btn-link-search {
-  background: none;
-  border: none;
-  color: var(--bseb-accent);
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: underline;
-  padding: 0;
-  font-size: 0.78rem;
-}
-
-/* 6. Provisional Admit Card Preview */
-.sim-ticket-preview {
-  background: #071026;
-  border: 1.5px dashed var(--bseb-accent);
-  border-radius: 10px;
-  padding: 12px;
-  margin: 14px 0;
-  width: 100%;
-}
-
-.ticket-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-  margin-bottom: 8px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--bseb-accent);
-}
-
-.ticket-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  font-size: 0.78rem;
-}
-
-.ticket-grid div {
-  background: rgba(255, 255, 255, 0.04);
-  padding: 6px 8px;
-  border-radius: 6px;
-}
-
-.ticket-warning {
-  margin: 8px 0 0;
-  font-size: 0.72rem;
-  color: var(--bseb-warning);
-}
-
 /* 7. Exam Hall (Stage 2) Layout */
 .exam-command-bar {
-  background: #071026;
+  background: var(--bseb-item-bg);
   border: 1px solid var(--bseb-border);
   border-radius: 10px;
   padding: 8px 12px;
@@ -319,10 +286,11 @@ body.bseb-simulator-body {
   border-radius: 6px;
   font-size: 0.74rem;
   font-weight: 700;
+  color: var(--bseb-text);
 }
 
 .exam-engine-timer {
-  background: #030717;
+  background: var(--bseb-bg);
   border: 1px solid var(--bseb-border);
   padding: 4px 10px;
   border-radius: 20px;
@@ -343,6 +311,34 @@ body.bseb-simulator-body {
   cursor: pointer;
 }
 
+/* Mobile Toggle Bar: [ 📄 प्रश्न पत्र ] vs [ 🔴 OMR व उत्तर ] */
+.mobile-view-toggle-bar {
+  display: flex;
+  background: var(--bseb-item-bg);
+  border: 1px solid var(--bseb-border);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.btn-view-toggle {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: var(--bseb-text-muted);
+  font-weight: 800;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-view-toggle.active {
+  background: var(--bseb-accent);
+  color: #fff;
+}
+
 .exam-split-grid {
   display: flex;
   flex-direction: column;
@@ -351,6 +347,9 @@ body.bseb-simulator-body {
 }
 
 @media (min-width: 900px) {
+  .mobile-view-toggle-bar {
+    display: none; /* डेस्कटॉप पर दोनों एक साथ दिखेंगे */
+  }
   .exam-split-grid {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
@@ -366,7 +365,7 @@ body.bseb-simulator-body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  height: 460px;
+  height: 520px;
   width: 100%;
 }
 
@@ -379,7 +378,7 @@ body.bseb-simulator-body {
 
 .pane-action-bar,
 .pane-tab-switcher {
-  background: #071026;
+  background: var(--bseb-item-bg);
   padding: 8px 12px;
   border-bottom: 1px solid var(--bseb-border);
   display: flex;
@@ -400,7 +399,7 @@ body.bseb-simulator-body {
 }
 
 .tab-btn.active {
-  color: #fff;
+  color: var(--bseb-text);
   border-bottom-color: var(--bseb-accent);
 }
 
@@ -440,9 +439,10 @@ body.bseb-simulator-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #071026;
+  background: var(--bseb-item-bg);
   padding: 6px 10px;
   border-radius: 6px;
+  border: 1px solid var(--bseb-border);
 }
 
 .omr-q-num {
@@ -460,9 +460,9 @@ body.bseb-simulator-body {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1px solid var(--bseb-border);
-  background: #030717;
-  color: #fff;
+  border: 1.5px solid var(--bseb-border);
+  background: var(--bseb-bg);
+  color: var(--bseb-text);
   font-size: 0.72rem;
   font-weight: 800;
   display: flex;
@@ -473,31 +473,102 @@ body.bseb-simulator-body {
 
 .omr-bubble.filled {
   background: var(--bseb-accent-dark) !important;
+  color: #ffffff !important;
   border-color: var(--bseb-accent) !important;
 }
 
+/* 8. Subjective Section-Wise Upload Cards */
 .subj-card {
-  background: #071026;
+  background: var(--bseb-item-bg);
   border: 1px solid var(--bseb-border);
   border-radius: 8px;
   padding: 10px;
 }
 
+.subj-card h4 {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  color: var(--bseb-text);
+}
+
+.subj-card p {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  color: var(--bseb-text-muted);
+}
+
 .subj-file-picker-row {
   display: flex;
   gap: 6px;
-  margin-top: 6px;
 }
 
 .btn-scan-cam,
 .btn-scan-file {
   flex: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px dashed var(--bseb-border);
-  color: #fff;
-  padding: 6px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px dashed var(--bseb-accent);
+  color: var(--bseb-text);
+  padding: 8px;
   border-radius: 6px;
   font-size: 0.74rem;
   text-align: center;
   cursor: pointer;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   9. असली लाल गोल घेरे वाला परीक्षक बैज (Red Examiner Stamp on Answer Sheet)
+   ========================================================================== */
+.checked-sheet-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  border: 1.5px solid var(--bseb-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 12px;
+}
+
+.checked-sheet-container img {
+  width: 100%;
+  display: block;
+}
+
+.bseb-red-circle-stamp {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 80px;
+  height: 80px;
+  border: 3.5px solid #dc2626;
+  border-radius: 50%;
+  color: #dc2626;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-12deg);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+  user-select: none;
+}
+
+.stamp-marks-obtained {
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.stamp-divider {
+  width: 60%;
+  height: 2px;
+  background-color: #dc2626;
+  margin: 2px 0;
+}
+
+.stamp-max-marks {
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
 }
