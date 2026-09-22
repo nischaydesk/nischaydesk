@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BSEB Annual Examination Result Portal | NischayDesk</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Core Theme & Simulator Stylesheets -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="bseb-style.css" />
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="app-body bseb-simulator-body">
+
+  <!-- TOP APP HEADER -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <a href="index.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">Official Result Portal</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="bseb-simulator.html" class="btn-home-exit">🏛️ परीक्षा हॉल</a>
+        <a href="index.html" class="btn-home-exit">🏠 होम</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sim-main-viewport">
+
+    <!-- SEARCH & CAPTCHA VERIFICATION CARD -->
+    <section class="sim-card-box" id="resultSearchSection">
+      <div class="sim-header-chip">
+        <span class="pulsing-dot"></span> बिहार विद्यालय परीक्षा समिति • आधिकारिक परिणाम पोर्टल
+      </div>
+      <h1 class="sim-title">वार्षिक माध्यमिक परीक्षा <span class="gradient-text">परिणाम 2026</span></h1>
+      <p class="sim-subtitle">
+        अपना आधिकारिक परिणाम देखने के लिए प्रवेश पत्र (Admit Card) पर अंकित रोल कोड, रोल नंबर और सुरक्षा कोड (Captcha) दर्ज करें।
+      </p>
+
+      <form id="resultLookupForm" onsubmit="handleResultSearchSubmit(event)">
+        <div class="sim-form-grid">
+          <div class="sim-input-group">
+            <label for="searchRollCode">रोल कोड (Roll Code) *</label>
+            <input type="text" id="searchRollCode" class="sim-input" placeholder="5-अंकीय रोल कोड (उदा: 22021)" maxlength="5" pattern="[0-9]{5}" required />
+          </div>
+
+          <div class="sim-input-group">
+            <label for="searchRollNumber">रोल नंबर (Roll Number) *</label>
+            <input type="text" id="searchRollNumber" class="sim-input" placeholder="8-अंकीय रोल नंबर (उदा: 26004168)" maxlength="8" pattern="[0-9]{8}" required />
+          </div>
+
+          <!-- Mathematical Captcha Engine -->
+          <div class="sim-input-group full-width">
+            <label for="searchCaptchaInput">सुरक्षा कोड / कैप्चा (Security Captcha) *</label>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <div id="captchaChallengeBox" style="background: #030717; border: 1.5px dashed #38bdf8; padding: 10px 18px; border-radius: 8px; font-weight: 800; font-family: monospace; font-size: 1.1rem; color: #38bdf8; user-select: none; letter-spacing: 2px;">
+                18 + 14 = ?
+              </div>
+              <button type="button" class="btn-page-step" onclick="generateNewCaptcha()" style="height: 42px;">🔄 रीफ्रेश</button>
+              <input type="number" id="searchCaptchaInput" class="sim-input" placeholder="उत्तर यहाँ लिखें" style="flex: 1; min-width: 140px;" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-actions-group">
+          <button type="submit" id="btnSearchSubmit" class="btn-sim-primary">
+            🔍 परिणाम देखें (View Result)
+          </button>
+          <button type="reset" class="btn-sim-secondary" onclick="resetResultPortal()">
+            साफ़ करें (Reset)
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- STATUS 1: 9:00 AM COUNTDOWN TIME-LOCK BANNER -->
+    <section class="sim-card-box" id="resultPendingLockBox" style="display: none; border-color: #f59e0b; text-align: center;">
+      <div style="font-size: 3rem; margin-bottom: 10px;">⏳</div>
+      <h2 style="color: #f59e0b; font-size: 1.4rem; margin: 0 0 10px;">उत्तर पुस्तिका का आधिकारिक मूल्यांकन जारी है!</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; max-width: 600px; margin: 0 auto 16px;">
+        बिहार बोर्ड परीक्षा सिमुलेशन नियमों के तहत निष्पक्ष मूल्यांकन हेतु आपका परिणाम परीक्षा तिथि के <strong>अगले दिन सुबह 09:00 AM</strong> पर घोषित किया जाएगा।
+      </p>
+      
+      <div style="display: inline-flex; align-items: center; gap: 10px; background: #030717; border: 1.5px solid #f59e0b; padding: 12px 24px; border-radius: 30px;">
+        <span style="color: #f59e0b; font-weight: 700; font-size: 0.85rem;">परिणाम प्रकाशन में शेष समय:</span>
+        <span id="lockCountdownDigits" style="color: #ffffff; font-family: monospace; font-size: 1.3rem; font-weight: 900; letter-spacing: 1px;">14:32:10</span>
+      </div>
+      <p style="font-size: 0.76rem; color: #64748b; margin-top: 14px;">(कृपया कल सुबह 9:00 बजे इसी रोल कोड और रोल नंबर से दोबारा लॉगिन करें)</p>
+    </section>
+
+    <!-- STATUS 2: THE OFFICIAL BIHAR BOARD MARKS MEMO (ACTIVE ON SUCCESS) -->
+    <section id="marksSheetDisplaySection" style="display: none; margin-top: 24px;">
+      
+      <div class="bseb-marks-memo-paper" id="bsebMarksSheetMemo">
+        
+        <!-- NISCHAYDESK OFFICIAL WATERMARK -->
+        <div class="memo-watermark-stamp">NISCHAYDESK WEB COPY</div>
+
+        <!-- MEMO OFFICIAL HEADER -->
+        <div class="memo-official-header">
+          <div class="bseb-emblem-seal">
+            <svg viewBox="0 0 100 100" class="seal-svg" width="72" height="72">
+              <circle cx="50" cy="50" r="46" fill="#0b1739" stroke="#38bdf8" stroke-width="3.5"/>
+              <circle cx="50" cy="50" r="38" fill="#0284c7" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="50" y="44" font-size="14" font-weight="900" fill="#ffffff" text-anchor="middle" font-family="Plus Jakarta Sans">N</text>
+              <text x="50" y="60" font-size="7.5" font-weight="800" fill="#fde047" text-anchor="middle" letter-spacing="0.5">NISCHAYDESK</text>
+            </svg>
+          </div>
+          <div class="memo-title-group">
+            <h2>Bihar School Examination Board</h2>
+            <h3>RESULT</h3>
+            <h4>ANNUAL SECONDARY EXAMINATION - 2026</h4>
+          </div>
+        </div>
+
+        <!-- CANDIDATE PROFILE TABLE -->
+        <table class="memo-info-table">
+          <tr>
+            <td class="info-label">BSEB Unique Id</td>
+            <td class="info-val" id="resUniqueId">--</td>
+          </tr>
+          <tr>
+            <td class="info-label">Student Name</td>
+            <td class="info-val" id="resStudentName">--</td>
+          </tr>
+          <tr>
+            <td class="info-label">Father's Name</td>
+            <td class="info-val" id="resFatherName">--</td>
+          </tr>
+          <tr>
+            <td class="info-label">School Name</td>
+            <td class="info-val" id="resSchoolName">--</td>
+          </tr>
+          <tr>
+            <td class="info-label">Roll Code</td>
+            <td class="info-val" id="resRollCode">--</td>
+          </tr>
+          <tr>
+            <td class="info-label">Roll Number</td>
+            <td class="info-val" id="resRollNumber">--</td>
+          </tr>
+          <tr>
+            <td class="info-label">Registration Number</td>
+            <td class="info-val" id="resRegNumber">--</td>
+          </tr>
+        </table>
+
+        <!-- MARKS DETAILS TABLE -->
+        <div class="memo-section-bar">Marks Details</div>
+        <table class="memo-marks-table">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>F.Marks</th>
+              <th>P.Marks</th>
+              <th>Theory</th>
+              <th>INT/PRAC</th>
+              <th>Regulation</th>
+              <th>Subject Total</th>
+            </tr>
+          </thead>
+          <tbody id="resMarksTableBody">
+            <!-- Dynamically Rendered Subjects based on Exam Completed -->
+            <tr>
+              <td class="sub-name">M.I.L. HINDI</td>
+              <td>100</td>
+              <td>030</td>
+              <td id="rHindiTh">--</td>
+              <td>-</td>
+              <td>-</td>
+              <td class="sub-tot" id="rHindiTot">--</td>
+            </tr>
+            <tr>
+              <td class="sub-name">S.I.L. SANSKRIT</td>
+              <td>100</td>
+              <td>030</td>
+              <td id="rSansTh">--</td>
+              <td>-</td>
+              <td>-</td>
+              <td class="sub-tot" id="rSansTot">--</td>
+            </tr>
+            <tr>
+              <td class="sub-name">MATHEMATICS</td>
+              <td>100</td>
+              <td>030</td>
+              <td id="rMathTh">--</td>
+              <td>-</td>
+              <td>-</td>
+              <td class="sub-tot" id="rMathTot">--</td>
+            </tr>
+            <tr>
+              <td class="sub-name">SOCIAL SCIENCE</td>
+              <td>100</td>
+              <td>030</td>
+              <td id="rSstTh">--</td>
+              <td id="rSstPr">--</td>
+              <td>-</td>
+              <td class="sub-tot" id="rSstTot">--</td>
+            </tr>
+            <tr>
+              <td class="sub-name">SCIENCE</td>
+              <td>100</td>
+              <td>030</td>
+              <td id="rSciTh">--</td>
+              <td id="rSciPr">--</td>
+              <td>-</td>
+              <td class="sub-tot" id="rSciTot">--</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- FINAL SUMMARY DIVISION STRIP -->
+        <table class="memo-final-strip">
+          <tr>
+            <td class="final-lbl">Result/Division</td>
+            <td class="final-val division" id="resDivisionStatus">--</td>
+            <td class="final-lbl">Total Marks</td>
+            <td class="final-val total" id="resTotalMarks">--</td>
+          </tr>
+        </table>
+
+        <!-- EXTRA / NON-CREDIT SUBJECT -->
+        <table class="memo-marks-table" style="margin-top: 10px;">
+          <tr>
+            <td class="sub-name" style="width: 28%;">ENGLISH</td>
+            <td style="width: 12%;">100</td>
+            <td style="width: 12%;">030</td>
+            <td id="rEngTh" style="width: 12%;">--</td>
+            <td style="width: 12%;">-</td>
+            <td style="width: 12%;">-</td>
+            <td class="sub-tot" id="rEngTot" style="width: 12%;">--</td>
+          </tr>
+        </table>
+
+        <!-- DISCLAIMER BOX -->
+        <div class="memo-disclaimer-box">
+          <p><strong>Abbreviations used:</strong> • F -> Fail • C -> Compartmental • U/R -> Under Regulation • ABS -> Absent • INT -> Internal • PRAC -> Practical</p>
+          <p>1. Bihar School Examination Board is not responsible for any inadvertent error that may have crept into the results being published on NET.</p>
+          <p>2. This is a computer-generated NISCHAYDESK WEB COPY meant for immediate exam simulation verification.</p>
+        </div>
+
+        <div class="memo-print-actions">
+          <button type="button" class="btn-print-memo" onclick="window.print()">🖨️ मार्कशीट प्रिंट करें / PDF डाउनलोड</button>
+          <button type="button" class="btn-new-exam" onclick="location.href='bseb-simulator.html'">🏛️ परीक्षा हॉल में जाएँ</button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Dynamic Result & Captcha Controller Script -->
+  <script>
+    let expectedCaptchaSum = 0;
+    let lockTimerInterval = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      generateNewCaptcha();
+      // Auto-fill from query params if available (e.g. ?code=22021&roll=26004168)
+      const urlParams = new URLSearchParams(window.location.search);
+      const qCode = urlParams.get('code');
+      const qRoll = urlParams.get('roll');
+      if (qCode) document.getElementById('searchRollCode').value = qCode;
+      if (qRoll) document.getElementById('searchRollNumber').value = qRoll;
+    });
+
+    // 1. DYNAMIC MATHEMATICAL CAPTCHA
+    function generateNewCaptcha() {
+      const num1 = Math.floor(10 + Math.random() * 40);
+      const num2 = Math.floor(1 + Math.random() * 20);
+      expectedCaptchaSum = num1 + num2;
+      document.getElementById('captchaChallengeBox').textContent = `${num1} + ${num2} = ?`;
+      document.getElementById('searchCaptchaInput').value = '';
+    }
+
+    // 2. RESULT SEARCH SUBMIT CONTROLLER
+    function handleResultSearchSubmit(event) {
+      event.preventDefault();
+
+      const rollCode = document.getElementById('searchRollCode').value.trim();
+      const rollNumber = document.getElementById('searchRollNumber').value.trim();
+      const userCaptcha = parseInt(document.getElementById('searchCaptchaInput').value.trim());
+
+      // Validate Captcha
+      if (userCaptcha !== expectedCaptchaSum) {
+        alert('❌ अमान्य सुरक्षा कोड (Incorrect Captcha)! कृपया जोड़ का सही उत्तर भरें।');
+        generateNewCaptcha();
+        return;
+      }
+
+      // Query LocalStorage first (with cloud fallback)
+      const dbKey = `bseb_res_${rollCode}_${rollNumber}`;
+      const cachedData = localStorage.getItem(dbKey);
+
+      if (!cachedData) {
+        alert('❌ इस रोल कोड और रोल नंबर का कोई परीक्षा रिकॉर्ड नहीं मिला!\n\nकृपया रोल कोड और रोल नंबर की पुनः जाँच करें।');
+        generateNewCaptcha();
+        return;
+      }
+
+      try {
+        const studentRecord = JSON.parse(cachedData);
+        evaluateResultUnlockTiming(studentRecord);
+      } catch (err) {
+        alert('❌ डेटा पार्स करने में समस्या आई।');
+      }
+    }
+
+    // 3. 9:00 AM STRICT UNLOCK LOGIC
+    function evaluateResultUnlockTiming(data) {
+      const lockBox = document.getElementById('resultPendingLockBox');
+      const memoSection = document.getElementById('marksSheetDisplaySection');
+
+      // Check unlock timestamp
+      const examTime = data.timestamp ? new Date(data.timestamp).getTime() : Date.now();
+      // Target is next morning 9:00 AM (at least 12 hours from submit or explicitly next day 9:00 AM)
+      const unlockTarget = data.unlockAt ? new Date(data.unlockAt).getTime() : (examTime + 1000 * 60 * 60 * 12);
+      const currentTime = Date.now();
+
+      if (currentTime < unlockTarget) {
+        // STILL LOCKED: Show countdown to 9:00 AM
+        memoSection.style.display = 'none';
+        lockBox.style.display = 'block';
+        startLockCountdown(unlockTarget);
+        window.scrollTo({ top: lockBox.offsetTop - 20, behavior: 'smooth' });
+      } else {
+        // UNLOCKED: Show Official Marks Memo
+        if (lockTimerInterval) clearInterval(lockTimerInterval);
+        lockBox.style.display = 'none';
+        memoSection.style.display = 'block';
+        populateMemoPaper(data);
+        window.scrollTo({ top: memoSection.offsetTop - 20, behavior: 'smooth' });
+      }
+    }
+
+    function startLockCountdown(targetTimestamp) {
+      if (lockTimerInterval) clearInterval(lockTimerInterval);
+      const digitsEl = document.getElementById('lockCountdownDigits');
+
+      function update() {
+        const diff = targetTimestamp - Date.now();
+        if (diff <= 0) {
+          clearInterval(lockTimerInterval);
+          location.reload();
+          return;
+        }
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+        digitsEl.textContent = `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+      update();
+      lockTimerInterval = setInterval(update, 1000);
+    }
+
+    // 4. POPULATE MARKS MEMO
+    function populateMemoPaper(record) {
+      document.getElementById('resUniqueId').textContent = record.uniqueId || '126713009452';
+      document.getElementById('resStudentName').textContent = record.name || '--';
+      document.getElementById('resFatherName').textContent = record.fatherName || '--';
+      document.getElementById('resSchoolName').textContent = record.schoolName || '--';
+      document.getElementById('resRollCode').textContent = record.rollCode || '--';
+      document.getElementById('resRollNumber').textContent = record.rollNumber || '--';
+      document.getElementById('resRegNumber').textContent = record.regNumber || '--';
+
+      // Fill Subject Specific Scores
+      const sub = record.subjectCode || '110-math';
+      const thScore = record.theoryMarks || 0;
+
+      // Reset all to '--'
+      ['rHindi', 'rSans', 'rMath', 'rSst', 'rSci', 'rEng'].forEach(prefix => {
+        const thEl = document.getElementById(`${prefix}Th`);
+        const totEl = document.getElementById(`${prefix}Tot`);
+        if (thEl) thEl.textContent = '--';
+        if (totEl) totEl.textContent = '--';
+      });
+
+      // Populate completed subject
+      if (sub.includes('math')) {
+        document.getElementById('rMathTh').textContent = String(thScore).padStart(3, '0');
+        document.getElementById('rMathTot').textContent = String(thScore).padStart(3, '0');
+      } else if (sub.includes('hindi')) {
+        document.getElementById('rHindiTh').textContent = String(thScore).padStart(3, '0');
+        document.getElementById('rHindiTot').textContent = String(thScore).padStart(3, '0');
+      } else if (sub.includes('science')) {
+        document.getElementById('rSciTh').textContent = String(thScore).padStart(3, '0');
+        document.getElementById('rSciPr').textContent = '018';
+        document.getElementById('rSciTot').textContent = String(thScore + 18).padStart(3, '0');
+      } else if (sub.includes('sst')) {
+        document.getElementById('rSstTh').textContent = String(thScore).padStart(3, '0');
+        document.getElementById('rSstPr').textContent = '019';
+        document.getElementById('rSstTot').textContent = String(thScore + 19).padStart(3, '0');
+      }
+
+      // Total and Status
+      document.getElementById('resTotalMarks').textContent = `${thScore} (Single Subject Completed)`;
+      const divEl = document.getElementById('resDivisionStatus');
+      if (thScore >= 30) {
+        divEl.textContent = 'PASSED (INCOMPLETE MATRIX)';
+        divEl.style.color = '#15803d';
+      } else {
+        divEl.textContent = 'NEEDS IMPROVEMENT';
+        divEl.style.color = '#dc2626';
+      }
+    }
+
+    function resetResultPortal() {
+      document.getElementById('resultPendingLockBox').style.display = 'none';
+      document.getElementById('marksSheetDisplaySection').style.display = 'none';
+      generateNewCaptcha();
+    }
+  </script>
+</body>
+</html>
