@@ -20,6 +20,17 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    .class-active-badge {
+      color: #ffffff;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.15);
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+  </style>
 </head>
 <body class="app-body">
 
@@ -153,7 +164,7 @@
     <section class="hero-studio-banner" style="padding-top: 24px; padding-bottom: 24px;">
       <div class="hero-content">
         
-        <!-- Clean Personalized User Welcome Strip (First Name & Class Only) -->
+        <!-- Personalized User Welcome Strip -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
           <div style="font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span> 👋
@@ -161,7 +172,7 @@
 
           <div id="welcomeUserMeta" style="display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.82rem;">
             <span style="color: #94a3b8;">कक्षा:</span>
-            <span style="color: #ffffff; font-weight: 700; background: rgba(56, 189, 248, 0.15); padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3);">
+            <span class="class-active-badge">
               <span id="displayStudentClass">Class 10th</span>
             </span>
             <button type="button" onclick="openProfileModal()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 2px 8px; font-size: 0.74rem; font-weight: 700; cursor: pointer;">
@@ -220,7 +231,7 @@
       </div>
     </section>
 
-    <!-- NEW: PROMINENT BSEB EXAM SIMULATOR CALLOUT BANNER -->
+    <!-- PROMINENT BSEB EXAM SIMULATOR CALLOUT BANNER -->
     <section class="dashboard-section" style="margin-top: 10px;">
       <div class="grid-card" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(11, 21, 45, 0.9)); border: 2px solid #38bdf8; border-radius: 16px; padding: 22px;">
         <div class="card-head">
@@ -229,7 +240,7 @@
         </div>
         <h3 class="card-title" style="font-size: 1.35rem; margin: 10px 0 6px;">🏛️ 3 घंटे 15 मिनट रियल बोर्ड परीक्षा सिमुलेशन</h3>
         <p class="card-desc" style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1;">
-          असली बोर्ड प्रश्न पत्र (Google Drive Viewer), 50-OMR बबल शीट, और हाथ से लिखी उत्तर पुस्तिका की स्कैनिंग। परीक्षा सबमिट होने के बाद निष्पक्ष मूल्यांकन होकर अगले दिन सुबह 9:00 बजे आधिकारिक वेब-कॉपी मार्कशीट प्राप्त करें।
+          असली बोर्ड प्रश्न पत्र (Google Drive Viewer), 50-OMR बबल शीट, और हाथ से लिखी उत्तर पुस्तिका की स्कैनिंग। परीक्षा सबमिट होने के बाद निष्पक्ष मूल्यांकन होकर 7वें दिन सुबह 9:00 बजे आधिकारिक वेब-कॉपी मार्कशीट प्राप्त करें।
         </p>
         <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
           <a href="bseb-simulator.html" class="btn-cta-primary" style="padding: 10px 20px; font-size: 0.88rem; text-decoration: none;">
@@ -239,54 +250,6 @@
             🔍 रिजल्ट चेक करें (Captcha Gate)
           </a>
         </div>
-      </div>
-    </section>
-
-    <!-- INTERACTIVE QUICK SUBJECT MATRIX -->
-    <section class="dashboard-section" id="subjectMatrixSection">
-      <div class="section-title-wrap">
-        <div>
-          <h2 class="section-headline">⚡ त्वरित विषय हब (Quick Subject Hub)</h2>
-          <p class="section-subheadline">सीधे अपने पसंदीदा विषय के नोट्स, फॉर्मूला शीट व टेस्ट में प्रवेश करें</p>
-        </div>
-      </div>
-
-      <div class="quick-tools-grid">
-        <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #38bdf8;">
-          <div class="tool-icon-box" style="color: #38bdf8;">📐</div>
-          <h4>गणित (Mathematics)</h4>
-          <p>फॉर्मूला शीट, प्रमेय व हल पेपर्स</p>
-        </a>
-
-        <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #60a5fa;">
-          <div class="tool-icon-box" style="color: #60a5fa;">⚡</div>
-          <h4>भौतिकी (Physics)</h4>
-          <p>डेरिवेशन्स, न्यूमेरिकल ट्रिक्स व नोट्स</p>
-        </a>
-
-        <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #34d399;">
-          <div class="tool-icon-box" style="color: #34d399;">🧪</div>
-          <h4>रसायन (Chemistry)</h4>
-          <p>रिएक्शन चार्ट व समीकरण नोट्स</p>
-        </a>
-
-        <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #f472b6;">
-          <div class="tool-icon-box" style="color: #f472b6;">🧬</div>
-          <h4>जीव विज्ञान (Biology)</h4>
-          <p>सचित्र डायग्राम्स व महत्वपूर्ण प्रश्न</p>
-        </a>
-
-        <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #fbbf24;">
-          <div class="tool-icon-box" style="color: #fbbf24;">🌍</div>
-          <h4>सामाजिक विज्ञान (SST)</h4>
-          <p>इतिहास, भूगोल, अर्थशास्त्र व नागरिक शास्त्र</p>
-        </a>
-
-        <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #c084fc;">
-          <div class="tool-icon-box" style="color: #c084fc;">📜</div>
-          <h4>भाषा (Hindi / Sanskrit)</h4>
-          <p>व्याकरण, पाठ सारांश व मॉडल सेट्स</p>
-        </a>
       </div>
     </section>
 
@@ -307,8 +270,8 @@
       </div>
     </section>
 
-    <!-- CLASS 10TH MATRIC SECTION -->
-    <section class="dashboard-section" id="sectionClass10">
+    <!-- CLASS 10TH MATRIC SECTION (डेटा फ़िल्टर टैग: data-class="10th") -->
+    <section class="dashboard-section" id="sectionClass10" data-class="10th">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">कक्षा 10वीं (मैट्रिक) सम्पूर्ण अध्ययन हब</h2>
@@ -357,48 +320,12 @@
       </div>
     </section>
 
-    <!-- QUESTION BANK & MODEL PAPER SECTION -->
-    <section class="dashboard-section" id="sectionPyqModel">
-      <div class="section-title-wrap">
-        <div>
-          <h2 class="section-headline">📖 क्वेश्चन बैंक (PYQ) एवं ऑफिशियल मॉडल पेपर हब</h2>
-          <p class="section-subheadline">बिहार बोर्ड परीक्षा में पूछे गए पिछले वर्षों के प्रश्न पत्र हल सहित</p>
-        </div>
-      </div>
-
-      <div class="dashboard-grid-cards">
-        <div class="grid-card" style="border: 1.5px solid #0284c7; background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(15, 23, 42, 0.6));">
-          <div class="card-head">
-            <span class="card-tag" style="background:#0284c7; color:#fff;">2020 - 2024 रियल पेपर्स</span>
-            <a href="pyq.html" class="card-action-link" style="color:#38bdf8; font-weight:700;">क्वेश्चन बैंक खोलें &rarr;</a>
-          </div>
-          <h3 class="card-title" style="font-size:1.2rem;">📖 10th मैट्रिक क्वेश्चन बैंक (हल सहित)</h3>
-          <p class="card-desc">पिछले 5 वर्षों के दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र।</p>
-          <div style="margin-top: auto; display:flex; gap:10px; flex-wrap:wrap; padding-top:10px;">
-            <a href="pyq.html" class="btn-start-test-sm" style="text-decoration:none; background:#0284c7; color:#fff;">➔ क्वेश्चन बैंक सॉल्व करें</a>
-          </div>
-        </div>
-
-        <div class="grid-card" style="border: 1.5px solid #10b981; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.6));">
-          <div class="card-head">
-            <span class="card-tag" style="background:#10b981; color:#fff;">BSEB ऑफिशियल सेट्स</span>
-            <a href="model-paper.html" class="card-action-link" style="color:#34d399; font-weight:700;">मॉडल पेपर खोलें &rarr;</a>
-          </div>
-          <h3 class="card-title" style="font-size:1.2rem;">📝 BSEB ऑफिशियल मॉडल पेपर</h3>
-          <p class="card-desc">बिहार विद्यालय परीक्षा समिति द्वारा जारी किए गए नवीनतम आधिकारिक मॉडल सेट्स।</p>
-          <div style="margin-top: auto; display:flex; gap:10px; flex-wrap:wrap; padding-top:10px;">
-            <a href="model-paper.html" class="btn-start-test-sm" style="text-decoration:none; background:#10b981; color:#fff;">➔ मॉडल पेपर्स देखें</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CLASS 11TH SCIENCE SECTION -->
-    <section class="dashboard-section" id="sectionClass11">
+    <!-- CLASS 11TH SCIENCE SECTION (डेटा फ़िल्टर टैग: data-class="11th") -->
+    <section class="dashboard-section" id="sectionClass11" data-class="11th">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">कक्षा 11वीं साइंस हब (NCERT & फाउंडेशन)</h2>
-          <p class="section-subheadline">भौतिकी, रसायन विज्ञान, गणित एवं जीव विज्ञान</p>
+          <p class="section-subheadline">भौतिकी, रसायन विज्ञान, गणित एवं जीव विज्ञान (PCMB)</p>
         </div>
         <a href="notes.html" class="realtime-indicator" style="text-decoration:none;">11th हब खोलें &rarr;</a>
       </div>
@@ -410,7 +337,13 @@
             <a href="syllabus.html" class="card-action-link">सिलेबस &rarr;</a>
           </div>
           <h3 class="card-title">गहन कॉन्सेप्ट्स, डेरिवेशन्स व फॉर्मूला</h3>
-          <p class="card-desc">मात्रक एवं मापन, गति के नियम, मोल संकल्पना, जगत मोनेरा के संपूर्ण नोट्स।</p>
+          <p class="card-desc">मात्रक एवं मापन, गति के नियम, मोल संकल्पना, थर्मोडायनामिक्स, सेल बायोलॉजी के संपूर्ण नोट्स।</p>
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding: 6px 0;">
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">⚡ भौतिकी</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🧪 रसायन</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">📐 गणित</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🧬 जीव विज्ञान</a>
+          </div>
         </div>
 
         <div class="grid-card">
@@ -427,8 +360,8 @@
       </div>
     </section>
 
-    <!-- CLASS 12TH SCIENCE SECTION -->
-    <section class="dashboard-section" id="sectionClass12">
+    <!-- CLASS 12TH SCIENCE SECTION (डेटा फ़िल्टर टैग: data-class="12th") -->
+    <section class="dashboard-section" id="sectionClass12" data-class="12th">
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">कक्षा 12वीं साइंस हब (बोर्ड स्पेशल)</h2>
@@ -445,6 +378,12 @@
           </div>
           <h3 class="card-title">इलेक्ट्रोस्टैटिक्स, विलयन, समाकलन, आनुवंशिकी</h3>
           <p class="card-desc">हस्तलिखित नोट्स, 5-मार्क्स महत्वपूर्ण प्रश्न और फॉर्मूला शीट।</p>
+          <div style="display: flex; gap: 8px; overflow-x: auto; padding: 6px 0;">
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">⚡ भौतिकी</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🧪 रसायन</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">📐 गणित</a>
+            <a href="notes.html" class="card-tag" style="text-decoration:none;">🧬 जीव विज्ञान</a>
+          </div>
         </div>
 
         <div class="grid-card">
@@ -456,6 +395,42 @@
           <p class="card-desc">35 ऑब्जेक्टिव प्रश्नों का रियल बोर्ड टेस्ट पैटर्न विथ OMR शीट सिमुलेटर।</p>
           <div style="margin-top: auto;">
             <a href="test.html" class="btn-cta-secondary" style="width: 100%; text-align: center;">⚡ 12वीं टेस्ट शुरू करें</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUESTION BANK & MODEL PAPER SECTION -->
+    <section class="dashboard-section" id="sectionPyqModel">
+      <div class="section-title-wrap">
+        <div>
+          <h2 class="section-headline">📖 क्वेश्चन बैंक (PYQ) एवं ऑफिशियल मॉडल पेपर हब</h2>
+          <p class="section-subheadline">बिहार बोर्ड परीक्षा में पूछे गए पिछले वर्षों के प्रश्न पत्र हल सहित</p>
+        </div>
+      </div>
+
+      <div class="dashboard-grid-cards">
+        <div class="grid-card" style="border: 1.5px solid #0284c7; background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(15, 23, 42, 0.6));">
+          <div class="card-head">
+            <span class="card-tag" style="background:#0284c7; color:#fff;">रियल बोर्ड पेपर्स</span>
+            <a href="pyq.html" class="card-action-link" style="color:#38bdf8; font-weight:700;">क्वेश्चन बैंक खोलें &rarr;</a>
+          </div>
+          <h3 class="card-title" style="font-size:1.2rem;">📖 क्वेश्चन बैंक (हल सहित)</h3>
+          <p class="card-desc">पिछले वर्षों के दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र।</p>
+          <div style="margin-top: auto; display:flex; gap:10px; flex-wrap:wrap; padding-top:10px;">
+            <a href="pyq.html" class="btn-start-test-sm" style="text-decoration:none; background:#0284c7; color:#fff;">➔ क्वेश्चन बैंक सॉल्व करें</a>
+          </div>
+        </div>
+
+        <div class="grid-card" style="border: 1.5px solid #10b981; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(15, 23, 42, 0.6));">
+          <div class="card-head">
+            <span class="card-tag" style="background:#10b981; color:#fff;">BSEB ऑफिशियल सेट्स</span>
+            <a href="model-paper.html" class="card-action-link" style="color:#34d399; font-weight:700;">मॉडल पेपर खोलें &rarr;</a>
+          </div>
+          <h3 class="card-title" style="font-size:1.2rem;">📝 BSEB ऑफिशियल मॉडल पेपर</h3>
+          <p class="card-desc">बिहार विद्यालय परीक्षा समिति द्वारा जारी किए गए नवीनतम आधिकारिक मॉडल सेट्स।</p>
+          <div style="margin-top: auto; display:flex; gap:10px; flex-wrap:wrap; padding-top:10px;">
+            <a href="model-paper.html" class="btn-start-test-sm" style="text-decoration:none; background:#10b981; color:#fff;">➔ मॉडल पेपर्स देखें</a>
           </div>
         </div>
       </div>
@@ -525,12 +500,16 @@
 
         <!-- Quick Class Selection Dropdown -->
         <div style="text-align: left; margin-bottom: 16px;">
-          <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा बदलें:</label>
-          <select id="quickClassSwitchSelect" onchange="handleDirectClassChange(this.value)" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
-            <option value="10">कक्षा 10वीं (मैट्रिक)</option>
-            <option value="11">कक्षा 11वीं (साइंस)</option>
-            <option value="12">कक्षा 12वीं (इंटर साइंस)</option>
+          <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
+          <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
+            <option value="10th">कक्षा 10वीं (मैट्रिक)</option>
+            <option value="11th">कक्षा 11वीं (साइंस)</option>
+            <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
           </select>
+
+          <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
+            💾 कक्षा सेव करें (Save Class)
+          </button>
         </div>
 
         <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
@@ -541,35 +520,6 @@
           ⏳ सुरक्षित लॉगआउट हो रहा है...
         </div>
 
-      </div>
-    </div>
-
-    <!-- DOC SCANNER & PDF STUDIO MODAL -->
-    <div class="pdf-modal-backdrop" id="docConverterModal">
-      <div class="pdf-modal-window" style="max-width: 520px; height: auto; max-height: 92vh; padding: 0; overflow: hidden; border-radius: 20px; background: #ffffff;">
-        <div style="background: #0f172a; padding: 14px 18px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <h3 style="font-size: 1.05rem; margin: 0; color: #fff;">📑 NischayDesk DocScanner Pro</h3>
-            <p style="font-size: 0.75rem; color: #94a3b8; margin: 2px 0 0;">कैमरा से फोटो खींचें व HD PDF बनाएं</p>
-          </div>
-          <button class="btn-studio-close" id="closeConverterBtn" style="color: #fff; font-size: 1.6rem; cursor: pointer; background: none; border: none;">&times;</button>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-          <label style="background: #3b82f6; color: #fff; padding: 9px; font-size: 0.82rem; font-weight: bold; border-radius: 8px; text-align: center; cursor: pointer;">
-            📁 गैलरी से चुनें
-            <input type="file" id="converterFileInput" accept="image/*" multiple style="display: none;">
-          </label>
-          <button type="button" id="openLiveCameraBtn" style="background: #10b981; color: #fff; border: none; padding: 9px; font-size: 0.82rem; font-weight: bold; border-radius: 8px; cursor: pointer;">
-            📸 कैमरा खोलें
-          </button>
-        </div>
-
-        <div style="padding: 12px 16px; background: #ffffff;">
-          <button type="button" id="generatePdfBtn" style="width: 100%; padding: 11px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 0.92rem; cursor: pointer;" disabled>
-            ⚡ HD PDF डाउनलोड करें (0 पेज)
-          </button>
-        </div>
       </div>
     </div>
 
@@ -594,8 +544,8 @@
           <li><a href="bseb-simulator.html">➔ 3h 15m बोर्ड परीक्षा</a></li>
           <li><a href="bseb-result.html">➔ रिजल्ट पोर्टल (Marksheet)</a></li>
           <li><a href="syllabus.html">➔ बोर्ड सिलेबस हब</a></li>
-          <li><a href="notes.html">➔ 10th मैट्रिक नोट्स</a></li>
-          <li><a href="pyq.html">➔ 10th क्वेश्चन बैंक</a></li>
+          <li><a href="notes.html">➔ स्टडी नोट्स</a></li>
+          <li><a href="pyq.html">➔ क्वेश्चन बैंक</a></li>
         </ul>
       </div>
 
@@ -617,7 +567,7 @@
     </div>
   </footer>
 
-  <!-- Scripts: First-Name Auth Sync & Class Management -->
+  <!-- Scripts: Class Filtering & True Gmail Auth Sync -->
   <script>
     // 📱 Mobile Drawer Control
     const menuBtn = document.getElementById('mobileMenuBtn');
@@ -640,7 +590,6 @@
     if (closeDrawerBtn) closeDrawerBtn.onclick = closeDrawerUnified;
     if (scrimEl) scrimEl.onclick = closeDrawerUnified;
 
-    // 🚀 Share Website Function
     function shareNischayDeskWebsite() {
       const shareData = {
         title: 'NischayDesk - बिहार बोर्ड टॉपर स्टडी पोर्टल',
@@ -655,7 +604,60 @@
       }
     }
 
-    // ⚡ FIRST-NAME ONLY SYNC LOGIC
+    // 🎓 कक्षा को सटीक रूप से बदलना और केवल उसी क्लास का कंटेंट दिखाना
+    function applyStudentClass(selectedClass) {
+      let cleanClass = "10th";
+      if (String(selectedClass).includes("11")) cleanClass = "11th";
+      else if (String(selectedClass).includes("12")) cleanClass = "12th";
+      else cleanClass = "10th";
+
+      // स्टोरेज में एक साथ सभी चाबियों को सेव करें
+      localStorage.setItem("nd_selected_class", cleanClass);
+      localStorage.setItem("nischay_user_class", cleanClass);
+      localStorage.setItem("user_class", cleanClass);
+
+      // UI पर टेक्स्ट और बैज तुरंत बदलें
+      const b1 = document.getElementById('userSessionBadge');
+      const b2 = document.getElementById('displayStudentClass');
+      const classSelect = document.getElementById('quickClassSwitchSelect');
+
+      if (b1) b1.textContent = `Class ${cleanClass} ▾`;
+      if (b2) b2.textContent = `Class ${cleanClass}`;
+      if (classSelect) classSelect.value = cleanClass;
+
+      // 🔍 डैशबोर्ड के सेक्शन्स को सख्त रूप से फ़िल्टर करें
+      const sec10 = document.getElementById('sectionClass10');
+      const sec11 = document.getElementById('sectionClass11');
+      const sec12 = document.getElementById('sectionClass12');
+
+      if (sec10) sec10.style.display = (cleanClass === "10th") ? "block" : "none";
+      if (sec11) sec11.style.display = (cleanClass === "11th") ? "block" : "none";
+      if (sec12) sec12.style.display = (cleanClass === "12th") ? "block" : "none";
+    }
+
+    // 💾 कक्षा सेव करने का बटन
+    function confirmSaveClassSelection() {
+      const classSelect = document.getElementById('quickClassSwitchSelect');
+      if (!classSelect) return;
+
+      const chosen = classSelect.value;
+      applyStudentClass(chosen);
+
+      // अगर लॉगिन है तो क्लाउड में सुरक्षित करें
+      if (window.firebase && firebase.auth) {
+        const user = firebase.auth().currentUser;
+        if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
+          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).set({
+            selectedClass: chosen
+          }, { merge: true });
+        }
+      }
+
+      alert(`✓ आपकी कक्षा Class ${chosen} सफलतापूर्वक सेव कर दी गई है!`);
+      closeProfileModal();
+    }
+
+    // ⚡ असली Google User Auth सिंक
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -664,14 +666,10 @@
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
 
-      // Load saved class
-      const savedClass = localStorage.getItem('nischay_user_class') || '10';
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-      if (classSelect) classSelect.value = savedClass;
-      updateClassBadgeVisuals(savedClass);
+      const savedClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_user_class') || '10th';
+      applyStudentClass(savedClass);
 
       if (user) {
-        // Extract First Name only (e.g., "Prince Kumar" -> "Prince")
         const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
         const firstName = rawName.trim().split(' ')[0];
 
@@ -682,6 +680,15 @@
         if (authBtn) authBtn.style.display = 'none';
         if (profileWidget) profileWidget.style.display = 'flex';
         if (welcomeCard) welcomeCard.style.display = 'block';
+
+        // अगर क्लाउड में पहले से क्लास सेव है तो उसे प्राथमिकता दें
+        if (window.NischayConfig && window.NischayConfig.dbInstance) {
+          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).get().then(doc => {
+            if (doc.exists && doc.data().selectedClass) {
+              applyStudentClass(doc.data().selectedClass);
+            }
+          }).catch(e => console.log(e));
+        }
       } else {
         if (authBtn) authBtn.style.display = 'inline-flex';
         if (profileWidget) profileWidget.style.display = 'none';
@@ -689,19 +696,21 @@
       }
     }
 
-    function handleDirectClassChange(selectedClass) {
-      localStorage.setItem('nischay_user_class', selectedClass);
-      updateClassBadgeVisuals(selectedClass);
-    }
-
-    function updateClassBadgeVisuals(cVal) {
-      const b1 = document.getElementById('userSessionBadge');
-      const b2 = document.getElementById('displayStudentClass');
-      if (b1) b1.textContent = `Class ${cVal}th ▾`;
-      if (b2) b2.textContent = `Class ${cVal}th`;
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
+      // पहले से सेव क्लास तुरंत लागू करें
+      const initialClass = localStorage.getItem('nd_selected_class') || '10th';
+      applyStudentClass(initialClass);
+
+      const authBtn = document.getElementById('headerAuthBtn');
+      if (authBtn) {
+        authBtn.onclick = () => {
+          if (window.firebase && firebase.auth) {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).catch(e => alert(e.message));
+          }
+        };
+      }
+
       if (window.firebase && firebase.auth) {
         firebase.auth().onAuthStateChanged((user) => {
           syncUserAuthState(user);
@@ -717,6 +726,10 @@
       const nameEl = document.getElementById('modalUserName');
       const emailEl = document.getElementById('modalUserEmail');
       const imgEl = document.getElementById('modalUserImg');
+      const classSelect = document.getElementById('quickClassSwitchSelect');
+
+      const savedClass = localStorage.getItem('nd_selected_class') || '10th';
+      if (classSelect) classSelect.value = savedClass;
 
       if (window.firebase && firebase.auth) {
         const user = firebase.auth().currentUser;
@@ -757,7 +770,7 @@
           closeProfileModal();
           window.location.reload();
         }
-      }, 1200);
+      }, 800);
     }
   </script>
 
