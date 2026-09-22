@@ -75,7 +75,6 @@
       object-fit: cover;
     }
 
-    /* हाई-कंट्रास्ट निर्देश बॉक्स */
     .instructions-card-fixed {
       background: #0f172a !important;
       border: 2px solid #38bdf8 !important;
@@ -196,7 +195,6 @@
         </div>
         <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">सत्यापन एवं डिजिटल एडमिट कार्ड</span></h1>
 
-        <!-- बिना लॉगिन नो-एंट्री गेट -->
         <div id="authRequiredBanner" style="display: block; background: rgba(239, 68, 68, 0.12); border: 2px solid #ef4444; border-radius: 12px; padding: 22px; text-align: center; margin: 18px 0;">
           <div style="font-size: 2.5rem; margin-bottom: 8px;">🔐</div>
           <h3 style="color: #f87171; margin: 0 0 6px;">Gmail लॉगिन अनिवार्य है</h3>
@@ -208,19 +206,17 @@
           </button>
         </div>
 
-        <!-- मुख्य फॉर्म -->
         <form id="simVerificationForm" class="sim-entry-form" onsubmit="event.preventDefault(); enterExamHallDirect();" style="display: none;">
           
-          <!-- 6 बोर्ड नियम कार्ड -->
           <div class="instructions-card-fixed">
             <h3>📜 परीक्षार्थियों के लिए 6 अनिवार्य बोर्ड नियम:</h3>
             <ol class="instructions-list-fixed">
               <li><strong>कक्षा आधारित परीक्षा:</strong> केवल आपकी चुनी हुई कक्षा के आधिकारिक विषयों की ही परीक्षा ली जाएगी।</li>
               <li><strong>समय-सीमा (3 घंटे 15 मिनट):</strong> 15 मिनट प्रश्न पत्र पढ़ने और 3 घंटे उत्तर लिखने के लिए निर्धारित हैं।</li>
               <li><strong>OMR शीट (50 अंक):</strong> प्रथम 50 रंगे गए गोलों का ही मूल्यांकन होगा। 50 से अधिक गोले अमान्य होंगे।</li>
-              <li><strong>सब्जेक्टिव उत्तर अपलोड:</strong> हाथ से लिखे उत्तरों की साफ फोटो अपलोड करें (1 से 3 पन्ने चुन सकते हैं)।</li>
+              <li><strong>अनिवार्य उत्तर कॉपी अपलोड:</strong> बिना हाथ से लिखे उत्तरों की कॉपी (फोटो) अपलोड किए परीक्षा जमा नहीं होगी।</li>
               <li><strong>अनुपस्थिति नियम:</strong> किसी दिन परीक्षा छोड़ने पर वह विषय <strong>ABSENT (000 अंक)</strong> दर्ज हो जाएगा।</li>
-              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> परीक्षा का अंतिम परिणाम 7वें दिन सुबह ठीक 9:00 बजे घोषित होगा।</li>
+              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> परीक्षा का अंतिम परिणाम और विस्तृत AI समीक्षा 7वें दिन सुबह ठीक 9:00 बजे घोषित होगा।</li>
             </ol>
 
             <div class="instruction-agree-box-fixed">
@@ -247,7 +243,6 @@
             <div class="sim-input-group" style="grid-column: 1 / -1;">
               <label for="regExamDaySelect">आज की परीक्षा (Day Wise Subject) *</label>
               <select id="regExamDaySelect" class="sim-select" onchange="toggleEnterButtonState()" required>
-                <!-- चुनी हुई कक्षा के अनुसार विषय यहाँ लोड होंगे -->
               </select>
             </div>
           </div>
@@ -330,48 +325,22 @@
 
           <div class="exam-tab-content" id="tabContentOmr">
             <div class="omr-meta-strip">
-              <span>★ किन्हीं 50 प्रश्नों के गोले रंगें</span>
+              <span>★ किन्हीं 50 प्रश्नों के गोले रंगें (कम से कम 10 अनिवार्य)</span>
               <span>भरे गोले: <strong id="omrFilledCount">0</strong> / 50</span>
             </div>
             <div class="omr-bubbles-scroll-area" id="omrBubblesMatrix"></div>
           </div>
 
+          <!-- विषय अनुसार डायनामिक सब्जेक्टिव अपलोड कंटेनर -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
             <div class="subj-meta-strip" style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px;">
-              <span style="font-size: 0.82rem; color: #fff; line-height: 1.5; display: block;">
-                ✍️ <strong>उत्तर पुस्तिका निर्देश:</strong> अपने हाथ से लिखे उत्तरों की साफ फोटो खींचें। हर प्रश्न के लिए गैलरी से <strong>एक साथ 1 से 3 पन्ने</strong> चुन सकते हैं।
+              <span style="font-size: 0.82rem; color: #fff; line-height: 1.5; display: block;" id="subjGuidanceBanner">
+                ✍️ <strong>उत्तर पुस्तिका निर्देश:</strong> अपने हाथ से लिखे उत्तरों की साफ फोटो अपलोड करें।
               </span>
             </div>
 
-            <div class="subj-upload-list">
-              <div class="subj-card">
-                <h4>1. अपठित गद्यांश / खंड 'ब' भाग 1 (पूर्णांक: 20 अंक)</h4>
-                <p>📌 संबंधित उत्तर वाले पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
-                <input type="file" id="fileGadyansh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'gadyansh', 3)" />
-                <div id="previewGadyansh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-              </div>
-
-              <div class="subj-card">
-                <h4>2. निबंध / पत्र / भाग 2 (पूर्णांक: 15 अंक)</h4>
-                <p>📌 संबंधित उत्तर के पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
-                <input type="file" id="fileNibandh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'nibandh', 3)" />
-                <div id="previewNibandh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-              </div>
-
-              <div class="subj-card">
-                <h4>3. लघु उत्तरीय प्रश्न (पूर्णांक: 10 अंक)</h4>
-                <p>📌 किन्हीं 5 प्रश्नों के उत्तर वाले पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
-                <input type="file" id="fileLaghu" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'laghu', 3)" />
-                <div id="previewLaghu" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-              </div>
-
-              <div class="subj-card">
-                <h4>4. दीर्घ उत्तरीय प्रश्न (पूर्णांक: 5 अंक)</h4>
-                <p>📌 विस्तृत उत्तर वाले पन्ने अपलोड करें (अधिकतम 2 पन्ने)।</p>
-                <input type="file" id="fileDeergh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'deergh', 2)" />
-                <div id="previewDeergh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-              </div>
-            </div>
+            <!-- यह पूरा ढांचा विषय के अनुसार डायनामिकली बनेगा -->
+            <div class="subj-upload-list" id="dynamicSubjUploadList"></div>
           </div>
 
         </div>
@@ -389,38 +358,36 @@
     let cloudState = null;
     let activeDay = 1;
     let selectedClass = "10th";
-    let selectedImages = { gadyansh: [], nibandh: [], laghu: [], deergh: [] };
+    let selectedImages = {}; // डायनामिक ऑब्जेक्ट
 
-    // 🎓 10वीं, 11वीं और 12वीं का अलग-अलग सिलेबस और विषय डेटाबेस
     const CLASS_SUBJECTS_MAP = {
       "10th": [
-        { day: 1, code: "101-hindi", name: "हिन्दी (M.I.L Hindi)" },
-        { day: 2, code: "105-sanskrit", name: "संस्कृत (S.I.L Sanskrit)" },
-        { day: 3, code: "110-math", name: "गणित (Mathematics)" },
-        { day: 4, code: "112-science", name: "विज्ञान (Science)" },
-        { day: 5, code: "113-sst", name: "सामाजिक विज्ञान (Social Science)" },
-        { day: 6, code: "114-english", name: "अंग्रेजी (English)" }
+        { day: 1, code: "101-hindi", name: "हिन्दी (M.I.L Hindi)", type: "language" },
+        { day: 2, code: "105-sanskrit", name: "संस्कृत (S.I.L Sanskrit)", type: "language" },
+        { day: 3, code: "110-math", name: "गणित (Mathematics)", type: "math" },
+        { day: 4, code: "112-science", name: "विज्ञान (Science)", type: "science" },
+        { day: 5, code: "113-sst", name: "सामाजिक विज्ञान (Social Science)", type: "theory" },
+        { day: 6, code: "114-english", name: "अंग्रेजी (English)", type: "language" }
       ],
       "11th": [
-        { day: 1, code: "117-physics", name: "भौतिक विज्ञान (Physics 11th)" },
-        { day: 2, code: "118-chemistry", name: "रसायन विज्ञान (Chemistry 11th)" },
-        { day: 3, code: "121-maths", name: "गणित (Mathematics 11th)" },
-        { day: 4, code: "119-biology", name: "जीव विज्ञान (Biology 11th)" },
-        { day: 5, code: "105-hindi-11", name: "हिन्दी (Hindi 11th)" },
-        { day: 6, code: "106-english-11", name: "अंग्रेजी (English 11th)" }
+        { day: 1, code: "117-physics", name: "भौतिक विज्ञान (Physics 11th)", type: "science" },
+        { day: 2, code: "118-chemistry", name: "रसायन विज्ञान (Chemistry 11th)", type: "science" },
+        { day: 3, code: "121-maths", name: "गणित (Mathematics 11th)", type: "math" },
+        { day: 4, code: "119-biology", name: "जीव विज्ञान (Biology 11th)", type: "science" },
+        { day: 5, code: "105-hindi-11", name: "हिन्दी (Hindi 11th)", type: "language" },
+        { day: 6, code: "106-english-11", name: "अंग्रेजी (English 11th)", type: "language" }
       ],
       "12th": [
-        { day: 1, code: "117-physics-12", name: "भौतिक विज्ञान (Physics 12th)" },
-        { day: 2, code: "118-chemistry-12", name: "रसायन विज्ञान (Chemistry 12th)" },
-        { day: 3, code: "121-maths-12", name: "गणित (Mathematics 12th)" },
-        { day: 4, code: "119-biology-12", name: "जीव विज्ञान (Biology 12th)" },
-        { day: 5, code: "105-hindi-12", name: "हिन्दी (Hindi 12th)" },
-        { day: 6, code: "106-english-12", name: "अंग्रेजी (English 12th)" }
+        { day: 1, code: "117-physics-12", name: "भौतिक विज्ञान (Physics 12th)", type: "science" },
+        { day: 2, code: "118-chemistry-12", name: "रसायन विज्ञान (Chemistry 12th)", type: "science" },
+        { day: 3, code: "121-maths-12", name: "गणित (Mathematics 12th)", type: "math" },
+        { day: 4, code: "119-biology-12", name: "जीव विज्ञान (Biology 12th)", type: "science" },
+        { day: 5, code: "105-hindi-12", name: "हिन्दी (Hindi 12th)", type: "language" },
+        { day: 6, code: "106-english-12", name: "अंग्रेजी (English 12th)", type: "language" }
       ]
     };
 
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. लोकल में सहेजी गई कक्षा लोड करें
       selectedClass = localStorage.getItem("nd_selected_class") || "10th";
       const classSelectEl = document.getElementById("regStudentClassSelect");
       if (classSelectEl) classSelectEl.value = selectedClass;
@@ -428,7 +395,6 @@
 
       renderSubjectDropdownForClass(selectedClass, null);
 
-      // 2. Firebase Auth चेक
       const authInterval = setInterval(() => {
         if (window.NischayConfig && window.NischayConfig.isCloudReady) {
           clearInterval(authInterval);
@@ -485,7 +451,6 @@
       }, 200);
     });
 
-    // 🔄 कक्षा बदलने पर विषय तुरंत बदलना
     function onClassSelectionChanged() {
       const classSelectEl = document.getElementById("regStudentClassSelect");
       selectedClass = classSelectEl.value;
@@ -493,7 +458,7 @@
       document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
 
       if (currentUser && window.NischayConfig && window.NischayConfig.dbInstance) {
-        window.NischayConfig.dbInstance.collection("users").doc(currentUser.uid).set({
+        window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
           selectedClass: selectedClass
         }, { merge: true });
       }
@@ -501,7 +466,6 @@
       renderSubjectDropdownForClass(selectedClass, cloudState);
     }
 
-    // 📚 सिर्फ चुनी हुई कक्षा के विषय रेंडर करना
     function renderSubjectDropdownForClass(cls, state) {
       const selectEl = document.getElementById("regExamDaySelect");
       if (!selectEl) return;
@@ -593,16 +557,87 @@
       }).catch(e => console.log(e));
     }
 
+    // 🎯 विषय अनुसार डायनामिक अपलोड बॉक्स बनाना (गणित में ज्यादा पन्ने)
+    function setupDynamicSubjectiveCards(subObj) {
+      const container = document.getElementById("dynamicSubjUploadList");
+      const guidance = document.getElementById("subjGuidanceBanner");
+      container.innerHTML = "";
+      selectedImages = {};
+
+      if (subObj.type === "math") {
+        // गणित के लिए विस्तृत बॉक्स (लघु उत्तरीय 15 सवाल व दीर्घ उत्तरीय 4 सवाल)
+        guidance.innerHTML = `📐 <strong>गणित उत्तर पुस्तिका निर्देश:</strong> गणित में स्टेप्स ज्यादा होते हैं। आप <strong>लघु उत्तरीय में अधिकतम 6 पन्ने</strong> और <strong>दीर्घ उत्तरीय में 6 पन्ने</strong> तक अपलोड कर सकते हैं।`;
+        
+        container.innerHTML = `
+          <div class="subj-card">
+            <h4>1. लघु उत्तरीय प्रश्न (किन्हीं 15 प्रश्नों के हल) - 30 अंक</h4>
+            <p>📌 प्रश्नों के स्टेप-वाइज हल के पन्ने अपलोड करें (1 से 6 पन्ने चुने जा सकते हैं)।</p>
+            <input type="file" id="fileMathShort" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'math_short', 6)" />
+            <div id="previewMath_short" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+
+          <div class="subj-card">
+            <h4>2. दीर्घ उत्तरीय प्रश्न (किन्हीं 4 प्रश्नों के हल) - 20 अंक</h4>
+            <p>📌 ग्राफ़, प्रमेय व लंबे हल के पन्ने अपलोड करें (1 से 6 पन्ने चुने जा सकते हैं)।</p>
+            <input type="file" id="fileMathLong" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'math_long', 6)" />
+            <div id="previewMath_long" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+        `;
+      } else if (subObj.type === "language") {
+        // हिन्दी / संस्कृत / अंग्रेजी
+        guidance.innerHTML = `✍️ <strong>भाषा उत्तर पुस्तिका निर्देश:</strong> गद्यांश, व्याकरण, निबंध व प्रश्नों के पन्ने संबंधित बॉक्स में अपलोड करें (अधिकतम 3-4 पन्ने प्रति सेक्शन)।`;
+        
+        container.innerHTML = `
+          <div class="subj-card">
+            <h4>1. अपठित गद्यांश / पैसेज - 20 अंक</h4>
+            <p>📌 गद्यांश उत्तर के पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
+            <input type="file" id="fileLangGadyansh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'lang_gadyansh', 3)" />
+            <div id="previewLang_gadyansh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+
+          <div class="subj-card">
+            <h4>2. निबंध / पत्र / संवाद लेखन - 15 अंक</h4>
+            <p>📌 निबंध व लेखन के पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
+            <input type="file" id="fileLangNibandh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'lang_nibandh', 3)" />
+            <div id="previewLang_nibandh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+
+          <div class="subj-card">
+            <h4>3. प्रश्न-उत्तर (लघु व दीर्घ उत्तरीय) - 15 अंक</h4>
+            <p>📌 पाठ्यपुस्तक के प्रश्नों के उत्तर अपलोड करें (अधिकतम 4 पन्ने)।</p>
+            <input type="file" id="fileLangQnA" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'lang_qna', 4)" />
+            <div id="previewLang_qna" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+        `;
+      } else {
+        // विज्ञान / सामाजिक विज्ञान
+        guidance.innerHTML = `🔬 <strong>उत्तर पुस्तिका निर्देश:</strong> भौतिकी, रसायन, जीवविज्ञान या SST के लघु व दीर्घ उत्तरीय प्रश्नों के पन्ने अपलोड करें (अधिकतम 5 पन्ने प्रति सेक्शन)।`;
+
+        container.innerHTML = `
+          <div class="subj-card">
+            <h4>1. लघु उत्तरीय प्रश्न (Short Answer Questions)</h4>
+            <p>📌 परिभाषा, अंतर व संक्षिप्त उत्तर वाले पन्ने अपलोड करें (अधिकतम 5 पन्ने)।</p>
+            <input type="file" id="fileSciShort" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'sci_short', 5)" />
+            <div id="previewSci_short" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+
+          <div class="subj-card">
+            <h4>2. दीर्घ उत्तरीय प्रश्न (Long Answer Questions & Diagrams)</h4>
+            <p>📌 विस्तृत व्याख्या, सचित्र चित्र व समीकरण के पन्ने अपलोड करें (अधिकतम 5 पन्ने)।</p>
+            <input type="file" id="fileSciLong" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'sci_long', 5)" />
+            <div id="previewSci_long" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
+          </div>
+        `;
+      }
+    }
+
     function resumeExamHall(day) {
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === day) || subjects[0];
       const paperKey = currentSub.code;
       const paperData = BSEB_PAPERS_DATABASE[paperKey] || BSEB_PAPERS_DATABASE["101-hindi"];
 
-      const rCode = document.getElementById("outRollCode").textContent || "33193";
-      const rNum = document.getElementById("outRollNumber").textContent || "26017186";
-
-      document.getElementById("hallDisplayRoll").textContent = `${rCode} - ${rNum} (${selectedClass})`;
+      document.getElementById("hallDisplayRoll").textContent = `${cloudState.rollCode} - ${cloudState.rollNumber} (${selectedClass})`;
       document.getElementById("hallDisplaySub").textContent = currentSub.name;
 
       const iframe = document.getElementById("simPaperFrame");
@@ -611,6 +646,7 @@
       }
 
       renderOmrBubbles(100);
+      setupDynamicSubjectiveCards(currentSub);
 
       document.getElementById("simVerificationStage").style.display = "none";
       document.getElementById("simExamHallStage").style.display = "block";
@@ -719,8 +755,34 @@
       document.getElementById("btnShowResponse").classList.toggle("active", view === "response");
     }
 
+    // 🚀 सख्त वैलिडेशन और 1 सेकंड में सुपरफ़ास्ट सबमिशन
     async function confirmFinalExamSubmission() {
-      if (!confirm("क्या आप आज की परीक्षा फाइनल जमा करना चाहते हैं?")) return;
+      // 1. OMR प्रश्नों की संख्या जाँचे
+      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
+                    ? cloudState.savedOMR[activeDay] : {};
+      const omrCount = Object.keys(saved).length;
+
+      if (omrCount < 10) {
+        alert(`⚠️ अमान्य सबमिशन! आपने केवल ${omrCount} वस्तुनिष्ठ प्रश्नों के उत्तर दिए हैं।\n\nबोर्ड परीक्षा जमा करने के लिए कम से कम 10 प्रश्नों के गोले रंगना अनिवार्य है!`);
+        switchExamTab('omr');
+        toggleMobileView('response');
+        return;
+      }
+
+      // 2. सब्जेक्टिव पन्नों की संख्या जाँचे
+      let totalImages = 0;
+      for (const sec in selectedImages) {
+        totalImages += (selectedImages[sec] ? selectedImages[sec].length : 0);
+      }
+
+      if (totalImages === 0) {
+        alert("⚠️ अमान्य सबमिशन! आपने खंड 'ब' (सब्जेक्टिव) की कोई भी उत्तर कॉपी अपलोड नहीं की है!\n\nकृपया अपनी कॉपी के पन्नों की फोटो अपलोड करें।");
+        switchExamTab('subj');
+        toggleMobileView('response');
+        return;
+      }
+
+      if (!confirm(`क्या आप आज की परीक्षा फाइनल जमा करना चाहते हैं?\n\n• भरे गए OMR गोले: ${omrCount}\n• अपलोड किए गए कुल पन्ने: ${totalImages}`)) return;
 
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
@@ -729,31 +791,27 @@
       const btn = document.querySelector(".btn-submit-board-exam");
       if (btn) {
         btn.disabled = true;
-        btn.textContent = "⏳ क्लाउड व AI मूल्यांकन...";
+        btn.textContent = "⏳ सुरक्षित जमा हो रहा है...";
       }
 
       try {
+        // बिना AI हैंग के तुरंत 1 सेकंड में सबमिट
         await submitExamToCloud(
           currentUser,
           activeDay,
           currentSub.name,
           paperData.answerKey,
-          [
-            ...(selectedImages.gadyansh || []),
-            ...(selectedImages.nibandh || []),
-            ...(selectedImages.laghu || []),
-            ...(selectedImages.deergh || [])
-          ],
+          selectedImages,
           cloudState
         );
 
-        alert(`✓ Day ${activeDay} (${currentSub.name}) की परीक्षा सफलतापूर्वक जमा हो गई!\n\nअब यह विषय हमेशा के लिए लॉक हो गया है।`);
+        alert(`✓ Day ${activeDay}: ${currentSub.name} की परीक्षा सफलतापूर्वक जमा हो गई!\n\n• आपकी उत्तर पुस्तिका सुरक्षित क्लाउड में जमा हो चुकी है।\n• संपूर्ण परिणाम 7वें दिन सुबह 09:00 AM पर खुलेगा।`);
         location.reload();
       } catch (err) {
         alert("सबमिशन त्रुटि: " + err.message);
         if (btn) {
           btn.disabled = false;
-          btn.textContent = "पुनः प्रयास करें";
+          btn.textContent = "परीक्षा जमा करें ✓";
         }
       }
     }
