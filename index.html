@@ -37,20 +37,21 @@
           <div class="brand-badge-icon">N</div>
           <div class="brand-typography">
             <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
-            <span class="brand-tagline">By Prince Kumar</span>
+            <span class="brand-tagline">Smart Student Portal</span>
           </div>
         </a>
       </div>
 
       <div class="nav-links-desktop">
         <a href="index.html" class="nav-item active">डैशबोर्ड</a>
+        <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
+        <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
         <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
-        <a href="notes.html" class="nav-item">📚 स्टडी नोट्स हब</a>
-        <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट सीरीज</a>
+        <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
+        <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट</a>
         <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
         <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
         <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
-        <a href="#quickTools" class="nav-item">🛠️ स्मार्ट टूल्स</a>
       </div>
 
       <div class="nav-actions">
@@ -65,7 +66,7 @@
           <span id="authBtnLabel">Google लॉगिन</span>
         </button>
 
-        <!-- जब ईमेल से लॉगिन होगा -->
+        <!-- जब ईमेल से लॉगिन होगा (केवल पहला नाम और क्लास) -->
         <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
@@ -96,6 +97,12 @@
     <nav class="drawer-nav-list">
       <a href="index.html" class="drawer-nav-item active">
         <span class="icon">📊</span> मुख्य डैशबोर्ड
+      </a>
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
+        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
+      </a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;">
+        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
       </a>
       <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e; font-weight: 700;">
         <span class="icon">💬</span> WhatsApp चैनल जुड़ें
@@ -136,55 +143,30 @@
 
     <div class="drawer-footer">
       <span class="platform-meta">NischayDesk Production</span>
-      <span class="founder-meta">संस्थापक: <strong>Prince Kumar</strong></span>
     </div>
   </aside>
 
   <!-- 3. MAIN DASHBOARD VIEWPORT -->
   <main class="dashboard-viewport">
 
-    <!-- LIVE RUNNING TICKER STRIP -->
-    <div class="news-ticker-strip">
-      <span class="ticker-tag">अपडेट</span>
-      <span class="ticker-text" id="liveTickerContent">📢 बिहार बोर्ड एवं NCERT 2026–2027 सत्र के सम्पूर्ण हैंडनोट्स एवं चैप्टर-वाइज टेस्ट सीरीज लाइव हैं!</span>
-    </div>
-
     <!-- OPEN EDGE-TO-EDGE HERO SECTION -->
-    <section class="hero-studio-banner">
+    <section class="hero-studio-banner" style="padding-top: 24px; padding-bottom: 24px;">
       <div class="hero-content">
         
-        <!-- Personalized User Welcome Box -->
-        <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 16px;">
-          <div style="font-size: 1.65rem; font-weight: 800; color: #ffffff; line-height: 1.2;">
-            नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span>! 🌟
+        <!-- Clean Personalized User Welcome Strip (First Name & Class Only) -->
+        <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
+          <div style="font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2;">
+            नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span> 👋
           </div>
 
-          <div id="welcomeUserMeta" style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; font-size: 0.85rem;">
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-              <span style="color: #94a3b8;">कक्षा:</span>
-              <span style="color: #ffffff; font-weight: 700; background: rgba(56, 189, 248, 0.15); padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3);">
-                <span id="displayStudentClass">Class 10th</span> • <span id="displayStudentStream" style="color: #38bdf8;">PCM</span>
-              </span>
-              <button type="button" onclick="openProfileModal()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 3px 8px; font-size: 0.76rem; font-weight: 700; cursor: pointer;">
-                बदलें ⚙️
-              </button>
-            </div>
-
-            <div style="font-size: 0.82rem; color: #38bdf8; font-weight: 600;">
-              🎯 लक्ष्य: <span id="displayStudentGoal" style="color: #f1f5f9; font-weight: 600;">बिहार बोर्ड टॉपर (State Rank)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- स्टेटस पिल + लाइव क्लॉक -->
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
-          <div class="status-pill" id="heroStatusPill">
-            <span class="pulsing-dot"></span> बिहार बोर्ड & NCERT स्पेशल 2026–2027
-          </div>
-
-          <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); padding: 5px 12px; border-radius: 20px; font-size: 0.76rem; font-weight: 700; color: #4ade80;">
-            <span style="display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 6px #22c55e;"></span>
-            <span id="liveClockText">IST --:--:--</span>
+          <div id="welcomeUserMeta" style="display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.82rem;">
+            <span style="color: #94a3b8;">कक्षा:</span>
+            <span style="color: #ffffff; font-weight: 700; background: rgba(56, 189, 248, 0.15); padding: 3px 10px; border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.3);">
+              <span id="displayStudentClass">Class 10th</span>
+            </span>
+            <button type="button" onclick="openProfileModal()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 2px 8px; font-size: 0.74rem; font-weight: 700; cursor: pointer;">
+              बदलें ⚙️
+            </button>
           </div>
         </div>
 
@@ -194,24 +176,34 @@
         </h1>
 
         <p class="hero-subline" id="heroSublineText">
-          आधिकारिक बोर्ड सिलेबस, टॉपर हस्तलिखित नोट्स, क्वेश्चन बैंक (2020-2026) और टाइमर टेस्ट सिमुलेटर।
+          आधिकारिक बोर्ड सिलेबस, टॉपर हस्तलिखित नोट्स, क्वेश्चन बैंक और 3 घंटे 15 मिनट रियल बोर्ड परीक्षा सिमुलेटर।
         </p>
 
         <!-- हीरो एक्शन बटन्स -->
         <div class="hero-action-group">
-          <a href="syllabus.html" class="btn-cta-primary">📋 ऑफिशियल सिलेबस</a>
+          <a href="bseb-simulator.html" class="btn-cta-primary" style="background: linear-gradient(135deg, #0284c7, #0369a1); border: 1px solid #38bdf8;">
+            🏛️ 3h 15m बोर्ड परीक्षा हॉल
+          </a>
+          <a href="bseb-result.html" class="btn-cta-secondary" style="border-color: #34d399; color: #34d399 !important;">
+            🔍 रिजल्ट पोर्टल
+          </a>
           <a href="notes.html" class="btn-cta-secondary">📚 चैप्टर नोट्स</a>
-          <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="btn-cta-secondary" style="border-color: #22c55e; color: #4ade80 !important;">💬 WhatsApp चैनल</a>
-          <button type="button" onclick="shareNischayDeskWebsite()" class="btn-cta-secondary">🚀 दोस्तों को शेयर करें</button>
+          <button type="button" onclick="shareNischayDeskWebsite()" class="btn-cta-secondary">🚀 शेयर करें</button>
         </div>
       </div>
 
       <!-- 2x2 Stats Grid -->
       <div class="hero-stats-panel">
         <div class="stat-glass-card">
-          <div class="stat-icon">📋</div>
-          <div class="stat-numeric">100%</div>
-          <div class="stat-label">आधिकारिक सिलेबस</div>
+          <div class="stat-icon">🏛️</div>
+          <div class="stat-numeric">3h 15m</div>
+          <div class="stat-label">बोर्ड परीक्षा सिमुलेटर</div>
+        </div>
+
+        <div class="stat-glass-card">
+          <div class="stat-icon">📄</div>
+          <div class="stat-numeric">50 OMR</div>
+          <div class="stat-label">कॉपी स्कैनिंग तकनीक</div>
         </div>
 
         <div class="stat-glass-card">
@@ -221,45 +213,36 @@
         </div>
 
         <div class="stat-glass-card">
-          <div class="stat-icon">🎯</div>
-          <div class="stat-numeric" id="totalQuizCount">1000+</div>
-          <div class="stat-label">चैप्टर-वाइज प्रश्न</div>
-        </div>
-
-        <div class="stat-glass-card">
           <div class="stat-icon">💎</div>
-          <div class="stat-numeric">फ्री</div>
+          <div class="stat-numeric">100% फ्री</div>
           <div class="stat-label">छात्र सेवा पोर्टल</div>
         </div>
       </div>
     </section>
 
-    <!-- NEW: STUDENT PULSE SUITE (DAILY STREAK & FOCUS TIMER) -->
-    <section class="student-pulse-grid">
-      <div class="pulse-card-banner">
-        <div>
-          <div class="pulse-meta-title">🔥 दैनिक अध्ययन स्ट्रीक (Study Streak)</div>
-          <div class="pulse-meta-desc">लगातार पढ़ाई जारी रखें और अपना टॉपर रिकॉर्ड बनाएं</div>
+    <!-- NEW: PROMINENT BSEB EXAM SIMULATOR CALLOUT BANNER -->
+    <section class="dashboard-section" style="margin-top: 10px;">
+      <div class="grid-card" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(11, 21, 45, 0.9)); border: 2px solid #38bdf8; border-radius: 16px; padding: 22px;">
+        <div class="card-head">
+          <span class="card-tag alert-tag" style="background: #0284c7; color: #ffffff;">बिहार बोर्ड स्पेशल</span>
+          <a href="bseb-result.html" class="card-action-link" style="color: #34d399; font-weight: 700;">🔍 रोल नंबर से रिजल्ट देखें &rarr;</a>
         </div>
-        <div class="streak-chip-badge">
-          <span class="streak-flame-icon">🔥</span>
-          <span id="userStreakCountDisplay">1st Day Active</span>
-        </div>
-      </div>
-
-      <div class="pulse-card-banner">
-        <div>
-          <div class="pulse-meta-title">⏱️ पोमोडोरो फोकस टाइमर (25 Min)</div>
-          <div class="pulse-meta-desc" id="focusTimerStatusText">गहरी पढ़ाई के लिए टाइमर शुरू करें</div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span id="focusTimerClock" style="font-size: 1.1rem; font-weight: 800; color: #38bdf8;">25:00</span>
-          <button type="button" id="toggleFocusTimerBtn" onclick="togglePomodoroTimer()" class="btn-start-test-sm" style="padding: 6px 12px;">शुरू करें</button>
+        <h3 class="card-title" style="font-size: 1.35rem; margin: 10px 0 6px;">🏛️ 3 घंटे 15 मिनट रियल बोर्ड परीक्षा सिमुलेशन</h3>
+        <p class="card-desc" style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1;">
+          असली बोर्ड प्रश्न पत्र (Google Drive Viewer), 50-OMR बबल शीट, और हाथ से लिखी उत्तर पुस्तिका की स्कैनिंग। परीक्षा सबमिट होने के बाद निष्पक्ष मूल्यांकन होकर अगले दिन सुबह 9:00 बजे आधिकारिक वेब-कॉपी मार्कशीट प्राप्त करें।
+        </p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
+          <a href="bseb-simulator.html" class="btn-cta-primary" style="padding: 10px 20px; font-size: 0.88rem; text-decoration: none;">
+            ⚡ परीक्षा कक्ष में प्रवेश करें &rarr;
+          </a>
+          <a href="bseb-result.html" class="btn-cta-secondary" style="padding: 10px 18px; font-size: 0.88rem; text-decoration: none;">
+            🔍 रिजल्ट चेक करें (Captcha Gate)
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- NEW: INTERACTIVE SUBJECT MATRIX -->
+    <!-- INTERACTIVE QUICK SUBJECT MATRIX -->
     <section class="dashboard-section" id="subjectMatrixSection">
       <div class="section-title-wrap">
         <div>
@@ -272,25 +255,25 @@
         <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #38bdf8;">
           <div class="tool-icon-box" style="color: #38bdf8;">📐</div>
           <h4>गणित (Mathematics)</h4>
-          <p>फॉर्मूला शीट, प्रमेय व 10th-12th हल पेपर्स</p>
+          <p>फॉर्मूला शीट, प्रमेय व हल पेपर्स</p>
         </a>
 
         <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #60a5fa;">
           <div class="tool-icon-box" style="color: #60a5fa;">⚡</div>
           <h4>भौतिकी (Physics)</h4>
-          <p>डेरिवेशन्स, न्यूमेरिकल ट्रिक्स व कॉन्सेप्ट नोट्स</p>
+          <p>डेरिवेशन्स, न्यूमेरिकल ट्रिक्स व नोट्स</p>
         </a>
 
         <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #34d399;">
           <div class="tool-icon-box" style="color: #34d399;">🧪</div>
           <h4>रसायन (Chemistry)</h4>
-          <p>रिएक्शन चार्ट, समीकरण व कार्बनिक यौगिक</p>
+          <p>रिएक्शन चार्ट व समीकरण नोट्स</p>
         </a>
 
         <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #f472b6;">
           <div class="tool-icon-box" style="color: #f472b6;">🧬</div>
           <h4>जीव विज्ञान (Biology)</h4>
-          <p>सचित्र डायग्राम्स, आनुवंशिकी व शब्दावली</p>
+          <p>सचित्र डायग्राम्स व महत्वपूर्ण प्रश्न</p>
         </a>
 
         <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #fbbf24;">
@@ -302,7 +285,7 @@
         <a href="notes.html" class="quick-tool-card" style="border-left: 3px solid #c084fc;">
           <div class="tool-icon-box" style="color: #c084fc;">📜</div>
           <h4>भाषा (Hindi / Sanskrit)</h4>
-          <p>व्याकरण, पाठ्यपुस्तक सारांश व पद्यांश</p>
+          <p>व्याकरण, पाठ सारांश व मॉडल सेट्स</p>
         </a>
       </div>
     </section>
@@ -379,7 +362,7 @@
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">📖 क्वेश्चन बैंक (PYQ) एवं ऑफिशियल मॉडल पेपर हब</h2>
-          <p class="section-subheadline">बिहार बोर्ड परीक्षा में 80% सवाल सीधे पिछले सालों के पेपर्स से पूछे जाते हैं</p>
+          <p class="section-subheadline">बिहार बोर्ड परीक्षा में पूछे गए पिछले वर्षों के प्रश्न पत्र हल सहित</p>
         </div>
       </div>
 
@@ -390,7 +373,7 @@
             <a href="pyq.html" class="card-action-link" style="color:#38bdf8; font-weight:700;">क्वेश्चन बैंक खोलें &rarr;</a>
           </div>
           <h3 class="card-title" style="font-size:1.2rem;">📖 10th मैट्रिक क्वेश्चन बैंक (हल सहित)</h3>
-          <p class="card-desc">पिछले 5 वर्षों के दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र। टॉपर प्रिंस कुमार द्वारा सत्यापित उत्तर कुंजी के साथ।</p>
+          <p class="card-desc">पिछले 5 वर्षों के दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र।</p>
           <div style="margin-top: auto; display:flex; gap:10px; flex-wrap:wrap; padding-top:10px;">
             <a href="pyq.html" class="btn-start-test-sm" style="text-decoration:none; background:#0284c7; color:#fff;">➔ क्वेश्चन बैंक सॉल्व करें</a>
           </div>
@@ -402,7 +385,7 @@
             <a href="model-paper.html" class="card-action-link" style="color:#34d399; font-weight:700;">मॉडल पेपर खोलें &rarr;</a>
           </div>
           <h3 class="card-title" style="font-size:1.2rem;">📝 BSEB ऑफिशियल मॉडल पेपर</h3>
-          <p class="card-desc">बिहार विद्यालय परीक्षा समिति द्वारा जारी किए गए नवीनतम आधिकारिक मॉडल सेट्स। बोर्ड के नए पैटर्न पर आधारित संपूर्ण हल।</p>
+          <p class="card-desc">बिहार विद्यालय परीक्षा समिति द्वारा जारी किए गए नवीनतम आधिकारिक मॉडल सेट्स।</p>
           <div style="margin-top: auto; display:flex; gap:10px; flex-wrap:wrap; padding-top:10px;">
             <a href="model-paper.html" class="btn-start-test-sm" style="text-decoration:none; background:#10b981; color:#fff;">➔ मॉडल पेपर्स देखें</a>
           </div>
@@ -428,15 +411,6 @@
           </div>
           <h3 class="card-title">गहन कॉन्सेप्ट्स, डेरिवेशन्स व फॉर्मूला</h3>
           <p class="card-desc">मात्रक एवं मापन, गति के नियम, मोल संकल्पना, जगत मोनेरा के संपूर्ण नोट्स।</p>
-          <div class="progress-container" style="margin-top:12px;">
-            <div class="progress-meta">
-              <span>सिलेबस कवरेज</span>
-              <span style="color: var(--brand-accent); font-weight: 700;">पूर्ण संकलित</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-bar" style="width: 100%;"></div>
-            </div>
-          </div>
         </div>
 
         <div class="grid-card">
@@ -457,7 +431,7 @@
     <section class="dashboard-section" id="sectionClass12">
       <div class="section-title-wrap">
         <div>
-          <h2 class="section-headline">कक्षा 12वीं साइंस हब (बोर्ड स्पेशल & JEE/NEET)</h2>
+          <h2 class="section-headline">कक्षा 12वीं साइंस हब (बोर्ड स्पेशल)</h2>
           <p class="section-subheadline">इंटरमीडिएट वार्षिक परीक्षा के संपूर्ण 4 प्रमुख विषय</p>
         </div>
         <a href="notes.html" class="realtime-indicator" style="text-decoration:none;">12th हब खोलें &rarr;</a>
@@ -470,21 +444,12 @@
             <a href="syllabus.html" class="card-action-link">सिलेबस &rarr;</a>
           </div>
           <h3 class="card-title">इलेक्ट्रोस्टैटिक्स, विलयन, समाकलन, आनुवंशिकी</h3>
-          <p class="card-desc">टॉपर्स द्वारा तैयार हस्तलिखित नोट्स, 5-मार्क्स महत्वपूर्ण प्रश्न और फॉर्मूला शीट।</p>
-          <div class="progress-container" style="margin-top:12px;">
-            <div class="progress-meta">
-              <span>12th बोर्ड कवरेज</span>
-              <span style="color: var(--brand-accent); font-weight: 700;">सक्रिय मॉड्यूल</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-bar" style="width: 100%;"></div>
-            </div>
-          </div>
+          <p class="card-desc">हस्तलिखित नोट्स, 5-मार्क्स महत्वपूर्ण प्रश्न और फॉर्मूला शीट।</p>
         </div>
 
         <div class="grid-card">
           <div class="card-head">
-            <span class="card-tag alert-tag">12th मॉडल पेपर टेस्ट</span>
+            <span class="card-tag alert-tag">12th बोर्ड सिमुलेशन</span>
             <a href="test.html" class="card-action-link">टेस्ट शुरू करें &rarr;</a>
           </div>
           <h3 class="card-title">12th बोर्ड सिमुलेशन टेस्ट</h3>
@@ -501,11 +466,23 @@
       <div class="section-title-wrap">
         <div>
           <h2 class="section-headline">छात्र स्मार्ट टूल्स</h2>
-          <p class="section-subheadline">दैनिक अध्ययन को आसान और तेज़ बनाने वाले इन-बिल्ट टूल्स</p>
+          <p class="section-subheadline">दैनिक अध्ययन को आसान और तेज़ बनाने वाले टूल्स</p>
         </div>
       </div>
 
       <div class="quick-tools-grid">
+        <a href="bseb-simulator.html" class="quick-tool-card" style="border: 1.5px solid #0284c7;">
+          <div class="tool-icon-box">🏛️</div>
+          <h4>3h 15m बोर्ड परीक्षा</h4>
+          <p>असली बोर्ड परीक्षा सिमुलेशन दें।</p>
+        </a>
+
+        <a href="bseb-result.html" class="quick-tool-card" style="border: 1.5px solid #10b981;">
+          <div class="tool-icon-box">🔍</div>
+          <h4>रिजल्ट पोर्टल (Captcha)</h4>
+          <p>रोल कोड/नंबर से मार्कशीट देखें।</p>
+        </a>
+
         <a href="syllabus.html" class="quick-tool-card">
           <div class="tool-icon-box">📋</div>
           <h4>सिलेबस हब</h4>
@@ -518,101 +495,21 @@
           <p>सीधे स्क्रीन पर PDF नोट्स पढ़ें।</p>
         </a>
 
-        <a href="test.html" class="quick-tool-card">
-          <div class="tool-icon-box">⏱️</div>
-          <h4>चैप्टर-वाइज टेस्ट</h4>
-          <p>अध्याय चुनकर टाइमर टेस्ट दें।</p>
-        </a>
-
         <a href="pyq.html" class="quick-tool-card">
           <div class="tool-icon-box">📖</div>
           <h4>क्वेश्चन बैंक</h4>
           <p>2020-2026 के हल पेपर्स।</p>
         </a>
 
-        <a href="model-paper.html" class="quick-tool-card">
-          <div class="tool-icon-box">📝</div>
-          <h4>मॉडल पेपर्स</h4>
-          <p>BSEB ऑफिशियल मॉडल सेट।</p>
-        </a>
-
-        <div class="quick-tool-card" id="openDocConverterBtn" style="border: 1.5px solid #0284c7;">
+        <div class="quick-tool-card" id="openDocConverterBtn">
           <div class="tool-icon-box">📄</div>
-          <h4>इमेज टू PDF कनवर्टर Pro</h4>
+          <h4>इमेज टू PDF कनवर्टर</h4>
           <p>कैमरा व फोटो से HD PDF बनाएं।</p>
         </div>
       </div>
     </section>
 
-    <!-- STUDENT ONBOARDING / CLASS SWITCH MODAL -->
-    <div class="pdf-modal-backdrop" id="onboardingModal">
-      <div class="pdf-modal-window" style="max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative;">
-        <button type="button" class="btn-studio-close" id="closeOnboardingBtn" onclick="document.getElementById('onboardingModal').classList.remove('active');" style="position: absolute; top: 14px; right: 16px; font-size: 1.5rem; cursor: pointer;">&times;</button>
-        
-        <div style="text-align: center; margin-bottom: 16px;">
-          <div style="font-size: 2rem; margin-bottom: 4px;">🎓</div>
-          <h3 style="color: var(--text-pure); font-size: 1.25rem;">NischayDesk प्रोफ़ाइल & क्लास चयन</h3>
-          <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">
-            अपनी कक्षा और लक्ष्य चुनें ताकि डैशबोर्ड आपके अनुसार कस्टमाइज़ हो:
-          </p>
-        </div>
-
-        <form id="onboardingForm" style="display: flex; flex-direction: column; gap: 12px;">
-          <div>
-            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">आपका नाम:</label>
-            <input type="text" id="obName" class="exam-dropdown" required placeholder="अपना नाम लिखें">
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>
-              <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">आपकी कक्षा:</label>
-              <select id="obClass" class="exam-dropdown">
-                <option value="10">10th मैट्रिक</option>
-                <option value="11" selected>11th साइंस</option>
-                <option value="12">12th साइंस</option>
-              </select>
-            </div>
-            <div>
-              <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">स्ट्रीम:</label>
-              <select id="obStream" class="exam-dropdown">
-                <option value="PCM" selected>PCM (गणित)</option>
-                <option value="PCB">PCB (बायोलॉजी)</option>
-                <option value="PCMB">PCMB (दोनों)</option>
-                <option value="General">सामान्य (मैट्रिक)</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">मुख्य लक्ष्य (Aim / Goal):</label>
-            <select id="obGoal" class="exam-dropdown" style="font-size: 0.9rem;">
-              <option value="बिहार बोर्ड टॉपर (State Rank)" selected>🏆 बिहार बोर्ड टॉपर (State Rank)</option>
-              <option value="IIT JEE (इंजीनियरिंग)">⚡ IIT JEE (इंजीनियरिंग)</option>
-              <option value="NEET (डॉक्टर / AIIMS)">🩺 NEET (डॉक्टर / MBBS)</option>
-              <option value="NDA (डिफेंस ऑफिसर)">🇮🇳 NDA (डिफेंस ऑफिसर / आर्मी / नेवी)</option>
-              <option value="UPSC (IAS / IPS सिविल सेवा)">🏛️ UPSC (IAS / IPS / IFS)</option>
-              <option value="BPSC (बिहार प्रशासनिक सेवा)">🎖️ BPSC (SDM / DSP अफसर)</option>
-              <option value="Airforce / Navy (अग्निवीर)">✈️ भारतीय वायुसेना / नौसेना (Airforce / Navy)</option>
-              <option value="बिहार पुलिस / दरोगा (SI)">👮 बिहार पुलिस / दारोगा (Sub-Inspector)</option>
-              <option value="रेलवे भर्ती (RRB / NTPC / ALP)">🚆 रेलवे परीक्षा (Railway NTPC / Group D / ALP)</option>
-              <option value="SSC (CGL / CHSL सरकारी नौकरी)">📑 SSC (CGL / CHSL / MTS)</option>
-              <option value="CUET (केंद्रीय विश्वविद्यालय प्रवेश)">🎓 CUET (DU / BHU / JNU प्रवेश)</option>
-              <option value="बैंकिंग सेवा (PO / Clerk)">🏦 बैंकिंग (IBPS / SBI PO & Clerk)</option>
-              <option value="सॉफ्टवेयर इंजीनियर / AI कोडर">💻 सॉफ्टवेयर इंजीनियर / कोडर (Tech & AI)</option>
-              <option value="सरकारी शिक्षक (BPSC TRE / CTET)">👨‍🏫 सरकारी शिक्षक (BPSC Teacher / CTET)</option>
-              <option value="पॉलिटेक्निक / ITI डिप्लोमा">⚙️ बिहार पॉलिटेक्निक / ITI डिप्लोमा</option>
-              <option value="सीए / कॉमर्स विशेषज्ञ (CA Foundation)">📊 चार्टर्ड अकाउंटेंट (CA Foundation)</option>
-            </select>
-          </div>
-
-          <button type="submit" id="saveProfileBtn" class="btn-cta-primary" style="width: 100%; border-radius: var(--radius-md); margin-top: 8px;">
-            ✓ प्रोफ़ाइल सेव करें
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- 5. DEDICATED USER PROFILE & LOGOUT MODAL -->
+    <!-- DEDICATED USER PROFILE & CLASS SELECTION MODAL -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
         
@@ -623,91 +520,56 @@
           <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
         </div>
 
-        <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important; letter-spacing: 0.3px;">छात्र नाम</h3>
+        <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
         <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
-        <button onclick="closeProfileModal(); window.openClassSwitchModal && window.openClassSwitchModal();" style="width: 100%; background: #13224a; border: 1px solid #1e3a8a; color: #38bdf8; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; margin-bottom: 12px; cursor: pointer;">
-          ⚙️ कक्षा या लक्ष्य बदलें
-        </button>
+        <!-- Quick Class Selection Dropdown -->
+        <div style="text-align: left; margin-bottom: 16px;">
+          <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा बदलें:</label>
+          <select id="quickClassSwitchSelect" onchange="handleDirectClassChange(this.value)" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
+            <option value="10">कक्षा 10वीं (मैट्रिक)</option>
+            <option value="11">कक्षा 11वीं (साइंस)</option>
+            <option value="12">कक्षा 12वीं (इंटर साइंस)</option>
+          </select>
+        </div>
 
         <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
           🚪 लॉगआउट करें (Logout)
         </button>
 
         <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
-          ⏳ सुरक्षित लॉगआउट हो रहा है, कृपया प्रतीक्षा करें...
+          ⏳ सुरक्षित लॉगआउट हो रहा है...
         </div>
 
       </div>
     </div>
 
-    <!-- 6. UPGRADED SMART TOOL: DOC SCANNER & PDF STUDIO MODAL -->
+    <!-- DOC SCANNER & PDF STUDIO MODAL -->
     <div class="pdf-modal-backdrop" id="docConverterModal">
       <div class="pdf-modal-window" style="max-width: 520px; height: auto; max-height: 92vh; padding: 0; overflow: hidden; border-radius: 20px; background: #ffffff;">
-        
-        <!-- स्टूडियो हेडर -->
         <div style="background: #0f172a; padding: 14px 18px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <h3 style="font-size: 1.05rem; margin: 0; color: #fff;">📑 NischayDesk DocScanner Pro</h3>
-            <p style="font-size: 0.75rem; color: #94a3b8; margin: 2px 0 0;">कैमरा से फोटो खींचें, रोटेट करें व HD PDF बनाएं</p>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin: 2px 0 0;">कैमरा से फोटो खींचें व HD PDF बनाएं</p>
           </div>
           <button class="btn-studio-close" id="closeConverterBtn" style="color: #fff; font-size: 1.6rem; cursor: pointer; background: none; border: none;">&times;</button>
         </div>
 
-        <!-- लाइव कैमरा व्यू बॉक्स -->
-        <div id="cameraContainer" style="display: none; position: relative; background: #000; width: 100%; height: 260px; flex-direction: column;">
-          <video id="cameraVideo" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
-          <div style="position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 12px;">
-            <button type="button" id="capturePhotoBtn" style="background: #2563eb; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer;">⚪ फोटो क्लिक करें</button>
-            <button type="button" id="stopCameraBtn" style="background: #ef4444; color: #fff; border: none; padding: 8px 14px; border-radius: 20px; cursor: pointer;">कैमरा बंद</button>
-          </div>
-          <canvas id="cameraCaptureCanvas" style="display: none;"></canvas>
-        </div>
-
-        <!-- इनपुट चयन: गैलरी या कैमरा -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
           <label style="background: #3b82f6; color: #fff; padding: 9px; font-size: 0.82rem; font-weight: bold; border-radius: 8px; text-align: center; cursor: pointer;">
             📁 गैलरी से चुनें
             <input type="file" id="converterFileInput" accept="image/*" multiple style="display: none;">
           </label>
-
           <button type="button" id="openLiveCameraBtn" style="background: #10b981; color: #fff; border: none; padding: 9px; font-size: 0.82rem; font-weight: bold; border-radius: 8px; cursor: pointer;">
-            📸 लाइव कैमरा खोलें
+            📸 कैमरा खोलें
           </button>
         </div>
 
-        <!-- फिल्टर व फाइल सेटिंग्स -->
-        <div style="display: flex; gap: 10px; padding: 8px 16px; background: #ffffff; border-bottom: 1px solid #f1f5f9;">
-          <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;">
-            <label style="font-size: 0.72rem; font-weight: bold; color: #64748b;">पेज फिल्टर:</label>
-            <select id="imageFilterSelect" style="padding: 6px 8px; font-size: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;">
-              <option value="original">मूल रंग (Original HD)</option>
-              <option value="magic">✨ मैजिक व्हाइट (नोट्स साफ)</option>
-              <option value="grayscale">ब्लैक & व्हाइट (B&W)</option>
-            </select>
-          </div>
-          <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;">
-            <label style="font-size: 0.72rem; font-weight: bold; color: #64748b;">PDF नाम:</label>
-            <input type="text" id="customPdfNameInput" value="NischayDesk_Notes" style="padding: 6px 8px; font-size: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;">
-          </div>
-        </div>
-
-        <!-- फोटो ग्रिड प्रीव्यू -->
-        <div style="max-height: 220px; overflow-y: auto; padding: 12px 16px; background: #f8fafc;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.78rem; font-weight: bold; color: #475569;">
-            <span id="selectedFilesCount">कोई फोटो नहीं जोड़ी गई</span>
-            <button type="button" id="clearAllPagesBtn" style="background: none; border: none; color: #ef4444; font-size: 0.75rem; cursor: pointer; display: none;">सब हटाएं</button>
-          </div>
-          <div id="pagesGridContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;"></div>
-        </div>
-
-        <!-- मुख्य डाउनलोड बटन -->
-        <div style="padding: 12px 16px; background: #ffffff; border-top: 1px solid #e2e8f0;">
+        <div style="padding: 12px 16px; background: #ffffff;">
           <button type="button" id="generatePdfBtn" style="width: 100%; padding: 11px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 0.92rem; cursor: pointer;" disabled>
             ⚡ HD PDF डाउनलोड करें (0 पेज)
           </button>
         </div>
-
       </div>
     </div>
 
@@ -716,8 +578,6 @@
   <!-- 4. FOOTER -->
   <footer class="app-footer">
     <div class="footer-container">
-      
-      <!-- Brand Column -->
       <div class="brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
@@ -726,75 +586,39 @@
         <p class="footer-summary">
           बिहार बोर्ड एवं प्रतियोगी परीक्षाओं के छात्रों के लिए 100% फ्री एवं समर्पित डिजिटल स्टडी डेस्क।
         </p>
-        <div class="founder-identity-box">
-          संस्थापक एवं डेवलपर: <strong>Prince Kumar</strong>
-        </div>
       </div>
 
-      <!-- Academics Links -->
       <div>
         <h4 class="footer-heading">एकैडमिक्स</h4>
         <ul class="footer-nav">
+          <li><a href="bseb-simulator.html">➔ 3h 15m बोर्ड परीक्षा</a></li>
+          <li><a href="bseb-result.html">➔ रिजल्ट पोर्टल (Marksheet)</a></li>
           <li><a href="syllabus.html">➔ बोर्ड सिलेबस हब</a></li>
           <li><a href="notes.html">➔ 10th मैट्रिक नोट्स</a></li>
-          <li><a href="pyq.html">➔ 10th क्वेश्चन बैंक (2020-26)</a></li>
-          <li><a href="model-paper.html">➔ ऑफिशियल मॉडल पेपर</a></li>
-          <li><a href="notes.html">➔ 11th & 12th साइंस नोट्स</a></li>
-          <li><a href="test.html">➔ चैप्टर-वाइज टेस्ट</a></li>
+          <li><a href="pyq.html">➔ 10th क्वेश्चन बैंक</a></li>
         </ul>
       </div>
 
-      <!-- Platform Links -->
       <div>
         <h4 class="footer-heading">प्लेटफ़ॉर्म</h4>
         <ul class="footer-nav">
           <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
           <li><a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" style="color: #4ade80 !important; font-weight: 700;">➔ WhatsApp चैनल</a></li>
           <li><a href="javascript:void(0)" onclick="shareNischayDeskWebsite()" style="color: #38bdf8 !important; font-weight: 700;">➔ वेबसाइट शेयर करें</a></li>
-          <li><a href="syllabus.html">➔ बोर्ड सिलेबस हब</a></li>
-          <li><a href="pyq.html">➔ क्वेश्चन बैंक</a></li>
-          <li><a href="model-paper.html">➔ मॉडल पेपर्स</a></li>
           <li><a href="ai-desk.html">➔ AI डाउट स्टूडियो</a></li>
         </ul>
       </div>
-
     </div>
 
-    <!-- Bottom Bar -->
     <div class="footer-bottom-bar">
-      <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;">
-        <a href="privacy.html#about" style="color: #38bdf8; text-decoration: none; font-weight: 600;">संस्थापक परिचय (About Developer)</a>
-        <span>•</span>
-        <a href="privacy.html#terms" style="color: var(--text-secondary); text-decoration: none;">सेवा की शर्तें (Terms)</a>
-        <span>•</span>
-        <a href="privacy.html#privacy" style="color: var(--text-secondary); text-decoration: none;">गोपनीयता नीति (Privacy Policy)</a>
-      </div>
-
       <div class="server-status-tag">
         &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● सिस्टम सक्रिय है</span>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts: Live Clock, Profile Modal, Menu Control, Pomodoro Engine & Sync -->
+  <!-- Scripts: First-Name Auth Sync & Class Management -->
   <script>
-    // 🇮🇳 Live Indian Standard Time (IST) Clock
-    function updateLiveIndiaClock() {
-      const clockEl = document.getElementById('liveClockText');
-      if (!clockEl) return;
-      const options = {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
-      };
-      const formatter = new Intl.DateTimeFormat('en-IN', options);
-      clockEl.textContent = 'IST ' + formatter.format(new Date());
-    }
-    setInterval(updateLiveIndiaClock, 1000);
-    updateLiveIndiaClock();
-
     // 📱 Mobile Drawer Control
     const menuBtn = document.getElementById('mobileMenuBtn');
     const sideDrawerEl = document.getElementById('sideDrawer');
@@ -820,19 +644,18 @@
     function shareNischayDeskWebsite() {
       const shareData = {
         title: 'NischayDesk - बिहार बोर्ड टॉपर स्टडी पोर्टल',
-        text: '🔥 बिहार बोर्ड मैट्रिक एवं इंटर के सभी विषयों के टॉपर नोट्स, सिलेबस और 2020-2026 क्वेश्चन बैंक अब बिल्कुल फ्री में उपलब्ध हैं! अभी विजिट करें:',
+        text: '🔥 बिहार बोर्ड मैट्रिक एवं इंटर के सभी टॉपर नोट्स और 3 घंटे 15 मिनट रियल बोर्ड परीक्षा सिमुलेटर बिल्कुल फ्री! अभी टेस्ट दें:',
         url: 'https://nischaydesk.github.io/nischaydesk/'
       };
-
       if (navigator.share) {
-        navigator.share(shareData).catch((err) => console.log('Share dismissed', err));
+        navigator.share(shareData).catch(() => {});
       } else {
         const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareData.text + '\n' + shareData.url);
         window.open(waUrl, '_blank');
       }
     }
 
-    // ⚡ 100% First-Name Auth Sync
+    // ⚡ FIRST-NAME ONLY SYNC LOGIC
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -841,7 +664,14 @@
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
 
+      // Load saved class
+      const savedClass = localStorage.getItem('nischay_user_class') || '10';
+      const classSelect = document.getElementById('quickClassSwitchSelect');
+      if (classSelect) classSelect.value = savedClass;
+      updateClassBadgeVisuals(savedClass);
+
       if (user) {
+        // Extract First Name only (e.g., "Prince Kumar" -> "Prince")
         const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
         const firstName = rawName.trim().split(' ')[0];
 
@@ -859,83 +689,25 @@
       }
     }
 
+    function handleDirectClassChange(selectedClass) {
+      localStorage.setItem('nischay_user_class', selectedClass);
+      updateClassBadgeVisuals(selectedClass);
+    }
+
+    function updateClassBadgeVisuals(cVal) {
+      const b1 = document.getElementById('userSessionBadge');
+      const b2 = document.getElementById('displayStudentClass');
+      if (b1) b1.textContent = `Class ${cVal}th ▾`;
+      if (b2) b2.textContent = `Class ${cVal}th`;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       if (window.firebase && firebase.auth) {
         firebase.auth().onAuthStateChanged((user) => {
           syncUserAuthState(user);
         });
       }
-      initStreakBadge();
     });
-
-    // 🔥 Daily Study Streak Tracker Logic
-    function initStreakBadge() {
-      const streakDisplay = document.getElementById('userStreakCountDisplay');
-      if (!streakDisplay) return;
-
-      const today = new Date().toDateString();
-      const lastVisit = localStorage.getItem('nischay_last_visit_date');
-      let streak = parseInt(localStorage.getItem('nischay_study_streak') || '1', 10);
-
-      if (lastVisit) {
-        const lastDate = new Date(lastVisit);
-        const diffDays = Math.floor((new Date(today) - lastDate) / (1000 * 60 * 60 * 24));
-
-        if (diffDays === 1) {
-          streak += 1;
-          localStorage.setItem('nischay_study_streak', streak);
-          localStorage.setItem('nischay_last_visit_date', today);
-        } else if (diffDays > 1) {
-          streak = 1;
-          localStorage.setItem('nischay_study_streak', streak);
-          localStorage.setItem('nischay_last_visit_date', today);
-        }
-      } else {
-        localStorage.setItem('nischay_last_visit_date', today);
-        localStorage.setItem('nischay_study_streak', 1);
-      }
-
-      streakDisplay.textContent = `${streak} Day Streak`;
-    }
-
-    // ⏱️ Focus Pomodoro Timer Logic
-    let pomodoroInterval = null;
-    let pomodoroSeconds = 25 * 60;
-    let isPomodoroRunning = false;
-
-    function togglePomodoroTimer() {
-      const btn = document.getElementById('toggleFocusTimerBtn');
-      const clock = document.getElementById('focusTimerClock');
-      const status = document.getElementById('focusTimerStatusText');
-
-      if (isPomodoroRunning) {
-        clearInterval(pomodoroInterval);
-        isPomodoroRunning = false;
-        btn.textContent = 'जारी रखें';
-        status.textContent = 'टाइमर रुका हुआ है';
-      } else {
-        isPomodoroRunning = true;
-        btn.textContent = 'रोकें';
-        status.textContent = '🎯 ध्यान केंद्रित रखें...';
-
-        pomodoroInterval = setInterval(() => {
-          if (pomodoroSeconds <= 0) {
-            clearInterval(pomodoroInterval);
-            isPomodoroRunning = false;
-            pomodoroSeconds = 25 * 60;
-            clock.textContent = '25:00';
-            btn.textContent = 'फिर से शुरू';
-            status.textContent = '🎉 सत्र पूरा हुआ! 5 मिनट का ब्रेक लें।';
-            alert('शाबाश प्रिंस भाई! 25 मिनट का फोकस स्टडी सेशन पूरा हुआ। 🌟');
-            return;
-          }
-          pomodoroSeconds--;
-          const m = Math.floor(pomodoroSeconds / 60).toString().padStart(2, '0');
-          const s = (pomodoroSeconds % 60).toString().padStart(2, '0');
-          clock.textContent = `${m}:${s}`;
-        }, 1000);
-      }
-    }
 
     // Profile Modal
     function openProfileModal() {
@@ -957,7 +729,6 @@
           if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
         }
       }
-
       modal.style.display = 'flex';
     }
 
@@ -973,33 +744,26 @@
     function handleSlowLogout() {
       const btn = document.getElementById('btnPerformLogout');
       const loader = document.getElementById('logoutLoadingState');
-
       if (btn) btn.disabled = true;
       if (loader) loader.style.display = 'block';
 
       setTimeout(() => {
         if (window.firebase && firebase.auth) {
           firebase.auth().signOut().finally(() => {
-            localStorage.removeItem('nischay_user_profile');
-            localStorage.removeItem('nischay_user_name');
             closeProfileModal();
             window.location.reload();
           });
         } else {
-          localStorage.removeItem('nischay_user_profile');
-          localStorage.removeItem('nischay_user_name');
           closeProfileModal();
           window.location.reload();
         }
-      }, 1400);
+      }, 1200);
     }
   </script>
 
   <!-- Dependencies -->
   <script src="config.js"></script>
-  <script src="syllabus-data.js"></script>
   <script src="auth.js"></script>
   <script src="main.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
