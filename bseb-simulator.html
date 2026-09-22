@@ -48,13 +48,13 @@
       flex-shrink: 0;
     }
     .brand-name {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: var(--bseb-text);
       line-height: 1.1;
     }
     .brand-tagline {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--bseb-accent);
       display: block;
     }
@@ -94,9 +94,9 @@
           ☀️ लाइट मोड
         </button>
         <div class="user-profile-widget" id="userProfileWidget" style="display: flex;">
-          <div class="user-avatar-img" id="userAvatarChar">?</div>
+          <div class="user-avatar-img" id="userAvatarChar" style="width: 28px; height: 28px; border-radius: 50%; background: #0284c7; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; border: 1.5px solid #38bdf8;">P</div>
           <div class="user-info-text">
-            <span class="user-display-name" id="simUserFirstName">लोडिंग...</span>
+            <span class="user-display-name" id="simUserFirstName">Prince</span>
           </div>
         </div>
         <a href="index.html" class="btn-home-exit">🏠 होम</a>
@@ -120,31 +120,37 @@
         <form id="simVerificationForm" class="sim-entry-form" onsubmit="handleRegistrationSubmit(event)">
           <div class="sim-form-grid">
             <div class="sim-input-group">
-              <label>परीक्षार्थी का पूरा नाम (Candidate Name)</label>
-              <input type="text" id="regStudentName" class="sim-input" readonly />
+              <label for="regStudentName">परीक्षार्थी का पूरा नाम (Candidate Name) *</label>
+              <!-- अब यह पूरी तरह टाइप और एडिट हो सकता है -->
+              <input type="text" id="regStudentName" class="sim-input" placeholder="उदा: PRINCE KUMAR" value="Prince Kumar" required />
             </div>
 
             <div class="sim-input-group">
-              <label>आज की परीक्षा (Day Wise Subject) *</label>
-              <select id="regExamDaySelect" class="sim-select">
-                <!-- JS द्वारा ऑटो-अपडेट होगा [COMPLETED ✓] के साथ -->
+              <label for="regExamDaySelect">आज की परीक्षा (Day Wise Subject) *</label>
+              <select id="regExamDaySelect" class="sim-select" required>
+                <option value="1" selected>Day 1: 101 - हिन्दी (M.I.L)</option>
+                <option value="2">Day 2: 105 - संस्कृत (S.I.L)</option>
+                <option value="3">Day 3: 110 - गणित (Mathematics)</option>
+                <option value="4">Day 4: 112 - विज्ञान (Science)</option>
+                <option value="5">Day 5: 113 - सामाजिक विज्ञान (Social Science)</option>
+                <option value="6">Day 6: 114 - अंग्रेजी (English)</option>
               </select>
             </div>
           </div>
 
           <!-- GENERATED CREDENTIALS TICKET -->
-          <div class="sim-ticket-preview" id="simTicketPreview">
+          <div class="sim-ticket-preview" id="simTicketPreview" style="display: block;">
             <div class="ticket-header">
               <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
               <span class="ticket-badge">VERIFIED</span>
             </div>
             <div class="ticket-grid">
-              <div><small>Roll Code:</small> <strong id="outRollCode">-----</strong></div>
-              <div><small>Roll Number:</small> <strong id="outRollNumber">--------</strong></div>
-              <div><small>Reg. No:</small> <strong id="outRegNo">--------------</strong></div>
+              <div><small>Roll Code:</small> <strong id="outRollCode">33193</strong></div>
+              <div><small>Roll Number:</small> <strong id="outRollNumber">26017186</strong></div>
+              <div><small>Reg. No:</small> <strong id="outRegNo">R-33018274-26</strong></div>
               <div><small>Result Date:</small> <strong>7वां दिन (09:00 AM)</strong></div>
             </div>
-            <p class="ticket-warning">★ आपका रोल कोड और रोल नंबर हमेशा के लिए सुरक्षित कर दिया गया है। 7वें दिन इसी से परिणाम खुलेगा।</p>
+            <p class="ticket-warning">★ आपका रोल कोड और रोल नंबर सुरक्षित है। 7वें दिन इसी से परिणाम खुलेगा।</p>
           </div>
 
           <div class="sim-actions-group">
@@ -276,34 +282,64 @@
     let selectedImages = { gadyansh: [], nibandh: [], laghu: [], deergh: [] };
 
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. अनिवार्य लॉगिन गेट
-      requireAuthStudent(async (user) => {
-        currentUser = user;
-        cloudState = await getCloudExamState(user);
-        cloudState = await enforceCloudAbsence(user, cloudState);
+      // 1. तुरंत लोकल स्टोरेज या डिफ़ॉल्ट डेटा लोड करें (बिना किसी रुकावट के)
+      let savedName = localStorage.getItem("nd_user_name") || "Prince Kumar";
+      let rollCode = localStorage.getItem("nd_saved_roll_code") || "33193";
+      let rollNumber = localStorage.getItem("nd_saved_roll_number") || "26017186";
+      let regNo = localStorage.getItem("nd_saved_reg_no") || "R-33018274-26";
 
-        // हेडर व प्रोफाइल अपडेट
-        document.getElementById("simUserFirstName").textContent = (user.displayName || "परीक्षार्थी").split(" ")[0];
-        document.getElementById("userAvatarChar").textContent = (user.displayName || "U").charAt(0).toUpperCase();
+      document.getElementById("regStudentName").value = savedName;
+      document.getElementById("simUserFirstName").textContent = savedName.split(" ")[0];
+      document.getElementById("userAvatarChar").textContent = savedName.charAt(0).toUpperCase();
+      document.getElementById("outRollCode").textContent = rollCode;
+      document.getElementById("outRollNumber").textContent = rollNumber;
+      document.getElementById("outRegNo").textContent = regNo;
 
-        // एडमिट कार्ड डेटा
-        document.getElementById("regStudentName").value = cloudState.displayName;
-        document.getElementById("outRollCode").textContent = cloudState.rollCode;
-        document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
-        document.getElementById("outRegNo").textContent = cloudState.regNo;
+      // 2. होम स्क्रीन वाले Firebase Auth से कनेक्ट करें
+      const checkFirebase = setInterval(() => {
+        if (window.NischayConfig && window.NischayConfig.isCloudReady) {
+          clearInterval(checkFirebase);
 
-        // ड्रॉपडाउन में [COMPLETED ✓] अपडेट करना
-        updateSubjectDropdownStatus(cloudState);
+          window.NischayConfig.authInstance.onAuthStateChanged(async (user) => {
+            if (user) {
+              currentUser = user;
+              const displayName = user.displayName || savedName;
+              localStorage.setItem("nd_user_name", displayName);
 
-        // यदि छात्र पहले से किसी चालू परीक्षा में था (रिफ्रेश रिकवरी)
-        if (cloudState.activeSession) {
-          activeDay = cloudState.activeSession.day;
-          resumeExamHall(activeDay);
+              document.getElementById("simUserFirstName").textContent = displayName.split(" ")[0];
+              document.getElementById("userAvatarChar").textContent = displayName.charAt(0).toUpperCase();
+              document.getElementById("regStudentName").value = displayName;
+
+              cloudState = await getCloudExamState(user);
+              cloudState = await enforceCloudAbsence(user, cloudState);
+
+              document.getElementById("outRollCode").textContent = cloudState.rollCode;
+              document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
+              document.getElementById("outRegNo").textContent = cloudState.regNo;
+
+              localStorage.setItem("nd_saved_roll_code", cloudState.rollCode);
+              localStorage.setItem("nd_saved_roll_number", cloudState.rollNumber);
+              localStorage.setItem("nd_saved_reg_no", cloudState.regNo);
+
+              updateSubjectDropdownStatus(cloudState);
+
+              if (cloudState.activeSession) {
+                activeDay = cloudState.activeSession.day;
+                resumeExamHall(activeDay);
+              }
+            } else {
+              // अगर किसी वजह से सेशन नहीं मिला तो लोकल डेटा से ड्रॉपडाउन तैयार करें
+              let localMockState = {
+                completedDays: JSON.parse(localStorage.getItem("nd_completed_days") || "{}")
+              };
+              updateSubjectDropdownStatus(localMockState);
+            }
+          });
         }
-      });
+      }, 200);
     });
 
-    // ड्रॉपडाउन में COMPLETED का ठप्पा
+    // ड्रॉपडाउन में [COMPLETED ✓] का ठप्पा लगाना
     function updateSubjectDropdownStatus(state) {
       const selectEl = document.getElementById("regExamDaySelect");
       const subjects = [
@@ -322,7 +358,7 @@
         const opt = document.createElement("option");
         opt.value = sub.day;
 
-        const record = state.completedDays ? state.completedDays[sub.day] : null;
+        const record = (state && state.completedDays) ? state.completedDays[sub.day] : null;
 
         if (record && record.status === "COMPLETED") {
           opt.textContent = `${sub.text} — [COMPLETED ✓]`;
@@ -348,10 +384,15 @@
     async function handleRegistrationSubmit(event) {
       event.preventDefault();
       activeDay = parseInt(document.getElementById("regExamDaySelect").value, 10);
+      const studentName = document.getElementById("regStudentName").value.trim();
+      localStorage.setItem("nd_user_name", studentName);
 
-      await updateCloudExamState(currentUser, {
-        activeSession: { day: activeDay, startedAt: new Date().toISOString() }
-      });
+      if (currentUser) {
+        await updateCloudExamState(currentUser, {
+          displayName: studentName,
+          activeSession: { day: activeDay, startedAt: new Date().toISOString() }
+        });
+      }
 
       resumeExamHall(activeDay);
     }
@@ -361,7 +402,10 @@
       const paperKey = daySubjectMap[day] || "101-hindi";
       const paperData = BSEB_PAPERS_DATABASE[paperKey];
 
-      document.getElementById("hallDisplayRoll").textContent = `${cloudState.rollCode} - ${cloudState.rollNumber}`;
+      const rCode = document.getElementById("outRollCode").textContent;
+      const rNum = document.getElementById("outRollNumber").textContent;
+
+      document.getElementById("hallDisplayRoll").textContent = `${rCode} - ${rNum}`;
       document.getElementById("hallDisplaySub").textContent = paperData.subjectName;
 
       // Google Drive iframe
@@ -373,13 +417,18 @@
       document.getElementById("simExamHallStage").classList.add("active");
 
       toggleMobileView('paper');
-      runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
+      
+      if (currentUser) {
+        runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
+      } else {
+        startExamTimer(day, confirmFinalExamSubmission);
+      }
     }
 
     function renderOmrBubbles(totalQuestions) {
       const container = document.getElementById("omrBubblesMatrix");
       container.innerHTML = "";
-      const saved = (cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : {};
+      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : getSavedBubbles(activeDay);
 
       for (let i = 1; i <= totalQuestions; i++) {
         const row = document.createElement("div");
@@ -405,7 +454,7 @@
     }
 
     function selectBubble(qNum, opt) {
-      const saved = (cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : {};
+      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : getSavedBubbles(activeDay);
       if (!saved[qNum] && Object.keys(saved).length >= 50) {
         alert("⚠️ बिहार बोर्ड नियमानुसार अधिकतम 50 प्रश्नों का ही उत्तर दिया जा सकता है!");
         return;
@@ -417,7 +466,12 @@
       });
       document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`).classList.add("filled");
 
-      syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
+      if (currentUser) {
+        syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
+      } else {
+        saveBubbleChoice(qNum, opt, activeDay);
+      }
+
       saved[qNum] = opt;
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
@@ -457,19 +511,33 @@
       btn.textContent = "⏳ क्लाउड व AI मूल्यांकन...";
 
       try {
-        await submitExamToCloud(
-          currentUser,
-          activeDay,
-          paperData.subjectName,
-          paperData.answerKey,
-          [
-            ...(selectedImages.gadyansh || []),
-            ...(selectedImages.nibandh || []),
-            ...(selectedImages.laghu || []),
-            ...(selectedImages.deergh || [])
-          ],
-          cloudState
-        );
+        if (currentUser) {
+          await submitExamToCloud(
+            currentUser,
+            activeDay,
+            paperData.subjectName,
+            paperData.answerKey,
+            [
+              ...(selectedImages.gadyansh || []),
+              ...(selectedImages.nibandh || []),
+              ...(selectedImages.laghu || []),
+              ...(selectedImages.deergh || [])
+            ],
+            cloudState
+          );
+        } else {
+          await submitDailyExam(
+            activeDay,
+            paperData.subjectName,
+            paperData.answerKey,
+            [
+              ...(selectedImages.gadyansh || []),
+              ...(selectedImages.nibandh || []),
+              ...(selectedImages.laghu || []),
+              ...(selectedImages.deergh || [])
+            ]
+          );
+        }
 
         alert(`✓ Day ${activeDay} (${paperData.subjectName}) की परीक्षा जमा हो गई!\n\nविषय पर [COMPLETED ✓] दर्ज हो गया है।`);
         location.reload();
