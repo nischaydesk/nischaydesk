@@ -1,6 +1,7 @@
 /**
  * ==========================================================================
  * NischayDesk - BSEB Official Cloud Engine (Firebase Firestore Backed)
+ * Multi-Class Engine (10th, 11th, 12th) & Permanent Single-ID Credentials
  * Developed for Prince Kumar | NischayDesk Enterprise
  * ==========================================================================
  */
@@ -67,49 +68,77 @@ function triggerGoogleLogin() {
 }
 
 // ==========================================
-// 3. Firestore क्लाउड सिंक
+// 3. Firestore क्लाउड सिंक (1 Gmail = 1 स्थायी एडमिट कार्ड)
 // ==========================================
 async function getCloudExamState(user) {
+  if (!window.NischayConfig || !window.NischayConfig.dbInstance) {
+    console.error("Firebase Database उपलब्ध नहीं है!");
+    return null;
+  }
+
   const db = window.NischayConfig.dbInstance;
   const docRef = db.collection("bseb_exams_2026").doc(user.uid);
   const docSnap = await docRef.get();
 
-  if (!docSnap.exists) {
-    const now = new Date();
-    const resultDate = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
-    resultDate.setHours(9, 0, 0, 0);
-
-    const initialState = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName || "Prince Kumar",
-      rollCode: localStorage.getItem("nd_saved_roll_code") || "33" + Math.floor(100 + Math.random() * 900),
-      rollNumber: localStorage.getItem("nd_saved_roll_number") || "2601" + Math.floor(1000 + Math.random() * 9000),
-      regNo: localStorage.getItem("nd_saved_reg_no") || "R-330" + Math.floor(10000000 + Math.random() * 90000000) + "-26",
-      schoolName: "HIGH SCHOOL TELWA, JHAJHA",
-      fatherName: "SURESH SHARMA",
-      startDate: now.toISOString(),
-      resultUnlockTime: resultDate.toISOString(),
-      currentActiveDay: 1,
-      completedDays: {},
-      savedOMR: {},
-      activeSession: null
-    };
-
-    await docRef.set(initialState);
-    return initialState;
+  // 1. अगर छात्र पहले से मौजूद है -> वही पुराना रोल कोड/नंबर लौटाएँ (नया कभी नहीं बनेगा)
+  if (docSnap.exists) {
+    const existingData = docSnap.data();
+    localStorage.setItem("nd_saved_roll_code", existingData.rollCode);
+    localStorage.setItem("nd_saved_roll_number", existingData.rollNumber);
+    localStorage.setItem("nd_saved_reg_no", existingData.regNo);
+    if (existingData.selectedClass) {
+      localStorage.setItem("nd_selected_class", existingData.selectedClass);
+    }
+    return existingData;
   }
-  return docSnap.data();
+
+  // 2. अगर छात्र पहली बार आया है -> केवल एक बार नया बनाएँ और हमेशा के लिए लॉक करें
+  const now = new Date();
+  const resultDate = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
+  resultDate.setHours(9, 0, 0, 0);
+
+  const initialClass = localStorage.getItem("nd_selected_class") || "10th";
+  const newRollCode = localStorage.getItem("nd_saved_roll_code") || "33" + Math.floor(100 + Math.random() * 900);
+  const newRollNumber = localStorage.getItem("nd_saved_roll_number") || "2601" + Math.floor(1000 + Math.random() * 9000);
+  const newRegNo = localStorage.getItem("nd_saved_reg_no") || "R-330" + Math.floor(10000000 + Math.random() * 90000000) + "-26";
+
+  const permanentStudentState = {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName || user.email.split('@')[0],
+    selectedClass: initialClass,
+    rollCode: newRollCode,
+    rollNumber: newRollNumber,
+    regNo: newRegNo,
+    schoolName: "HIGH SCHOOL TELWA, JHAJHA",
+    fatherName: "SURESH SHARMA",
+    startDate: now.toISOString(),
+    resultUnlockTime: resultDate.toISOString(),
+    currentActiveDay: 1,
+    completedDays: {},
+    savedOMR: {},
+    activeSession: null
+  };
+
+  // Firestore में स्थाई रूप से सेव करें
+  await docRef.set(permanentStudentState);
+
+  localStorage.setItem("nd_saved_roll_code", newRollCode);
+  localStorage.setItem("nd_saved_roll_number", newRollNumber);
+  localStorage.setItem("nd_saved_reg_no", newRegNo);
+  localStorage.setItem("nd_selected_class", initialClass);
+
+  return permanentStudentState;
 }
 
 async function updateCloudExamState(user, patchData) {
-  if (!window.NischayConfig || !window.NischayConfig.dbInstance) return;
+  if (!window.NischayConfig || !window.NischayConfig.dbInstance || !user) return;
   const db = window.NischayConfig.dbInstance;
   await db.collection("bseb_exams_2026").doc(user.uid).set(patchData, { merge: true });
 }
 
 // ==========================================
-// 4. अनुपस्थिति नियम
+// 4. अनुपस्थिति नियम (Strict Calendar Rule)
 // ==========================================
 async function enforceCloudAbsence(user, state) {
   if (!state || !state.startDate) return state;
@@ -125,7 +154,7 @@ async function enforceCloudAbsence(user, state) {
     if (d < daysPassed) {
       if (!state.completedDays[d] || state.completedDays[d].status !== "COMPLETED") {
         state.completedDays[d] = {
-          subjectName: BSEB_CONFIG.SUBJECTS[d - 1].name,
+          subjectName: `Day ${d} Exam`,
           objectiveMarks: 0,
           subjectiveMarks: 0,
           totalMarks: 0,
@@ -138,7 +167,7 @@ async function enforceCloudAbsence(user, state) {
   }
 
   state.currentActiveDay = Math.min(daysPassed, 7);
-  if (hasChanged) {
+  if (hasChanged && user) {
     await updateCloudExamState(user, {
       completedDays: state.completedDays,
       currentActiveDay: state.currentActiveDay
@@ -185,13 +214,12 @@ function runCloudExamTimer(user, day, onTimeUp) {
   }, 1000);
 }
 
-// बैकअप टाइमर फंक्शन (ताकि सिमुलेटर कभी क्रैश न हो)
 function startExamTimer(day, onTimeUp) {
   runCloudExamTimer(null, day, onTimeUp);
 }
 
 // ==========================================
-// 6. OMR सिंक (Firestore Crash-Proof Fix)
+// 6. OMR सिंक (Crash-Proof Merge)
 // ==========================================
 async function syncBubbleToCloud(user, day, qNum, opt, state) {
   if (!state) return;
@@ -199,13 +227,11 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
   if (!state.savedOMR[day]) state.savedOMR[day] = {};
   state.savedOMR[day][qNum] = opt;
 
-  // लोकल बैकअप
   localStorage.setItem(`omr_backup_${day}_${qNum}`, opt);
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     try {
       const db = window.NischayConfig.dbInstance;
-      // .set with merge is 100% crash proof vs .update
       await db.collection("bseb_exams_2026").doc(user.uid).set({
         savedOMR: {
           [day]: {
@@ -219,7 +245,6 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
   }
 }
 
-// बैकअप OMR रीड/राइट
 function saveBubbleChoice(qNum, opt, day) {
   localStorage.setItem(`omr_backup_${day}_${qNum}`, opt);
 }
@@ -287,7 +312,7 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesB64, s
   for (let i = 1; i <= 100; i++) {
     if (omr[i]) {
       count++;
-      if (answerKey[i] && omr[i].toUpperCase() === answerKey[i].toUpperCase()) {
+      if (answerKey && answerKey[i] && omr[i].toUpperCase() === answerKey[i].toUpperCase()) {
         objMarks++;
       }
       if (count === 50) break;
@@ -320,7 +345,6 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesB64, s
     });
   }
 
-  // स्थानीय बैकअप
   const localCompleted = JSON.parse(localStorage.getItem("nd_completed_days") || "{}");
   localCompleted[day] = completedData;
   localStorage.setItem("nd_completed_days", JSON.stringify(localCompleted));
@@ -328,7 +352,6 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesB64, s
   return completedData;
 }
 
-// बैकअप लोकल सबमिशन फंक्शन
 async function submitDailyExam(day, subjectName, answerKey, imagesB64) {
   return await submitExamToCloud(null, day, subjectName, answerKey, imagesB64, null);
 }
