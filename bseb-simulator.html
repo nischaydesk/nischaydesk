@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BSEB Real Exam Simulator | NischayDesk</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Core Theme & Simulator Stylesheets -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="bseb-style.css" />
+
+  <!-- Firebase Modular Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="app-body bseb-simulator-body">
+
+  <!-- TOP APP HEADER -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <a href="index.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">BSEB Real Exam Simulator</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Live Student Profile Chip (Only First Name Display) -->
+        <div class="user-profile-widget" id="userProfileWidget" style="display: flex;">
+          <div class="user-avatar-img" id="userAvatarChar" style="width: 28px; height: 28px; border-radius: 50%; background: #0284c7; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; border: 1.5px solid #38bdf8;">?</div>
+          <div class="user-info-text">
+            <span class="user-display-name" id="simUserFirstName">अतिथि छात्र</span>
+            <span class="user-session-badge" id="simUserClassBadge">Class 10th</span>
+          </div>
+        </div>
+        <a href="index.html" class="btn-home-exit" title="डैशबोर्ड पर लौटें">🏠 होम</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sim-main-viewport">
+
+    <!-- ====================================================================
+         STAGE 1: ADMISSION DESK & CREDENTIAL GENERATOR (प्रवेश पत्र सत्यापन)
+         ==================================================================== -->
+    <section class="sim-stage active" id="simVerificationStage">
+      <div class="sim-card-box">
+        <div class="sim-header-chip">
+          <span class="pulsing-dot"></span> NischayDesk • बिहार बोर्ड परीक्षा सिमुलेशन पोर्टल
+        </div>
+        <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">सत्यापन एवं डिजिटल एडमिट कार्ड</span> गेट</h1>
+        <p class="sim-subtitle">
+          असली बोर्ड परीक्षा शुरू करने से पहले अपना विवरण भरें। सबमिट करते ही आपका रोल कोड व रोल नंबर जनरेट होगा।
+        </p>
+
+        <form id="simVerificationForm" class="sim-entry-form" onsubmit="handleRegistrationSubmit(event)">
+          <div class="sim-form-grid">
+            <div class="sim-input-group">
+              <label for="regStudentName">परीक्षार्थी का पूरा नाम (Candidate Name) *</label>
+              <input type="text" id="regStudentName" class="sim-input" placeholder="उदा: RAHUL KUMAR" required />
+            </div>
+
+            <div class="sim-input-group">
+              <label for="regFatherName">पिता का नाम (Father's Name) *</label>
+              <input type="text" id="regFatherName" class="sim-input" placeholder="उदा: SURESH SHARMA" required />
+            </div>
+
+            <div class="sim-input-group full-width">
+              <label for="regSchoolName">विद्यालय / कॉलेज का नाम (School Name) *</label>
+              <input type="text" id="regSchoolName" class="sim-input" placeholder="उदा: GOVT. HIGH SCHOOL PATNA" required />
+            </div>
+
+            <div class="sim-input-group">
+              <label for="regExamClass">कक्षा (Examination Level) *</label>
+              <select id="regExamClass" class="sim-select" onchange="handleSimClassChange(this.value)">
+                <option value="10" selected>कक्षा 10वीं (मैट्रिक बोर्ड)</option>
+                <option value="11">कक्षा 11वीं (साइंस)</option>
+                <option value="12">कक्षा 12वीं (इंटर साइंस बोर्ड)</option>
+              </select>
+            </div>
+
+            <div class="sim-input-group">
+              <label for="regExamSubject">विषय चुनें (Subject) *</label>
+              <select id="regExamSubject" class="sim-select">
+                <option value="101-hindi" selected>101 - हिन्दी (M.I.L Hindi) [100 Marks]</option>
+                <option value="110-math">110 - गणित (Mathematics) [100 Marks]</option>
+                <option value="112-science">112 - विज्ञान (Science) [80 + 20 Marks]</option>
+                <option value="113-sst">113 - सामाजिक विज्ञान (Social Science) [80 + 20 Marks]</option>
+                <option value="105-sanskrit">105 - संस्कृत (S.I.L Sanskrit) [100 Marks]</option>
+                <option value="114-english">114 - अंग्रेजी (English) [100 Marks]</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- GENERATED CREDENTIALS TICKET -->
+          <div class="sim-ticket-preview" id="simTicketPreview" style="display: none;">
+            <div class="ticket-header">
+              <span>NISCHAYDESK PROVISIONAL ADMIT CARD</span>
+              <span class="ticket-badge">VERIFIED</span>
+            </div>
+            <div class="ticket-grid">
+              <div><small>ND Unique ID:</small> <strong id="outUniqueId">--------</strong></div>
+              <div><small>Roll Code:</small> <strong id="outRollCode">-----</strong></div>
+              <div><small>Roll Number:</small> <strong id="outRollNumber">--------</strong></div>
+              <div><small>Reg. No:</small> <strong id="outRegNo">--------------</strong></div>
+            </div>
+            <p class="ticket-warning">⚠️ कृपया अपना रोल कोड और रोल नंबर नोट कर लें। परीक्षा समाप्त होने पर इसी से आपका परिणाम खुलेगा।</p>
+          </div>
+
+          <div class="sim-actions-group">
+            <button type="button" id="btnGenCredentials" class="btn-sim-secondary" onclick="generateCandidateCredentials()">
+              ⚡ रोल नंबर व एडमिट कार्ड जनरेट करें
+            </button>
+            <button type="submit" id="btnEnterExamHall" class="btn-sim-primary" disabled>
+              🏛️ परीक्षा कक्ष में प्रवेश करें (Enter Exam Hall) →
+            </button>
+          </div>
+        </form>
+
+        <!-- Search Existing Result Direct Entry -->
+        <div class="sim-direct-search-box">
+          <span>पहले से परीक्षा दे चुके हैं?</span>
+          <button type="button" class="btn-link-search" onclick="location.href='bseb-result.html'">
+            🔍 रोल कोड व रोल नंबर डालकर परिणाम खोजें
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         STAGE 2: REAL 3 HOURS 15 MIN EXAM HALL (SPLIT STAGE OMR + SUBJECTIVE)
+         ==================================================================== -->
+    <section class="sim-stage" id="simExamHallStage">
+      
+      <!-- TOP STATUS COMMAND BAR -->
+      <div class="exam-command-bar">
+        <div class="candidate-mini-info">
+          <span class="candidate-roll-badge">Roll: <strong id="hallDisplayRoll">----- - --------</strong></span>
+          <span class="candidate-sub-badge" id="hallDisplaySub">विषय</span>
+        </div>
+
+        <!-- 3 Hours 15 Minutes Live Engine Timer -->
+        <div class="exam-engine-timer" id="examEngineTimer">
+          <span class="timer-icon">⏳</span>
+          <span class="timer-text">शेष समय:</span>
+          <span class="timer-digits" id="simTimerDigits">03:15:00</span>
+        </div>
+
+        <button type="button" class="btn-submit-board-exam" onclick="confirmFinalExamSubmission()">
+          सबमिट एवं फाइनल रिजल्ट ✓
+        </button>
+      </div>
+
+      <!-- MAIN SPLIT VIEWPORT STAGE -->
+      <div class="exam-split-grid">
+
+        <!-- LEFT PANE: GOOGLE DRIVE PREVIEW QUESTION PAPER (PAGES NAVIGATOR) -->
+        <div class="exam-left-pane">
+          <div class="pane-action-bar">
+            <div class="pane-title">📄 आधिकारिक प्रश्न पत्र (Question Paper)</div>
+            <div class="paper-page-controls">
+              <span class="paper-page-indicator" id="paperPageIndicator">स्मूथ स्क्रॉल व्यू</span>
+            </div>
+          </div>
+
+          <div class="paper-iframe-wrapper">
+            <iframe 
+              id="simPaperFrame" 
+              src="" 
+              frameborder="0"
+              allowfullscreen
+              sandbox="allow-scripts allow-same-origin allow-forms">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- RIGHT PANE: SECTION TABS (OMR BUBBLES & SUBJECTIVE SCANNER) -->
+        <div class="exam-right-pane">
+          
+          <div class="pane-tab-switcher">
+            <button type="button" class="tab-btn active" id="tabBtnOmr" onclick="switchExamTab('omr')">
+              🔴 खंड 'अ': OMR शीट (50 अंक)
+            </button>
+            <button type="button" class="tab-btn" id="tabBtnSubj" onclick="switchExamTab('subj')">
+              📸 खंड 'ब': उत्तर कॉपी स्कैन (50 अंक)
+            </button>
+          </div>
+
+          <!-- TAB 1: BSEB REAL OMR BUBBLE MATRIX -->
+          <div class="exam-tab-content active" id="tabContentOmr">
+            <div class="omr-meta-strip">
+              <span>★ नियम: अधिकतम 50 प्रश्नों के गोले रंगें (1 प्रश्न = 1 अंक)</span>
+              <span class="omr-fill-counter">भरे गए गोले: <strong id="omrFilledCount">0</strong> / 50</span>
+            </div>
+
+            <div class="omr-bubbles-scroll-area" id="omrBubblesMatrix">
+              <!-- Dynamically rendered 100 Rows of (A, B, C, D) bubbles -->
+            </div>
+          </div>
+
+          <!-- TAB 2: SUBJECTIVE QUESTION HANDWRITTEN PHOTO UPLOADER -->
+          <div class="exam-tab-content" id="tabContentSubj">
+            <div class="subj-meta-strip">
+              <span>✍️ कॉपी पर हाथ से उत्तर लिखें और क्रमवार साफ फोटो अपलोड करें।</span>
+            </div>
+
+            <div class="subj-upload-list" id="subjUploadList">
+              <!-- Dynamic Cards for Question Uploads -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="bseb-papers.js"></script>
+  <script src="bseb-engine.js"></script>
+</body>
+</html>
