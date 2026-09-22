@@ -20,7 +20,9 @@ const BSEB_CONFIG = {
   ]
 };
 
+// ==========================================
 // 1. थीम इंजन
+// ==========================================
 function initThemeEngine() {
   const savedTheme = localStorage.getItem("nischay_theme") || "dark";
   applyTheme(savedTheme);
@@ -38,7 +40,9 @@ function applyTheme(theme) {
   if (btn) btn.innerHTML = theme === "dark" ? "☀️ लाइट मोड" : "🌙 डार्क मोड";
 }
 
+// ==========================================
 // 2. अनिवार्य लॉगिन गेटकीपर
+// ==========================================
 function requireAuthStudent(callback) {
   const checkAuth = setInterval(() => {
     if (window.NischayConfig && window.NischayConfig.isCloudReady) {
@@ -55,13 +59,16 @@ function requireAuthStudent(callback) {
 }
 
 function triggerGoogleLogin() {
+  if (!window.NischayConfig || !window.NischayConfig.authInstance) return;
   const provider = new firebase.auth.GoogleAuthProvider();
   window.NischayConfig.authInstance.signInWithPopup(provider)
     .then(() => location.reload())
     .catch((err) => alert("लॉगिन असफल: " + err.message));
 }
 
-// 3. Firestore क्लाउड सिंक (अमर एडमिट कार्ड व स्टेट)
+// ==========================================
+// 3. Firestore क्लाउड सिंक
+// ==========================================
 async function getCloudExamState(user) {
   const db = window.NischayConfig.dbInstance;
   const docRef = db.collection("bseb_exams_2026").doc(user.uid);
@@ -75,10 +82,10 @@ async function getCloudExamState(user) {
     const initialState = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName || "परीक्षार्थी",
-      rollCode: "33" + Math.floor(100 + Math.random() * 900),
-      rollNumber: "2601" + Math.floor(1000 + Math.random() * 9000),
-      regNo: "R-330" + Math.floor(10000000 + Math.random() * 90000000) + "-26",
+      displayName: user.displayName || "Prince Kumar",
+      rollCode: localStorage.getItem("nd_saved_roll_code") || "33" + Math.floor(100 + Math.random() * 900),
+      rollNumber: localStorage.getItem("nd_saved_roll_number") || "2601" + Math.floor(1000 + Math.random() * 9000),
+      regNo: localStorage.getItem("nd_saved_reg_no") || "R-330" + Math.floor(10000000 + Math.random() * 90000000) + "-26",
       schoolName: "HIGH SCHOOL TELWA, JHAJHA",
       fatherName: "SURESH SHARMA",
       startDate: now.toISOString(),
@@ -96,18 +103,24 @@ async function getCloudExamState(user) {
 }
 
 async function updateCloudExamState(user, patchData) {
+  if (!window.NischayConfig || !window.NischayConfig.dbInstance) return;
   const db = window.NischayConfig.dbInstance;
   await db.collection("bseb_exams_2026").doc(user.uid).set(patchData, { merge: true });
 }
 
+// ==========================================
 // 4. अनुपस्थिति नियम
+// ==========================================
 async function enforceCloudAbsence(user, state) {
+  if (!state || !state.startDate) return state;
   const startDayTime = new Date(state.startDate).getTime();
   const nowTime = Date.now();
   const oneDayMs = 24 * 60 * 60 * 1000;
   const daysPassed = Math.floor((nowTime - startDayTime) / oneDayMs) + 1;
 
   let hasChanged = false;
+  if (!state.completedDays) state.completedDays = {};
+
   for (let d = 1; d <= 6; d++) {
     if (d < daysPassed) {
       if (!state.completedDays[d] || state.completedDays[d].status !== "COMPLETED") {
@@ -134,11 +147,13 @@ async function enforceCloudAbsence(user, state) {
   return state;
 }
 
+// ==========================================
 // 5. 3 घंटे 15 मिनट टाइमर
+// ==========================================
 let examTimerRef = null;
 
 function runCloudExamTimer(user, day, onTimeUp) {
-  const timerKey = `timer_end_${user.uid}_day_${day}`;
+  const timerKey = `timer_end_${user ? user.uid : 'guest'}_day_${day}`;
   let endTime = localStorage.getItem(timerKey);
 
   if (!endTime) {
@@ -170,18 +185,57 @@ function runCloudExamTimer(user, day, onTimeUp) {
   }, 1000);
 }
 
-// 6. OMR सिंक
+// बैकअप टाइमर फंक्शन (ताकि सिमुलेटर कभी क्रैश न हो)
+function startExamTimer(day, onTimeUp) {
+  runCloudExamTimer(null, day, onTimeUp);
+}
+
+// ==========================================
+// 6. OMR सिंक (Firestore Crash-Proof Fix)
+// ==========================================
 async function syncBubbleToCloud(user, day, qNum, opt, state) {
+  if (!state) return;
+  if (!state.savedOMR) state.savedOMR = {};
   if (!state.savedOMR[day]) state.savedOMR[day] = {};
   state.savedOMR[day][qNum] = opt;
 
-  const db = window.NischayConfig.dbInstance;
-  await db.collection("bseb_exams_2026").doc(user.uid).update({
-    [`savedOMR.${day}.${qNum}`]: opt
-  });
+  // लोकल बैकअप
+  localStorage.setItem(`omr_backup_${day}_${qNum}`, opt);
+
+  if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
+    try {
+      const db = window.NischayConfig.dbInstance;
+      // .set with merge is 100% crash proof vs .update
+      await db.collection("bseb_exams_2026").doc(user.uid).set({
+        savedOMR: {
+          [day]: {
+            [qNum]: opt
+          }
+        }
+      }, { merge: true });
+    } catch (e) {
+      console.warn("Cloud OMR sync error (saved locally):", e);
+    }
+  }
 }
 
+// बैकअप OMR रीड/राइट
+function saveBubbleChoice(qNum, opt, day) {
+  localStorage.setItem(`omr_backup_${day}_${qNum}`, opt);
+}
+
+function getSavedBubbles(day) {
+  const bubbles = {};
+  for (let i = 1; i <= 100; i++) {
+    const val = localStorage.getItem(`omr_backup_${day}_${i}`);
+    if (val) bubbles[i] = val;
+  }
+  return bubbles;
+}
+
+// ==========================================
 // 7. असली AI विज़न चेकर
+// ==========================================
 async function gradeSubjectiveWithGemini(subjectName, imagesBase64) {
   if (!imagesBase64 || imagesBase64.length === 0) {
     return { marks: 0, feedback: "कोई कॉपी अपलोड नहीं मिली।" };
@@ -222,9 +276,11 @@ async function gradeSubjectiveWithGemini(subjectName, imagesBase64) {
   return { marks: 25, feedback: "तकनीकी समीक्षाधीन" };
 }
 
+// ==========================================
 // 8. सबमिशन इंजन
+// ==========================================
 async function submitExamToCloud(user, day, subjectName, answerKey, imagesB64, state) {
-  const omr = (state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
+  const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : getSavedBubbles(day);
   
   let objMarks = 0;
   let count = 0;
@@ -249,15 +305,32 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesB64, s
     submittedAt: new Date().toISOString()
   };
 
-  state.completedDays[day] = completedData;
-  state.activeSession = null;
+  if (state) {
+    if (!state.completedDays) state.completedDays = {};
+    state.completedDays[day] = completedData;
+    state.activeSession = null;
+  }
 
-  await updateCloudExamState(user, {
-    [`completedDays.${day}`]: completedData,
-    activeSession: null
-  });
+  if (user) {
+    await updateCloudExamState(user, {
+      completedDays: {
+        [day]: completedData
+      },
+      activeSession: null
+    });
+  }
+
+  // स्थानीय बैकअप
+  const localCompleted = JSON.parse(localStorage.getItem("nd_completed_days") || "{}");
+  localCompleted[day] = completedData;
+  localStorage.setItem("nd_completed_days", JSON.stringify(localCompleted));
 
   return completedData;
+}
+
+// बैकअप लोकल सबमिशन फंक्शन
+async function submitDailyExam(day, subjectName, answerKey, imagesB64) {
+  return await submitExamToCloud(null, day, subjectName, answerKey, imagesB64, null);
 }
 
 document.addEventListener("DOMContentLoaded", initThemeEngine);
