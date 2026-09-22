@@ -1,6 +1,8 @@
 /* ==========================================================================
-   NischayDesk Real-Time Test Simulation Engine (Exact Logic Fix v6.3)
-   Architected by: Prince Kumar
+   NischayDesk Real-Time Test Simulation Engine (v5.0 Ultimate Pro)
+   Architected by: Prince Kumar (NischayDesk)
+   Features: Robust JSON Fetch, Bulletproof Option Highlighting,
+             Dashboard Score Sync, Negative Marking & Zero DOM Collision
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -39,41 +41,19 @@ document.addEventListener('DOMContentLoaded', function () {
   let timerInterval = null;
   let timeRemaining = 900;
 
-  // 1. डायरेक्ट होम बटन
-  const headerBrand = document.querySelector('.header-brand, .brand, nav, header');
-  if (headerBrand && !document.getElementById('quickHomeNavBtn')) {
-    const homeBtn = document.createElement('a');
-    homeBtn.id = 'quickHomeNavBtn';
-    homeBtn.href = 'index.html';
-    homeBtn.innerHTML = '🏠 होम';
-    homeBtn.setAttribute('style', `
-      margin-left: 10px;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.15);
-      color: inherit;
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      display: inline-flex;
-      align-items: center;
-    `);
-    headerBrand.appendChild(homeBtn);
-  }
-
-  // 2. 11th और 12th चुनते ही अलर्ट
+  // 1. 11th और 12th चुनते ही अलर्ट
   if (testClassSelect) {
     testClassSelect.addEventListener('change', function () {
       const selectedClass = this.value.trim();
       if (selectedClass === '11' || selectedClass === '12') {
-        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट अभी उपलब्ध नहीं है!\nइस पर काम चल रहा है, जल्द ही लाइव होगा। तब तक आप 10वीं का टेस्ट दें।`);
+        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट मॉड्यूल अभी तैयार हो रहा है!\nबहुत जल्द लाइव होगा। तब तक आप 10वीं का संपूर्ण अभ्यास कर सकते हैं।`);
         this.value = '10';
+        if (typeof updateSubjects === 'function') updateSubjects();
       }
     });
   }
 
-  // केवल चुने हुए विषय की ही JSON फाइल उठाना (ताकि कोई दूसरा विषय मिक्स न हो)
+  // केवल चुने हुए विषय की ही JSON फाइल उठाना
   function getTargetJsonFile() {
     const cls = testClassSelect ? testClassSelect.value.trim() : "10";
     if (cls !== "10") return "CLASS_NOT_READY";
@@ -137,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-      alert(`⚠️ '${jsonFile}' लोड नहीं हो सकी!\n${fetchError}`);
+      alert(`⚠️ प्रश्न बैंक डेटा लोड नहीं हो सका!\nकृपया इंटरनेट कनेक्शन जांचें।`);
       return false;
     }
 
@@ -152,10 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const isFull = isFullSyllabusSelected();
 
     if (isFull) {
-      // फुल सिलेबस: उसी विषय के सारे के सारे सवाल (जैसे फ़िज़िक्स के पूरे 100 सवाल)
       currentQuestions = [...allQs];
     } else {
-      // चैप्टर वाइज: केवल चुने हुए चैप्टर के सवाल
       const val = testChapterSelect.value;
       const text = testChapterSelect.options[testChapterSelect.selectedIndex].text;
       const match = (val + " " + text).match(/\d+/);
@@ -167,10 +145,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // प्रश्नों को शफल करना
     currentQuestions.sort(() => Math.random() - 0.5);
 
-    // ★ नियम: सिर्फ चैप्टर वाइज में 20 प्रश्न होंगे, फुल सिलेबस में जितने भी हैं सारे (पूरे 100) आएँगे!
     if (!isFull && currentQuestions.length > 20) {
       currentQuestions = currentQuestions.slice(0, 20);
     }
@@ -178,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
-  // 3. स्टार्ट बटन और टाइमर
+  // 2. स्टार्ट बटन और टाइमर
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
       const cls = testClassSelect ? testClassSelect.value.trim() : "10";
@@ -200,13 +176,8 @@ document.addEventListener('DOMContentLoaded', function () {
       userResponses = {};
       currentQIndex = 0;
 
-      // टाइमर: फुल सिलेबस = 30 मिनट (1800s), चैप्टर वाइज = 15 मिनट (900s)
       const isFull = isFullSyllabusSelected();
-      if (isFull) {
-        timeRemaining = 30 * 60; // 30 मिनट
-      } else {
-        timeRemaining = 15 * 60; // 15 मिनट
-      }
+      timeRemaining = isFull ? (30 * 60) : (15 * 60);
 
       if (testLobbyScreen) testLobbyScreen.classList.remove('active');
       if (testResultScreen) testResultScreen.classList.remove('active');
@@ -218,10 +189,11 @@ document.addEventListener('DOMContentLoaded', function () {
       startTimer();
       renderPalette();
       renderQuestion(0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
-  // 4. सवाल दिखाना
+  // 3. सवाल व विकल्प रेंडरिंग (100% कंट्रास्ट और नो-झबना लॉजिक)
   function renderQuestion(index) {
     if (index < 0 || index >= currentQuestions.length) return;
     currentQIndex = index;
@@ -243,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
       qData.options.forEach((optText, optIdx) => {
         const isSelected = (userResponses[index] === optIdx);
         const optCard = document.createElement('div');
-        optCard.className = `option-choice-item ${isSelected ? 'selected' : ''}`;
+        optCard.className = `option-choice-item ${isSelected ? 'selected active' : ''}`;
         optCard.innerHTML = `
           <span class="option-letter">${letters[optIdx]}</span>
           <span class="option-label-text">${optText}</span>
@@ -259,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePaletteStatus();
   }
 
-  // 5. पैलेट
+  // 4. NTA OMR पैलेट
   function renderPalette() {
     if (!paletteButtonsGrid) return;
     paletteButtonsGrid.innerHTML = '';
@@ -318,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 6. टाइमर
+  // 5. टाइमर इंजन
   function startTimer() {
     clearInterval(timerInterval);
     updateTimerDisplay();
@@ -327,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function () {
       updateTimerDisplay();
       if (timeRemaining <= 0) {
         clearInterval(timerInterval);
-        alert("समय समाप्त हो गया है!");
+        alert("परीक्षा का समय समाप्त हो गया है! आपका टेस्ट स्वतः सबमिट किया जा रहा है।");
         finishAndSubmitExam();
       }
     }, 1000);
@@ -336,10 +308,17 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateTimerDisplay() {
     const mins = Math.floor(timeRemaining / 60);
     const secs = timeRemaining % 60;
-    if (timerDigits) timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    if (timerDigits) {
+      timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      const timerBox = document.getElementById('examTimerBox');
+      if (timerBox) {
+        if (timeRemaining <= 120) timerBox.classList.add('timer-warning');
+        else timerBox.classList.remove('timer-warning');
+      }
+    }
   }
 
-  // 7. रिजल्ट
+  // 6. रिजल्ट व डैशबोर्ड सिंक
   function finishAndSubmitExam() {
     clearInterval(timerInterval);
     let correctCount = 0, wrongCount = 0;
@@ -354,9 +333,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const totalQuestions = currentQuestions.length;
     const totalScore = (correctCount * 4) - (wrongCount * 1);
+    const maxScore = totalQuestions * 4;
+    const accuracyVal = Math.round((correctCount / (correctCount + wrongCount || 1)) * 100);
 
-    if (resTotalMarks) resTotalMarks.innerText = `${totalScore} / ${totalQuestions * 4}`;
-    if (resAccuracy) resAccuracy.innerText = `${Math.round((correctCount / (correctCount + wrongCount || 1)) * 100)}%`;
+    // डैशबोर्ड के लिए स्कोर सुरक्षित करना
+    localStorage.setItem('nischay_last_test_score', `${totalScore} / ${maxScore}`);
+    localStorage.setItem('nischay_last_test_accuracy', `${accuracyVal}%`);
+
+    if (resTotalMarks) resTotalMarks.innerText = `${totalScore} / ${maxScore}`;
+    if (resAccuracy) resAccuracy.innerText = `${accuracyVal}%`;
     if (resCorrectCount) resCorrectCount.innerText = correctCount;
     if (resWrongCount) resWrongCount.innerText = wrongCount;
 
@@ -365,10 +350,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const letters = ['A', 'B', 'C', 'D'];
       currentQuestions.forEach((q, idx) => {
         const userAns = userResponses[idx];
+        const isCorrect = (userAns === q.correct);
         const solBox = document.createElement('div');
         solBox.className = 'sol-item';
         solBox.innerHTML = `
           <div class="sol-q-title">Q.${idx + 1}: ${q.q}</div>
+          <div class="sol-ans-row ${isCorrect ? 'correct' : 'wrong'}">
+            ${userAns !== undefined ? `आपका उत्तर: (${letters[userAns]})${q.options[userAns]}` : 'आपने यह प्रश्न छोड़ दिया था'}
+          </div>
           <div style="font-size:0.84rem; color:var(--success); font-weight:700; margin-bottom:4px;">
             सटीक उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
           </div>
@@ -380,12 +369,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (testRunningScreen) testRunningScreen.classList.remove('active');
     if (testResultScreen) testResultScreen.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   if (restartTestBtn) {
     restartTestBtn.addEventListener('click', () => {
       if (testResultScreen) testResultScreen.classList.remove('active');
       if (testLobbyScreen) testLobbyScreen.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 });
