@@ -1,8 +1,6 @@
 /**
- * ==========================================================================
- * NischayDesk - BSEB Official Cloud Engine (1-Second Instant Submit Engine)
- * Developed for Prince Kumar | NischayDesk Enterprise
- * ==========================================================================
+ * NischayDesk - BSEB Official Cloud Engine
+ * Unique Per-Gmail Roll Generation & Instant Submit
  */
 
 const BSEB_CONFIG = {
@@ -42,7 +40,21 @@ function triggerGoogleLogin() {
     .catch((err) => alert("लॉगिन असफल: " + err.message));
 }
 
-// 1 Gmail = 1 स्थायी रोल कोड और रोल नंबर
+// UID से यूनिक नंबर जनरेटर (ताकि हर Gmail को अलग नंबर मिले)
+function generateUniqueCredentials(uid) {
+  let hash = 0;
+  for (let i = 0; i < uid.length; i++) {
+    hash = (hash << 5) - hash + uid.charCodeAt(i);
+    hash |= 0;
+  }
+  const posHash = Math.abs(hash);
+  const rollCode = "33" + String(100 + (posHash % 899));
+  const rollNumber = "2601" + String(1000 + (Math.floor(posHash / 10) % 8999));
+  const regNo = "R-330" + String(10000000 + (Math.floor(posHash / 7) % 89999999)) + "-26";
+  return { rollCode, rollNumber, regNo };
+}
+
+// 1 Gmail = 1 यूनिक स्थायी रोल कोड और रोल नंबर
 async function getCloudExamState(user) {
   if (!window.NischayConfig || !window.NischayConfig.dbInstance) return null;
 
@@ -51,33 +63,25 @@ async function getCloudExamState(user) {
   const docSnap = await docRef.get();
 
   if (docSnap.exists) {
-    const existingData = docSnap.data();
-    localStorage.setItem("nd_saved_roll_code", existingData.rollCode);
-    localStorage.setItem("nd_saved_roll_number", existingData.rollNumber);
-    localStorage.setItem("nd_saved_reg_no", existingData.regNo);
-    if (existingData.selectedClass) {
-      localStorage.setItem("nd_selected_class", existingData.selectedClass);
-    }
-    return existingData;
+    return docSnap.data();
   }
 
+  // अगर नया यूजर है, तो सिर्फ उसकी UID से यूनिक रोल नंबर बनाएँ
+  const creds = generateUniqueCredentials(user.uid);
   const now = new Date();
   const resultDate = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
   resultDate.setHours(9, 0, 0, 0);
 
   const initialClass = localStorage.getItem("nd_selected_class") || "10th";
-  const newRollCode = localStorage.getItem("nd_saved_roll_code") || "33" + Math.floor(100 + Math.random() * 900);
-  const newRollNumber = localStorage.getItem("nd_saved_roll_number") || "2601" + Math.floor(1000 + Math.random() * 9000);
-  const newRegNo = localStorage.getItem("nd_saved_reg_no") || "R-330" + Math.floor(10000000 + Math.random() * 90000000) + "-26";
 
   const permanentStudentState = {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName || user.email.split('@')[0],
     selectedClass: initialClass,
-    rollCode: newRollCode,
-    rollNumber: newRollNumber,
-    regNo: newRegNo,
+    rollCode: creds.rollCode,
+    rollNumber: creds.rollNumber,
+    regNo: creds.regNo,
     schoolName: "HIGH SCHOOL TELWA, JHAJHA",
     fatherName: "SURESH SHARMA",
     startDate: now.toISOString(),
@@ -89,12 +93,6 @@ async function getCloudExamState(user) {
   };
 
   await docRef.set(permanentStudentState);
-
-  localStorage.setItem("nd_saved_roll_code", newRollCode);
-  localStorage.setItem("nd_saved_roll_number", newRollNumber);
-  localStorage.setItem("nd_saved_reg_no", newRegNo);
-  localStorage.setItem("nd_selected_class", initialClass);
-
   return permanentStudentState;
 }
 
@@ -181,8 +179,6 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
   if (!state.savedOMR[day]) state.savedOMR[day] = {};
   state.savedOMR[day][qNum] = opt;
 
-  localStorage.setItem(`omr_backup_${day}_${qNum}`, opt);
-
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     try {
       const db = window.NischayConfig.dbInstance;
@@ -199,11 +195,9 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
   }
 }
 
-// ⚡ 1-सेकंड सुपरफ़ास्ट सबमिशन इंजन
 async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, state) {
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
   
-  // OMR अंक 0.01 सेकंड में गणना
   let objMarks = 0;
   let count = 0;
   for (let i = 1; i <= 100; i++) {
@@ -216,7 +210,6 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, 
     }
   }
 
-  // कुल अपलोड किए गए पन्नों की गिनती
   let totalUploadedPages = 0;
   if (imagesDict) {
     for (const key in imagesDict) {
@@ -224,11 +217,10 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, 
     }
   }
 
-  // तुरंत तैयार सबमिशन रिकॉर्ड
   const completedData = {
     subjectName: subjectName,
     objectiveMarks: objMarks,
-    subjectiveMarks: 35, // सुरक्षित प्राप्तांक (7वें दिन विस्तृत परिणाम में खुलेगा)
+    subjectiveMarks: 35,
     totalMarks: objMarks + 35,
     uploadedPagesCount: totalUploadedPages,
     status: "COMPLETED",
@@ -240,10 +232,6 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, 
     state.completedDays[day] = completedData;
     state.activeSession = null;
   }
-
-  const localCompleted = JSON.parse(localStorage.getItem("nd_completed_days") || "{}");
-  localCompleted[day] = completedData;
-  localStorage.setItem("nd_completed_days", JSON.stringify(localCompleted));
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
