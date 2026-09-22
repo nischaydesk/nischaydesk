@@ -10,8 +10,93 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Core Theme & Simulator Stylesheets -->
+  <!-- Core Simulator Stylesheet -->
   <link rel="stylesheet" href="bseb-style.css" />
+
+  <style>
+    /* हेडर और लोगो का पक्का फिक्स */
+    .app-header .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+    .brand-entity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      min-width: 0;
+    }
+    .brand-badge-icon {
+      width: 32px;
+      height: 32px;
+      background: #0284c7;
+      color: #ffffff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      border: 1.5px solid #38bdf8;
+      flex-shrink: 0;
+    }
+    .brand-typography {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--bseb-text);
+      white-space: nowrap;
+    }
+    .brand-tagline {
+      font-size: 0.68rem;
+      color: var(--bseb-accent);
+      white-space: nowrap;
+    }
+    .nav-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .btn-theme-toggle {
+      background: var(--bseb-surface-card);
+      border: 1px solid var(--bseb-border);
+      color: var(--bseb-text);
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-home-exit {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid var(--bseb-border);
+      color: var(--bseb-accent);
+      padding: 5px 9px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* मार्कशीट टेबल मोबाइल रिस्पॉन्सिव स्क्रॉल */
+    .table-responsive-box {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 14px;
+    }
+  </style>
 </head>
 <body class="app-body bseb-simulator-body">
 
@@ -22,7 +107,7 @@
         <a href="index.html" class="brand-entity">
           <div class="brand-badge-icon">N</div>
           <div class="brand-typography">
-            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-name">Nischay<span style="color: #38bdf8;">Desk</span></span>
             <span class="brand-tagline">BSEB 7-Day Result Gate</span>
           </div>
         </a>
@@ -32,7 +117,7 @@
         <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
           ☀️ लाइट मोड
         </button>
-        <a href="bseb-simulator.html" class="btn-home-exit">🏛️ परीक्षा हॉल</a>
+        <a href="bseb-simulator.html" class="btn-home-exit">🏛️ हॉल</a>
         <a href="index.html" class="btn-home-exit">🏠 होम</a>
       </div>
     </nav>
@@ -54,23 +139,23 @@
         <div class="sim-form-grid">
           <div class="sim-input-group">
             <label for="searchRollCode">रोल कोड (Roll Code) *</label>
-            <input type="text" id="searchRollCode" class="sim-input" placeholder="5-अंकीय रोल कोड (उदा: 33124)" maxlength="5" pattern="[0-9]{5}" required />
+            <input type="text" id="searchRollCode" class="sim-input" placeholder="5-अंकीय रोल कोड (उदा: 33193)" maxlength="5" pattern="[0-9]{5}" required />
           </div>
 
           <div class="sim-input-group">
             <label for="searchRollNumber">रोल नंबर (Roll Number) *</label>
-            <input type="text" id="searchRollNumber" class="sim-input" placeholder="8-अंकीय रोल नंबर (उदा: 26014589)" maxlength="8" pattern="[0-9]{8}" required />
+            <input type="text" id="searchRollNumber" class="sim-input" placeholder="8-अंकीय रोल नंबर (उदा: 26017186)" maxlength="8" pattern="[0-9]{8}" required />
           </div>
 
           <!-- Mathematical Captcha Engine -->
           <div class="sim-input-group full-width">
             <label for="searchCaptchaInput">सुरक्षा कोड / कैप्चा (Security Captcha) *</label>
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-              <div id="captchaChallengeBox" style="background: var(--bseb-bg); border: 1.5px dashed var(--bseb-accent); padding: 10px 18px; border-radius: 8px; font-weight: 800; font-family: monospace; font-size: 1.1rem; color: var(--bseb-accent); user-select: none; letter-spacing: 2px;">
-                24 + 16 = ?
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <div id="captchaChallengeBox" style="background: var(--bseb-bg); border: 1.5px dashed var(--bseb-accent); padding: 8px 16px; border-radius: 8px; font-weight: 800; font-family: monospace; font-size: 1.1rem; color: var(--bseb-accent); user-select: none;">
+                26 + 19 = ?
               </div>
-              <button type="button" class="btn-sim-secondary" onclick="generateNewCaptcha()" style="width: auto; padding: 8px 14px;">🔄 रीफ्रेश</button>
-              <input type="number" id="searchCaptchaInput" class="sim-input" placeholder="उत्तर यहाँ लिखें" style="flex: 1; min-width: 140px;" required />
+              <button type="button" class="btn-sim-secondary" onclick="generateNewCaptcha()" style="width: auto; padding: 8px 12px; font-size: 0.76rem;">🔄 रीफ्रेश</button>
+              <input type="number" id="searchCaptchaInput" class="sim-input" placeholder="उत्तर लिखें" style="flex: 1; min-width: 120px;" required />
             </div>
           </div>
         </div>
@@ -85,90 +170,96 @@
 
     <!-- STATUS 1: 7TH DAY 9:00 AM STRICT TIME-LOCK BANNER -->
     <section class="sim-card-box" id="resultPendingLockBox" style="display: none; border-color: var(--bseb-warning); text-align: center; margin-top: 15px;">
-      <div style="font-size: 3rem; margin-bottom: 10px;">🔒</div>
-      <h2 style="color: var(--bseb-warning); font-size: 1.3rem; margin: 0 0 10px;">कड़े बोर्ड नियमों के तहत परिणाम अभी सुरक्षित लॉक है!</h2>
-      <p style="color: var(--bseb-text-muted); font-size: 0.88rem; line-height: 1.6; max-width: 600px; margin: 0 auto 16px;">
+      <div style="font-size: 2.8rem; margin-bottom: 8px;">🔒</div>
+      <h2 style="color: var(--bseb-warning); font-size: 1.25rem; margin: 0 0 10px;">कड़े बोर्ड नियमों के तहत परिणाम अभी सुरक्षित लॉक है!</h2>
+      <p style="color: var(--bseb-text-muted); font-size: 0.84rem; line-height: 1.5; max-width: 580px; margin: 0 auto 16px;">
         बिहार बोर्ड सिमुलेशन के कड़े नियमों के अनुसार 6 दिनों की सभी उत्तर-पुस्तिकाओं का केंद्रीय मूल्यांकन जारी है। संपूर्ण परीक्षा परिणाम <strong>7वें दिन सुबह 09:00 AM</strong> पर ही सार्वजनिक होगा।
       </p>
       
-      <div style="display: inline-flex; align-items: center; gap: 10px; background: var(--bseb-bg); border: 1.5px solid var(--bseb-warning); padding: 12px 24px; border-radius: 30px;">
-        <span style="color: var(--bseb-warning); font-weight: 700; font-size: 0.85rem;">परिणाम विमोचन में शेष समय:</span>
-        <span id="lockCountdownDigits" style="color: #ffffff; font-family: monospace; font-size: 1.25rem; font-weight: 900; letter-spacing: 1px;">00d 00h 00m 00s</span>
+      <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--bseb-bg); border: 1.5px solid var(--bseb-warning); padding: 10px 20px; border-radius: 30px;">
+        <span style="color: var(--bseb-warning); font-weight: 700; font-size: 0.8rem;">परिणाम विमोचन में शेष समय:</span>
+        <span id="lockCountdownDigits" style="color: #ffffff; font-family: monospace; font-size: 1.15rem; font-weight: 900;">00d 00h 00m 00s</span>
       </div>
 
-      <div style="margin-top: 16px; font-size: 0.8rem; color: var(--bseb-accent);">
-        अनलॉक तिथि व समय: <strong id="lockTargetDateText">--</strong>
+      <div style="margin-top: 14px; font-size: 0.78rem; color: var(--bseb-accent);">
+        अनलॉक समय: <strong id="lockTargetDateText">--</strong>
       </div>
     </section>
 
     <!-- STATUS 2: THE OFFICIAL BIHAR BOARD MARKS MEMO (500 MARKS MATRIX) -->
-    <section id="marksSheetDisplaySection" style="display: none; margin-top: 24px;">
+    <section id="marksSheetDisplaySection" style="display: none; margin-top: 20px;">
       
-      <div class="sim-card-box" style="background: #ffffff; color: #000000; border: 2px solid #0f172a; padding: 24px; border-radius: 8px;">
+      <div class="sim-card-box" style="background: #ffffff; color: #000000; border: 2px solid #0f172a; padding: 16px; border-radius: 8px;">
         
         <!-- HEADER -->
-        <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 12px; margin-bottom: 16px;">
-          <h2 style="margin: 0; font-size: 1.4rem; color: #991b1b; text-transform: uppercase; font-weight: 900;">बिहार विद्यालय परीक्षा समिति, पटना</h2>
-          <h3 style="margin: 4px 0; font-size: 1.1rem; color: #0f172a; font-weight: 800;">BIHAR SCHOOL EXAMINATION BOARD, PATNA</h3>
-          <h4 style="margin: 0; font-size: 0.9rem; color: #475569; font-weight: 700;">वार्षिक माध्यमिक परीक्षा परिणाम - 2026 (ANNUAL SECONDARY EXAMINATION RESULT)</h4>
+        <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 14px;">
+          <h2 style="margin: 0; font-size: 1.2rem; color: #991b1b; text-transform: uppercase; font-weight: 900;">बिहार विद्यालय परीक्षा समिति, पटना</h2>
+          <h3 style="margin: 2px 0; font-size: 0.95rem; color: #0f172a; font-weight: 800;">BIHAR SCHOOL EXAMINATION BOARD, PATNA</h3>
+          <h4 style="margin: 0; font-size: 0.8rem; color: #475569; font-weight: 700;">वार्षिक माध्यमिक परीक्षा परिणाम - 2026 (MARKS MEMO)</h4>
         </div>
 
         <!-- CANDIDATE PROFILE TABLE -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.82rem;">
-          <tr>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; font-weight: bold; width: 20%; background: #f8fafc;">विद्यार्थी का नाम</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; width: 30%;" id="resStudentName">--</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; font-weight: bold; width: 20%; background: #f8fafc;">रोल कोड</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; width: 30%;" id="resRollCode">--</td>
-          </tr>
-          <tr>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc;">पिता का नाम</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1;" id="resFatherName">--</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc;">रोल नंबर</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1;" id="resRollNumber">--</td>
-          </tr>
-          <tr>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc;">विद्यालय का नाम</td>
-            <td style="padding: 4px 8px; border: 1px solid #cbd5e1;" colspan="3" id="resSchoolName">--</td>
-          </tr>
-        </table>
-
-        <!-- MARKS DETAILS TABLE -->
-        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.82rem; margin-bottom: 16px;">
-          <thead>
-            <tr style="background: #0f172a; color: #ffffff;">
-              <th style="padding: 8px; border: 1px solid #000; text-align: left;">विषय (SUBJECTS)</th>
-              <th style="padding: 8px; border: 1px solid #000;">पूर्णांक</th>
-              <th style="padding: 8px; border: 1px solid #000;">उत्तीर्णांक</th>
-              <th style="padding: 8px; border: 1px solid #000;">ऑब्जेक्टिव (50)</th>
-              <th style="padding: 8px; border: 1px solid #000;">सब्जेक्टिव (50)</th>
-              <th style="padding: 8px; border: 1px solid #000;">कुल प्राप्तांक</th>
+        <div class="table-responsive-box">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
+            <tr>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; font-weight: bold; width: 22%; background: #f8fafc;">विद्यार्थी का नाम</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; width: 28%;" id="resStudentName">--</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; font-weight: bold; width: 22%; background: #f8fafc;">रोल कोड</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; width: 28%;" id="resRollCode">--</td>
             </tr>
-          </thead>
-          <tbody id="resMarksTableBody">
-            <!-- 6 दिन के 6 विषय -->
-          </tbody>
-        </table>
-
-        <!-- DIVISION STRIP -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.95rem;">
-          <tr style="background: #f1f5f9; border: 2px solid #0f172a;">
-            <td style="padding: 10px; font-weight: 800; width: 25%;">अंतिम परिणाम (RESULT):</td>
-            <td style="padding: 10px; font-weight: 900; font-size: 1.15rem; width: 25%;" id="resDivisionStatus">--</td>
-            <td style="padding: 10px; font-weight: 800; width: 25%;">कुल प्राप्तांक (TOTAL):</td>
-            <td style="padding: 10px; font-weight: 900; font-size: 1.15rem; width: 25%; color: #0284c7;" id="resTotalMarks">-- / 500</td>
-          </tr>
-        </table>
-
-        <!-- DISCLAIMER -->
-        <div style="font-size: 0.72rem; color: #64748b; line-height: 1.5; border-top: 1px solid #cbd5e1; padding-top: 8px;">
-          <p style="margin: 0;">★ <strong>बोर्ड नियम:</strong> 1st Division: 300+ अंक | 2nd Division: 225-299 अंक | 3rd Division: 150-224 अंक।</p>
-          <p style="margin: 2px 0 0;">★ अंग्रेजी के अंक कुल प्राप्तांक (Grand Total) में नहीं जोड़े जाते हैं, लेकिन विषय पास करना आवश्यक है। अनुपस्थित परीक्षा में 000 अंक दिए गए हैं।</p>
+            <tr>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc;">पिता का नाम</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1;" id="resFatherName">--</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc;">रोल नंबर</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1;" id="resRollNumber">--</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1; font-weight: bold; background: #f8fafc;">विद्यालय का नाम</td>
+              <td style="padding: 4px 6px; border: 1px solid #cbd5e1;" colspan="3" id="resSchoolName">--</td>
+            </tr>
+          </table>
         </div>
 
-        <div style="margin-top: 20px; display: flex; gap: 10px;">
-          <button type="button" class="btn-sim-primary" onclick="window.print()" style="background: #0f172a;">🖨️ आधिकारिक मार्कशीट प्रिंट करें</button>
-          <button type="button" class="btn-sim-secondary" onclick="location.href='bseb-simulator.html'">🏛️ परीक्षा पोर्टल पर लौटें</button>
+        <!-- MARKS DETAILS TABLE -->
+        <div class="table-responsive-box">
+          <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.78rem;">
+            <thead>
+              <tr style="background: #0f172a; color: #ffffff;">
+                <th style="padding: 6px; border: 1px solid #000; text-align: left;">विषय (SUBJECTS)</th>
+                <th style="padding: 6px; border: 1px solid #000;">पूर्णांक</th>
+                <th style="padding: 6px; border: 1px solid #000;">उत्तीर्णांक</th>
+                <th style="padding: 6px; border: 1px solid #000;">ऑब्जेक्टिव</th>
+                <th style="padding: 6px; border: 1px solid #000;">सब्जेक्टिव</th>
+                <th style="padding: 6px; border: 1px solid #000;">कुल प्राप्तांक</th>
+              </tr>
+            </thead>
+            <tbody id="resMarksTableBody">
+              <!-- 6 दिन के 6 विषय -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- DIVISION STRIP -->
+        <div class="table-responsive-box">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+            <tr style="background: #f1f5f9; border: 2px solid #0f172a;">
+              <td style="padding: 8px; font-weight: 800; width: 25%;">अंतिम परिणाम:</td>
+              <td style="padding: 8px; font-weight: 900; font-size: 1rem; width: 25%;" id="resDivisionStatus">--</td>
+              <td style="padding: 8px; font-weight: 800; width: 25%;">कुल प्राप्तांक:</td>
+              <td style="padding: 8px; font-weight: 900; font-size: 1rem; width: 25%; color: #0284c7;" id="resTotalMarks">-- / 500</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- DISCLAIMER -->
+        <div style="font-size: 0.7rem; color: #64748b; line-height: 1.4; border-top: 1px solid #cbd5e1; padding-top: 6px;">
+          <p style="margin: 0;">★ <strong>बोर्ड नियम:</strong> 1st Division: 300+ अंक | 2nd Division: 225-299 अंक | 3rd Division: 150-224 अंक।</p>
+          <p style="margin: 2px 0 0;">★ अंग्रेजी के अंक कुल प्राप्तांक में नहीं जोड़े जाते हैं। छूटी हुई परीक्षा में ABS (000) अंक दर्ज किए गए हैं।</p>
+        </div>
+
+        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn-sim-primary" onclick="window.print()" style="background: #0f172a; flex: 1; min-width: 150px;">🖨️ मार्कशीट प्रिंट करें</button>
+          <button type="button" class="btn-sim-secondary" onclick="location.href='bseb-simulator.html'" style="flex: 1; min-width: 150px;">🏛️ परीक्षा पोर्टल</button>
         </div>
 
       </div>
@@ -186,6 +277,18 @@
     document.addEventListener("DOMContentLoaded", () => {
       generateNewCaptcha();
       initThemeEngine();
+
+      // ऑटो-फ़िल: छात्र का एडमिट कार्ड डेटा स्वतः भरें
+      const sessionData = localStorage.getItem("nischay_student_session");
+      if (sessionData) {
+        try {
+          const student = JSON.parse(sessionData);
+          if (student.rollCode) document.getElementById('searchRollCode').value = student.rollCode;
+          if (student.rollNumber) document.getElementById('searchRollNumber').value = student.rollNumber;
+        } catch (e) {
+          console.error("Session parse error", e);
+        }
+      }
     });
 
     // 1. सुरक्षा कैप्चा
@@ -236,7 +339,7 @@
         startLockCountdown(unlockTime);
         window.scrollTo({ top: document.getElementById('resultPendingLockBox').offsetTop - 20, behavior: 'smooth' });
       } else {
-        // ताला खुल गया: 500-अंक की मार्कशीट तैयार करें
+        // ताला खुला: 500-अंक की मार्कशीट दिखाएँ
         if (lockTimerInterval) clearInterval(lockTimerInterval);
         document.getElementById('resultPendingLockBox').style.display = 'none';
         document.getElementById('marksSheetDisplaySection').style.display = 'block';
@@ -269,7 +372,7 @@
       lockTimerInterval = setInterval(update, 1000);
     }
 
-    // 4. 6-विषय मार्कशीट रेंडरर (कड़े पास/फेल नियमों के साथ)
+    // 4. 6-विषय मार्कशीट रेंडरर
     function renderOfficialMarkSheet(student, state) {
       document.getElementById('resStudentName').textContent = student.name;
       document.getElementById('resFatherName').textContent = student.fatherName || 'SURESH SHARMA';
@@ -308,7 +411,6 @@
           totalScore = objScore + subjScore;
           statusBadge = `${String(totalScore).padStart(3, '0')}`;
         } else {
-          // जो परीक्षा छूटी, उसमें ABSENT का कड़ा नियम
           statusBadge = `<strong style="color: #dc2626;">ABS (000)</strong>`;
           hasFailedSubject = true;
         }
@@ -329,7 +431,6 @@
         tbody.appendChild(row);
       });
 
-      // डिवीजन कैलकुलेशन
       document.getElementById('resTotalMarks').textContent = `${grandTotal500} / 500`;
       const divStatusEl = document.getElementById('resDivisionStatus');
 
