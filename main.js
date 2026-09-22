@@ -1,7 +1,8 @@
 /* ==========================================================================
    NischayDesk Core Controller, Theme & Smart Utilities Engine (v5.0 PRO)
    Architected by: Prince Kumar
-   Features: Live Camera, Rotate, Delete, Magic Filter, Custom Watermark & Anti-Crash
+   Features: Live Ticker Engine, Streak Tracker, Pomodoro Focus, 
+             Live Camera, Rotate, Delete, Magic Filter, Custom Watermark & Anti-Crash
    ========================================================================== */
 
 // ग्लोबल वैरिएबल्स (रोटेट और डिलीट के लिए)
@@ -20,6 +21,28 @@ window.deletePage = function (index) {
     scannedPages.splice(index, 1);
     if (typeof renderPagesGridGlobal === 'function') renderPagesGridGlobal();
   }
+};
+
+// =========================================================================
+// 0. STUDENT ONBOARDING / CLASS SWITCH CONTROLLER (ग्लोबल एक्सेस)
+// =========================================================================
+window.openClassSwitchModal = function() {
+  const modal = document.getElementById('onboardingModal');
+  if (!modal) return;
+
+  const savedProfile = JSON.parse(localStorage.getItem('nischay_user_profile') || '{}');
+  const nameInput = document.getElementById('obName');
+  const classInput = document.getElementById('obClass');
+  const streamInput = document.getElementById('obStream');
+  const goalInput = document.getElementById('obGoal');
+
+  if (nameInput) nameInput.value = savedProfile.name || localStorage.getItem('nischay_user_name') || '';
+  if (classInput && savedProfile.class) classInput.value = savedProfile.class;
+  if (streamInput && savedProfile.stream) streamInput.value = savedProfile.stream;
+  if (goalInput && savedProfile.goal) goalInput.value = savedProfile.goal;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -77,7 +100,78 @@ document.addEventListener('DOMContentLoaded', function () {
   applySavedTheme();
 
   // =========================================================================
-  // 3. SMART TOOL: ULTIMATE DOC SCANNER & PDF STUDIO
+  // 3. LIVE TICKER ROTATOR ENGINE (Dynamic EdTech Updates)
+  // =========================================================================
+  const tickerEl = document.getElementById('liveTickerContent');
+  if (tickerEl) {
+    const tickerUpdates = [
+      "📢 बिहार बोर्ड एवं NCERT 2026–2027 सत्र के सम्पूर्ण हैंडनोट्स एवं चैप्टर टेस्ट लाइव हैं!",
+      "⚡ 2020-2024 क्वेश्चन बैंक के सभी शिफ्ट्स का विस्तृत हल निश्चय-डेस्क पर उपलब्ध है!",
+      "💡 टॉपर मंत्र: कठिन अध्यायों के सूत्र और डेरिवेशन्स का प्रतिदिन अभ्यास करें।",
+      "🎯 कक्षा 10वीं व 12वीं बोर्ड स्पेशल मॉडल पेपर्स का सिमुलेशन टेस्ट देना शुरू करें!"
+    ];
+    let tickerIdx = 0;
+    setInterval(() => {
+      tickerIdx = (tickerIdx + 1) % tickerUpdates.length;
+      tickerEl.style.opacity = '0';
+      setTimeout(() => {
+        tickerEl.textContent = tickerUpdates[tickerIdx];
+        tickerEl.style.opacity = '1';
+      }, 300);
+    }, 6000);
+  }
+
+  // =========================================================================
+  // 4. ONBOARDING & PROFILE FORM SUBMIT HANDLER
+  // =========================================================================
+  const onboardingForm = document.getElementById('onboardingForm');
+  const onboardingModal = document.getElementById('onboardingModal');
+
+  function updateDashboardProfileUI(profile) {
+    const dispClass = document.getElementById('displayStudentClass');
+    const dispStream = document.getElementById('displayStudentStream');
+    const dispGoal = document.getElementById('displayStudentGoal');
+    const userSessionBadge = document.getElementById('userSessionBadge');
+
+    if (dispClass) dispClass.textContent = `Class ${profile.class}th`;
+    if (dispStream) dispStream.textContent = profile.stream || 'General';
+    if (dispGoal) dispGoal.textContent = profile.goal || 'बिहार बोर्ड टॉपर';
+    if (userSessionBadge) userSessionBadge.textContent = `Class ${profile.class}th ▾`;
+  }
+
+  const existingProfile = JSON.parse(localStorage.getItem('nischay_user_profile') || 'null');
+  if (existingProfile) {
+    updateDashboardProfileUI(existingProfile);
+  }
+
+  if (onboardingForm) {
+    onboardingForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const profile = {
+        name: document.getElementById('obName')?.value.trim() || 'छात्र',
+        class: document.getElementById('obClass')?.value || '10',
+        stream: document.getElementById('obStream')?.value || 'PCM',
+        goal: document.getElementById('obGoal')?.value || 'बिहार बोर्ड टॉपर (State Rank)'
+      };
+
+      localStorage.setItem('nischay_user_profile', JSON.stringify(profile));
+      localStorage.setItem('nischay_user_name', profile.name);
+
+      updateDashboardProfileUI(profile);
+
+      const welcomeName = document.getElementById('welcomeUserName');
+      const userDisplayName = document.getElementById('userDisplayName');
+      if (welcomeName) welcomeName.textContent = profile.name.split(' ')[0];
+      if (userDisplayName) userDisplayName.textContent = profile.name.split(' ')[0];
+
+      if (onboardingModal) onboardingModal.classList.remove('active');
+      document.body.style.overflow = '';
+      alert('✓ प्रोफ़ाइल और कक्षा सफलतापूर्वक अपडेट हो गई!');
+    });
+  }
+
+  // =========================================================================
+  // 5. SMART TOOL: ULTIMATE DOC SCANNER & PDF STUDIO
   // =========================================================================
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
@@ -376,4 +470,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-}); // DOMContentLoaded का क्लोजिंग ब्रैकेट (यह छूटा हुआ था)
+});
