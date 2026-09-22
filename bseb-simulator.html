@@ -5,21 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>BSEB Real Exam Simulator | NischayDesk</title>
 
-  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Simulator CSS -->
   <link rel="stylesheet" href="bseb-style.css" />
 
-  <!-- Firebase Modular Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
-    /* हेडर व ब्रांडिंग */
     .app-header .nav-container {
       display: flex;
       align-items: center;
@@ -59,17 +55,17 @@
       display: block;
     }
     .user-avatar-slot {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: #0284c7;
-      color: #fff;
+      background: #4338ca;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.85rem;
-      border: 1.5px solid #38bdf8;
+      font-size: 0.95rem;
+      border: 2px solid #38bdf8;
       overflow: hidden;
       flex-shrink: 0;
     }
@@ -79,55 +75,57 @@
       object-fit: cover;
     }
 
-    /* 6 कड़े बोर्ड नियम कार्ड */
-    .instructions-card {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1.5px solid var(--bseb-border);
+    /* हाई-कंट्रास्ट निर्देश बॉक्स */
+    .instructions-card-fixed {
+      background: #0f172a !important;
+      border: 2px solid #38bdf8 !important;
       border-radius: 12px;
-      padding: 18px;
+      padding: 16px;
       margin: 16px 0;
       text-align: left;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
-    .instructions-card h3 {
-      margin: 0 0 12px 0;
-      color: #38bdf8;
+    .instructions-card-fixed h3 {
+      margin: 0 0 10px 0;
+      color: #38bdf8 !important;
       font-size: 1.05rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 800;
     }
-    .instructions-list {
+    .instructions-list-fixed {
       margin: 0;
       padding-left: 20px;
-      color: var(--bseb-text);
-      font-size: 0.86rem;
+      color: #f8fafc !important;
+      font-size: 0.88rem;
       line-height: 1.7;
     }
-    .instructions-list li {
-      margin-bottom: 8px;
+    .instructions-list-fixed li strong {
+      color: #fdba74 !important;
     }
-    .instruction-agree-box {
+    .instruction-agree-box-fixed {
       margin-top: 14px;
       padding-top: 12px;
-      border-top: 1px dashed var(--bseb-border);
+      border-top: 1px dashed rgba(255, 255, 255, 0.2);
       display: flex;
-      align-items: flex-start;
-      gap: 10px;
+      align-items: center;
+      gap: 12px;
+      background: rgba(56, 189, 248, 0.08);
+      padding: 10px;
+      border-radius: 8px;
     }
-    .instruction-agree-box input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin-top: 2px;
+    .instruction-agree-box-fixed input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
       accent-color: #0284c7;
       cursor: pointer;
+      flex-shrink: 0;
     }
-    .instruction-agree-box label {
-      font-size: 0.82rem;
-      color: var(--bseb-text-muted);
+    .instruction-agree-box-fixed label {
+      font-size: 0.86rem;
+      color: #ffffff !important;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    /* मोबाइल स्क्रॉलिंग व पेन लेआउट */
     .exam-right-pane {
       display: flex;
       flex-direction: column;
@@ -161,7 +159,6 @@
 </head>
 <body class="app-body bseb-simulator-body">
 
-  <!-- TOP APP HEADER -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -178,10 +175,10 @@
         <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
           ☀️ लाइट मोड
         </button>
-        <div class="user-profile-widget" id="userProfileWidget" style="display: flex; align-items: center; gap: 6px;">
-          <div class="user-avatar-slot" id="userAvatarBox">🔒</div>
+        <div class="user-profile-widget" id="userProfileWidget" style="display: flex; align-items: center; gap: 8px;">
+          <div class="user-avatar-slot" id="userAvatarBox">?</div>
           <div class="user-info-text">
-            <span class="user-display-name" id="simUserFirstName">सत्यापन...</span>
+            <span class="user-display-name" id="simUserFirstName" style="font-weight: 700; color: #fff;">लॉगिन...</span>
           </div>
         </div>
         <a href="index.html" class="btn-home-exit">🏠 होम</a>
@@ -191,79 +188,87 @@
 
   <main class="sim-main-viewport">
 
-    <!-- STAGE 1: ADMISSION DESK & RULES DECLARATION -->
+    <!-- STAGE 1: ADMISSION DESK -->
     <section class="sim-stage active" id="simVerificationStage">
       <div class="sim-card-box">
         <div class="sim-header-chip">
-          <span class="pulsing-dot"></span> बिहार विद्यालय परीक्षा समिति • 7-दिवसीय महा-सिमुलेटर
+          <span class="pulsing-dot"></span> बिहार विद्यालय परीक्षा समिति • महा-सिमुलेटर
         </div>
-        <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">निर्देश एवं डिजिटल सत्यापन</span></h1>
+        <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">सत्यापन एवं डिजिटल एडमिट कार्ड</span></h1>
 
-        <!-- बिना लॉगिन कड़ा पहरा -->
-        <div id="authRequiredBanner" style="display: block; background: rgba(239, 68, 68, 0.1); border: 1.5px solid #ef4444; border-radius: 12px; padding: 22px; text-align: center; margin: 18px 0;">
+        <!-- बिना लॉगिन नो-एंट्री गेट -->
+        <div id="authRequiredBanner" style="display: block; background: rgba(239, 68, 68, 0.12); border: 2px solid #ef4444; border-radius: 12px; padding: 22px; text-align: center; margin: 18px 0;">
           <div style="font-size: 2.5rem; margin-bottom: 8px;">🔐</div>
           <h3 style="color: #f87171; margin: 0 0 6px;">Gmail लॉगिन अनिवार्य है</h3>
           <p style="color: var(--bseb-text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 16px;">
-            बिहार बोर्ड सिमुलेटर में अपनी OMR कॉपी, डिजिटल एडमिट कार्ड और 7-दिवसीय परिणाम को सुरक्षित रखने के लिए अपने आधिकारिक Gmail से लॉगिन करें।
+            परीक्षा में सम्मिलित होने, अपनी OMR कॉपी और डिजिटल एडमिट कार्ड को सुरक्षित रखने के लिए आधिकारिक Gmail से लॉगिन करें।
           </p>
           <button type="button" class="btn-sim-primary" onclick="triggerGoogleLogin()" style="background: #ffffff; color: #000; font-weight: 800; width: auto; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; cursor: pointer;">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G" /> Google से लॉगिन करें
           </button>
         </div>
 
-        <!-- मुख्य फॉर्म एवं नियम पत्र -->
+        <!-- मुख्य फॉर्म -->
         <form id="simVerificationForm" class="sim-entry-form" onsubmit="event.preventDefault(); enterExamHallDirect();" style="display: none;">
           
           <!-- 6 बोर्ड नियम कार्ड -->
-          <div class="instructions-card">
+          <div class="instructions-card-fixed">
             <h3>📜 परीक्षार्थियों के लिए 6 अनिवार्य बोर्ड नियम:</h3>
-            <ol class="instructions-list">
-              <li><strong>एक दिन में केवल एक विषय:</strong> 1 दिन में सिर्फ एक ही परीक्षा दी जा सकेगी। कुल 6 दिनों में सभी 6 अनिवार्य विषय संपन्न होंगे।</li>
-              <li><strong>समय-सीमा (3 घंटे 15 मिनट):</strong> परीक्षा शुरू होते ही टाइमर चालू हो जाएगा। 15 मिनट प्रश्न पत्र पढ़ने और 3 घंटे उत्तर लिखने के लिए हैं।</li>
-              <li><strong>वस्तुनिष्ठ प्रश्न (OMR 50 अंक):</strong> 100 प्रश्नों में से केवल प्रथम 50 रंगे गए गोलों का ही मूल्यांकन होगा। 50 से अधिक रंगने पर बाद वाले स्वतः अमान्य हो जाएंगे।</li>
-              <li><strong>सब्जेक्टिव कॉपी (मल्टीपल पेज अपलोड):</strong> हाथ से लिखे उत्तरों की साफ फोटो संबंधित सेक्शन में अपलोड करें। आप एक सेक्शन में 1 से 3 पन्ने चुन सकते हैं। AI परीक्षक लिखावट व स्टेप्स देखकर अंक देगा।</li>
-              <li><strong>अनुपस्थिति नियम (Strict Calendar Rule):</strong> यदि छात्र किसी दिन परीक्षा छोड़ देता है, तो वह दिन हमेशा के लिए लॉक होकर <strong>ABSENT (000 अंक)</strong> दर्ज हो जाएगा।</li>
-              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> सभी 6 परीक्षाओं का अंतिम सम्मिलित परिणाम और 500-अंक की मार्कशीट केवल 7वें दिन खुलेगी।</li>
+            <ol class="instructions-list-fixed">
+              <li><strong>कक्षा आधारित परीक्षा:</strong> केवल आपकी चुनी हुई कक्षा के आधिकारिक विषयों की ही परीक्षा ली जाएगी।</li>
+              <li><strong>समय-सीमा (3 घंटे 15 मिनट):</strong> 15 मिनट प्रश्न पत्र पढ़ने और 3 घंटे उत्तर लिखने के लिए निर्धारित हैं।</li>
+              <li><strong>OMR शीट (50 अंक):</strong> प्रथम 50 रंगे गए गोलों का ही मूल्यांकन होगा। 50 से अधिक गोले अमान्य होंगे।</li>
+              <li><strong>सब्जेक्टिव उत्तर अपलोड:</strong> हाथ से लिखे उत्तरों की साफ फोटो अपलोड करें (1 से 3 पन्ने चुन सकते हैं)।</li>
+              <li><strong>अनुपस्थिति नियम:</strong> किसी दिन परीक्षा छोड़ने पर वह विषय <strong>ABSENT (000 अंक)</strong> दर्ज हो जाएगा।</li>
+              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> परीक्षा का अंतिम परिणाम 7वें दिन सुबह ठीक 9:00 बजे घोषित होगा।</li>
             </ol>
 
-            <div class="instruction-agree-box">
+            <div class="instruction-agree-box-fixed">
               <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" />
-              <label for="chkAgreeRules">मैंने बिहार बोर्ड परीक्षा के सभी 6 नियमों को ध्यानपूर्वक पढ़ लिया है और मैं इनका पालन करने के लिए पूर्णतः सहमत हूँ।</label>
+              <label for="chkAgreeRules">मैंने सभी 6 नियमों को पढ़ लिया है और मैं इनका पालन करने के लिए पूर्णतः सहमत हूँ।</label>
             </div>
           </div>
 
           <div class="sim-form-grid">
             <div class="sim-input-group">
-              <label for="regStudentName">परीक्षार्थी का पूरा नाम (Gmail से सत्यापित)</label>
-              <input type="text" id="regStudentName" class="sim-input" readonly style="background: rgba(255,255,255,0.05); font-weight: 700;" />
+              <label for="regStudentName">परीक्षार्थी का नाम (Gmail सत्यापित)</label>
+              <input type="text" id="regStudentName" class="sim-input" readonly style="background: rgba(255,255,255,0.08); font-weight: 800; color: #38bdf8;" />
             </div>
 
             <div class="sim-input-group">
+              <label for="regStudentClassSelect">सक्रिय कक्षा (Class Stream) *</label>
+              <select id="regStudentClassSelect" class="sim-select" onchange="onClassSelectionChanged()" style="font-weight: 700; border-color: #38bdf8;">
+                <option value="10th">कक्षा 10वीं (Class 10th - मैट्रिक)</option>
+                <option value="11th">कक्षा 11वीं (Class 11th - साइंस)</option>
+                <option value="12th">कक्षा 12वीं (Class 12th - साइंस)</option>
+              </select>
+            </div>
+
+            <div class="sim-input-group" style="grid-column: 1 / -1;">
               <label for="regExamDaySelect">आज की परीक्षा (Day Wise Subject) *</label>
-              <select id="regExamDaySelect" class="sim-select" onchange="checkSelectedSubjectStatus()" required>
-                <!-- JS द्वारा लाइव अपडेट होगा -->
+              <select id="regExamDaySelect" class="sim-select" onchange="toggleEnterButtonState()" required>
+                <!-- चुनी हुई कक्षा के अनुसार विषय यहाँ लोड होंगे -->
               </select>
             </div>
           </div>
 
-          <!-- GENERATED CREDENTIALS TICKET -->
           <div class="sim-ticket-preview" id="simTicketPreview" style="display: block;">
             <div class="ticket-header">
               <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
               <span class="ticket-badge">VERIFIED</span>
             </div>
             <div class="ticket-grid">
-              <div><small>Roll Code:</small> <strong id="outRollCode">-----</strong></div>
-              <div><small>Roll Number:</small> <strong id="outRollNumber">--------</strong></div>
-              <div><small>Reg. No:</small> <strong id="outRegNo">--------------</strong></div>
+              <div><small>Roll Code:</small> <strong id="outRollCode">33193</strong></div>
+              <div><small>Roll Number:</small> <strong id="outRollNumber">26017186</strong></div>
+              <div><small>Class / Stream:</small> <strong id="outClassStream">10th Regular</strong></div>
               <div><small>Result Date:</small> <strong>7वां दिन (09:00 AM)</strong></div>
             </div>
-            <p class="ticket-warning" id="ticketStatusMsg">★ आपका रोल कोड और रोल नंबर Gmail अकाउंट से हमेशा के लिए सुरक्षित है।</p>
+            <p class="ticket-warning" id="ticketStatusMsg">★ आपका रोल कोड और रोल नंबर Gmail अकाउंट से सुरक्षित है।</p>
           </div>
 
           <div class="sim-actions-group">
-            <button type="button" id="btnEnterExamHall" class="btn-sim-primary" onclick="enterExamHallDirect()" disabled>
-              🔒 नियमों की सहमति देकर परीक्षा कक्ष में प्रवेश करें →
+            <button type="button" id="btnEnterExamHall" class="btn-sim-primary" onclick="enterExamHallDirect()" disabled style="opacity: 0.6; cursor: not-allowed;">
+              🔒 नियमों पर सहमति देकर परीक्षा कक्ष में प्रवेश करें →
             </button>
           </div>
         </form>
@@ -279,7 +284,6 @@
 
     <!-- STAGE 2: EXAM HALL -->
     <section class="sim-stage" id="simExamHallStage" style="display: none;">
-      
       <div class="exam-command-bar">
         <div class="candidate-mini-info">
           <span class="candidate-roll-badge">Roll: <strong id="hallDisplayRoll">----- - --------</strong></span>
@@ -295,7 +299,6 @@
         </button>
       </div>
 
-      <!-- Mobile View Switcher -->
       <div class="mobile-view-toggle-bar">
         <button type="button" class="btn-view-toggle active" id="btnShowPaper" onclick="toggleMobileView('paper')">
           📄 प्रश्न पत्र देखें
@@ -306,8 +309,6 @@
       </div>
 
       <div class="exam-split-grid">
-
-        <!-- प्रश्न पत्र -->
         <div class="exam-left-pane" id="examLeftPane">
           <div class="pane-action-bar">
             <div class="pane-title">📄 प्रश्न पत्र (Full Preview)</div>
@@ -317,9 +318,7 @@
           </div>
         </div>
 
-        <!-- उत्तर / OMR / सब्जेक्टिव कॉपी -->
         <div class="exam-right-pane" id="examRightPane">
-          
           <div class="pane-tab-switcher">
             <button type="button" class="tab-btn active" id="tabBtnOmr" onclick="switchExamTab('omr')">
               🔴 खंड 'अ': OMR (50 अंक)
@@ -329,7 +328,6 @@
             </button>
           </div>
 
-          <!-- OMR बबल्स -->
           <div class="exam-tab-content" id="tabContentOmr">
             <div class="omr-meta-strip">
               <span>★ किन्हीं 50 प्रश्नों के गोले रंगें</span>
@@ -338,32 +336,28 @@
             <div class="omr-bubbles-scroll-area" id="omrBubblesMatrix"></div>
           </div>
 
-          <!-- सब्जेक्टिव उत्तर कॉपी (मल्टीपल पन्ने सपोर्ट) -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
             <div class="subj-meta-strip" style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px;">
-              <span style="font-size: 0.82rem; color: var(--bseb-text); line-height: 1.5; display: block;">
+              <span style="font-size: 0.82rem; color: #fff; line-height: 1.5; display: block;">
                 ✍️ <strong>उत्तर पुस्तिका निर्देश:</strong> अपने हाथ से लिखे उत्तरों की साफ फोटो खींचें। हर प्रश्न के लिए गैलरी से <strong>एक साथ 1 से 3 पन्ने</strong> चुन सकते हैं।
               </span>
             </div>
 
             <div class="subj-upload-list">
-              <!-- 1. अपठित गद्यांश -->
               <div class="subj-card">
-                <h4>1. अपठित गद्यांश (पूर्णांक: 20 अंक)</h4>
-                <p>📌 गद्यांश 1 और 2 के उत्तर वाले पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
+                <h4>1. अपठित गद्यांश / खंड 'ब' भाग 1 (पूर्णांक: 20 अंक)</h4>
+                <p>📌 संबंधित उत्तर वाले पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
                 <input type="file" id="fileGadyansh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'gadyansh', 3)" />
                 <div id="previewGadyansh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
               </div>
 
-              <!-- 2. निबंध एवं पत्र लेखन -->
               <div class="subj-card">
-                <h4>2. निबंध एवं पत्र / संवाद लेखन (पूर्णांक: 15 अंक)</h4>
-                <p>📌 निबंध और आवेदन पत्र के सभी पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
+                <h4>2. निबंध / पत्र / भाग 2 (पूर्णांक: 15 अंक)</h4>
+                <p>📌 संबंधित उत्तर के पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
                 <input type="file" id="fileNibandh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'nibandh', 3)" />
                 <div id="previewNibandh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
               </div>
 
-              <!-- 3. लघु उत्तरीय प्रश्न -->
               <div class="subj-card">
                 <h4>3. लघु उत्तरीय प्रश्न (पूर्णांक: 10 अंक)</h4>
                 <p>📌 किन्हीं 5 प्रश्नों के उत्तर वाले पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
@@ -371,28 +365,21 @@
                 <div id="previewLaghu" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
               </div>
 
-              <!-- 4. दीर्घ उत्तरीय प्रश्न -->
               <div class="subj-card">
                 <h4>4. दीर्घ उत्तरीय प्रश्न (पूर्णांक: 5 अंक)</h4>
-                <p>📌 विस्तृत व्याख्या व दीर्घ उत्तरीय उत्तर के पन्ने अपलोड करें (अधिकतम 2 पन्ने)।</p>
+                <p>📌 विस्तृत उत्तर वाले पन्ने अपलोड करें (अधिकतम 2 पन्ने)।</p>
                 <input type="file" id="fileDeergh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'deergh', 2)" />
                 <div id="previewDeergh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
               </div>
             </div>
-
-            <div style="margin-top: 14px; padding: 10px; border-radius: 6px; background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--bseb-border); font-size: 0.72rem; color: var(--bseb-text-muted); line-height: 1.5;">
-              💡 <strong>सुझाव:</strong> गैलरी खोलते समय फोटो पर 1 सेकंड दबाकर (Long Press करके) एक साथ 2 या 3 पन्ने चुन लें। सबमिट करने पर AI मुख्य परीक्षक सभी पन्नों की क्रमवार जाँच करेगा।
-            </div>
           </div>
 
         </div>
-
       </div>
     </section>
 
   </main>
 
-  <!-- Core Scripts -->
   <script src="config.js"></script>
   <script src="bseb-papers.js"></script>
   <script src="bseb-engine.js"></script>
@@ -401,10 +388,47 @@
     let currentUser = null;
     let cloudState = null;
     let activeDay = 1;
+    let selectedClass = "10th";
     let selectedImages = { gadyansh: [], nibandh: [], laghu: [], deergh: [] };
 
+    // 🎓 10वीं, 11वीं और 12वीं का अलग-अलग सिलेबस और विषय डेटाबेस
+    const CLASS_SUBJECTS_MAP = {
+      "10th": [
+        { day: 1, code: "101-hindi", name: "हिन्दी (M.I.L Hindi)" },
+        { day: 2, code: "105-sanskrit", name: "संस्कृत (S.I.L Sanskrit)" },
+        { day: 3, code: "110-math", name: "गणित (Mathematics)" },
+        { day: 4, code: "112-science", name: "विज्ञान (Science)" },
+        { day: 5, code: "113-sst", name: "सामाजिक विज्ञान (Social Science)" },
+        { day: 6, code: "114-english", name: "अंग्रेजी (English)" }
+      ],
+      "11th": [
+        { day: 1, code: "117-physics", name: "भौतिक विज्ञान (Physics 11th)" },
+        { day: 2, code: "118-chemistry", name: "रसायन विज्ञान (Chemistry 11th)" },
+        { day: 3, code: "121-maths", name: "गणित (Mathematics 11th)" },
+        { day: 4, code: "119-biology", name: "जीव विज्ञान (Biology 11th)" },
+        { day: 5, code: "105-hindi-11", name: "हिन्दी (Hindi 11th)" },
+        { day: 6, code: "106-english-11", name: "अंग्रेजी (English 11th)" }
+      ],
+      "12th": [
+        { day: 1, code: "117-physics-12", name: "भौतिक विज्ञान (Physics 12th)" },
+        { day: 2, code: "118-chemistry-12", name: "रसायन विज्ञान (Chemistry 12th)" },
+        { day: 3, code: "121-maths-12", name: "गणित (Mathematics 12th)" },
+        { day: 4, code: "119-biology-12", name: "जीव विज्ञान (Biology 12th)" },
+        { day: 5, code: "105-hindi-12", name: "हिन्दी (Hindi 12th)" },
+        { day: 6, code: "106-english-12", name: "अंग्रेजी (English 12th)" }
+      ]
+    };
+
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Firebase Auth चेक
+      // 1. लोकल में सहेजी गई कक्षा लोड करें
+      selectedClass = localStorage.getItem("nd_selected_class") || "10th";
+      const classSelectEl = document.getElementById("regStudentClassSelect");
+      if (classSelectEl) classSelectEl.value = selectedClass;
+      document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
+
+      renderSubjectDropdownForClass(selectedClass, null);
+
+      // 2. Firebase Auth चेक
       const authInterval = setInterval(() => {
         if (window.NischayConfig && window.NischayConfig.isCloudReady) {
           clearInterval(authInterval);
@@ -415,8 +439,7 @@
               document.getElementById("authRequiredBanner").style.display = "none";
               document.getElementById("simVerificationForm").style.display = "block";
 
-              // Google का असली नाम व फोटो
-              const realName = user.displayName || "परीक्षार्थी";
+              const realName = user.displayName || user.email.split('@')[0];
               document.getElementById("simUserFirstName").textContent = realName.split(" ")[0];
               document.getElementById("regStudentName").value = realName;
 
@@ -427,19 +450,28 @@
                 avatarBox.textContent = realName.charAt(0).toUpperCase();
               }
 
-              // Firestore डेटा लोड
-              cloudState = await getCloudExamState(user);
-              cloudState = await enforceCloudAbsence(user, cloudState);
+              try {
+                cloudState = await getCloudExamState(user);
+                cloudState = await enforceCloudAbsence(user, cloudState);
 
-              document.getElementById("outRollCode").textContent = cloudState.rollCode;
-              document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
-              document.getElementById("outRegNo").textContent = cloudState.regNo;
+                if (cloudState.selectedClass) {
+                  selectedClass = cloudState.selectedClass;
+                  if (classSelectEl) classSelectEl.value = selectedClass;
+                  document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
+                }
 
-              updateSubjectDropdownStatus(cloudState);
+                document.getElementById("outRollCode").textContent = cloudState.rollCode;
+                document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
 
-              if (cloudState.activeSession && cloudState.activeSession.day) {
-                activeDay = cloudState.activeSession.day;
-                resumeExamHall(activeDay);
+                renderSubjectDropdownForClass(selectedClass, cloudState);
+
+                if (cloudState.activeSession && cloudState.activeSession.day) {
+                  activeDay = cloudState.activeSession.day;
+                  resumeExamHall(activeDay);
+                }
+              } catch (e) {
+                console.warn("Firestore sync fallback:", e);
+                renderSubjectDropdownForClass(selectedClass, null);
               }
             } else {
               currentUser = null;
@@ -453,39 +485,28 @@
       }, 200);
     });
 
-    // चेकबॉक्स सहमति चेक
-    function toggleEnterButtonState() {
-      const isAgreed = document.getElementById("chkAgreeRules").checked;
-      const enterBtn = document.getElementById("btnEnterExamHall");
-      const chosenDay = parseInt(document.getElementById("regExamDaySelect").value, 10);
-      const record = (cloudState && cloudState.completedDays) ? cloudState.completedDays[chosenDay] : null;
+    // 🔄 कक्षा बदलने पर विषय तुरंत बदलना
+    function onClassSelectionChanged() {
+      const classSelectEl = document.getElementById("regStudentClassSelect");
+      selectedClass = classSelectEl.value;
+      localStorage.setItem("nd_selected_class", selectedClass);
+      document.getElementById("outClassStream").textContent = selectedClass === "10th" ? "10th Matric" : (selectedClass === "11th" ? "11th Science" : "12th Science");
 
-      if (record && record.status === "COMPLETED") {
-        enterBtn.disabled = true;
-        enterBtn.textContent = "⚠️ यह परीक्षा पहले ही जमा हो चुकी है";
-      } else if (isAgreed) {
-        enterBtn.disabled = false;
-        enterBtn.textContent = "🏛️ परीक्षा कक्ष में प्रवेश करें (Enter Exam Hall) →";
-      } else {
-        enterBtn.disabled = true;
-        enterBtn.textContent = "🔒 नियमों की सहमति देकर परीक्षा कक्ष में प्रवेश करें →";
+      if (currentUser && window.NischayConfig && window.NischayConfig.dbInstance) {
+        window.NischayConfig.dbInstance.collection("users").doc(currentUser.uid).set({
+          selectedClass: selectedClass
+        }, { merge: true });
       }
+
+      renderSubjectDropdownForClass(selectedClass, cloudState);
     }
 
-    // ड्रॉपडाउन में [COMPLETED ✓] अपडेट करना
-    function updateSubjectDropdownStatus(state) {
+    // 📚 सिर्फ चुनी हुई कक्षा के विषय रेंडर करना
+    function renderSubjectDropdownForClass(cls, state) {
       const selectEl = document.getElementById("regExamDaySelect");
       if (!selectEl) return;
 
-      const subjects = [
-        { day: 1, text: "Day 1: 101 - हिन्दी (M.I.L)" },
-        { day: 2, text: "Day 2: 105 - संस्कृत (S.I.L)" },
-        { day: 3, text: "Day 3: 110 - गणित (Mathematics)" },
-        { day: 4, text: "Day 4: 112 - विज्ञान (Science)" },
-        { day: 5, text: "Day 5: 113 - सामाजिक विज्ञान (Social Science)" },
-        { day: 6, text: "Day 6: 114 - अंग्रेजी (English)" }
-      ];
-
+      const subjects = CLASS_SUBJECTS_MAP[cls] || CLASS_SUBJECTS_MAP["10th"];
       selectEl.innerHTML = "";
       let firstPendingDay = null;
 
@@ -496,16 +517,16 @@
         const record = (state && state.completedDays) ? state.completedDays[sub.day] : null;
 
         if (record && record.status === "COMPLETED") {
-          opt.textContent = `${sub.text} — [COMPLETED ✓]`;
+          opt.textContent = `Day ${sub.day}: ${sub.name} — [COMPLETED ✓]`;
           opt.disabled = true;
           opt.style.color = "#22c55e";
           opt.style.fontWeight = "bold";
         } else if (record && record.status === "ABSENT") {
-          opt.textContent = `${sub.text} — [ABSENT ❌]`;
+          opt.textContent = `Day ${sub.day}: ${sub.name} — [ABSENT ❌]`;
           opt.disabled = true;
           opt.style.color = "#ef4444";
         } else {
-          opt.textContent = `${sub.text} (उपलब्ध)`;
+          opt.textContent = `Day ${sub.day}: ${sub.name} (उपलब्ध)`;
           if (!firstPendingDay) firstPendingDay = sub.day;
         }
 
@@ -514,20 +535,34 @@
 
       if (firstPendingDay) {
         selectEl.value = firstPendingDay;
-      } else {
-        document.getElementById("btnEnterExamHall").disabled = true;
-        document.getElementById("btnEnterExamHall").textContent = "✓ सभी 6 परीक्षाएं समाप्त हो चुकी हैं";
-        document.getElementById("ticketStatusMsg").innerHTML = `<strong style="color: #22c55e;">बधाई! आपकी सभी 6 परीक्षाएं पूर्ण हो चुकी हैं। परिणाम 7वें दिन सुबह 09:00 AM पर देखें।</strong>`;
       }
-
       toggleEnterButtonState();
     }
 
-    function checkSelectedSubjectStatus() {
-      toggleEnterButtonState();
+    function toggleEnterButtonState() {
+      const isAgreed = document.getElementById("chkAgreeRules").checked;
+      const enterBtn = document.getElementById("btnEnterExamHall");
+      const chosenDay = parseInt(document.getElementById("regExamDaySelect").value, 10);
+      const record = (cloudState && cloudState.completedDays) ? cloudState.completedDays[chosenDay] : null;
+
+      if (record && record.status === "COMPLETED") {
+        enterBtn.disabled = true;
+        enterBtn.style.opacity = "0.5";
+        enterBtn.style.cursor = "not-allowed";
+        enterBtn.textContent = "⚠️ यह परीक्षा पहले ही जमा हो चुकी है";
+      } else if (isAgreed) {
+        enterBtn.disabled = false;
+        enterBtn.style.opacity = "1";
+        enterBtn.style.cursor = "pointer";
+        enterBtn.textContent = "🏛️ परीक्षा कक्ष में प्रवेश करें (Enter Exam Hall) →";
+      } else {
+        enterBtn.disabled = true;
+        enterBtn.style.opacity = "0.6";
+        enterBtn.style.cursor = "not-allowed";
+        enterBtn.textContent = "🔒 नियमों पर सहमति देकर परीक्षा कक्ष में प्रवेश करें →";
+      }
     }
 
-    // परीक्षा कक्ष में प्रवेश
     function enterExamHallDirect() {
       if (!currentUser) {
         alert("कृपया पहले Gmail से लॉगिन करें!");
@@ -546,40 +581,36 @@
 
       const record = (cloudState && cloudState.completedDays) ? cloudState.completedDays[activeDay] : null;
       if (record && record.status === "COMPLETED") {
-        alert("⚠️ यह परीक्षा पहले ही सफलतापूर्वक जमा हो चुकी है। आप इसे दोबारा नहीं दे सकते!");
+        alert("⚠️ यह परीक्षा पहले ही जमा हो चुकी है।");
         return;
       }
 
       resumeExamHall(activeDay);
 
       updateCloudExamState(currentUser, {
-        activeSession: { day: activeDay, startedAt: new Date().toISOString() }
-      });
+        selectedClass: selectedClass,
+        activeSession: { day: activeDay, class: selectedClass, startedAt: new Date().toISOString() }
+      }).catch(e => console.log(e));
     }
 
     function resumeExamHall(day) {
-      const daySubjectMap = { 
-        1: "101-hindi", 
-        2: "105-sanskrit", 
-        3: "110-math", 
-        4: "112-science", 
-        5: "113-sst", 
-        6: "114-english" 
-      };
-
-      const paperKey = daySubjectMap[day] || "101-hindi";
+      const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
+      const currentSub = subjects.find(s => s.day === day) || subjects[0];
+      const paperKey = currentSub.code;
       const paperData = BSEB_PAPERS_DATABASE[paperKey] || BSEB_PAPERS_DATABASE["101-hindi"];
 
-      document.getElementById("hallDisplayRoll").textContent = `${cloudState.rollCode} - ${cloudState.rollNumber}`;
-      document.getElementById("hallDisplaySub").textContent = paperData.subjectName;
+      const rCode = document.getElementById("outRollCode").textContent || "33193";
+      const rNum = document.getElementById("outRollNumber").textContent || "26017186";
+
+      document.getElementById("hallDisplayRoll").textContent = `${rCode} - ${rNum} (${selectedClass})`;
+      document.getElementById("hallDisplaySub").textContent = currentSub.name;
 
       const iframe = document.getElementById("simPaperFrame");
       if (iframe && paperData.driveLink) {
         iframe.src = paperData.driveLink;
       }
 
-      const qCount = (paperData.subjectCode === "112" || paperData.subjectCode === "113") ? 80 : 100;
-      renderOmrBubbles(qCount);
+      renderOmrBubbles(100);
 
       document.getElementById("simVerificationStage").style.display = "none";
       document.getElementById("simExamHallStage").style.display = "block";
@@ -641,7 +672,6 @@
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
 
-    // मल्टीपल पन्ने संभालने वाला फ़ंक्शन
     function handleImageSelection(event, section, maxAllowed) {
       const files = event.target.files;
       if (!files || files.length === 0) return;
@@ -692,8 +722,10 @@
     async function confirmFinalExamSubmission() {
       if (!confirm("क्या आप आज की परीक्षा फाइनल जमा करना चाहते हैं?")) return;
 
-      const daySubjectMap = { 1: "101-hindi", 2: "105-sanskrit", 3: "110-math", 4: "112-science", 5: "113-sst", 6: "114-english" };
-      const paperData = BSEB_PAPERS_DATABASE[daySubjectMap[activeDay]];
+      const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
+      const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
+      const paperData = BSEB_PAPERS_DATABASE[currentSub.code] || BSEB_PAPERS_DATABASE["101-hindi"];
+
       const btn = document.querySelector(".btn-submit-board-exam");
       if (btn) {
         btn.disabled = true;
@@ -704,7 +736,7 @@
         await submitExamToCloud(
           currentUser,
           activeDay,
-          paperData.subjectName,
+          currentSub.name,
           paperData.answerKey,
           [
             ...(selectedImages.gadyansh || []),
@@ -715,7 +747,7 @@
           cloudState
         );
 
-        alert(`✓ Day ${activeDay} (${paperData.subjectName}) की परीक्षा सफलतापूर्वक जमा हो गई!\n\nअब यह विषय हमेशा के लिए लॉक हो गया है।`);
+        alert(`✓ Day ${activeDay} (${currentSub.name}) की परीक्षा सफलतापूर्वक जमा हो गई!\n\nअब यह विषय हमेशा के लिए लॉक हो गया है।`);
         location.reload();
       } catch (err) {
         alert("सबमिशन त्रुटि: " + err.message);
