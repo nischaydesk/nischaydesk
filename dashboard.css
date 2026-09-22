@@ -1,145 +1,217 @@
 /* ==========================================================================
-   NischayDesk Dashboard & Notes Studio Styling (v3.5)
-   Layout & Component Architecture: Prince Kumar
+   NischayDesk Dashboard Architecture & EdTech Studio Suite (v5.0 Ultimate Pro)
+   Architected by: Prince Kumar (NischayDesk)
+   Features: Open Edge-to-Edge Hero, Daily Streak Tracker, Study Focus Hub,
+             3D Subject Matrix, App-Style Quick Tools, Zero Feature Drop
    ========================================================================== */
 
-/* 1. Hero Studio Banner */
+/* ==========================================================================
+   1. OPEN HERO ED-TECH STAGE (पुराना चौकोर डिब्बा खत्म, अब खुला और बड़ा लुक)
+   ========================================================================== */
 .hero-studio-banner {
-  background: radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.18), transparent 55%),
-              linear-gradient(180deg, var(--bg-secondary) 0%, var(--surface-card) 100%);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-lg);
-  padding: 28px 18px;
-  margin-bottom: 28px;
+  background: transparent !important;
+  border: none !important;
+  padding: 10px 4px 28px !important;
+  margin-bottom: 24px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
-  box-shadow: var(--shadow-md);
   position: relative;
-  overflow: hidden;
-  transition: background var(--transition-smooth), border-color var(--transition-smooth);
+  overflow: visible;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 960px) {
   .hero-studio-banner {
-    grid-template-columns: 1.25fr 1fr;
-    padding: 38px 30px;
+    grid-template-columns: 1.35fr 1fr;
+    padding: 24px 8px 36px !important;
     align-items: center;
+    gap: 36px;
   }
 }
 
-.hero-headline {
-  font-size: 1.75rem;
-  font-weight: 800;
-  line-height: 1.25;
-  color: var(--text-pure);
-  margin-bottom: 10px;
-  letter-spacing: -0.5px;
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
 }
 
-@media (min-width: 600px) {
+.hero-headline {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-pure) !important;
+  margin: 10px 0 12px;
+  letter-spacing: -0.6px;
+}
+
+@media (min-width: 640px) {
   .hero-headline {
-    font-size: 2.2rem;
+    font-size: 2.45rem;
   }
 }
 
 .hero-subline {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 520px;
-  margin-bottom: 18px;
+  font-size: 0.92rem;
+  color: var(--text-secondary) !important;
+  line-height: 1.65;
+  max-width: 540px;
+  margin-bottom: 22px;
 }
 
 .hero-action-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-/* Hero Stats Metric Panel (2x2 Balanced Grid) */
+/* ==========================================================================
+   2. HERO STATS & STUDENT METRIC STAGE (फ्लोटिंग प्रीमियम कार्ड्स)
+   ========================================================================== */
 .hero-stats-panel {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .stat-glass-card {
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 14px 10px;
-  backdrop-filter: blur(8px);
+  background: rgba(12, 22, 51, 0.7) !important;
+  border: 1.5px solid var(--border-strong) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 18px 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-quick), border-color var(--transition-quick);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: transform var(--transition-quick), border-color var(--transition-quick), box-shadow var(--transition-quick);
 }
 
 .stat-glass-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--brand-accent);
+  transform: translateY(-4px);
+  border-color: var(--brand-accent) !important;
+  box-shadow: 0 12px 30px var(--brand-glow);
 }
 
 .stat-icon {
-  font-size: 1.3rem;
-  margin-bottom: 2px;
+  font-size: 1.45rem;
+  margin-bottom: 4px;
 }
 
 .stat-numeric {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: var(--brand-accent);
+  color: var(--brand-accent) !important;
   letter-spacing: -0.5px;
 }
 
 .stat-label {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-  margin-top: 2px;
+  font-size: 0.74rem;
+  color: var(--text-secondary) !important;
+  font-weight: 700;
+  margin-top: 3px;
 }
 
-/* 2. Dashboard Sections & Headlines */
+/* ==========================================================================
+   3. NEW PRO WIDGETS: DAILY STREAK, GOALS & FOCUS TIMER BAR
+   ========================================================================== */
+.student-pulse-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 768px) {
+  .student-pulse-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.pulse-card-banner {
+  background: linear-gradient(135deg, rgba(14, 27, 65, 0.75), rgba(8, 15, 36, 0.9));
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-quick), border-color var(--transition-quick);
+}
+
+.pulse-card-banner:hover {
+  border-color: var(--brand-accent);
+  transform: translateY(-2px);
+}
+
+.pulse-meta-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  margin-bottom: 3px;
+}
+
+.pulse-meta-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   4. DASHBOARD SECTIONS & HEADLINES
+   ========================================================================== */
 .dashboard-section {
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .section-title-wrap {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   flex-wrap: wrap;
   gap: 10px;
 }
 
 .section-headline {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--text-pure);
+  letter-spacing: -0.3px;
 }
 
 .section-subheadline {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .realtime-indicator {
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: var(--brand-accent);
   background: rgba(56, 189, 248, 0.12);
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(56, 189, 248, 0.25);
+  transition: all var(--transition-quick);
 }
 
-/* 3. Grid Cards System */
+.realtime-indicator:hover {
+  background: rgba(56, 189, 248, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   5. SOLID DARK GRID CARDS SYSTEM (सिलेबस, टेस्ट व क्वेश्चन बैंक)
+   ========================================================================== */
 .dashboard-grid-cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 18px;
 }
 
 @media (min-width: 768px) {
@@ -149,19 +221,22 @@
 }
 
 .grid-card {
-  background: var(--surface-card);
-  border: 1px solid var(--border-strong);
+  background: rgba(12, 24, 56, 0.75) !important;
+  border: 1.5px solid var(--border-strong) !important;
   border-radius: var(--radius-lg);
-  padding: 18px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-quick), border-color var(--transition-quick);
+  transition: transform var(--transition-quick), border-color var(--transition-quick), box-shadow var(--transition-quick);
 }
 
 .grid-card:hover {
-  border-color: var(--brand-accent);
-  transform: translateY(-2px);
+  border-color: var(--brand-accent) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px var(--brand-glow);
 }
 
 .card-head {
@@ -172,13 +247,13 @@
 }
 
 .card-tag {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  background: rgba(56, 189, 248, 0.12);
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.14);
   color: var(--brand-accent);
 }
 
@@ -193,30 +268,32 @@
 }
 
 .card-action-link {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--brand-accent);
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
+  transition: var(--transition-quick);
 }
 
 .card-action-link:hover {
-  text-decoration: underline;
+  color: #ffffff;
+  padding-left: 2px;
 }
 
 .card-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-pure);
-  margin-bottom: 6px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-pure) !important;
+  margin-bottom: 8px;
   line-height: 1.35;
 }
 
 .card-desc {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 14px;
+  font-size: 0.82rem;
+  color: var(--text-secondary) !important;
+  line-height: 1.55;
+  margin-bottom: 16px;
 }
 
 /* Progress Tracker */
@@ -235,7 +312,7 @@
 
 .progress-track {
   width: 100%;
-  height: 6px;
+  height: 7px;
   background: var(--surface-elevated);
   border-radius: var(--radius-pill);
   overflow: hidden;
@@ -256,7 +333,7 @@
   gap: 8px;
   align-items: center;
   background: var(--surface-elevated);
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
 }
@@ -267,33 +344,36 @@
 }
 
 .stat-pill-sm .stat-val {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--text-pure);
 }
 
 .stat-pill-sm .stat-desc {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
 .btn-start-test-sm {
   background: var(--brand-primary);
-  color: #fff;
+  color: #fff !important;
   text-decoration: none;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: var(--radius-sm);
   white-space: nowrap;
-  transition: background var(--transition-quick);
+  transition: background var(--transition-quick), transform var(--transition-quick);
 }
 
 .btn-start-test-sm:hover {
   background: var(--brand-secondary);
+  transform: scale(1.03);
 }
 
-/* 4. Quick Utilities Grid */
+/* ==========================================================================
+   6. QUICK UTILITIES GRID (App-Style 2-Column Mobile, 4-Column Desktop)
+   ========================================================================== */
 .quick-tools-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -302,55 +382,67 @@
 
 @media (min-width: 900px) {
   .quick-tools-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
 }
 
+@media (min-width: 1100px) {
+  .quick-tools-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+  }
+}
+
 .quick-tool-card {
-  background: var(--surface-card);
+  background: rgba(12, 22, 51, 0.75);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   padding: 16px 12px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: transform var(--transition-quick), border-color var(--transition-quick);
+  transition: transform var(--transition-quick), border-color var(--transition-quick), box-shadow var(--transition-quick);
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(10px);
 }
 
 .quick-tool-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--brand-accent);
+  box-shadow: 0 6px 18px var(--brand-glow);
 }
 
 .tool-icon-box {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   background: var(--surface-elevated);
   display: grid;
   place-items: center;
-  font-size: 1.15rem;
-  margin-bottom: 8px;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
   border: 1px solid var(--border-subtle);
+  box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.1);
 }
 
 .quick-tool-card h4 {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 4px;
 }
 
 .quick-tool-card p {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
   line-height: 1.35;
 }
 
-/* 5. Notes Hub Styles */
+/* ==========================================================================
+   7. NOTES CATALOG, SEARCH & FILTERS (अपरिवर्तित व सुरक्षित)
+   ========================================================================== */
 .notes-header-banner {
   text-align: center;
   padding: 20px 14px 14px;
@@ -359,14 +451,14 @@
 }
 
 .notes-headline {
-  font-size: 1.8rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: var(--text-pure);
   margin-bottom: 6px;
 }
 
 .notes-subheadline {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   margin-bottom: 18px;
 }
@@ -388,12 +480,12 @@
 
 .notes-search-field {
   width: 100%;
-  padding: 11px 16px 11px 40px;
+  padding: 12px 16px 12px 42px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-strong);
   background: var(--surface-card);
   color: var(--text-pure);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   outline: none;
   transition: border-color var(--transition-quick), box-shadow var(--transition-quick);
 }
@@ -403,10 +495,9 @@
   box-shadow: 0 0 0 3px var(--brand-glow);
 }
 
-/* Filter Pills Container */
 .filter-pill-container {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   overflow-x: auto;
   padding: 4px 2px;
   justify-content: flex-start;
@@ -429,9 +520,9 @@
   background: var(--surface-card);
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: var(--radius-pill);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-quick);
@@ -450,11 +541,10 @@
   box-shadow: 0 2px 10px var(--brand-glow);
 }
 
-/* Notes Catalog Grid */
 .notes-grid-catalog {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 16px;
 }
 
 @media (min-width: 650px) {
@@ -473,7 +563,7 @@
   background: var(--surface-card);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -494,21 +584,21 @@
 }
 
 .note-badge-class {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   background: rgba(56, 189, 248, 0.12);
   color: var(--brand-accent);
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: 4px;
 }
 
 .note-badge-pages {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 .note-item-card h3 {
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--text-pure);
   margin-bottom: 6px;
@@ -516,25 +606,25 @@
 }
 
 .note-item-card p {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  line-height: 1.45;
+  line-height: 1.5;
   margin-bottom: 14px;
 }
 
 .note-btn-group {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
-  gap: 6px;
+  gap: 8px;
 }
 
 .btn-read-note {
   background: var(--brand-primary);
   color: #fff;
   border: none;
-  padding: 8px 10px;
+  padding: 9px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
@@ -549,9 +639,9 @@
   background: var(--surface-elevated);
   color: var(--brand-accent);
   border: 1px solid var(--border-subtle);
-  padding: 8px 10px;
+  padding: 9px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   text-align: center;
@@ -562,35 +652,15 @@
   border-color: var(--brand-accent);
 }
 
-/* Loading States */
-.loading-state-box {
-  grid-column: 1 / -1;
-  padding: 40px 16px;
-  text-align: center;
-  color: var(--text-secondary);
-}
-
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid rgba(56, 189, 248, 0.2);
-  border-top-color: var(--brand-accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 10px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* 6. Embedded Studio PDF Viewer & Utility Modals */
+/* ==========================================================================
+   8. EMBEDDED PDF VIEWER & DIALOG MODALS
+   ========================================================================== */
 .pdf-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(3, 6, 16, 0.85);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 2000;
   display: none;
   place-items: center;
@@ -606,7 +676,7 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 950px;
+  max-width: 960px;
   height: 88vh;
   display: flex;
   flex-direction: column;
@@ -615,7 +685,7 @@
 }
 
 .pdf-studio-header {
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
@@ -625,13 +695,13 @@
 }
 
 .pdf-doc-badge {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--brand-accent);
   font-weight: 700;
 }
 
 .pdf-doc-title {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   color: var(--text-pure);
   font-weight: 700;
 }
@@ -639,16 +709,16 @@
 .pdf-studio-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .btn-studio-action {
   background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -689,16 +759,15 @@
 }
 
 .pdf-studio-footer {
-  padding: 6px 14px;
+  padding: 8px 16px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-/* 7. Utility Modal Components */
 .btn-stage-primary {
   background: var(--surface-elevated);
   border: 1px solid var(--brand-accent);
@@ -718,120 +787,27 @@
 
 .exam-dropdown {
   width: 100%;
-  padding: 9px 12px;
+  padding: 10px 12px;
   background: var(--surface-elevated);
   border: 1px solid var(--border-strong);
   color: var(--text-pure);
   border-radius: var(--radius-sm);
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   outline: none;
 }
+
 /* ==========================================================================
-   VISIBILITY BUG FIXES (Dark Mode Text & Stats Cards)
+   9. STRICT LIGHT MODE ONLY OVERRIDES
    ========================================================================== */
-
-/* 1. बैनर का मुख्य शीर्षक और विवरण कभी काला नहीं होगा */
-.hero-studio-banner h1,
-.hero-studio-banner .hero-headline,
-.hero-headline {
-  color: #ffffff !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.hero-studio-banner p,
-.hero-subline {
-  color: #94a3b8 !important;
-}
-
-/* 2. डार्क मोड में 4 स्टेट्स कार्ड्स कभी सफ़ेद नहीं होंगे */
-body:not(.light-mode) .stat-glass-card,
-html:not(.light-mode) .stat-glass-card {
-  background: #0f1c3d !important;
-  border: 1px solid rgba(56, 189, 248, 0.2) !important;
-  color: #ffffff !important;
-}
-
-body:not(.light-mode) .stat-glass-card .stat-numeric,
-html:not(.light-mode) .stat-glass-card .stat-numeric {
-  color: #38bdf8 !important;
-}
-
-body:not(.light-mode) .stat-glass-card .stat-label,
-html:not(.light-mode) .stat-glass-card .stat-label {
-  color: #94a3b8 !important;
-}
-
-/* लाइट मोड में ही ये सफेद दिखेंगे */
-html.light-mode .stat-glass-card {
-  background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #0f172a !important;
-}
-html.light-mode .stat-glass-card .stat-numeric {
-  color: #0284c7 !important;
-}
-html.light-mode .stat-glass-card .stat-label {
-  color: #64748b !important;
-}
-/* ==========================================================================
-   STATS & GRID CARDS SOLID DARK THEME (FORCE OVERRIDE)
-   ========================================================================== */
-
-/* 1. स्टेट्स कार्ड्स (100%, 80+, 1000+, फ्री वाले बॉक्स) */
-.stat-glass-card,
-div.stat-glass-card {
-  background: #081229 !important; /* गहरा नेवी-स्पेस बैकग्राउंड */
-  border: 1.5px solid #1e3a8a !important; /* प्रीमियम रॉयल ब्लू बॉर्डर */
-  border-radius: 16px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-}
-
-.stat-glass-card:hover {
-  border-color: #38bdf8 !important;
-  transform: translateY(-3px) !important;
-}
-
-/* कार्ड्स के अंदर का नंबर और टेक्स्ट */
-.stat-glass-card .stat-numeric {
-  color: #38bdf8 !important; /* चमकीला आसमानी */
-  font-weight: 800 !important;
-}
-
-.stat-glass-card .stat-label {
-  color: #94a3b8 !important; /* हल्का साफ़ ग्रे */
-  font-weight: 600 !important;
-}
-
-/* 2. ग्रिड कार्ड्स (सिलेबस, नोट्स और टेस्ट वाले मुख्य बॉक्स) */
-.grid-card,
-div.grid-card {
-  background: #0c1838 !important;
-  border: 1.5px solid #1e3a8a !important;
-  border-radius: 18px !important;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4) !important;
-}
-
-.grid-card:hover {
-  border-color: #38bdf8 !important;
-}
-
-.grid-card .card-title {
-  color: #ffffff !important;
-  font-weight: 800 !important;
-}
-
-.grid-card .card-desc {
-  color: #94a3b8 !important;
-}
-
-/* 3. सिर्फ और सिर्फ जब आप "लाइट मोड" ऑन करेंगे तभी ये सफ़ेद होंगे */
 html.light-mode .stat-glass-card,
 html.light-mode div.stat-glass-card,
 html.light-mode .grid-card,
-html.light-mode div.grid-card {
+html.light-mode div.grid-card,
+html.light-mode .quick-tool-card,
+html.light-mode .pulse-card-banner {
   background: #ffffff !important;
   border: 1.5px solid #cbd5e1 !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05) !important;
 }
 
 html.light-mode .stat-glass-card .stat-numeric {
@@ -839,12 +815,12 @@ html.light-mode .stat-glass-card .stat-numeric {
 }
 
 html.light-mode .stat-glass-card .stat-label,
-html.light-mode .grid-card .card-desc {
+html.light-mode .grid-card .card-desc,
+html.light-mode .pulse-meta-desc {
   color: #475569 !important;
 }
 
-html.light-mode .grid-card .card-title {
+html.light-mode .grid-card .card-title,
+html.light-mode .pulse-meta-title {
   color: #0f172a !important;
 }
-
-
