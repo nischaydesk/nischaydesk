@@ -117,11 +117,10 @@
           असली बोर्ड परीक्षा के अनुसार 1 दिन में सिर्फ 1 परीक्षा होगी। सभी 6 परीक्षाएं समाप्त होने के बाद 7वें दिन सुबह 09:00 AM पर आधिकारिक परिणाम खुलेगा।
         </p>
 
-        <form id="simVerificationForm" class="sim-entry-form" onsubmit="handleRegistrationSubmit(event)">
+        <form id="simVerificationForm" class="sim-entry-form" onsubmit="event.preventDefault(); enterExamHallDirect();">
           <div class="sim-form-grid">
             <div class="sim-input-group">
               <label for="regStudentName">परीक्षार्थी का पूरा नाम (Candidate Name) *</label>
-              <!-- अब यह पूरी तरह टाइप और एडिट हो सकता है -->
               <input type="text" id="regStudentName" class="sim-input" placeholder="उदा: PRINCE KUMAR" value="Prince Kumar" required />
             </div>
 
@@ -154,7 +153,8 @@
           </div>
 
           <div class="sim-actions-group">
-            <button type="submit" id="btnEnterExamHall" class="btn-sim-primary">
+            <!-- सीधा ऑनक्लिक ट्रिगर -->
+            <button type="button" id="btnEnterExamHall" class="btn-sim-primary" onclick="enterExamHallDirect()">
               🏛️ परीक्षा कक्ष में प्रवेश करें (Enter Exam Hall) →
             </button>
           </div>
@@ -170,7 +170,7 @@
     </section>
 
     <!-- STAGE 2: EXAM HALL -->
-    <section class="sim-stage" id="simExamHallStage">
+    <section class="sim-stage" id="simExamHallStage" style="display: none;">
       
       <div class="exam-command-bar">
         <div class="candidate-mini-info">
@@ -282,20 +282,28 @@
     let selectedImages = { gadyansh: [], nibandh: [], laghu: [], deergh: [] };
 
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. तुरंत लोकल स्टोरेज या डिफ़ॉल्ट डेटा लोड करें (बिना किसी रुकावट के)
+      // 1. तुरंत डाटा लोड
       let savedName = localStorage.getItem("nd_user_name") || "Prince Kumar";
       let rollCode = localStorage.getItem("nd_saved_roll_code") || "33193";
       let rollNumber = localStorage.getItem("nd_saved_roll_number") || "26017186";
       let regNo = localStorage.getItem("nd_saved_reg_no") || "R-33018274-26";
 
-      document.getElementById("regStudentName").value = savedName;
-      document.getElementById("simUserFirstName").textContent = savedName.split(" ")[0];
-      document.getElementById("userAvatarChar").textContent = savedName.charAt(0).toUpperCase();
+      const nameInput = document.getElementById("regStudentName");
+      if (nameInput) nameInput.value = savedName;
+
+      const userBadge = document.getElementById("simUserFirstName");
+      if (userBadge) userBadge.textContent = savedName.split(" ")[0];
+
+      const avatar = document.getElementById("userAvatarChar");
+      if (avatar) avatar.textContent = savedName.charAt(0).toUpperCase();
+
       document.getElementById("outRollCode").textContent = rollCode;
       document.getElementById("outRollNumber").textContent = rollNumber;
       document.getElementById("outRegNo").textContent = regNo;
 
-      // 2. होम स्क्रीन वाले Firebase Auth से कनेक्ट करें
+      updateSubjectDropdownStatus(null);
+
+      // 2. बैकग्राउंड Firebase Auth सिंक
       const checkFirebase = setInterval(() => {
         if (window.NischayConfig && window.NischayConfig.isCloudReady) {
           clearInterval(checkFirebase);
@@ -306,42 +314,41 @@
               const displayName = user.displayName || savedName;
               localStorage.setItem("nd_user_name", displayName);
 
-              document.getElementById("simUserFirstName").textContent = displayName.split(" ")[0];
-              document.getElementById("userAvatarChar").textContent = displayName.charAt(0).toUpperCase();
-              document.getElementById("regStudentName").value = displayName;
+              if (userBadge) userBadge.textContent = displayName.split(" ")[0];
+              if (avatar) avatar.textContent = displayName.charAt(0).toUpperCase();
+              if (nameInput) nameInput.value = displayName;
 
-              cloudState = await getCloudExamState(user);
-              cloudState = await enforceCloudAbsence(user, cloudState);
+              try {
+                cloudState = await getCloudExamState(user);
+                cloudState = await enforceCloudAbsence(user, cloudState);
 
-              document.getElementById("outRollCode").textContent = cloudState.rollCode;
-              document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
-              document.getElementById("outRegNo").textContent = cloudState.regNo;
+                document.getElementById("outRollCode").textContent = cloudState.rollCode;
+                document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
+                document.getElementById("outRegNo").textContent = cloudState.regNo;
 
-              localStorage.setItem("nd_saved_roll_code", cloudState.rollCode);
-              localStorage.setItem("nd_saved_roll_number", cloudState.rollNumber);
-              localStorage.setItem("nd_saved_reg_no", cloudState.regNo);
+                localStorage.setItem("nd_saved_roll_code", cloudState.rollCode);
+                localStorage.setItem("nd_saved_roll_number", cloudState.rollNumber);
+                localStorage.setItem("nd_saved_reg_no", cloudState.regNo);
 
-              updateSubjectDropdownStatus(cloudState);
+                updateSubjectDropdownStatus(cloudState);
 
-              if (cloudState.activeSession) {
-                activeDay = cloudState.activeSession.day;
-                resumeExamHall(activeDay);
+                if (cloudState.activeSession && cloudState.activeSession.day) {
+                  activeDay = cloudState.activeSession.day;
+                  resumeExamHall(activeDay);
+                }
+              } catch (err) {
+                console.warn("Cloud load warning:", err);
               }
-            } else {
-              // अगर किसी वजह से सेशन नहीं मिला तो लोकल डेटा से ड्रॉपडाउन तैयार करें
-              let localMockState = {
-                completedDays: JSON.parse(localStorage.getItem("nd_completed_days") || "{}")
-              };
-              updateSubjectDropdownStatus(localMockState);
             }
           });
         }
-      }, 200);
+      }, 300);
     });
 
-    // ड्रॉपडाउन में [COMPLETED ✓] का ठप्पा लगाना
     function updateSubjectDropdownStatus(state) {
       const selectEl = document.getElementById("regExamDaySelect");
+      if (!selectEl) return;
+
       const subjects = [
         { day: 1, text: "Day 1: 101 - हिन्दी (M.I.L)" },
         { day: 2, text: "Day 2: 105 - संस्कृत (S.I.L)" },
@@ -381,54 +388,87 @@
       }
     }
 
-    async function handleRegistrationSubmit(event) {
-      event.preventDefault();
-      activeDay = parseInt(document.getElementById("regExamDaySelect").value, 10);
-      const studentName = document.getElementById("regStudentName").value.trim();
+    // 🚀 सीधा परीक्षा कक्ष में प्रवेश फ़ंक्शन (No Hang)
+    function enterExamHallDirect() {
+      const selectEl = document.getElementById("regExamDaySelect");
+      activeDay = parseInt(selectEl.value, 10) || 1;
+
+      const nameInput = document.getElementById("regStudentName");
+      const studentName = nameInput ? nameInput.value.trim() : "Prince Kumar";
       localStorage.setItem("nd_user_name", studentName);
 
-      if (currentUser) {
-        await updateCloudExamState(currentUser, {
+      // हॉल तुरंत खोलें
+      resumeExamHall(activeDay);
+
+      // बैकग्राउंड क्लाउड सिंक
+      if (currentUser && typeof updateCloudExamState === "function") {
+        updateCloudExamState(currentUser, {
           displayName: studentName,
           activeSession: { day: activeDay, startedAt: new Date().toISOString() }
-        });
+        }).catch(e => console.log("Background sync:", e));
       }
-
-      resumeExamHall(activeDay);
     }
 
     function resumeExamHall(day) {
-      const daySubjectMap = { 1: "101-hindi", 2: "105-sanskrit", 3: "110-math", 4: "112-science", 5: "113-sst", 6: "114-english" };
-      const paperKey = daySubjectMap[day] || "101-hindi";
-      const paperData = BSEB_PAPERS_DATABASE[paperKey];
+      const daySubjectMap = { 
+        1: "101-hindi", 
+        2: "105-sanskrit", 
+        3: "110-math", 
+        4: "112-science", 
+        5: "113-sst", 
+        6: "114-english" 
+      };
 
-      const rCode = document.getElementById("outRollCode").textContent;
-      const rNum = document.getElementById("outRollNumber").textContent;
+      const paperKey = daySubjectMap[day] || "101-hindi";
+      const paperData = BSEB_PAPERS_DATABASE[paperKey] || BSEB_PAPERS_DATABASE["101-hindi"];
+
+      const rCode = document.getElementById("outRollCode").textContent || "33193";
+      const rNum = document.getElementById("outRollNumber").textContent || "26017186";
 
       document.getElementById("hallDisplayRoll").textContent = `${rCode} - ${rNum}`;
       document.getElementById("hallDisplaySub").textContent = paperData.subjectName;
 
       // Google Drive iframe
-      document.getElementById("simPaperFrame").src = paperData.driveLink;
+      const iframe = document.getElementById("simPaperFrame");
+      if (iframe && paperData.driveLink) {
+        iframe.src = paperData.driveLink;
+      }
 
-      renderOmrBubbles(paperData.subjectCode === "112" || paperData.subjectCode === "113" ? 80 : 100);
+      // OMR रेंडर
+      const qCount = (paperData.subjectCode === "112" || paperData.subjectCode === "113") ? 80 : 100;
+      renderOmrBubbles(qCount);
 
-      document.getElementById("simVerificationStage").classList.remove("active");
-      document.getElementById("simExamHallStage").classList.add("active");
+      // स्क्रीन टॉगल (गारंटीड स्विच)
+      const stage1 = document.getElementById("simVerificationStage");
+      const stage2 = document.getElementById("simExamHallStage");
+
+      if (stage1) {
+        stage1.classList.remove("active");
+        stage1.style.display = "none";
+      }
+      if (stage2) {
+        stage2.classList.add("active");
+        stage2.style.display = "block";
+      }
 
       toggleMobileView('paper');
-      
-      if (currentUser) {
+
+      // टाइमर
+      if (currentUser && typeof runCloudExamTimer === "function") {
         runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
-      } else {
+      } else if (typeof startExamTimer === "function") {
         startExamTimer(day, confirmFinalExamSubmission);
       }
     }
 
     function renderOmrBubbles(totalQuestions) {
       const container = document.getElementById("omrBubblesMatrix");
+      if (!container) return;
       container.innerHTML = "";
-      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : getSavedBubbles(activeDay);
+
+      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
+                    ? cloudState.savedOMR[activeDay] 
+                    : (typeof getSavedBubbles === "function" ? getSavedBubbles(activeDay) : {});
 
       for (let i = 1; i <= totalQuestions; i++) {
         const row = document.createElement("div");
@@ -454,7 +494,10 @@
     }
 
     function selectBubble(qNum, opt) {
-      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) ? cloudState.savedOMR[activeDay] : getSavedBubbles(activeDay);
+      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
+                    ? cloudState.savedOMR[activeDay] 
+                    : (typeof getSavedBubbles === "function" ? getSavedBubbles(activeDay) : {});
+
       if (!saved[qNum] && Object.keys(saved).length >= 50) {
         alert("⚠️ बिहार बोर्ड नियमानुसार अधिकतम 50 प्रश्नों का ही उत्तर दिया जा सकता है!");
         return;
@@ -464,11 +507,13 @@
         const el = document.getElementById(`bubble_${activeDay}_${qNum}_${o}`);
         if (el) el.classList.remove("filled");
       });
-      document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`).classList.add("filled");
 
-      if (currentUser) {
+      const target = document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`);
+      if (target) target.classList.add("filled");
+
+      if (currentUser && typeof syncBubbleToCloud === "function") {
         syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
-      } else {
+      } else if (typeof saveBubbleChoice === "function") {
         saveBubbleChoice(qNum, opt, activeDay);
       }
 
@@ -482,7 +527,8 @@
       const reader = new FileReader();
       reader.onload = (e) => {
         selectedImages[section] = [e.target.result];
-        document.getElementById(`preview${section.charAt(0).toUpperCase() + section.slice(1)}`).textContent = `✓ ${file.name} अपलोड हो गया`;
+        const preview = document.getElementById(`preview${section.charAt(0).toUpperCase() + section.slice(1)}`);
+        if (preview) preview.textContent = `✓ ${file.name} अपलोड हो गया`;
       };
       reader.readAsDataURL(file);
     }
@@ -507,11 +553,13 @@
       const daySubjectMap = { 1: "101-hindi", 2: "105-sanskrit", 3: "110-math", 4: "112-science", 5: "113-sst", 6: "114-english" };
       const paperData = BSEB_PAPERS_DATABASE[daySubjectMap[activeDay]];
       const btn = document.querySelector(".btn-submit-board-exam");
-      btn.disabled = true;
-      btn.textContent = "⏳ क्लाउड व AI मूल्यांकन...";
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "⏳ क्लाउड व AI मूल्यांकन...";
+      }
 
       try {
-        if (currentUser) {
+        if (currentUser && typeof submitExamToCloud === "function") {
           await submitExamToCloud(
             currentUser,
             activeDay,
@@ -543,8 +591,10 @@
         location.reload();
       } catch (err) {
         alert("सबमिशन त्रुटि: " + err.message);
-        btn.disabled = false;
-        btn.textContent = "पुनः प्रयास करें";
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "पुनः प्रयास करें";
+        }
       }
     }
   </script>
