@@ -1,7 +1,8 @@
 /* ==========================================================================
-   NischayDesk Official Syllabus Repository & Interactive Controller
+   NischayDesk Official Syllabus Repository & Interactive Controller (v5.0 Pro)
    Classes: 10th Matric, 11th Science & 12th Science
-   Curated by: Prince Kumar
+   Curated by: Prince Kumar (NischayDesk)
+   Fixed: DOM ID Synchronization with syllabus.html, In-App Safe Viewer Integration
    ========================================================================== */
 
 window.NischaySyllabusHubData = {
@@ -62,8 +63,6 @@ window.NischaySyllabusHubData = {
           { no: 6, name: "प्राकृतिक संसाधनों का प्रबंधन", pdf: "" }
         ]
       },
-
-      // सामाजिक विज्ञान के सभी खंड अलग-अलग:
       "history": {
         title: "इतिहास (History - भारत और समकालीन विश्व)",
         chapters: [
@@ -97,8 +96,8 @@ window.NischaySyllabusHubData = {
         title: "राजनीति शास्त्र (Democratic Politics - लोकतांत्रिक राजनीति)",
         chapters: [
           { no: 1, name: "लोकतंत्र में सत्ता की साझेदारी (Power Sharing)", pdf: "" },
-          { no: 2, name: "सत्ता में साझेदारी की कार्यप्रणाली (संघवाद एवं स्थानीय स्वशासन)", pdf: "" },
-          { no: 3, name: "लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष (जन संघर्ष और आंदोलन)", pdf: "" },
+          { no: 2, name: "सत्ता में साझेदारी की कार्यप्रणाली", pdf: "" },
+          { no: 3, name: "लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष", pdf: "" },
           { no: 4, name: "लोकतंत्र की उपलब्धियाँ (Outcomes of Democracy)", pdf: "" },
           { no: 5, name: "लोकतंत्र की चुनौतियाँ (Challenges to Democracy)", pdf: "" }
         ]
@@ -304,16 +303,26 @@ window.NischaySyllabusHubData = {
 };
 
 // ============================================================================
-// INTERACTIVE DOM CONTROLLER FOR SYLLABUS.HTML
+// DUAL COMPATIBILITY DOM CONTROLLER FOR SYLLABUS.HTML
 // ============================================================================
 document.addEventListener('DOMContentLoaded', function () {
-  const classSelect = document.getElementById('syllabusClassSelect');
-  const subjectSelect = document.getElementById('syllabusSubjectSelect');
-  const chaptersContainer = document.getElementById('syllabusChaptersList');
+  const classSelect = document.getElementById('sylClassFilter') || document.getElementById('syllabusClassSelect');
+  const subjectSelect = document.getElementById('sylSubjectFilter') || document.getElementById('syllabusSubjectSelect');
+  const chaptersContainer = document.getElementById('syllabusChaptersContainer') || document.getElementById('syllabusChaptersList');
 
   if (!classSelect || !subjectSelect || !chaptersContainer) return;
 
-  const studentLockedClass = localStorage.getItem('nischay_student_class') || '10';
+  const savedProfile = localStorage.getItem('nischay_user_profile');
+  let studentLockedClass = '10';
+  if (savedProfile) {
+    try {
+      const parsed = JSON.parse(savedProfile);
+      if (parsed.class) studentLockedClass = parsed.class;
+    } catch (e) {}
+  } else {
+    studentLockedClass = localStorage.getItem('nischay_student_class') || '10';
+  }
+
   if (window.NischaySyllabusHubData[studentLockedClass]) {
     classSelect.value = studentLockedClass;
   }
@@ -356,9 +365,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!chapters || chapters.length === 0) {
       chaptersContainer.innerHTML = `
-        <div style="text-align:center; padding:30px 16px; color:var(--text-secondary);">
-          <div style="font-size:2rem; margin-bottom:8px;">📋</div>
-          <p>इस विषय का सिलेबस शीघ्र अपलोड किया जा रहा है।</p>
+        <div class="loading-state-box">
+          <div style="font-size:2.2rem; margin-bottom:8px;">📋</div>
+          <p>इस विषय का आधिकारिक सिलेबस शीघ्र जोड़ा जा रहा है।</p>
         </div>
       `;
       return;
@@ -366,29 +375,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     chapters.forEach(ch => {
       const card = document.createElement('div');
-      card.style.cssText = `
-        background: var(--surface-card, #0c1633);
-        border: 1px solid var(--border-strong, #1e366a);
-        border-radius: 12px;
-        padding: 12px 16px;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      `;
+      card.className = 'chapter-bar-card';
 
       const hasPdf = ch.pdf && ch.pdf.trim() !== '' && ch.pdf !== '#';
       const actionButton = hasPdf
-        ? `<a href="${ch.pdf}" target="_blank" style="background:#0284c7; color:#fff; padding:6px 14px; border-radius:8px; font-size:0.8rem; font-weight:700; text-decoration:none; white-space:nowrap;">📖 सिलेबस देखें</a>`
-        : `<button onclick="alert('अध्याय ${ch.no} का आधिकारिक सिलेबस PDF जल्द लिंक किया जा रहा है!')" style="background:rgba(56,189,248,0.1); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:6px 14px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer; white-space:nowrap;">📖 सिलेबस देखें</button>`;
+        ? `<button class="btn-view-syllabus" onclick="window.openPdfViewer ? window.openPdfViewer('${ch.pdf}', '${ch.name.replace(/'/g, "\\'")}') : window.open('${ch.pdf}', '_blank')">📖 <span>सिलेबस देखें</span></button>`
+        : `<button class="btn-view-syllabus" style="background:var(--surface-elevated); border:1px solid var(--border-subtle); color:var(--brand-accent);" onclick="alert('अध्याय ${ch.no} का आधिकारिक सिलेबस PDF जल्द लिंक किया जा रहा है!')">📖 <span>जल्द आ रहा है</span></button>`;
 
       card.innerHTML = `
-        <div style="min-width:0;">
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-            <span style="background:rgba(56,189,248,0.15); color:#38bdf8; font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:4px;">अध्याय ${ch.no}</span>
-          </div>
-          <div style="color:var(--text-pure, #ffffff); font-size:0.92rem; font-weight:700; line-height:1.3;">${ch.name}</div>
+        <div class="chapter-meta-wrap">
+          <span class="chapter-idx-pill">अध्याय ${ch.no}</span>
+          <span class="chapter-title-text">${ch.name}</span>
         </div>
         <div>${actionButton}</div>
       `;
