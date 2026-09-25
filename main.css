@@ -202,7 +202,7 @@ body.app-body {
    6. BRAND NEW PRO ED-TECH WIDGETS (STREAK, TICKER, GLOW-CARDS)
    ========================================================================== */
 
-/* 🔥 Daily Study Streak Card */
+/* Daily Study Streak Card */
 .streak-chip-badge {
   display: inline-flex;
   align-items: center;
@@ -225,7 +225,7 @@ body.app-body {
   100% { transform: scale(1.18); filter: drop-shadow(0 0 8px #ff7043); }
 }
 
-/* 📢 Live Ticker Strip */
+/* Live Ticker Strip */
 .news-ticker-strip {
   display: flex;
   align-items: center;
@@ -259,7 +259,7 @@ body.app-body {
   text-overflow: ellipsis;
 }
 
-/* 🌟 Ultra-Glass Morphism Cards (Unacademy / PW Style) */
+/* Ultra-Glass Morphism Cards */
 .pro-glass-card {
   background: var(--surface-card) !important;
   border: 1px solid var(--border-strong) !important;
@@ -453,10 +453,12 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
-   9. ABSOLUTE BULLETPROOF LIGHT MODE (कभी कोई टेक्स्ट नहीं छिपेगा)
+   9. ABSOLUTE BULLETPROOF LIGHT MODE (Dual Class + Attribute Support)
    ========================================================================== */
 
-html.light-mode body.app-body {
+/* बॉडी व बैकग्राउंड */
+html.light-mode body.app-body,
+html[data-theme="light"] body.app-body {
   background-color: #f1f5f9 !important;
   background-image: 
     radial-gradient(at 0% 0%, rgba(2, 132, 199, 0.05) 0px, transparent 50%),
@@ -464,65 +466,124 @@ html.light-mode body.app-body {
   color: #0f172a !important;
 }
 
-html.light-mode .hero-headline {
+/* नमस्ते और हेडलाइंस */
+html.light-mode .hero-headline,
+html[data-theme="light"] .hero-headline,
+html.light-mode #welcomeGreetingText,
+html[data-theme="light"] #welcomeGreetingText,
+html.light-mode .hero-content h1,
+html[data-theme="light"] .hero-content h1 {
   color: #0f172a !important;
 }
 
-html.light-mode .hero-subline {
+html.light-mode .hero-subline,
+html[data-theme="light"] .hero-subline {
   color: #475569 !important;
 }
 
+/* सभी सामान्य कार्ड्स */
 html.light-mode .pro-glass-card,
+html[data-theme="light"] .pro-glass-card,
 html.light-mode .stat-glass-card,
+html[data-theme="light"] .stat-glass-card,
 html.light-mode .grid-card,
+html[data-theme="light"] .grid-card,
 html.light-mode .quick-tool-card,
+html[data-theme="light"] .quick-tool-card,
 html.light-mode .note-item-card,
+html[data-theme="light"] .note-item-card,
 html.light-mode .lobby-card,
+html[data-theme="light"] .lobby-card,
 html.light-mode .question-stage-box,
+html[data-theme="light"] .question-stage-box,
 html.light-mode .question-palette-box,
+html[data-theme="light"] .question-palette-box,
 html.light-mode .result-card-container,
-html.light-mode .news-ticker-strip {
+html[data-theme="light"] .result-card-container,
+html.light-mode .news-ticker-strip,
+html[data-theme="light"] .news-ticker-strip {
   background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   color: #0f172a !important;
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
 }
 
-html.light-mode h1, 
-html.light-mode h2, 
-html.light-mode h3, 
-html.light-mode h4,
-html.light-mode .card-title,
-html.light-mode .brand-title,
-html.light-mode .footer-heading,
-html.light-mode .note-item-card h3,
-html.light-mode .question-text,
-html.light-mode .palette-title,
-html.light-mode .solutions-heading,
-html.light-mode .ticker-text {
+/* 🎯 क्वेश्चन बैंक (pyq.html) और मॉडल पेपर (model-paper.html) के सेलेक्टर्स */
+html.light-mode .filter-container,
+html[data-theme="light"] .filter-container,
+html.light-mode .filter-box,
+html[data-theme="light"] .filter-box,
+html.light-mode .search-filter-card,
+html[data-theme="light"] .search-filter-card,
+html.light-mode .filter-bar,
+html[data-theme="light"] .filter-bar,
+html.light-mode .paper-card,
+html[data-theme="light"] .paper-card,
+html.light-mode .qb-card,
+html[data-theme="light"] .qb-card,
+html.light-mode .model-paper-card,
+html[data-theme="light"] .model-paper-card,
+html.light-mode .paper-list-item,
+html[data-theme="light"] .paper-list-item,
+html.light-mode .item-card,
+html[data-theme="light"] .item-card {
+  background: #ffffff !important;
+  border: 1.5px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* टाइटल्स, टेक्स्ट और हेडिंग्स */
+html.light-mode h1, html[data-theme="light"] h1,
+html.light-mode h2, html[data-theme="light"] h2,
+html.light-mode h3, html[data-theme="light"] h3,
+html.light-mode h4, html[data-theme="light"] h4,
+html.light-mode .card-title, html[data-theme="light"] .card-title,
+html.light-mode .brand-title, html[data-theme="light"] .brand-title,
+html.light-mode .footer-heading, html[data-theme="light"] .footer-heading,
+html.light-mode .note-item-card h3, html[data-theme="light"] .note-item-card h3,
+html.light-mode .question-text, html[data-theme="light"] .question-text,
+html.light-mode .palette-title, html[data-theme="light"] .palette-title,
+html.light-mode .solutions-heading, html[data-theme="light"] .solutions-heading,
+html.light-mode .ticker-text, html[data-theme="light"] .ticker-text,
+html.light-mode .paper-title, html[data-theme="light"] .paper-title {
   color: #0f172a !important;
 }
 
-html.light-mode p,
-html.light-mode .stat-label,
-html.light-mode .card-desc,
-html.light-mode .footer-summary,
-html.light-mode .section-subheadline,
-html.light-mode .note-item-card p,
-html.light-mode .lobby-subtitle {
+/* पैराग्राफ और सब-टेक्स्ट */
+html.light-mode p, html[data-theme="light"] p,
+html.light-mode .stat-label, html[data-theme="light"] .stat-label,
+html.light-mode .card-desc, html[data-theme="light"] .card-desc,
+html.light-mode .footer-summary, html[data-theme="light"] .footer-summary,
+html.light-mode .section-subheadline, html[data-theme="light"] .section-subheadline,
+html.light-mode .note-item-card p, html[data-theme="light"] .note-item-card p,
+html.light-mode .lobby-subtitle, html[data-theme="light"] .lobby-subtitle,
+html.light-mode .paper-desc, html[data-theme="light"] .paper-desc,
+html.light-mode .sub-title, html[data-theme="light"] .sub-title {
   color: #475569 !important;
 }
 
-html.light-mode select,
-html.light-mode input,
-html.light-mode .exam-dropdown,
-html.light-mode .notes-search-field {
-  background: #ffffff !important;
+/* ड्रॉपडाउन, इनपुट और सेलेक्ट बॉक्स */
+html.light-mode select, html[data-theme="light"] select,
+html.light-mode input, html[data-theme="light"] input,
+html.light-mode .exam-dropdown, html[data-theme="light"] .exam-dropdown,
+html.light-mode .notes-search-field, html[data-theme="light"] .notes-search-field,
+html.light-mode .select-input, html[data-theme="light"] .select-input,
+html.light-mode .search-input, html[data-theme="light"] .search-input {
+  background-color: #ffffff !important;
   color: #0f172a !important;
-  border: 1px solid #cbd5e1 !important;
+  border: 1.5px solid #cbd5e1 !important;
 }
 
-html.light-mode .app-footer {
+html.light-mode select option,
+html[data-theme="light"] select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* फूटर */
+html.light-mode .app-footer,
+html[data-theme="light"] .app-footer {
   background: #e2e8f0 !important;
   border-top: 1px solid #cbd5e1 !important;
 }
