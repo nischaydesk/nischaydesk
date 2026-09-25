@@ -1,6 +1,6 @@
 /**
  * NischayDesk - BSEB Official Cloud Engine
- * Unique Per-Gmail Roll Generation & Instant Submit
+ * Unique Hash-Based UID Credentials & Instant Fallback
  */
 
 const BSEB_CONFIG = {
@@ -40,41 +40,34 @@ function triggerGoogleLogin() {
     .catch((err) => alert("लॉगिन असफल: " + err.message));
 }
 
-// UID से यूनिक नंबर जनरेटर (ताकि हर Gmail को अलग नंबर मिले)
 function generateUniqueCredentials(uid) {
-  let hash = 0;
+  if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
+
+  let hash1 = 0, hash2 = 0;
   for (let i = 0; i < uid.length; i++) {
-    hash = (hash << 5) - hash + uid.charCodeAt(i);
-    hash |= 0;
+    const char = uid.charCodeAt(i);
+    hash1 = ((hash1 << 5) - hash1) + char;
+    hash1 |= 0;
+    hash2 = ((hash2 << 7) + hash2) ^ char;
+    hash2 |= 0;
   }
-  const posHash = Math.abs(hash);
-  const rollCode = "33" + String(100 + (posHash % 899));
-  const rollNumber = "2601" + String(1000 + (Math.floor(posHash / 10) % 8999));
-  const regNo = "R-330" + String(10000000 + (Math.floor(posHash / 7) % 89999999)) + "-26";
+
+  const abs1 = Math.abs(hash1);
+  const abs2 = Math.abs(hash2);
+
+  const rollCode = "33" + String(100 + (abs1 % 899));
+  const rollNumber = "2601" + String(1000 + (abs2 % 8999));
+  const regNo = "R-330" + String(10000000 + ((abs1 + abs2) % 89999999)) + "-26";
+
   return { rollCode, rollNumber, regNo };
 }
 
-// 1 Gmail = 1 यूनिक स्थायी रोल कोड और रोल नंबर
 async function getCloudExamState(user) {
-  if (!window.NischayConfig || !window.NischayConfig.dbInstance) return null;
-
-  const db = window.NischayConfig.dbInstance;
-  const docRef = db.collection("bseb_exams_2026").doc(user.uid);
-  const docSnap = await docRef.get();
-
-  if (docSnap.exists) {
-    return docSnap.data();
-  }
-
-  // अगर नया यूजर है, तो सिर्फ उसकी UID से यूनिक रोल नंबर बनाएँ
+  if (!user) return null;
   const creds = generateUniqueCredentials(user.uid);
-  const now = new Date();
-  const resultDate = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
-  resultDate.setHours(9, 0, 0, 0);
-
   const initialClass = localStorage.getItem("nd_selected_class") || "10th";
 
-  const permanentStudentState = {
+  let studentState = {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName || user.email.split('@')[0],
@@ -84,57 +77,49 @@ async function getCloudExamState(user) {
     regNo: creds.regNo,
     schoolName: "HIGH SCHOOL TELWA, JHAJHA",
     fatherName: "SURESH SHARMA",
-    startDate: now.toISOString(),
-    resultUnlockTime: resultDate.toISOString(),
-    currentActiveDay: 1,
+    startDate: new Date().toISOString(),
+    resultUnlockTime: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
     completedDays: {},
     savedOMR: {},
+    lastExamDate: null,
     activeSession: null
   };
 
-  await docRef.set(permanentStudentState);
-  return permanentStudentState;
-}
+  if (window.NischayConfig && window.NischayConfig.dbInstance) {
+    try {
+      const db = window.NischayConfig.dbInstance;
+      const docRef = db.collection("bseb_exams_2026").doc(user.uid);
+      const docSnap = await docRef.get();
 
-async function updateCloudExamState(user, patchData) {
-  if (!window.NischayConfig || !window.NischayConfig.dbInstance || !user) return;
-  const db = window.NischayConfig.dbInstance;
-  await db.collection("bseb_exams_2026").doc(user.uid).set(patchData, { merge: true });
-}
-
-async function enforceCloudAbsence(user, state) {
-  if (!state || !state.startDate) return state;
-  const startDayTime = new Date(state.startDate).getTime();
-  const nowTime = Date.now();
-  const oneDayMs = 24 * 60 * 60 * 1000;
-  const daysPassed = Math.floor((nowTime - startDayTime) / oneDayMs) + 1;
-
-  let hasChanged = false;
-  if (!state.completedDays) state.completedDays = {};
-
-  for (let d = 1; d <= 6; d++) {
-    if (d < daysPassed) {
-      if (!state.completedDays[d] || state.completedDays[d].status !== "COMPLETED") {
-        state.completedDays[d] = {
-          subjectName: `Day ${d} Exam`,
-          objectiveMarks: 0,
-          subjectiveMarks: 0,
-          totalMarks: 0,
-          status: "ABSENT",
-          submittedAt: null
-        };
-        hasChanged = true;
+      if (docSnap.exists) {
+        studentState = { ...studentState, ...docSnap.data() };
+      } else {
+        await docRef.set(studentState);
       }
+    } catch (e) {
+      console.warn("Firestore fetch error, fallback to memory hash:", e);
     }
   }
 
-  state.currentActiveDay = Math.min(daysPassed, 7);
-  if (hasChanged && user) {
-    await updateCloudExamState(user, {
-      completedDays: state.completedDays,
-      currentActiveDay: state.currentActiveDay
-    });
+  localStorage.setItem("nischay_student_session", JSON.stringify(studentState));
+  localStorage.setItem(`nischay_exam_state_${studentState.rollCode}_${studentState.rollNumber}`, JSON.stringify(studentState));
+
+  return studentState;
+}
+
+async function updateCloudExamState(user, patchData) {
+  if (!user) return;
+  if (window.NischayConfig && window.NischayConfig.dbInstance) {
+    try {
+      const db = window.NischayConfig.dbInstance;
+      await db.collection("bseb_exams_2026").doc(user.uid).set(patchData, { merge: true });
+    } catch(e) {
+      console.warn("Cloud update failed:", e);
+    }
   }
+}
+
+async function enforceCloudAbsence(user, state) {
   return state;
 }
 
@@ -183,21 +168,15 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
     try {
       const db = window.NischayConfig.dbInstance;
       await db.collection("bseb_exams_2026").doc(user.uid).set({
-        savedOMR: {
-          [day]: {
-            [qNum]: opt
-          }
-        }
+        savedOMR: { [day]: { [qNum]: opt } }
       }, { merge: true });
-    } catch (e) {
-      console.warn("Cloud OMR sync error:", e);
-    }
+    } catch (e) {}
   }
 }
 
 async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, state) {
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
-  
+
   let objMarks = 0;
   let count = 0;
   for (let i = 1; i <= 100; i++) {
@@ -217,6 +196,8 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, 
     }
   }
 
+  const todayStr = new Date().toISOString().split('T')[0];
+
   const completedData = {
     subjectName: subjectName,
     objectiveMarks: objMarks,
@@ -230,19 +211,20 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesDict, 
   if (state) {
     if (!state.completedDays) state.completedDays = {};
     state.completedDays[day] = completedData;
+    state.lastExamDate = todayStr;
     state.activeSession = null;
   }
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
     await db.collection("bseb_exams_2026").doc(user.uid).set({
-      completedDays: {
-        [day]: completedData
-      },
+      completedDays: { [day]: completedData },
+      lastExamDate: todayStr,
       activeSession: null
     }, { merge: true });
   }
 
+  localStorage.setItem(`nischay_exam_state_${state.rollCode}_${state.rollNumber}`, JSON.stringify(state));
   return completedData;
 }
 
