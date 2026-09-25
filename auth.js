@@ -157,16 +157,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (userAvatarImg) userAvatarImg.src = photoURL;
 
       if (drawerUserCard) {
-        const isLight = document.documentElement.classList.contains('light-mode');
-        const nameColor = isLight ? '#0f172a' : '#ffffff';
-        const subColor = isLight ? '#0284c7' : '#38bdf8';
-
         drawerUserCard.innerHTML = `
           <div style="display:flex; align-items:center; gap:12px;">
             <img src="${photoURL}" style="width:42px; height:42px; border-radius:50%; border:2px solid #0284c7; object-fit:cover;" alt="${activeName}">
             <div style="min-width:0; overflow:hidden;">
-              <div style="font-size:0.98rem; font-weight:800; color:${nameColor}; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${activeName}</div>
-              <div style="font-size:0.78rem; color:${subColor}; font-weight:700; margin-top:3px;">● Class ${fullClass} सक्रिय (बदलें ▾)</div>
+              <div class="user-name-title">${activeName}</div>
+              <div style="font-size:0.78rem; color:#0284c7; font-weight:700; margin-top:3px;">● Class ${fullClass} सक्रिय (बदलें ▾)</div>
             </div>
           </div>
         `;
