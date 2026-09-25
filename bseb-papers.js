@@ -4,7 +4,7 @@
    ========================================================================== */
 
 const BSEB_PAPERS_DATABASE = {
-  // 1. मातृभाषा हिन्दी (Code: 101) - आपका असली पेपर
+  // 1. मातृभाषा हिन्दी (Code: 101)
   "101-hindi": {
     subjectCode: "101",
     subjectName: "हिन्दी (M.I.L Hindi)",
@@ -14,8 +14,7 @@ const BSEB_PAPERS_DATABASE = {
     totalPages: 23,
     driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/preview",
     answerKey: {
-      
-       1: "A", 2: "B", 3: "B", 4: "A", 5: "B",
+      1: "A", 2: "B", 3: "B", 4: "A", 5: "B",
       6: "C", 7: "D", 8: "C", 9: "A", 10: "B",
       11: "D", 12: "A", 13: "A", 14: "C", 15: "D",
       16: "A", 17: "D", 18: "A", 19: "B", 20: "B",
@@ -46,7 +45,7 @@ const BSEB_PAPERS_DATABASE = {
     passMarks: 30,
     hasPractical: false,
     totalPages: 20,
-    driveLink: "https://drive.google.com/file/d/1m_Gvjc5BFg-Gq8cInuVcpJwdesy3jcSX/view?usp=drivesdk/preview",
+    driveLink: "https://drive.google.com/file/d/1m_Gvjc5BFg-Gq8cInuVcpJwdesy3jcSX/preview",
     answerKey: {
       1: "A", 2: "B", 3: "C", 4: "D", 5: "A", 6: "B", 7: "C", 8: "D", 9: "A", 10: "B",
       11: "C", 12: "D", 13: "A", 14: "B", 15: "C", 16: "D", 17: "A", 18: "B", 19: "C", 20: "D",
@@ -69,7 +68,7 @@ const BSEB_PAPERS_DATABASE = {
     passMarks: 30,
     hasPractical: false,
     totalPages: 32,
-    driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/preview",
+    driveLink: "https://drive.google.com/file/d/1w78O_KDgZq3foKaLEv3xhP4vRTOyq02b/preview",
     answerKey: {
       1: "B", 2: "D", 3: "A", 4: "C", 5: "B", 6: "A", 7: "C", 8: "D", 9: "B", 10: "A",
       11: "B", 12: "C", 13: "D", 14: "A", 15: "B", 16: "C", 17: "D", 18: "A", 19: "B", 20: "C",
@@ -93,7 +92,7 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: true,
     practicalMarks: 20,
     totalPages: 24,
-    driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/preview",
+    driveLink: "https://drive.google.com/file/d/1S0CRy6LT8wE7yByQN1Rx4JOgrIk5QD1Y/preview",
     answerKey: {
       1: "A", 2: "B", 3: "C", 4: "D", 5: "A", 6: "B", 7: "C", 8: "D", 9: "A", 10: "B",
       11: "C", 12: "D", 13: "A", 14: "B", 15: "C", 16: "D", 17: "A", 18: "B", 19: "C", 20: "D",
@@ -115,7 +114,7 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: true,
     practicalMarks: 20,
     totalPages: 24,
-    driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/preview",
+    driveLink: "https://drive.google.com/file/d/1hg-uLvcYQx9yVB2QFxYMuywt2F9hH2Ly/preview",
     answerKey: {
       1: "C", 2: "A", 3: "D", 4: "B", 5: "A", 6: "C", 7: "D", 8: "B", 9: "A", 10: "C",
       11: "D", 12: "B", 13: "A", 14: "C", 15: "D", 16: "B", 17: "A", 18: "C", 19: "D", 20: "B",
@@ -136,7 +135,7 @@ const BSEB_PAPERS_DATABASE = {
     passMarks: 30,
     hasPractical: false,
     totalPages: 22,
-    driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/preview",
+    driveLink: "https://drive.google.com/file/d/1rDlSyvoHPxlc_eObIV5ZZFPrqI0vXW0l/preview",
     answerKey: {
       1: "B", 2: "A", 3: "C", 4: "D", 5: "B", 6: "A", 7: "C", 8: "D", 9: "B", 10: "A",
       11: "B", 12: "C", 13: "D", 14: "A", 15: "B", 16: "C", 17: "D", 18: "A", 19: "B", 20: "C",
