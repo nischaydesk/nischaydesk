@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSEB Annual Secondary Examination Result 2026 | NischayDesk</title>
+  <title>BSEB Simulation Result Portal | NischayDesk</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,11 +19,31 @@
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', Arial, sans-serif;
       background: #f1f5f9;
       margin: 0;
-      padding: 20px;
+      padding: 16px;
       color: #0f172a;
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .top-brand-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .brand-logo-badge {
+      background: #0284c7;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.1rem;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .brand-name {
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: #0f172a;
     }
 
     /* सर्च गेटवे कार्ड */
@@ -39,9 +59,9 @@
     }
     .search-title {
       margin: 0 0 4px 0;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      color: #0369a1;
+      color: #0284c7;
       text-align: center;
     }
     .search-subtitle {
@@ -51,9 +71,7 @@
       margin: 0 0 16px 0;
       line-height: 1.4;
     }
-    .form-group {
-      margin-bottom: 12px;
-    }
+    .form-group { margin-bottom: 12px; }
     .form-group label {
       display: block;
       font-size: 0.82rem;
@@ -88,7 +106,7 @@
     .captcha-badge {
       font-weight: 800;
       font-size: 1.05rem;
-      color: #0369a1;
+      color: #0284c7;
       letter-spacing: 2px;
     }
     .btn-search {
@@ -105,7 +123,6 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
-      transition: 0.2s;
     }
     .btn-search:hover { background: #0369a1; }
     .error-banner {
@@ -122,8 +139,32 @@
       line-height: 1.4;
     }
 
+    /* ⏳ 7वें दिन से पहले का काउंटडाउन कार्ड */
+    .countdown-card {
+      display: none;
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      border: 2px solid #0284c7;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+    .timer-big-clock {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #0284c7;
+      background: rgba(2, 132, 199, 0.08);
+      padding: 10px;
+      border-radius: 10px;
+      margin: 14px 0;
+      letter-spacing: 1px;
+    }
+
     /* ===================================================
-       🎯 A4 साइज बोर्ड मार्कशीट कंटेनर
+       🎯 A4 साइज NischayDesk आधिकारिक मार्कशीट
        =================================================== */
     .a4-marksheet-wrapper {
       display: none;
@@ -137,64 +178,70 @@
       margin-bottom: 30px;
     }
 
-    /* स्क्रीनशॉट जैसा WEB COPY वाटरमार्क */
+    /* NISCHAYDESK WEB COPY वाटरमार्क */
     .watermark-webcopy {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(-32deg);
-      font-size: 5.5rem;
+      font-size: 4rem;
       font-weight: 900;
-      color: rgba(15, 23, 42, 0.07);
+      color: rgba(2, 132, 199, 0.06);
       pointer-events: none;
       white-space: nowrap;
-      letter-spacing: 12px;
+      letter-spacing: 6px;
       z-index: 1;
     }
 
     .marksheet-header {
       text-align: center;
-      border-bottom: 2px solid #000;
-      padding-bottom: 6px;
-      margin-bottom: 10px;
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .header-logo-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
     }
     .bseb-logo-text {
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       font-weight: 900;
       text-transform: uppercase;
       margin: 0;
-      color: #000;
-      letter-spacing: 0.5px;
+      color: #0f172a;
     }
     .bseb-sub-text {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 800;
       margin: 2px 0;
-      letter-spacing: 1.5px;
+      color: #0284c7;
+      letter-spacing: 1px;
     }
     .bseb-exam-title {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       font-weight: 800;
       text-transform: uppercase;
       margin: 2px 0 0 0;
     }
 
-    /* छात्र विवरण टेबल */
     .student-data-table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 12px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
     .student-data-table td {
-      border: 1px solid #333;
+      border: 1px solid #64748b;
       padding: 5px 8px;
     }
     .student-data-table td.field-name {
       background: #f8fafc;
       font-weight: 700;
       width: 22%;
-      color: #1e293b;
+      color: #334155;
     }
     .student-data-table td.field-val {
       font-weight: 800;
@@ -203,14 +250,13 @@
       text-transform: uppercase;
     }
 
-    /* मार्क्स टेबल */
     .marks-band-title {
       background: #eab308;
       border: 1px solid #333;
       border-bottom: none;
       text-align: center;
       font-weight: 900;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       padding: 4px;
       text-transform: uppercase;
     }
@@ -224,8 +270,8 @@
       z-index: 2;
     }
     .marks-matrix-table th, .marks-matrix-table td {
-      border: 1px solid #333;
-      padding: 5px 4px;
+      border: 1px solid #475569;
+      padding: 6px 4px;
     }
     .marks-matrix-table th {
       background: #ffffff;
@@ -245,17 +291,15 @@
       color: #16a34a;
     }
 
-    /* फुटर व नियम */
     .marksheet-footer {
       font-size: 0.72rem;
-      color: #334155;
+      color: #475569;
       line-height: 1.5;
-      border-top: 1px dashed #64748b;
+      border-top: 1px dashed #94a3b8;
       padding-top: 8px;
       margin-top: 6px;
     }
 
-    /* प्रिंट बटन */
     .print-bar {
       display: flex;
       gap: 12px;
@@ -272,9 +316,6 @@
     .btn-print { background: #16a34a; color: #fff; }
     .btn-reset { background: #64748b; color: #fff; }
 
-    /* ===================================================
-       🖨️ A4 प्रिंट मीडिया क्वेरी (Exact A4 1-Page Layout)
-       =================================================== */
     @media print {
       @page {
         size: A4 portrait;
@@ -286,7 +327,7 @@
         margin: 0 !important;
         display: block !important;
       }
-      .search-card, .print-bar, header {
+      .top-brand-bar, .search-card, .countdown-card, .print-bar, header {
         display: none !important;
       }
       .a4-marksheet-wrapper {
@@ -299,17 +340,7 @@
         margin: 0 !important;
       }
       .watermark-webcopy {
-        opacity: 0.12 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .marks-band-title {
-        background: #eab308 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .student-data-table td.field-name {
-        background: #f8fafc !important;
+        opacity: 0.1 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -318,11 +349,16 @@
 </head>
 <body>
 
+  <div class="top-brand-bar">
+    <div class="brand-logo-badge">N</div>
+    <div class="brand-name">Nischay<span style="color:#0284c7;">Desk</span> BSEB Portal</div>
+  </div>
+
   <!-- चरण 1: परिणाम खोज गेटवे -->
   <div class="search-card" id="searchBoxCard">
     <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
     <p class="search-subtitle">
-      बिहार विद्यालय परीक्षा समिति • NischayDesk आधिकारिक रिजल्ट गेट<br />
+      NischayDesk आधिकारिक 7-दिवसीय मूल्यांकन परीक्षा परिणाम<br />
       सत्यापित रोल कोड एवं रोल नंबर दर्ज करें
     </p>
 
@@ -337,7 +373,7 @@
     </div>
 
     <div class="captcha-wrap">
-      <span class="captcha-badge" id="captchaEquation">15 + 8 = ?</span>
+      <span class="captcha-badge" id="captchaEquation">12 + 6 = ?</span>
       <button type="button" onclick="generateCaptcha()" style="border:none; background:none; color:#0284c7; cursor:pointer; font-weight:bold; font-size:0.8rem;">🔄 नया कैप्चा</button>
     </div>
 
@@ -352,14 +388,33 @@
     <div class="error-banner" id="errorBanner"></div>
   </div>
 
-  <!-- चरण 2: A4 साइज आधिकारिक मार्कशीट (स्क्रीनशॉट जैसा) -->
+  <!-- ⏳ 7वें दिन से पहले का काउंटडाउन लॉक कार्ड -->
+  <div class="countdown-card" id="countdownCard">
+    <div style="font-size: 2.8rem; margin-bottom: 6px;">⏳</div>
+    <h3 style="color: #0284c7; margin: 0 0 6px 0; font-size: 1.25rem;">आपकी परीक्षा अभी प्रगति पर है!</h3>
+    <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0;">
+      बिहार बोर्ड 7-दिवसीय सिमुलेशन नियमानुसार, आपका परिणाम सभी 6 विषयों की परीक्षा समाप्त होने के बाद **7वें दिन सुबह ठीक 09:00 AM** पर प्रकाशित किया जाएगा।
+    </p>
+    <div class="timer-big-clock" id="resultCountdownTimer">-- दिन -- घंटे -- मिनट</div>
+    <div style="background: rgba(2, 132, 199, 0.08); border-radius: 8px; padding: 10px; font-size: 0.82rem; color: #0284c7; font-weight: bold;">
+      🔒 सुरक्षा नियम: समय पूर्व परिणाम देखना पूर्णतः प्रतिबंधित है।
+    </div>
+    <button type="button" onclick="resetSearch()" style="margin-top: 15px; padding: 8px 20px; background: #64748b; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+      ← वापस जाएं
+    </button>
+  </div>
+
+  <!-- चरण 2: A4 साइज NischayDesk आधिकारिक मार्कशीट -->
   <div class="a4-marksheet-wrapper" id="a4Marksheet">
-    <div class="watermark-webcopy">WEB COPY</div>
+    <div class="watermark-webcopy">NISCHAYDESK WEB COPY</div>
 
     <div class="marksheet-header">
-      <h1 class="bseb-logo-text">Bihar School Examination Board</h1>
-      <div class="bseb-sub-text">RESULT</div>
-      <div class="bseb-exam-title" id="outExamTitle">ANNUAL SECONDARY EXAMINATION - 2026</div>
+      <div class="header-logo-row">
+        <div style="background:#0284c7; color:#fff; font-weight:900; font-size:1.1rem; padding:3px 8px; border-radius:6px;">N</div>
+        <h1 class="bseb-logo-text">NischayDesk Examination Council</h1>
+      </div>
+      <div class="bseb-sub-text">BSEB REAL EXAM SIMULATION EVALUATION - 2026</div>
+      <div class="bseb-exam-title">ANNUAL SECONDARY EXAMINATION WEB COPY</div>
     </div>
 
     <table class="student-data-table">
@@ -372,8 +427,12 @@
       <tr>
         <td class="field-name">Father's Name</td>
         <td class="field-val" id="outFatherName">--</td>
+        <td class="field-name">Mother's Name</td>
+        <td class="field-val" id="outMotherName">--</td>
+      </tr>
+      <tr>
         <td class="field-name">School Name</td>
-        <td class="field-val" id="outSchoolName">--</td>
+        <td class="field-val" colspan="3" id="outSchoolName">--</td>
       </tr>
       <tr>
         <td class="field-name">Roll Code</td>
@@ -395,14 +454,12 @@
           <th style="width: 32%;">Subject</th>
           <th style="width: 12%;">F.Marks</th>
           <th style="width: 12%;">P.Marks</th>
-          <th style="width: 14%;">Theory</th>
+          <th style="width: 14%;">Theory (Obj+Subj)</th>
           <th style="width: 14%;">INT/PRAC</th>
           <th style="width: 16%;">Subject Total</th>
         </tr>
       </thead>
-      <tbody id="matrixTableBody">
-        <!-- 6 विषयों का डायनामिक आधिकारिक डेटा -->
-      </tbody>
+      <tbody id="matrixTableBody"></tbody>
       <tfoot>
         <tr class="final-row">
           <td colspan="2">Final Result / Division</td>
@@ -414,8 +471,8 @@
     </table>
 
     <div class="marksheet-footer">
-      <strong>Abbreviations used:</strong> • F -> Fail • P -> Pass • ABS -> Absent • INT -> Internal Assessment • PRAC -> Practical Assessment • REG -> Under Regulation<br />
-      <em>Disclaimer:</em> Bihar School Examination Board is not responsible for any inadvertent error that may have crept in the results being published on NET. The result published on NET is for immediate information to the examinees. This is a computer generated Web Copy.
+      <strong>Abbreviations used:</strong> • F -> Fail • P -> Pass • ABS -> Absent • INT -> Internal Assessment • PRAC -> Practical Assessment<br />
+      <em>Disclaimer:</em> This Web Copy is published by NischayDesk Real Examination Simulator for immediate evaluation of Class 10th students. Certified digital copy verified by NischayDesk Evaluation Engine.
     </div>
   </div>
 
@@ -429,10 +486,11 @@
 
   <script>
     let expectedCaptchaSum = 0;
+    let countdownIntervalRef = null;
 
     function generateCaptcha() {
-      const n1 = Math.floor(Math.random() * 25) + 5;
-      const n2 = Math.floor(Math.random() * 20) + 2;
+      const n1 = Math.floor(Math.random() * 20) + 5;
+      const n2 = Math.floor(Math.random() * 15) + 3;
       expectedCaptchaSum = n1 + n2;
       document.getElementById("captchaEquation").textContent = `${n1} + ${n2} = ?`;
       document.getElementById("inputCaptcha").value = "";
@@ -453,7 +511,6 @@
       err.style.display = "none";
     }
 
-    // 🔒 सख्त फायरबेस सर्च: सिर्फ वही खुलेगा जो डेटाबेस में दर्ज होगा
     async function fetchOfficialResult() {
       hideError();
       const rCode = document.getElementById("inputRollCode").value.trim();
@@ -473,11 +530,10 @@
       }
 
       btn.disabled = true;
-      btn.textContent = "⏳ बिहार बोर्ड सर्वर पर खोजा जा रहा है...";
+      btn.textContent = "⏳ सर्वर पर रिकॉर्ड खोजा जा रहा है...";
 
       let studentData = null;
 
-      // 1. फायरबेस Firestore में सटीक रोल कोड + रोल नंबर क्वेरी
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
@@ -495,7 +551,6 @@
         }
       }
 
-      // 2. लोकल सत्र से बैकअप मिलान (केवल उसी छात्र का)
       if (!studentData) {
         const localCache = localStorage.getItem(`nischay_exam_state_${rCode}_${rNum}`);
         if (localCache) {
@@ -511,21 +566,62 @@
       btn.disabled = false;
       btn.textContent = "🔍 आधिकारिक परिणाम खोजें (Search Result)";
 
-      // 🛑 अगर फायरबेस में रिकॉर्ड नहीं मिला तो सीधा रिजेक्शन
       if (!studentData) {
-        showError("❌ कोई रिकॉर्ड नहीं मिला!\nदर्ज किया गया रोल कोड (" + rCode + ") या रोल नंबर (" + rNum + ") अमान्य है अथवा परीक्षा में उपस्थित नहीं हुआ है।");
+        showError("❌ कोई रिकॉर्ड नहीं मिला!\nदर्ज किया गया रोल कोड (" + rCode + ") या रोल नंबर (" + rNum + ") अमान्य है।");
         generateCaptcha();
         return;
       }
 
-      // रिकॉर्ड मिल गया -> A4 मार्कशीट रेंडर करें
+      // =========================================================
+      // 🔒 7वें दिन का कड़ा ताला (Strict Day 7 Release Gate)
+      // =========================================================
+      const startDateMs = studentData.startDate ? new Date(studentData.startDate).getTime() : Date.now();
+      
+      // 7वां दिन = शुरुआत के 6 दिन पूरे होने के बाद अगला दिन (सुबह 9:00 बजे)
+      const day7UnlockMs = startDateMs + (6 * 24 * 60 * 60 * 1000);
+      const nowMs = Date.now();
+
+      // अगर 7वां दिन नहीं आया है तो सीधे काउंटडाउन दिखाएं
+      if (nowMs < day7UnlockMs) {
+        showCountdownScreen(day7UnlockMs);
+        return;
+      }
+
+      // 7वां दिन पूरा हो गया -> अब ही मार्कशीट खुलेगी
       renderA4Marksheet(studentData);
+    }
+
+    function showCountdownScreen(unlockMs) {
+      document.getElementById("searchBoxCard").style.display = "none";
+      document.getElementById("countdownCard").style.display = "block";
+
+      if (countdownIntervalRef) clearInterval(countdownIntervalRef);
+
+      const updateClock = () => {
+        const diff = unlockMs - Date.now();
+        if (diff <= 0) {
+          clearInterval(countdownIntervalRef);
+          document.getElementById("resultCountdownTimer").textContent = "परिणाम जारी हो चुका है! कृपया दोबारा खोजें।";
+          return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("resultCountdownTimer").textContent = `${d} दिन ${h} घंटे ${m} मिनट ${s} सेकंड`;
+      };
+
+      updateClock();
+      countdownIntervalRef = setInterval(updateClock, 1000);
     }
 
     function renderA4Marksheet(data) {
       document.getElementById("outUniqueId").textContent = data.uid ? (data.uid.substring(0, 14).toUpperCase()) : "12671309250009";
       document.getElementById("outStudentName").textContent = (data.displayName || "PRINCE KUMAR").toUpperCase();
-      document.getElementById("outFatherName").textContent = (data.fatherName || "SURESH SHARMA").toUpperCase();
+      document.getElementById("outFatherName").textContent = (data.fatherName || "राजेश शर्मा").toUpperCase();
+      document.getElementById("outMotherName").textContent = (data.motherName || "संजू देवी").toUpperCase();
       document.getElementById("outSchoolName").textContent = (data.schoolName || "HIGH SCHOOL TELWA BAZAR, JAMUI").toUpperCase();
       document.getElementById("outRollCode").textContent = data.rollCode;
       document.getElementById("outRollNumber").textContent = data.rollNumber;
@@ -594,16 +690,18 @@
         divTag.style.color = "#d97706";
       }
 
-      // सर्च बॉक्स छिपाकर A4 मार्कशीट और प्रिंट बार दिखाएं
       document.getElementById("searchBoxCard").style.display = "none";
+      document.getElementById("countdownCard").style.display = "none";
       document.getElementById("a4Marksheet").style.display = "block";
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function resetSearch() {
+      if (countdownIntervalRef) clearInterval(countdownIntervalRef);
       document.getElementById("a4Marksheet").style.display = "none";
       document.getElementById("printActionsBar").style.display = "none";
+      document.getElementById("countdownCard").style.display = "none";
       document.getElementById("searchBoxCard").style.display = "block";
       generateCaptcha();
       hideError();
