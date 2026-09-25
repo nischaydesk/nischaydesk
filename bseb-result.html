@@ -393,7 +393,7 @@
     <div style="font-size: 2.8rem; margin-bottom: 6px;">⏳</div>
     <h3 style="color: #0284c7; margin: 0 0 6px 0; font-size: 1.25rem;">आपकी परीक्षा अभी प्रगति पर है!</h3>
     <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0;">
-      बिहार बोर्ड 7-दिवसीय सिमुलेशन नियमानुसार, आपका परिणाम सभी 6 विषयों की परीक्षा समाप्त होने के बाद **7वें दिन सुबह ठीक 09:00 AM** पर प्रकाशित किया जाएगा।
+      बिहार बोर्ड 7-दिवसीय सिमुलेशन नियमानुसार, आपका परिणाम सभी 6 विषयों की परीक्षा समाप्त होने के बाद <strong>7वें दिन सुबह ठीक 09:00 AM</strong> पर प्रकाशित किया जाएगा।
     </p>
     <div class="timer-big-clock" id="resultCountdownTimer">-- दिन -- घंटे -- मिनट</div>
     <div style="background: rgba(2, 132, 199, 0.08); border-radius: 8px; padding: 10px; font-size: 0.82rem; color: #0284c7; font-weight: bold;">
@@ -573,11 +573,21 @@
       }
 
       // =========================================================
+      // 🛑 शून्य परीक्षा सुरक्षा: बिना परीक्षा दिए रिज़ल्ट/टाइमर नहीं
+      // =========================================================
+      const completed = studentData.completedDays || {};
+      const completedCount = Object.keys(completed).length;
+
+      if (completedCount === 0 && !studentData.activeSession) {
+        showError("❌ आपने अभी तक किसी भी विषय की परीक्षा प्रारंभ नहीं की है!\nकृपया पहले परीक्षा पोर्टल पर जाकर परीक्षा दें, उसके बाद ही परिणाम सारणी मान्य होगी।");
+        generateCaptcha();
+        return;
+      }
+
+      // =========================================================
       // 🔒 7वें दिन का कड़ा ताला (Strict Day 7 Release Gate)
       // =========================================================
       const startDateMs = studentData.startDate ? new Date(studentData.startDate).getTime() : Date.now();
-      
-      // 7वां दिन = शुरुआत के 6 दिन पूरे होने के बाद अगला दिन (सुबह 9:00 बजे)
       const day7UnlockMs = startDateMs + (6 * 24 * 60 * 60 * 1000);
       const nowMs = Date.now();
 
@@ -587,7 +597,7 @@
         return;
       }
 
-      // 7वां दिन पूरा हो गया -> अब ही मार्कशीट खुलेगी
+      // 7वां दिन पूरा होने पर ही मार्कशीट खुलेगी
       renderA4Marksheet(studentData);
     }
 
