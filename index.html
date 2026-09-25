@@ -8,7 +8,7 @@
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- Core Theme & Layout Stylesheets -->
@@ -21,6 +21,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+  <!-- Fast HD PDF Generator Library (jsPDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     .class-active-badge {
       color: #ffffff;
@@ -30,10 +33,57 @@
       border-radius: 6px;
       border: 1px solid rgba(56, 189, 248, 0.3);
     }
-    html.light-mode .class-active-badge {
-      color: #0284c7;
-      background: #e0f2fe;
-      border-color: #bae6fd;
+    html.light-mode .class-active-badge,
+    html[data-theme="light"] .class-active-badge {
+      color: #0284c7 !important;
+      background: #e0f2fe !important;
+      border-color: #bae6fd !important;
+    }
+
+    /* लाइट मोड में नमस्ते और हेडिंग फिक्स */
+    html.light-mode #welcomeGreetingText,
+    html[data-theme="light"] #welcomeGreetingText {
+      color: #0f172a !important;
+    }
+
+    /* तगड़ा 50+ पेज PDF प्रोग्रेस बार मोडल */
+    #heavyPdfModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 999999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .heavy-pdf-box {
+      background: #1e293b;
+      border: 2px solid #0284c7;
+      border-radius: 16px;
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      color: #ffffff;
+    }
+    .pdf-track {
+      width: 100%;
+      height: 12px;
+      background: rgba(2, 132, 199, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 16px 0 10px 0;
+      border: 1px solid #0284c7;
+    }
+    .pdf-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #22c55e);
+      border-radius: 8px;
+      transition: width 0.1s ease-out;
     }
   </style>
 </head>
@@ -166,14 +216,14 @@
     <section class="hero-studio-banner" style="padding-top: 24px; padding-bottom: 24px;">
       <div class="hero-content">
         
-        <!-- Personalized User Welcome Strip (लाइट और डार्क मोड दोनों में साफ़ टेक्स्ट) -->
+        <!-- Personalized User Welcome Strip (लाइट और डार्क मोड दोनों में क्रिस्टल क्लियर) -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
-          <div style="font-size: 1.6rem; font-weight: 800; color: var(--text-pure); line-height: 1.2;">
+          <div id="welcomeGreetingText" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span> 👋
           </div>
 
           <div id="welcomeUserMeta" style="display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 0.82rem;">
-            <span style="color: var(--text-secondary);">कक्षा:</span>
+            <span style="color: var(--text-secondary, #94a3b8);">कक्षा:</span>
             <span class="class-active-badge">
               <span id="displayStudentClass">Class 10th</span>
             </span>
@@ -476,13 +526,35 @@
           <p>2020-2026 के हल पेपर्स।</p>
         </a>
 
-        <div class="quick-tool-card" id="openDocConverterBtn">
+        <!-- 📸 तगड़ा इमेज टू PDF कनवर्टर कार्ड -->
+        <div class="quick-tool-card" id="openDocConverterBtn" onclick="triggerFastPdfConverter()" style="cursor: pointer; border: 1.5px solid #38bdf8;">
           <div class="tool-icon-box">📄</div>
           <h4>इमेज टू PDF कनवर्टर</h4>
-          <p>कैमरा व फोटो से HD PDF बनाएं।</p>
+          <p>40-50 फोटो की हाई-स्पीड HD PDF बनाएं।</p>
         </div>
       </div>
     </section>
+
+    <!-- छिपे हुए फ़ाइल इनपुट -->
+    <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
+
+    <!-- ⚡ लाइव PDF जनरेशन प्रोग्रेस मोडल -->
+    <div id="heavyPdfModal">
+      <div class="heavy-pdf-box">
+        <div style="font-size: 2.4rem; margin-bottom: 8px;">⚡</div>
+        <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.2rem;">तगड़ा PDF इंजन सक्रिय है...</h3>
+        <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;" id="heavyPdfStatusText">फ़ोटो लोड हो रही हैं...</p>
+        
+        <div class="pdf-track">
+          <div class="pdf-fill" id="heavyPdfFillBar"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: #cbd5e1;">
+          <span id="heavyPdfPageCounter">0 / 0 पेज</span>
+          <span id="heavyPdfPercent">0%</span>
+        </div>
+      </div>
+    </div>
 
     <!-- DEDICATED USER PROFILE & CLASS SELECTION MODAL -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
@@ -761,6 +833,130 @@
           window.location.reload();
         }
       }, 800);
+    }
+
+    // =========================================================
+    // 🚀 ULTRA-POWERFUL 50+ PAGE IMAGE TO PDF ENGINE
+    // =========================================================
+    function triggerFastPdfConverter() {
+      const input = document.getElementById('heavyPdfFileInput');
+      if (input) input.click();
+    }
+
+    document.getElementById('heavyPdfFileInput').addEventListener('change', async function(e) {
+      const files = Array.from(e.target.files);
+      if (!files || files.length === 0) return;
+
+      const modal = document.getElementById('heavyPdfModal');
+      const statusText = document.getElementById('heavyPdfStatusText');
+      const fillBar = document.getElementById('heavyPdfFillBar');
+      const pageCounter = document.getElementById('heavyPdfPageCounter');
+      const percentEl = document.getElementById('heavyPdfPercent');
+
+      modal.style.display = 'flex';
+      fillBar.style.width = '0%';
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'pt',
+          format: 'a4',
+          compress: true
+        });
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const curPage = i + 1;
+
+          // प्रगति अपडेट
+          statusText.textContent = `पेज ${curPage} ऑप्टिमाइज़ व संपीड़ित हो रहा है...`;
+          pageCounter.textContent = `${curPage} / ${files.length} पेज`;
+          const pct = Math.round((curPage / files.length) * 100);
+          fillBar.style.width = pct + '%';
+          percentEl.textContent = pct + '%';
+
+          // मेमोरी-सेफ इमेज लोडर विथ कैनवस कंप्रेशन
+          const compressedDataUrl = await compressAndLoadImage(file);
+
+          if (i > 0) pdf.addPage();
+
+          // ऑटो फिट स्केलिंग
+          const imgProps = pdf.getImageProperties(compressedDataUrl);
+          const imgRatio = imgProps.width / imgProps.height;
+
+          let finalW = pageWidth - 20;
+          let finalH = finalW / imgRatio;
+
+          if (finalH > (pageHeight - 20)) {
+            finalH = pageHeight - 20;
+            finalW = finalH * imgRatio;
+          }
+
+          const posX = (pageWidth - finalW) / 2;
+          const posY = (pageHeight - finalH) / 2;
+
+          pdf.addImage(compressedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
+
+          // ब्राउज़र को फ्रीज होने से बचाने के लिए छोटा ब्रेक
+          await new Promise(r => setTimeout(r, 15));
+        }
+
+        statusText.textContent = "✓ PDF तैयार! डाउनलोड प्रारंभ हो रहा है...";
+        fillBar.style.width = '100%';
+        percentEl.textContent = '100%';
+
+        setTimeout(() => {
+          const timestamp = new Date().toISOString().slice(0,10);
+          pdf.save(`NischayDesk_Doc_${timestamp}.pdf`);
+          modal.style.display = 'none';
+          e.target.value = '';
+        }, 500);
+
+      } catch (err) {
+        alert("PDF बनाने में त्रुटि: " + err.message);
+        modal.style.display = 'none';
+        e.target.value = '';
+      }
+    });
+
+    // ब्राउज़र क्रैश रोधी कैनवस डाउनसैम्पलर
+    function compressAndLoadImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxDimension = 1600; // 50 पेज के लिए अनुकूलित रेजोल्यूशन
+            let w = img.width;
+            let h = img.height;
+
+            if (w > h && w > maxDimension) {
+              h = Math.round((h * maxDimension) / w);
+              w = maxDimension;
+            } else if (h > maxDimension) {
+              w = Math.round((w * maxDimension) / h);
+              h = maxDimension;
+            }
+
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+
+            // 0.72 क्वालिटी: हाई क्लैरिटी के साथ हल्का साइज
+            resolve(canvas.toDataURL('image/jpeg', 0.72));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
     }
   </script>
 
