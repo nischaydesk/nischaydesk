@@ -16,330 +16,227 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
-    .app-header .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      gap: 8px;
+    /* डेस्कटॉप और मोबाइल दोनों में फुल-स्क्रीन सही दिखने के लिए */
+    .exam-split-grid {
+      display: flex !important;
+      flex-direction: row;
+      gap: 12px;
+      height: calc(100vh - 120px);
+      width: 100%;
     }
-    .brand-entity {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .brand-badge-icon {
-      width: 32px;
-      height: 32px;
-      background: #0284c7;
-      color: #fff;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 1.1rem;
-      border: 1.5px solid #38bdf8;
-      flex-shrink: 0;
-    }
-    .brand-name {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--bseb-text);
-      line-height: 1.1;
-    }
-    .brand-tagline {
-      font-size: 0.68rem;
-      color: var(--bseb-accent);
-      display: block;
-    }
-    .user-avatar-slot {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #4338ca;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 0.95rem;
-      border: 2px solid #38bdf8;
+    .exam-left-pane {
+      flex: 1.2;
+      display: flex !important;
+      flex-direction: column;
+      background: var(--bseb-surface-card);
+      border-radius: 10px;
       overflow: hidden;
-      flex-shrink: 0;
+      border: 1px solid var(--bseb-border);
     }
-    .user-avatar-slot img {
+    .exam-right-pane {
+      flex: 1;
+      display: flex !important;
+      flex-direction: column;
+      background: var(--bseb-surface-card);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--bseb-border);
+    }
+    .paper-iframe-wrapper {
+      flex: 1;
       width: 100%;
       height: 100%;
-      object-fit: cover;
     }
-
-    /* 3 आसान और साफ़ नियम */
-    .instructions-card-fixed {
-      background: #0f172a !important;
-      border: 1.5px solid #38bdf8 !important;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin: 14px 0;
-      text-align: left;
-    }
-    .instructions-card-fixed h3 {
-      margin: 0 0 8px 0;
-      color: #38bdf8 !important;
-      font-size: 0.98rem;
-      font-weight: 800;
-    }
-    .instructions-list-fixed {
-      margin: 0;
-      padding-left: 18px;
-      color: #f8fafc !important;
-      font-size: 0.84rem;
-      line-height: 1.6;
-    }
-    .instructions-list-fixed li strong {
-      color: #fdba74 !important;
-    }
-    .instruction-agree-box-fixed {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(56, 189, 248, 0.08);
-      padding: 10px;
-      border-radius: 8px;
-    }
-    .instruction-agree-box-fixed input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      accent-color: #0284c7;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-    .instruction-agree-box-fixed label {
-      font-size: 0.84rem;
-      color: #ffffff !important;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .exam-right-pane {
-      display: flex;
-      flex-direction: column;
-      height: 75vh !important;
-      overflow: hidden !important;
+    .paper-iframe-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
     .exam-tab-content {
       flex: 1;
       overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch;
-      padding: 10px 10px 80px 10px !important;
+      padding: 12px;
     }
-    .subj-card {
-      background: var(--bseb-surface-card);
-      border: 1.5px solid var(--bseb-border);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
+
+    /* मोबाइल स्क्रीन पर टॉगल बटन काम करेंगे */
+    @media (max-width: 900px) {
+      .exam-split-grid {
+        flex-direction: column;
+        height: auto;
+      }
+      .mobile-view-toggle-bar {
+        display: flex !important;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .exam-left-pane.mobile-hide, .exam-right-pane.mobile-hide {
+        display: none !important;
+      }
     }
-    .subj-card h4 {
-      margin: 0 0 4px 0;
-      font-size: 0.95rem;
-      color: var(--bseb-text);
+    @media (min-width: 901px) {
+      .mobile-view-toggle-bar {
+        display: none !important; /* डेस्कटॉप पर दोनों एक साथ साइड-बाई-साइड दिखेंगे */
+      }
+      .exam-left-pane, .exam-right-pane {
+        display: flex !important;
+      }
     }
-    .subj-card p {
-      margin: 0 0 10px 0;
-      font-size: 0.74rem;
-      color: var(--bseb-text-muted);
+
+    /* टेक्स्ट दोनों थीम में 100% साफ दिखेगा */
+    .guidance-box-fixed {
+      background: rgba(2, 132, 199, 0.12) !important;
+      border-left: 4px solid #0284c7 !important;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+    .guidance-text-fixed {
+      font-size: 0.86rem !important;
+      color: var(--bseb-text, #0f172a) !important;
+      font-weight: 700 !important;
+      line-height: 1.5;
+      display: block;
+    }
+    html[data-theme="dark"] .guidance-text-fixed {
+      color: #f8fafc !important;
+    }
+    html[data-theme="light"] .guidance-text-fixed {
+      color: #0f172a !important;
     }
   </style>
 </head>
 <body class="app-body bseb-simulator-body">
 
   <header class="app-header">
-    <nav class="nav-container">
-      <div class="nav-brand-group">
-        <a href="index.html" class="brand-entity">
-          <div class="brand-badge-icon">N</div>
-          <div class="brand-typography">
-            <span class="brand-name">Nischay<span style="color: #38bdf8;">Desk</span></span>
-            <span class="brand-tagline">BSEB 7-Day Portal</span>
-          </div>
-        </a>
-      </div>
+    <nav class="nav-container" style="display:flex; justify-content:space-between; align-items:center; padding:10px 16px;">
+      <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+        <div style="background:#0284c7; color:#fff; font-weight:900; padding:4px 8px; border-radius:6px;">N</div>
+        <span style="font-weight:800; font-size:1.1rem; color:var(--bseb-text);">Nischay<span style="color:#38bdf8;">Desk</span></span>
+      </a>
 
-      <div class="nav-controls-right">
-        <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
-          ☀️ लाइट मोड
-        </button>
-        <div class="user-profile-widget" id="userProfileWidget" style="display: flex; align-items: center; gap: 8px;">
-          <div class="user-avatar-slot" id="userAvatarBox">?</div>
-          <div class="user-info-text">
-            <span class="user-display-name" id="simUserFirstName" style="font-weight: 700; color: #fff;">लॉगिन...</span>
-          </div>
-        </div>
-        <a href="index.html" class="btn-home-exit">🏠 होम</a>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">☀️ मोड</button>
+        <span id="simUserFirstName" style="font-weight:700; color:var(--bseb-text);">लॉगिन...</span>
+        <a href="index.html" class="btn-home-exit" style="text-decoration:none; padding:5px 10px; border-radius:6px; background:#0284c7; color:#fff; font-size:0.8rem;">🏠 होम</a>
       </div>
     </nav>
   </header>
 
-  <main class="sim-main-viewport">
+  <main class="sim-main-viewport" style="padding: 10px 14px;">
 
-    <!-- STAGE 1: ADMISSION DESK -->
+    <!-- STAGE 1: सत्यापन एवं प्रवेश -->
     <section class="sim-stage active" id="simVerificationStage">
-      <div class="sim-card-box">
-        <div class="sim-header-chip">
-          <span class="pulsing-dot"></span> बिहार विद्यालय परीक्षा समिति • महा-सिमुलेटर
-        </div>
-        <h1 class="sim-title">परीक्षार्थी <span class="gradient-text">सत्यापन एवं डिजिटल एडमिट कार्ड</span></h1>
-
-        <div id="authRequiredBanner" style="display: block; background: rgba(239, 68, 68, 0.12); border: 2px solid #ef4444; border-radius: 12px; padding: 22px; text-align: center; margin: 18px 0;">
-          <div style="font-size: 2.5rem; margin-bottom: 8px;">🔐</div>
-          <h3 style="color: #f87171; margin: 0 0 6px;">Gmail लॉगिन अनिवार्य है</h3>
-          <p style="color: var(--bseb-text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 16px;">
-            परीक्षा में सम्मिलित होने और डिजिटल एडमिट कार्ड सुरक्षित रखने के लिए अपने आधिकारिक Gmail से लॉगिन करें।
-          </p>
-          <button type="button" class="btn-sim-primary" onclick="triggerGoogleLogin()" style="background: #ffffff; color: #000; font-weight: 800; width: auto; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; cursor: pointer;">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G" /> Google से लॉगिन करें
-          </button>
+      <div class="sim-card-box" style="max-width: 650px; margin: 20px auto; background: var(--bseb-surface-card); padding: 20px; border-radius: 12px; border: 1.5px solid var(--bseb-border);">
+        <h2 style="margin: 0 0 12px 0; color: var(--bseb-text);">🏛️ बिहार विद्यालय परीक्षा समिति महा-सिमुलेटर</h2>
+        
+        <div id="authRequiredBanner" style="text-align: center; padding: 20px;">
+          <p style="color: var(--bseb-text-muted);">परीक्षा में शामिल होने के लिए Gmail लॉगिन अनिवार्य है।</p>
+          <button type="button" onclick="triggerGoogleLogin()" style="padding: 10px 20px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer;">Google से लॉगिन करें</button>
         </div>
 
-        <form id="simVerificationForm" class="sim-entry-form" onsubmit="event.preventDefault(); enterExamHallDirect();" style="display: none;">
+        <form id="simVerificationForm" style="display: none;" onsubmit="event.preventDefault(); enterExamHallDirect();">
           
-          <!-- 3 मुख्य नियम (Terms & Conditions) -->
-          <div class="instructions-card-fixed">
-            <h3>📜 परीक्षा के 3 अनिवार्य नियम:</h3>
-            <ol class="instructions-list-fixed">
-              <li><strong>कक्षा और समय (3h 15m):</strong> केवल आपकी चुनी हुई कक्षा के आधिकारिक विषयों की परीक्षा होगी।</li>
-              <li><strong>OMR व उत्तर पुस्तिका:</strong> वस्तुनिष्ठ प्रश्नों के 50 OMR गोले और सब्जेक्टिव उत्तर के पन्नों की फ़ोटो अपलोड करना अनिवार्य है।</li>
-              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> परीक्षा का अंतिम परिणाम और AI मार्कशीट 7वें दिन सुबह ठीक 9:00 बजे खुलेगी।</li>
-            </ol>
-
-            <div class="instruction-agree-box-fixed">
-              <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" />
-              <label for="chkAgreeRules">मैंने नियमों को पढ़ लिया है और मैं इनका पालन करने के लिए पूर्णतः सहमत हूँ।</label>
+          <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
+            <strong style="color: #0284c7;">📜 परीक्षा के 3 मुख्य नियम:</strong>
+            <ul style="margin: 6px 0 0 16px; font-size: 0.85rem; color: var(--bseb-text); line-height: 1.6;">
+              <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही परीक्षा अपने आप लॉक हो जाएगी[span_15](start_span)[span_15](end_span)[span_16](start_span)[span_16](end_span)।</li>
+              <li><strong>उत्तर पुस्तिका:</strong> OMR गोले और हाथ से लिखे उत्तर के पन्नों की फोटो अपलोड करें[span_17](start_span)[span_17](end_span)[span_18](start_span)[span_18](end_span)।</li>
+              <li><strong>अंतिम परिणाम:</strong> 7वें दिन सुबह ठीक 9:00 बजे पूरा परिणाम खुलेगा।</li>
+            </ul>
+            <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px;" />
+              <label for="chkAgreeRules" style="font-size: 0.85rem; font-weight: 700; color: var(--bseb-text);">मैं सभी नियमों से पूर्णतः सहमत हूँ।</label>
             </div>
           </div>
 
-          <div class="sim-form-grid">
-            <div class="sim-input-group">
-              <label for="regStudentName">परीक्षार्थी का नाम (Gmail सत्यापित)</label>
-              <input type="text" id="regStudentName" class="sim-input" readonly style="background: rgba(255,255,255,0.08); font-weight: 800; color: #38bdf8;" />
+          <div style="display: grid; gap: 10px; margin-bottom: 14px;">
+            <div>
+              <label style="font-size: 0.8rem; font-weight: bold; color: var(--bseb-text-muted);">परीक्षार्थी का नाम</label>
+              <input type="text" id="regStudentName" readonly style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--bseb-border); background: rgba(0,0,0,0.05); color: var(--bseb-text); font-weight: bold;" />
             </div>
-
-            <div class="sim-input-group">
-              <label for="regStudentClassSelect">सक्रिय कक्षा (Class Stream) *</label>
-              <select id="regStudentClassSelect" class="sim-select" onchange="onClassSelectionChanged()" style="font-weight: 700; border-color: #38bdf8;">
+            <div>
+              <label style="font-size: 0.8rem; font-weight: bold; color: var(--bseb-text-muted);">सक्रिय कक्षा</label>
+              <select id="regStudentClassSelect" onchange="onClassSelectionChanged()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--bseb-border); background: var(--bseb-surface-card); color: var(--bseb-text); font-weight: bold;">
                 <option value="10th">कक्षा 10वीं (Class 10th - मैट्रिक)</option>
                 <option value="11th">कक्षा 11वीं (Class 11th - साइंस)</option>
                 <option value="12th">कक्षा 12वीं (Class 12th - साइंस)</option>
               </select>
             </div>
-
-            <div class="sim-input-group" style="grid-column: 1 / -1;">
-              <label for="regExamDaySelect">आज की परीक्षा (Day Wise Subject) *</label>
-              <select id="regExamDaySelect" class="sim-select" onchange="toggleEnterButtonState()" required>
-              </select>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: bold; color: var(--bseb-text-muted);">आज का विषय</label>
+              <select id="regExamDaySelect" onchange="toggleEnterButtonState()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--bseb-border); background: var(--bseb-surface-card); color: var(--bseb-text); font-weight: bold;"></select>
             </div>
           </div>
 
-          <!-- डायनामिक एडमिट कार्ड (स्थायी यूनिक नंबर) -->
-          <div class="sim-ticket-preview" id="simTicketPreview" style="display: block;">
-            <div class="ticket-header">
-              <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
-              <span class="ticket-badge">VERIFIED</span>
-            </div>
-            <div class="ticket-grid">
-              <div><small>Roll Code:</small> <strong id="outRollCode">--</strong></div>
-              <div><small>Roll Number:</small> <strong id="outRollNumber">--</strong></div>
-              <div><small>Reg. No:</small> <strong id="outRegNo">--</strong></div>
-              <div><small>Result Date:</small> <strong>7वां दिन (09:00 AM)</strong></div>
-            </div>
-            <p class="ticket-warning" id="ticketStatusMsg">★ आपका रोल कोड और रोल नंबर Gmail अकाउंट से स्थायी रूप से सुरक्षित है।</p>
+          <!-- डिजिटल एडमिट कार्ड -->
+          <div style="background: rgba(0,0,0,0.1); border: 1px dashed var(--bseb-border); padding: 10px; border-radius: 8px; margin-bottom: 14px; font-size: 0.85rem; color: var(--bseb-text);">
+            <div>Roll Code: <strong id="outRollCode">--</strong> | Roll No: <strong id="outRollNumber">--</strong></div>
           </div>
 
-          <div class="sim-actions-group">
-            <button type="button" id="btnEnterExamHall" class="btn-sim-primary" onclick="enterExamHallDirect()" disabled style="opacity: 0.6; cursor: not-allowed;">
-              🔒 नियमों पर सहमति देकर परीक्षा कक्ष में प्रवेश करें →
-            </button>
-          </div>
-        </form>
-
-        <div class="sim-direct-search-box">
-          <span>7वें दिन का परिणाम देखना चाहते हैं?</span>
-          <button type="button" class="btn-link-search" onclick="location.href='bseb-result.html'">
-            🔍 रोल कोड व रोल नंबर डालकर परिणाम देखें
+          <button type="button" id="btnEnterExamHall" onclick="enterExamHallDirect()" disabled style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: bold; border: none; border-radius: 8px; opacity: 0.6; cursor: not-allowed;">
+            🔒 नियमों पर सहमति देकर प्रवेश करें
           </button>
-        </div>
+        </form>
       </div>
     </section>
 
-    <!-- STAGE 2: EXAM HALL -->
+    <!-- STAGE 2: परीक्षा हॉल (डेस्कटॉप + मोबाइल दोनों में 100% सही) -->
     <section class="sim-stage" id="simExamHallStage" style="display: none;">
-      <div class="exam-command-bar">
-        <div class="candidate-mini-info">
-          <span class="candidate-roll-badge">Roll: <strong id="hallDisplayRoll">----- - --------</strong></span>
-          <span class="candidate-sub-badge" id="hallDisplaySub">विषय</span>
-        </div>
-
-        <div class="exam-engine-timer">
-          <span id="examTimerClock">⏳ 03:15:00</span>
-        </div>
-
-        <button type="button" class="btn-submit-board-exam" onclick="confirmFinalExamSubmission()">
-          परीक्षा जमा करें ✓
-        </button>
+      
+      <!-- कमांड बार -->
+      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bseb-surface-card); padding: 8px 14px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--bseb-border); flex-wrap: wrap; gap: 8px;">
+        <span style="font-weight: 800; font-size: 0.9rem; color: var(--bseb-text);"><span id="hallDisplaySub">विषय</span> (<span id="hallDisplayRoll">--</span>)</span>
+        <div style="font-weight: 900; font-size: 1.1rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 4px 12px; border-radius: 6px;" id="examTimerClock">⏳ 03:15:00</div>
+        <button type="button" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 8px 14px; font-weight: bold; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
       </div>
 
+      <!-- मोबाइल के लिए टॉगल स्विच -->
       <div class="mobile-view-toggle-bar">
-        <button type="button" class="btn-view-toggle active" id="btnShowPaper" onclick="toggleMobileView('paper')">
-          📄 प्रश्न पत्र देखें
-        </button>
-        <button type="button" class="btn-view-toggle" id="btnShowResponse" onclick="toggleMobileView('response')">
-          🔴 OMR व उत्तर कॉपी
-        </button>
+        <button type="button" id="btnShowPaper" onclick="toggleMobileView('paper')" style="flex:1; padding:8px; border-radius:6px; border:1px solid #0284c7; background:#0284c7; color:#fff; font-weight:bold;">📄 प्रश्न पत्र देखें</button>
+        <button type="button" id="btnShowResponse" onclick="toggleMobileView('response')" style="flex:1; padding:8px; border-radius:6px; border:1px solid var(--bseb-border); background:var(--bseb-surface-card); color:var(--bseb-text); font-weight:bold;">🔴 OMR व उत्तर कॉपी</button>
       </div>
 
       <div class="exam-split-grid">
+        <!-- बायां हिस्सा: प्रश्न पत्र -->
         <div class="exam-left-pane" id="examLeftPane">
-          <div class="pane-action-bar">
-            <div class="pane-title">📄 प्रश्न पत्र (Full Preview)</div>
-          </div>
+          <div style="padding: 8px 12px; background: rgba(0,0,0,0.05); font-weight: bold; font-size: 0.85rem; color: var(--bseb-text); border-bottom: 1px solid var(--bseb-border);">📄 प्रश्न पत्र (Official Booklet)</div>
           <div class="paper-iframe-wrapper">
-            <iframe id="simPaperFrame" src="" frameborder="0" allowfullscreen></iframe>
+            <iframe id="simPaperFrame" src=""></iframe>
           </div>
         </div>
 
+        <!-- दायां हिस्सा: OMR और मास्टर अपलोड -->
         <div class="exam-right-pane" id="examRightPane">
-          <div class="pane-tab-switcher">
-            <button type="button" class="tab-btn active" id="tabBtnOmr" onclick="switchExamTab('omr')">
-              🔴 खंड 'अ': OMR (50 अंक)
-            </button>
-            <button type="button" class="tab-btn" id="tabBtnSubj" onclick="switchExamTab('subj')">
-              📸 खंड 'ब': उत्तर कॉपी (50 अंक)
-            </button>
+          <div style="display: flex; border-bottom: 1px solid var(--bseb-border);">
+            <button type="button" id="tabBtnOmr" onclick="switchExamTab('omr')" style="flex:1; padding:10px; border:none; background:#0284c7; color:#fff; font-weight:bold; cursor:pointer;">🔴 OMR (50 अंक)</button>
+            <button type="button" id="tabBtnSubj" onclick="switchExamTab('subj')" style="flex:1; padding:10px; border:none; background:transparent; color:var(--bseb-text); font-weight:bold; cursor:pointer;">📸 उत्तर पुस्तिका (50 अंक)</button>
           </div>
 
+          <!-- OMR टैब -->
           <div class="exam-tab-content" id="tabContentOmr">
-            <div class="omr-meta-strip">
-              <span>★ किन्हीं 50 प्रश्नों के गोले रंगें (कम से कम 10 अनिवार्य)</span>
-              <span>भरे गोले: <strong id="omrFilledCount">0</strong> / 50</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.82rem; font-weight:bold; color:var(--bseb-text);">
+              <span>किन्हीं 50 प्रश्नों के उत्तर दें</span>
+              <span>भरे गोले: <span id="omrFilledCount" style="color:#0284c7;">0</span>/50</span>
             </div>
-            <div class="omr-bubbles-scroll-area" id="omrBubblesMatrix"></div>
+            <div id="omrBubblesMatrix" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:6px;"></div>
           </div>
 
+          <!-- उत्तर पुस्तिका टैब (1 मास्टर बॉक्स + 100% साफ टेक्स्ट) -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
-            <div class="subj-meta-strip" style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 10px 14px; border-radius: 6px; margin-bottom: 14px;">
-              <span style="font-size: 0.82rem; color: #fff; line-height: 1.5; display: block;" id="subjGuidanceBanner">
-                ✍️ <strong>उत्तर पुस्तिका निर्देश:</strong> अपने हाथ से लिखे उत्तरों की साफ फोटो अपलोड करें।
+            <div class="guidance-box-fixed">
+              <span class="guidance-text-fixed" id="subjGuidanceBanner">
+                ✍️ <strong>उत्तर पुस्तिका निर्देश:</strong> अपने हाथ से लिखे सभी पन्नों की फोटो नीचे एक साथ चुनें।
               </span>
             </div>
 
-            <div class="subj-upload-list" id="dynamicSubjUploadList"></div>
+            <div style="border: 2px dashed #0284c7; background: rgba(2, 132, 199, 0.04); padding: 18px; text-align: center; border-radius: 10px;">
+              <div style="font-size: 2rem; margin-bottom: 4px;">📸</div>
+              <h4 style="margin: 0 0 4px 0; color: var(--bseb-text);">सम्पूर्ण उत्तर पुस्तिका के पन्ने अपलोड करें</h4>
+              <p style="font-size: 0.8rem; color: var(--bseb-text-muted); margin: 0 0 12px 0;">(गैलरी से सभी पन्ने एक साथ चुनें • अधिकतम 15 पन्ने)</p>
+              <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 280px; padding: 6px;" />
+              <div id="uploadStatusText" style="margin-top: 10px; font-weight: bold; font-size: 0.85rem; color: #0284c7;"></div>
+            </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -355,52 +252,39 @@
     let cloudState = null;
     let activeDay = 1;
     let selectedClass = "10th";
-    let selectedImages = {};
+    let uploadedPagesList = [];
 
     const CLASS_SUBJECTS_MAP = {
       "10th": [
-        { day: 1, code: "101-hindi", name: "हिन्दी (M.I.L Hindi)", type: "language" },
-        { day: 2, code: "105-sanskrit", name: "संस्कृत (S.I.L Sanskrit)", type: "language" },
-        { day: 3, code: "110-math", name: "गणित (Mathematics)", type: "math" },
-        { day: 4, code: "112-science", name: "विज्ञान (Science)", type: "science" },
-        { day: 5, code: "113-sst", name: "सामाजिक विज्ञान (Social Science)", type: "theory" },
-        { day: 6, code: "114-english", name: "अंग्रेजी (English)", type: "language" }
+        { day: 1, code: "101-hindi", name: "हिन्दी (M.I.L Hindi)" },
+        { day: 2, code: "105-sanskrit", name: "संस्कृत (S.I.L Sanskrit)" },
+        { day: 3, code: "110-math", name: "गणित (Mathematics)" },
+        { day: 4, code: "112-science", name: "विज्ञान (Science)" },
+        { day: 5, code: "113-sst", name: "सामाजिक विज्ञान (Social Science)" },
+        { day: 6, code: "114-english", name: "अंग्रेजी (English)" }
       ],
       "11th": [
-        { day: 1, code: "117-physics", name: "भौतिक विज्ञान (Physics 11th)", type: "science" },
-        { day: 2, code: "118-chemistry", name: "रसायन विज्ञान (Chemistry 11th)", type: "science" },
-        { day: 3, code: "121-maths", name: "गणित (Mathematics 11th)", type: "math" },
-        { day: 4, code: "119-biology", name: "जीव विज्ञान (Biology 11th)", type: "science" },
-        { day: 5, code: "105-hindi-11", name: "हिन्दी (Hindi 11th)", type: "language" },
-        { day: 6, code: "106-english-11", name: "अंग्रेजी (English 11th)", type: "language" }
+        { day: 1, code: "117-physics", name: "भौतिक विज्ञान (Physics 11th)" },
+        { day: 2, code: "118-chemistry", name: "रसायन विज्ञान (Chemistry 11th)" },
+        { day: 3, code: "121-maths", name: "गणित (Mathematics 11th)" },
+        { day: 4, code: "119-biology", name: "जीव विज्ञान (Biology 11th)" },
+        { day: 5, code: "105-hindi-11", name: "हिन्दी (Hindi 11th)" },
+        { day: 6, code: "106-english-11", name: "अंग्रेजी (English 11th)" }
       ],
       "12th": [
-        { day: 1, code: "117-physics-12", name: "भौतिक विज्ञान (Physics 12th)", type: "science" },
-        { day: 2, code: "118-chemistry-12", name: "रसायन विज्ञान (Chemistry 12th)", type: "science" },
-        { day: 3, code: "121-maths-12", name: "गणित (Mathematics 12th)", type: "math" },
-        { day: 4, code: "119-biology-12", name: "जीव विज्ञान (Biology 12th)", type: "science" },
-        { day: 5, code: "105-hindi-12", name: "हिन्दी (Hindi 12th)", type: "language" },
-        { day: 6, code: "106-english-12", name: "अंग्रेजी (English 12th)", type: "language" }
+        { day: 1, code: "117-physics-12", name: "भौतिक विज्ञान (Physics 12th)" },
+        { day: 2, code: "118-chemistry-12", name: "रसायन विज्ञान (Chemistry 12th)" },
+        { day: 3, code: "121-maths-12", name: "गणित (Mathematics 12th)" },
+        { day: 4, code: "119-biology-12", name: "जीव विज्ञान (Biology 12th)" },
+        { day: 5, code: "105-hindi-12", name: "हिन्दी (Hindi 12th)" },
+        { day: 6, code: "106-english-12", name: "अंग्रेजी (English 12th)" }
       ]
     };
 
-    function setupInstantCredentials(uid) {
-      if (typeof generateUniqueCredentials === 'function') {
-        const creds = generateUniqueCredentials(uid);
-        document.getElementById("outRollCode").textContent = creds.rollCode;
-        document.getElementById("outRollNumber").textContent = creds.rollNumber;
-        document.getElementById("outRegNo").textContent = creds.regNo;
-        return creds;
-      }
-      return null;
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
       selectedClass = localStorage.getItem("nd_selected_class") || "10th";
-      const classSelectEl = document.getElementById("regStudentClassSelect");
-      if (classSelectEl) classSelectEl.value = selectedClass;
-
-      renderSubjectDropdownForClass(selectedClass, null);
+      const clsEl = document.getElementById("regStudentClassSelect");
+      if (clsEl) clsEl.value = selectedClass;
 
       const authInterval = setInterval(() => {
         if (window.NischayConfig && window.NischayConfig.isCloudReady) {
@@ -416,439 +300,249 @@
               document.getElementById("simUserFirstName").textContent = realName.split(" ")[0];
               document.getElementById("regStudentName").value = realName;
 
-              const avatarBox = document.getElementById("userAvatarBox");
-              if (user.photoURL) {
-                avatarBox.innerHTML = `<img src="${user.photoURL}" alt="User" />`;
-              } else {
-                avatarBox.textContent = realName.charAt(0).toUpperCase();
-              }
-
-              const quickCreds = setupInstantCredentials(user.uid);
+              const creds = generateUniqueCredentials(user.uid);
+              document.getElementById("outRollCode").textContent = creds.rollCode;
+              document.getElementById("outRollNumber").textContent = creds.rollNumber;
 
               try {
                 cloudState = await getCloudExamState(user);
-                cloudState = await enforceCloudAbsence(user, cloudState);
+                renderSubjectDropdown();
 
-                if (cloudState && cloudState.selectedClass) {
-                  selectedClass = cloudState.selectedClass;
-                  if (classSelectEl) classSelectEl.value = selectedClass;
-                }
-
-                if (cloudState && cloudState.rollCode) {
-                  document.getElementById("outRollCode").textContent = cloudState.rollCode;
-                  document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
-                  document.getElementById("outRegNo").textContent = cloudState.regNo;
-                }
-
-                renderSubjectDropdownForClass(selectedClass, cloudState);
-
+                // यदि पहले से कोई एक्टिव सेशन चल रहा है तो टाइमर वहीं से जारी होगा
                 if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
                   activeDay = cloudState.activeSession.day;
                   resumeExamHall(activeDay);
                 }
               } catch (e) {
-                console.warn("Cloud exam sync fallback:", e);
-                if (!cloudState && quickCreds) {
-                  cloudState = {
-                    rollCode: quickCreds.rollCode,
-                    rollNumber: quickCreds.rollNumber,
-                    regNo: quickCreds.regNo,
-                    completedDays: {}
-                  };
-                }
-                renderSubjectDropdownForClass(selectedClass, cloudState);
+                renderSubjectDropdown();
               }
-            } else {
-              currentUser = null;
-              document.getElementById("authRequiredBanner").style.display = "block";
-              document.getElementById("simVerificationForm").style.display = "none";
-              document.getElementById("simUserFirstName").textContent = "लॉगिन आवश्यक";
-              document.getElementById("userAvatarBox").textContent = "🔒";
             }
           });
         }
-      }, 200);
+      }, 150);
     });
 
-    function onClassSelectionChanged() {
-      const classSelectEl = document.getElementById("regStudentClassSelect");
-      selectedClass = classSelectEl.value;
-      localStorage.setItem("nd_selected_class", selectedClass);
-      localStorage.setItem("nischay_student_class", selectedClass.replace(/[^0-9]/g, ''));
-
-      if (currentUser && window.NischayConfig && window.NischayConfig.dbInstance) {
-        window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
-          selectedClass: selectedClass
-        }, { merge: true });
-      }
-
-      renderSubjectDropdownForClass(selectedClass, cloudState);
-    }
-
-    function renderSubjectDropdownForClass(cls, state) {
+    function renderSubjectDropdown() {
       const selectEl = document.getElementById("regExamDaySelect");
       if (!selectEl) return;
-
-      const subjects = CLASS_SUBJECTS_MAP[cls] || CLASS_SUBJECTS_MAP["10th"];
+      const list = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       selectEl.innerHTML = "";
-      let firstPendingDay = null;
 
-      subjects.forEach(sub => {
+      list.forEach(s => {
         const opt = document.createElement("option");
-        opt.value = sub.day;
+        opt.value = s.day;
+        const rec = cloudState?.completedDays?.[s.day];
 
-        const record = (state && state.completedDays) ? state.completedDays[sub.day] : null;
-
-        if (record && record.status === "COMPLETED") {
-          opt.textContent = `Day ${sub.day}: ${sub.name} — [COMPLETED ✓]`;
+        if (rec && rec.status === "COMPLETED") {
+          opt.textContent = `Day ${s.day}: ${s.name} [जमा हो चुका है ✓]`;
           opt.disabled = true;
-          opt.style.color = "#22c55e";
-          opt.style.fontWeight = "bold";
-        } else if (record && record.status === "ABSENT") {
-          opt.textContent = `Day ${sub.day}: ${sub.name} — [ABSENT ❌]`;
+        } else if (rec && rec.status === "LOCKED") {
+          opt.textContent = `Day ${s.day}: ${s.name} [समय समाप्त - लॉक ❌]`;
           opt.disabled = true;
-          opt.style.color = "#ef4444";
         } else {
-          opt.textContent = `Day ${sub.day}: ${sub.name} (उपलब्ध)`;
-          if (!firstPendingDay) firstPendingDay = sub.day;
+          opt.textContent = `Day ${s.day}: ${s.name}`;
         }
-
         selectEl.appendChild(opt);
       });
-
-      if (firstPendingDay) {
-        selectEl.value = firstPendingDay;
-      }
       toggleEnterButtonState();
     }
 
     function toggleEnterButtonState() {
       const chk = document.getElementById("chkAgreeRules");
-      const enterBtn = document.getElementById("btnEnterExamHall");
-      const selectEl = document.getElementById("regExamDaySelect");
-
-      if (!chk || !enterBtn) return;
-
-      const isAgreed = chk.checked;
-      const chosenDay = selectEl ? parseInt(selectEl.value, 10) : 1;
-      const record = (cloudState && cloudState.completedDays) ? cloudState.completedDays[chosenDay] : null;
-
-      if (record && record.status === "COMPLETED") {
-        enterBtn.disabled = true;
-        enterBtn.style.opacity = "0.5";
-        enterBtn.style.cursor = "not-allowed";
-        enterBtn.textContent = "⚠️ यह परीक्षा पहले ही जमा हो चुकी है";
-      } else if (isAgreed) {
-        enterBtn.disabled = false;
-        enterBtn.style.opacity = "1";
-        enterBtn.style.cursor = "pointer";
-        enterBtn.textContent = "🏛️ परीक्षा कक्ष में प्रवेश करें (Enter Exam Hall) →";
-      } else {
-        enterBtn.disabled = true;
-        enterBtn.style.opacity = "0.6";
-        enterBtn.style.cursor = "not-allowed";
-        enterBtn.textContent = "🔒 नियमों पर सहमति देकर परीक्षा कक्ष में प्रवेश करें →";
+      const btn = document.getElementById("btnEnterExamHall");
+      if (chk && btn) {
+        btn.disabled = !chk.checked;
+        btn.style.opacity = chk.checked ? "1" : "0.6";
+        btn.style.cursor = chk.checked ? "pointer" : "not-allowed";
+        btn.textContent = chk.checked ? "🏛️ परीक्षा कक्ष में प्रवेश करें →" : "🔒 नियमों पर सहमति देकर प्रवेश करें";
       }
     }
 
     function enterExamHallDirect() {
-      if (!currentUser) {
-        alert("कृपया पहले Gmail से लॉगिन करें!");
-        triggerGoogleLogin();
-        return;
-      }
-
-      const isAgreed = document.getElementById("chkAgreeRules").checked;
-      if (!isAgreed) {
-        alert("कृपया पहले नियमों पर सहमति बॉक्स पर टिक करें!");
-        return;
-      }
-
-      const selectEl = document.getElementById("regExamDaySelect");
-      activeDay = parseInt(selectEl.value, 10) || 1;
-
-      const record = (cloudState && cloudState.completedDays) ? cloudState.completedDays[activeDay] : null;
-      if (record && record.status === "COMPLETED") {
-        alert("⚠️ यह परीक्षा पहले ही जमा हो चुकी है।");
-        return;
-      }
-
-      if (!cloudState) {
-        const quick = setupInstantCredentials(currentUser.uid);
-        cloudState = {
-          rollCode: quick ? quick.rollCode : "33193",
-          rollNumber: quick ? quick.rollNumber : "26017186",
-          regNo: quick ? quick.regNo : "R-33010189-26",
-          completedDays: {}
-        };
-      }
-
+      const sDay = parseInt(document.getElementById("regExamDaySelect").value, 10) || 1;
+      activeDay = sDay;
       resumeExamHall(activeDay);
-
-      if (typeof updateCloudExamState === 'function') {
-        updateCloudExamState(currentUser, {
-          selectedClass: selectedClass,
-          activeSession: { day: activeDay, class: selectedClass, startedAt: new Date().toISOString() }
-        }).catch(e => console.log(e));
-      }
-    }
-
-    function setupDynamicSubjectiveCards(subObj) {
-      const container = document.getElementById("dynamicSubjUploadList");
-      const guidance = document.getElementById("subjGuidanceBanner");
-      container.innerHTML = "";
-      selectedImages = {};
-
-      if (subObj.type === "math") {
-        guidance.innerHTML = `📐 <strong>गणित उत्तर पुस्तिका निर्देश:</strong> गणित में स्टेप्स ज्यादा होते हैं। आप <strong>लघु उत्तरीय में अधिकतम 6 पन्ने</strong> और <strong>दीर्घ उत्तरीय में 6 पन्ने</strong> तक अपलोड कर सकते हैं।`;
-        
-        container.innerHTML = `
-          <div class="subj-card">
-            <h4>1. लघु उत्तरीय प्रश्न (किन्हीं 15 प्रश्नों के हल) - 30 अंक</h4>
-            <p>📌 प्रश्नों के स्टेप-वाइज हल के पन्ने अपलोड करें (1 से 6 पन्ने चुने जा सकते हैं)।</p>
-            <input type="file" id="fileMathShort" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'math_short', 6)" />
-            <div id="previewMath_short" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-
-          <div class="subj-card">
-            <h4>2. दीर्घ उत्तरीय प्रश्न (किन्हीं 4 प्रश्नों के हल) - 20 अंक</h4>
-            <p>📌 ग्राफ़, प्रमेय व लंबे हल के पन्ने अपलोड करें (1 से 6 पन्ने चुने जा सकते हैं)।</p>
-            <input type="file" id="fileMathLong" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'math_long', 6)" />
-            <div id="previewMath_long" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-        `;
-      } else if (subObj.type === "language") {
-        guidance.innerHTML = `✍️ <strong>भाषा उत्तर पुस्तिका निर्देश:</strong> गद्यांश, व्याकरण, निबंध व प्रश्नों के पन्ने संबंधित बॉक्स में अपलोड करें (अधिकतम 3-4 पन्ने प्रति सेक्शन)।`;
-        
-        container.innerHTML = `
-          <div class="subj-card">
-            <h4>1. अपठित गद्यांश / पैसेज - 20 अंक</h4>
-            <p>📌 गद्यांश उत्तर के पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
-            <input type="file" id="fileLangGadyansh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'lang_gadyansh', 3)" />
-            <div id="previewLang_gadyansh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-
-          <div class="subj-card">
-            <h4>2. निबंध / पत्र / संवाद लेखन - 15 अंक</h4>
-            <p>📌 निबंध व लेखन के पन्ने अपलोड करें (अधिकतम 3 पन्ने)।</p>
-            <input type="file" id="fileLangNibandh" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'lang_nibandh', 3)" />
-            <div id="previewLang_nibandh" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-
-          <div class="subj-card">
-            <h4>3. प्रश्न-उत्तर (लघु व दीर्घ उत्तरीय) - 15 अंक</h4>
-            <p>📌 पाठ्यपुस्तक के प्रश्नों के उत्तर अपलोड करें (अधिकतम 4 पन्ने)।</p>
-            <input type="file" id="fileLangQnA" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'lang_qna', 4)" />
-            <div id="previewLang_qna" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-        `;
-      } else {
-        guidance.innerHTML = `🔬 <strong>उत्तर पुस्तिका निर्देश:</strong> भौतिकी, रसायन, जीवविज्ञान या SST के लघु व दीर्घ उत्तरीय प्रश्नों के पन्ने अपलोड करें (अधिकतम 5 पन्ने प्रति सेक्शन)।`;
-
-        container.innerHTML = `
-          <div class="subj-card">
-            <h4>1. लघु उत्तरीय प्रश्न (Short Answer Questions)</h4>
-            <p>📌 परिभाषा, अंतर व संक्षिप्त उत्तर वाले पन्ने अपलोड करें (अधिकतम 5 पन्ने)।</p>
-            <input type="file" id="fileSciShort" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'sci_short', 5)" />
-            <div id="previewSci_short" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-
-          <div class="subj-card">
-            <h4>2. दीर्घ उत्तरीय प्रश्न (Long Answer Questions & Diagrams)</h4>
-            <p>📌 विस्तृत व्याख्या, सचित्र चित्र व समीकरण के पन्ने अपलोड करें (अधिकतम 5 पन्ने)।</p>
-            <input type="file" id="fileSciLong" accept="image/*" multiple class="sim-input" onchange="handleImageSelection(event, 'sci_long', 5)" />
-            <div id="previewSci_long" style="font-size: 0.76rem; color: #38bdf8; margin-top: 6px; font-weight: 700;"></div>
-          </div>
-        `;
-      }
     }
 
     function resumeExamHall(day) {
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === day) || subjects[0];
-      const paperKey = currentSub.code;
-      const paperData = BSEB_PAPERS_DATABASE[paperKey] || BSEB_PAPERS_DATABASE["101-hindi"];
+      const paperData = BSEB_PAPERS_DATABASE[currentSub.code] || BSEB_PAPERS_DATABASE["101-hindi"];
 
-      const rCode = (cloudState && cloudState.rollCode) ? cloudState.rollCode : "33193";
-      const rNum = (cloudState && cloudState.rollNumber) ? cloudState.rollNumber : "26017186";
-
-      document.getElementById("hallDisplayRoll").textContent = `${rCode} - ${rNum} (${selectedClass})`;
       document.getElementById("hallDisplaySub").textContent = currentSub.name;
+      document.getElementById("hallDisplayRoll").textContent = `${cloudState?.rollCode || "33193"}-${cloudState?.rollNumber || "26017186"}`;
 
       const iframe = document.getElementById("simPaperFrame");
-      if (iframe && paperData && paperData.driveLink) {
-        iframe.src = paperData.driveLink;
-      }
+      if (iframe && paperData && paperData.driveLink) iframe.src = paperData.driveLink;
+
+      document.getElementById("subjGuidanceBanner").innerHTML = `✍️ <strong>${currentSub.name} उत्तर पुस्तिका:</strong> अपने सभी पन्नों की साफ फोटो एक साथ चुनें (अधिकतम 15 पन्ने)।`;
 
       renderOmrBubbles(100);
-      setupDynamicSubjectiveCards(currentSub);
 
       document.getElementById("simVerificationStage").style.display = "none";
       document.getElementById("simExamHallStage").style.display = "block";
 
-      toggleMobileView('paper');
-      if (typeof runCloudExamTimer === 'function') {
-        runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
-      }
+      // ⏳ क्लाउड सर्वर-सिंक्ड टाइमर (समय समाप्त होने पर स्वतः लॉक)
+      startStrictTimer(day);
     }
 
-    function renderOmrBubbles(totalQuestions) {
-      const container = document.getElementById("omrBubblesMatrix");
-      if (!container) return;
-      container.innerHTML = "";
+    function startStrictTimer(day) {
+      const lockKey = `exam_started_at_${currentUser.uid}_day_${day}`;
+      let startMs = localStorage.getItem(lockKey);
 
-      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
-                    ? cloudState.savedOMR[activeDay] : {};
+      if (!startMs) {
+        startMs = Date.now();
+        localStorage.setItem(lockKey, startMs);
+        if (window.NischayConfig?.dbInstance) {
+          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
+            activeSession: { day: day, startedAt: new Date(startMs).toISOString() }
+          }, { merge: true });
+        }
+      } else {
+        startMs = parseInt(startMs, 10);
+      }
 
-      for (let i = 1; i <= totalQuestions; i++) {
+      const totalDuration = 195 * 60 * 1000; // 3 घंटे 15 मिनट
+      const endMs = startMs + totalDuration;
+      const clockEl = document.getElementById("examTimerClock");
+
+      const timerInterval = setInterval(() => {
+        const left = endMs - Date.now();
+
+        if (left <= 0) {
+          clearInterval(timerInterval);
+          clockEl.textContent = "00:00:00 (समय समाप्त)";
+          alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब हमेशा के लिए लॉक हो गया है।");
+          
+          // विषय को LOCKED दर्ज करें
+          if (window.NischayConfig?.dbInstance) {
+            window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
+              completedDays: { [day]: { status: "LOCKED", totalMarks: 0, reason: "TIME_OVER" } },
+              activeSession: null
+            }, { merge: true }).then(() => location.reload());
+          }
+          return;
+        }
+
+        const h = Math.floor(left / 3600000);
+        const m = Math.floor((left % 3600000) / 60000);
+        const s = Math.floor((left % 60000) / 1000);
+        clockEl.textContent = `⏳ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      }, 1000);
+    }
+
+    function renderOmrBubbles(count) {
+      const box = document.getElementById("omrBubblesMatrix");
+      box.innerHTML = "";
+      const saved = cloudState?.savedOMR?.[activeDay] || {};
+
+      for (let i = 1; i <= count; i++) {
+        const d = document.createElement("div");
+        d.style.cssText = "display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.03); padding:4px 6px; border-radius:4px;";
+        d.innerHTML = `<span style="font-size:0.75rem; font-weight:bold; color:var(--bseb-text);">Q.${i}</span>`;
+
         const row = document.createElement("div");
-        row.className = "omr-row-item";
-        row.innerHTML = `<span class="omr-q-num">Q.${String(i).padStart(2, '0')}</span>`;
-
-        const optsGroup = document.createElement("div");
-        optsGroup.className = "omr-options-group";
-
+        row.style.cssText = "display:flex; gap:3px;";
         ["A", "B", "C", "D"].forEach(opt => {
-          const bubble = document.createElement("div");
-          bubble.className = "omr-bubble" + (saved[i] === opt ? " filled" : "");
-          bubble.textContent = opt;
-          bubble.id = `bubble_${activeDay}_${i}_${opt}`;
-          bubble.onclick = () => selectBubble(i, opt);
-          optsGroup.appendChild(bubble);
+          const b = document.createElement("button");
+          b.type = "button";
+          b.textContent = opt;
+          b.style.cssText = `width:22px; height:22px; border-radius:50%; border:1px solid #0284c7; font-size:0.68rem; font-weight:bold; cursor:pointer; background:${saved[i] === opt ? '#0284c7' : 'transparent'}; color:${saved[i] === opt ? '#fff' : 'var(--bseb-text)'};`;
+          b.onclick = () => selectBubble(i, opt);
+          row.appendChild(b);
         });
-
-        row.appendChild(optsGroup);
-        container.appendChild(row);
+        d.appendChild(row);
+        box.appendChild(d);
       }
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
 
-    function selectBubble(qNum, opt) {
-      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
-                    ? cloudState.savedOMR[activeDay] : {};
-
-      if (!saved[qNum] && Object.keys(saved).length >= 50) {
-        alert("⚠️ बिहार बोर्ड नियमानुसार अधिकतम 50 प्रश्नों का ही उत्तर दिया जा सकता है!");
-        return;
-      }
-
-      ["A", "B", "C", "D"].forEach(o => {
-        const el = document.getElementById(`bubble_${activeDay}_${qNum}_${o}`);
-        if (el) el.classList.remove("filled");
-      });
-
-      const target = document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`);
-      if (target) target.classList.add("filled");
-
-      if (typeof syncBubbleToCloud === 'function') {
-        syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
-      }
-      saved[qNum] = opt;
-      document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
+    function selectBubble(q, opt) {
+      if (!cloudState.savedOMR) cloudState.savedOMR = {};
+      if (!cloudState.savedOMR[activeDay]) cloudState.savedOMR[activeDay] = {};
+      cloudState.savedOMR[activeDay][q] = opt;
+      renderOmrBubbles(100);
     }
 
-    function handleImageSelection(event, section, maxAllowed) {
-      const files = event.target.files;
+    function handleMasterUpload(e) {
+      const files = e.target.files;
       if (!files || files.length === 0) return;
-
-      const preview = document.getElementById(`preview${section.charAt(0).toUpperCase() + section.slice(1)}`);
-
-      if (files.length > maxAllowed) {
-        alert(`⚠️ इस सेक्शन में आप अधिकतम ${maxAllowed} पन्ने ही अपलोड कर सकते हैं! आपने ${files.length} चुने हैं।`);
-        event.target.value = "";
-        if (preview) preview.textContent = "";
-        selectedImages[section] = [];
-        return;
-      }
-
-      selectedImages[section] = [];
-      if (preview) preview.textContent = `⏳ ${files.length} पन्ने लोड हो रहे हैं...`;
+      uploadedPagesList = [];
+      const txt = document.getElementById("uploadStatusText");
+      txt.textContent = `⏳ ${files.length} पन्ने प्रोसेस हो रहे हैं...`;
 
       let loaded = 0;
       for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          selectedImages[section].push(e.target.result);
+        const r = new FileReader();
+        r.onload = (ev) => {
+          uploadedPagesList.push(ev.target.result);
           loaded++;
           if (loaded === files.length) {
-            if (preview) {
-              preview.textContent = `✓ कुल ${files.length} पन्ने सफलतापूर्वक चुने गए`;
-            }
+            txt.textContent = `✓ कुल ${files.length} पन्ने तैयार हैं!`;
           }
         };
-        reader.readAsDataURL(files[i]);
+        r.readAsDataURL(files[i]);
       }
     }
 
     function switchExamTab(tab) {
       document.getElementById("tabContentOmr").style.display = tab === "omr" ? "block" : "none";
       document.getElementById("tabContentSubj").style.display = tab === "subj" ? "block" : "none";
-      document.getElementById("tabBtnOmr").classList.toggle("active", tab === "omr");
-      document.getElementById("tabBtnSubj").classList.toggle("active", tab === "subj");
+      document.getElementById("tabBtnOmr").style.background = tab === "omr" ? "#0284c7" : "transparent";
+      document.getElementById("tabBtnOmr").style.color = tab === "omr" ? "#fff" : "var(--bseb-text)";
+      document.getElementById("tabBtnSubj").style.background = tab === "subj" ? "#0284c7" : "transparent";
+      document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    function toggleMobileView(view) {
-      document.getElementById("examLeftPane").style.display = view === "paper" ? "flex" : "none";
-      document.getElementById("examRightPane").style.display = view === "response" ? "flex" : "none";
-      document.getElementById("btnShowPaper").classList.toggle("active", view === "paper");
-      document.getElementById("btnShowResponse").classList.toggle("active", view === "response");
+    function toggleMobileView(v) {
+      const lp = document.getElementById("examLeftPane");
+      const rp = document.getElementById("examRightPane");
+      const bp = document.getElementById("btnShowPaper");
+      const br = document.getElementById("btnShowResponse");
+
+      if (v === 'paper') {
+        lp.classList.remove("mobile-hide");
+        rp.classList.add("mobile-hide");
+        bp.style.background = "#0284c7"; bp.style.color = "#fff";
+        br.style.background = "var(--bseb-surface-card)"; br.style.color = "var(--bseb-text)";
+      } else {
+        lp.classList.add("mobile-hide");
+        rp.classList.remove("mobile-hide");
+        br.style.background = "#0284c7"; br.style.color = "#fff";
+        bp.style.background = "var(--bseb-surface-card)"; bp.style.color = "var(--bseb-text)";
+      }
     }
 
     async function confirmFinalExamSubmission() {
-      const saved = (cloudState && cloudState.savedOMR && cloudState.savedOMR[activeDay]) 
-                    ? cloudState.savedOMR[activeDay] : {};
-      const omrCount = Object.keys(saved).length;
+      const omr = cloudState?.savedOMR?.[activeDay] || {};
+      const count = Object.keys(omr).length;
 
-      if (omrCount < 10) {
-        alert(`⚠️ अमान्य सबमिशन! आपने केवल ${omrCount} वस्तुनिष्ठ प्रश्नों के उत्तर दिए हैं।\n\nबोर्ड परीक्षा जमा करने के लिए कम से कम 10 प्रश्नों के गोले रंगना अनिवार्य है!`);
-        switchExamTab('omr');
-        toggleMobileView('response');
+      if (count < 10) {
+        alert("कम से कम 10 OMR प्रश्नों के उत्तर देना अनिवार्य है!");
+        return;
+      }
+      if (uploadedPagesList.length === 0) {
+        alert("कृपया अपनी उत्तर पुस्तिका के पन्ने अपलोड करें!");
         return;
       }
 
-      let totalImages = 0;
-      for (const sec in selectedImages) {
-        totalImages += (selectedImages[sec] ? selectedImages[sec].length : 0);
-      }
-
-      if (totalImages === 0) {
-        alert("⚠️ अमान्य सबमिशन! आपने खंड 'ब' (सब्जेक्टिव) की कोई भी उत्तर कॉपी अपलोड नहीं की है!\n\nकृपया अपनी कॉपी के पन्नों की फोटो अपलोड करें।");
-        switchExamTab('subj');
-        toggleMobileView('response');
-        return;
-      }
-
-      if (!confirm(`क्या आप आज की परीक्षा फाइनल जमा करना चाहते हैं?\n\n• भरे गए OMR गोले: ${omrCount}\n• अपलोड किए गए कुल पन्ने: ${totalImages}`)) return;
+      if (!confirm(`क्या आप Day ${activeDay} की परीक्षा फाइनल जमा करना चाहते हैं?`)) return;
 
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
-      const paperData = BSEB_PAPERS_DATABASE[currentSub.code] || BSEB_PAPERS_DATABASE["101-hindi"];
+      const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      const btn = document.querySelector(".btn-submit-board-exam");
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = "⏳ सुरक्षित जमा हो रहा है...";
-      }
+      await submitExamToCloud(
+        currentUser,
+        activeDay,
+        currentSub.name,
+        paperData ? paperData.answerKey : {},
+        { "all_pages": uploadedPagesList },
+        cloudState
+      );
 
-      try {
-        await submitExamToCloud(
-          currentUser,
-          activeDay,
-          currentSub.name,
-          paperData ? paperData.answerKey : {},
-          selectedImages,
-          cloudState
-        );
-
-        alert(`✓ Day ${activeDay}: ${currentSub.name} की परीक्षा सफलतापूर्वक जमा हो गई!\n\n• आपकी उत्तर पुस्तिका सुरक्षित क्लाउड में जमा हो चुकी है।\n• संपूर्ण परिणाम 7वें दिन सुबह 09:00 AM पर खुलेगा।`);
-        location.reload();
-      } catch (err) {
-        alert("सबमिशन त्रुटि: " + err.message);
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = "परीक्षा जमा करें ✓";
-        }
-      }
+      alert(`✓ Day ${activeDay} की परीक्षा सफलतापूर्वक जमा हो गई!`);
+      location.reload();
     }
   </script>
 </body>
