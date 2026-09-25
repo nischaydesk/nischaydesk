@@ -31,7 +31,6 @@
       flex-direction: column;
     }
 
-    /* स्टेप कंटेनर */
     .gateway-step {
       display: none;
       animation: fadeIn 0.3s ease-in-out;
@@ -55,7 +54,6 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     }
 
-    /* एडमिट कार्ड पूर्वावलोकन */
     .admit-card-preview {
       border: 2px solid #0284c7;
       border-radius: 10px;
@@ -84,14 +82,13 @@
       margin-top: 2px;
     }
 
-    /* सुरक्षा स्कैनिंग गेट */
     .security-scan-box {
       text-align: center;
       padding: 40px 20px;
     }
     .scanner-line {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       margin: 0 auto 20px auto;
       border-radius: 50%;
       border: 4px solid #0284c7;
@@ -102,7 +99,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* परीक्षा हॉल स्वतंत्र स्क्रॉल */
     #simExamHallStage {
       height: 100%;
       display: flex;
@@ -202,7 +198,6 @@
     html[data-theme="dark"] .guidance-text-fixed { color: #f8fafc !important; }
     html[data-theme="light"] .guidance-text-fixed { color: #0f172a !important; }
 
-    /* सबमिशन सक्सेस मोडल */
     .success-modal {
       display: none;
       position: fixed;
@@ -288,7 +283,7 @@
       </div>
     </section>
 
-    <!-- चरण 2: कक्षा, विषय चयन एवं 3 सख्त नियम -->
+    <!-- चरण 2: कक्षा, विषय चयन एवं नियम पुष्टि -->
     <section class="gateway-step" id="step2RulesAndSubject">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 2: विषय एवं परीक्षा नियम पुष्टि</h2>
@@ -296,9 +291,9 @@
         <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
           <strong style="color: #0284c7; font-size: 0.92rem;">📜 परीक्षा के 3 मुख्य नियम:</strong>
           <ul style="margin: 6px 0 0 16px; font-size: 0.85rem; color: var(--bseb-text); line-height: 1.6;">
-            <li><strong>एक बार जमा = हमेशा के लिए लॉक:</strong> परीक्षा सबमिट करते ही उस विषय का पेपर लॉक हो जाएगा।</li>
-            <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही पेपर स्वतः लॉक हो जाएगा।</li>
-            <li><strong>अंतिम परिणाम:</strong> 7वें दिन सुबह ठीक 9:00 बजे मार्कशीट खुलेगी।</li>
+            <li><strong>समय शेष तक सुरक्षित:</strong> 3 घंटे 15 मिनट तक आपके भरे गोले व फोटो सुरक्षित रहेंगे, आप कभी भी आकर दे सकते हैं।</li>
+            <li><strong>फाइनल सबमिशन:</strong> एक बार 'परीक्षा जमा करें' दबाने पर यह विषय हमेशा के लिए लॉक हो जाएगा।</li>
+            <li><strong>समय समाप्त:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः लॉक हो जाएगा।</li>
           </ul>
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
@@ -340,7 +335,7 @@
         <p style="font-size: 0.88rem; color: var(--bseb-text-muted); margin: 0 0 16px 0;" id="scanStatusDesc">
           Gmail क्रेडेंशियल, रोल नंबर और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
         </p>
-        <div style="font-weight: 800; color: #16a34a; font-size: 0.95rem;" id="scanProgressBadge">⏳ जांच 45% पूर्ण</div>
+        <div style="font-weight: 800; color: #16a34a; font-size: 0.95rem;" id="scanProgressBadge">⏳ जांच पूर्ण हो रही है...</div>
       </div>
     </section>
 
@@ -406,7 +401,7 @@
       <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
       <h2 style="color: #16a34a; margin: 0 0 8px 0;" id="successModalTitle">परीक्षा सफलतापूर्वक जमा हो गई!</h2>
       <p style="color: var(--bseb-text); font-size: 0.92rem; line-height: 1.5; margin: 0 0 16px 0;" id="successModalDesc">
-        आपकी OMR और हस्तलिखित उत्तर पुस्तिका क्लाउड पर सुरक्षित लॉक हो चुकी है। अब यह विषय दोबारा नहीं खुलेगा।
+        आपकी OMR और हस्तलिखित उत्तर पुस्तिका सफलतापूर्वक दर्ज हो चुकी है। अब यह विषय हमेशा के लिए लॉक हो चुका है।
       </p>
       <div style="background: rgba(22, 163, 74, 0.1); border: 1px solid #16a34a; border-radius: 8px; padding: 10px; margin-bottom: 18px; font-weight: 700; color: #16a34a; font-size: 0.88rem;">
         🔒 स्थिति: COMPLETED & LOCKED
@@ -482,8 +477,7 @@
 
               try {
                 cloudState = await getCloudExamState(user);
-                
-                // स्कूल नाम लोड करें
+
                 const schInput = document.getElementById("inputSchoolName");
                 if (cloudState && cloudState.schoolName) {
                   schInput.value = cloudState.schoolName;
@@ -491,7 +485,7 @@
 
                 renderSubjectDropdown();
 
-                // यदि पहले से कोई एक्टिव अन-सबमिटेड सेशन है तो सीधे हॉल खुलेगा
+                // यदि पहले से कोई एक्टिव अन-सबमिटेड सेशन है तो सीधे परीक्षा हॉल में ले जाएँ
                 if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
                   const checkDay = cloudState.activeSession.day;
                   const isDone = cloudState?.completedDays?.[checkDay]?.status;
@@ -516,14 +510,10 @@
       if (target) target.classList.add("active");
     }
 
-    function goToStep1() {
-      showStep("step1AdmitCard");
-    }
+    function goToStep1() { showStep("step1AdmitCard"); }
 
     function goToStep2() {
       const schName = document.getElementById("inputSchoolName").value.trim() || "HIGH SCHOOL TELWA BAZAR, JAMUI";
-      
-      // स्कूल का नाम क्लाउड और लोकल में सेव करें
       if (cloudState) cloudState.schoolName = schName;
       if (currentUser && window.NischayConfig?.dbInstance) {
         window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
@@ -531,7 +521,6 @@
         }, { merge: true });
       }
       localStorage.setItem("nischay_student_school", schName);
-
       showStep("step2RulesAndSubject");
     }
 
@@ -590,7 +579,6 @@
       const selectEl = document.getElementById("regExamDaySelect");
       activeDay = parseInt(selectEl.value, 10) || 1;
 
-      // सुरक्षा जांच स्क्रीन दिखाएं
       showStep("step3SecurityClearance");
 
       const badge = document.getElementById("scanProgressBadge");
@@ -600,7 +588,7 @@
       setTimeout(() => {
         badge.textContent = "⏳ पहचान व रोल कोड मिलान: 85%";
         desc.textContent = "डिजिटल सुरक्षा क्लीयरेंस मिल गई है। परीक्षा हॉल लोड हो रहा है...";
-      }, 1000);
+      }, 800);
 
       setTimeout(() => {
         badge.textContent = "✓ क्लीयरेंस पूर्ण! परीक्षा कक्ष आवंटित";
@@ -608,8 +596,8 @@
         setTimeout(() => {
           showStep("simExamHallStage");
           resumeExamHall(activeDay);
-        }, 800);
-      }, 2200);
+        }, 600);
+      }, 1600);
     }
 
     function resumeExamHall(day) {
@@ -625,6 +613,16 @@
       const maxLimit = (currentSub.code.includes("math") || day === 3) ? 24 : 20;
       document.getElementById("subjGuidanceBanner").innerHTML = `✍️ <strong>${currentSub.name} उत्तर पुस्तिका:</strong> अपने सभी पन्नों की साफ फोटो नीचे एक साथ चुनें (अधिकतम ${maxLimit} पन्ने)।`;
       document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: अधिकतम ${maxLimit} पन्ने की अनुमति है)`;
+
+      // ड्राफ्ट में पहले से अपलोड फोटो पुनर्स्थापित करना
+      const savedPagesCache = localStorage.getItem(`draft_pages_${currentUser.uid}_day_${day}`);
+      if (savedPagesCache) {
+        try {
+          uploadedPagesList = JSON.parse(savedPagesCache);
+          document.getElementById("uploadStatusText").textContent = `✓ कुल ${uploadedPagesList.length} पन्ने पहले से अपलोड हैं`;
+          document.getElementById("uploadStatusText").style.color = "#16a34a";
+        } catch (e) {}
+      }
 
       renderOmrBubbles(100);
       startStrictTimer(day);
@@ -659,7 +657,7 @@
           clearInterval(examTimerInterval);
           clockEl.textContent = "00:00:00 (समय समाप्त)";
           alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब हमेशा के लिए लॉक हो गया है।");
-          
+
           if (window.NischayConfig?.dbInstance) {
             window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
               completedDays: { [day]: { status: "LOCKED", totalMarks: 0, reason: "TIME_OVER" } },
@@ -702,14 +700,15 @@
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
 
+    // 🎯 गोला रंगने पर तुरंत सिंक (छात्र कभी भी आकर आगे दे सकता है)
     function selectBubble(q, opt) {
       if (!cloudState.savedOMR) cloudState.savedOMR = {};
       if (!cloudState.savedOMR[activeDay]) cloudState.savedOMR[activeDay] = {};
       cloudState.savedOMR[activeDay][q] = opt;
       renderOmrBubbles(100);
+      syncBubbleToCloud(currentUser, activeDay, q, opt, cloudState);
     }
 
-    // 🛑 24 पेज की सख्त लिमिट और एंटी-स्पैम जांच
     function handleMasterUpload(e) {
       const files = e.target.files;
       const txt = document.getElementById("uploadStatusText");
@@ -721,29 +720,17 @@
       const MAX_PAGES_ALLOWED = (currentSub.code.includes("math") || activeDay === 3) ? 24 : 20;
 
       if (files.length > MAX_PAGES_ALLOWED) {
-        alert(`⚠️ कड़ा बोर्ड नियम उल्लंघन!\n\nबिहार बोर्ड नियमानुसार ${currentSub.name} उत्तर-पुस्तिका में अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!\n\nआपका चयन रद्द कर दिया गया है। कृपया दोबारा केवल 1 से ${MAX_PAGES_ALLOWED} मुख्य पेज ही चुनें।`);
+        alert(`⚠️ कड़ा बोर्ड नियम उल्लंघन!\n\nबिहार बोर्ड नियमानुसार ${currentSub.name} उत्तर-पुस्तिका में अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!\n\nआपका चयन रद्द कर दिया गया है।`);
         e.target.value = "";
-        uploadedPagesList = [];
-        txt.textContent = `❌ अमान्य चयन: अधिकतम ${MAX_PAGES_ALLOWED} पेज की ही अनुमति है।`;
-        txt.style.color = "#ef4444";
         return;
       }
 
       uploadedPagesList = [];
       txt.style.color = "#0284c7";
-      txt.textContent = `⏳ ${files.length} पन्ने स्कैन और तैयार हो रहे हैं...`;
+      txt.textContent = `⏳ ${files.length} पन्ने सुरक्षित हो रहे हैं...`;
 
       let loaded = 0;
       for (let i = 0; i < files.length; i++) {
-        if (files[i].size > 4 * 1024 * 1024) {
-          alert(`⚠️ पेज ${i + 1} की फोटो 4MB से बड़ी है। कृपया सामान्य साइज की फोटो अपलोड करें।`);
-          e.target.value = "";
-          uploadedPagesList = [];
-          txt.textContent = "❌ कृपया उचित साइज के पन्ने चुनें।";
-          txt.style.color = "#ef4444";
-          return;
-        }
-
         const r = new FileReader();
         r.onload = (ev) => {
           uploadedPagesList.push({
@@ -752,8 +739,12 @@
           });
           loaded++;
           if (loaded === files.length) {
-            txt.textContent = `✓ कुल ${files.length} पन्ने जाँचे जाने के लिए तैयार हैं (BSEB Validated)`;
+            txt.textContent = `✓ कुल ${files.length} पन्ने सुरक्षित सेव हैं!`;
             txt.style.color = "#16a34a";
+            // ड्राफ्ट में सुरक्षित रखें ताकि पेज रिफ्रेश होने पर भी न हटे
+            try {
+              localStorage.setItem(`draft_pages_${currentUser.uid}_day_${activeDay}`, JSON.stringify(uploadedPagesList));
+            } catch (err) {}
           }
         };
         r.readAsDataURL(files[i]);
@@ -769,6 +760,7 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
+    // ⚡ त्वरित सबमिशन: बटन कभी हैंग नहीं होगा, तुरंत मोडल खुलेगा
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -782,7 +774,7 @@
         return;
       }
 
-      if (!confirm(`क्या आप Day ${activeDay} की परीक्षा फाइनल जमा करना चाहते हैं?`)) return;
+      if (!confirm(`क्या आप Day ${activeDay} की परीक्षा फाइनल जमा करना चाहते हैं?\n(जमा करने के बाद यह विषय लॉक हो जाएगा)`)) return;
 
       const submitBtn = document.getElementById("btnSubmitFinalExam");
       if (submitBtn) {
@@ -796,22 +788,28 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      await submitExamToCloud(
-        currentUser,
-        activeDay,
-        currentSub.name,
-        paperData ? paperData.answerKey : {},
-        { "all_pages": uploadedPagesList },
-        cloudState
-      );
+      try {
+        await submitExamToCloud(
+          currentUser,
+          activeDay,
+          currentSub.name,
+          paperData ? paperData.answerKey : {},
+          uploadedPagesList,
+          cloudState
+        );
 
-      if (!cloudState.completedDays) cloudState.completedDays = {};
-      cloudState.completedDays[activeDay] = { status: "COMPLETED", subjectName: currentSub.name };
-      cloudState.activeSession = null;
+        // ड्राफ्ट साफ़ करें
+        localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
 
-      document.getElementById("successModalTitle").textContent = `Day ${activeDay}: ${currentSub.name} जमा हो गया!`;
-      document.getElementById("successModalDesc").textContent = `आपकी OMR और हस्तलिखित उत्तर पुस्तिका क्लाउड पर सफलतापूर्वक जमा कर दी गई है। यह विषय अब हमेशा के लिए लॉक हो चुका है।`;
-      document.getElementById("submissionSuccessModal").classList.add("active");
+        document.getElementById("successModalTitle").textContent = `Day ${activeDay}: ${currentSub.name} जमा हो गया!`;
+        document.getElementById("submissionSuccessModal").classList.add("active");
+      } catch (e) {
+        alert("सबमिशन त्रुटि: " + e.message);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "परीक्षा जमा करें ✓";
+        }
+      }
     }
   </script>
 </body>
