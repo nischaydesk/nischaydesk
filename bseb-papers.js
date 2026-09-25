@@ -46,7 +46,7 @@ const BSEB_PAPERS_DATABASE = {
     passMarks: 30,
     hasPractical: false,
     totalPages: 20,
-    driveLink: "/preview",
+    driveLink: "https://drive.google.com/file/d/1m_Gvjc5BFg-Gq8cInuVcpJwdesy3jcSX/view?usp=drivesdk/preview",
     answerKey: {
       1: "A", 2: "B", 3: "C", 4: "D", 5: "A", 6: "B", 7: "C", 8: "D", 9: "A", 10: "B",
       11: "C", 12: "D", 13: "A", 14: "B", 15: "C", 16: "D", 17: "A", 18: "B", 19: "C", 20: "D",
