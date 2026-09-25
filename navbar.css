@@ -1,13 +1,9 @@
 /* ==========================================================================
-   NischayDesk Solid Navbar & Slide Drawer Architecture (v5.0 Ultimate Pro)
-   Architected by: Prince Kumar (NischayDesk)
-   Enhanced: Glass-Morphism Header, Active Status Indicators, 100% Bulletproof
-             Contrast for Dark & Light Mode, App-Style Drawer
+   NischayDesk Solid Navbar & Slide Drawer Architecture (v5.0 Unified)
+   Fixed: Sidebar Bottom Truncation, Dark/Light Text Contrast & Profile Sync
    ========================================================================== */
 
-/* ==========================================================================
-   1. TOP HEADER (MODERN GLASS-SOLID TECH NAVBAR)
-   ========================================================================== */
+/* 1. TOP HEADER (MODERN GLASS-SOLID TECH NAVBAR) */
 .app-header {
   position: sticky;
   top: 0;
@@ -41,9 +37,7 @@ html.light-mode .app-header {
   gap: 12px;
 }
 
-/* ==========================================================================
-   2. BRAND & MOBILE HAMBURGER
-   ========================================================================== */
+/* 2. BRAND & MOBILE HAMBURGER */
 .nav-brand-group {
   display: flex !important;
   align-items: center !important;
@@ -159,9 +153,7 @@ html.light-mode .brand-name-accent {
   margin-top: 1px;
 }
 
-/* ==========================================================================
-   3. DESKTOP NAVIGATION
-   ========================================================================== */
+/* 3. DESKTOP NAVIGATION */
 .nav-links-desktop {
   display: none;
   align-items: center;
@@ -210,9 +202,7 @@ html.light-mode .nav-item.active {
   border: 1px solid #bae6fd;
 }
 
-/* ==========================================================================
-   4. NAV ACTIONS & PROFILE WIDGET
-   ========================================================================== */
+/* 4. NAV ACTIONS & PROFILE WIDGET */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -316,9 +306,7 @@ html.light-mode .user-session-badge {
   color: #0284c7 !important;
 }
 
-/* ==========================================================================
-   5. SOLID APP-STYLE SIDE DRAWER
-   ========================================================================== */
+/* 5. SLIDE-OUT DRAWER ENGINE (नीचे से कटने का 100% इलाज) */
 .side-drawer {
   position: fixed !important;
   top: 0 !important;
@@ -328,12 +316,13 @@ html.light-mode .user-session-badge {
   background-color: #080f24 !important;
   border-right: 1.5px solid rgba(56, 189, 248, 0.22) !important;
   z-index: 2000 !important;
-  padding: 20px 16px !important;
+  padding: 16px 16px 90px 16px !important; /* 90px पैडिंग ताकि स्क्रॉल पूरा नीचे तक जाए और कुछ न कटे */
   display: flex !important;
   flex-direction: column !important;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   box-shadow: 14px 0 45px rgba(0, 0, 0, 0.85) !important;
-  overflow-y: auto;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 html.light-mode .side-drawer {
@@ -371,6 +360,7 @@ html.light-mode .side-drawer {
   margin-bottom: 16px !important;
   padding-bottom: 12px !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  flex-shrink: 0 !important;
 }
 
 html.light-mode .drawer-header {
@@ -416,7 +406,7 @@ html.light-mode .drawer-close-btn {
   color: #0f172a !important;
 }
 
-/* User Card inside Drawer */
+/* User Card inside Drawer (डार्क और लाइट दोनों मोड में साफ दिखेगा) */
 .drawer-user-card {
   background: linear-gradient(135deg, rgba(19, 34, 74, 0.8), rgba(12, 22, 51, 0.9)) !important;
   border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
@@ -425,6 +415,7 @@ html.light-mode .drawer-close-btn {
   margin-bottom: 16px !important;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  flex-shrink: 0 !important;
   transition: all 0.2s ease;
 }
 
@@ -456,7 +447,6 @@ html.light-mode .drawer-user-prompt {
   display: flex !important;
   flex-direction: column !important;
   gap: 7px !important;
-  flex: 1 !important;
 }
 
 .drawer-nav-item {
@@ -487,7 +477,7 @@ html.light-mode .drawer-nav-item:hover, html.light-mode .drawer-nav-item.active 
   color: #0284c7 !important;
 }
 
-/* Dark / Light Toggle Container in Drawer */
+/* Dark / Light Toggle Switch Container */
 .drawer-theme-row {
   display: flex !important;
   align-items: center !important;
@@ -509,8 +499,11 @@ html.light-mode .theme-label {
   color: #0f172a !important;
 }
 
+/* Drawer Footer & Founder Info */
 .drawer-footer {
+  margin-top: 14px !important;
   padding-top: 14px !important;
+  padding-bottom: 24px !important;
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
   display: flex !important;
   flex-direction: column !important;
