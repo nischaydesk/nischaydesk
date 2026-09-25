@@ -16,7 +16,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
-    /* पूरे पेज का स्क्रॉल लॉक ताकि सिर्फ बॉक्स स्क्रॉल हों */
     html, body {
       margin: 0;
       padding: 0;
@@ -39,7 +38,6 @@
       overflow: hidden;
     }
 
-    /* डेस्कटॉप और मोबाइल दोनों के लिए स्वतंत्र स्क्रॉल लेआउट */
     .exam-split-grid {
       display: flex !important;
       flex-direction: column;
@@ -49,7 +47,6 @@
       min-height: 0;
     }
 
-    /* ऊपर प्रश्न पत्र - निश्चित ऊंचाई और अपना अलग स्क्रॉल */
     .exam-left-pane {
       flex: 1;
       height: 48%;
@@ -75,7 +72,6 @@
       border: none;
     }
 
-    /* नीचे OMR शीट - निश्चित ऊंचाई और अपना अलग स्वतंत्र स्क्रॉल */
     .exam-right-pane {
       flex: 1;
       height: 52%;
@@ -94,7 +90,6 @@
       flex-shrink: 0;
     }
 
-    /* केवल OMR के अंदर स्क्रॉल होगा, पूरा पेज कभी नहीं हिलेगा */
     .exam-tab-content {
       flex: 1;
       overflow-y: auto !important;
@@ -102,7 +97,6 @@
       padding: 10px;
     }
 
-    /* डेस्कटॉप (बड़ी स्क्रीन) पर आमने-सामने साइड-बाय-साइड */
     @media (min-width: 900px) {
       .exam-split-grid {
         flex-direction: row;
@@ -115,12 +109,8 @@
         flex: 0.9;
         height: 100%;
       }
-      .mobile-view-toggle-bar {
-        display: none !important;
-      }
     }
 
-    /* निर्देश बॉक्स का साफ टेक्स्ट */
     .guidance-box-fixed {
       background: rgba(2, 132, 199, 0.12) !important;
       border-left: 4px solid #0284c7 !important;
@@ -137,11 +127,31 @@
       display: block;
     }
 
-    html[data-theme="dark"] .guidance-text-fixed {
-      color: #f8fafc !important;
+    html[data-theme="dark"] .guidance-text-fixed { color: #f8fafc !important; }
+    html[data-theme="light"] .guidance-text-fixed { color: #0f172a !important; }
+
+    /* सबमिशन सक्सेस मोडल */
+    .success-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      box-sizing: border-box;
     }
-    html[data-theme="light"] .guidance-text-fixed {
-      color: #0f172a !important;
+    .success-modal.active { display: flex; }
+    .success-box {
+      background: var(--bseb-surface-card);
+      border: 2px solid #16a34a;
+      border-radius: 14px;
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
   </style>
 </head>
@@ -164,7 +174,7 @@
 
   <main class="sim-main-viewport">
 
-    <!-- STAGE 1: सत्यापन एवं प्रवेश (क्लीन बिना किसी अजीब टैग के) -->
+    <!-- STAGE 1: सत्यापन एवं प्रवेश -->
     <section class="sim-stage active" id="simVerificationStage" style="overflow-y: auto;">
       <div class="sim-card-box" style="max-width: 580px; margin: 15px auto; background: var(--bseb-surface-card); padding: 18px; border-radius: 12px; border: 1.5px solid var(--bseb-border);">
         <h2 style="margin: 0 0 10px 0; font-size: 1.25rem; color: var(--bseb-text);">🏛️ बिहार विद्यालय परीक्षा समिति महा-सिमुलेटर</h2>
@@ -179,9 +189,9 @@
           <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
             <strong style="color: #0284c7; font-size: 0.92rem;">📜 परीक्षा के 3 मुख्य नियम:</strong>
             <ul style="margin: 6px 0 0 16px; font-size: 0.85rem; color: var(--bseb-text); line-height: 1.6;">
-              <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही परीक्षा अपने आप लॉक हो जाएगी।</li>
-              <li><strong>उत्तर पुस्तिका:</strong> OMR गोले और हाथ से लिखे उत्तर के पन्नों की फोटो अपलोड करें।</li>
-              <li><strong>अंतिम परिणाम:</strong> 7वें दिन सुबह ठीक 9:00 बजे पूरा परिणाम खुलेगा।</li>
+              <li><strong>एक बार जमा = हमेशा के लिए लॉक:</strong> परीक्षा सबमिट करते ही उस विषय का पेपर लॉक हो जाएगा।</li>
+              <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही पेपर स्वतः लॉक हो जाएगा।</li>
+              <li><strong>अंतिम परिणाम:</strong> 7वें दिन सुबह ठीक 9:00 बजे मार्कशीट खुलेगी।</li>
             </ul>
             <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
               <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
@@ -219,18 +229,16 @@
       </div>
     </section>
 
-    <!-- STAGE 2: परीक्षा हॉल (स्वतंत्र OMR स्क्रॉल लेआउट) -->
+    <!-- STAGE 2: परीक्षा हॉल -->
     <section class="sim-stage" id="simExamHallStage" style="display: none;">
       
-      <!-- शीर्ष स्टेटस बार -->
       <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bseb-surface-card); padding: 6px 10px; border-radius: 8px; margin-bottom: 6px; border: 1px solid var(--bseb-border); flex-shrink: 0;">
         <span style="font-weight: 800; font-size: 0.85rem; color: var(--bseb-text);"><span id="hallDisplaySub">विषय</span></span>
         <div style="font-weight: 900; font-size: 1rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 3px 10px; border-radius: 6px;" id="examTimerClock">⏳ 03:15:00</div>
-        <button type="button" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 6px 12px; font-weight: bold; font-size: 0.8rem; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
+        <button type="button" id="btnSubmitFinalExam" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 6px 12px; font-weight: bold; font-size: 0.8rem; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
       </div>
 
       <div class="exam-split-grid">
-        <!-- ऊपर: प्रश्न पत्र (PDF का अलग फ्रेम) -->
         <div class="exam-left-pane" id="examLeftPane">
           <div style="padding: 5px 10px; background: rgba(0,0,0,0.05); font-weight: bold; font-size: 0.78rem; color: var(--bseb-text); border-bottom: 1px solid var(--bseb-border); flex-shrink: 0;">
             📄 प्रश्न पत्र (Official Booklet)
@@ -240,14 +248,12 @@
           </div>
         </div>
 
-        <!-- नीचे: OMR और कॉपी अपलोड (इसका अपना स्वतंत्र स्क्रॉल) -->
         <div class="exam-right-pane" id="examRightPane">
           <div class="pane-tab-switcher">
             <button type="button" id="tabBtnOmr" onclick="switchExamTab('omr')" style="flex:1; padding:8px; border:none; background:#0284c7; color:#fff; font-weight:bold; font-size:0.85rem; cursor:pointer;">🔴 OMR (50 अंक)</button>
             <button type="button" id="tabBtnSubj" onclick="switchExamTab('subj')" style="flex:1; padding:8px; border:none; background:transparent; color:var(--bseb-text); font-weight:bold; font-size:0.85rem; cursor:pointer;">📸 उत्तर पुस्तिका (50 अंक)</button>
           </div>
 
-          <!-- OMR टैब (सिर्फ यही स्क्रॉल होगा) -->
           <div class="exam-tab-content" id="tabContentOmr">
             <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.8rem; font-weight:bold; color:var(--bseb-text); position: sticky; top: 0; background: var(--bseb-surface-card); padding: 4px 0; z-index: 2;">
               <span>किन्हीं 50 प्रश्नों के उत्तर दें</span>
@@ -256,7 +262,6 @@
             <div id="omrBubblesMatrix" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:6px;"></div>
           </div>
 
-          <!-- उत्तर पुस्तिका टैब -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
             <div class="guidance-box-fixed">
               <span class="guidance-text-fixed" id="subjGuidanceBanner">
@@ -278,6 +283,23 @@
 
   </main>
 
+  <!-- सबमिशन सक्सेस मोडल -->
+  <div class="success-modal" id="submissionSuccessModal">
+    <div class="success-box">
+      <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+      <h2 style="color: #16a34a; margin: 0 0 8px 0;" id="successModalTitle">परीक्षा सफलतापूर्वक जमा हो गई!</h2>
+      <p style="color: var(--bseb-text); font-size: 0.92rem; line-height: 1.5; margin: 0 0 16px 0;" id="successModalDesc">
+        आपकी OMR और उत्तर पुस्तिका क्लाउड पर सुरक्षित लॉक हो चुकी है। अब यह विषय दोबारा नहीं खुलेगा।
+      </p>
+      <div style="background: rgba(22, 163, 74, 0.1); border: 1px solid #16a34a; border-radius: 8px; padding: 10px; margin-bottom: 18px; font-weight: 700; color: #16a34a; font-size: 0.88rem;">
+        🔒 स्थिति: COMPLETED & LOCKED
+      </div>
+      <button type="button" onclick="location.reload()" style="background: #0284c7; color: #fff; border: none; padding: 10px 24px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">
+        डैशबोर्ड पर वापस जाएं
+      </button>
+    </div>
+  </div>
+
   <script src="config.js"></script>
   <script src="bseb-papers.js"></script>
   <script src="bseb-engine.js"></script>
@@ -288,6 +310,7 @@
     let activeDay = 1;
     let selectedClass = "10th";
     let uploadedPagesList = [];
+    let examTimerInterval = null;
 
     const CLASS_SUBJECTS_MAP = {
       "10th": [
@@ -343,9 +366,14 @@
                 cloudState = await getCloudExamState(user);
                 renderSubjectDropdown();
 
+                // यदि पहले से कोई एक्टिव अन-सबमिटेड सेशन है तभी हॉल खुलेगा
                 if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
-                  activeDay = cloudState.activeSession.day;
-                  resumeExamHall(activeDay);
+                  const checkDay = cloudState.activeSession.day;
+                  const isDone = cloudState?.completedDays?.[checkDay]?.status;
+                  if (isDone !== "COMPLETED" && isDone !== "LOCKED") {
+                    activeDay = checkDay;
+                    resumeExamHall(activeDay);
+                  }
                 }
               } catch (e) {
                 renderSubjectDropdown();
@@ -362,38 +390,58 @@
       const list = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       selectEl.innerHTML = "";
 
+      let selectableDay = null;
+
       list.forEach(s => {
         const opt = document.createElement("option");
         opt.value = s.day;
         const rec = cloudState?.completedDays?.[s.day];
 
         if (rec && rec.status === "COMPLETED") {
-          opt.textContent = `Day ${s.day}: ${s.name} [जमा हो चुका है ✓]`;
+          opt.textContent = `Day ${s.day}: ${s.name} [जमा हो चुका है - लॉक 🔒]`;
           opt.disabled = true;
         } else if (rec && rec.status === "LOCKED") {
           opt.textContent = `Day ${s.day}: ${s.name} [समय समाप्त - लॉक ❌]`;
           opt.disabled = true;
         } else {
           opt.textContent = `Day ${s.day}: ${s.name}`;
+          if (!selectableDay) selectableDay = s.day;
         }
         selectEl.appendChild(opt);
       });
+
+      if (selectableDay) selectEl.value = selectableDay;
       toggleEnterButtonState();
     }
 
     function toggleEnterButtonState() {
       const chk = document.getElementById("chkAgreeRules");
       const btn = document.getElementById("btnEnterExamHall");
+      const selectEl = document.getElementById("regExamDaySelect");
+      const chosenDay = parseInt(selectEl.value, 10);
+      const isDone = cloudState?.completedDays?.[chosenDay]?.status;
+
       if (chk && btn) {
-        btn.disabled = !chk.checked;
-        btn.style.opacity = chk.checked ? "1" : "0.6";
-        btn.style.cursor = chk.checked ? "pointer" : "not-allowed";
-        btn.textContent = chk.checked ? "🏛️ परीक्षा कक्ष में प्रवेश करें →" : "🔒 नियमों पर सहमति देकर प्रवेश करें";
+        if (isDone === "COMPLETED" || isDone === "LOCKED") {
+          btn.disabled = true;
+          btn.style.opacity = "0.5";
+          btn.textContent = "🔒 यह परीक्षा पहले ही लॉक हो चुकी है";
+        } else {
+          btn.disabled = !chk.checked;
+          btn.style.opacity = chk.checked ? "1" : "0.6";
+          btn.style.cursor = chk.checked ? "pointer" : "not-allowed";
+          btn.textContent = chk.checked ? "🏛️ परीक्षा कक्ष में प्रवेश करें →" : "🔒 नियमों पर सहमति देकर प्रवेश करें";
+        }
       }
     }
 
     function enterExamHallDirect() {
       const sDay = parseInt(document.getElementById("regExamDaySelect").value, 10) || 1;
+      const rec = cloudState?.completedDays?.[sDay];
+      if (rec && (rec.status === "COMPLETED" || rec.status === "LOCKED")) {
+        alert("⚠️ यह परीक्षा पहले ही समाप्त और लॉक हो चुकी है!");
+        return;
+      }
       activeDay = sDay;
       resumeExamHall(activeDay);
     }
@@ -419,6 +467,8 @@
     }
 
     function startStrictTimer(day) {
+      if (examTimerInterval) clearInterval(examTimerInterval);
+
       const lockKey = `exam_started_at_${currentUser.uid}_day_${day}`;
       let startMs = localStorage.getItem(lockKey);
 
@@ -438,13 +488,13 @@
       const endMs = startMs + totalDuration;
       const clockEl = document.getElementById("examTimerClock");
 
-      const timerInterval = setInterval(() => {
+      examTimerInterval = setInterval(() => {
         const left = endMs - Date.now();
 
         if (left <= 0) {
-          clearInterval(timerInterval);
+          clearInterval(examTimerInterval);
           clockEl.textContent = "00:00:00 (समय समाप्त)";
-          alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब लॉक हो गया है।");
+          alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब हमेशा के लिए लॉक हो गया है।");
           
           if (window.NischayConfig?.dbInstance) {
             window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
@@ -540,10 +590,19 @@
 
       if (!confirm(`क्या आप Day ${activeDay} की परीक्षा फाइनल जमा करना चाहते हैं?`)) return;
 
+      const submitBtn = document.getElementById("btnSubmitFinalExam");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "⏳ जमा हो रहा है...";
+      }
+
+      if (examTimerInterval) clearInterval(examTimerInterval);
+
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
+      // क्लाउड में जमा करें और AI इवैल्यूएशन ट्रिगर करें
       await submitExamToCloud(
         currentUser,
         activeDay,
@@ -553,8 +612,15 @@
         cloudState
       );
 
-      alert(`✓ Day ${activeDay} की परीक्षा सफलतापूर्वक जमा हो गई!`);
-      location.reload();
+      // लोकल स्टेट में भी तुरंत स्थिति लॉक करें
+      if (!cloudState.completedDays) cloudState.completedDays = {};
+      cloudState.completedDays[activeDay] = { status: "COMPLETED", subjectName: currentSub.name };
+      cloudState.activeSession = null;
+
+      // बड़ा सक्सेस मोडल दिखाएं ताकि स्पष्ट पता चले
+      document.getElementById("successModalTitle").textContent = `Day ${activeDay}: ${currentSub.name} जमा हो गया!`;
+      document.getElementById("successModalDesc").textContent = `आपकी OMR और हस्तलिखित उत्तर पुस्तिका क्लाउड पर सफलतापूर्वक जमा कर दी गई है। यह विषय अब हमेशा के लिए लॉक हो चुका है।`;
+      document.getElementById("submissionSuccessModal").classList.add("active");
     }
   </script>
 </body>
