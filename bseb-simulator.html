@@ -247,7 +247,7 @@
             </div>
           </div>
 
-          <!-- डायनामिक एडमिट कार्ड (कोई हार्डकोडेड नंबर नहीं) -->
+          <!-- डायनामिक एडमिट कार्ड (कोई हार्डकोडेड नंबर नहीं, सिर्फ उस Gmail का असली नंबर) -->
           <div class="sim-ticket-preview" id="simTicketPreview" style="display: block;">
             <div class="ticket-header">
               <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
@@ -415,6 +415,7 @@
               }
 
               try {
+                // क्लाउड से उस Gmail का अपना स्थायी डेटा लाएँ
                 cloudState = await getCloudExamState(user);
                 cloudState = await enforceCloudAbsence(user, cloudState);
 
@@ -454,6 +455,7 @@
       const classSelectEl = document.getElementById("regStudentClassSelect");
       selectedClass = classSelectEl.value;
       localStorage.setItem("nd_selected_class", selectedClass);
+      localStorage.setItem("nischay_student_class", selectedClass.replace(/[^0-9]/g, ''));
 
       if (currentUser && window.NischayConfig && window.NischayConfig.dbInstance) {
         window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
@@ -501,7 +503,7 @@
       toggleEnterButtonState();
     }
 
-    // 🚀 बटन को 100% एक्टिव करने वाला फंक्शन
+    // 🚀 चेकबॉक्स टिक होते ही बटन एक्टिव करने वाला फंक्शन
     function toggleEnterButtonState() {
       const chk = document.getElementById("chkAgreeRules");
       const enterBtn = document.getElementById("btnEnterExamHall");
