@@ -25,7 +25,7 @@
 
     .sim-main-viewport {
       padding: 8px 12px;
-      height: calc(100vh - 65px);
+      min-height: calc(100vh - 65px);
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
@@ -36,7 +36,7 @@
       animation: fadeIn 0.3s ease-in-out;
     }
     .gateway-step.active {
-      display: block;
+      display: block !important;
     }
 
     @keyframes fadeIn {
@@ -84,7 +84,7 @@
     }
 
     .form-group-sim {
-      margin-bottom: 11px;
+      margin-bottom: 12px;
     }
     .form-group-sim label {
       display: block;
@@ -95,7 +95,7 @@
     }
     .form-group-sim input, .form-group-sim select {
       width: 100%;
-      padding: 9px 12px;
+      padding: 10px 12px;
       border-radius: 8px;
       border: 1.5px solid var(--bseb-border);
       background: var(--bseb-surface-card);
@@ -104,7 +104,7 @@
       box-sizing: border-box;
       outline: none;
     }
-    .form-group-sim input:focus {
+    .form-group-sim input:focus, .form-group-sim select:focus {
       border-color: #0284c7;
     }
 
@@ -125,11 +125,15 @@
       to { transform: rotate(360deg); }
     }
 
+    /* परीक्षा हॉल - डिफ़ॉल्ट रूप से पूरी तरह छिपा रहेगा */
     #simExamHallStage {
+      display: none;
       height: 100%;
-      display: flex;
       flex-direction: column;
       overflow: hidden;
+    }
+    #simExamHallStage.active {
+      display: flex !important;
     }
 
     .exam-split-grid {
@@ -285,7 +289,7 @@
 
   <main class="sim-main-viewport">
 
-    <!-- चरण 1: डिजिटल एडमिट कार्ड व व्यक्तिगत विवरण (Editable Fields) -->
+    <!-- चरण 1: डिजिटल एडमिट कार्ड व व्यक्तिगत विवरण (उदाहरण प्लेसहोल्डर के साथ) -->
     <section class="gateway-step active" id="step1AdmitCard">
       <div class="sim-card-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -299,7 +303,6 @@
         </div>
 
         <div id="admitCardContentBox" style="display: none;">
-          <!-- ऑटोमैटिक जनरेटेड क्रेडेंशियल्स (हर Gmail के लिए यूनिक) -->
           <div class="admit-card-preview">
             <div class="admit-card-header">
               <span style="font-weight:800; font-size:0.85rem; color:#0284c7;">BIHAR SCHOOL EXAMINATION BOARD</span>
@@ -312,26 +315,26 @@
             </div>
           </div>
 
-          <!-- छात्र द्वारा बदले जाने वाले 4 मुख्य विवरण -->
+          <!-- छात्र का नाम Gmail से अपने आप भरेगा, बाकी उदाहरण में रहेंगे -->
           <div class="form-group-sim">
             <label>👤 परीक्षार्थी का नाम (Student Name) *</label>
-            <input type="text" id="inputStudentName" placeholder="उदा. PRINCE KUMAR" />
+            <input type="text" id="inputStudentName" placeholder="उदा. प्रिंस कुमार" />
           </div>
 
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <div class="form-group-sim">
               <label>👩 माता का नाम (Mother's Name) *</label>
-              <input type="text" id="inputMotherName" placeholder="उदा. SUNITA DEVI" />
+              <input type="text" id="inputMotherName" placeholder="उदा. संजू देवी" />
             </div>
             <div class="form-group-sim">
               <label>👨 पिता का नाम (Father's Name) *</label>
-              <input type="text" id="inputFatherName" placeholder="उदा. SURESH SHARMA" />
+              <input type="text" id="inputFatherName" placeholder="उदा. राजेश शर्मा" />
             </div>
           </div>
 
           <div class="form-group-sim">
             <label>🏫 स्कूल / कॉलेज का नाम (School Name) *</label>
-            <input type="text" id="inputSchoolName" placeholder="उदा. HIGH SCHOOL TELWA, JHAJHA" />
+            <input type="text" id="inputSchoolName" placeholder="उदा. उच्च विद्यालय तेलवा बाज़ार, जमुई" />
           </div>
 
           <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
@@ -349,9 +352,9 @@
         <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
           <strong style="color: #0284c7; font-size: 0.92rem;">📜 परीक्षा के 3 मुख्य नियम:</strong>
           <ul style="margin: 6px 0 0 16px; font-size: 0.85rem; color: var(--bseb-text); line-height: 1.6;">
-            <li><strong>समय शेष तक सुरक्षित:</strong> 3 घंटे 15 मिनट तक आपके भरे गोले व फोटो सुरक्षित रहेंगे, आप कभी भी आकर दे सकते हैं।</li>
-            <li><strong>फाइनल सबमिशन:</strong> एक बार 'परीक्षा जमा करें' दबाने पर यह विषय हमेशा के लिए लॉक हो जाएगा।</li>
-            <li><strong>समय समाप्त:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः लॉक हो जाएगा।</li>
+            <li><strong>समय शेष तक सुरक्षित:</strong> 3 घंटे 15 मिनट तक आपके भरे गोले व फोटो सुरक्षित रहेंगे, बैक जाने पर भी नहीं हटेंगे[span_8](start_span)[span_8](end_span)।</li>
+            <li><strong>फ़ाइनल सबमिशन:</strong> एक बार 'परीक्षा जमा करें' दबाने पर यह विषय हमेशा के लिए लॉक हो जाएगा[span_9](start_span)[span_9](end_span)।</li>
+            <li><strong>समय समाप्त:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः लॉक हो जाएगा[span_10](start_span)[span_10](end_span)।</li>
           </ul>
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
@@ -369,7 +372,7 @@
             </select>
           </div>
           <div class="form-group-sim">
-            <label>आज का विषय</label>
+            <label>आज का विषय (जमा किया हुआ विषय लॉक रहेगा)</label>
             <select id="regExamDaySelect" onchange="toggleEnterButtonState()"></select>
           </div>
         </div>
@@ -397,7 +400,7 @@
       </div>
     </section>
 
-    <!-- अंतिम चरण: परीक्षा कक्ष (Exam Hall) -->
+    <!-- अंतिम चरण: परीक्षा कक्ष (Exam Hall - पूरी तरह सुरक्षित) -->
     <section class="gateway-step" id="simExamHallStage">
       
       <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bseb-surface-card); padding: 6px 10px; border-radius: 8px; margin-bottom: 6px; border: 1px solid var(--bseb-border); flex-shrink: 0;">
@@ -545,15 +548,15 @@
               try {
                 cloudState = await getCloudExamState(user);
 
-                // छात्र के इनपुट फ़ील्ड्स में सेव्ड वैल्यूज भरें
+                // छात्र का नाम जीमेल से भरेगा, माता-पिता का नाम अगर पहले से सेव है तो भरेगा नहीं तो खाली रहेगा
                 document.getElementById("inputStudentName").value = cloudState?.displayName || realName;
-                document.getElementById("inputFatherName").value = cloudState?.fatherName || "SURESH SHARMA";
-                document.getElementById("inputMotherName").value = cloudState?.motherName || "SUNITA DEVI";
-                document.getElementById("inputSchoolName").value = cloudState?.schoolName || "HIGH SCHOOL TELWA, JHAJHA";
+                document.getElementById("inputFatherName").value = (cloudState?.fatherName && cloudState.fatherName !== "SURESH SHARMA") ? cloudState.fatherName : "";
+                document.getElementById("inputMotherName").value = (cloudState?.motherName && cloudState.motherName !== "SUNITA DEVI") ? cloudState.motherName : "";
+                document.getElementById("inputSchoolName").value = cloudState?.schoolName || "";
 
                 renderSubjectDropdown();
 
-                // यदि पहले से कोई एक्टिव अन-सबमिटेड सेशन है तो सीधे परीक्षा हॉल में ले जाएँ
+                // यदि पहले से कोई एक्टिव अन-सबमिटेड सेशन चल रहा है तो सीधे परीक्षा हॉल में ले जाएँ
                 if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
                   const checkDay = cloudState.activeSession.day;
                   const isDone = cloudState?.completedDays?.[checkDay]?.status;
@@ -573,18 +576,24 @@
     });
 
     function showStep(stepId) {
-      document.querySelectorAll(".gateway-step").forEach(el => el.classList.remove("active"));
+      document.querySelectorAll(".gateway-step").forEach(el => {
+        el.classList.remove("active");
+        el.style.display = "none";
+      });
       const target = document.getElementById(stepId);
-      if (target) target.classList.add("active");
+      if (target) {
+        target.classList.add("active");
+        target.style.display = (stepId === "simExamHallStage") ? "flex" : "block";
+      }
     }
 
     function goToStep1() { showStep("step1AdmitCard"); }
 
     function goToStep2() {
-      const sName = document.getElementById("inputStudentName").value.trim() || currentUser.displayName;
-      const fName = document.getElementById("inputFatherName").value.trim() || "SURESH SHARMA";
-      const mName = document.getElementById("inputMotherName").value.trim() || "SUNITA DEVI";
-      const schName = document.getElementById("inputSchoolName").value.trim() || "HIGH SCHOOL TELWA, JHAJHA";
+      const sName = document.getElementById("inputStudentName").value.trim() || currentUser.displayName || "विद्यार्थी";
+      const fName = document.getElementById("inputFatherName").value.trim() || "राजेश शर्मा";
+      const mName = document.getElementById("inputMotherName").value.trim() || "संजू देवी";
+      const schName = document.getElementById("inputSchoolName").value.trim() || "उच्च विद्यालय तेलवा बाज़ार, जमुई";
 
       if (cloudState) {
         cloudState.displayName = sName;
@@ -593,7 +602,6 @@
         cloudState.schoolName = schName;
       }
 
-      // Firestore में 4 विवरण अपडेट करें
       if (currentUser && window.NischayConfig?.dbInstance) {
         window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
           displayName: sName,
@@ -624,12 +632,12 @@
         opt.value = s.day;
         const rec = cloudState?.completedDays?.[s.day];
 
-        if (rec && rec.status === "COMPLETED") {
+        // 🔒 सख्त लॉक कंडीशन: यदि स्टेटस COMPLETED या LOCKED है
+        if (rec && (rec.status === "COMPLETED" || rec.status === "LOCKED")) {
           opt.textContent = `Day ${s.day}: ${s.name} [जमा हो चुका है - लॉक 🔒]`;
           opt.disabled = true;
-        } else if (rec && rec.status === "LOCKED") {
-          opt.textContent = `Day ${s.day}: ${s.name} [समय समाप्त - लॉक ❌]`;
-          opt.disabled = true;
+          opt.style.color = "#ef4444";
+          opt.style.fontWeight = "bold";
         } else {
           opt.textContent = `Day ${s.day}: ${s.name}`;
           if (!selectableDay) selectableDay = s.day;
@@ -637,7 +645,11 @@
         selectEl.appendChild(opt);
       });
 
-      if (selectableDay) selectEl.value = selectableDay;
+      if (selectableDay) {
+        selectEl.value = selectableDay;
+      } else {
+        selectEl.disabled = true;
+      }
       toggleEnterButtonState();
     }
 
@@ -649,9 +661,10 @@
       const isDone = cloudState?.completedDays?.[chosenDay]?.status;
 
       if (chk && btn) {
-        if (isDone === "COMPLETED" || isDone === "LOCKED") {
+        if (isDone === "COMPLETED" || isDone === "LOCKED" || !chosenDay) {
           btn.disabled = true;
           btn.style.opacity = "0.5";
+          btn.style.cursor = "not-allowed";
           btn.textContent = "🔒 यह परीक्षा पहले ही लॉक हो चुकी है";
         } else {
           btn.disabled = !chk.checked;
@@ -743,6 +756,13 @@
           clearInterval(examTimerInterval);
           clockEl.textContent = "00:00:00 (समय समाप्त)";
           alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब हमेशा के लिए लॉक हो गया है।");
+
+          if (cloudState) {
+            if (!cloudState.completedDays) cloudState.completedDays = {};
+            cloudState.completedDays[day] = { status: "LOCKED", totalMarks: 0, reason: "TIME_OVER" };
+            cloudState.activeSession = null;
+            localStorage.setItem(`nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`, JSON.stringify(cloudState));
+          }
 
           if (window.NischayConfig?.dbInstance) {
             window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
@@ -844,7 +864,9 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // 1 से 100% प्रोग्रेस बार के साथ इंस्टेंट सबमिशन व लॉक
+    // =========================================================
+    // 🎯 1 से 100% प्रोग्रेस बार के साथ इंस्टेंट सबमिशन व लॉक
+    // =========================================================
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -876,9 +898,19 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
+      // 🛑 तुरंत मेमोरी में लॉक करें ताकि बैकएंड रिफ्रेश होने पर भी विषय लॉक दिखे
+      if (!cloudState.completedDays) cloudState.completedDays = {};
+      cloudState.completedDays[activeDay] = { 
+        status: "COMPLETED", 
+        subjectName: currentSub.name,
+        submittedAt: new Date().toISOString()
+      };
+      cloudState.activeSession = null;
+      localStorage.setItem(`nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`, JSON.stringify(cloudState));
+
       let cur = 0;
       const progressTimer = setInterval(async () => {
-        cur += Math.floor(Math.random() * 5) + 3;
+        cur += Math.floor(Math.random() * 6) + 4;
 
         if (cur < 35) {
           stageText.textContent = "1. OMR गोलों का क्रिप्टोग्राफ़िक सत्यापन जारी...";
@@ -909,11 +941,12 @@
           );
 
           localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
+          localStorage.removeItem(`exam_started_at_${currentUser.uid}_day_${activeDay}`);
         } else {
           barFill.style.width = cur + "%";
           percentNum.textContent = cur + "%";
         }
-      }, 70);
+      }, 60);
     }
   </script>
 </body>
