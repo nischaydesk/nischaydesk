@@ -1,11 +1,8 @@
 /**
- * NischayDesk - BSEB Official Cloud Engine (v9.5 Production Stable)
- * - Anti-Hang Architecture (Images evaluated locally via AI, light metadata to Firestore)
- * - Safe Auto-Sync (OMR and Draft Pages preserved in LocalStorage & Cloud)
- * - Server-Synced Strict 3:15:00 Timer with Auto-Lock
+ * NischayDesk - BSEB Official Cloud Engine (v10.0 Hard-Lock Architecture)
+ * Model: gemini-3.6-flash
  */
 
-// GitHub स्कैनर से बचाने के लिए टुकड़ों में सुरक्षित टोकन
 const _p1 = "QVEuQWI4Uk42SVFJQll5MTcwQ3Rta1ZFM250";
 const _p2 = "dmY2VF9iOWttWmVob0pKV2NiOUdHOTY0VkE=";
 
@@ -18,7 +15,7 @@ function getProtectedKey() {
 }
 
 const BSEB_CONFIG = {
-  EXAM_DURATION_MINUTES: 195, // 3 घंटे 15 मिनट
+  EXAM_DURATION_MINUTES: 195,
   GEMINI_MODEL: "gemini-3.6-flash"
 };
 
@@ -47,7 +44,7 @@ function triggerGoogleLogin() {
     .catch((err) => alert("लॉगिन असफल: " + err.message));
 }
 
-// 🎯 छात्र की UID से यूनिक रोल क्रेडेंशियल्स
+// 🎯 हर Gmail UID के लिए स्थायी यूनिक रोल कोड एवं नंबर
 function generateUniqueCredentials(uid) {
   if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
 
@@ -70,12 +67,11 @@ function generateUniqueCredentials(uid) {
   return { rollCode, rollNumber, regNo };
 }
 
-// Firestore से छात्र का पूरा रिकॉर्ड लोड करना
+// स्टेट लोड: क्लाउड और लोकल दोनों का सख्त मिलान
 async function getCloudExamState(user) {
   if (!user) return null;
   const creds = generateUniqueCredentials(user.uid);
   const initialClass = localStorage.getItem("nd_selected_class") || "10th";
-  const savedSchool = localStorage.getItem("nischay_student_school") || "HIGH SCHOOL TELWA BAZAR, JAMUI";
 
   let studentState = {
     uid: user.uid,
@@ -85,14 +81,26 @@ async function getCloudExamState(user) {
     rollCode: creds.rollCode,
     rollNumber: creds.rollNumber,
     regNo: creds.regNo,
-    schoolName: savedSchool,
-    fatherName: "SURESH SHARMA",
+    schoolName: "",
+    motherName: "",
+    fatherName: "",
     startDate: new Date().toISOString(),
     completedDays: {},
     savedOMR: {},
     activeSession: null
   };
 
+  // 1. सबसे पहले लोकल स्टोरेज से लॉक रिकॉर्ड्स उठाएं
+  const localKey = `nischay_exam_state_${studentState.rollCode}_${studentState.rollNumber}`;
+  const localCache = localStorage.getItem(localKey);
+  if (localCache) {
+    try {
+      const parsedLocal = JSON.parse(localCache);
+      studentState = { ...studentState, ...parsedLocal };
+    } catch(e) {}
+  }
+
+  // 2. फ़ायरबेस से डेटा मर्ज करें
   if (window.NischayConfig && window.NischayConfig.dbInstance) {
     try {
       const db = window.NischayConfig.dbInstance;
@@ -100,38 +108,39 @@ async function getCloudExamState(user) {
       const docSnap = await docRef.get();
 
       if (docSnap.exists) {
-        studentState = { ...studentState, ...docSnap.data() };
+        const cloudData = docSnap.data();
+        // अगर क्लाउड या लोकल किसी एक में भी सबमिट है तो लॉक ही माना जाएगा
+        studentState = {
+          ...studentState,
+          ...cloudData,
+          completedDays: {
+            ...(studentState.completedDays || {}),
+            ...(cloudData.completedDays || {})
+          }
+        };
       } else {
         await docRef.set(studentState);
       }
     } catch (e) {
-      console.warn("Firestore fetch notice:", e);
+      console.warn("Firestore sync fallback:", e);
     }
   }
 
-  // लोकल बैकअप सिंक
-  const localCache = localStorage.getItem(`nischay_exam_state_${studentState.rollCode}_${studentState.rollNumber}`);
-  if (localCache) {
-    try {
-      const parsedLocal = JSON.parse(localCache);
-      studentState.savedOMR = { ...studentState.savedOMR, ...(parsedLocal.savedOMR || {}) };
-    } catch (e) {}
-  }
-
   localStorage.setItem("nischay_student_session", JSON.stringify(studentState));
-  localStorage.setItem(`nischay_exam_state_${studentState.rollCode}_${studentState.rollNumber}`, JSON.stringify(studentState));
+  localStorage.setItem(localKey, JSON.stringify(studentState));
 
   return studentState;
 }
 
-// OMR गोला तुरंत सेव (लोकल + हल्का फायरबेस कॉल)
+// OMR ऑटो सिंक
 async function syncBubbleToCloud(user, day, qNum, opt, state) {
   if (!state) return;
   if (!state.savedOMR) state.savedOMR = {};
   if (!state.savedOMR[day]) state.savedOMR[day] = {};
   state.savedOMR[day][qNum] = opt;
 
-  localStorage.setItem(`nischay_exam_state_${state.rollCode}_${state.rollNumber}`, JSON.stringify(state));
+  const localKey = `nischay_exam_state_${state.rollCode}_${state.rollNumber}`;
+  localStorage.setItem(localKey, JSON.stringify(state));
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     try {
@@ -143,7 +152,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
   }
 }
 
-// 🤖 बैकग्राउंड में बिना UI को रोके AI कॉपी चेकिंग
+// 🤖 बैकग्राउंड में AI चेकिंग (Firestore को हैंग किए बिना)
 async function runBackgroundGeminiEvaluation(uid, day, subjectName, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return;
 
@@ -204,19 +213,18 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectName, imagesList, 
           }
         }, { merge: true });
 
-        console.log(`✓ Day ${day} AI Evaluation Saved to Cloud: ${awardedMarks}/50`);
+        console.log(`✓ Day ${day} AI Evaluation Recorded: ${awardedMarks}/50`);
       }
     }
   } catch (err) {
-    console.warn("AI background grading notice:", err);
+    console.warn("AI grading notice:", err);
   }
 }
 
-// ⚡ सुपर-फास्ट 1-सेकंड सबमिशन (हल्का डेटाबेस कॉल ताकि कभी न अटके)
+// 🔒 सख्त सबमिशन: लोकल और क्लाउड दोनों जगह तुरंत ताला
 async function submitExamToCloud(user, day, subjectName, answerKey, imagesList, state) {
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
 
-  // OMR चेकिंग (50 अंक)
   let objMarks = 0;
   let count = 0;
   for (let i = 1; i <= 100; i++) {
@@ -229,25 +237,30 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesList, 
     }
   }
 
-  const todayStr = new Date().toISOString().split('T')[0];
-
   const completedData = {
     subjectName: subjectName,
     objectiveMarks: objMarks,
-    subjectiveMarks: 35, // प्रोविजनल
+    subjectiveMarks: 35,
     totalMarks: objMarks + 35,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
     status: "COMPLETED",
     submittedAt: new Date().toISOString()
   };
 
-  if (state) {
-    if (!state.completedDays) state.completedDays = {};
-    state.completedDays[day] = completedData;
-    state.activeSession = null;
-  }
+  // 1. स्टेट को लोकल में परमानेंट लॉक करें
+  if (!state.completedDays) state.completedDays = {};
+  state.completedDays[day] = completedData;
+  state.activeSession = null;
 
-  // 1. भारी इमेज हटाकर सिर्फ हल्का डेटा Firestore में भेजें (0.1 सेकंड में सेव)
+  const localKey = `nischay_exam_state_${state.rollCode}_${state.rollNumber}`;
+  localStorage.setItem(localKey, JSON.stringify(state));
+  localStorage.setItem("nischay_student_session", JSON.stringify(state));
+
+  // 2. टाइमर की मेमोरी पूरी तरह खत्म करें ताकि दोबारा न चले
+  localStorage.removeItem(`exam_started_at_${user.uid}_day_${day}`);
+  localStorage.removeItem(`draft_pages_${user.uid}_day_${day}`);
+
+  // 3. फ़ायरबेस में तुरंत लॉक दर्ज करें
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
     await db.collection("bseb_exams_2026").doc(user.uid).set({
@@ -255,13 +268,9 @@ async function submitExamToCloud(user, day, subjectName, answerKey, imagesList, 
       activeSession: null
     }, { merge: true });
 
-    // 2. बैकग्राउंड में AI को भारी फोटो सीधे भेजें (Firestore पर बोझ डाले बिना)
+    // बैकग्राउंड में AI चेकिंग
     runBackgroundGeminiEvaluation(user.uid, day, subjectName, imagesList, objMarks);
   }
-
-  // टाइमर की चाबी हटाएं ताकि यह विषय दोबारा न खुले
-  localStorage.removeItem(`exam_started_at_${user.uid}_day_${day}`);
-  localStorage.setItem(`nischay_exam_state_${state.rollCode}_${state.rollNumber}`, JSON.stringify(state));
 
   return completedData;
 }
