@@ -16,47 +16,47 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
+    /* मोबाइल फ्रेंडली लेआउट: कभी कुछ नहीं कटेगा */
     html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100%;
       background: var(--bseb-bg, #0f172a);
-      touch-action: manipulation;
+      overflow-x: hidden;
+      overflow-y: auto; /* नेचुरल स्क्रॉल */
+      -webkit-overflow-scrolling: touch;
     }
 
     .sim-main-viewport {
-      padding: 6px 10px;
-      height: calc(100vh - 55px);
+      padding: 8px 10px 40px 10px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      min-height: calc(100vh - 55px);
     }
 
     .gateway-step {
       display: none;
-      animation: fadeIn 0.3s ease-in-out;
-      height: 100%;
-      overflow-y: auto;
+      animation: fadeIn 0.25s ease-in-out;
+      width: 100%;
     }
     .gateway-step.active {
       display: block !important;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .sim-card-box {
-      max-width: 600px;
+      max-width: 580px;
       margin: 10px auto;
       background: var(--bseb-surface-card);
-      padding: 18px;
+      padding: 16px;
       border-radius: 14px;
       border: 1.5px solid var(--bseb-border);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
     .admit-card-preview {
@@ -78,14 +78,14 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--bseb-text);
     }
     .admit-grid div strong {
       color: #0284c7;
       display: block;
       margin-top: 2px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
 
     .form-group-sim {
@@ -93,7 +93,7 @@
     }
     .form-group-sim label {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       color: var(--bseb-text-muted);
       margin-bottom: 3px;
@@ -115,11 +115,11 @@
 
     .security-scan-box {
       text-align: center;
-      padding: 40px 20px;
+      padding: 35px 20px;
     }
     .scanner-line {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       margin: 0 auto 16px auto;
       border-radius: 50%;
       border: 4px solid #0284c7;
@@ -130,36 +130,42 @@
       to { transform: rotate(360deg); }
     }
 
+    /* =========================================================
+       📱 परीक्षा हॉल: प्राकृतिक स्क्रॉल लेआउट (कोई झांपना नहीं)
+       ========================================================= */
     #simExamHallStage {
       display: none;
-      height: 100%;
       flex-direction: column;
-      overflow: hidden;
+      gap: 8px;
+      width: 100%;
     }
     #simExamHallStage.active {
       display: flex !important;
     }
 
-    .exam-split-grid {
-      display: flex !important;
-      flex-direction: column;
-      flex: 1;
-      gap: 6px;
-      overflow: hidden;
-      min-height: 0;
+    .exam-hall-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bseb-surface-card);
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--bseb-border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
-    .exam-left-pane {
-      flex: 5.2;
-      height: 52%;
-      min-height: 220px;
-      display: flex !important;
-      flex-direction: column;
+    /* प्रश्न पत्र बॉक्स: मोबाइल पर स्पष्ट 320px ऊंचाई */
+    .exam-paper-container {
+      width: 100%;
+      height: 330px;
       background: #ffffff;
       border-radius: 10px;
-      overflow: hidden;
       border: 2px solid #0284c7;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .paper-toolbar {
@@ -174,10 +180,7 @@
       flex-shrink: 0;
     }
 
-    .zoom-btn-group {
-      display: flex;
-      gap: 6px;
-    }
+    .zoom-btn-group { display: flex; gap: 6px; }
     .btn-zoom {
       background: rgba(255, 255, 255, 0.25);
       border: 1px solid rgba(255, 255, 255, 0.5);
@@ -195,9 +198,7 @@
       height: 100%;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
-      position: relative;
     }
-
     .paper-iframe-wrapper iframe {
       width: 100%;
       height: 100%;
@@ -206,87 +207,60 @@
       transition: transform 0.15s ease-out;
     }
 
-    .exam-right-pane {
-      flex: 4.8;
-      height: 48%;
-      min-height: 220px;
-      display: flex !important;
-      flex-direction: column;
+    /* OMR व अपलोड बॉक्स: नीचे बिना कटे पूरा दिखेगा */
+    .exam-answer-container {
+      width: 100%;
       background: var(--bseb-surface-card);
       border-radius: 10px;
-      overflow: hidden;
       border: 1.5px solid var(--bseb-border);
-      box-shadow: 0 -4px 15px rgba(0,0,0,0.15);
+      overflow: hidden;
+      margin-bottom: 20px;
     }
 
     .pane-tab-switcher {
       display: flex;
       border-bottom: 1px solid var(--bseb-border);
-      flex-shrink: 0;
       background: rgba(0,0,0,0.04);
     }
 
     .exam-tab-content {
-      flex: 1;
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch;
       padding: 10px;
+      max-height: 340px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
+    /* डेस्कटॉप व्यू */
     @media (min-width: 900px) {
-      .exam-split-grid {
-        flex-direction: row;
+      .exam-split-wrapper {
+        display: flex;
+        gap: 12px;
       }
-      .exam-left-pane {
+      .exam-paper-container {
         flex: 1.2;
-        height: 100%;
+        height: 600px;
       }
-      .exam-right-pane {
+      .exam-answer-container {
         flex: 0.9;
-        height: 100%;
+        margin-bottom: 0;
+      }
+      .exam-tab-content {
+        max-height: 540px;
       }
     }
 
-    .guidance-box-fixed {
-      background: rgba(2, 132, 199, 0.12) !important;
-      border-left: 4px solid #0284c7 !important;
-      padding: 8px 10px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-
-    .guidance-text-fixed {
-      font-size: 0.8rem !important;
-      color: var(--bseb-text, #0f172a) !important;
-      font-weight: 700 !important;
-      line-height: 1.4;
-      display: block;
-    }
-
-    html[data-theme="dark"] .guidance-text-fixed { color: #f8fafc !important; }
-    html[data-theme="light"] .guidance-text-fixed { color: #0f172a !important; }
-
-    /* 🛑 अगले दिन 9:30 AM का लॉक नोटिस कार्ड */
     .next-day-lock-card {
       background: rgba(239, 68, 68, 0.08);
       border: 2px dashed #ef4444;
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
-    .next-day-lock-card h3 {
-      margin: 0 0 6px 0;
-      color: #ef4444;
-      font-size: 1rem;
-    }
-    .next-day-lock-card p {
-      margin: 0;
-      font-size: 0.82rem;
-      color: var(--bseb-text);
-      line-height: 1.5;
-    }
+    .next-day-lock-card h3 { margin: 0 0 4px 0; color: #ef4444; font-size: 0.95rem; }
+    .next-day-lock-card p { margin: 0; font-size: 0.8rem; color: var(--bseb-text); line-height: 1.4; }
 
+    /* सबमिशन प्रोग्रेस मोडल */
     #submissionProgressScreen {
       display: none;
       position: fixed;
@@ -298,9 +272,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
-    #submissionProgressScreen.active {
-      display: flex;
-    }
+    #submissionProgressScreen.active { display: flex; }
     .progress-modal-card {
       background: var(--bseb-surface-card, #1e293b);
       border: 2px solid #0284c7;
@@ -332,16 +304,19 @@
 <body class="app-body bseb-simulator-body">
 
   <header class="app-header" style="height: 55px; border-bottom: 1px solid var(--bseb-border); display: flex; align-items: center; flex-shrink: 0;">
-    <nav class="nav-container" style="display:flex; justify-content:space-between; align-items:center; padding:0 14px; width: 100%; box-sizing: border-box;">
+    <nav class="nav-container" style="display:flex; justify-content:space-between; align-items:center; padding:0 12px; width: 100%; box-sizing: border-box;">
       <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:8px;">
         <div style="background:#0284c7; color:#fff; font-weight:900; padding:3px 7px; border-radius:6px; font-size: 0.9rem;">N</div>
         <span style="font-weight:800; font-size:1.05rem; color:var(--bseb-text);">Nischay<span style="color:#38bdf8;">Desk</span></span>
       </a>
 
-      <div style="display:flex; align-items:center; gap:10px;">
-        <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" style="padding: 4px 8px; font-size: 0.75rem;">☀️ मोड</button>
-        <span id="simUserFirstName" style="font-weight:700; font-size:0.85rem; color:var(--bseb-text);">लॉगिन...</span>
-        <a href="index.html" class="btn-home-exit" style="text-decoration:none; padding:4px 9px; border-radius:6px; background:#0284c7; color:#fff; font-size:0.75rem; font-weight: bold;">🏠 होम</a>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <!-- 🔓 सीक्रेट अनलॉक बटन केवल टेस्टिंग के लिए -->
+        <button type="button" onclick="developerResetLock()" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold; cursor:pointer;" title="परीक्षण हेतु आज का ताला खोलें">
+          🔓 टेस्ट अनलॉक
+        </button>
+        <span id="simUserFirstName" style="font-weight:700; font-size:0.82rem; color:var(--bseb-text);">लॉगिन...</span>
+        <a href="index.html" class="btn-home-exit" style="text-decoration:none; padding:4px 8px; border-radius:6px; background:#0284c7; color:#fff; font-size:0.75rem; font-weight: bold;">🏠 होम</a>
       </div>
     </nav>
   </header>
@@ -411,16 +386,16 @@
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 2: विषय एवं परीक्षा नियम पुष्टि</h2>
 
-        <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
-          <strong style="color: #0284c7; font-size: 0.92rem;">📜 बिहार बोर्ड 7-दिवसीय कड़े नियम:</strong>
-          <ul style="margin: 6px 0 0 16px; font-size: 0.85rem; color: var(--bseb-text); line-height: 1.6;">
+        <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+          <strong style="color: #0284c7; font-size: 0.9rem;">📜 बिहार बोर्ड 7-दिवसीय कड़े नियम:</strong>
+          <ul style="margin: 6px 0 0 16px; font-size: 0.82rem; color: var(--bseb-text); line-height: 1.5;">
             <li><strong>एक दिन में केवल 1 विषय:</strong> परीक्षा बिल्कुल क्रमबद्ध (हिन्दी ➔ संस्कृत ➔ गणित ➔ विज्ञान ➔ सामाजिक विज्ञान ➔ अंग्रेजी) होगी।</li>
-            <li><strong>अगले दिन सुबह 09:30 बजे ताला खुलेगा:</strong> आज की परीक्षा जमा होने के बाद अगला विषय अगले कैलेंडर दिन सुबह ठीक 09:30 AM पर ही खुलेगा।</li>
+            <li><strong>अगले दिन सुबह 09:30 बजे ताला खुलेगा:</strong> आज की परीक्षा जमा होने के बाद अगला विषय अगले दिन सुबह ठीक 09:30 AM पर ही खुलेगा।</li>
             <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः हमेशा के लिए लॉक हो जाएगा।</li>
           </ul>
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
-            <label for="chkAgreeRules" style="font-size: 0.85rem; font-weight: 700; color: var(--bseb-text); cursor: pointer;">मैं सभी नियमों से पूर्णतः सहमत हूँ।</label>
+            <label for="chkAgreeRules" style="font-size: 0.82rem; font-weight: 700; color: var(--bseb-text); cursor: pointer;">मैं सभी नियमों से पूर्णतः सहमत हूँ।</label>
           </div>
         </div>
 
@@ -429,7 +404,7 @@
           <p id="nextDayNoticeText">अगला विषय अगले दिन सुबह ठीक 09:30 AM पर खुलेगा।</p>
         </div>
 
-        <div style="display: grid; gap: 10px; margin-bottom: 14px;">
+        <div style="display: grid; gap: 10px; margin-bottom: 12px;">
           <div class="form-group-sim">
             <label>सक्रिय कक्षा</label>
             <select id="regStudentClassSelect" onchange="onClassSelectionChanged()">
@@ -460,24 +435,26 @@
       <div class="sim-card-box security-scan-box">
         <div class="scanner-line"></div>
         <h3 style="color: #0284c7; margin: 0 0 8px 0;" id="scanStatusTitle">डिजिटल सत्यापन जारी है...</h3>
-        <p style="font-size: 0.88rem; color: var(--bseb-text-muted); margin: 0 0 16px 0;" id="scanStatusDesc">
+        <p style="font-size: 0.85rem; color: var(--bseb-text-muted); margin: 0 0 16px 0;" id="scanStatusDesc">
           परीक्षार्थी क्रेडेंशियल, रोल नंबर और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
         </p>
-        <div style="font-weight: 800; color: #16a34a; font-size: 0.95rem;" id="scanProgressBadge">⏳ जांच पूर्ण हो रही है...</div>
+        <div style="font-weight: 800; color: #16a34a; font-size: 0.92rem;" id="scanProgressBadge">⏳ जांच पूर्ण हो रही है...</div>
       </div>
     </section>
 
-    <!-- अंतिम चरण: परीक्षा कक्ष -->
+    <!-- अंतिम चरण: परीक्षा कक्ष (बिना कटे साफ-साफ दिखने वाला लेआउट) -->
     <section class="gateway-step" id="simExamHallStage">
       
-      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bseb-surface-card); padding: 5px 10px; border-radius: 8px; margin-bottom: 5px; border: 1px solid var(--bseb-border); flex-shrink: 0;">
+      <!-- शीर्ष स्टेटस बार -->
+      <div class="exam-hall-header-bar">
         <span style="font-weight: 800; font-size: 0.82rem; color: var(--bseb-text);"><span id="hallDisplaySub">विषय</span></span>
         <div style="font-weight: 900; font-size: 0.95rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 6px;" id="examTimerClock">⏳ 03:15:00</div>
-        <button type="button" id="btnSubmitFinalExam" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 5px 12px; font-weight: bold; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
+        <button type="button" id="btnSubmitFinalExam" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 6px 12px; font-weight: bold; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
       </div>
 
-      <div class="exam-split-grid">
-        <div class="exam-left-pane" id="examLeftPane">
+      <div class="exam-split-wrapper">
+        <!-- ऊपर: प्रश्न पत्र (सिर्फ़ प्रश्न पत्र ज़ूम होगा) -->
+        <div class="exam-paper-container">
           <div class="paper-toolbar">
             <span>📄 प्रश्न पत्र (Booklet)</span>
             <div class="zoom-btn-group">
@@ -486,17 +463,19 @@
               <button type="button" class="btn-zoom" onclick="resetPaperZoom()" title="सामान्य करें">↺</button>
             </div>
           </div>
-          <div class="paper-iframe-wrapper" id="paperScrollContainer">
+          <div class="paper-iframe-wrapper">
             <iframe id="simPaperFrame" src=""></iframe>
           </div>
         </div>
 
-        <div class="exam-right-pane" id="examRightPane">
+        <!-- नीचे: OMR और उत्तर पुस्तिका (पूरा अपलोड बॉक्स दिखेगा) -->
+        <div class="exam-answer-container">
           <div class="pane-tab-switcher">
             <button type="button" id="tabBtnOmr" onclick="switchExamTab('omr')" style="flex:1; padding:8px; border:none; background:#0284c7; color:#fff; font-weight:bold; font-size:0.82rem; cursor:pointer;">🔴 OMR (50 अंक)</button>
             <button type="button" id="tabBtnSubj" onclick="switchExamTab('subj')" style="flex:1; padding:8px; border:none; background:transparent; color:var(--bseb-text); font-weight:bold; font-size:0.82rem; cursor:pointer;">📸 उत्तर पुस्तिका (50 अंक)</button>
           </div>
 
+          <!-- OMR टैब -->
           <div class="exam-tab-content" id="tabContentOmr">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.76rem; font-weight:bold; color:var(--bseb-text); position: sticky; top: 0; background: var(--bseb-surface-card); padding: 4px 0; z-index: 2;">
               <span>किन्हीं 50 प्रश्नों के उत्तर दें</span>
@@ -505,22 +484,17 @@
             <div id="omrBubblesMatrix" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(125px, 1fr)); gap:5px;"></div>
           </div>
 
+          <!-- उत्तर पुस्तिका टैब (कभी नहीं कटेगा) -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
-            <div class="guidance-box-fixed">
-              <span class="guidance-text-fixed" id="subjGuidanceBanner">
-                ✍️ <strong>उत्तर पुस्तिका निर्देश:</strong> अपने सभी पन्नों की साफ फोटो नीचे एक साथ चुनें।
-              </span>
-            </div>
-
             <div style="border: 2px dashed #0284c7; background: rgba(2, 132, 199, 0.05); padding: 14px 10px; text-align: center; border-radius: 10px;">
-              <div style="font-size: 1.6rem; margin-bottom: 2px;">📸</div>
-              <h4 style="margin: 0 0 4px 0; font-size: 0.9rem; color: var(--bseb-text);">उत्तर पुस्तिका के पन्ने अपलोड करें</h4>
-              <p style="font-size: 0.74rem; color: var(--bseb-text-muted); margin: 0 0 10px 0;" id="pageLimitInstructionText">
+              <div style="font-size: 1.8rem; margin-bottom: 4px;">📸</div>
+              <h4 style="margin: 0 0 4px 0; font-size: 0.92rem; color: var(--bseb-text);">उत्तर पुस्तिका के पन्ने अपलोड करें</h4>
+              <p style="font-size: 0.76rem; color: var(--bseb-text-muted); margin: 0 0 10px 0;" id="pageLimitInstructionText">
                 (गणित: अधिकतम 24 पन्ने | अन्य: अधिकतम 20 पन्ने)
               </p>
               
-              <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
-              <div id="uploadStatusText" style="margin-top: 8px; font-weight: bold; font-size: 0.8rem; color: #0284c7;"></div>
+              <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1.5px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
+              <div id="uploadStatusText" style="margin-top: 8px; font-weight: bold; font-size: 0.82rem; color: #0284c7;"></div>
             </div>
           </div>
         </div>
@@ -529,6 +503,7 @@
 
   </main>
 
+  <!-- सबमिशन प्रोग्रेस मोडल -->
   <div id="submissionProgressScreen">
     <div class="progress-modal-card">
       <div style="font-size: 2.8rem; margin-bottom: 8px;" id="progressIcon">🔒</div>
@@ -582,6 +557,23 @@
       ]
     };
 
+    // 🔓 केवल आपके लिए: टेस्ट रीसेट फ़ंक्शन (बिना नया Gmail बनाए ताला खोलने के लिए)
+    function developerResetLock() {
+      if (!confirm("क्या आप टेस्टिंग के लिए आज का ताला खोलना चाहते हैं?")) return;
+      if (cloudState) {
+        cloudState.lastExamDate = null;
+        if (currentUser && window.NischayConfig?.dbInstance) {
+          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
+            lastExamDate: null
+          }, { merge: true });
+        }
+        const localKey = `nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`;
+        localStorage.setItem(localKey, JSON.stringify(cloudState));
+      }
+      alert("✓ ताला खुल गया! अब आप अगला विषय टेस्ट कर सकते हैं।");
+      location.reload();
+    }
+
     function adjustPaperZoom(delta) {
       currentPaperZoom = Math.min(2.5, Math.max(0.8, currentPaperZoom + delta));
       applyPaperZoom();
@@ -632,7 +624,6 @@
 
                 renderSubjectDropdown();
 
-                // यदि आज कोई एक्टिव अन-सबमिटेड सेशन चल रहा है तो सीधे परीक्षा हॉल में ले जाएँ
                 if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
                   const checkDay = cloudState.activeSession.day;
                   const isDone = cloudState?.completedDays?.[checkDay]?.status;
@@ -661,6 +652,7 @@
         target.classList.add("active");
         target.style.display = (stepId === "simExamHallStage") ? "flex" : "block";
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function goToStep1() { showStep("step1AdmitCard"); }
@@ -702,7 +694,6 @@
       showStep("step2RulesAndSubject");
     }
 
-    // 🔒 कड़ा क्रमबद्ध नियम (1 Day = 1 Exam + Next Day 09:30 AM Unlock)
     function renderSubjectDropdown() {
       const selectEl = document.getElementById("regExamDaySelect");
       const noticeBox = document.getElementById("nextDayNoticeBox");
@@ -713,11 +704,10 @@
       selectEl.innerHTML = "";
 
       const completed = cloudState?.completedDays || {};
-      const lastExamDateStr = cloudState?.lastExamDate; // 'YYYY-MM-DD'
+      const lastExamDateStr = cloudState?.lastExamDate;
       const todayStr = new Date().toISOString().split("T")[0];
       const now = new Date();
 
-      // 1. पता करें कि छात्र किस क्रम पर है
       let currentSequenceDay = 1;
       for (let i = 1; i <= 6; i++) {
         if (completed[i] && (completed[i].status === "COMPLETED" || completed[i].status === "LOCKED")) {
@@ -727,13 +717,10 @@
         }
       }
 
-      // 2. क्या आज छात्र पहले ही कोई परीक्षा दे चुका है?
       let isTodayExamFinished = (lastExamDateStr === todayStr);
 
-      // 3. क्या अगला दिन आ चुका है लेकिन 09:30 AM नहीं हुआ है?
       let isTimeRestricted = false;
       if (lastExamDateStr && lastExamDateStr !== todayStr) {
-        // अगला कैलेंडर दिन तो आ गया, पर क्या 9:30 AM बज गया?
         const currentHours = now.getHours();
         const currentMinutes = now.getMinutes();
         if (currentHours < 9 || (currentHours === 9 && currentMinutes < 30)) {
@@ -753,7 +740,7 @@
           opt.disabled = true;
           opt.style.color = "#ef4444";
         } else if (s.day < currentSequenceDay) {
-          opt.textContent = `Day ${s.day}: ${s.name} [लॉक 🔒]`;
+          opt.textContent = `Day ${s.day}: ${s.name} [समय समाप्त - लॉक 🔒]`;
           opt.disabled = true;
         } else if (s.day === currentSequenceDay) {
           if (isTodayExamFinished) {
@@ -773,7 +760,6 @@
         selectEl.appendChild(opt);
       });
 
-      // सूचना कार्ड दिखाना
       if (isTodayExamFinished) {
         noticeBox.style.display = "block";
         noticeText.textContent = "आज की परीक्षा पूर्ण हो चुकी है! अगला विषय कल सुबह ठीक 09:30 AM पर खुलेगा।";
@@ -782,7 +768,7 @@
         noticeText.textContent = "आज की परीक्षा सुबह ठीक 09:30 AM पर खुलेगी। कृपया 09:30 बजे तक प्रतीक्षा करें।";
       } else if (currentSequenceDay > 6) {
         noticeBox.style.display = "block";
-        noticeText.innerHTML = "🎉 <strong>बधाई!</strong> आपकी सभी 6 विषयों की परीक्षा समाप्त हो चुकी है। अब 7वें दिन सुबह 09:00 बजे मार्कशीट पोर्टल पर परिणाम देखें।";
+        noticeText.innerHTML = "🎉 आपकी सभी 6 विषयों की परीक्षा समाप्त हो चुकी है! परिणाम 7वें दिन मार्कशीट पोर्टल पर देखें।";
       } else {
         noticeBox.style.display = "none";
       }
@@ -830,7 +816,7 @@
       setTimeout(() => {
         badge.textContent = "⏳ पहचान व रोल नंबर मिलान: 85%";
         desc.textContent = "डिजिटल सुरक्षा क्लीयरेंस मिल गई है। परीक्षा कक्ष लोड हो रहा है...";
-      }, 700);
+      }, 600);
 
       setTimeout(() => {
         badge.textContent = "✓ क्लीयरेंस पूर्ण! परीक्षा कक्ष आवंटित";
@@ -838,8 +824,8 @@
         setTimeout(() => {
           showStep("simExamHallStage");
           resumeExamHall(activeDay);
-        }, 500);
-      }, 1500);
+        }, 400);
+      }, 1200);
     }
 
     function resumeExamHall(day) {
@@ -856,7 +842,6 @@
       }
 
       const maxLimit = (currentSub.code.includes("math") || day === 3) ? 24 : 20;
-      document.getElementById("subjGuidanceBanner").innerHTML = `✍️ <strong>${currentSub.name} उत्तर पुस्तिका:</strong> अपने सभी पन्नों की साफ फोटो नीचे एक साथ चुनें (अधिकतम ${maxLimit} पन्ने)।`;
       document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: अधिकतम ${maxLimit} पन्ने की अनुमति है)`;
 
       const savedPagesCache = localStorage.getItem(`draft_pages_${currentUser.uid}_day_${day}`);
@@ -1012,7 +997,6 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // 🔒 1 से 100% फुल-स्क्रीन प्रोग्रेस के साथ सबमिशन + आज का दिन लॉक
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -1045,7 +1029,6 @@
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
       const todayStr = new Date().toISOString().split("T")[0];
 
-      // 🛑 उसी पल मेमोरी में विषय लॉक + आज की परीक्षा पूर्ण
       if (!cloudState.completedDays) cloudState.completedDays = {};
       cloudState.completedDays[activeDay] = { 
         status: "COMPLETED", 
