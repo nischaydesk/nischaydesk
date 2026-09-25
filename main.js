@@ -1,11 +1,10 @@
 /* ==========================================================================
-   NischayDesk Core Controller, Theme & Smart Utilities Engine (v5.0 PRO)
+   NischayDesk Core Controller, Theme & Smart Utilities Engine (v5.0 Unified)
    Architected by: Prince Kumar
-   Features: Live Ticker Engine, Streak Tracker, Pomodoro Focus, 
-             Live Camera, Rotate, Delete, Magic Filter, Custom Watermark & Anti-Crash
+   Features: Live Ticker (2020–2026), Streak Tracker, Live Camera,
+             Magic Filter & Document Studio
    ========================================================================== */
 
-// ग्लोबल वैरिएबल्स (रोटेट और डिलीट के लिए)
 let scannedPages = [];
 let renderPagesGridGlobal = null;
 
@@ -23,16 +22,13 @@ window.deletePage = function (index) {
   }
 };
 
-// =========================================================================
-// 0. STUDENT ONBOARDING / CLASS SWITCH CONTROLLER (ग्लोबल एक्सेस)
-// =========================================================================
 window.openClassSwitchModal = function() {
-  const modal = document.getElementById('onboardingModal');
+  const modal = document.getElementById('onboardingModal') || document.getElementById('customProfileModal');
   if (!modal) return;
 
   const savedProfile = JSON.parse(localStorage.getItem('nischay_user_profile') || '{}');
-  const nameInput = document.getElementById('obName');
-  const classInput = document.getElementById('obClass');
+  const nameInput = document.getElementById('obName') || document.getElementById('modalUserName');
+  const classInput = document.getElementById('obClass') || document.getElementById('quickClassSwitchSelect');
   const streamInput = document.getElementById('obStream');
   const goalInput = document.getElementById('obGoal');
 
@@ -42,14 +38,13 @@ window.openClassSwitchModal = function() {
   if (goalInput && savedProfile.goal) goalInput.value = savedProfile.goal;
 
   modal.classList.add('active');
+  modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 };
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  // =========================================================================
   // 1. MOBILE SLIDE-OUT DRAWER ENGINE
-  // =========================================================================
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
   const sideDrawer = document.getElementById('sideDrawer');
   const drawerScrim = document.getElementById('drawerScrim');
@@ -71,9 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
   if (drawerScrim) drawerScrim.addEventListener('click', closeDrawer);
 
-  // =========================================================================
   // 2. UNIVERSAL DARK / LIGHT THEME ENGINE
-  // =========================================================================
   const themeSwitch = document.getElementById('themeSwitch');
 
   function applySavedTheme() {
@@ -82,9 +75,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (isLight) {
       document.documentElement.classList.add('light-mode');
+      document.documentElement.setAttribute('data-theme', 'light');
       if (themeSwitch) themeSwitch.checked = true;
     } else {
       document.documentElement.classList.remove('light-mode');
+      document.documentElement.setAttribute('data-theme', 'dark');
       if (themeSwitch) themeSwitch.checked = false;
     }
   }
@@ -99,14 +94,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   applySavedTheme();
 
-  // =========================================================================
-  // 3. LIVE TICKER ROTATOR ENGINE (Dynamic EdTech Updates)
-  // =========================================================================
+  // 3. LIVE TICKER ROTATOR ENGINE (2020–2026 अपडेटेड)
   const tickerEl = document.getElementById('liveTickerContent');
   if (tickerEl) {
     const tickerUpdates = [
       "📢 बिहार बोर्ड एवं NCERT 2026–2027 सत्र के सम्पूर्ण हैंडनोट्स एवं चैप्टर टेस्ट लाइव हैं!",
-      "⚡ 2020-2024 क्वेश्चन बैंक के सभी शिफ्ट्स का विस्तृत हल निश्चय-डेस्क पर उपलब्ध है!",
+      "⚡ 2020–2026 क्वेश्चन बैंक के सभी शिफ्ट्स का विस्तृत हल निश्चय-डेस्क पर उपलब्ध है!",
       "💡 टॉपर मंत्र: कठिन अध्यायों के सूत्र और डेरिवेशन्स का प्रतिदिन अभ्यास करें।",
       "🎯 कक्षा 10वीं व 12वीं बोर्ड स्पेशल मॉडल पेपर्स का सिमुलेशन टेस्ट देना शुरू करें!"
     ];
@@ -121,9 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 6000);
   }
 
-  // =========================================================================
   // 4. ONBOARDING & PROFILE FORM SUBMIT HANDLER
-  // =========================================================================
   const onboardingForm = document.getElementById('onboardingForm');
   const onboardingModal = document.getElementById('onboardingModal');
 
@@ -133,10 +124,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const dispGoal = document.getElementById('displayStudentGoal');
     const userSessionBadge = document.getElementById('userSessionBadge');
 
-    if (dispClass) dispClass.textContent = `Class ${profile.class}th`;
+    const cleanNum = String(profile.class || profile.studentClass || "10").replace(/[^0-9]/g, '');
+    if (dispClass) dispClass.textContent = `Class ${cleanNum}th`;
     if (dispStream) dispStream.textContent = profile.stream || 'General';
     if (dispGoal) dispGoal.textContent = profile.goal || 'बिहार बोर्ड टॉपर';
-    if (userSessionBadge) userSessionBadge.textContent = `Class ${profile.class}th ▾`;
+    if (userSessionBadge) userSessionBadge.textContent = `Class ${cleanNum}th ▾`;
   }
 
   const existingProfile = JSON.parse(localStorage.getItem('nischay_user_profile') || 'null');
@@ -147,15 +139,19 @@ document.addEventListener('DOMContentLoaded', function () {
   if (onboardingForm) {
     onboardingForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      const numClass = document.getElementById('obClass')?.value || '10';
       const profile = {
         name: document.getElementById('obName')?.value.trim() || 'छात्र',
-        class: document.getElementById('obClass')?.value || '10',
+        class: numClass,
+        studentClass: `${numClass}th`,
         stream: document.getElementById('obStream')?.value || 'PCM',
         goal: document.getElementById('obGoal')?.value || 'बिहार बोर्ड टॉपर (State Rank)'
       };
 
       localStorage.setItem('nischay_user_profile', JSON.stringify(profile));
       localStorage.setItem('nischay_user_name', profile.name);
+      localStorage.setItem('nd_selected_class', `${numClass}th`);
+      localStorage.setItem('nischay_student_class', numClass);
 
       updateDashboardProfileUI(profile);
 
@@ -167,12 +163,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (onboardingModal) onboardingModal.classList.remove('active');
       document.body.style.overflow = '';
       alert('✓ प्रोफ़ाइल और कक्षा सफलतापूर्वक अपडेट हो गई!');
+      location.reload();
     });
   }
 
-  // =========================================================================
-  // 5. SMART TOOL: ULTIMATE DOC SCANNER & PDF STUDIO
-  // =========================================================================
+  // 5. DOC SCANNER & PDF STUDIO
   const openDocConverterBtn = document.getElementById('openDocConverterBtn');
   const docConverterModal = document.getElementById('docConverterModal');
   const closeConverterBtn = document.getElementById('closeConverterBtn');
@@ -192,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let cameraStream = null;
 
-  // 1. मोडल ओपन / क्लोज़
   if (openDocConverterBtn && docConverterModal) {
     openDocConverterBtn.addEventListener('click', () => {
       docConverterModal.classList.add('active');
@@ -225,7 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 2. लाइव कैमरा ऑन
   if (openLiveCameraBtn) {
     openLiveCameraBtn.addEventListener('click', async () => {
       try {
@@ -245,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (stopCameraBtn) stopCameraBtn.addEventListener('click', stopLiveCamera);
 
-  // 3. फ़ोटो कैप्चर
   if (capturePhotoBtn) {
     capturePhotoBtn.addEventListener('click', () => {
       if (!cameraVideo || !cameraVideo.videoWidth) return;
@@ -268,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 4. गैलरी से फ़ोटो लोड
   if (converterFileInput) {
     converterFileInput.addEventListener('change', async function () {
       const files = Array.from(this.files).filter(f => f.type.startsWith('image/'));
@@ -311,7 +302,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 5. ग्रिड रेंडर
   function renderPagesGrid() {
     if (!pagesGridContainer) return;
     pagesGridContainer.innerHTML = '';
@@ -358,7 +348,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 6. इमेज प्रोसेस (फिल्टर + रोटेशन)
   function processFinalImage(page, filterType) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -408,7 +397,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 7. PDF जनरेशन
   if (generatePdfBtn) {
     generatePdfBtn.addEventListener('click', async function () {
       if (scannedPages.length === 0) return;
