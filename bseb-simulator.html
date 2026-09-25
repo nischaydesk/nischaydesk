@@ -75,51 +75,51 @@
       object-fit: cover;
     }
 
+    /* 3 आसान और साफ़ नियम */
     .instructions-card-fixed {
       background: #0f172a !important;
-      border: 2px solid #38bdf8 !important;
+      border: 1.5px solid #38bdf8 !important;
       border-radius: 12px;
-      padding: 16px;
-      margin: 16px 0;
+      padding: 14px 16px;
+      margin: 14px 0;
       text-align: left;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
     .instructions-card-fixed h3 {
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
       color: #38bdf8 !important;
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       font-weight: 800;
     }
     .instructions-list-fixed {
       margin: 0;
-      padding-left: 20px;
+      padding-left: 18px;
       color: #f8fafc !important;
-      font-size: 0.88rem;
-      line-height: 1.7;
+      font-size: 0.84rem;
+      line-height: 1.6;
     }
     .instructions-list-fixed li strong {
       color: #fdba74 !important;
     }
     .instruction-agree-box-fixed {
-      margin-top: 14px;
-      padding-top: 12px;
+      margin-top: 12px;
+      padding-top: 10px;
       border-top: 1px dashed rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: rgba(56, 189, 248, 0.08);
       padding: 10px;
       border-radius: 8px;
     }
     .instruction-agree-box-fixed input[type="checkbox"] {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       accent-color: #0284c7;
       cursor: pointer;
       flex-shrink: 0;
     }
     .instruction-agree-box-fixed label {
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       color: #ffffff !important;
       font-weight: 600;
       cursor: pointer;
@@ -199,7 +199,7 @@
           <div style="font-size: 2.5rem; margin-bottom: 8px;">🔐</div>
           <h3 style="color: #f87171; margin: 0 0 6px;">Gmail लॉगिन अनिवार्य है</h3>
           <p style="color: var(--bseb-text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 16px;">
-            परीक्षा में सम्मिलित होने, अपनी OMR कॉपी और डिजिटल एडमिट कार्ड को सुरक्षित रखने के लिए आधिकारिक Gmail से लॉगिन करें।
+            परीक्षा में सम्मिलित होने और डिजिटल एडमिट कार्ड सुरक्षित रखने के लिए अपने आधिकारिक Gmail से लॉगिन करें।
           </p>
           <button type="button" class="btn-sim-primary" onclick="triggerGoogleLogin()" style="background: #ffffff; color: #000; font-weight: 800; width: auto; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; cursor: pointer;">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G" /> Google से लॉगिन करें
@@ -208,20 +208,18 @@
 
         <form id="simVerificationForm" class="sim-entry-form" onsubmit="event.preventDefault(); enterExamHallDirect();" style="display: none;">
           
+          <!-- 3 मुख्य नियम (Terms & Conditions) -->
           <div class="instructions-card-fixed">
-            <h3>📜 परीक्षार्थियों के लिए 6 अनिवार्य बोर्ड नियम:</h3>
+            <h3>📜 परीक्षा के 3 अनिवार्य नियम:</h3>
             <ol class="instructions-list-fixed">
-              <li><strong>कक्षा आधारित परीक्षा:</strong> केवल आपकी चुनी हुई कक्षा के आधिकारिक विषयों की ही परीक्षा ली जाएगी।</li>
-              <li><strong>समय-सीमा (3 घंटे 15 मिनट):</strong> 15 मिनट प्रश्न पत्र पढ़ने और 3 घंटे उत्तर लिखने के लिए निर्धारित हैं।</li>
-              <li><strong>OMR शीट (50 अंक):</strong> प्रथम 50 रंगे गए गोलों का ही मूल्यांकन होगा। 50 से अधिक गोले अमान्य होंगे।</li>
-              <li><strong>अनिवार्य उत्तर कॉपी अपलोड:</strong> बिना हाथ से लिखे उत्तरों की कॉपी (फोटो) अपलोड किए परीक्षा जमा नहीं होगी।</li>
-              <li><strong>अनुपस्थिति नियम:</strong> किसी दिन परीक्षा छोड़ने पर वह विषय <strong>ABSENT (000 अंक)</strong> दर्ज हो जाएगा।</li>
-              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> परीक्षा का अंतिम परिणाम और विस्तृत AI समीक्षा 7वें दिन सुबह ठीक 9:00 बजे घोषित होगा।</li>
+              <li><strong>कक्षा और समय (3h 15m):</strong> केवल आपकी चुनी हुई कक्षा के आधिकारिक विषयों की परीक्षा होगी।</li>
+              <li><strong>OMR व उत्तर पुस्तिका:</strong> वस्तुनिष्ठ प्रश्नों के 50 OMR गोले और सब्जेक्टिव उत्तर के पन्नों की फ़ोटो अपलोड करना अनिवार्य है।</li>
+              <li><strong>7वें दिन सुबह 09:00 AM पर परिणाम:</strong> परीक्षा का अंतिम परिणाम और AI मार्कशीट 7वें दिन सुबह ठीक 9:00 बजे खुलेगी।</li>
             </ol>
 
             <div class="instruction-agree-box-fixed">
               <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" />
-              <label for="chkAgreeRules">मैंने सभी 6 नियमों को पढ़ लिया है और मैं इनका पालन करने के लिए पूर्णतः सहमत हूँ।</label>
+              <label for="chkAgreeRules">मैंने नियमों को पढ़ लिया है और मैं इनका पालन करने के लिए पूर्णतः सहमत हूँ।</label>
             </div>
           </div>
 
@@ -247,16 +245,16 @@
             </div>
           </div>
 
-          <!-- डायनामिक एडमिट कार्ड (कोई हार्डकोडेड नंबर नहीं, सिर्फ उस Gmail का असली नंबर) -->
+          <!-- डायनामिक एडमिट कार्ड (स्थायी यूनिक नंबर) -->
           <div class="sim-ticket-preview" id="simTicketPreview" style="display: block;">
             <div class="ticket-header">
               <span>NISCHAYDESK OFFICIAL ADMIT CARD (PERMANENT)</span>
               <span class="ticket-badge">VERIFIED</span>
             </div>
             <div class="ticket-grid">
-              <div><small>Roll Code:</small> <strong id="outRollCode">लोड हो रहा है...</strong></div>
-              <div><small>Roll Number:</small> <strong id="outRollNumber">लोड हो रहा है...</strong></div>
-              <div><small>Reg. No:</small> <strong id="outRegNo">लोड हो रहा है...</strong></div>
+              <div><small>Roll Code:</small> <strong id="outRollCode">--</strong></div>
+              <div><small>Roll Number:</small> <strong id="outRollNumber">--</strong></div>
+              <div><small>Reg. No:</small> <strong id="outRegNo">--</strong></div>
               <div><small>Result Date:</small> <strong>7वां दिन (09:00 AM)</strong></div>
             </div>
             <p class="ticket-warning" id="ticketStatusMsg">★ आपका रोल कोड और रोल नंबर Gmail अकाउंट से स्थायी रूप से सुरक्षित है।</p>
@@ -386,6 +384,17 @@
       ]
     };
 
+    function setupInstantCredentials(uid) {
+      if (typeof generateUniqueCredentials === 'function') {
+        const creds = generateUniqueCredentials(uid);
+        document.getElementById("outRollCode").textContent = creds.rollCode;
+        document.getElementById("outRollNumber").textContent = creds.rollNumber;
+        document.getElementById("outRegNo").textContent = creds.regNo;
+        return creds;
+      }
+      return null;
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       selectedClass = localStorage.getItem("nd_selected_class") || "10th";
       const classSelectEl = document.getElementById("regStudentClassSelect");
@@ -414,30 +423,40 @@
                 avatarBox.textContent = realName.charAt(0).toUpperCase();
               }
 
+              const quickCreds = setupInstantCredentials(user.uid);
+
               try {
-                // क्लाउड से उस Gmail का अपना स्थायी डेटा लाएँ
                 cloudState = await getCloudExamState(user);
                 cloudState = await enforceCloudAbsence(user, cloudState);
 
-                if (cloudState.selectedClass) {
+                if (cloudState && cloudState.selectedClass) {
                   selectedClass = cloudState.selectedClass;
                   if (classSelectEl) classSelectEl.value = selectedClass;
                 }
 
-                // हर यूजर का अपना अनोखा रोल नंबर व रोल कोड स्क्रीन पर सेट करें
-                document.getElementById("outRollCode").textContent = cloudState.rollCode;
-                document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
-                document.getElementById("outRegNo").textContent = cloudState.regNo;
+                if (cloudState && cloudState.rollCode) {
+                  document.getElementById("outRollCode").textContent = cloudState.rollCode;
+                  document.getElementById("outRollNumber").textContent = cloudState.rollNumber;
+                  document.getElementById("outRegNo").textContent = cloudState.regNo;
+                }
 
                 renderSubjectDropdownForClass(selectedClass, cloudState);
 
-                if (cloudState.activeSession && cloudState.activeSession.day) {
+                if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
                   activeDay = cloudState.activeSession.day;
                   resumeExamHall(activeDay);
                 }
               } catch (e) {
-                console.warn("Firestore sync fallback:", e);
-                renderSubjectDropdownForClass(selectedClass, null);
+                console.warn("Cloud exam sync fallback:", e);
+                if (!cloudState && quickCreds) {
+                  cloudState = {
+                    rollCode: quickCreds.rollCode,
+                    rollNumber: quickCreds.rollNumber,
+                    regNo: quickCreds.regNo,
+                    completedDays: {}
+                  };
+                }
+                renderSubjectDropdownForClass(selectedClass, cloudState);
               }
             } else {
               currentUser = null;
@@ -503,7 +522,6 @@
       toggleEnterButtonState();
     }
 
-    // 🚀 चेकबॉक्स टिक होते ही बटन एक्टिव करने वाला फंक्शन
     function toggleEnterButtonState() {
       const chk = document.getElementById("chkAgreeRules");
       const enterBtn = document.getElementById("btnEnterExamHall");
@@ -542,7 +560,7 @@
 
       const isAgreed = document.getElementById("chkAgreeRules").checked;
       if (!isAgreed) {
-        alert("कृपया पहले 6 बोर्ड नियमों को पढ़कर सहमति बॉक्स पर टिक करें!");
+        alert("कृपया पहले नियमों पर सहमति बॉक्स पर टिक करें!");
         return;
       }
 
@@ -555,12 +573,24 @@
         return;
       }
 
+      if (!cloudState) {
+        const quick = setupInstantCredentials(currentUser.uid);
+        cloudState = {
+          rollCode: quick ? quick.rollCode : "33193",
+          rollNumber: quick ? quick.rollNumber : "26017186",
+          regNo: quick ? quick.regNo : "R-33010189-26",
+          completedDays: {}
+        };
+      }
+
       resumeExamHall(activeDay);
 
-      updateCloudExamState(currentUser, {
-        selectedClass: selectedClass,
-        activeSession: { day: activeDay, class: selectedClass, startedAt: new Date().toISOString() }
-      }).catch(e => console.log(e));
+      if (typeof updateCloudExamState === 'function') {
+        updateCloudExamState(currentUser, {
+          selectedClass: selectedClass,
+          activeSession: { day: activeDay, class: selectedClass, startedAt: new Date().toISOString() }
+        }).catch(e => console.log(e));
+      }
     }
 
     function setupDynamicSubjectiveCards(subObj) {
@@ -639,11 +669,14 @@
       const paperKey = currentSub.code;
       const paperData = BSEB_PAPERS_DATABASE[paperKey] || BSEB_PAPERS_DATABASE["101-hindi"];
 
-      document.getElementById("hallDisplayRoll").textContent = `${cloudState.rollCode} - ${cloudState.rollNumber} (${selectedClass})`;
+      const rCode = (cloudState && cloudState.rollCode) ? cloudState.rollCode : "33193";
+      const rNum = (cloudState && cloudState.rollNumber) ? cloudState.rollNumber : "26017186";
+
+      document.getElementById("hallDisplayRoll").textContent = `${rCode} - ${rNum} (${selectedClass})`;
       document.getElementById("hallDisplaySub").textContent = currentSub.name;
 
       const iframe = document.getElementById("simPaperFrame");
-      if (iframe && paperData.driveLink) {
+      if (iframe && paperData && paperData.driveLink) {
         iframe.src = paperData.driveLink;
       }
 
@@ -654,7 +687,9 @@
       document.getElementById("simExamHallStage").style.display = "block";
 
       toggleMobileView('paper');
-      runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
+      if (typeof runCloudExamTimer === 'function') {
+        runCloudExamTimer(currentUser, day, confirmFinalExamSubmission);
+      }
     }
 
     function renderOmrBubbles(totalQuestions) {
@@ -705,7 +740,9 @@
       const target = document.getElementById(`bubble_${activeDay}_${qNum}_${opt}`);
       if (target) target.classList.add("filled");
 
-      syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
+      if (typeof syncBubbleToCloud === 'function') {
+        syncBubbleToCloud(currentUser, activeDay, qNum, opt, cloudState);
+      }
       saved[qNum] = opt;
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
@@ -798,7 +835,7 @@
           currentUser,
           activeDay,
           currentSub.name,
-          paperData.answerKey,
+          paperData ? paperData.answerKey : {},
           selectedImages,
           cloudState
         );
