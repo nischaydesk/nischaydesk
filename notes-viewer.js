@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (v5.0 Ultimate Pro)
+   NischayDesk Complete Notes Controller (v5.0 Strict Class-Filter Edition)
    Architected by: Prince Kumar (NischayDesk)
-   Features: Universal Dark/Light High Contrast, Fast Google Drive Previewer,
-             Dynamic Search & Seamless Class Sync
+   Features: Strict Class Separation (10th/11th/12th), Dynamic Pills,
+             In-App HD Google Drive Previewer & Universal Theme Contrast
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -74,41 +74,37 @@ document.addEventListener('DOMContentLoaded', function () {
     window.open(`https://drive.google.com/uc?export=download&id=${fileId}`, '_blank');
   };
 
+  // 🎯 छात्र की सक्रिय कक्षा के अनुसार सिर्फ़ उसी क्लास का डेटा लोड करना
+  function getActiveStudentClass() {
+    const rawClass = localStorage.getItem('nd_selected_class') || 
+                     localStorage.getItem('nischay_student_class') || 
+                     localStorage.getItem('nischay_user_class') || '10th';
+    const numOnly = String(rawClass).replace(/[^0-9]/g, '');
+    return (numOnly === '11' || numOnly === '12') ? numOnly : '10';
+  }
+
   function initNotes(currentUser) {
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
       setTimeout(() => initNotes(currentUser), 200);
       return;
     }
 
-    const isUserLoggedIn = !!currentUser;
-    let studentClass = null;
+    const activeClass = getActiveStudentClass();
 
-    if (isUserLoggedIn) {
-      const profile = localStorage.getItem('nischay_user_profile');
-      if (profile) {
-        try {
-          const parsed = JSON.parse(profile);
-          studentClass = parsed.class || parsed.studentClass;
-        } catch (e) {}
-      }
-      if (!studentClass) {
-        studentClass = localStorage.getItem('nischay_student_class') || '10';
-      }
-    }
+    // 1. फ़िल्टर पिल्स (बटनों) को चुनी गई क्लास के अनुसार एडजस्ट करें
+    adjustFilterPills(activeClass);
 
-    adjustFilterPills(isUserLoggedIn, studentClass);
-
+    // 2. मास्टर लिस्ट में सिर्फ़ सक्रिय क्लास के चैप्टर्स डालें
     allChaptersMaster = [];
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      if (isUserLoggedIn && studentClass) {
-        if (!subject.id.startsWith(studentClass + '-')) return;
-      }
+      // यदि सब्जेक्ट आईडी उस क्लास से शुरू नहीं होती, तो पूरी तरह छोड़ दें
+      if (!subject.id.startsWith(activeClass + '-')) return;
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
         subject.chapters.forEach(function (ch) {
           allChaptersMaster.push({
             subjectId: subject.id,
-            classTitle: subject.classTitle || "NischayDesk",
+            classTitle: subject.classTitle || `Class ${activeClass}th`,
             subjectTitle: subject.subjectTitle || "विषय",
             no: ch.no,
             name: ch.name,
@@ -120,28 +116,31 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+    currentFilterSubject = 'all';
     renderNotesGrid();
   }
 
-  function adjustFilterPills(isLoggedIn, sClass) {
+  function adjustFilterPills(sClass) {
     if (!filterPillContainer) return;
     const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
 
     filterButtons.forEach(btn => {
       const filterVal = btn.getAttribute('data-filter');
+      
+      // "सभी विषय" का बटन हमेशा दिखेगा
       if (filterVal === 'all') {
         btn.style.display = 'inline-block';
+        btn.classList.add('active');
         return;
       }
 
-      if (!isLoggedIn) {
+      btn.classList.remove('active');
+
+      // केवल उसी क्लास के विषय बटन दिखेंगे जो छात्र ने चुनी है
+      if (filterVal.startsWith(sClass + '-')) {
         btn.style.display = 'inline-block';
       } else {
-        if (filterVal.startsWith(sClass + '-')) {
-          btn.style.display = 'inline-block';
-        } else {
-          btn.style.display = 'none';
-        }
+        btn.style.display = 'none';
       }
     });
   }
@@ -170,10 +169,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (filtered.length === 0) {
       notesCatalogGrid.innerHTML = `
-        <div class="loading-state-box">
-          <div style="font-size: 2.5rem; margin-bottom: 10px;">📋</div>
-          <h3 class="card-title" style="font-size: 1.15rem; margin-bottom: 6px;">कोई नोट्स नहीं मिले</h3>
-          <p class="card-desc">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
+        <div class="loading-state-box" style="text-align:center; padding:40px 16px; width:100%; grid-column:1/-1;">
+          <div style="font-size: 2.8rem; margin-bottom: 10px;">📚</div>
+          <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 6px; color: var(--text-pure);">कोई नोट्स नहीं मिले</h3>
+          <p class="card-desc" style="color: var(--text-secondary); font-size: 0.88rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
         </div>
       `;
       return;
@@ -181,11 +180,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let htmlBuffer = '';
     filtered.forEach(function (note) {
-      const hasPdf = note.pdfUrl && note.pdfUrl.trim() !== '' && note.pdfUrl !== '#';
+      const hasPdf = note.pdfUrl && note.pdfUrl.trim() !== '' && note.pdfUrl !== '#' && !note.pdfUrl.includes('xxxx');
       
       const readAction = hasPdf 
         ? `onclick="window.openNoteModal('${note.classTitle}', '${escapeHtml(note.name)}', '${note.pdfUrl}')"`
-        : `onclick="alert('अध्याय ${note.no} के नोट्स जल्द जोड़े जा रहे हैं!')"`;
+        : `onclick="alert('अध्याय ${note.no} के नोट्स जल्द अपलोड किए जा रहे हैं!')"`;
 
       const downloadAction = hasPdf
         ? `onclick="window.downloadPdfDirectly('${note.pdfUrl}')"`
@@ -207,12 +206,12 @@ document.addEventListener('DOMContentLoaded', function () {
               <div style="background: rgba(56, 189, 248, 0.14); color: var(--brand-accent); min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; border: 1px solid var(--border-subtle);">
                 ${note.no}
               </div>
-              <h3 style="font-size: 1rem; margin: 0; font-weight: 800; line-height: 1.4;">
+              <h3 style="font-size: 1rem; margin: 0; font-weight: 800; line-height: 1.4; color: var(--text-pure);">
                 ${note.name}
               </h3>
             </div>
 
-            <p class="note-desc" style="padding-left: 42px;">
+            <p class="note-desc" style="padding-left: 42px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
               ${note.desc}
             </p>
           </div>
@@ -222,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
               📖 <span>नोट्स पढ़ें</span>
             </button>
             <button class="btn-download-note" ${downloadAction}>
-              📥 <span>PDF</span>
+              📥 <span>डाउनलोड</span>
             </button>
           </div>
         </div>
