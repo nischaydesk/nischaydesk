@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk User Auth & Profile State Management Engine (v4.2)
-   Fixed: Profile Card Name Visibility in Light Mode Sidebar Drawer
+   NischayDesk User Auth & Profile State Management Engine (v5.0 Unified)
+   Fixed: Sidebar Dark/Light Name Visibility & Cloud Firestore Key Sync
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,14 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const userSessionBadge = document.getElementById('userSessionBadge');
   const drawerUserCard = document.getElementById('drawerUserCard');
 
-  // वेलकम कार्ड के एलिमेंट्स
   const personalizedWelcomeCard = document.getElementById('personalizedWelcomeCard');
   const welcomeUserName = document.getElementById('welcomeUserName');
   const displayStudentClass = document.getElementById('displayStudentClass');
   const displayStudentStream = document.getElementById('displayStudentStream');
   const displayStudentGoal = document.getElementById('displayStudentGoal');
 
-  // ऑनबोर्डिंग / क्लास स्विच मोडल एलिमेंट्स
   const onboardingModal = document.getElementById('onboardingModal');
   const onboardingForm = document.getElementById('onboardingForm');
   const obName = document.getElementById('obName');
@@ -27,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const obGoal = document.getElementById('obGoal');
   const obHobby = document.getElementById('obHobby');
 
-  // तीनों मुख्य क्लास सेक्शन्स (होमपेज)
   const sectionClass10 = document.getElementById('sectionClass10');
   const sectionClass11 = document.getElementById('sectionClass11');
   const sectionClass12 = document.getElementById('sectionClass12');
@@ -36,18 +33,18 @@ document.addEventListener('DOMContentLoaded', function () {
                ? window.NischayConfig.authInstance 
                : (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
 
-  const db = (window.NischayConfig && window.NischayConfig.firestoreInstance)
-             ? window.NischayConfig.firestoreInstance
+  const db = (window.NischayConfig && window.NischayConfig.dbInstance)
+             ? window.NischayConfig.dbInstance
              : (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
 
-  // डिफ़ॉल्ट रूप से तीनों सेक्शन्स को दिखाएं (गेस्ट मोड)
-  showAllClasses();
+  const savedClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_student_class') || '10th';
+  applyClassLockToDOM(savedClass);
 
-  function showAllClasses() {
-    if (sectionClass10) sectionClass10.style.setProperty('display', 'block', 'important');
-    if (sectionClass11) sectionClass11.style.setProperty('display', 'block', 'important');
-    if (sectionClass12) sectionClass12.style.setProperty('display', 'block', 'important');
-    if (personalizedWelcomeCard) personalizedWelcomeCard.style.setProperty('display', 'none', 'important');
+  function applyClassLockToDOM(cls) {
+    const cleanCls = String(cls).replace(/[^0-9]/g, '') || '10';
+    if (sectionClass10) sectionClass10.style.display = (cleanCls === '10' ? 'block' : 'none');
+    if (sectionClass11) sectionClass11.style.display = (cleanCls === '11' ? 'block' : 'none');
+    if (sectionClass12) sectionClass12.style.display = (cleanCls === '12' ? 'block' : 'none');
   }
 
   if (!auth) return;
@@ -55,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
 
-  // 1. Google Sign-In Action
   if (headerAuthBtn) {
     headerAuthBtn.addEventListener('click', function () {
       auth.signInWithPopup(provider).catch(err => {
@@ -66,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 2. Class Switch Modal Global Trigger
   window.openClassSwitchModal = function () {
     openOnboardingModal(auth.currentUser);
   };
@@ -80,21 +75,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (obName) obName.value = (data && data.name) ? data.name : (user?.displayName || "");
-    if (obClass && data?.studentClass) obClass.value = data.studentClass;
+    if (obClass) obClass.value = (data && (data.studentClass || data.class)) ? String(data.studentClass || data.class).replace(/[^0-9]/g, '') : "10";
     if (obStream && data?.stream) obStream.value = data.stream;
     if (obGoal && data?.goal) obGoal.value = data.goal;
 
     onboardingModal.classList.add('active');
   }
 
-  // 3. Profile Onboarding Form Submit
   if (onboardingForm) {
     onboardingForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const user = auth.currentUser;
       const targetUid = user ? user.uid : "local_user";
       const finalName = obName ? obName.value.trim() : (user?.displayName || "छात्र");
-      const selectedClass = obClass ? obClass.value : "10";
+      const numClass = obClass ? obClass.value : "10";
+      const fullClassStr = `${numClass}th`;
       const selectedStream = obStream ? obStream.value : "PCM";
       const selectedGoal = obGoal ? obGoal.value : "बिहार बोर्ड टॉपर (State Rank)";
       const selectedHobby = obHobby ? obHobby.value.trim() : "";
@@ -102,7 +97,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const profilePayload = {
         uid: targetUid,
         name: finalName,
-        studentClass: selectedClass,
+        studentClass: fullClassStr,
+        class: numClass,
         stream: selectedStream,
         goal: selectedGoal,
         hobby: selectedHobby,
@@ -111,10 +107,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
       localStorage.setItem('nischay_user_profile', JSON.stringify(profilePayload));
       localStorage.setItem('nischay_user_name', finalName);
-      localStorage.setItem('nischay_student_class', selectedClass);
+      localStorage.setItem('nd_selected_class', fullClassStr);
+      localStorage.setItem('nischay_student_class', numClass);
+      localStorage.setItem('user_class', fullClassStr);
 
       if (db && user) {
         db.collection('students').doc(user.uid).set(profilePayload, { merge: true }).catch(() => {});
+        db.collection('bseb_exams_2026').doc(user.uid).set({ selectedClass: fullClassStr }, { merge: true }).catch(() => {});
       }
 
       onboardingModal.classList.remove('active');
@@ -122,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 4. User Authentication State Listener
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       if (headerAuthBtn) headerAuthBtn.style.display = 'none';
@@ -144,24 +142,31 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (err) {}
       }
 
-      const activeName = (profileData && profileData.name) ? profileData.name : (user.displayName || "छात्र");
-      const activeClass = (profileData && profileData.studentClass) ? profileData.studentClass : (localStorage.getItem('nischay_student_class') || "11");
+      const activeName = (profileData && profileData.name) ? profileData.name : (user.displayName || user.email.split('@')[0]);
+      const rawClass = (profileData && (profileData.studentClass || profileData.class)) || localStorage.getItem('nd_selected_class') || "10th";
+      const cleanNum = String(rawClass).replace(/[^0-9]/g, '') || "10";
+      const fullClass = `${cleanNum}th`;
       const photoURL = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(activeName)}&background=0284c7&color=fff`;
 
       localStorage.setItem('nischay_user_name', activeName);
+      localStorage.setItem('nd_selected_class', fullClass);
+      localStorage.setItem('nischay_student_class', cleanNum);
 
-      if (userDisplayName) userDisplayName.innerText = activeName;
-      if (userSessionBadge) userSessionBadge.innerText = `Class ${activeClass}th ▾`;
+      if (userDisplayName) userDisplayName.innerText = activeName.split(' ')[0];
+      if (userSessionBadge) userSessionBadge.innerText = `Class ${fullClass} ▾`;
       if (userAvatarImg) userAvatarImg.src = photoURL;
 
-      // साइडबार में डार्क ब्लू बोल्ड नाम (जो लाइट मेनू बैकग्राउंड पर एकदम साफ दिखेगा)
       if (drawerUserCard) {
+        const isLight = document.documentElement.classList.contains('light-mode');
+        const nameColor = isLight ? '#0f172a' : '#ffffff';
+        const subColor = isLight ? '#0284c7' : '#38bdf8';
+
         drawerUserCard.innerHTML = `
           <div style="display:flex; align-items:center; gap:12px;">
             <img src="${photoURL}" style="width:42px; height:42px; border-radius:50%; border:2px solid #0284c7; object-fit:cover;" alt="${activeName}">
             <div style="min-width:0; overflow:hidden;">
-              <div style="font-size:0.98rem; font-weight:800; color:#0f172a !important; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${activeName}</div>
-              <div style="font-size:0.78rem; color:#15803d !important; font-weight:700; margin-top:3px;">● Class ${activeClass}th सक्रिय (बदलें ▾)</div>
+              <div style="font-size:0.98rem; font-weight:800; color:${nameColor}; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${activeName}</div>
+              <div style="font-size:0.78rem; color:${subColor}; font-weight:700; margin-top:3px;">● Class ${fullClass} सक्रिय (बदलें ▾)</div>
             </div>
           </div>
         `;
@@ -174,7 +179,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
     } else {
-      // गेस्ट मोड
       if (headerAuthBtn) headerAuthBtn.style.display = 'inline-flex';
       if (userProfileWidget) userProfileWidget.style.display = 'none';
 
@@ -184,35 +188,27 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
       }
 
-      showAllClasses();
+      const guestClass = localStorage.getItem('nd_selected_class') || '10th';
+      applyClassLockToDOM(guestClass);
     }
   });
 
-  // क्लास और गोल डिस्प्ले बाइंडिंग
   function applyClassLock(profile) {
-    const sClass = String(profile.studentClass || "11");
+    const rawClass = profile.studentClass || profile.class || "10";
+    const cleanNum = String(rawClass).replace(/[^0-9]/g, '') || "10";
+    const fullClass = `${cleanNum}th`;
     const sName = profile.name || "छात्र";
     const sStream = profile.stream || "PCM";
     const sGoal = profile.goal || "बिहार बोर्ड टॉपर (State Rank)";
 
-    localStorage.setItem('nischay_student_class', sClass);
-
     if (personalizedWelcomeCard) {
-      personalizedWelcomeCard.style.setProperty('display', 'block', 'important');
+      personalizedWelcomeCard.style.display = 'block';
       if (welcomeUserName) welcomeUserName.innerText = sName.split(' ')[0];
-      if (displayStudentClass) displayStudentClass.innerText = `Class ${sClass}th`;
+      if (displayStudentClass) displayStudentClass.innerText = `Class ${fullClass}`;
       if (displayStudentStream) displayStudentStream.innerText = sStream;
       if (displayStudentGoal) displayStudentGoal.innerText = sGoal;
     }
 
-    if (sectionClass10) {
-      sectionClass10.style.setProperty('display', (sClass === "10" ? 'block' : 'none'), 'important');
-    }
-    if (sectionClass11) {
-      sectionClass11.style.setProperty('display', (sClass === "11" ? 'block' : 'none'), 'important');
-    }
-    if (sectionClass12) {
-      sectionClass12.style.setProperty('display', (sClass === "12" ? 'block' : 'none'), 'important');
-    }
+    applyClassLockToDOM(cleanNum);
   }
 });
