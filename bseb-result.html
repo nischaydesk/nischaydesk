@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="bseb-style.css" />
 
   <style>
-    /* हेडर और लोगो का पक्का फिक्स */
+    /* हेडर और नेविगेशन का सीधा अलाइनमेंट */
     .app-header .nav-container {
       display: flex;
       align-items: center;
@@ -76,6 +76,9 @@
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .btn-home-exit {
       background: rgba(56, 189, 248, 0.12);
@@ -87,6 +90,30 @@
       font-size: 0.72rem;
       font-weight: 700;
       white-space: nowrap;
+    }
+
+    /* टाइमर बॉक्स: दोनों थीम (डार्क और लाइट) में 100% साफ दिखेगा */
+    .timer-badge-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bseb-surface-card);
+      border: 1.5px solid var(--bseb-warning);
+      padding: 10px 20px;
+      border-radius: 30px;
+      margin: 10px 0;
+    }
+    .timer-label {
+      color: var(--bseb-warning);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    .timer-digits-fixed {
+      color: var(--bseb-text) !important; /* लाइट मोड में डार्क और डार्क मोड में वाइट */
+      font-family: monospace;
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
     }
 
     /* मार्कशीट टेबल मोबाइल रिस्पॉन्सिव स्क्रॉल */
@@ -130,7 +157,7 @@
       <div class="sim-header-chip">
         <span class="pulsing-dot"></span> बिहार विद्यालय परीक्षा समिति • 7-दिवसीय महा-परिणाम गेट
       </div>
-      <h1 class="sim-title">वार्षिक माध्यमिक परीक्षा <span class="gradient-text">परिणाम 2026</span></h1>
+      <h1 class="sim-title">वार्षिक परीक्षा <span class="gradient-text">परिणाम 2026</span></h1>
       <p class="sim-subtitle">
         कड़े बोर्ड नियमों के तहत सभी 6 परीक्षाओं का सम्मिलित परिणाम केवल 7वें दिन सुबह ठीक 09:00 AM पर खुलेगा। अपना रोल कोड, रोल नंबर और सुरक्षा कोड भरें।
       </p>
@@ -173,12 +200,13 @@
       <div style="font-size: 2.8rem; margin-bottom: 8px;">🔒</div>
       <h2 style="color: var(--bseb-warning); font-size: 1.25rem; margin: 0 0 10px;">कड़े बोर्ड नियमों के तहत परिणाम अभी सुरक्षित लॉक है!</h2>
       <p style="color: var(--bseb-text-muted); font-size: 0.84rem; line-height: 1.5; max-width: 580px; margin: 0 auto 16px;">
-        बिहार बोर्ड सिमुलेशन के कड़े नियमों के अनुसार 6 दिनों की सभी उत्तर-पुस्तिकाओं का केंद्रीय मूल्यांकन जारी है। संपूर्ण परीक्षा परिणाम <strong>7वें दिन सुबह 09:00 AM</strong> पर ही सार्वजनिक होगा।
+        बिहार बोर्ड सिमुलेशन के कड़े नियमों के अनुसार 6 दिनों की सभी उत्तर-पुस्तिकाओं का केंद्रीय AI मूल्यांकन जारी है। संपूर्ण परीक्षा परिणाम <strong>7वें दिन सुबह 09:00 AM</strong> पर ही सार्वजनिक होगा।
       </p>
       
-      <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--bseb-bg); border: 1.5px solid var(--bseb-warning); padding: 10px 20px; border-radius: 30px;">
-        <span style="color: var(--bseb-warning); font-weight: 700; font-size: 0.8rem;">परिणाम विमोचन में शेष समय:</span>
-        <span id="lockCountdownDigits" style="color: #ffffff; font-family: monospace; font-size: 1.15rem; font-weight: 900;">00d 00h 00m 00s</span>
+      <!-- ठीक किया गया टाइमर बैज (लाइट और डार्क मोड दोनों में साफ़) -->
+      <div class="timer-badge-container">
+        <span class="timer-label">परिणाम विमोचन में शेष समय:</span>
+        <span id="lockCountdownDigits" class="timer-digits-fixed">00d 00h 00m 00s</span>
       </div>
 
       <div style="margin-top: 14px; font-size: 0.78rem; color: var(--bseb-accent);">
@@ -195,7 +223,7 @@
         <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 14px;">
           <h2 style="margin: 0; font-size: 1.2rem; color: #991b1b; text-transform: uppercase; font-weight: 900;">बिहार विद्यालय परीक्षा समिति, पटना</h2>
           <h3 style="margin: 2px 0; font-size: 0.95rem; color: #0f172a; font-weight: 800;">BIHAR SCHOOL EXAMINATION BOARD, PATNA</h3>
-          <h4 style="margin: 0; font-size: 0.8rem; color: #475569; font-weight: 700;">वार्षिक माध्यमिक परीक्षा परिणाम - 2026 (MARKS MEMO)</h4>
+          <h4 style="margin: 0; font-size: 0.8rem; color: #475569; font-weight: 700;">वार्षिक परीक्षा परिणाम - 2026 (MARKS MEMO)</h4>
         </div>
 
         <!-- CANDIDATE PROFILE TABLE -->
@@ -254,7 +282,7 @@
         <!-- DISCLAIMER -->
         <div style="font-size: 0.7rem; color: #64748b; line-height: 1.4; border-top: 1px solid #cbd5e1; padding-top: 6px;">
           <p style="margin: 0;">★ <strong>बोर्ड नियम:</strong> 1st Division: 300+ अंक | 2nd Division: 225-299 अंक | 3rd Division: 150-224 अंक।</p>
-          <p style="margin: 2px 0 0;">★ अंग्रेजी के अंक कुल प्राप्तांक में नहीं जोड़े जाते हैं। छूटी हुई परीक्षा में ABS (000) अंक दर्ज किए गए हैं।</p>
+          <p style="margin: 2px 0 0;">★ छूटी हुई परीक्षा में ABS (000) अंक दर्ज किए गए हैं।</p>
         </div>
 
         <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
@@ -278,7 +306,7 @@
       generateNewCaptcha();
       initThemeEngine();
 
-      // ऑटो-फ़िल: छात्र का एडमिट कार्ड डेटा स्वतः भरें
+      // ऑटो-फ़िल: यदि यूजर का सेशन पहले से है
       const sessionData = localStorage.getItem("nischay_student_session");
       if (sessionData) {
         try {
@@ -315,21 +343,29 @@
       }
 
       const storageKey = `nischay_exam_state_${rollCode}_${rollNumber}`;
-      const stateData = localStorage.getItem(storageKey);
-      const studentSession = localStorage.getItem("nischay_student_session");
+      let stateData = localStorage.getItem(storageKey);
+      let studentSession = localStorage.getItem("nischay_student_session");
 
-      if (!stateData || !studentSession) {
-        alert('❌ इस रोल कोड और रोल नंबर का कोई 7-दिवसीय परीक्षा रिकॉर्ड नहीं मिला!');
-        generateNewCaptcha();
+      // फॉलबैक: यदि कोई सीधे रोल नंबर से सर्च कर रहा हो
+      let state = stateData ? JSON.parse(stateData) : null;
+      let student = studentSession ? JSON.parse(studentSession) : null;
+
+      if (!state) {
+        // यदि लोकल स्टोरेज में उस की से न मिले, तो 7वें दिन का टेस्ट लॉक दिखाएँ
+        const dummyUnlock = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000 + 19 * 60 * 60 * 1000);
+        dummyUnlock.setHours(9, 0, 0, 0);
+
+        document.getElementById('marksSheetDisplaySection').style.display = 'none';
+        document.getElementById('resultPendingLockBox').style.display = 'block';
+        document.getElementById('lockTargetDateText').textContent = dummyUnlock.toLocaleString("hi-IN", { dateStyle: "full", timeStyle: "short" });
+        startLockCountdown(dummyUnlock);
+        window.scrollTo({ top: document.getElementById('resultPendingLockBox').offsetTop - 20, behavior: 'smooth' });
         return;
       }
 
-      const state = JSON.parse(stateData);
-      const student = JSON.parse(studentSession);
-
       // कड़ा नियम: 7वें दिन 9:00 AM से पहले ताला नहीं खुलेगा
       const now = new Date();
-      const unlockTime = new Date(state.resultUnlockTime);
+      const unlockTime = new Date(state.resultUnlockTime || (Date.now() + 86400000));
 
       if (now < unlockTime) {
         document.getElementById('marksSheetDisplaySection').style.display = 'none';
@@ -339,12 +375,11 @@
         startLockCountdown(unlockTime);
         window.scrollTo({ top: document.getElementById('resultPendingLockBox').offsetTop - 20, behavior: 'smooth' });
       } else {
-        // ताला खुला: 500-अंक की मार्कशीट दिखाएँ
         if (lockTimerInterval) clearInterval(lockTimerInterval);
         document.getElementById('resultPendingLockBox').style.display = 'none';
         document.getElementById('marksSheetDisplaySection').style.display = 'block';
         
-        renderOfficialMarkSheet(student, state);
+        renderOfficialMarkSheet(student || { name: "परीक्षार्थी", school: "HIGH SCHOOL TELWA", rollCode, rollNumber }, state);
         window.scrollTo({ top: document.getElementById('marksSheetDisplaySection').offsetTop - 20, behavior: 'smooth' });
       }
     }
@@ -376,7 +411,7 @@
     function renderOfficialMarkSheet(student, state) {
       document.getElementById('resStudentName').textContent = student.name;
       document.getElementById('resFatherName').textContent = student.fatherName || 'SURESH SHARMA';
-      document.getElementById('resSchoolName').textContent = student.school;
+      document.getElementById('resSchoolName').textContent = student.school || 'HIGH SCHOOL TELWA, JHAJHA';
       document.getElementById('resRollCode').textContent = student.rollCode;
       document.getElementById('resRollNumber').textContent = student.rollNumber;
 
