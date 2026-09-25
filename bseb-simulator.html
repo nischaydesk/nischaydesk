@@ -23,7 +23,7 @@
       min-height: 100%;
       background: var(--bseb-bg, #0f172a);
       overflow-x: hidden;
-      overflow-y: auto; /* नेचुरल स्क्रॉल */
+      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -130,9 +130,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* =========================================================
-       📱 परीक्षा हॉल: प्राकृतिक स्क्रॉल लेआउट (कोई झांपना नहीं)
-       ========================================================= */
+    /* परीक्षा हॉल लेआउट */
     #simExamHallStage {
       display: none;
       flex-direction: column;
@@ -156,7 +154,6 @@
       z-index: 10;
     }
 
-    /* प्रश्न पत्र बॉक्स: मोबाइल पर स्पष्ट 320px ऊंचाई */
     .exam-paper-container {
       width: 100%;
       height: 330px;
@@ -207,7 +204,6 @@
       transition: transform 0.15s ease-out;
     }
 
-    /* OMR व अपलोड बॉक्स: नीचे बिना कटे पूरा दिखेगा */
     .exam-answer-container {
       width: 100%;
       background: var(--bseb-surface-card);
@@ -230,7 +226,6 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* डेस्कटॉप व्यू */
     @media (min-width: 900px) {
       .exam-split-wrapper {
         display: flex;
@@ -310,13 +305,10 @@
         <span style="font-weight:800; font-size:1.05rem; color:var(--bseb-text);">Nischay<span style="color:#38bdf8;">Desk</span></span>
       </a>
 
-      <div style="display:flex; align-items:center; gap:8px;">
-        <!-- 🔓 सीक्रेट अनलॉक बटन केवल टेस्टिंग के लिए -->
-        <button type="button" onclick="developerResetLock()" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold; cursor:pointer;" title="परीक्षण हेतु आज का ताला खोलें">
-          🔓 टेस्ट अनलॉक
-        </button>
-        <span id="simUserFirstName" style="font-weight:700; font-size:0.82rem; color:var(--bseb-text);">लॉगिन...</span>
-        <a href="index.html" class="btn-home-exit" style="text-decoration:none; padding:4px 8px; border-radius:6px; background:#0284c7; color:#fff; font-size:0.75rem; font-weight: bold;">🏠 होम</a>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" style="padding: 4px 8px; font-size: 0.75rem;">☀️ मोड</button>
+        <span id="simUserFirstName" style="font-weight:700; font-size:0.85rem; color:var(--bseb-text);">लॉगिन...</span>
+        <a href="index.html" class="btn-home-exit" style="text-decoration:none; padding:4px 9px; border-radius:6px; background:#0284c7; color:#fff; font-size:0.75rem; font-weight: bold;">🏠 होम</a>
       </div>
     </nav>
   </header>
@@ -381,7 +373,7 @@
       </div>
     </section>
 
-    <!-- चरण 2: विषय एवं परीक्षा नियम पुष्टि (क्रमबद्ध नियम + 09:30 AM का ताला) -->
+    <!-- चरण 2: विषय एवं परीक्षा नियम पुष्टि -->
     <section class="gateway-step" id="step2RulesAndSubject">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 2: विषय एवं परीक्षा नियम पुष्टि</h2>
@@ -442,10 +434,9 @@
       </div>
     </section>
 
-    <!-- अंतिम चरण: परीक्षा कक्ष (बिना कटे साफ-साफ दिखने वाला लेआउट) -->
+    <!-- अंतिम चरण: परीक्षा कक्ष -->
     <section class="gateway-step" id="simExamHallStage">
       
-      <!-- शीर्ष स्टेटस बार -->
       <div class="exam-hall-header-bar">
         <span style="font-weight: 800; font-size: 0.82rem; color: var(--bseb-text);"><span id="hallDisplaySub">विषय</span></span>
         <div style="font-weight: 900; font-size: 0.95rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 6px;" id="examTimerClock">⏳ 03:15:00</div>
@@ -453,7 +444,6 @@
       </div>
 
       <div class="exam-split-wrapper">
-        <!-- ऊपर: प्रश्न पत्र (सिर्फ़ प्रश्न पत्र ज़ूम होगा) -->
         <div class="exam-paper-container">
           <div class="paper-toolbar">
             <span>📄 प्रश्न पत्र (Booklet)</span>
@@ -468,14 +458,12 @@
           </div>
         </div>
 
-        <!-- नीचे: OMR और उत्तर पुस्तिका (पूरा अपलोड बॉक्स दिखेगा) -->
         <div class="exam-answer-container">
           <div class="pane-tab-switcher">
             <button type="button" id="tabBtnOmr" onclick="switchExamTab('omr')" style="flex:1; padding:8px; border:none; background:#0284c7; color:#fff; font-weight:bold; font-size:0.82rem; cursor:pointer;">🔴 OMR (50 अंक)</button>
             <button type="button" id="tabBtnSubj" onclick="switchExamTab('subj')" style="flex:1; padding:8px; border:none; background:transparent; color:var(--bseb-text); font-weight:bold; font-size:0.82rem; cursor:pointer;">📸 उत्तर पुस्तिका (50 अंक)</button>
           </div>
 
-          <!-- OMR टैब -->
           <div class="exam-tab-content" id="tabContentOmr">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.76rem; font-weight:bold; color:var(--bseb-text); position: sticky; top: 0; background: var(--bseb-surface-card); padding: 4px 0; z-index: 2;">
               <span>किन्हीं 50 प्रश्नों के उत्तर दें</span>
@@ -484,7 +472,6 @@
             <div id="omrBubblesMatrix" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(125px, 1fr)); gap:5px;"></div>
           </div>
 
-          <!-- उत्तर पुस्तिका टैब (कभी नहीं कटेगा) -->
           <div class="exam-tab-content" id="tabContentSubj" style="display: none;">
             <div style="border: 2px dashed #0284c7; background: rgba(2, 132, 199, 0.05); padding: 14px 10px; text-align: center; border-radius: 10px;">
               <div style="font-size: 1.8rem; margin-bottom: 4px;">📸</div>
@@ -556,23 +543,6 @@
         { day: 6, code: "114-english", name: "अंग्रेजी (English)" }
       ]
     };
-
-    // 🔓 केवल आपके लिए: टेस्ट रीसेट फ़ंक्शन (बिना नया Gmail बनाए ताला खोलने के लिए)
-    function developerResetLock() {
-      if (!confirm("क्या आप टेस्टिंग के लिए आज का ताला खोलना चाहते हैं?")) return;
-      if (cloudState) {
-        cloudState.lastExamDate = null;
-        if (currentUser && window.NischayConfig?.dbInstance) {
-          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
-            lastExamDate: null
-          }, { merge: true });
-        }
-        const localKey = `nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`;
-        localStorage.setItem(localKey, JSON.stringify(cloudState));
-      }
-      alert("✓ ताला खुल गया! अब आप अगला विषय टेस्ट कर सकते हैं।");
-      location.reload();
-    }
 
     function adjustPaperZoom(delta) {
       currentPaperZoom = Math.min(2.5, Math.max(0.8, currentPaperZoom + delta));
