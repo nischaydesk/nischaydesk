@@ -289,7 +289,7 @@
 
   <main class="sim-main-viewport">
 
-    <!-- चरण 1: डिजिटल एडमिट कार्ड व व्यक्तिगत विवरण (उदाहरण प्लेसहोल्डर के साथ) -->
+    <!-- चरण 1: डिजिटल एडमिट कार्ड व व्यक्तिगत विवरण (सख्त इनपुट चेकिंग) -->
     <section class="gateway-step active" id="step1AdmitCard">
       <div class="sim-card-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -315,7 +315,6 @@
             </div>
           </div>
 
-          <!-- छात्र का नाम Gmail से अपने आप भरेगा, बाकी उदाहरण में रहेंगे -->
           <div class="form-group-sim">
             <label>👤 परीक्षार्थी का नाम (Student Name) *</label>
             <input type="text" id="inputStudentName" placeholder="उदा. प्रिंस कुमार" />
@@ -337,6 +336,10 @@
             <input type="text" id="inputSchoolName" placeholder="उदा. उच्च विद्यालय तेलवा बाज़ार, जमुई" />
           </div>
 
+          <div id="step1ErrorMsg" style="display:none; color:#ef4444; font-weight:bold; font-size:0.82rem; margin-bottom:8px;">
+            ⚠️ कृपया सभी चारों विवरण (परीक्षार्थी, माता, पिता और स्कूल का नाम) सही-सही भरें!
+          </div>
+
           <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
             विवरण सत्यापित करें एवं आगे बढ़ें (चरण 2) →
           </button>
@@ -344,7 +347,7 @@
       </div>
     </section>
 
-    <!-- चरण 2: कक्षा, विषय चयन एवं नियम पुष्टि -->
+    <!-- चरण 2: कक्षा, विषय चयन एवं नियम पुष्टि (क्लीन नियम बॉक्स) -->
     <section class="gateway-step" id="step2RulesAndSubject">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 2: विषय एवं परीक्षा नियम पुष्टि</h2>
@@ -352,9 +355,9 @@
         <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
           <strong style="color: #0284c7; font-size: 0.92rem;">📜 परीक्षा के 3 मुख्य नियम:</strong>
           <ul style="margin: 6px 0 0 16px; font-size: 0.85rem; color: var(--bseb-text); line-height: 1.6;">
-            <li><strong>समय शेष तक सुरक्षित:</strong> 3 घंटे 15 मिनट तक आपके भरे गोले व फोटो सुरक्षित रहेंगे, बैक जाने पर भी नहीं हटेंगे[span_8](start_span)[span_8](end_span)।</li>
-            <li><strong>फ़ाइनल सबमिशन:</strong> एक बार 'परीक्षा जमा करें' दबाने पर यह विषय हमेशा के लिए लॉक हो जाएगा[span_9](start_span)[span_9](end_span)।</li>
-            <li><strong>समय समाप्त:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः लॉक हो जाएगा[span_10](start_span)[span_10](end_span)।</li>
+            <li><strong>समय शेष तक सुरक्षित:</strong> 3 घंटे 15 मिनट तक आपके भरे गोले व फोटो सुरक्षित रहेंगे, बैक जाने पर भी नहीं हटेंगे[span_7](start_span)[span_7](end_span)।</li>
+            <li><strong>फ़ाइनल सबमिशन:</strong> एक बार 'परीक्षा जमा करें' दबाने पर यह विषय हमेशा के लिए लॉक हो जाएगा[span_8](start_span)[span_8](end_span)।</li>
+            <li><strong>समय समाप्त:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः लॉक हो जाएगा[span_9](start_span)[span_9](end_span)।</li>
           </ul>
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
@@ -400,7 +403,7 @@
       </div>
     </section>
 
-    <!-- अंतिम चरण: परीक्षा कक्ष (Exam Hall - पूरी तरह सुरक्षित) -->
+    <!-- अंतिम चरण: परीक्षा कक्ष (Exam Hall) -->
     <section class="gateway-step" id="simExamHallStage">
       
       <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bseb-surface-card); padding: 6px 10px; border-radius: 8px; margin-bottom: 6px; border: 1px solid var(--bseb-border); flex-shrink: 0;">
@@ -548,11 +551,13 @@
               try {
                 cloudState = await getCloudExamState(user);
 
-                // छात्र का नाम जीमेल से भरेगा, माता-पिता का नाम अगर पहले से सेव है तो भरेगा नहीं तो खाली रहेगा
+                // छात्र का नाम Gmail से अपने आप लोड होगा
                 document.getElementById("inputStudentName").value = cloudState?.displayName || realName;
+
+                // माता-पिता का नाम: यदि पहले से छात्र ने कुछ सेव किया है तो वह दिखेगा, नहीं तो खाली रहेगा (Placeholder दिखेगा)
                 document.getElementById("inputFatherName").value = (cloudState?.fatherName && cloudState.fatherName !== "SURESH SHARMA") ? cloudState.fatherName : "";
                 document.getElementById("inputMotherName").value = (cloudState?.motherName && cloudState.motherName !== "SUNITA DEVI") ? cloudState.motherName : "";
-                document.getElementById("inputSchoolName").value = cloudState?.schoolName || "";
+                document.getElementById("inputSchoolName").value = (cloudState?.schoolName && cloudState.schoolName !== "HIGH SCHOOL TELWA, JHAJHA") ? cloudState.schoolName : "";
 
                 renderSubjectDropdown();
 
@@ -589,11 +594,19 @@
 
     function goToStep1() { showStep("step1AdmitCard"); }
 
+    // 🛑 चरण 1 सत्यापन: बिना भरे आगे बढ़ना पूर्णतः प्रतिबंधित
     function goToStep2() {
-      const sName = document.getElementById("inputStudentName").value.trim() || currentUser.displayName || "विद्यार्थी";
-      const fName = document.getElementById("inputFatherName").value.trim() || "राजेश शर्मा";
-      const mName = document.getElementById("inputMotherName").value.trim() || "संजू देवी";
-      const schName = document.getElementById("inputSchoolName").value.trim() || "उच्च विद्यालय तेलवा बाज़ार, जमुई";
+      const sName = document.getElementById("inputStudentName").value.trim();
+      const fName = document.getElementById("inputFatherName").value.trim();
+      const mName = document.getElementById("inputMotherName").value.trim();
+      const schName = document.getElementById("inputSchoolName").value.trim();
+      const errBox = document.getElementById("step1ErrorMsg");
+
+      if (!sName || !fName || !mName || !schName) {
+        errBox.style.display = "block";
+        return;
+      }
+      errBox.style.display = "none";
 
       if (cloudState) {
         cloudState.displayName = sName;
@@ -619,6 +632,7 @@
       showStep("step2RulesAndSubject");
     }
 
+    // 🔒 कड़ा नियम: जमा किया हुआ विषय हमेशा लॉक दिखेगा
     function renderSubjectDropdown() {
       const selectEl = document.getElementById("regExamDaySelect");
       if (!selectEl) return;
@@ -632,7 +646,6 @@
         opt.value = s.day;
         const rec = cloudState?.completedDays?.[s.day];
 
-        // 🔒 सख्त लॉक कंडीशन: यदि स्टेटस COMPLETED या LOCKED है
         if (rec && (rec.status === "COMPLETED" || rec.status === "LOCKED")) {
           opt.textContent = `Day ${s.day}: ${s.name} [जमा हो चुका है - लॉक 🔒]`;
           opt.disabled = true;
@@ -714,6 +727,7 @@
       document.getElementById("subjGuidanceBanner").innerHTML = `✍️ <strong>${currentSub.name} उत्तर पुस्तिका:</strong> अपने सभी पन्नों की साफ फोटो नीचे एक साथ चुनें (अधिकतम ${maxLimit} पन्ने)।`;
       document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: अधिकतम ${maxLimit} पन्ने की अनुमति है)`;
 
+      // ड्राफ्ट में पहले से अपलोड फोटो पुनर्स्थापित करना
       const savedPagesCache = localStorage.getItem(`draft_pages_${currentUser.uid}_day_${day}`);
       if (savedPagesCache) {
         try {
@@ -864,9 +878,7 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // =========================================================
-    // 🎯 1 से 100% प्रोग्रेस बार के साथ इंस्टेंट सबमिशन व लॉक
-    // =========================================================
+    // 🔒 1 से 100% फुल-स्क्रीन प्रोग्रेस के साथ तुरंत और स्थायी लॉक
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -898,7 +910,7 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      // 🛑 तुरंत मेमोरी में लॉक करें ताकि बैकएंड रिफ्रेश होने पर भी विषय लॉक दिखे
+      // 🛑 उसी पल मेमोरी में विषय को COMPLETED लॉक कर दें
       if (!cloudState.completedDays) cloudState.completedDays = {};
       cloudState.completedDays[activeDay] = { 
         status: "COMPLETED", 
@@ -906,7 +918,12 @@
         submittedAt: new Date().toISOString()
       };
       cloudState.activeSession = null;
-      localStorage.setItem(`nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`, JSON.stringify(cloudState));
+      
+      const localKey = `nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`;
+      localStorage.setItem(localKey, JSON.stringify(cloudState));
+      localStorage.setItem("nischay_student_session", JSON.stringify(cloudState));
+      localStorage.removeItem(`exam_started_at_${currentUser.uid}_day_${activeDay}`);
+      localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
 
       let cur = 0;
       const progressTimer = setInterval(async () => {
@@ -939,9 +956,6 @@
             uploadedPagesList,
             cloudState
           );
-
-          localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
-          localStorage.removeItem(`exam_started_at_${currentUser.uid}_day_${activeDay}`);
         } else {
           barFill.style.width = cur + "%";
           percentNum.textContent = cur + "%";
