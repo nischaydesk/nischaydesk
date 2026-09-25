@@ -80,6 +80,32 @@
       color: #0284c7;
       display: block;
       margin-top: 2px;
+      font-size: 0.95rem;
+    }
+
+    .form-group-sim {
+      margin-bottom: 11px;
+    }
+    .form-group-sim label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--bseb-text-muted);
+      margin-bottom: 4px;
+    }
+    .form-group-sim input, .form-group-sim select {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1.5px solid var(--bseb-border);
+      background: var(--bseb-surface-card);
+      color: var(--bseb-text);
+      font-weight: 700;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .form-group-sim input:focus {
+      border-color: #0284c7;
     }
 
     .security-scan-box {
@@ -198,9 +224,6 @@
     html[data-theme="dark"] .guidance-text-fixed { color: #f8fafc !important; }
     html[data-theme="light"] .guidance-text-fixed { color: #0f172a !important; }
 
-    /* =========================================================
-       🚀 1 से 100% वाला फुल-स्क्रीन सबमिशन प्रोसेसिंग गेटवे
-       ========================================================= */
     #submissionProgressScreen {
       display: none;
       position: fixed;
@@ -262,7 +285,7 @@
 
   <main class="sim-main-viewport">
 
-    <!-- चरण 1: डिजिटल एडमिट कार्ड एवं स्कूल विवरण सत्यापन -->
+    <!-- चरण 1: डिजिटल एडमिट कार्ड व व्यक्तिगत विवरण (Editable Fields) -->
     <section class="gateway-step active" id="step1AdmitCard">
       <div class="sim-card-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -276,28 +299,42 @@
         </div>
 
         <div id="admitCardContentBox" style="display: none;">
+          <!-- ऑटोमैटिक जनरेटेड क्रेडेंशियल्स (हर Gmail के लिए यूनिक) -->
           <div class="admit-card-preview">
             <div class="admit-card-header">
               <span style="font-weight:800; font-size:0.85rem; color:#0284c7;">BIHAR SCHOOL EXAMINATION BOARD</span>
               <span style="font-size:0.75rem; color:var(--bseb-text-muted);">वार्षिक परीक्षा 2026</span>
             </div>
             <div class="admit-grid">
-              <div>परीक्षार्थी का नाम: <strong id="admitStudentName">--</strong></div>
-              <div>माता/पिता का नाम: <strong id="admitFatherName">SURESH SHARMA</strong></div>
               <div>रोल कोड: <strong id="outRollCode">--</strong></div>
               <div>रोल नंबर: <strong id="outRollNumber">--</strong></div>
               <div style="grid-column: 1 / -1;">रजिस्ट्रेशन नंबर: <strong id="outRegNo">--</strong></div>
             </div>
           </div>
 
-          <div style="margin-bottom: 14px;">
-            <label style="font-size: 0.82rem; font-weight: bold; color: var(--bseb-text-muted); display: block; margin-bottom: 4px;">
-              🏫 अपने स्कूल / कॉलेज का नाम दर्ज करें (मार्कशीट के लिए) *
-            </label>
-            <input type="text" id="inputSchoolName" placeholder="उदा. HIGH SCHOOL TELWA BAZAR, JAMUI" style="width: 100%; padding: 10px; border-radius: 8px; border: 1.5px solid #0284c7; background: var(--bseb-surface-card); color: var(--bseb-text); font-weight: bold; box-sizing: border-box;" />
+          <!-- छात्र द्वारा बदले जाने वाले 4 मुख्य विवरण -->
+          <div class="form-group-sim">
+            <label>👤 परीक्षार्थी का नाम (Student Name) *</label>
+            <input type="text" id="inputStudentName" placeholder="उदा. PRINCE KUMAR" />
           </div>
 
-          <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div class="form-group-sim">
+              <label>👩 माता का नाम (Mother's Name) *</label>
+              <input type="text" id="inputMotherName" placeholder="उदा. SUNITA DEVI" />
+            </div>
+            <div class="form-group-sim">
+              <label>👨 पिता का नाम (Father's Name) *</label>
+              <input type="text" id="inputFatherName" placeholder="उदा. SURESH SHARMA" />
+            </div>
+          </div>
+
+          <div class="form-group-sim">
+            <label>🏫 स्कूल / कॉलेज का नाम (School Name) *</label>
+            <input type="text" id="inputSchoolName" placeholder="उदा. HIGH SCHOOL TELWA, JHAJHA" />
+          </div>
+
+          <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
             विवरण सत्यापित करें एवं आगे बढ़ें (चरण 2) →
           </button>
         </div>
@@ -323,17 +360,17 @@
         </div>
 
         <div style="display: grid; gap: 10px; margin-bottom: 14px;">
-          <div>
-            <label style="font-size: 0.8rem; font-weight: bold; color: var(--bseb-text-muted);">सक्रिय कक्षा</label>
-            <select id="regStudentClassSelect" onchange="onClassSelectionChanged()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--bseb-border); background: var(--bseb-surface-card); color: var(--bseb-text); font-weight: bold; box-sizing: border-box;">
+          <div class="form-group-sim">
+            <label>सक्रिय कक्षा</label>
+            <select id="regStudentClassSelect" onchange="onClassSelectionChanged()">
               <option value="10th">कक्षा 10वीं (Class 10th - मैट्रिक)</option>
               <option value="11th">कक्षा 11वीं (Class 11th - साइंस)</option>
               <option value="12th">कक्षा 12वीं (Class 12th - साइंस)</option>
             </select>
           </div>
-          <div>
-            <label style="font-size: 0.8rem; font-weight: bold; color: var(--bseb-text-muted);">आज का विषय</label>
-            <select id="regExamDaySelect" onchange="toggleEnterButtonState()" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--bseb-border); background: var(--bseb-surface-card); color: var(--bseb-text); font-weight: bold; box-sizing: border-box;"></select>
+          <div class="form-group-sim">
+            <label>आज का विषय</label>
+            <select id="regExamDaySelect" onchange="toggleEnterButtonState()"></select>
           </div>
         </div>
 
@@ -354,7 +391,7 @@
         <div class="scanner-line"></div>
         <h3 style="color: #0284c7; margin: 0 0 8px 0;" id="scanStatusTitle">डिजिटल सत्यापन जारी है...</h3>
         <p style="font-size: 0.88rem; color: var(--bseb-text-muted); margin: 0 0 16px 0;" id="scanStatusDesc">
-          Gmail क्रेडेंशियल, रोल नंबर और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
+          परीक्षार्थी क्रेडेंशियल, रोल नंबर और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
         </p>
         <div style="font-weight: 800; color: #16a34a; font-size: 0.95rem;" id="scanProgressBadge">⏳ जांच पूर्ण हो रही है...</div>
       </div>
@@ -416,9 +453,7 @@
 
   </main>
 
-  <!-- =========================================================
-       🚀 1 से 100% वाला फुल-स्क्रीन सबमिशन प्रोसेसिंग गेटवे
-       ========================================================= -->
+  <!-- 1 से 100% वाला फुल-स्क्रीन सबमिशन प्रोसेसिंग गेटवे -->
   <div id="submissionProgressScreen">
     <div class="progress-modal-card">
       <div style="font-size: 2.8rem; margin-bottom: 8px;" id="progressIcon">🔒</div>
@@ -501,7 +536,6 @@
 
               const realName = user.displayName || user.email.split('@')[0];
               document.getElementById("simUserFirstName").textContent = realName.split(" ")[0];
-              document.getElementById("admitStudentName").textContent = realName;
 
               const creds = generateUniqueCredentials(user.uid);
               document.getElementById("outRollCode").textContent = creds.rollCode;
@@ -511,10 +545,11 @@
               try {
                 cloudState = await getCloudExamState(user);
 
-                const schInput = document.getElementById("inputSchoolName");
-                if (cloudState && cloudState.schoolName) {
-                  schInput.value = cloudState.schoolName;
-                }
+                // छात्र के इनपुट फ़ील्ड्स में सेव्ड वैल्यूज भरें
+                document.getElementById("inputStudentName").value = cloudState?.displayName || realName;
+                document.getElementById("inputFatherName").value = cloudState?.fatherName || "SURESH SHARMA";
+                document.getElementById("inputMotherName").value = cloudState?.motherName || "SUNITA DEVI";
+                document.getElementById("inputSchoolName").value = cloudState?.schoolName || "HIGH SCHOOL TELWA, JHAJHA";
 
                 renderSubjectDropdown();
 
@@ -546,14 +581,33 @@
     function goToStep1() { showStep("step1AdmitCard"); }
 
     function goToStep2() {
-      const schName = document.getElementById("inputSchoolName").value.trim() || "HIGH SCHOOL TELWA BAZAR, JAMUI";
-      if (cloudState) cloudState.schoolName = schName;
+      const sName = document.getElementById("inputStudentName").value.trim() || currentUser.displayName;
+      const fName = document.getElementById("inputFatherName").value.trim() || "SURESH SHARMA";
+      const mName = document.getElementById("inputMotherName").value.trim() || "SUNITA DEVI";
+      const schName = document.getElementById("inputSchoolName").value.trim() || "HIGH SCHOOL TELWA, JHAJHA";
+
+      if (cloudState) {
+        cloudState.displayName = sName;
+        cloudState.fatherName = fName;
+        cloudState.motherName = mName;
+        cloudState.schoolName = schName;
+      }
+
+      // Firestore में 4 विवरण अपडेट करें
       if (currentUser && window.NischayConfig?.dbInstance) {
         window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
+          displayName: sName,
+          fatherName: fName,
+          motherName: mName,
           schoolName: schName
         }, { merge: true });
       }
+
+      localStorage.setItem("nischay_student_name", sName);
+      localStorage.setItem("nischay_student_father", fName);
+      localStorage.setItem("nischay_student_mother", mName);
       localStorage.setItem("nischay_student_school", schName);
+
       showStep("step2RulesAndSubject");
     }
 
@@ -619,8 +673,8 @@
       const desc = document.getElementById("scanStatusDesc");
 
       setTimeout(() => {
-        badge.textContent = "⏳ पहचान व रोल कोड मिलान: 85%";
-        desc.textContent = "डिजिटल सुरक्षा क्लीयरेंस मिल गई है। परीक्षा हॉल लोड हो रहा है...";
+        badge.textContent = "⏳ पहचान व बायोमेट्रिक मिलान: 85%";
+        desc.textContent = "डिजिटल सुरक्षा क्लीयरेंस मिल गई है। परीक्षा कक्ष लोड हो रहा है...";
       }, 700);
 
       setTimeout(() => {
@@ -647,7 +701,6 @@
       document.getElementById("subjGuidanceBanner").innerHTML = `✍️ <strong>${currentSub.name} उत्तर पुस्तिका:</strong> अपने सभी पन्नों की साफ फोटो नीचे एक साथ चुनें (अधिकतम ${maxLimit} पन्ने)।`;
       document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: अधिकतम ${maxLimit} पन्ने की अनुमति है)`;
 
-      // ड्राफ्ट में पहले से अपलोड फोटो पुनर्स्थापित करना
       const savedPagesCache = localStorage.getItem(`draft_pages_${currentUser.uid}_day_${day}`);
       if (savedPagesCache) {
         try {
@@ -791,9 +844,7 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // =========================================================
-    // 🎯 1 से 100% प्रोग्रेस बार के साथ इंस्टेंट सबमिशन व लॉक
-    // =========================================================
+    // 1 से 100% प्रोग्रेस बार के साथ इंस्टेंट सबमिशन व लॉक
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -811,7 +862,6 @@
 
       if (examTimerInterval) clearInterval(examTimerInterval);
 
-      // तुरंत फुल-स्क्रीन लोडर खोलें (पुराने पेज पर कोई बटन अटका नहीं रहेगा)
       const screen = document.getElementById("submissionProgressScreen");
       screen.classList.add("active");
 
@@ -826,7 +876,6 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      // 1 से 100% का स्मूथ एनिमेशन
       let cur = 0;
       const progressTimer = setInterval(async () => {
         cur += Math.floor(Math.random() * 5) + 3;
@@ -850,7 +899,6 @@
           icon.textContent = "✅";
           finalArea.style.display = "block";
 
-          // बैकएंड में हल्का डेटा सेव व लॉक
           await submitExamToCloud(
             currentUser,
             activeDay,
