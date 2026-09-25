@@ -516,3 +516,18 @@ html.light-mode .drawer-footer {
   border-top: 1px solid #cbd5e1 !important;
   color: #64748b !important;
 }
+/* प्रोफाइल कार्ड में नाम का रंग - डार्क और लाइट दोनों मोड के लिए */
+.user-name-title {
+  color: #f8fafc !important; /* डार्क मोड में चमकीला सफ़ेद */
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.light-mode .user-name-title {
+  color: #0f172a !important; /* लाइट मोड में गहरा काला/नेवी ताकि साफ़ दिखे */
+}
+
