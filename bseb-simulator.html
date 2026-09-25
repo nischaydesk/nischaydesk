@@ -198,27 +198,48 @@
     html[data-theme="dark"] .guidance-text-fixed { color: #f8fafc !important; }
     html[data-theme="light"] .guidance-text-fixed { color: #0f172a !important; }
 
-    .success-modal {
+    /* =========================================================
+       🚀 1 से 100% वाला फुल-स्क्रीन सबमिशन प्रोसेसिंग गेटवे
+       ========================================================= */
+    #submissionProgressScreen {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      z-index: 99999;
+      background: var(--bseb-bg, #0f172a);
+      z-index: 999999;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      padding: 20px;
       box-sizing: border-box;
     }
-    .success-modal.active { display: flex; }
-    .success-box {
-      background: var(--bseb-surface-card);
-      border: 2px solid #16a34a;
-      border-radius: 14px;
+    #submissionProgressScreen.active {
+      display: flex;
+    }
+    .progress-modal-card {
+      background: var(--bseb-surface-card, #1e293b);
+      border: 2px solid #0284c7;
+      border-radius: 16px;
       max-width: 480px;
       width: 100%;
-      padding: 24px;
+      padding: 26px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    }
+    .progress-bar-track {
+      width: 100%;
+      height: 14px;
+      background: rgba(2, 132, 199, 0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0 12px 0;
+      border: 1px solid #0284c7;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #16a34a);
+      border-radius: 10px;
+      transition: width 0.15s ease-out;
     }
   </style>
 </head>
@@ -395,20 +416,32 @@
 
   </main>
 
-  <!-- सबमिशन सक्सेस मोडल -->
-  <div class="success-modal" id="submissionSuccessModal">
-    <div class="success-box">
-      <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
-      <h2 style="color: #16a34a; margin: 0 0 8px 0;" id="successModalTitle">परीक्षा सफलतापूर्वक जमा हो गई!</h2>
-      <p style="color: var(--bseb-text); font-size: 0.92rem; line-height: 1.5; margin: 0 0 16px 0;" id="successModalDesc">
-        आपकी OMR और हस्तलिखित उत्तर पुस्तिका सफलतापूर्वक दर्ज हो चुकी है। अब यह विषय हमेशा के लिए लॉक हो चुका है।
-      </p>
-      <div style="background: rgba(22, 163, 74, 0.1); border: 1px solid #16a34a; border-radius: 8px; padding: 10px; margin-bottom: 18px; font-weight: 700; color: #16a34a; font-size: 0.88rem;">
-        🔒 स्थिति: COMPLETED & LOCKED
+  <!-- =========================================================
+       🚀 1 से 100% वाला फुल-स्क्रीन सबमिशन प्रोसेसिंग गेटवे
+       ========================================================= -->
+  <div id="submissionProgressScreen">
+    <div class="progress-modal-card">
+      <div style="font-size: 2.8rem; margin-bottom: 8px;" id="progressIcon">🔒</div>
+      <h2 style="color: #0284c7; margin: 0 0 6px 0; font-size: 1.3rem;" id="progressTitle">परीक्षा उत्तर-पुस्तिका सील हो रही है...</h2>
+      <p style="color: var(--bseb-text-muted); font-size: 0.86rem; margin: 0;" id="progressStageText">प्रारंभ हो रहा है...</p>
+      
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
       </div>
-      <button type="button" onclick="location.reload()" style="background: #0284c7; color: #fff; border: none; padding: 10px 24px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">
-        डैशबोर्ड पर वापस जाएं
-      </button>
+      
+      <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:bold; color:var(--bseb-text);">
+        <span>क्लाउड एनक्रिप्शन</span>
+        <span id="progressPercentNum">0%</span>
+      </div>
+
+      <div id="finalActionArea" style="display:none; margin-top: 18px;">
+        <div style="background: rgba(22, 163, 74, 0.12); border: 1.5px solid #16a34a; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-weight: 800; color: #16a34a; font-size: 0.9rem;">
+          ✓ परीक्षा सफलतापूर्वक लॉक हो चुकी है!
+        </div>
+        <button type="button" onclick="location.reload()" style="width:100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">
+          डैशबोर्ड पर वापस जाएं →
+        </button>
+      </div>
     </div>
   </div>
 
@@ -588,7 +621,7 @@
       setTimeout(() => {
         badge.textContent = "⏳ पहचान व रोल कोड मिलान: 85%";
         desc.textContent = "डिजिटल सुरक्षा क्लीयरेंस मिल गई है। परीक्षा हॉल लोड हो रहा है...";
-      }, 800);
+      }, 700);
 
       setTimeout(() => {
         badge.textContent = "✓ क्लीयरेंस पूर्ण! परीक्षा कक्ष आवंटित";
@@ -596,8 +629,8 @@
         setTimeout(() => {
           showStep("simExamHallStage");
           resumeExamHall(activeDay);
-        }, 600);
-      }, 1600);
+        }, 500);
+      }, 1500);
     }
 
     function resumeExamHall(day) {
@@ -700,7 +733,6 @@
       document.getElementById("omrFilledCount").textContent = Object.keys(saved).length;
     }
 
-    // 🎯 गोला रंगने पर तुरंत सिंक (छात्र कभी भी आकर आगे दे सकता है)
     function selectBubble(q, opt) {
       if (!cloudState.savedOMR) cloudState.savedOMR = {};
       if (!cloudState.savedOMR[activeDay]) cloudState.savedOMR[activeDay] = {};
@@ -741,7 +773,6 @@
           if (loaded === files.length) {
             txt.textContent = `✓ कुल ${files.length} पन्ने सुरक्षित सेव हैं!`;
             txt.style.color = "#16a34a";
-            // ड्राफ्ट में सुरक्षित रखें ताकि पेज रिफ्रेश होने पर भी न हटे
             try {
               localStorage.setItem(`draft_pages_${currentUser.uid}_day_${activeDay}`, JSON.stringify(uploadedPagesList));
             } catch (err) {}
@@ -760,7 +791,9 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // ⚡ त्वरित सबमिशन: बटन कभी हैंग नहीं होगा, तुरंत मोडल खुलेगा
+    // =========================================================
+    // 🎯 1 से 100% प्रोग्रेस बार के साथ इंस्टेंट सबमिशन व लॉक
+    // =========================================================
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -776,40 +809,63 @@
 
       if (!confirm(`क्या आप Day ${activeDay} की परीक्षा फाइनल जमा करना चाहते हैं?\n(जमा करने के बाद यह विषय लॉक हो जाएगा)`)) return;
 
-      const submitBtn = document.getElementById("btnSubmitFinalExam");
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "⏳ जमा हो रहा है...";
-      }
-
       if (examTimerInterval) clearInterval(examTimerInterval);
+
+      // तुरंत फुल-स्क्रीन लोडर खोलें (पुराने पेज पर कोई बटन अटका नहीं रहेगा)
+      const screen = document.getElementById("submissionProgressScreen");
+      screen.classList.add("active");
+
+      const barFill = document.getElementById("progressBarFill");
+      const percentNum = document.getElementById("progressPercentNum");
+      const stageText = document.getElementById("progressStageText");
+      const title = document.getElementById("progressTitle");
+      const icon = document.getElementById("progressIcon");
+      const finalArea = document.getElementById("finalActionArea");
 
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      try {
-        await submitExamToCloud(
-          currentUser,
-          activeDay,
-          currentSub.name,
-          paperData ? paperData.answerKey : {},
-          uploadedPagesList,
-          cloudState
-        );
+      // 1 से 100% का स्मूथ एनिमेशन
+      let cur = 0;
+      const progressTimer = setInterval(async () => {
+        cur += Math.floor(Math.random() * 5) + 3;
 
-        // ड्राफ्ट साफ़ करें
-        localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
-
-        document.getElementById("successModalTitle").textContent = `Day ${activeDay}: ${currentSub.name} जमा हो गया!`;
-        document.getElementById("submissionSuccessModal").classList.add("active");
-      } catch (e) {
-        alert("सबमिशन त्रुटि: " + e.message);
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "परीक्षा जमा करें ✓";
+        if (cur < 35) {
+          stageText.textContent = "1. OMR गोलों का क्रिप्टोग्राफ़िक सत्यापन जारी...";
+        } else if (cur < 75) {
+          stageText.textContent = "2. हस्तलिखित कॉपियों का डिजिटल वॉटरमार्क व सीलिंग...";
+        } else if (cur < 98) {
+          stageText.textContent = "3. बिहार बोर्ड क्लाउड सर्वर पर रिकॉर्ड स्थायी रूप से लॉक हो रहा है...";
         }
-      }
+
+        if (cur >= 100) {
+          cur = 100;
+          clearInterval(progressTimer);
+
+          barFill.style.width = "100%";
+          percentNum.textContent = "100%";
+          title.textContent = `${currentSub.name} - परीक्षा सील एवं लॉक!`;
+          stageText.textContent = "सत्यापन पूर्ण: अब यह विषय दोबारा नहीं खोला जा सकेगा।";
+          icon.textContent = "✅";
+          finalArea.style.display = "block";
+
+          // बैकएंड में हल्का डेटा सेव व लॉक
+          await submitExamToCloud(
+            currentUser,
+            activeDay,
+            currentSub.name,
+            paperData ? paperData.answerKey : {},
+            uploadedPagesList,
+            cloudState
+          );
+
+          localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
+        } else {
+          barFill.style.width = cur + "%";
+          percentNum.textContent = cur + "%";
+        }
+      }, 70);
     }
   </script>
 </body>
