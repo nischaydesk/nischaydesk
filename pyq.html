@@ -7,7 +7,7 @@
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="main.css">
@@ -17,18 +17,62 @@
   <style>
     .pyq-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
     .hero-banner { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: #fff; padding: 24px; border-radius: 14px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: var(--surface-card, #fff); padding: 14px; border-radius: 10px; border: 1px solid var(--border-strong, #cbd5e1); }
-    .filter-bar select, .filter-bar input { padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border-strong, #cbd5e1); font-size: 0.92rem; outline: none; background: var(--surface-elevated, #fff); color: var(--text-pure, #0f172a); }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: var(--surface-card, #0c1633); padding: 14px; border-radius: 10px; border: 1.5px solid var(--border-strong, #1e3a8a); }
+    .filter-bar select, .filter-bar input { padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border-strong, #1e3a8a); font-size: 0.92rem; outline: none; background: var(--surface-elevated, #13224a); color: var(--text-pure, #ffffff); }
     .filter-bar input { flex: 1; min-width: 200px; }
     .pyq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-    .pyq-card { background: var(--surface-card, #fff); border-radius: 12px; padding: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.06); border: 1.5px solid var(--border-strong, #eee); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
+    .pyq-card { background: var(--surface-card, #0c1633); border-radius: 12px; padding: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.06); border: 1.5px solid var(--border-strong, #1e3a8a); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
     .pyq-card:hover { transform: translateY(-3px); border-color: var(--brand-accent); }
     .badge-year { background: rgba(56, 189, 248, 0.15); color: #0284c7; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; display: inline-block; }
-    .badge-shift { background: rgba(255, 255, 255, 0.08); color: var(--text-secondary, #4b5563); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; display: inline-block; margin-left: 6px; border: 1px solid var(--border-subtle, #cbd5e1); }
-    .pyq-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--text-pure, #1e293b); }
+    .badge-shift { background: rgba(255, 255, 255, 0.08); color: var(--text-secondary, #94a3b8); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; display: inline-block; margin-left: 6px; border: 1px solid var(--border-subtle, rgba(56, 189, 248, 0.18)); }
+    .pyq-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--text-pure, #ffffff); }
     .btn-group { display: flex; gap: 8px; margin-top: 14px; }
     .btn-view { flex: 1; background: #0284c7; color: white !important; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none; }
-    .btn-down { background: var(--surface-elevated, #f1f5f9); color: var(--text-secondary, #334155) !important; border: 1px solid var(--border-strong, #cbd5e1); padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .btn-down { background: var(--surface-elevated, #13224a); color: var(--text-secondary, #94a3b8) !important; border: 1px solid var(--border-strong, #1e3a8a); padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+    /* ☀️ Light Mode Fixes (Pyq Card, Filters & Inputs) */
+    html.light-mode .filter-bar,
+    html[data-theme="light"] .filter-bar,
+    html.light-mode .pyq-card,
+    html[data-theme="light"] .pyq-card {
+      background: #ffffff !important;
+      border: 1.5px solid #cbd5e1 !important;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+    }
+
+    html.light-mode .filter-bar select,
+    html[data-theme="light"] .filter-bar select,
+    html.light-mode .filter-bar input,
+    html[data-theme="light"] .filter-bar input {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border: 1.5px solid #cbd5e1 !important;
+    }
+
+    html.light-mode .filter-bar select option,
+    html[data-theme="light"] .filter-bar select option {
+      background: #ffffff !important;
+      color: #0f172a !important;
+    }
+
+    html.light-mode .pyq-card h3,
+    html[data-theme="light"] .pyq-card h3 {
+      color: #0f172a !important;
+    }
+
+    html.light-mode .badge-shift,
+    html[data-theme="light"] .badge-shift {
+      background: #f1f5f9 !important;
+      color: #475569 !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    html.light-mode .btn-down,
+    html[data-theme="light"] .btn-down {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+    }
     
     /* PDF Modal */
     .pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
@@ -213,6 +257,7 @@
       });
 
       if (filtered.length === 0) {
+        mpGrid = document.getElementById('pyqGrid');
         pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-secondary, #64748b);">कोई प्रश्न पत्र नहीं मिला!</div>`;
         return;
       }
