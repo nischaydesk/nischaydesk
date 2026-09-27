@@ -587,3 +587,51 @@ html[data-theme="light"] .app-footer {
   background: #e2e8f0 !important;
   border-top: 1px solid #cbd5e1 !important;
 }
+/* =========================================================
+   🎯 PYQ & MODEL PAPER FORCE LIGHT MODE
+   ========================================================= */
+html.light-mode body,
+html[data-theme="light"] body {
+  background-color: #f1f5f9 !important;
+}
+
+/* क्वेश्चन बैंक व मॉडल पेपर के सभी कंटेनर और कार्ड */
+html.light-mode .pyq-card,
+html[data-theme="light"] .pyq-card,
+html.light-mode .model-card,
+html[data-theme="light"] .model-card,
+html.light-mode .paper-box,
+html[data-theme="light"] .paper-box,
+html.light-mode .filter-section,
+html[data-theme="light"] .filter-section,
+html.light-mode [class*="card"],
+html[data-theme="light"] [class*="card"] {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* इनपुट, सर्च बार और सेलेक्ट ड्रॉपडाउन */
+html.light-mode select,
+html[data-theme="light"] select,
+html.light-mode input[type="text"],
+html[data-theme="light"] input[type="text"],
+html.light-mode input[type="search"],
+html[data-theme="light"] input[type="search"] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1.5px solid #94a3b8 !important;
+}
+
+/* अंदर के सभी टेक्स्ट और पैराग्राफ */
+html.light-mode h1, html[data-theme="light"] h1,
+html.light-mode h2, html[data-theme="light"] h2,
+html.light-mode h3, html[data-theme="light"] h3,
+html.light-mode h4, html[data-theme="light"] h4,
+html.light-mode p, html[data-theme="light"] p,
+html.light-mode span:not(.card-tag):not(.badge),
+html[data-theme="light"] span:not(.card-tag):not(.badge) {
+  color: #0f172a !important;
+}
+
