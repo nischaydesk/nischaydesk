@@ -199,7 +199,7 @@ body.app-body {
 }
 
 /* ==========================================================================
-   6. BRAND NEW PRO ED-TECH WIDGETS (STREAK, TICKER, GLOW-CARDS)
+   6. BRAND NEW PRO ED-TECH WIDGETS
    ========================================================================== */
 
 /* Daily Study Streak Card */
@@ -453,10 +453,9 @@ input:checked + .slider:before {
 }
 
 /* ==========================================================================
-   9. ABSOLUTE BULLETPROOF LIGHT MODE (Dual Class + Attribute Support)
+   9. PERFECT HIGH-CONTRAST LIGHT MODE (NO UNWANTED BOX OUTLINES)
    ========================================================================== */
 
-/* बॉडी व बैकग्राउंड */
 html.light-mode body.app-body,
 html[data-theme="light"] body.app-body {
   background-color: #f1f5f9 !important;
@@ -466,7 +465,7 @@ html[data-theme="light"] body.app-body {
   color: #0f172a !important;
 }
 
-/* नमस्ते और हेडलाइंस */
+/* मुख्य टाइटल्स और नमस्ते */
 html.light-mode .hero-headline,
 html[data-theme="light"] .hero-headline,
 html.light-mode #welcomeGreetingText,
@@ -481,25 +480,17 @@ html[data-theme="light"] .hero-subline {
   color: #475569 !important;
 }
 
-/* सभी सामान्य कार्ड्स */
+/* सिर्फ मुख्य कार्ड्स को व्हाइट बैकग्राउंड व सही बॉर्डर (अंदर के टेक्स्ट को नहीं) */
+html.light-mode .grid-card,
+html[data-theme="light"] .grid-card,
 html.light-mode .pro-glass-card,
 html[data-theme="light"] .pro-glass-card,
 html.light-mode .stat-glass-card,
 html[data-theme="light"] .stat-glass-card,
-html.light-mode .grid-card,
-html[data-theme="light"] .grid-card,
 html.light-mode .quick-tool-card,
 html[data-theme="light"] .quick-tool-card,
 html.light-mode .note-item-card,
 html[data-theme="light"] .note-item-card,
-html.light-mode .lobby-card,
-html[data-theme="light"] .lobby-card,
-html.light-mode .question-stage-box,
-html[data-theme="light"] .question-stage-box,
-html.light-mode .question-palette-box,
-html[data-theme="light"] .question-palette-box,
-html.light-mode .result-card-container,
-html[data-theme="light"] .result-card-container,
 html.light-mode .news-ticker-strip,
 html[data-theme="light"] .news-ticker-strip {
   background: #ffffff !important;
@@ -508,32 +499,35 @@ html[data-theme="light"] .news-ticker-strip {
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* 🎯 क्वेश्चन बैंक (pyq.html) और मॉडल पेपर (model-paper.html) के सेलेक्टर्स */
+/* 🎯 क्वेश्चन बैंक व मॉडल पेपर के मुख्य कंटेनर्स */
 html.light-mode .filter-container,
 html[data-theme="light"] .filter-container,
-html.light-mode .filter-box,
-html[data-theme="light"] .filter-box,
 html.light-mode .search-filter-card,
 html[data-theme="light"] .search-filter-card,
-html.light-mode .filter-bar,
-html[data-theme="light"] .filter-bar,
 html.light-mode .paper-card,
 html[data-theme="light"] .paper-card,
 html.light-mode .qb-card,
 html[data-theme="light"] .qb-card,
 html.light-mode .model-paper-card,
 html[data-theme="light"] .model-paper-card,
-html.light-mode .paper-list-item,
-html[data-theme="light"] .paper-list-item,
 html.light-mode .item-card,
 html[data-theme="light"] .item-card {
   background: #ffffff !important;
-  border: 1.5px solid #e2e8f0 !important;
+  border: 1.5px solid #cbd5e1 !important;
   color: #0f172a !important;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
 }
 
-/* टाइटल्स, टेक्स्ट और हेडिंग्स */
+/* अंदरूनी एलिमेंट्स से अनचाहे बॉर्डर्स हटाना */
+html.light-mode .card-head, html[data-theme="light"] .card-head,
+html.light-mode .card-title, html[data-theme="light"] .card-title,
+html.light-mode .card-desc, html[data-theme="light"] .card-desc {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* टाइटल्स और हेडिंग्स का रंग */
 html.light-mode h1, html[data-theme="light"] h1,
 html.light-mode h2, html[data-theme="light"] h2,
 html.light-mode h3, html[data-theme="light"] h3,
@@ -541,38 +535,28 @@ html.light-mode h4, html[data-theme="light"] h4,
 html.light-mode .card-title, html[data-theme="light"] .card-title,
 html.light-mode .brand-title, html[data-theme="light"] .brand-title,
 html.light-mode .footer-heading, html[data-theme="light"] .footer-heading,
-html.light-mode .note-item-card h3, html[data-theme="light"] .note-item-card h3,
-html.light-mode .question-text, html[data-theme="light"] .question-text,
-html.light-mode .palette-title, html[data-theme="light"] .palette-title,
-html.light-mode .solutions-heading, html[data-theme="light"] .solutions-heading,
-html.light-mode .ticker-text, html[data-theme="light"] .ticker-text,
 html.light-mode .paper-title, html[data-theme="light"] .paper-title {
   color: #0f172a !important;
 }
 
-/* पैराग्राफ और सब-टेक्स्ट */
+/* पैराग्राफ और डिस्क्रिप्शन */
 html.light-mode p, html[data-theme="light"] p,
-html.light-mode .stat-label, html[data-theme="light"] .stat-label,
 html.light-mode .card-desc, html[data-theme="light"] .card-desc,
+html.light-mode .stat-label, html[data-theme="light"] .stat-label,
 html.light-mode .footer-summary, html[data-theme="light"] .footer-summary,
-html.light-mode .section-subheadline, html[data-theme="light"] .section-subheadline,
-html.light-mode .note-item-card p, html[data-theme="light"] .note-item-card p,
-html.light-mode .lobby-subtitle, html[data-theme="light"] .lobby-subtitle,
-html.light-mode .paper-desc, html[data-theme="light"] .paper-desc,
-html.light-mode .sub-title, html[data-theme="light"] .sub-title {
+html.light-mode .section-subheadline, html[data-theme="light"] .section-subheadline {
   color: #475569 !important;
 }
 
-/* ड्रॉपडाउन, इनपुट और सेलेक्ट बॉक्स */
+/* इनपुट और सेलेक्ट बॉक्सेस */
 html.light-mode select, html[data-theme="light"] select,
-html.light-mode input, html[data-theme="light"] input,
-html.light-mode .exam-dropdown, html[data-theme="light"] .exam-dropdown,
-html.light-mode .notes-search-field, html[data-theme="light"] .notes-search-field,
-html.light-mode .select-input, html[data-theme="light"] .select-input,
-html.light-mode .search-input, html[data-theme="light"] .search-input {
+html.light-mode input[type="text"], html[data-theme="light"] input[type="text"],
+html.light-mode input[type="search"], html[data-theme="light"] input[type="search"],
+html.light-mode .exam-dropdown, html[data-theme="light"] .exam-dropdown {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border: 1.5px solid #cbd5e1 !important;
+  border-radius: var(--radius-sm);
 }
 
 html.light-mode select option,
@@ -587,51 +571,3 @@ html[data-theme="light"] .app-footer {
   background: #e2e8f0 !important;
   border-top: 1px solid #cbd5e1 !important;
 }
-/* =========================================================
-   🎯 PYQ & MODEL PAPER FORCE LIGHT MODE
-   ========================================================= */
-html.light-mode body,
-html[data-theme="light"] body {
-  background-color: #f1f5f9 !important;
-}
-
-/* क्वेश्चन बैंक व मॉडल पेपर के सभी कंटेनर और कार्ड */
-html.light-mode .pyq-card,
-html[data-theme="light"] .pyq-card,
-html.light-mode .model-card,
-html[data-theme="light"] .model-card,
-html.light-mode .paper-box,
-html[data-theme="light"] .paper-box,
-html.light-mode .filter-section,
-html[data-theme="light"] .filter-section,
-html.light-mode [class*="card"],
-html[data-theme="light"] [class*="card"] {
-  background: #ffffff !important;
-  color: #0f172a !important;
-  border: 1.5px solid #cbd5e1 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
-}
-
-/* इनपुट, सर्च बार और सेलेक्ट ड्रॉपडाउन */
-html.light-mode select,
-html[data-theme="light"] select,
-html.light-mode input[type="text"],
-html[data-theme="light"] input[type="text"],
-html.light-mode input[type="search"],
-html[data-theme="light"] input[type="search"] {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border: 1.5px solid #94a3b8 !important;
-}
-
-/* अंदर के सभी टेक्स्ट और पैराग्राफ */
-html.light-mode h1, html[data-theme="light"] h1,
-html.light-mode h2, html[data-theme="light"] h2,
-html.light-mode h3, html[data-theme="light"] h3,
-html.light-mode h4, html[data-theme="light"] h4,
-html.light-mode p, html[data-theme="light"] p,
-html.light-mode span:not(.card-tag):not(.badge),
-html[data-theme="light"] span:not(.card-tag):not(.badge) {
-  color: #0f172a !important;
-}
-
