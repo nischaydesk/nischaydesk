@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSEB Simulation Result Portal | NischayDesk</title>
+  <title>BSEB Annual Exam Result 2026 | NischayDesk</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -129,6 +129,21 @@
       gap: 8px;
     }
     .btn-search:hover { background: #0369a1; }
+
+    /* अलर्ट / काउंटडाउन कार्ड */
+    .countdown-lock-card {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border: 2px solid #eab308;
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      margin-bottom: 25px;
+    }
+
     .error-banner {
       display: none;
       margin-top: 12px;
@@ -289,7 +304,6 @@
       color: #16a34a;
     }
 
-    /* जाँची गई कॉपी डाउनलोड सेक्शन */
     .eval-copies-container {
       margin-top: 14px;
       background: #f8fafc;
@@ -359,7 +373,6 @@
     .btn-print { background: #16a34a; color: #fff; }
     .btn-reset { background: #64748b; color: #fff; }
 
-    /* प्रिंट मीडिया नियम */
     @media print {
       @page {
         size: A4 portrait;
@@ -371,7 +384,7 @@
         margin: 0 !important;
         display: block !important;
       }
-      .top-brand-bar, .search-card, .print-bar, .eval-copies-container {
+      .top-brand-bar, .search-card, .print-bar, .eval-copies-container, .countdown-lock-card {
         display: none !important;
       }
       .a4-marksheet-wrapper {
@@ -412,10 +425,11 @@
     <div class="brand-name">Nischay<span style="color:#0284c7;">Desk</span> BSEB Portal</div>
   </div>
 
+  <!-- सर्च गेटवे -->
   <div class="search-card" id="searchBoxCard">
     <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
     <p class="search-subtitle">
-      NischayDesk आधिकारिक सिमुलेशन मूल्यांकन परिणाम (Fast Test Portal)<br />
+      बिहार विद्यालय परीक्षा समिति आधिकारिक डिजिटल परिणाम पोर्टल<br />
       सत्यापित रोल कोड एवं रोल नंबर दर्ज करें
     </p>
 
@@ -445,6 +459,20 @@
     <div class="error-banner" id="errorBanner"></div>
   </div>
 
+  <!-- 7-दिन का कड़ा लॉक / काउंटडाउन कार्ड -->
+  <div class="countdown-lock-card" id="lockCountdownCard">
+    <div style="font-size: 2.6rem; margin-bottom: 6px;">⏳</div>
+    <h2 style="color: #b45309; margin: 0 0 6px 0; font-size: 1.25rem;">परिणाम अभी संकलन में है!</h2>
+    <p style="font-size: 0.85rem; color: #475569; margin: 0 0 14px 0; line-height: 1.4;">
+      वार्षिक परीक्षा के नियम के अनुसार, परिणाम परीक्षा शुरू होने के <strong>7 दिन बाद</strong> प्रकाशित किया जाता है।
+    </p>
+    <div style="background: #fef08a; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 1.15rem; color: #854d0e; letter-spacing: 1px;" id="countdownTimerClock">
+      लोड हो रहा है...
+    </div>
+    <button type="button" class="btn-action btn-reset" onclick="resetSearch()" style="margin-top: 16px; width: 100%;">← पीछे जाएं</button>
+  </div>
+
+  <!-- A4 मार्कशीट -->
   <div class="a4-marksheet-wrapper" id="a4Marksheet">
     <div class="watermark-webcopy">NISCHAYDESK WEB COPY</div>
 
@@ -534,6 +562,7 @@
 
   <script>
     let expectedCaptchaSum = 0;
+    let countdownInterval = null;
 
     function generateCaptcha() {
       const n1 = Math.floor(Math.random() * 20) + 5;
@@ -619,7 +648,76 @@
         return;
       }
 
+      // 🔒 7-दिन का कड़ा नियम चेक करें (इंटरनेट सर्वर टाइम से)
+      const isUnlocked = await checkResultReleaseDate(studentData);
+      if (!isUnlocked) {
+        return; // ताला लगा है, उलटी गिनती शुरू हो गई है
+      }
+
       renderA4Marksheet(studentData);
+    }
+
+    // 🔒 7-दिन की उलटी गिनती का सख्त फंक्शन
+    async function checkResultReleaseDate(data) {
+      const serverDateObj = await getVerifiedServerDate();
+      const nowMs = serverDateObj.getTime();
+
+      // परीक्षा शुरू होने की तिथि
+      const startMs = data.startDate ? new Date(data.startDate).getTime() : nowMs;
+      // पूरे 7 दिन बाद (7 * 24 * 60 * 60 * 1000)
+      const releaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
+
+      if (nowMs < releaseMs) {
+        document.getElementById("searchBoxCard").style.display = "none";
+        document.getElementById("lockCountdownCard").style.display = "block";
+
+        if (countdownInterval) clearInterval(countdownInterval);
+
+        const updateTimer = () => {
+          const diff = releaseMs - Date.now() - (cachedServerOffset || 0);
+          if (diff <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("lockCountdownCard").style.display = "none";
+            renderA4Marksheet(data);
+            return;
+          }
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          document.getElementById("countdownTimerClock").textContent = 
+            `⏳ ${days} दिन : ${String(hours).padStart(2,'0')} घंटे : ${String(minutes).padStart(2,'0')} मिनट : ${String(seconds).padStart(2,'0')} सेकंड`;
+        };
+
+        updateTimer();
+        countdownInterval = setInterval(updateTimer, 1000);
+        return false;
+      }
+
+      return true;
+    }
+
+    // ⚡ OMR ऑटो-कैलकुलेटर: अगर completedDays न भी मिले, तो OMR से सही अंक निकालेगा
+    function calculateObjectiveFromSavedOMR(day, subCode, savedOMR) {
+      if (!savedOMR || !savedOMR[day]) return 0;
+      const dayAnswers = savedOMR[day];
+      const paperData = window.BSEB_PAPERS_DATABASE?.[subCode];
+      if (!paperData || !paperData.answerKey) return 0;
+
+      const answerKey = paperData.answerKey;
+      let score = 0;
+      let count = 0;
+      for (let i = 1; i <= 100; i++) {
+        if (dayAnswers[i]) {
+          count++;
+          if (answerKey[i] && dayAnswers[i].toUpperCase() === answerKey[i].toUpperCase()) {
+            score++;
+          }
+          if (count === 50) break;
+        }
+      }
+      return score;
     }
 
     function renderA4Marksheet(data) {
@@ -638,15 +736,17 @@
       buttonsGrid.innerHTML = "";
 
       const subjects = [
-        { day: 1, name: "M.I.L. HINDI", full: 100, pass: 30, isExtra: false },
-        { day: 2, name: "S.I.L. SANSKRIT", full: 100, pass: 30, isExtra: false },
-        { day: 3, name: "MATHEMATICS", full: 100, pass: 30, isExtra: false },
-        { day: 4, name: "SCIENCE", full: 100, pass: 30, isExtra: false },
-        { day: 5, name: "SOCIAL SCIENCE", full: 100, pass: 30, isExtra: false },
-        { day: 6, name: "ENGLISH", full: 100, pass: 30, isExtra: true }
+        { day: 1, code: "101-hindi", name: "M.I.L. HINDI", full: 100, pass: 30, isExtra: false },
+        { day: 2, code: "105-sanskrit", name: "S.I.L. SANSKRIT", full: 100, pass: 30, isExtra: false },
+        { day: 3, code: "110-math", name: "MATHEMATICS", full: 100, pass: 30, isExtra: false },
+        { day: 4, code: "112-science", name: "SCIENCE", full: 100, pass: 30, isExtra: false },
+        { day: 5, code: "113-sst", name: "SOCIAL SCIENCE", full: 100, pass: 30, isExtra: false },
+        { day: 6, code: "114-english", name: "ENGLISH", full: 100, pass: 30, isExtra: true }
       ];
 
       const completed = data.completedDays || {};
+      const savedOMR = data.savedOMR || {};
+
       let aggregateMarks = 0;
       let isCandidateFailed = false;
 
@@ -664,6 +764,9 @@
           btn.innerHTML = `📄 Day ${sub.day} (${sub.name.split(' ')[0]}) जाँची प्रति`;
           btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord);
           buttonsGrid.appendChild(btn);
+        } else if (savedOMR && savedOMR[sub.day] && Object.keys(savedOMR[sub.day]).length > 0) {
+          // 🚀 जादू: अगर सबमिशन में completedDays न भी हो, OMR से सही अंक दर्ज होंगे!
+          theoryMarks = calculateObjectiveFromSavedOMR(sub.day, sub.code, savedOMR);
         } else {
           isAbsent = true;
         }
@@ -705,12 +808,12 @@
       }
 
       document.getElementById("searchBoxCard").style.display = "none";
+      document.getElementById("lockCountdownCard").style.display = "none";
       document.getElementById("a4Marksheet").style.display = "block";
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 📦 IndexedDB से उत्तर-पुस्तिका पढ़ने का हेल्पर
     async function getEvaluatedSheetFromDB(uid, day) {
       return new Promise((resolve) => {
         const req = indexedDB.open("NischaySheetsDB", 1);
@@ -726,7 +829,6 @@
       });
     }
 
-    // 🔴 जाँची हुई लाल कलम वाली सर्टिफाइड कॉपी का असली PDF जनरेटर
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord) {
       let cacheData = await getEvaluatedSheetFromDB(uid, day);
 
@@ -743,7 +845,7 @@
       }
 
       const pages = cacheData.pages || [];
-      const evalPages = examRecord.pagesEvaluation || cacheData.evaluation || [];
+      const evalPages = examRecord?.pagesEvaluation || cacheData.evaluation || [];
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
@@ -765,17 +867,15 @@
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         const pEval = evalPages.find(p => p.pageIndex === i);
-        const marksOnThisPage = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord.subjectiveMarks || 0) : 0);
-        const remark = pEval ? pEval.pageRemark : (examRecord.aiFeedback || "मूल्यांकन संपन्न");
+        const marksOnThisPage = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 0);
+        const remark = pEval ? pEval.pageRemark : (examRecord?.aiFeedback || "मूल्यांकन संपन्न");
 
-        // लाल हेडर पट्टी
         ctx.fillStyle = "rgba(220, 38, 38, 0.9)";
         ctx.fillRect(0, 0, canvas.width, 80);
         ctx.fillStyle = "#ffffff";
         ctx.font = "bold 32px 'Plus Jakarta Sans', Arial";
         ctx.fillText(`BSEB Patna Evaluation Copy | Day ${day}: ${subjectName} | Page: ${i + 1}/${pages.length}`, 30, 52);
 
-        // लाल टिक मार्क (✓)
         ctx.strokeStyle = "#dc2626";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
@@ -785,12 +885,10 @@
         ctx.lineTo(1120, 340);
         ctx.stroke();
 
-        // अंक
         ctx.fillStyle = "#dc2626";
         ctx.font = "bold 60px 'Plus Jakarta Sans', Arial";
         ctx.fillText(`+${marksOnThisPage}`, 1000, 540);
 
-        // गोल आधिकारिक मुहर
         ctx.strokeStyle = "#dc2626";
         ctx.lineWidth = 6;
         ctx.beginPath();
@@ -804,7 +902,6 @@
         ctx.fillText("CHIEF EXAMINER", 1040, 785);
         ctx.textAlign = "left";
 
-        // नीचे परीक्षक टिप्पणी
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
         ctx.strokeStyle = "#dc2626";
@@ -823,8 +920,10 @@
     }
 
     function resetSearch() {
+      if (countdownInterval) clearInterval(countdownInterval);
       document.getElementById("a4Marksheet").style.display = "none";
       document.getElementById("printActionsBar").style.display = "none";
+      document.getElementById("lockCountdownCard").style.display = "none";
       document.getElementById("searchBoxCard").style.display = "block";
       generateCaptcha();
       hideError();
