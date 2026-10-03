@@ -15,9 +15,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  
-  <!-- HEIC Image Conversion Support -->
-  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
   <style>
     html, body {
@@ -482,7 +479,7 @@
                 (गणित: अधिकतम 24 पन्ने | अन्य: अधिकतम 20 पन्ने)
               </p>
               
-              <input type="file" id="masterAnswerInput" accept="image/*,.heic" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1.5px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
+              <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1.5px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
               <div id="uploadStatusText" style="margin-top: 8px; font-weight: bold; font-size: 0.82rem; color: #0284c7;"></div>
             </div>
           </div>
@@ -666,7 +663,6 @@
       showStep("step2RulesAndSubject");
     }
 
-    // 🔒 सर्वर समय आधारित ड्रॉपडाउन व ताला (फोन घड़ी से छेड़छाड़ असंभव)
     async function renderSubjectDropdown() {
       const selectEl = document.getElementById("regExamDaySelect");
       const noticeBox = document.getElementById("nextDayNoticeBox");
@@ -679,7 +675,6 @@
       const completed = cloudState?.completedDays || {};
       const lastExamDateStr = cloudState?.lastExamDate;
       
-      // सर्वर समय प्राप्त करें
       const serverDateObj = await getVerifiedServerDate();
       const todayStr = serverDateObj.toISOString().split("T")[0];
 
@@ -832,7 +827,6 @@
       startStrictTimer(day);
     }
 
-    // 🔒 सर्वर-सिंक्ड 3 घंटे 15 मिनट का अपरिवर्तनीय टाइमर
     async function startStrictTimer(day) {
       if (examTimerInterval) clearInterval(examTimerInterval);
 
@@ -856,7 +850,6 @@
       const endMs = startMs + totalDuration;
       const clockEl = document.getElementById("examTimerClock");
 
-      // सर्वर ऑफ़सेट (स्थानीय समय और सर्वर समय का अंतर)
       const localServerOffset = serverNowMs - Date.now();
 
       examTimerInterval = setInterval(async () => {
@@ -896,7 +889,6 @@
       }, 1000);
     }
 
-    // 🔴 OMR: 50 गोलों का सख्त लॉक + अनसेलेक्ट (हटाने) की पूरी आजादी
     function renderOmrBubbles(count) {
       const box = document.getElementById("omrBubblesMatrix");
       box.innerHTML = "";
@@ -929,11 +921,9 @@
 
       const currentAnswers = cloudState.savedOMR[activeDay];
 
-      // 1. अगर छात्र पहले से भरे गोले पर दोबारा क्लिक करे, तो उसे अन-सेलेक्ट (हटा) दें
       if (currentAnswers[q] === opt) {
         delete currentAnswers[q];
       } else {
-        // 2. 50 गोलों का कड़ा ताला
         const totalFilled = Object.keys(currentAnswers).length;
         if (!currentAnswers[q] && totalFilled >= 50) {
           alert("⚠️ बोर्ड नियम: आप अधिकतम 50 प्रश्नों के ही उत्तर दे सकते हैं!\nकिसी अन्य प्रश्न का उत्तर बदलने के लिए पहले से रंगे किसी गोले पर क्लिक करके उसे हटाएँ।");
@@ -946,11 +936,10 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    // 📸 ऑटो-कंप्रेशन और HEIC सपोर्ट के साथ पन्नों को सुरक्षित करना
+    // 🚀 सुपर-फास्ट मेमोरी-सेफ इमेज कंप्रेसर (कैमरे की 20MB फाइल को 150KB में बदलेगा)
     async function handleMasterUpload(e) {
-      const files = e.target.files;
+      const files = Array.from(e.target.files);
       const txt = document.getElementById("uploadStatusText");
-
       if (!files || files.length === 0) return;
 
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
@@ -958,57 +947,77 @@
       const MAX_PAGES_ALLOWED = (currentSub.code.includes("math") || activeDay === 3) ? 24 : 20;
 
       if (files.length > MAX_PAGES_ALLOWED) {
-        alert(`⚠️ कड़ा बोर्ड नियम उल्लंघन!\n\n${currentSub.name} में अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!\n\nकृपया सही संख्या में पेज चुनें।`);
+        alert(`⚠️ कड़ा नियम: अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!`);
         e.target.value = "";
         return;
       }
 
       uploadedPagesList = [];
       txt.style.color = "#0284c7";
-      txt.textContent = `⏳ ${files.length} पन्ने कंप्रेस एवं सुरक्षित किए जा रहे हैं...`;
+
+      const processHeavyFile = (file) => {
+        return new Promise((resolve) => {
+          const blobUrl = URL.createObjectURL(file);
+          const img = new Image();
+
+          img.onload = () => {
+            URL.revokeObjectURL(blobUrl);
+            
+            let w = img.width;
+            let h = img.height;
+            const maxDimension = 850;
+
+            if (w > h && w > maxDimension) {
+              h = Math.round((h * maxDimension) / w);
+              w = maxDimension;
+            } else if (h > maxDimension) {
+              w = Math.round((w * maxDimension) / h);
+              h = maxDimension;
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = w;
+            canvas.height = h;
+
+            const ctx = canvas.getContext("2d", { alpha: false });
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+
+            const lightBase64 = canvas.toDataURL("image/jpeg", 0.45);
+            resolve(lightBase64);
+          };
+
+          img.onerror = () => {
+            URL.revokeObjectURL(blobUrl);
+            const fr = new FileReader();
+            fr.onload = (ev) => resolve(ev.target.result);
+            fr.readAsDataURL(file);
+          };
+
+          img.src = blobUrl;
+        });
+      };
 
       for (let i = 0; i < files.length; i++) {
-        let f = files[i];
-
-        // HEIC को JPEG में बदलें
-        if (f.name.toLowerCase().endsWith('.heic') || f.type.includes('heic')) {
-          try {
-            const converted = await heic2any({ blob: f, toType: "image/jpeg", quality: 0.6 });
-            f = Array.isArray(converted) ? converted[0] : converted;
-          } catch(err) {}
-        }
-
-        // कंप्रेस करके 800px पर लाना ताकि मोबाइल पर लोड न पड़े
-        const base64Data = await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(f);
-          reader.onload = (ev) => {
-            const img = new Image();
-            img.src = ev.target.result;
-            img.onload = () => {
-              const canvas = document.createElement('canvas');
-              let w = img.width, h = img.height;
-              const maxDim = 800;
-              if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
-              else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-              canvas.width = w; canvas.height = h;
-              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-              resolve(canvas.toDataURL('image/jpeg', 0.55));
-            };
-          };
-        });
+        txt.textContent = `⏳ पन्ना ${i + 1} / ${files.length} सुरक्षित हो रहा है (${Math.round(((i + 1) / files.length) * 100)}%)...`;
+        await new Promise(r => setTimeout(r, 40));
+        const compressedDataUrl = await processHeavyFile(files[i]);
 
         uploadedPagesList.push({
           pageNumber: i + 1,
-          dataUrl: base64Data
+          dataUrl: compressedDataUrl
         });
       }
 
-      txt.textContent = `✓ कुल ${files.length} पन्ने सफलता से सुरक्षित हो गए!`;
+      txt.textContent = `✓ कुल ${uploadedPagesList.length} पन्ने सफलता से सुरक्षित हो गए!`;
       txt.style.color = "#16a34a";
+
       try {
         localStorage.setItem(`draft_pages_${currentUser.uid}_day_${activeDay}`, JSON.stringify(uploadedPagesList));
-      } catch (err) {}
+      } catch (err) {
+        console.warn("LocalStorage मेमोरी भर गई, डेटा सत्र में सुरक्षित है।");
+      }
     }
 
     function switchExamTab(tab) {
@@ -1020,7 +1029,6 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // ⚡ अंतिम सबमिशन (सर्वर समय आधारित लॉकिंग + शांत बैकग्राउंड AI चेकिंग)
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -1052,13 +1060,13 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      // सर्वर समय प्राप्त करें
       const serverDateObj = await getVerifiedServerDate();
       const todayStr = serverDateObj.toISOString().split("T")[0];
 
       if (!cloudState.completedDays) cloudState.completedDays = {};
       cloudState.completedDays[activeDay] = { 
         status: "COMPLETED", 
+        subjectCode: currentSub.code,
         subjectName: currentSub.name,
         submittedAt: serverDateObj.toISOString()
       };
@@ -1093,11 +1101,10 @@
           icon.textContent = "✅";
           finalArea.style.display = "block";
 
-          // क्लाउड पर भेजना (बैकग्राउंड AI मूल्यांकन स्वतः शुरू होगा)
           await submitExamToCloud(
             currentUser,
             activeDay,
-            currentSub.name,
+            currentSub.code,
             paperData ? paperData.answerKey : {},
             uploadedPagesList,
             cloudState
