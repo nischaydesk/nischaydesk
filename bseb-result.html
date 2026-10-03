@@ -20,26 +20,29 @@
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', Arial, sans-serif;
       background: #f1f5f9;
       margin: 0;
-      padding: 16px;
+      padding: 12px;
       color: #0f172a;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
 
     .top-brand-bar {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .brand-logo-badge {
-      background: #0284c7;
-      color: #fff;
+      background: #0284c7 !important;
+      color: #ffffff !important;
       font-weight: 900;
       font-size: 1.1rem;
       padding: 4px 10px;
       border-radius: 8px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .brand-name {
       font-weight: 900;
@@ -47,6 +50,7 @@
       color: #0f172a;
     }
 
+    /* सर्च गेटवे कार्ड */
     .search-card {
       width: 100%;
       max-width: 480px;
@@ -139,16 +143,19 @@
       line-height: 1.4;
     }
 
+    /* रिस्पॉन्सिव आधिकारिक मार्कशीट रैपर */
     .a4-marksheet-wrapper {
       display: none;
-      width: 210mm;
-      min-height: 297mm;
-      padding: 12mm 15mm;
+      width: 100%;
+      max-width: 820px;
       background: #ffffff;
       border: 2px solid #1e293b;
+      border-radius: 8px;
+      padding: 20px;
       position: relative;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       margin-bottom: 20px;
+      overflow-x: auto;
     }
 
     .watermark-webcopy {
@@ -156,7 +163,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(-32deg);
-      font-size: 4rem;
+      font-size: clamp(2rem, 6vw, 4rem);
       font-weight: 900;
       color: rgba(2, 132, 199, 0.06);
       pointer-events: none;
@@ -178,22 +185,34 @@
       gap: 10px;
       margin-bottom: 4px;
     }
+    .header-logo-box {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      font-weight: 900;
+      font-size: 1.2rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #0284c7;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      display: inline-block;
+    }
     .bseb-logo-text {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 900;
       text-transform: uppercase;
       margin: 0;
       color: #0f172a;
     }
     .bseb-sub-text {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 800;
       margin: 2px 0;
       color: #0284c7;
       letter-spacing: 1px;
     }
     .bseb-exam-title {
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       font-weight: 800;
       text-transform: uppercase;
       margin: 2px 0 0 0;
@@ -207,13 +226,15 @@
     }
     .student-data-table td {
       border: 1px solid #64748b;
-      padding: 5px 8px;
+      padding: 6px 8px;
     }
     .student-data-table td.field-name {
       background: #f8fafc;
       font-weight: 700;
       width: 22%;
       color: #334155;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .student-data-table td.field-val {
       font-weight: 800;
@@ -223,14 +244,17 @@
     }
 
     .marks-band-title {
-      background: #eab308;
+      background: #eab308 !important;
+      color: #000 !important;
       border: 1px solid #333;
       border-bottom: none;
       text-align: center;
       font-weight: 900;
       font-size: 0.86rem;
-      padding: 4px;
+      padding: 5px;
       text-transform: uppercase;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .marks-matrix-table {
       width: 100%;
@@ -257,12 +281,15 @@
     .final-row {
       font-weight: 900;
       background: #f8fafc;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
     .division-tag {
       font-size: 1rem;
       color: #16a34a;
     }
 
+    /* जाँची गई कॉपी डाउनलोड सेक्शन */
     .eval-copies-container {
       margin-top: 14px;
       background: #f8fafc;
@@ -281,7 +308,7 @@
     }
     .eval-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 8px;
     }
     .btn-download-copy {
@@ -317,6 +344,9 @@
       display: flex;
       gap: 12px;
       margin-bottom: 30px;
+      width: 100%;
+      max-width: 820px;
+      justify-content: center;
     }
     .btn-action {
       padding: 10px 22px;
@@ -329,6 +359,7 @@
     .btn-print { background: #16a34a; color: #fff; }
     .btn-reset { background: #64748b; color: #fff; }
 
+    /* प्रिंट मीडिया नियम */
     @media print {
       @page {
         size: A4 portrait;
@@ -346,11 +377,30 @@
       .a4-marksheet-wrapper {
         display: block !important;
         width: 100% !important;
+        max-width: none !important;
         min-height: auto !important;
         border: 2px solid #000 !important;
+        border-radius: 0 !important;
         box-shadow: none !important;
-        padding: 8mm 10mm !important;
+        padding: 6mm 8mm !important;
         margin: 0 !important;
+      }
+      .header-logo-box {
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        border: 1.5px solid #0284c7 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .marks-band-title {
+        background: #eab308 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .watermark-webcopy {
+        opacity: 0.1 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
   </style>
@@ -400,7 +450,7 @@
 
     <div class="marksheet-header">
       <div class="header-logo-row">
-        <div style="background:#0284c7; color:#fff; font-weight:900; font-size:1.1rem; padding:3px 8px; border-radius:6px;">N</div>
+        <div class="header-logo-box">N</div>
         <h1 class="bseb-logo-text">NischayDesk Examination Council</h1>
       </div>
       <div class="bseb-sub-text">BSEB REAL EXAM SIMULATION EVALUATION - 2026</div>
@@ -468,13 +518,13 @@
     </div>
 
     <div class="marksheet-footer">
-      <strong>Abbreviations used:</strong> • F -> Fail • P -> Pass • ABS -> Absent • INT -> Internal Assessment • PRAC -> Practical Assessment<br />
+      <strong>Abbreviations used:</strong> • F -&gt; Fail • P -&gt; Pass • ABS -&gt; Absent • INT -&gt; Internal Assessment • PRAC -&gt; Practical Assessment<br />
       <em>Disclaimer:</em> This Web Copy is published by NischayDesk Real Examination Simulator for immediate evaluation of Class 10th students. Certified digital copy verified by NischayDesk Evaluation Engine.
     </div>
   </div>
 
   <div class="print-bar" id="printActionsBar" style="display: none;">
-    <button type="button" class="btn-action btn-print" onclick="window.print()">🖨️️ A4 साइज में प्रिंट / PDF सेव करें</button>
+    <button type="button" class="btn-action btn-print" onclick="window.print()">🖨️ A4 साइज में प्रिंट / PDF सेव करें</button>
     <button type="button" class="btn-action btn-reset" onclick="resetSearch()">🔍 दूसरा रिजल्ट खोजें</button>
   </div>
 
@@ -678,10 +728,8 @@
 
     // 🔴 जाँची हुई लाल कलम वाली सर्टिफाइड कॉपी का असली PDF जनरेटर
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord) {
-      // 1. पहले IndexedDB में खोजें
       let cacheData = await getEvaluatedSheetFromDB(uid, day);
 
-      // 2. फ़ॉलबैक: LocalStorage में खोजें
       if (!cacheData) {
         const raw = localStorage.getItem(`eval_sheet_${uid}_day_${day}`);
         if (raw) {
