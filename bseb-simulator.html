@@ -11,12 +11,15 @@
 
   <link rel="stylesheet" href="bseb-style.css" />
 
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  
+  <!-- HEIC Image Conversion Support -->
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 
   <style>
-    /* मोबाइल फ्रेंडली लेआउट: कभी कुछ नहीं कटेगा */
     html, body {
       margin: 0;
       padding: 0;
@@ -363,7 +366,7 @@
           </div>
 
           <div id="step1ErrorMsg" style="display:none; color:#ef4444; font-weight:bold; font-size:0.82rem; margin-bottom:8px;">
-            ⚠️ कृपया सभी चारों विवरण (परीक्षार्थी, माता, पिता और स्कूल का नाम) सही-सही भरें!
+            ⚠️ कृपया सभी चारों विवरण सही-सही भरें!
           </div>
 
           <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
@@ -381,8 +384,8 @@
         <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
           <strong style="color: #0284c7; font-size: 0.9rem;">📜 बिहार बोर्ड 7-दिवसीय कड़े नियम:</strong>
           <ul style="margin: 6px 0 0 16px; font-size: 0.82rem; color: var(--bseb-text); line-height: 1.5;">
-            <li><strong>एक दिन में केवल 1 विषय:</strong> परीक्षा बिल्कुल क्रमबद्ध (हिन्दी ➔ संस्कृत ➔ गणित ➔ विज्ञान ➔ सामाजिक विज्ञान ➔ अंग्रेजी) होगी।</li>
-            <li><strong>अगले दिन सुबह 09:30 बजे ताला खुलेगा:</strong> आज की परीक्षा जमा होने के बाद अगला विषय अगले दिन सुबह ठीक 09:30 AM पर ही खुलेगा।</li>
+            <li><strong>एक दिन में केवल 1 विषय:</strong> परीक्षा क्रमबद्ध (हिन्दी ➔ संस्कृत ➔ गणित ➔ विज्ञान ➔ सामाजिक विज्ञान ➔ अंग्रेजी) होगी।</li>
+            <li><strong>अगले दिन सुबह 09:30 बजे ताला खुलेगा:</strong> क्लाउड सर्वर घड़ी के अनुसार ही अगला विषय सुबह ठीक 09:30 AM पर खुलेगा।</li>
             <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः हमेशा के लिए लॉक हो जाएगा।</li>
           </ul>
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
@@ -428,7 +431,7 @@
         <div class="scanner-line"></div>
         <h3 style="color: #0284c7; margin: 0 0 8px 0;" id="scanStatusTitle">डिजिटल सत्यापन जारी है...</h3>
         <p style="font-size: 0.85rem; color: var(--bseb-text-muted); margin: 0 0 16px 0;" id="scanStatusDesc">
-          परीक्षार्थी क्रेडेंशियल, रोल नंबर और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
+          परीक्षार्थी क्रेडेंशियल, सर्वर समय और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
         </p>
         <div style="font-weight: 800; color: #16a34a; font-size: 0.92rem;" id="scanProgressBadge">⏳ जांच पूर्ण हो रही है...</div>
       </div>
@@ -436,10 +439,9 @@
 
     <!-- अंतिम चरण: परीक्षा कक्ष -->
     <section class="gateway-step" id="simExamHallStage">
-      
       <div class="exam-hall-header-bar">
         <span style="font-weight: 800; font-size: 0.82rem; color: var(--bseb-text);"><span id="hallDisplaySub">विषय</span></span>
-        <div style="font-weight: 900; font-size: 0.95rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 6px;" id="examTimerClock">⏳ 03:15:00</div>
+        <div style="font-weight: 900; font-size: 0.95rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 6px;" id="examTimerClock">⏳ सर्वर समय सिंक हो रहा है...</div>
         <button type="button" id="btnSubmitFinalExam" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 6px 12px; font-weight: bold; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
       </div>
 
@@ -466,7 +468,7 @@
 
           <div class="exam-tab-content" id="tabContentOmr">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.76rem; font-weight:bold; color:var(--bseb-text); position: sticky; top: 0; background: var(--bseb-surface-card); padding: 4px 0; z-index: 2;">
-              <span>किन्हीं 50 प्रश्नों के उत्तर दें</span>
+              <span>किन्हीं 50 प्रश्नों के उत्तर दें (क्लिक करके हटा भी सकते हैं)</span>
               <span>भरे गोले: <span id="omrFilledCount" style="color:#0284c7;">0</span>/50</span>
             </div>
             <div id="omrBubblesMatrix" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(125px, 1fr)); gap:5px;"></div>
@@ -480,7 +482,7 @@
                 (गणित: अधिकतम 24 पन्ने | अन्य: अधिकतम 20 पन्ने)
               </p>
               
-              <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1.5px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
+              <input type="file" id="masterAnswerInput" accept="image/*,.heic" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1.5px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
               <div id="uploadStatusText" style="margin-top: 8px; font-weight: bold; font-size: 0.82rem; color: #0284c7;"></div>
             </div>
           </div>
@@ -511,7 +513,7 @@
           ✓ आज की परीक्षा सफलतापूर्वक समाप्त हो गई!
         </div>
         <p style="font-size: 0.82rem; color: var(--bseb-text-muted); margin-bottom: 12px;">
-          अगला विषय अगले कैलेंडर दिन सुबह ठीक 09:30 AM पर खुलेगा।
+          उत्तर पुस्तिका सर्वर पर सुरक्षित रूप से सील कर दी गई है। अगला विषय अगले कैलेंडर दिन सुबह ठीक 09:30 AM पर खुलेगा।
         </p>
         <button type="button" onclick="location.reload()" style="width:100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">
           डैशबोर्ड पर वापस जाएं →
@@ -592,7 +594,7 @@
                 document.getElementById("inputMotherName").value = (cloudState?.motherName && cloudState.motherName !== "SUNITA DEVI") ? cloudState.motherName : "";
                 document.getElementById("inputSchoolName").value = (cloudState?.schoolName && cloudState.schoolName !== "HIGH SCHOOL TELWA, JHAJHA") ? cloudState.schoolName : "";
 
-                renderSubjectDropdown();
+                await renderSubjectDropdown();
 
                 if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
                   const checkDay = cloudState.activeSession.day;
@@ -604,7 +606,7 @@
                   }
                 }
               } catch (e) {
-                renderSubjectDropdown();
+                await renderSubjectDropdown();
               }
             }
           });
@@ -664,7 +666,8 @@
       showStep("step2RulesAndSubject");
     }
 
-    function renderSubjectDropdown() {
+    // 🔒 सर्वर समय आधारित ड्रॉपडाउन व ताला (फोन घड़ी से छेड़छाड़ असंभव)
+    async function renderSubjectDropdown() {
       const selectEl = document.getElementById("regExamDaySelect");
       const noticeBox = document.getElementById("nextDayNoticeBox");
       const noticeText = document.getElementById("nextDayNoticeText");
@@ -675,8 +678,10 @@
 
       const completed = cloudState?.completedDays || {};
       const lastExamDateStr = cloudState?.lastExamDate;
-      const todayStr = new Date().toISOString().split("T")[0];
-      const now = new Date();
+      
+      // सर्वर समय प्राप्त करें
+      const serverDateObj = await getVerifiedServerDate();
+      const todayStr = serverDateObj.toISOString().split("T")[0];
 
       let currentSequenceDay = 1;
       for (let i = 1; i <= 6; i++) {
@@ -691,8 +696,8 @@
 
       let isTimeRestricted = false;
       if (lastExamDateStr && lastExamDateStr !== todayStr) {
-        const currentHours = now.getHours();
-        const currentMinutes = now.getMinutes();
+        const currentHours = serverDateObj.getHours();
+        const currentMinutes = serverDateObj.getMinutes();
         if (currentHours < 9 || (currentHours === 9 && currentMinutes < 30)) {
           isTimeRestricted = true;
         }
@@ -735,7 +740,7 @@
         noticeText.textContent = "आज की परीक्षा पूर्ण हो चुकी है! अगला विषय कल सुबह ठीक 09:30 AM पर खुलेगा।";
       } else if (isTimeRestricted) {
         noticeBox.style.display = "block";
-        noticeText.textContent = "आज की परीक्षा सुबह ठीक 09:30 AM पर खुलेगी। कृपया 09:30 बजे तक प्रतीक्षा करें।";
+        noticeText.textContent = "आज की परीक्षा सुबह ठीक 09:30 AM पर खुलेगी। कृपया सर्वर समय 09:30 बजे तक प्रतीक्षा करें।";
       } else if (currentSequenceDay > 6) {
         noticeBox.style.display = "block";
         noticeText.innerHTML = "🎉 आपकी सभी 6 विषयों की परीक्षा समाप्त हो चुकी है! परिणाम 7वें दिन मार्कशीट पोर्टल पर देखें।";
@@ -784,9 +789,9 @@
       const desc = document.getElementById("scanStatusDesc");
 
       setTimeout(() => {
-        badge.textContent = "⏳ पहचान व रोल नंबर मिलान: 85%";
-        desc.textContent = "डिजिटल सुरक्षा क्लीयरेंस मिल गई है। परीक्षा कक्ष लोड हो रहा है...";
-      }, 600);
+        badge.textContent = "⏳ सर्वर टाइम व बायोमेट्रिक मिलान: 85%";
+        desc.textContent = "क्लाउड टाइम सिंक पूर्ण हुआ। परीक्षा कक्ष लोड हो रहा है...";
+      }, 500);
 
       setTimeout(() => {
         badge.textContent = "✓ क्लीयरेंस पूर्ण! परीक्षा कक्ष आवंटित";
@@ -795,7 +800,7 @@
           showStep("simExamHallStage");
           resumeExamHall(activeDay);
         }, 400);
-      }, 1200);
+      }, 1000);
     }
 
     function resumeExamHall(day) {
@@ -827,37 +832,45 @@
       startStrictTimer(day);
     }
 
-    function startStrictTimer(day) {
+    // 🔒 सर्वर-सिंक्ड 3 घंटे 15 मिनट का अपरिवर्तनीय टाइमर
+    async function startStrictTimer(day) {
       if (examTimerInterval) clearInterval(examTimerInterval);
 
-      const lockKey = `exam_started_at_${currentUser.uid}_day_${day}`;
-      let startMs = localStorage.getItem(lockKey);
+      const serverNowMs = await getVerifiedServerTimestamp();
+      let startMs = null;
+
+      if (cloudState && cloudState.activeSession && cloudState.activeSession.day === day) {
+        startMs = new Date(cloudState.activeSession.startedAt).getTime();
+      }
 
       if (!startMs) {
-        startMs = Date.now();
-        localStorage.setItem(lockKey, startMs);
+        startMs = serverNowMs;
         if (window.NischayConfig?.dbInstance) {
           window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
             activeSession: { day: day, startedAt: new Date(startMs).toISOString() }
           }, { merge: true });
         }
-      } else {
-        startMs = parseInt(startMs, 10);
       }
 
       const totalDuration = 195 * 60 * 1000;
       const endMs = startMs + totalDuration;
       const clockEl = document.getElementById("examTimerClock");
 
-      examTimerInterval = setInterval(() => {
-        const left = endMs - Date.now();
+      // सर्वर ऑफ़सेट (स्थानीय समय और सर्वर समय का अंतर)
+      const localServerOffset = serverNowMs - Date.now();
+
+      examTimerInterval = setInterval(async () => {
+        const currentAdjustedTime = Date.now() + localServerOffset;
+        const left = endMs - currentAdjustedTime;
 
         if (left <= 0) {
           clearInterval(examTimerInterval);
           clockEl.textContent = "00:00:00 (समय समाप्त)";
           alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब हमेशा के लिए लॉक हो गया है।");
 
-          const todayStr = new Date().toISOString().split("T")[0];
+          const finalServerDate = await getVerifiedServerDate();
+          const todayStr = finalServerDate.toISOString().split("T")[0];
+
           if (cloudState) {
             if (!cloudState.completedDays) cloudState.completedDays = {};
             cloudState.completedDays[day] = { status: "LOCKED", totalMarks: 0, reason: "TIME_OVER" };
@@ -883,6 +896,7 @@
       }, 1000);
     }
 
+    // 🔴 OMR: 50 गोलों का सख्त लॉक + अनसेलेक्ट (हटाने) की पूरी आजादी
     function renderOmrBubbles(count) {
       const box = document.getElementById("omrBubblesMatrix");
       box.innerHTML = "";
@@ -912,12 +926,28 @@
     function selectBubble(q, opt) {
       if (!cloudState.savedOMR) cloudState.savedOMR = {};
       if (!cloudState.savedOMR[activeDay]) cloudState.savedOMR[activeDay] = {};
-      cloudState.savedOMR[activeDay][q] = opt;
+
+      const currentAnswers = cloudState.savedOMR[activeDay];
+
+      // 1. अगर छात्र पहले से भरे गोले पर दोबारा क्लिक करे, तो उसे अन-सेलेक्ट (हटा) दें
+      if (currentAnswers[q] === opt) {
+        delete currentAnswers[q];
+      } else {
+        // 2. 50 गोलों का कड़ा ताला
+        const totalFilled = Object.keys(currentAnswers).length;
+        if (!currentAnswers[q] && totalFilled >= 50) {
+          alert("⚠️ बोर्ड नियम: आप अधिकतम 50 प्रश्नों के ही उत्तर दे सकते हैं!\nकिसी अन्य प्रश्न का उत्तर बदलने के लिए पहले से रंगे किसी गोले पर क्लिक करके उसे हटाएँ।");
+          return;
+        }
+        currentAnswers[q] = opt;
+      }
+
       renderOmrBubbles(100);
-      syncBubbleToCloud(currentUser, activeDay, q, opt, cloudState);
+      syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    function handleMasterUpload(e) {
+    // 📸 ऑटो-कंप्रेशन और HEIC सपोर्ट के साथ पन्नों को सुरक्षित करना
+    async function handleMasterUpload(e) {
       const files = e.target.files;
       const txt = document.getElementById("uploadStatusText");
 
@@ -928,34 +958,57 @@
       const MAX_PAGES_ALLOWED = (currentSub.code.includes("math") || activeDay === 3) ? 24 : 20;
 
       if (files.length > MAX_PAGES_ALLOWED) {
-        alert(`⚠️ कड़ा बोर्ड नियम उल्लंघन!\n\nबिहार बोर्ड नियमानुसार ${currentSub.name} उत्तर-पुस्तिका में अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!\n\nआपका चयन रद्द कर दिया गया है।`);
+        alert(`⚠️ कड़ा बोर्ड नियम उल्लंघन!\n\n${currentSub.name} में अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!\n\nकृपया सही संख्या में पेज चुनें।`);
         e.target.value = "";
         return;
       }
 
       uploadedPagesList = [];
       txt.style.color = "#0284c7";
-      txt.textContent = `⏳ ${files.length} पन्ने सुरक्षित हो रहे हैं...`;
+      txt.textContent = `⏳ ${files.length} पन्ने कंप्रेस एवं सुरक्षित किए जा रहे हैं...`;
 
-      let loaded = 0;
       for (let i = 0; i < files.length; i++) {
-        const r = new FileReader();
-        r.onload = (ev) => {
-          uploadedPagesList.push({
-            pageNumber: i + 1,
-            dataUrl: ev.target.result
-          });
-          loaded++;
-          if (loaded === files.length) {
-            txt.textContent = `✓ कुल ${files.length} पन्ने सुरक्षित सेव हैं!`;
-            txt.style.color = "#16a34a";
-            try {
-              localStorage.setItem(`draft_pages_${currentUser.uid}_day_${activeDay}`, JSON.stringify(uploadedPagesList));
-            } catch (err) {}
-          }
-        };
-        r.readAsDataURL(files[i]);
+        let f = files[i];
+
+        // HEIC को JPEG में बदलें
+        if (f.name.toLowerCase().endsWith('.heic') || f.type.includes('heic')) {
+          try {
+            const converted = await heic2any({ blob: f, toType: "image/jpeg", quality: 0.6 });
+            f = Array.isArray(converted) ? converted[0] : converted;
+          } catch(err) {}
+        }
+
+        // कंप्रेस करके 800px पर लाना ताकि मोबाइल पर लोड न पड़े
+        const base64Data = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(f);
+          reader.onload = (ev) => {
+            const img = new Image();
+            img.src = ev.target.result;
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              let w = img.width, h = img.height;
+              const maxDim = 800;
+              if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+              else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+              canvas.width = w; canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              resolve(canvas.toDataURL('image/jpeg', 0.55));
+            };
+          };
+        });
+
+        uploadedPagesList.push({
+          pageNumber: i + 1,
+          dataUrl: base64Data
+        });
       }
+
+      txt.textContent = `✓ कुल ${files.length} पन्ने सफलता से सुरक्षित हो गए!`;
+      txt.style.color = "#16a34a";
+      try {
+        localStorage.setItem(`draft_pages_${currentUser.uid}_day_${activeDay}`, JSON.stringify(uploadedPagesList));
+      } catch (err) {}
     }
 
     function switchExamTab(tab) {
@@ -967,6 +1020,7 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
+    // ⚡ अंतिम सबमिशन (सर्वर समय आधारित लॉकिंग + शांत बैकग्राउंड AI चेकिंग)
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -997,13 +1051,16 @@
       const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
-      const todayStr = new Date().toISOString().split("T")[0];
+
+      // सर्वर समय प्राप्त करें
+      const serverDateObj = await getVerifiedServerDate();
+      const todayStr = serverDateObj.toISOString().split("T")[0];
 
       if (!cloudState.completedDays) cloudState.completedDays = {};
       cloudState.completedDays[activeDay] = { 
         status: "COMPLETED", 
         subjectName: currentSub.name,
-        submittedAt: new Date().toISOString()
+        submittedAt: serverDateObj.toISOString()
       };
       cloudState.lastExamDate = todayStr;
       cloudState.activeSession = null;
@@ -1011,19 +1068,18 @@
       const localKey = `nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`;
       localStorage.setItem(localKey, JSON.stringify(cloudState));
       localStorage.setItem("nischay_student_session", JSON.stringify(cloudState));
-      localStorage.removeItem(`exam_started_at_${currentUser.uid}_day_${activeDay}`);
       localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
 
       let cur = 0;
       const progressTimer = setInterval(async () => {
-        cur += Math.floor(Math.random() * 6) + 4;
+        cur += Math.floor(Math.random() * 8) + 6;
 
-        if (cur < 35) {
-          stageText.textContent = "1. OMR गोलों का क्रिप्टोग्राफ़िक सत्यापन जारी...";
-        } else if (cur < 75) {
-          stageText.textContent = "2. हस्तलिखित कॉपियों का डिजिटल वॉटरमार्क व सीलिंग...";
+        if (cur < 40) {
+          stageText.textContent = "1. OMR गोलों का आधिकारिक मिलान जारी...";
+        } else if (cur < 80) {
+          stageText.textContent = "2. हस्तलिखित उत्तर-पुस्तिका का एन्क्रिप्शन व सीलिंग...";
         } else if (cur < 98) {
-          stageText.textContent = "3. बिहार बोर्ड क्लाउड सर्वर पर रिकॉर्ड स्थायी रूप से लॉक हो रहा है...";
+          stageText.textContent = "3. परीक्षा रिकॉर्ड क्लाउड सर्वर पर सुरक्षित हो रहा है...";
         }
 
         if (cur >= 100) {
@@ -1033,10 +1089,11 @@
           barFill.style.width = "100%";
           percentNum.textContent = "100%";
           title.textContent = `${currentSub.name} - परीक्षा सील एवं लॉक!`;
-          stageText.textContent = "सत्यापन पूर्ण: अब अगला विषय अगले दिन सुबह 09:30 AM पर खुलेगा।";
+          stageText.textContent = "उत्तर-पुस्तिका जमा हो गई। अगला विषय कल सुबह ठीक 09:30 AM पर खुलेगा।";
           icon.textContent = "✅";
           finalArea.style.display = "block";
 
+          // क्लाउड पर भेजना (बैकग्राउंड AI मूल्यांकन स्वतः शुरू होगा)
           await submitExamToCloud(
             currentUser,
             activeDay,
@@ -1049,7 +1106,7 @@
           barFill.style.width = cur + "%";
           percentNum.textContent = cur + "%";
         }
-      }, 60);
+      }, 50);
     }
   </script>
 </body>
