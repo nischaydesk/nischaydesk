@@ -47,7 +47,6 @@
       color: #0f172a;
     }
 
-    /* सर्च गेटवे कार्ड */
     .search-card {
       width: 100%;
       max-width: 480px;
@@ -140,7 +139,6 @@
       line-height: 1.4;
     }
 
-    /* A4 साइज NischayDesk आधिकारिक मार्कशीट */
     .a4-marksheet-wrapper {
       display: none;
       width: 210mm;
@@ -265,7 +263,6 @@
       color: #16a34a;
     }
 
-    /* सर्टिफाइड कॉपी डाउनलोड सेक्शन */
     .eval-copies-container {
       margin-top: 14px;
       background: #f8fafc;
@@ -355,11 +352,6 @@
         padding: 8mm 10mm !important;
         margin: 0 !important;
       }
-      .watermark-webcopy {
-        opacity: 0.1 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
     }
   </style>
 </head>
@@ -370,7 +362,6 @@
     <div class="brand-name">Nischay<span style="color:#0284c7;">Desk</span> BSEB Portal</div>
   </div>
 
-  <!-- चरण 1: परिणाम खोज गेटवे -->
   <div class="search-card" id="searchBoxCard">
     <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
     <p class="search-subtitle">
@@ -404,7 +395,6 @@
     <div class="error-banner" id="errorBanner"></div>
   </div>
 
-  <!-- चरण 2: A4 साइज आधिकारिक मार्कशीट -->
   <div class="a4-marksheet-wrapper" id="a4Marksheet">
     <div class="watermark-webcopy">NISCHAYDESK WEB COPY</div>
 
@@ -470,7 +460,6 @@
       </tfoot>
     </table>
 
-    <!-- जाँची गई उत्तर-पुस्तिकाएं (Red Ink Evaluated Sheets) -->
     <div class="eval-copies-container" id="evaluatedCopiesBox">
       <div class="eval-copies-title">
         <span>🖋️ डिजिटल जाँची गई उत्तर-पुस्तिकाएँ (Red-Pen Certified Copies PDF):</span>
@@ -485,7 +474,7 @@
   </div>
 
   <div class="print-bar" id="printActionsBar" style="display: none;">
-    <button type="button" class="btn-action btn-print" onclick="window.print()">🖨️ A4 साइज में प्रिंट / PDF सेव करें</button>
+    <button type="button" class="btn-action btn-print" onclick="window.print()">🖨️️ A4 साइज में प्रिंट / PDF सेव करें</button>
     <button type="button" class="btn-action btn-reset" onclick="resetSearch()">🔍 दूसरा रिजल्ट खोजें</button>
   </div>
 
@@ -580,7 +569,6 @@
         return;
       }
 
-      // ⚡ टेस्टिंग मोड: 7वें दिन का लॉक पूरी तरह हटा दिया गया है
       renderA4Marksheet(studentData);
     }
 
@@ -620,14 +608,12 @@
         if (examRecord && (examRecord.status === "COMPLETED" || examRecord.status === "EVALUATED")) {
           theoryMarks = examRecord.totalMarks || 0;
 
-          // 📄 जाँची हुई कॉपी डाउनलोड बटन
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-download-copy";
           btn.innerHTML = `📄 Day ${sub.day} (${sub.name.split(' ')[0]}) जाँची प्रति`;
           btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord);
           buttonsGrid.appendChild(btn);
-
         } else {
           isAbsent = true;
         }
@@ -674,24 +660,42 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // 📦 IndexedDB से उत्तर-पुस्तिका पढ़ने का हेल्पर
+    async function getEvaluatedSheetFromDB(uid, day) {
+      return new Promise((resolve) => {
+        const req = indexedDB.open("NischaySheetsDB", 1);
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("sheets")) return resolve(null);
+          const tx = db.transaction("sheets", "readonly");
+          const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
+          getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
+          getReq.onerror = () => resolve(null);
+        };
+        req.onerror = () => resolve(null);
+      });
+    }
+
     // 🔴 जाँची हुई लाल कलम वाली सर्टिफाइड कॉपी का असली PDF जनरेटर
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord) {
-      const cacheKey = `eval_sheet_${uid}_day_${day}`;
-      const rawCache = localStorage.getItem(cacheKey);
+      // 1. पहले IndexedDB में खोजें
+      let cacheData = await getEvaluatedSheetFromDB(uid, day);
 
-      if (!rawCache) {
-        alert(`Day ${day} (${subjectName}) की हस्तलिखित कॉपियां इसी ब्राउज़र पर अपलोड नहीं की गई थीं या मेमोरी रीसेट हो चुकी है।`);
+      // 2. फ़ॉलबैक: LocalStorage में खोजें
+      if (!cacheData) {
+        const raw = localStorage.getItem(`eval_sheet_${uid}_day_${day}`);
+        if (raw) {
+          try { cacheData = JSON.parse(raw); } catch(e){}
+        }
+      }
+
+      if (!cacheData || !cacheData.pages || cacheData.pages.length === 0) {
+        alert(`Day ${day} (${subjectName}) की हस्तलिखित कॉपियां इस ब्राउज़र मेमोरी में नहीं मिलीं।`);
         return;
       }
 
-      const cacheData = JSON.parse(rawCache);
       const pages = cacheData.pages || [];
       const evalPages = examRecord.pagesEvaluation || cacheData.evaluation || [];
-
-      if (pages.length === 0) {
-        alert("कोई पन्ना नहीं मिला!");
-        return;
-      }
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
@@ -702,48 +706,43 @@
         const pageItem = pages[i];
         const base64Data = typeof pageItem === "string" ? pageItem : pageItem.dataUrl;
 
-        // पन्ने पर लाल कलम से चेकिंग लगाने हेतु कैनवास का उपयोग
         const canvas = document.createElement("canvas");
         canvas.width = 1200;
         canvas.height = 1700;
         const ctx = canvas.getContext("2d");
 
-        // मूल छात्र की कॉपी ड्रा करें
         const img = new Image();
         img.src = base64Data;
         await new Promise(r => { img.onload = r; img.onerror = r; });
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 🔴 लाल कलम मार्किंग (Red-Pen Certified Evaluation)
         const pEval = evalPages.find(p => p.pageIndex === i);
         const marksOnThisPage = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord.subjectiveMarks || 0) : 0);
-        const remark = pEval ? pEval.pageRemark : "मूल्यांकन संपन्न";
+        const remark = pEval ? pEval.pageRemark : (examRecord.aiFeedback || "मूल्यांकन संपन्न");
 
-        // ऊपर हेडर बार (लाल स्याही)
+        // लाल हेडर पट्टी
         ctx.fillStyle = "rgba(220, 38, 38, 0.9)";
         ctx.fillRect(0, 0, canvas.width, 80);
         ctx.fillStyle = "#ffffff";
         ctx.font = "bold 32px 'Plus Jakarta Sans', Arial";
         ctx.fillText(`BSEB Patna Evaluation Copy | Day ${day}: ${subjectName} | Page: ${i + 1}/${pages.length}`, 30, 52);
 
-        // लाल टिक मार्क (✓) और गोल घेरा
+        // लाल टिक मार्क (✓)
         ctx.strokeStyle = "#dc2626";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
-
-        // बड़ा लाल टिक मार्क
         ctx.beginPath();
         ctx.moveTo(950, 400);
         ctx.lineTo(1000, 460);
         ctx.lineTo(1120, 340);
         ctx.stroke();
 
-        // दिए गए अंक
+        // अंक
         ctx.fillStyle = "#dc2626";
         ctx.font = "bold 60px 'Plus Jakarta Sans', Arial";
         ctx.fillText(`+${marksOnThisPage}`, 1000, 540);
 
-        // आधिकारिक गोल मुहर (Certified Stamp)
+        // गोल आधिकारिक मुहर
         ctx.strokeStyle = "#dc2626";
         ctx.lineWidth = 6;
         ctx.beginPath();
@@ -757,7 +756,7 @@
         ctx.fillText("CHIEF EXAMINER", 1040, 785);
         ctx.textAlign = "left";
 
-        // नीचे टिप्पणी
+        // नीचे परीक्षक टिप्पणी
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
         ctx.strokeStyle = "#dc2626";
@@ -768,7 +767,6 @@
         ctx.font = "bold 28px Arial";
         ctx.fillText(`परीक्षक टिप्पणी: ${remark} | इस पृष्ठ पर अंक: ${marksOnThisPage}`, 60, canvas.height - 60);
 
-        // PDF में पृष्ठ जोड़ें
         const annotatedImgData = canvas.toDataURL("image/jpeg", 0.85);
         doc.addImage(annotatedImgData, "JPEG", 0, 0, 210, 297);
       }
