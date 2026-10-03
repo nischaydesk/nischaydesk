@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NischayDesk - BSEB Question Papers & Official Answer Keys Database
+   NischayDesk - BSEB Question Papers, Answer Keys & Subjective Blueprint
    Curated for: Class 10th (Matric) Board Real Simulation
    ========================================================================== */
 
@@ -13,8 +13,18 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: false,
     totalPages: 23,
     driveLink: "https://drive.google.com/file/d/10tq2M_1xREn-wB0JHBxr1iPkAFxenqI6/preview",
+    subjectiveBlueprint: {
+      totalSubjectiveMarks: 50,
+      sections: [
+        { name: "गद्यांश (Comprehension)", maxMarks: 20, rule: "दो गद्यांश (10 + 10 अंक), प्रत्येक में 2-2 अंक के 5 प्रश्न।" },
+        { name: "निबंध लेखन (Essay Writing)", maxMarks: 10, rule: "दिए गए विषयों में से किसी एक पर लगभग 250-300 शब्दों में निबंध (10 अंक)।" },
+        { name: "पत्र / संवाद लेखन (Letter / Dialogue)", maxMarks: 5, rule: "आवेदन पत्र या दो व्यक्तियों के बीच संवाद (5 अंक)।" },
+        { name: "लघु उत्तरीय प्रश्न (Short Questions)", maxMarks: 10, rule: "किन्हीं 5 प्रश्नों के उत्तर 20-30 शब्दों में (5 x 2 अंक = 10 अंक)।" },
+        { name: "दीर्घ उत्तरीय व्याख्या (Long Question)", maxMarks: 5, rule: "किसी एक काव्यांश/गद्यांश का भावार्थ/व्याख्या (5 अंक)।" }
+      ]
+    },
     answerKey: {
-      1: "A", 2: "A", 3: "B", 4: "A", 5: "B", // Q2 corrected to A
+      1: "A", 2: "A", 3: "B", 4: "A", 5: "B",
       6: "C", 7: "D", 8: "C", 9: "A", 10: "B",
       11: "D", 12: "A", 13: "A", 14: "C", 15: "D",
       16: "A", 17: "D", 18: "A", 19: "B", 20: "B",
@@ -46,8 +56,18 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: false,
     totalPages: 20,
     driveLink: "https://drive.google.com/file/d/1m_Gvjc5BFg-Gq8cInuVcpJwdesy3jcSX/preview",
+    subjectiveBlueprint: {
+      totalSubjectiveMarks: 50,
+      sections: [
+        { name: "अपठित गद्यांश (Unseen Passage)", maxMarks: 13, rule: "दो अपठित गद्यांश (7 + 6 अंक)।" },
+        { name: "संस्कृत पत्र लेखन (Letter Writing)", maxMarks: 8, rule: "किन्हीं दो पत्रों का लेखन (2 x 4 अंक = 8 अंक)।" },
+        { name: "अनुच्छेद लेखन (Sanskrit Paragraph)", maxMarks: 7, rule: "किसी एक विषय पर 7 वाक्यों में संस्कृत अनुच्छेद (7 अंक)।" },
+        { name: "संस्कृत अनुवाद (Translation)", maxMarks: 6, rule: "किन्हीं 6 वाक्यों का संस्कृत में अनुवाद (6 x 1 अंक = 6 अंक)।" },
+        { name: "लघु उत्तरीय प्रश्न (Textbook Qs)", maxMarks: 16, rule: "पाठ्यपुस्तक से किन्हीं 8 प्रश्नों के उत्तर हिन्दी में (8 x 2 अंक = 16 अंक)।" }
+      ]
+    },
     answerKey: {
-      1: "D", 2: "B", 3: "C", 4: "D", 5: "A", 6: "B", 7: "B", 8: "D", 9: "A", 10: "A", // Q1 corrected to D
+      1: "D", 2: "B", 3: "C", 4: "D", 5: "A", 6: "B", 7: "B", 8: "D", 9: "A", 10: "A",
       11: "B", 12: "A", 13: "A", 14: "B", 15: "A", 16: "B", 17: "A", 18: "C", 19: "C", 20: "B",
       21: "A", 22: "B", 23: "A", 24: "B", 25: "C", 26: "B", 27: "B", 28: "C", 29: "A", 30: "C",
       31: "C", 32: "A", 33: "B", 34: "A", 35: "A", 36: "D", 37: "A", 38: "B", 39: "C", 40: "D",
@@ -69,6 +89,13 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: false,
     totalPages: 32,
     driveLink: "https://drive.google.com/file/d/1w78O_KDgZq3foKaLEv3xhP4vRTOyq02b/preview",
+    subjectiveBlueprint: {
+      totalSubjectiveMarks: 50,
+      sections: [
+        { name: "लघु उत्तरीय प्रश्न (Short Answer)", maxMarks: 30, rule: "कुल 30 में से किन्हीं 15 प्रश्नों के उत्तर दें। प्रत्येक प्रश्न 2 अंक का (15 x 2 = 30 अंक)। स्टेप्स पर अंक दें।" },
+        { name: "दीर्घ उत्तरीय प्रश्न (Long Answer)", maxMarks: 20, rule: "कुल 8 में से किन्हीं 4 प्रश्नों के उत्तर दें। प्रत्येक प्रश्न 5 अंक का (4 x 5 = 20 अंक)। ग्राफ, प्रमेय और गणना स्टेप-वाइज जाँचें।" }
+      ]
+    },
     answerKey: {
       1: "D", 2: "B", 3: "C", 4: "C", 5: "C", 6: "D", 7: "B", 8: "B", 9: "A", 10: "B",
       11: "B", 12: "A", 13: "A", 14: "D", 15: "B", 16: "D", 17: "B", 18: "D", 19: "D", 20: "D",
@@ -93,13 +120,21 @@ const BSEB_PAPERS_DATABASE = {
     practicalMarks: 20,
     totalPages: 24,
     driveLink: "https://drive.google.com/file/d/1S0CRy6LT8wE7yByQN1Rx4JOgrIk5QD1Y/preview",
+    subjectiveBlueprint: {
+      totalSubjectiveMarks: 40,
+      sections: [
+        { name: "भौतिक विज्ञान (Physics)", maxMarks: 13, rule: "लघु उत्तरीय (4 x 2 = 8 अंक) + 1 दीर्घ उत्तरीय (6 अंक में से हल या 5 अंक)। कुल 13 अंक।" },
+        { name: "रसायन विज्ञान (Chemistry)", maxMarks: 13, rule: "लघु उत्तरीय (4 x 2 = 8 अंक) + 1 दीर्घ उत्तरीय (5 अंक)। कुल 13 अंक।" },
+        { name: "जीव विज्ञान (Biology)", maxMarks: 14, rule: "लघु उत्तरीय (4 x 2 = 8 अंक) + 1 दीर्घ उत्तरीय (6/5 अंक)। कुल 14 अंक।" }
+      ]
+    },
     answerKey: {
-      1: "B", 2: "B", 3: "A", 4: "C", 5: "C", 6: "D", 7: "B", 8: "B", 9: "D", 10: "B", // Q1 corrected to B
-      11: "C", 12: "C", 13: "B", 14: "C", 15: "A", 16: "C", 17: "A", 18: "B", 19: "D", 20: "B", // Q12 corrected to C
+      1: "B", 2: "B", 3: "A", 4: "C", 5: "C", 6: "D", 7: "B", 8: "B", 9: "D", 10: "B",
+      11: "C", 12: "C", 13: "B", 14: "C", 15: "A", 16: "C", 17: "A", 18: "B", 19: "D", 20: "B",
       21: "A", 22: "D", 23: "B", 24: "C", 25: "A", 26: "C", 27: "D", 28: "B", 29: "B", 30: "B",
       31: "C", 32: "B", 33: "B", 34: "C", 35: "A", 36: "D", 37: "C", 38: "D", 39: "A", 40: "C",
       41: "C", 42: "B", 43: "C", 44: "A", 45: "A", 46: "B", 47: "C", 48: "C", 49: "D", 50: "B",
-      51: "A", 52: "B", 53: "B", 54: "C", 55: "C", 56: "B", 57: "C", 58: "D", 59: "B", 60: "D", // Q60 corrected to D
+      51: "A", 52: "B", 53: "B", 54: "C", 55: "C", 56: "B", 57: "C", 58: "D", 59: "B", 60: "D",
       61: "C", 62: "A", 63: "D", 64: "B", 65: "A", 66: "C", 67: "D", 68: "कोई सही विकल्प नहीं", 69: "B", 70: "A",
       71: "A", 72: "B", 73: "C", 74: "A", 75: "D", 76: "B", 77: "D", 78: "C", 79: "A", 80: "B"
     }
@@ -115,6 +150,15 @@ const BSEB_PAPERS_DATABASE = {
     practicalMarks: 20,
     totalPages: 24,
     driveLink: "https://drive.google.com/file/d/1hg-uLvcYQx9yVB2QFxYMuywt2F9hH2Ly/preview",
+    subjectiveBlueprint: {
+      totalSubjectiveMarks: 40,
+      sections: [
+        { name: "इतिहास (History)", maxMarks: 10, rule: "लघु उत्तरीय (3 x 2 = 6 अंक) + 1 दीर्घ उत्तरीय (4 अंक)।" },
+        { name: "भूगोल व आपदा (Geography)", maxMarks: 12, rule: "लघु उत्तरीय (3 x 2 = 6 अंक) + आपदा प्रबंधन (2 x 2 = 4 अंक) + 1 दीर्घ उत्तरीय (4 अंक)।" },
+        { name: "राजनीति विज्ञान (Pol. Science)", maxMarks: 9, rule: "लघु उत्तरीय (2 x 2 = 4 अंक) + 1 दीर्घ उत्तरीय (4/5 अंक)।" },
+        { name: "अर्थशास्त्र (Economics)", maxMarks: 9, rule: "लघु उत्तरीय (2 x 2 = 4 अंक) + 1 दीर्घ उत्तरीय (4/5 अंक)।" }
+      ]
+    },
     answerKey: {
       1: "C", 2: "D", 3: "A", 4: "D", 5: "B", 6: "A", 7: "D", 8: "D", 9: "C", 10: "D",
       11: "A", 12: "B", 13: "B", 14: "C", 15: "C", 16: "A", 17: "C", 18: "B", 19: "C", 20: "B",
@@ -136,6 +180,15 @@ const BSEB_PAPERS_DATABASE = {
     hasPractical: false,
     totalPages: 22,
     driveLink: "https://drive.google.com/file/d/1rDlSyvoHPxlc_eObIV5ZZFPrqI0vXW0l/preview",
+    subjectiveBlueprint: {
+      totalSubjectiveMarks: 50,
+      sections: [
+        { name: "Comprehension Passages", maxMarks: 20, rule: "Unseen prose & poetry passages with short answers (20 Marks)." },
+        { name: "Writing Skills", maxMarks: 15, rule: "Notice/Message/Letter/Paragraph writing (15 Marks)." },
+        { name: "Short Questions (Textbook)", maxMarks: 10, rule: "Any 5 questions from textbook (5 x 2 = 10 Marks)." },
+        { name: "Long Explanation / Summary", maxMarks: 5, rule: "Summary or theme-based long answer (5 Marks)." }
+      ]
+    },
     answerKey: {
       1: "A", 2: "C", 3: "B", 4: "B", 5: "B", 6: "C", 7: "A", 8: "A", 9: "B", 10: "C",
       11: "C", 12: "B", 13: "B", 14: "C", 15: "A", 16: "D", 17: "A", 18: "C", 19: "C", 20: "C",
