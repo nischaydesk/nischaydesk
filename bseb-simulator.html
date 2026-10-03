@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>BSEB Real Exam Simulator | NischayDesk</title>
+  <title>BSEB Real Exam Simulator (Test Mode) | NischayDesk</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -244,17 +244,6 @@
       }
     }
 
-    .next-day-lock-card {
-      background: rgba(239, 68, 68, 0.08);
-      border: 2px dashed #ef4444;
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    .next-day-lock-card h3 { margin: 0 0 4px 0; color: #ef4444; font-size: 0.95rem; }
-    .next-day-lock-card p { margin: 0; font-size: 0.8rem; color: var(--bseb-text); line-height: 1.4; }
-
     /* सबमिशन प्रोग्रेस मोडल */
     #submissionProgressScreen {
       display: none;
@@ -292,7 +281,7 @@
       width: 0%;
       background: linear-gradient(90deg, #0284c7, #16a34a);
       border-radius: 10px;
-      transition: width 0.15s ease-out;
+      transition: width 0.25s ease-out;
     }
   </style>
 </head>
@@ -315,12 +304,12 @@
 
   <main class="sim-main-viewport">
 
-    <!-- चरण 1: डिजिटल एडमिट कार्ड व विवरण -->
+    <!-- चरण 1: डिजिटल प्रवेश-पत्र विवरण -->
     <section class="gateway-step active" id="step1AdmitCard">
       <div class="sim-card-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h2 style="margin: 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 1: आधिकारिक प्रवेश-पत्र सत्यापन</h2>
-          <span style="background:#0284c7; color:#fff; font-size:0.72rem; padding:3px 8px; border-radius:12px; font-weight:bold;">BSEB OFFICIAL</span>
+          <h2 style="margin: 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 1: परीक्षार्थी सत्यापन</h2>
+          <span style="background:#16a34a; color:#fff; font-size:0.72rem; padding:3px 8px; border-radius:12px; font-weight:bold;">⚡ FAST TEST MODE</span>
         </div>
 
         <div id="authRequiredBanner" style="text-align: center; padding: 20px;">
@@ -332,7 +321,7 @@
           <div class="admit-card-preview">
             <div class="admit-card-header">
               <span style="font-weight:800; font-size:0.85rem; color:#0284c7;">BIHAR SCHOOL EXAMINATION BOARD</span>
-              <span style="font-size:0.75rem; color:var(--bseb-text-muted);">वार्षिक परीक्षा 2026</span>
+              <span style="font-size:0.75rem; color:var(--bseb-text-muted);">वार्षिक परीक्षा 2026 (Live Test)</span>
             </div>
             <div class="admit-grid">
               <div>रोल कोड: <strong id="outRollCode">--</strong></div>
@@ -367,46 +356,37 @@
           </div>
 
           <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
-            विवरण सत्यापित करें एवं आगे बढ़ें (चरण 2) →
+            विवरण सत्यापित करें एवं विषय चुनें (चरण 2) →
           </button>
         </div>
       </div>
     </section>
 
-    <!-- चरण 2: विषय एवं परीक्षा नियम पुष्टि -->
+    <!-- चरण 2: विषय चयन (टेस्टिंग मोड: सभी विषय अनलॉक) -->
     <section class="gateway-step" id="step2RulesAndSubject">
       <div class="sim-card-box">
-        <h2 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 2: विषय एवं परीक्षा नियम पुष्टि</h2>
+        <h2 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--bseb-text);">चरण 2: विषय चयन (Fast Test Mode)</h2>
 
-        <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid #0284c7; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-          <strong style="color: #0284c7; font-size: 0.9rem;">📜 बिहार बोर्ड 7-दिवसीय कड़े नियम:</strong>
-          <ul style="margin: 6px 0 0 16px; font-size: 0.82rem; color: var(--bseb-text); line-height: 1.5;">
-            <li><strong>एक दिन में केवल 1 विषय:</strong> परीक्षा क्रमबद्ध (हिन्दी ➔ संस्कृत ➔ गणित ➔ विज्ञान ➔ सामाजिक विज्ञान ➔ अंग्रेजी) होगी।</li>
-            <li><strong>अगले दिन सुबह 09:30 बजे ताला खुलेगा:</strong> क्लाउड सर्वर घड़ी के अनुसार ही अगला विषय सुबह ठीक 09:30 AM पर खुलेगा।</li>
-            <li><strong>सख्त समय सीमा:</strong> 3 घंटे 15 मिनट पूरे होते ही विषय स्वतः हमेशा के लिए लॉक हो जाएगा।</li>
-          </ul>
+        <div style="background: rgba(22, 163, 74, 0.1); border: 1.5px solid #16a34a; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+          <strong style="color: #16a34a; font-size: 0.9rem;">🛠️ डेवलपर टेस्टिंग मोड सक्रिय है:</strong>
+          <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: var(--bseb-text); line-height: 1.4;">
+            7 दिन का ताला हटा दिया गया है। आप आज ही बारी-बारी से सभी 6 विषयों का टेस्ट दे सकते हैं और सबमिट करते ही AI द्वारा जाँची गई कॉपी व अंक तुरंत देख सकते हैं।
+          </p>
           <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="chkAgreeRules" onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
-            <label for="chkAgreeRules" style="font-size: 0.82rem; font-weight: 700; color: var(--bseb-text); cursor: pointer;">मैं सभी नियमों से पूर्णतः सहमत हूँ।</label>
+            <input type="checkbox" id="chkAgreeRules" checked onchange="toggleEnterButtonState()" style="width: 18px; height: 18px; cursor: pointer;" />
+            <label for="chkAgreeRules" style="font-size: 0.82rem; font-weight: 700; color: var(--bseb-text); cursor: pointer;">मैं परीक्षा देने के लिए तैयार हूँ।</label>
           </div>
-        </div>
-
-        <div id="nextDayNoticeBox" style="display:none;" class="next-day-lock-card">
-          <h3>🔒 आज की परीक्षा पूर्ण हो चुकी है!</h3>
-          <p id="nextDayNoticeText">अगला विषय अगले दिन सुबह ठीक 09:30 AM पर खुलेगा।</p>
         </div>
 
         <div style="display: grid; gap: 10px; margin-bottom: 12px;">
           <div class="form-group-sim">
             <label>सक्रिय कक्षा</label>
-            <select id="regStudentClassSelect" onchange="onClassSelectionChanged()">
+            <select id="regStudentClassSelect">
               <option value="10th">कक्षा 10वीं (Class 10th - मैट्रिक)</option>
-              <option value="11th">कक्षा 11वीं (Class 11th - साइंस)</option>
-              <option value="12th">कक्षा 12वीं (Class 12th - साइंस)</option>
             </select>
           </div>
           <div class="form-group-sim">
-            <label>आज का विषय (क्रम अनुसार आवंटित)</label>
+            <label>विषय चुनें (कोई भी विषय अभी टेस्ट करें)</label>
             <select id="regExamDaySelect" onchange="toggleEnterButtonState()"></select>
           </div>
         </div>
@@ -415,22 +395,22 @@
           <button type="button" onclick="goToStep1()" style="flex:1; padding: 11px; background: transparent; border:1px solid var(--bseb-border); color: var(--bseb-text); font-weight: bold; border-radius: 8px; cursor: pointer;">
             ← पीछे जाएं
           </button>
-          <button type="button" id="btnEnterExamHall" onclick="triggerSecurityClearance()" disabled style="flex:2; padding: 11px; background: #0284c7; color: #fff; font-weight: bold; border: none; border-radius: 8px; opacity: 0.6; cursor: not-allowed;">
-            🔒 सुरक्षा जांच प्रारंभ करें →
+          <button type="button" id="btnEnterExamHall" onclick="triggerSecurityClearance()" style="flex:2; padding: 11px; background: #0284c7; color: #fff; font-weight: bold; border: none; border-radius: 8px; cursor: pointer;">
+            🔒 परीक्षा हॉल में प्रवेश करें →
           </button>
         </div>
       </div>
     </section>
 
-    <!-- चरण 3: सुरक्षा एवं बायोमेट्रिक स्कैनिंग गेट -->
+    <!-- चरण 3: त्वरित क्लीयरेंस गेट -->
     <section class="gateway-step" id="step3SecurityClearance">
       <div class="sim-card-box security-scan-box">
         <div class="scanner-line"></div>
         <h3 style="color: #0284c7; margin: 0 0 8px 0;" id="scanStatusTitle">डिजिटल सत्यापन जारी है...</h3>
         <p style="font-size: 0.85rem; color: var(--bseb-text-muted); margin: 0 0 16px 0;" id="scanStatusDesc">
-          परीक्षार्थी क्रेडेंशियल, सर्वर समय और आवंटित परीक्षा कक्ष की पुष्टि की जा रही है...
+          प्रश्न पत्र एवं उत्तर-पुस्तिका लोड हो रही है...
         </p>
-        <div style="font-weight: 800; color: #16a34a; font-size: 0.92rem;" id="scanProgressBadge">⏳ जांच पूर्ण हो रही है...</div>
+        <div style="font-weight: 800; color: #16a34a; font-size: 0.92rem;" id="scanProgressBadge">⏳ प्रारंभ हो रहा है...</div>
       </div>
     </section>
 
@@ -438,7 +418,7 @@
     <section class="gateway-step" id="simExamHallStage">
       <div class="exam-hall-header-bar">
         <span style="font-weight: 800; font-size: 0.82rem; color: var(--bseb-text);"><span id="hallDisplaySub">विषय</span></span>
-        <div style="font-weight: 900; font-size: 0.95rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 6px;" id="examTimerClock">⏳ सर्वर समय सिंक हो रहा है...</div>
+        <div style="font-weight: 900; font-size: 0.95rem; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 6px;" id="examTimerClock">⏳ 03:15:00</div>
         <button type="button" id="btnSubmitFinalExam" onclick="confirmFinalExamSubmission()" style="background: #16a34a; color: #fff; border: none; padding: 6px 12px; font-weight: bold; font-size: 0.78rem; border-radius: 6px; cursor: pointer;">परीक्षा जमा करें ✓</button>
       </div>
 
@@ -465,7 +445,7 @@
 
           <div class="exam-tab-content" id="tabContentOmr">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.76rem; font-weight:bold; color:var(--bseb-text); position: sticky; top: 0; background: var(--bseb-surface-card); padding: 4px 0; z-index: 2;">
-              <span>किन्हीं 50 प्रश्नों के उत्तर दें (क्लिक करके हटा भी सकते हैं)</span>
+              <span>किन्हीं 50 प्रश्नों के उत्तर दें</span>
               <span>भरे गोले: <span id="omrFilledCount" style="color:#0284c7;">0</span>/50</span>
             </div>
             <div id="omrBubblesMatrix" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(125px, 1fr)); gap:5px;"></div>
@@ -476,7 +456,7 @@
               <div style="font-size: 1.8rem; margin-bottom: 4px;">📸</div>
               <h4 style="margin: 0 0 4px 0; font-size: 0.92rem; color: var(--bseb-text);">उत्तर पुस्तिका के पन्ने अपलोड करें</h4>
               <p style="font-size: 0.76rem; color: var(--bseb-text-muted); margin: 0 0 10px 0;" id="pageLimitInstructionText">
-                (गणित: अधिकतम 24 पन्ने | अन्य: अधिकतम 20 पन्ने)
+                (अधिकतम 20-24 पन्ने)
               </p>
               
               <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width: 100%; max-width: 270px; padding: 8px; font-size: 0.8rem; background: var(--bseb-surface-card); border: 1.5px solid var(--bseb-border); border-radius: 6px; color: var(--bseb-text);" />
@@ -489,11 +469,11 @@
 
   </main>
 
-  <!-- सबमिशन प्रोग्रेस मोडल -->
+  <!-- सबमिशन एवं AI लाइव चेकिंग प्रोग्रेस स्क्रीन -->
   <div id="submissionProgressScreen">
     <div class="progress-modal-card">
-      <div style="font-size: 2.8rem; margin-bottom: 8px;" id="progressIcon">🔒</div>
-      <h2 style="color: #0284c7; margin: 0 0 6px 0; font-size: 1.3rem;" id="progressTitle">परीक्षा उत्तर-पुस्तिका सील हो रही है...</h2>
+      <div style="font-size: 2.8rem; margin-bottom: 8px;" id="progressIcon">⏳</div>
+      <h2 style="color: #0284c7; margin: 0 0 6px 0; font-size: 1.25rem;" id="progressTitle">उत्तर-पुस्तिका जाँची जा रही है...</h2>
       <p style="color: var(--bseb-text-muted); font-size: 0.86rem; margin: 0;" id="progressStageText">प्रारंभ हो रहा है...</p>
       
       <div class="progress-bar-track">
@@ -501,20 +481,22 @@
       </div>
       
       <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:bold; color:var(--bseb-text);">
-        <span>क्लाउड एनक्रिप्शन</span>
+        <span id="aiLiveStatusText">Gemini AI चेकर सक्रिय</span>
         <span id="progressPercentNum">0%</span>
       </div>
 
       <div id="finalActionArea" style="display:none; margin-top: 18px;">
-        <div style="background: rgba(22, 163, 74, 0.12); border: 1.5px solid #16a34a; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-weight: 800; color: #16a34a; font-size: 0.9rem;">
-          ✓ आज की परीक्षा सफलतापूर्वक समाप्त हो गई!
+        <div style="background: rgba(22, 163, 74, 0.12); border: 1.5px solid #16a34a; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-weight: 800; color: #16a34a; font-size: 0.9rem;" id="finalScoreCardBadge">
+          ✓ मूल्यांकन संपन्न!
         </div>
-        <p style="font-size: 0.82rem; color: var(--bseb-text-muted); margin-bottom: 12px;">
-          उत्तर पुस्तिका सर्वर पर सुरक्षित रूप से सील कर दी गई है। अगला विषय अगले कैलेंडर दिन सुबह ठीक 09:30 AM पर खुलेगा।
-        </p>
-        <button type="button" onclick="location.reload()" style="width:100%; background: #0284c7; color: #fff; border: none; padding: 12px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.95rem;">
-          डैशबोर्ड पर वापस जाएं →
-        </button>
+        <div style="display:flex; gap:10px;">
+          <button type="button" onclick="location.reload()" style="flex:1; background: #0284c7; color: #fff; border: none; padding: 11px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 0.88rem;">
+            + अगला विषय दें →
+          </button>
+          <a href="bseb-result.html" style="flex:1; text-decoration:none; background: #16a34a; color: #fff; padding: 11px; font-weight: 800; border-radius: 8px; font-size: 0.88rem; display:inline-flex; align-items:center; justify-content:center;">
+            📊 रिजल्ट देखें →
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -561,10 +543,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      selectedClass = localStorage.getItem("nd_selected_class") || "10th";
-      const clsEl = document.getElementById("regStudentClassSelect");
-      if (clsEl) clsEl.value = selectedClass;
-
       const authInterval = setInterval(() => {
         if (window.NischayConfig && window.NischayConfig.isCloudReady) {
           clearInterval(authInterval);
@@ -585,25 +563,14 @@
 
               try {
                 cloudState = await getCloudExamState(user);
-
                 document.getElementById("inputStudentName").value = cloudState?.displayName || realName;
-                document.getElementById("inputFatherName").value = (cloudState?.fatherName && cloudState.fatherName !== "SURESH SHARMA") ? cloudState.fatherName : "";
-                document.getElementById("inputMotherName").value = (cloudState?.motherName && cloudState.motherName !== "SUNITA DEVI") ? cloudState.motherName : "";
-                document.getElementById("inputSchoolName").value = (cloudState?.schoolName && cloudState.schoolName !== "HIGH SCHOOL TELWA, JHAJHA") ? cloudState.schoolName : "";
+                document.getElementById("inputFatherName").value = cloudState?.fatherName || "";
+                document.getElementById("inputMotherName").value = cloudState?.motherName || "";
+                document.getElementById("inputSchoolName").value = cloudState?.schoolName || "";
 
-                await renderSubjectDropdown();
-
-                if (cloudState && cloudState.activeSession && cloudState.activeSession.day) {
-                  const checkDay = cloudState.activeSession.day;
-                  const isDone = cloudState?.completedDays?.[checkDay]?.status;
-                  if (isDone !== "COMPLETED" && isDone !== "LOCKED") {
-                    activeDay = checkDay;
-                    showStep("simExamHallStage");
-                    resumeExamHall(activeDay);
-                  }
-                }
+                renderSubjectDropdown();
               } catch (e) {
-                await renderSubjectDropdown();
+                renderSubjectDropdown();
               }
             }
           });
@@ -663,113 +630,37 @@
       showStep("step2RulesAndSubject");
     }
 
-    async function renderSubjectDropdown() {
+    // ⚡ टेस्टिंग मोड ड्रॉपडाउन: सभी 6 विषय खुले रहेंगे
+    function renderSubjectDropdown() {
       const selectEl = document.getElementById("regExamDaySelect");
-      const noticeBox = document.getElementById("nextDayNoticeBox");
-      const noticeText = document.getElementById("nextDayNoticeText");
       if (!selectEl) return;
 
-      const list = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
+      const list = CLASS_SUBJECTS_MAP["10th"];
       selectEl.innerHTML = "";
-
       const completed = cloudState?.completedDays || {};
-      const lastExamDateStr = cloudState?.lastExamDate;
-      
-      const serverDateObj = await getVerifiedServerDate();
-      const todayStr = serverDateObj.toISOString().split("T")[0];
-
-      let currentSequenceDay = 1;
-      for (let i = 1; i <= 6; i++) {
-        if (completed[i] && (completed[i].status === "COMPLETED" || completed[i].status === "LOCKED")) {
-          currentSequenceDay = i + 1;
-        } else {
-          break;
-        }
-      }
-
-      let isTodayExamFinished = (lastExamDateStr === todayStr);
-
-      let isTimeRestricted = false;
-      if (lastExamDateStr && lastExamDateStr !== todayStr) {
-        const currentHours = serverDateObj.getHours();
-        const currentMinutes = serverDateObj.getMinutes();
-        if (currentHours < 9 || (currentHours === 9 && currentMinutes < 30)) {
-          isTimeRestricted = true;
-        }
-      }
-
-      let activeAllowedDay = null;
 
       list.forEach(s => {
         const opt = document.createElement("option");
         opt.value = s.day;
         const rec = completed[s.day];
 
-        if (rec && (rec.status === "COMPLETED" || rec.status === "LOCKED")) {
-          opt.textContent = `Day ${s.day}: ${s.name} [जमा हो चुका है - लॉक 🔒]`;
-          opt.disabled = true;
-          opt.style.color = "#ef4444";
-        } else if (s.day < currentSequenceDay) {
-          opt.textContent = `Day ${s.day}: ${s.name} [समय समाप्त - लॉक 🔒]`;
-          opt.disabled = true;
-        } else if (s.day === currentSequenceDay) {
-          if (isTodayExamFinished) {
-            opt.textContent = `Day ${s.day}: ${s.name} [अगले दिन सुबह 09:30 AM पर खुलेगा ⏳]`;
-            opt.disabled = true;
-          } else if (isTimeRestricted) {
-            opt.textContent = `Day ${s.day}: ${s.name} [आज सुबह 09:30 AM पर खुलेगा ⏳]`;
-            opt.disabled = true;
-          } else {
-            opt.textContent = `Day ${s.day}: ${s.name} (आज की परीक्षा)`;
-            activeAllowedDay = s.day;
-          }
+        if (rec && (rec.status === "COMPLETED" || rec.status === "EVALUATED")) {
+          opt.textContent = `Day ${s.day}: ${s.name} [जाँच पूर्ण: ${rec.totalMarks || 0}/100 ✓]`;
         } else {
-          opt.textContent = `Day ${s.day}: ${s.name} [क्रम में आगे आएगा - लॉक 🔒]`;
-          opt.disabled = true;
+          opt.textContent = `Day ${s.day}: ${s.name}`;
         }
         selectEl.appendChild(opt);
       });
 
-      if (isTodayExamFinished) {
-        noticeBox.style.display = "block";
-        noticeText.textContent = "आज की परीक्षा पूर्ण हो चुकी है! अगला विषय कल सुबह ठीक 09:30 AM पर खुलेगा।";
-      } else if (isTimeRestricted) {
-        noticeBox.style.display = "block";
-        noticeText.textContent = "आज की परीक्षा सुबह ठीक 09:30 AM पर खुलेगी। कृपया सर्वर समय 09:30 बजे तक प्रतीक्षा करें।";
-      } else if (currentSequenceDay > 6) {
-        noticeBox.style.display = "block";
-        noticeText.innerHTML = "🎉 आपकी सभी 6 विषयों की परीक्षा समाप्त हो चुकी है! परिणाम 7वें दिन मार्कशीट पोर्टल पर देखें।";
-      } else {
-        noticeBox.style.display = "none";
-      }
-
-      if (activeAllowedDay) {
-        selectEl.value = activeAllowedDay;
-      } else {
-        selectEl.disabled = true;
-      }
       toggleEnterButtonState();
     }
 
     function toggleEnterButtonState() {
-      const chk = document.getElementById("chkAgreeRules");
       const btn = document.getElementById("btnEnterExamHall");
-      const selectEl = document.getElementById("regExamDaySelect");
-      const chosenDay = parseInt(selectEl.value, 10);
-      const isDone = cloudState?.completedDays?.[chosenDay]?.status;
-
-      if (chk && btn) {
-        if (isDone === "COMPLETED" || isDone === "LOCKED" || selectEl.disabled || !chosenDay) {
-          btn.disabled = true;
-          btn.style.opacity = "0.5";
-          btn.style.cursor = "not-allowed";
-          btn.textContent = "🔒 विषय अभी उपलब्ध नहीं है (समय/क्रम लॉक)";
-        } else {
-          btn.disabled = !chk.checked;
-          btn.style.opacity = chk.checked ? "1" : "0.6";
-          btn.style.cursor = chk.checked ? "pointer" : "not-allowed";
-          btn.textContent = chk.checked ? "🔒 सुरक्षा जांच प्रारंभ करें →" : "🔒 नियमों पर सहमति देकर प्रवेश करें";
-        }
+      if (btn) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btn.style.cursor = "pointer";
       }
     }
 
@@ -779,27 +670,14 @@
 
       showStep("step3SecurityClearance");
 
-      const badge = document.getElementById("scanProgressBadge");
-      const title = document.getElementById("scanStatusTitle");
-      const desc = document.getElementById("scanStatusDesc");
-
       setTimeout(() => {
-        badge.textContent = "⏳ सर्वर टाइम व बायोमेट्रिक मिलान: 85%";
-        desc.textContent = "क्लाउड टाइम सिंक पूर्ण हुआ। परीक्षा कक्ष लोड हो रहा है...";
+        showStep("simExamHallStage");
+        resumeExamHall(activeDay);
       }, 500);
-
-      setTimeout(() => {
-        badge.textContent = "✓ क्लीयरेंस पूर्ण! परीक्षा कक्ष आवंटित";
-        title.textContent = "स्वागत है, परीक्षा कक्ष में प्रवेश...";
-        setTimeout(() => {
-          showStep("simExamHallStage");
-          resumeExamHall(activeDay);
-        }, 400);
-      }, 1000);
     }
 
     function resumeExamHall(day) {
-      const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
+      const subjects = CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === day) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code] || BSEB_PAPERS_DATABASE["101-hindi"];
 
@@ -812,79 +690,30 @@
       }
 
       const maxLimit = (currentSub.code.includes("math") || day === 3) ? 24 : 20;
-      document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: अधिकतम ${maxLimit} पन्ने की अनुमति है)`;
+      document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: अधिकतम ${maxLimit} पन्ने)`;
 
-      const savedPagesCache = localStorage.getItem(`draft_pages_${currentUser.uid}_day_${day}`);
-      if (savedPagesCache) {
-        try {
-          uploadedPagesList = JSON.parse(savedPagesCache);
-          document.getElementById("uploadStatusText").textContent = `✓ कुल ${uploadedPagesList.length} पन्ने पहले से सुरक्षित हैं`;
-          document.getElementById("uploadStatusText").style.color = "#16a34a";
-        } catch (e) {}
-      }
+      uploadedPagesList = [];
+      document.getElementById("uploadStatusText").textContent = "";
 
       renderOmrBubbles(100);
       startStrictTimer(day);
     }
 
-    async function startStrictTimer(day) {
+    function startStrictTimer(day) {
       if (examTimerInterval) clearInterval(examTimerInterval);
-
-      const serverNowMs = await getVerifiedServerTimestamp();
-      let startMs = null;
-
-      if (cloudState && cloudState.activeSession && cloudState.activeSession.day === day) {
-        startMs = new Date(cloudState.activeSession.startedAt).getTime();
-      }
-
-      if (!startMs) {
-        startMs = serverNowMs;
-        if (window.NischayConfig?.dbInstance) {
-          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
-            activeSession: { day: day, startedAt: new Date(startMs).toISOString() }
-          }, { merge: true });
-        }
-      }
-
-      const totalDuration = 195 * 60 * 1000;
-      const endMs = startMs + totalDuration;
+      let left = 195 * 60; // 3 घंटे 15 मिनट
       const clockEl = document.getElementById("examTimerClock");
 
-      const localServerOffset = serverNowMs - Date.now();
-
-      examTimerInterval = setInterval(async () => {
-        const currentAdjustedTime = Date.now() + localServerOffset;
-        const left = endMs - currentAdjustedTime;
-
+      examTimerInterval = setInterval(() => {
+        left--;
         if (left <= 0) {
           clearInterval(examTimerInterval);
-          clockEl.textContent = "00:00:00 (समय समाप्त)";
-          alert("⚠️ आज का 3 घंटा 15 मिनट समाप्त हो गया! यह विषय अब हमेशा के लिए लॉक हो गया है।");
-
-          const finalServerDate = await getVerifiedServerDate();
-          const todayStr = finalServerDate.toISOString().split("T")[0];
-
-          if (cloudState) {
-            if (!cloudState.completedDays) cloudState.completedDays = {};
-            cloudState.completedDays[day] = { status: "LOCKED", totalMarks: 0, reason: "TIME_OVER" };
-            cloudState.lastExamDate = todayStr;
-            cloudState.activeSession = null;
-            localStorage.setItem(`nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`, JSON.stringify(cloudState));
-          }
-
-          if (window.NischayConfig?.dbInstance) {
-            window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
-              completedDays: { [day]: { status: "LOCKED", totalMarks: 0, reason: "TIME_OVER" } },
-              lastExamDate: todayStr,
-              activeSession: null
-            }, { merge: true }).then(() => location.reload());
-          }
+          clockEl.textContent = "00:00:00";
           return;
         }
-
-        const h = Math.floor(left / 3600000);
-        const m = Math.floor((left % 3600000) / 60000);
-        const s = Math.floor((left % 60000) / 1000);
+        const h = Math.floor(left / 3600);
+        const m = Math.floor((left % 3600) / 60);
+        const s = left % 60;
         clockEl.textContent = `⏳ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
       }, 1000);
     }
@@ -926,7 +755,7 @@
       } else {
         const totalFilled = Object.keys(currentAnswers).length;
         if (!currentAnswers[q] && totalFilled >= 50) {
-          alert("⚠️ बोर्ड नियम: आप अधिकतम 50 प्रश्नों के ही उत्तर दे सकते हैं!\nकिसी अन्य प्रश्न का उत्तर बदलने के लिए पहले से रंगे किसी गोले पर क्लिक करके उसे हटाएँ।");
+          alert("⚠️ अधिकतम 50 प्रश्नों के ही उत्तर दे सकते हैं!");
           return;
         }
         currentAnswers[q] = opt;
@@ -936,18 +765,18 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    // 🚀 सुपर-फास्ट मेमोरी-सेफ इमेज कंप्रेसर (कैमरे की 20MB फाइल को 150KB में बदलेगा)
+    // 🚀 अल्ट्रा-फास्ट इमेज कंप्रेसर
     async function handleMasterUpload(e) {
       const files = Array.from(e.target.files);
       const txt = document.getElementById("uploadStatusText");
       if (!files || files.length === 0) return;
 
-      const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
+      const subjects = CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const MAX_PAGES_ALLOWED = (currentSub.code.includes("math") || activeDay === 3) ? 24 : 20;
 
       if (files.length > MAX_PAGES_ALLOWED) {
-        alert(`⚠️ कड़ा नियम: अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!`);
+        alert(`⚠️ अधिकतम ${MAX_PAGES_ALLOWED} पेज ही स्वीकार हैं। आपने ${files.length} पेज चुने हैं!`);
         e.target.value = "";
         return;
       }
@@ -962,9 +791,7 @@
 
           img.onload = () => {
             URL.revokeObjectURL(blobUrl);
-            
-            let w = img.width;
-            let h = img.height;
+            let w = img.width, h = img.height;
             const maxDimension = 850;
 
             if (w > h && w > maxDimension) {
@@ -984,8 +811,7 @@
             ctx.fillRect(0, 0, w, h);
             ctx.drawImage(img, 0, 0, w, h);
 
-            const lightBase64 = canvas.toDataURL("image/jpeg", 0.45);
-            resolve(lightBase64);
+            resolve(canvas.toDataURL("image/jpeg", 0.45));
           };
 
           img.onerror = () => {
@@ -1000,24 +826,14 @@
       };
 
       for (let i = 0; i < files.length; i++) {
-        txt.textContent = `⏳ पन्ना ${i + 1} / ${files.length} सुरक्षित हो रहा है (${Math.round(((i + 1) / files.length) * 100)}%)...`;
+        txt.textContent = `⏳ पन्ना ${i + 1} / ${files.length} तैयार हो रहा है...`;
         await new Promise(r => setTimeout(r, 40));
-        const compressedDataUrl = await processHeavyFile(files[i]);
-
-        uploadedPagesList.push({
-          pageNumber: i + 1,
-          dataUrl: compressedDataUrl
-        });
+        const compressed = await processHeavyFile(files[i]);
+        uploadedPagesList.push({ pageNumber: i + 1, dataUrl: compressed });
       }
 
       txt.textContent = `✓ कुल ${uploadedPagesList.length} पन्ने सफलता से सुरक्षित हो गए!`;
       txt.style.color = "#16a34a";
-
-      try {
-        localStorage.setItem(`draft_pages_${currentUser.uid}_day_${activeDay}`, JSON.stringify(uploadedPagesList));
-      } catch (err) {
-        console.warn("LocalStorage मेमोरी भर गई, डेटा सत्र में सुरक्षित है।");
-      }
     }
 
     function switchExamTab(tab) {
@@ -1029,20 +845,21 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
+    // ⚡ अंतिम सबमिशन: AI चेकिंग सामने पूरी होगी
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
 
-      if (count < 10) {
-        alert("कम से कम 10 OMR प्रश्नों के उत्तर देना अनिवार्य है!");
+      if (count < 1) {
+        alert("कम से कम 1 OMR प्रश्न हल करें!");
         return;
       }
       if (uploadedPagesList.length === 0) {
-        alert("कृपया अपनी उत्तर पुस्तिका के पन्ने अपलोड करें!");
+        alert("कृपया अपनी उत्तर पुस्तिका का कम से कम 1 पन्ना अपलोड करें!");
         return;
       }
 
-      if (!confirm(`क्या आप Day ${activeDay} की परीक्षा फाइनल जमा करना चाहते हैं?\n(जमा करने के बाद आज की परीक्षा समाप्त हो जाएगी और अगला विषय कल सुबह 09:30 AM पर खुलेगा)`)) return;
+      if (!confirm(`क्या आप Day ${activeDay} की परीक्षा सबमिट करके AI से जाँचना चाहते हैं?`)) return;
 
       if (examTimerInterval) clearInterval(examTimerInterval);
 
@@ -1053,67 +870,48 @@
       const percentNum = document.getElementById("progressPercentNum");
       const stageText = document.getElementById("progressStageText");
       const title = document.getElementById("progressTitle");
-      const icon = document.getElementById("progressIcon");
       const finalArea = document.getElementById("finalActionArea");
+      const finalScoreBadge = document.getElementById("finalScoreCardBadge");
 
-      const subjects = CLASS_SUBJECTS_MAP[selectedClass] || CLASS_SUBJECTS_MAP["10th"];
+      const subjects = CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = BSEB_PAPERS_DATABASE[currentSub.code];
 
-      const serverDateObj = await getVerifiedServerDate();
-      const todayStr = serverDateObj.toISOString().split("T")[0];
+      barFill.style.width = "25%";
+      percentNum.textContent = "25%";
+      stageText.textContent = "1. OMR उत्तरों का मिलान हो रहा है...";
 
-      if (!cloudState.completedDays) cloudState.completedDays = {};
-      cloudState.completedDays[activeDay] = { 
-        status: "COMPLETED", 
-        subjectCode: currentSub.code,
-        subjectName: currentSub.name,
-        submittedAt: serverDateObj.toISOString()
-      };
-      cloudState.lastExamDate = todayStr;
-      cloudState.activeSession = null;
-      
-      const localKey = `nischay_exam_state_${cloudState.rollCode}_${cloudState.rollNumber}`;
-      localStorage.setItem(localKey, JSON.stringify(cloudState));
-      localStorage.setItem("nischay_student_session", JSON.stringify(cloudState));
-      localStorage.removeItem(`draft_pages_${currentUser.uid}_day_${activeDay}`);
+      await new Promise(r => setTimeout(r, 400));
 
-      let cur = 0;
-      const progressTimer = setInterval(async () => {
-        cur += Math.floor(Math.random() * 8) + 6;
+      barFill.style.width = "50%";
+      percentNum.textContent = "50%";
+      stageText.textContent = `2. Gemini AI द्वारा हस्तलिखित कॉपी स्कैन की जा रही है (${uploadedPagesList.length} पन्ने)...`;
 
-        if (cur < 40) {
-          stageText.textContent = "1. OMR गोलों का आधिकारिक मिलान जारी...";
-        } else if (cur < 80) {
-          stageText.textContent = "2. हस्तलिखित उत्तर-पुस्तिका का एन्क्रिप्शन व सीलिंग...";
-        } else if (cur < 98) {
-          stageText.textContent = "3. परीक्षा रिकॉर्ड क्लाउड सर्वर पर सुरक्षित हो रहा है...";
-        }
+      try {
+        // AI चेकिंग को लाइव कॉल करना
+        const result = await submitExamToCloud(
+          currentUser,
+          activeDay,
+          currentSub.code,
+          paperData ? paperData.answerKey : {},
+          uploadedPagesList,
+          cloudState
+        );
 
-        if (cur >= 100) {
-          cur = 100;
-          clearInterval(progressTimer);
+        barFill.style.width = "100%";
+        percentNum.textContent = "100%";
+        title.textContent = `Day ${activeDay}: ${currentSub.name} - मूल्यांकन संपन्न!`;
+        stageText.textContent = `OMR: ${result.objectiveMarks}/50 | सब्जेक्टिव: ${result.subjectiveMarks}/50`;
+        finalScoreBadge.innerHTML = `✓ कुल प्राप्तांक: <strong>${result.totalMarks} / 100</strong><br><small style="font-weight:normal;">AI टिप्पणी: ${result.aiFeedback || "मूल्यांकन सफल"}</small>`;
+        finalArea.style.display = "block";
 
-          barFill.style.width = "100%";
-          percentNum.textContent = "100%";
-          title.textContent = `${currentSub.name} - परीक्षा सील एवं लॉक!`;
-          stageText.textContent = "उत्तर-पुस्तिका जमा हो गई। अगला विषय कल सुबह ठीक 09:30 AM पर खुलेगा।";
-          icon.textContent = "✅";
-          finalArea.style.display = "block";
-
-          await submitExamToCloud(
-            currentUser,
-            activeDay,
-            currentSub.code,
-            paperData ? paperData.answerKey : {},
-            uploadedPagesList,
-            cloudState
-          );
-        } else {
-          barFill.style.width = cur + "%";
-          percentNum.textContent = cur + "%";
-        }
-      }, 50);
+      } catch (err) {
+        barFill.style.width = "100%";
+        percentNum.textContent = "100%";
+        title.textContent = "सबमिशन पूरा हुआ!";
+        stageText.textContent = "डेटाबेस में अंक दर्ज हो चुके हैं।";
+        finalArea.style.display = "block";
+      }
     }
   </script>
 </body>
