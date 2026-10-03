@@ -1,6 +1,10 @@
 /**
- * NischayDesk - BSEB Engine (Fast Developer Testing Mode v16.0)
- * Fixed: Zero Auto-Restore Loop + Large Storage (IndexedDB)
+ * NischayDesk - BSEB Engine (Fast Developer Testing Mode v17.0)
+ * Features:
+ *   1. Zero Wait Submission (तुरंत पर्चा सील और जमा)
+ *   2. Silent Background AI Checking (बैकग्राउंड में शांत मूल्यांकन, हॉल में कोई नंबर नहीं)
+ *   3. IndexedDB Answer Copy Preservation (रिजल्ट पोर्टल पर लाल पेन कॉपी के लिए)
+ *   4. Zero Auto-Restore Bug (Firestore खाली तो फ्रेश टेस्ट)
  */
 
 function getProtectedKey() {
@@ -29,7 +33,7 @@ const BSEB_CONFIG = {
   BACKUP_MODEL: "gemini-1.5-flash"
 };
 
-// 📦 IndexedDB में उत्तर-पुस्तिका सुरक्षित स्टोर करने का पक्का इंजन
+// 📦 IndexedDB में उत्तर-पुस्तिका सुरक्षित रखने का इंजन
 function saveEvaluatedSheetToDB(uid, day, dataObj) {
   return new Promise((resolve) => {
     const req = indexedDB.open("NischaySheetsDB", 1);
@@ -114,7 +118,7 @@ function generateUniqueCredentials(uid) {
 }
 
 /* ==========================================================================
-   🔄 छात्र सत्र प्रबंधन (Auto-Restore Bug Fixed)
+   🔄 छात्र सत्र प्रबंधन (सटीक सिंक, कोई पुराना कचरा नहीं)
    ========================================================================== */
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -122,7 +126,7 @@ async function getCloudExamState(user) {
   const initialClass = localStorage.getItem("nd_selected_class") || "10th";
   const serverDateObj = await getVerifiedServerDate();
 
-  // फ़ोन की पुरानी लोकल मेमोरी पूरी तरह साफ़ रखें ताकि पुराना भूत न जागे
+  // फ़ोन की पुरानी मेमोरी साफ़ करें ताकि पुराना डेटा दोबारा न बने
   localStorage.removeItem(`nischay_exam_state_${creds.rollCode}_${creds.rollNumber}`);
   localStorage.removeItem("nischay_student_session");
 
@@ -159,7 +163,6 @@ async function getCloudExamState(user) {
           savedOMR: cloudData.savedOMR || {}
         };
       }
-      // ध्यान दें: अगर डॉक्यूमेंट नहीं है, तो यहाँ कोई auto-set नहीं होगा!
     } catch (e) {
       console.warn("Firestore sync error:", e);
     }
@@ -204,17 +207,17 @@ async function callGeminiApiFallback(parts) {
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         return data;
       }
-    } catch (err) {
-      console.warn(`Model ${model} unavailable, trying backup...`, err);
-    }
+    } catch (err) {}
   }
   throw new Error("AI मूल्यांकन सर्वर उपलब्ध नहीं है।");
 }
 
-async function evaluateSubjectiveWithAI(subjectCode, imagesList) {
-  if (!imagesList || imagesList.length === 0) {
-    return { subjectiveMarks: 0, aiFeedback: "कोई उत्तर-पुस्तिका अपलोड नहीं मिली", pagesEvaluation: [] };
-  }
+/* ==========================================================================
+   🤫 2. शांत बैकग्राउंड AI चेकिंग (Background Silent Grading)
+   छात्र को सबमिट करते समय इंतज़ार नहीं करना पड़ेगा। यह पीछे अपने आप जाँचेगा!
+   ========================================================================== */
+async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
+  if (!imagesList || imagesList.length === 0) return;
 
   const totalPages = Math.min(imagesList.length, 24);
   let imageParts = [];
@@ -230,13 +233,12 @@ async function evaluateSubjectiveWithAI(subjectCode, imagesList) {
     }
   }
 
-  if (imageParts.length === 0) {
-    return { subjectiveMarks: 0, aiFeedback: "पन्ने प्रोसेस नहीं हो सके", pagesEvaluation: [] };
-  }
+  if (imageParts.length === 0) return;
 
   const paperInfo = (window.BSEB_PAPERS_DATABASE && window.BSEB_PAPERS_DATABASE[subjectCode])
                     ? window.BSEB_PAPERS_DATABASE[subjectCode]
                     : null;
+
   const subjectName = paperInfo ? paperInfo.subjectName : subjectCode;
   const blueprintText = paperInfo && paperInfo.subjectiveBlueprint
     ? JSON.stringify(paperInfo.subjectiveBlueprint.sections, null, 2)
@@ -287,25 +289,45 @@ STRICT EVALUATION INSTRUCTIONS:
       awarded = Math.min(maxSubjective, Math.max(0, parseInt(parsed.totalSubjectiveMarks, 10) || 0));
     }
 
-    return {
-      subjectiveMarks: awarded,
-      aiFeedback: parsed.overallRemarks || "मूल्यांकन संपन्न",
-      pagesEvaluation: parsed.pagesEvaluation || [],
-      isDisqualified: (!parsed.isValid || parsed.status === "REJECTED")
-    };
+    const finalTotal = currentObjMarks + awarded;
+    const serverDateObj = await getVerifiedServerDate();
+
+    // 1. Firestore में अंक और टिप्पणी अपडेट करें (रिजल्ट पोर्टल के लिए)
+    if (window.NischayConfig?.dbInstance) {
+      await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
+        completedDays: {
+          [day]: {
+            subjectiveMarks: awarded,
+            totalMarks: finalTotal,
+            aiFeedback: parsed.overallRemarks || "मूल्यांकन संपन्न",
+            pagesEvaluation: parsed.pagesEvaluation || [],
+            status: "EVALUATED",
+            aiEvaluatedAt: serverDateObj.toISOString()
+          }
+        }
+      }, { merge: true });
+    }
+
+    // 2. IndexedDB में जाँची हुई प्रति का डेटा सिंक करें (ताकि PDF में लाल टिक दिखें)
+    await saveEvaluatedSheetToDB(uid, day, {
+      subjectCode: subjectCode,
+      subjectName: subjectName,
+      pages: imagesList,
+      evaluation: parsed.pagesEvaluation || []
+    });
+
   } catch (err) {
-    console.error("AI Evaluation error:", err);
-    return {
-      subjectiveMarks: 0,
-      aiFeedback: "AI मूल्यांकन प्रतिक्रिया में विलंब (डिफ़ॉल्ट दर्ज)",
-      pagesEvaluation: []
-    };
+    console.error("AI Background Evaluation error:", err);
   }
 }
 
+/* ==========================================================================
+   ⚡ 3. सुपरफास्ट सबमिशन (परीक्षा हॉल में तुरंत सील, कोई नंबर नहीं)
+   ========================================================================== */
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
 
+  // OMR का मिलान
   let objMarks = 0;
   let count = 0;
   for (let i = 1; i <= 100; i++) {
@@ -322,34 +344,28 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
                     ? window.BSEB_PAPERS_DATABASE[subjectCode]
                     : null;
   const subjectName = paperInfo ? paperInfo.subjectName : subjectCode;
-
-  const aiResult = await evaluateSubjectiveWithAI(subjectCode, imagesList);
-
   const serverDateObj = await getVerifiedServerDate();
   const todayStr = serverDateObj.toISOString().split('T')[0];
-  const finalTotal = objMarks + aiResult.subjectiveMarks;
 
+  // सबमिट करते वक्त केवल बेसिक डेटा जमा होगा (कोई नंबर हॉल में नहीं दिखेगा)
   const completedData = {
     subjectCode: subjectCode,
     subjectName: subjectName,
     objectiveMarks: objMarks,
-    subjectiveMarks: aiResult.subjectiveMarks,
-    totalMarks: finalTotal,
-    aiFeedback: aiResult.aiFeedback,
-    pagesEvaluation: aiResult.pagesEvaluation,
-    isDisqualified: !!aiResult.isDisqualified,
+    subjectiveMarks: 0,
+    totalMarks: objMarks,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
-    status: "EVALUATED",
-    submittedAt: serverDateObj.toISOString(),
-    aiEvaluatedAt: serverDateObj.toISOString()
+    status: "COMPLETED",
+    submittedAt: serverDateObj.toISOString()
   };
 
+  // कॉपियों को IndexedDB में तुरंत सुरक्षित करें (PDF के लिए)
   if (imagesList && imagesList.length > 0) {
     await saveEvaluatedSheetToDB(user.uid, day, {
       subjectCode: subjectCode,
       subjectName: subjectName,
       pages: imagesList,
-      evaluation: aiResult.pagesEvaluation
+      evaluation: []
     });
   }
 
@@ -358,6 +374,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   state.lastExamDate = todayStr;
   state.activeSession = null;
 
+  // Firestore में सुरक्षित जमा
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
     await db.collection("bseb_exams_2026").doc(user.uid).set({
@@ -365,6 +382,9 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       lastExamDate: todayStr,
       activeSession: null
     }, { merge: true });
+
+    // 🚀 शांत बैकग्राउंड चेकिंग चालू (छात्र को बिना रोके पीछे AI काम करेगा)
+    runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
   }
 
   return completedData;
