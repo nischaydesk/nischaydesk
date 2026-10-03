@@ -1,10 +1,11 @@
 /**
- * NischayDesk - BSEB Engine (Fast Developer Testing Mode v17.0)
+ * NischayDesk - BSEB Engine (Fast Developer Testing Mode v18.0 Final)
  * Features:
  *   1. Zero Wait Submission (तुरंत पर्चा सील और जमा)
- *   2. Silent Background AI Checking (बैकग्राउंड में शांत मूल्यांकन, हॉल में कोई नंबर नहीं)
- *   3. IndexedDB Answer Copy Preservation (रिजल्ट पोर्टल पर लाल पेन कॉपी के लिए)
- *   4. Zero Auto-Restore Bug (Firestore खाली तो फ्रेश टेस्ट)
+ *   2. Guaranteed Identity Write (rollCode, rollNumber, regNo, schoolName हर सबमिशन में सुरक्षित)
+ *   3. Silent Background AI Checking (बैकग्राउंड में शांत मूल्यांकन, हॉल में कोई नंबर नहीं)
+ *   4. IndexedDB Answer Copy Preservation (रिजल्ट पोर्टल पर लाल पेन कॉपी के लिए)
+ *   5. Zero Auto-Restore Bug (Firestore खाली तो फ्रेश टेस्ट)
  */
 
 function getProtectedKey() {
@@ -118,7 +119,7 @@ function generateUniqueCredentials(uid) {
 }
 
 /* ==========================================================================
-   🔄 छात्र सत्र प्रबंधन (सटीक सिंक, कोई पुराना कचरा नहीं)
+   🔄 छात्र सत्र प्रबंधन (Auto-Restore Bug Fixed)
    ========================================================================== */
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -126,7 +127,7 @@ async function getCloudExamState(user) {
   const initialClass = localStorage.getItem("nd_selected_class") || "10th";
   const serverDateObj = await getVerifiedServerDate();
 
-  // फ़ोन की पुरानी मेमोरी साफ़ करें ताकि पुराना डेटा दोबारा न बने
+  // फ़ोन की पुरानी मेमोरी साफ़ रखें ताकि पुराना कचरा लोड न हो
   localStorage.removeItem(`nischay_exam_state_${creds.rollCode}_${creds.rollNumber}`);
   localStorage.removeItem("nischay_student_session");
 
@@ -214,7 +215,7 @@ async function callGeminiApiFallback(parts) {
 
 /* ==========================================================================
    🤫 2. शांत बैकग्राउंड AI चेकिंग (Background Silent Grading)
-   छात्र को सबमिट करते समय इंतज़ार नहीं करना पड़ेगा। यह पीछे अपने आप जाँचेगा!
+   हॉल में तुरंत सबमिट होगा। चेकिंग पीछे शांत रूप से चलेगी।
    ========================================================================== */
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return;
@@ -322,7 +323,7 @@ STRICT EVALUATION INSTRUCTIONS:
 }
 
 /* ==========================================================================
-   ⚡ 3. सुपरफास्ट सबमिशन (परीक्षा हॉल में तुरंत सील, कोई नंबर नहीं)
+   ⚡ 3. सुपरफास्ट सबमिशन (परीक्षा हॉल में तुरंत सील + Guaranteed Identity)
    ========================================================================== */
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
@@ -347,7 +348,9 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   const serverDateObj = await getVerifiedServerDate();
   const todayStr = serverDateObj.toISOString().split('T')[0];
 
-  // सबमिट करते वक्त केवल बेसिक डेटा जमा होगा (कोई नंबर हॉल में नहीं दिखेगा)
+  const creds = generateUniqueCredentials(user ? user.uid : null);
+
+  // सबमिट करते वक्त डेटाबेस में सील होने वाला पेलोड
   const completedData = {
     subjectCode: subjectCode,
     subjectName: subjectName,
@@ -359,7 +362,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     submittedAt: serverDateObj.toISOString()
   };
 
-  // कॉपियों को IndexedDB में तुरंत सुरक्षित करें (PDF के लिए)
+  // कॉपियों को IndexedDB में सुरक्षित करें (PDF के लिए)
   if (imagesList && imagesList.length > 0) {
     await saveEvaluatedSheetToDB(user.uid, day, {
       subjectCode: subjectCode,
@@ -374,16 +377,24 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   state.lastExamDate = todayStr;
   state.activeSession = null;
 
-  // Firestore में सुरक्षित जमा
+  // 🔴 गारंटीड पहचान डेटा (rollCode, rollNumber कभी नहीं छूटेगा)
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
     await db.collection("bseb_exams_2026").doc(user.uid).set({
+      uid: user.uid,
+      rollCode: state.rollCode || creds.rollCode,
+      rollNumber: state.rollNumber || creds.rollNumber,
+      regNo: state.regNo || creds.regNo,
+      displayName: state.displayName || user.displayName || user.email.split('@')[0],
+      fatherName: state.fatherName || "",
+      motherName: state.motherName || "",
+      schoolName: state.schoolName || "",
       completedDays: { [day]: completedData },
       lastExamDate: todayStr,
       activeSession: null
     }, { merge: true });
 
-    // 🚀 शांत बैकग्राउंड चेकिंग चालू (छात्र को बिना रोके पीछे AI काम करेगा)
+    // 🚀 शांत बैकग्राउंड AI चेकिंग प्रारंभ
     runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
   }
 
