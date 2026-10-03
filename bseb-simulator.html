@@ -355,7 +355,7 @@
             ⚠️ कृपया सभी चारों विवरण सही-सही भरें!
           </div>
 
-          <button type="button" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
+          <button type="button" id="btnGoToStep2" onclick="goToStep2()" style="width: 100%; padding: 12px; background: #0284c7; color: #fff; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; margin-top:6px;">
             विवरण सत्यापित करें एवं विषय चुनें (चरण 2) →
           </button>
         </div>
@@ -471,7 +471,7 @@
 
   </main>
 
-  <!-- सबमिशन प्रोग्रेस मोडल (कोई नंबर नहीं दिखेगा) -->
+  <!-- सबमिशन प्रोग्रेस मोडल -->
   <div id="submissionProgressScreen">
     <div class="progress-modal-card">
       <div style="font-size: 2.8rem; margin-bottom: 8px;" id="progressIcon">🔒</div>
@@ -598,7 +598,7 @@
 
     function goToStep1() { showStep("step1AdmitCard"); }
 
-    function goToStep2() {
+    async function goToStep2() {
       const sName = document.getElementById("inputStudentName").value.trim();
       const fName = document.getElementById("inputFatherName").value.trim();
       const mName = document.getElementById("inputMotherName").value.trim();
@@ -611,20 +611,39 @@
       }
       errBox.style.display = "none";
 
+      const creds = generateUniqueCredentials(currentUser ? currentUser.uid : null);
+
       if (cloudState) {
         cloudState.displayName = sName;
         cloudState.fatherName = fName;
         cloudState.motherName = mName;
         cloudState.schoolName = schName;
+        cloudState.rollCode = creds.rollCode;
+        cloudState.rollNumber = creds.rollNumber;
+        cloudState.regNo = creds.regNo;
       }
 
+      // 🔴 चरण 1 पर ही Firestore में रोल कोड और रोल नंबर पक्का दर्ज करना
       if (currentUser && window.NischayConfig?.dbInstance) {
-        window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
-          displayName: sName,
-          fatherName: fName,
-          motherName: mName,
-          schoolName: schName
-        }, { merge: true });
+        const btnNext = document.getElementById("btnGoToStep2");
+        if (btnNext) btnNext.textContent = "⏳ सत्यापन हो रहा है...";
+
+        try {
+          await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(currentUser.uid).set({
+            uid: currentUser.uid,
+            displayName: sName,
+            fatherName: fName,
+            motherName: mName,
+            schoolName: schName,
+            rollCode: creds.rollCode,
+            rollNumber: creds.rollNumber,
+            regNo: creds.regNo
+          }, { merge: true });
+        } catch(e) {
+          console.warn("Step 1 Firestore Sync warning:", e);
+        }
+
+        if (btnNext) btnNext.textContent = "विवरण सत्यापित करें एवं विषय चुनें (चरण 2) →";
       }
 
       showStep("step2RulesAndSubject");
@@ -844,7 +863,7 @@
       document.getElementById("tabBtnSubj").style.color = tab === "subj" ? "#fff" : "var(--bseb-text)";
     }
 
-    // 🔒 अंतिम सबमिशन (शांत सीलिंग, कोई अंक नहीं दिखेगा)
+    // 🔒 अंतिम सबमिशन (सटीक सीलिंग + फुल रिकॉर्ड सिंक)
     async function confirmFinalExamSubmission() {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
