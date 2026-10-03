@@ -12,6 +12,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     * { box-sizing: border-box; }
@@ -163,9 +164,7 @@
       letter-spacing: 1px;
     }
 
-    /* ===================================================
-       🎯 A4 साइज NischayDesk आधिकारिक मार्कशीट
-       =================================================== */
+    /* A4 साइज NischayDesk आधिकारिक मार्कशीट */
     .a4-marksheet-wrapper {
       display: none;
       width: 210mm;
@@ -175,10 +174,9 @@
       border: 2px solid #1e293b;
       position: relative;
       box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    /* NISCHAYDESK WEB COPY वाटरमार्क */
     .watermark-webcopy {
       position: absolute;
       top: 50%;
@@ -291,6 +289,48 @@
       color: #16a34a;
     }
 
+    /* सर्टिफाइड कॉपी डाउनलोड सेक्शन */
+    .eval-copies-container {
+      margin-top: 14px;
+      background: #f8fafc;
+      border: 1.5px solid #0284c7;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .eval-copies-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #0284c7;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .eval-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+    }
+    .btn-download-copy {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #0f172a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .btn-download-copy:hover {
+      background: #0284c7;
+      color: #fff;
+      border-color: #0284c7;
+    }
+
     .marksheet-footer {
       font-size: 0.72rem;
       color: #475569;
@@ -303,7 +343,7 @@
     .print-bar {
       display: flex;
       gap: 12px;
-      margin-top: 10px;
+      margin-bottom: 30px;
     }
     .btn-action {
       padding: 10px 22px;
@@ -327,7 +367,7 @@
         margin: 0 !important;
         display: block !important;
       }
-      .top-brand-bar, .search-card, .countdown-card, .print-bar, header {
+      .top-brand-bar, .search-card, .countdown-card, .print-bar, .eval-copies-container {
         display: none !important;
       }
       .a4-marksheet-wrapper {
@@ -404,7 +444,7 @@
     </button>
   </div>
 
-  <!-- चरण 2: A4 साइज NischayDesk आधिकारिक मार्कशीट -->
+  <!-- चरण 2: A4 साइज आधिकारिक मार्कशीट -->
   <div class="a4-marksheet-wrapper" id="a4Marksheet">
     <div class="watermark-webcopy">NISCHAYDESK WEB COPY</div>
 
@@ -470,6 +510,14 @@
       </tfoot>
     </table>
 
+    <!-- जाँची गई उत्तर-पुस्तिकाएं (Red Ink Evaluated Sheets) -->
+    <div class="eval-copies-container" id="evaluatedCopiesBox">
+      <div class="eval-copies-title">
+        <span>🖋️ डिजिटल जाँची गई उत्तर-पुस्तिकाएँ (Red-Pen Certified Copies):</span>
+      </div>
+      <div class="eval-grid" id="evalButtonsGrid"></div>
+    </div>
+
     <div class="marksheet-footer">
       <strong>Abbreviations used:</strong> • F -> Fail • P -> Pass • ABS -> Absent • INT -> Internal Assessment • PRAC -> Practical Assessment<br />
       <em>Disclaimer:</em> This Web Copy is published by NischayDesk Real Examination Simulator for immediate evaluation of Class 10th students. Certified digital copy verified by NischayDesk Evaluation Engine.
@@ -482,6 +530,7 @@
   </div>
 
   <script src="config.js"></script>
+  <script src="bseb-papers.js"></script>
   <script src="bseb-engine.js"></script>
 
   <script>
@@ -572,32 +621,25 @@
         return;
       }
 
-      // =========================================================
-      // 🛑 शून्य परीक्षा सुरक्षा: बिना परीक्षा दिए रिज़ल्ट/टाइमर नहीं
-      // =========================================================
       const completed = studentData.completedDays || {};
       const completedCount = Object.keys(completed).length;
 
       if (completedCount === 0 && !studentData.activeSession) {
-        showError("❌ आपने अभी तक किसी भी विषय की परीक्षा प्रारंभ नहीं की है!\nकृपया पहले परीक्षा पोर्टल पर जाकर परीक्षा दें, उसके बाद ही परिणाम सारणी मान्य होगी।");
+        showError("❌ आपने अभी तक किसी भी विषय की परीक्षा प्रारंभ नहीं की है!\nकृपया पहले परीक्षा पोर्टल पर जाकर परीक्षा दें।");
         generateCaptcha();
         return;
       }
 
-      // =========================================================
-      // 🔒 7वें दिन का कड़ा ताला (Strict Day 7 Release Gate)
-      // =========================================================
+      // 🔒 सर्वर समय आधारित 7वें दिन का कड़ा ताला
       const startDateMs = studentData.startDate ? new Date(studentData.startDate).getTime() : Date.now();
       const day7UnlockMs = startDateMs + (6 * 24 * 60 * 60 * 1000);
-      const nowMs = Date.now();
+      const serverNowMs = await getVerifiedServerTimestamp();
 
-      // अगर 7वां दिन नहीं आया है तो सीधे काउंटडाउन दिखाएं
-      if (nowMs < day7UnlockMs) {
+      if (serverNowMs < day7UnlockMs) {
         showCountdownScreen(day7UnlockMs);
         return;
       }
 
-      // 7वां दिन पूरा होने पर ही मार्कशीट खुलेगी
       renderA4Marksheet(studentData);
     }
 
@@ -607,8 +649,10 @@
 
       if (countdownIntervalRef) clearInterval(countdownIntervalRef);
 
-      const updateClock = () => {
-        const diff = unlockMs - Date.now();
+      const updateClock = async () => {
+        const serverNowMs = await getVerifiedServerTimestamp();
+        const diff = unlockMs - serverNowMs;
+
         if (diff <= 0) {
           clearInterval(countdownIntervalRef);
           document.getElementById("resultCountdownTimer").textContent = "परिणाम जारी हो चुका है! कृपया दोबारा खोजें।";
@@ -638,7 +682,9 @@
       document.getElementById("outRegNo").textContent = data.regNo || `${data.rollCode}-00027-25`;
 
       const tbody = document.getElementById("matrixTableBody");
+      const buttonsGrid = document.getElementById("evalButtonsGrid");
       tbody.innerHTML = "";
+      buttonsGrid.innerHTML = "";
 
       const subjects = [
         { day: 1, name: "M.I.L. HINDI", full: 100, pass: 30, isExtra: false },
@@ -658,8 +704,17 @@
         let theoryMarks = 0;
         let isAbsent = false;
 
-        if (examRecord && examRecord.status === "COMPLETED") {
+        if (examRecord && (examRecord.status === "COMPLETED" || examRecord.status === "EVALUATED")) {
           theoryMarks = examRecord.totalMarks || 0;
+
+          // जाँची हुई कॉपी डाउनलोड बटन तैयार करना
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-download-copy";
+          btn.innerHTML = `📄 Day ${sub.day} (${sub.name.split(' ')[0]})`;
+          btn.onclick = () => alert(`Day ${sub.day} की जाँची गई लाल स्याही वाली सर्टिफाइड कॉपी लोड हो रही है...`);
+          buttonsGrid.appendChild(btn);
+
         } else {
           isAbsent = true;
         }
