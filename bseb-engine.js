@@ -1,10 +1,6 @@
 /**
- * NischayDesk - BSEB Engine (Fast Developer Testing Mode v15.0)
- * Features:
- *   1. Obfuscated Multi-Segment Key Injection (Bypasses GitHub Secret Scanners)
- *   2. Synchronous Live Gemini Evaluation
- *   3. Zero Waiting Locks (Testing Mode Enabled)
- *   4. Large Storage Engine (IndexedDB - Up to 1GB for all 6 subjects' answer copies)
+ * NischayDesk - BSEB Engine (Fast Developer Testing Mode v16.0)
+ * Fixed: Zero Auto-Restore Loop + Large Storage (IndexedDB)
  */
 
 function getProtectedKey() {
@@ -88,7 +84,7 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("nischay_theme", theme);
   const btn = document.getElementById("themeToggleBtn");
-  if (btn) btn.innerHTML = theme === "dark" ? "☀️️ लाइट मोड" : "🌙 डार्क मोड";
+  if (btn) btn.innerHTML = theme === "dark" ? "☀️ लाइट मोड" : "🌙 डार्क मोड";
 }
 
 function triggerGoogleLogin() {
@@ -117,15 +113,18 @@ function generateUniqueCredentials(uid) {
   return { rollCode, rollNumber, regNo };
 }
 
-async function enforceCloudAbsence(user, state) {
-  return state; // ⚡ टेस्टिंग मोड में अनुपस्थिति लॉक बाईपास
-}
-
+/* ==========================================================================
+   🔄 छात्र सत्र प्रबंधन (Auto-Restore Bug Fixed)
+   ========================================================================== */
 async function getCloudExamState(user) {
   if (!user) return null;
   const creds = generateUniqueCredentials(user.uid);
   const initialClass = localStorage.getItem("nd_selected_class") || "10th";
   const serverDateObj = await getVerifiedServerDate();
+
+  // फ़ोन की पुरानी लोकल मेमोरी पूरी तरह साफ़ रखें ताकि पुराना भूत न जागे
+  localStorage.removeItem(`nischay_exam_state_${creds.rollCode}_${creds.rollNumber}`);
+  localStorage.removeItem("nischay_student_session");
 
   let studentState = {
     uid: user.uid,
@@ -145,34 +144,27 @@ async function getCloudExamState(user) {
     activeSession: null
   };
 
-  const localKey = `nischay_exam_state_${studentState.rollCode}_${studentState.rollNumber}`;
-  const localCache = localStorage.getItem(localKey);
-  if (localCache) {
-    try { studentState = { ...studentState, ...JSON.parse(localCache) }; } catch(e) {}
-  }
-
   if (window.NischayConfig && window.NischayConfig.dbInstance) {
     try {
       const db = window.NischayConfig.dbInstance;
       const docRef = db.collection("bseb_exams_2026").doc(user.uid);
       const docSnap = await docRef.get();
+
       if (docSnap.exists) {
         const cloudData = docSnap.data();
         studentState = {
           ...studentState,
           ...cloudData,
-          completedDays: { ...(studentState.completedDays || {}), ...(cloudData.completedDays || {}) }
+          completedDays: cloudData.completedDays || {},
+          savedOMR: cloudData.savedOMR || {}
         };
-      } else {
-        await docRef.set(studentState);
       }
+      // ध्यान दें: अगर डॉक्यूमेंट नहीं है, तो यहाँ कोई auto-set नहीं होगा!
     } catch (e) {
-      console.warn("Firestore sync warning:", e);
+      console.warn("Firestore sync error:", e);
     }
   }
 
-  localStorage.setItem("nischay_student_session", JSON.stringify(studentState));
-  localStorage.setItem(localKey, JSON.stringify(studentState));
   return studentState;
 }
 
@@ -186,9 +178,6 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
   } else {
     delete state.savedOMR[day][qNum];
   }
-
-  const localKey = `nischay_exam_state_${state.rollCode}_${state.rollNumber}`;
-  localStorage.setItem(localKey, JSON.stringify(state));
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     try {
@@ -334,7 +323,6 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
                     : null;
   const subjectName = paperInfo ? paperInfo.subjectName : subjectCode;
 
-  // लाइव AI मूल्यांकन
   const aiResult = await evaluateSubjectiveWithAI(subjectCode, imagesList);
 
   const serverDateObj = await getVerifiedServerDate();
@@ -356,7 +344,6 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     aiEvaluatedAt: serverDateObj.toISOString()
   };
 
-  // 🚀 IndexedDB में सुरक्षित 1GB स्टोरेज (मेमोरी कभी नहीं भरेगी)
   if (imagesList && imagesList.length > 0) {
     await saveEvaluatedSheetToDB(user.uid, day, {
       subjectCode: subjectCode,
@@ -370,10 +357,6 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   state.completedDays[day] = completedData;
   state.lastExamDate = todayStr;
   state.activeSession = null;
-
-  const localKey = `nischay_exam_state_${state.rollCode}_${state.rollNumber}`;
-  localStorage.setItem(localKey, JSON.stringify(state));
-  localStorage.setItem("nischay_student_session", JSON.stringify(state));
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
