@@ -140,30 +140,6 @@
       line-height: 1.4;
     }
 
-    /* ⏳ 7वें दिन से पहले का काउंटडाउन कार्ड */
-    .countdown-card {
-      display: none;
-      width: 100%;
-      max-width: 520px;
-      background: #ffffff;
-      border: 2px solid #0284c7;
-      border-radius: 14px;
-      padding: 24px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
-    .timer-big-clock {
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: #0284c7;
-      background: rgba(2, 132, 199, 0.08);
-      padding: 10px;
-      border-radius: 10px;
-      margin: 14px 0;
-      letter-spacing: 1px;
-    }
-
     /* A4 साइज NischayDesk आधिकारिक मार्कशीट */
     .a4-marksheet-wrapper {
       display: none;
@@ -313,22 +289,22 @@
     }
     .btn-download-copy {
       background: #ffffff;
-      border: 1px solid #cbd5e1;
-      padding: 6px;
+      border: 1.5px solid #0284c7;
+      padding: 8px;
       border-radius: 6px;
-      font-size: 0.74rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      color: #0f172a;
+      color: #0284c7;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
+      transition: all 0.2s;
     }
     .btn-download-copy:hover {
       background: #0284c7;
       color: #fff;
-      border-color: #0284c7;
     }
 
     .marksheet-footer {
@@ -367,7 +343,7 @@
         margin: 0 !important;
         display: block !important;
       }
-      .top-brand-bar, .search-card, .countdown-card, .print-bar, .eval-copies-container {
+      .top-brand-bar, .search-card, .print-bar, .eval-copies-container {
         display: none !important;
       }
       .a4-marksheet-wrapper {
@@ -398,7 +374,7 @@
   <div class="search-card" id="searchBoxCard">
     <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
     <p class="search-subtitle">
-      NischayDesk आधिकारिक 7-दिवसीय मूल्यांकन परीक्षा परिणाम<br />
+      NischayDesk आधिकारिक सिमुलेशन मूल्यांकन परिणाम (Fast Test Portal)<br />
       सत्यापित रोल कोड एवं रोल नंबर दर्ज करें
     </p>
 
@@ -426,22 +402,6 @@
     </button>
 
     <div class="error-banner" id="errorBanner"></div>
-  </div>
-
-  <!-- ⏳ 7वें दिन से पहले का काउंटडाउन लॉक कार्ड -->
-  <div class="countdown-card" id="countdownCard">
-    <div style="font-size: 2.8rem; margin-bottom: 6px;">⏳</div>
-    <h3 style="color: #0284c7; margin: 0 0 6px 0; font-size: 1.25rem;">आपकी परीक्षा अभी प्रगति पर है!</h3>
-    <p style="font-size: 0.88rem; color: #475569; line-height: 1.5; margin: 0;">
-      बिहार बोर्ड 7-दिवसीय सिमुलेशन नियमानुसार, आपका परिणाम सभी 6 विषयों की परीक्षा समाप्त होने के बाद <strong>7वें दिन सुबह ठीक 09:00 AM</strong> पर प्रकाशित किया जाएगा।
-    </p>
-    <div class="timer-big-clock" id="resultCountdownTimer">-- दिन -- घंटे -- मिनट</div>
-    <div style="background: rgba(2, 132, 199, 0.08); border-radius: 8px; padding: 10px; font-size: 0.82rem; color: #0284c7; font-weight: bold;">
-      🔒 सुरक्षा नियम: समय पूर्व परिणाम देखना पूर्णतः प्रतिबंधित है।
-    </div>
-    <button type="button" onclick="resetSearch()" style="margin-top: 15px; padding: 8px 20px; background: #64748b; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
-      ← वापस जाएं
-    </button>
   </div>
 
   <!-- चरण 2: A4 साइज आधिकारिक मार्कशीट -->
@@ -513,7 +473,7 @@
     <!-- जाँची गई उत्तर-पुस्तिकाएं (Red Ink Evaluated Sheets) -->
     <div class="eval-copies-container" id="evaluatedCopiesBox">
       <div class="eval-copies-title">
-        <span>🖋️ डिजिटल जाँची गई उत्तर-पुस्तिकाएँ (Red-Pen Certified Copies):</span>
+        <span>🖋️ डिजिटल जाँची गई उत्तर-पुस्तिकाएँ (Red-Pen Certified Copies PDF):</span>
       </div>
       <div class="eval-grid" id="evalButtonsGrid"></div>
     </div>
@@ -535,7 +495,6 @@
 
   <script>
     let expectedCaptchaSum = 0;
-    let countdownIntervalRef = null;
 
     function generateCaptcha() {
       const n1 = Math.floor(Math.random() * 20) + 5;
@@ -621,54 +580,8 @@
         return;
       }
 
-      const completed = studentData.completedDays || {};
-      const completedCount = Object.keys(completed).length;
-
-      if (completedCount === 0 && !studentData.activeSession) {
-        showError("❌ आपने अभी तक किसी भी विषय की परीक्षा प्रारंभ नहीं की है!\nकृपया पहले परीक्षा पोर्टल पर जाकर परीक्षा दें।");
-        generateCaptcha();
-        return;
-      }
-
-      // 🔒 सर्वर समय आधारित 7वें दिन का कड़ा ताला
-      const startDateMs = studentData.startDate ? new Date(studentData.startDate).getTime() : Date.now();
-      const day7UnlockMs = startDateMs + (6 * 24 * 60 * 60 * 1000);
-      const serverNowMs = await getVerifiedServerTimestamp();
-
-      if (serverNowMs < day7UnlockMs) {
-        showCountdownScreen(day7UnlockMs);
-        return;
-      }
-
+      // ⚡ टेस्टिंग मोड: 7वें दिन का लॉक पूरी तरह हटा दिया गया है
       renderA4Marksheet(studentData);
-    }
-
-    function showCountdownScreen(unlockMs) {
-      document.getElementById("searchBoxCard").style.display = "none";
-      document.getElementById("countdownCard").style.display = "block";
-
-      if (countdownIntervalRef) clearInterval(countdownIntervalRef);
-
-      const updateClock = async () => {
-        const serverNowMs = await getVerifiedServerTimestamp();
-        const diff = unlockMs - serverNowMs;
-
-        if (diff <= 0) {
-          clearInterval(countdownIntervalRef);
-          document.getElementById("resultCountdownTimer").textContent = "परिणाम जारी हो चुका है! कृपया दोबारा खोजें।";
-          return;
-        }
-
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById("resultCountdownTimer").textContent = `${d} दिन ${h} घंटे ${m} मिनट ${s} सेकंड`;
-      };
-
-      updateClock();
-      countdownIntervalRef = setInterval(updateClock, 1000);
     }
 
     function renderA4Marksheet(data) {
@@ -707,12 +620,12 @@
         if (examRecord && (examRecord.status === "COMPLETED" || examRecord.status === "EVALUATED")) {
           theoryMarks = examRecord.totalMarks || 0;
 
-          // जाँची हुई कॉपी डाउनलोड बटन तैयार करना
+          // 📄 जाँची हुई कॉपी डाउनलोड बटन
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-download-copy";
-          btn.innerHTML = `📄 Day ${sub.day} (${sub.name.split(' ')[0]})`;
-          btn.onclick = () => alert(`Day ${sub.day} की जाँची गई लाल स्याही वाली सर्टिफाइड कॉपी लोड हो रही है...`);
+          btn.innerHTML = `📄 Day ${sub.day} (${sub.name.split(' ')[0]}) जाँची प्रति`;
+          btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord);
           buttonsGrid.appendChild(btn);
 
         } else {
@@ -756,17 +669,116 @@
       }
 
       document.getElementById("searchBoxCard").style.display = "none";
-      document.getElementById("countdownCard").style.display = "none";
       document.getElementById("a4Marksheet").style.display = "block";
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // 🔴 जाँची हुई लाल कलम वाली सर्टिफाइड कॉपी का असली PDF जनरेटर
+    async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord) {
+      const cacheKey = `eval_sheet_${uid}_day_${day}`;
+      const rawCache = localStorage.getItem(cacheKey);
+
+      if (!rawCache) {
+        alert(`Day ${day} (${subjectName}) की हस्तलिखित कॉपियां इसी ब्राउज़र पर अपलोड नहीं की गई थीं या मेमोरी रीसेट हो चुकी है।`);
+        return;
+      }
+
+      const cacheData = JSON.parse(rawCache);
+      const pages = cacheData.pages || [];
+      const evalPages = examRecord.pagesEvaluation || cacheData.evaluation || [];
+
+      if (pages.length === 0) {
+        alert("कोई पन्ना नहीं मिला!");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+
+      for (let i = 0; i < pages.length; i++) {
+        if (i > 0) doc.addPage();
+
+        const pageItem = pages[i];
+        const base64Data = typeof pageItem === "string" ? pageItem : pageItem.dataUrl;
+
+        // पन्ने पर लाल कलम से चेकिंग लगाने हेतु कैनवास का उपयोग
+        const canvas = document.createElement("canvas");
+        canvas.width = 1200;
+        canvas.height = 1700;
+        const ctx = canvas.getContext("2d");
+
+        // मूल छात्र की कॉपी ड्रा करें
+        const img = new Image();
+        img.src = base64Data;
+        await new Promise(r => { img.onload = r; img.onerror = r; });
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // 🔴 लाल कलम मार्किंग (Red-Pen Certified Evaluation)
+        const pEval = evalPages.find(p => p.pageIndex === i);
+        const marksOnThisPage = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord.subjectiveMarks || 0) : 0);
+        const remark = pEval ? pEval.pageRemark : "मूल्यांकन संपन्न";
+
+        // ऊपर हेडर बार (लाल स्याही)
+        ctx.fillStyle = "rgba(220, 38, 38, 0.9)";
+        ctx.fillRect(0, 0, canvas.width, 80);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 32px 'Plus Jakarta Sans', Arial";
+        ctx.fillText(`BSEB Patna Evaluation Copy | Day ${day}: ${subjectName} | Page: ${i + 1}/${pages.length}`, 30, 52);
+
+        // लाल टिक मार्क (✓) और गोल घेरा
+        ctx.strokeStyle = "#dc2626";
+        ctx.lineWidth = 10;
+        ctx.lineCap = "round";
+
+        // बड़ा लाल टिक मार्क
+        ctx.beginPath();
+        ctx.moveTo(950, 400);
+        ctx.lineTo(1000, 460);
+        ctx.lineTo(1120, 340);
+        ctx.stroke();
+
+        // दिए गए अंक
+        ctx.fillStyle = "#dc2626";
+        ctx.font = "bold 60px 'Plus Jakarta Sans', Arial";
+        ctx.fillText(`+${marksOnThisPage}`, 1000, 540);
+
+        // आधिकारिक गोल मुहर (Certified Stamp)
+        ctx.strokeStyle = "#dc2626";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.arc(1040, 750, 90, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.font = "bold 22px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("BSEB PATNA", 1040, 725);
+        ctx.fillText("EVALUATED", 1040, 755);
+        ctx.fillText("CHIEF EXAMINER", 1040, 785);
+        ctx.textAlign = "left";
+
+        // नीचे टिप्पणी
+        ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+        ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
+        ctx.strokeStyle = "#dc2626";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(40, canvas.height - 110, canvas.width - 80, 80);
+
+        ctx.fillStyle = "#dc2626";
+        ctx.font = "bold 28px Arial";
+        ctx.fillText(`परीक्षक टिप्पणी: ${remark} | इस पृष्ठ पर अंक: ${marksOnThisPage}`, 60, canvas.height - 60);
+
+        // PDF में पृष्ठ जोड़ें
+        const annotatedImgData = canvas.toDataURL("image/jpeg", 0.85);
+        doc.addImage(annotatedImgData, "JPEG", 0, 0, 210, 297);
+      }
+
+      doc.save(`BSEB_Certified_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}.pdf`);
+    }
+
     function resetSearch() {
-      if (countdownIntervalRef) clearInterval(countdownIntervalRef);
       document.getElementById("a4Marksheet").style.display = "none";
       document.getElementById("printActionsBar").style.display = "none";
-      document.getElementById("countdownCard").style.display = "none";
       document.getElementById("searchBoxCard").style.display = "block";
       generateCaptcha();
       hideError();
