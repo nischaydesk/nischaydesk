@@ -274,7 +274,7 @@ window.NischaySyllabus = {
        { no:9 , name: "परिवहन, संचार एवं व्यापार", status: "ready", pdfUrl: "https://drive.google.com/file/d/1b6uRuWQ4ztbS8ewsFI-nl--R3gerZDD0/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सड़क मार्ग (स्वर्णिम चतुर्भुज), रेलवे, जलमार्ग एवं अंतरराष्ट्रीय व्यापार।" },
        { no:10, name: "बिहार: कृषि एवं वन संसाधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1iPaqj5uMcklUMu-DrXCONjzorZ8GiqOp/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बिहार में कृषि की स्थिति, सिंचाई के साधन एवं वन क्षेत्र का विस्तार।" },
        { no:11, name: "बिहार: खनिज, ऊर्जा एवं उद्योग", status: "ready", pdfUrl: "https://drive.google.com/file/d/1kRlLvc0baMkFGIGQXmtZdz6H6cAcSwyh/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बरौनी रिफाइनरी, कांटी ताप विद्युत एवं बिहार में खनिज संपदा।" },
-       { no:12, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
+       { no:12, name: "मानचित्र अध्ययन (उच्चावच निरूपण)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1ydcUVH7yCxzScpqyNT1_ZQ7Q4KurEoiE/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "हैश्यूर विधि, समोच्च रेखाएं, पर्वतीय छायाकरण एवं तल चिह्न।" }
       ]
     },
     {
@@ -325,7 +325,7 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "संस्कृत (पीयूषम् एवं व्याकरण)",
       chapters: [
-        { no: 1, name: "मंगलम् (Mangalam)", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "उपनिषदों के मंत्र, सत्यमेव जयते, आत्मा और परमात्मा का रहस्य।" },
+        { no: 1, name: "मंगलम् (Mangalam)", status: "ready", pdfUrl: "https://drive.google.com/file/d/18cs-FDuBd9gAE97v9MxReyjQI2GsS6o5/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "उपनिषदों के मंत्र, सत्यमेव जयते, आत्मा और परमात्मा का रहस्य।" },
         { no: 2, name: "पाटलिपुत्रवैभवम्", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "पटना का प्राचीन इतिहास, मेगस्थनीज, चंद्रगुप्त मौर्य व गुरु गोबिंद सिंह।" },
         { no: 3, name: "अलसकथा", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "विद्यापति रचित पुरुषपरीक्षा, मिथिला के मंत्री वीरेश्वर और आलसियों की परीक्षा।" },
         { no: 4, name: "संस्कृतसाहित्ये लेखिकाः", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "विजयाङ्का, गार्गी, मैत्रेयी, तिरुमलाम्बा एवं पंडिता क्षमाराव का योगदान।" },
