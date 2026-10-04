@@ -197,10 +197,10 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "रसायन विज्ञान (Chemistry)",
       chapters: [
-        { no: 1, name: "रासायनिक अभिक्रियाएँ एवं समीकरण", status: "ready", pdfUrl: "https://drive.google.com/file/d/10PaIJPjKjhNDvyWjQyToPEZu1sLbMHXx/view?usp=drivesdk/preview", pages: "10 पेज PDF", desc: "संयोजन, वियोजन, विस्थापन, रेडॉक्स अभिक्रियाएं और समीकरण संतुलन।" },
-        { no: 2, name: "अम्ल, क्षारक एवं लवण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1OBSONia9MRBvp0avrrtvQAVhyfyE9Tc9/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूचक, pH पैमाना, विरंजक चूर्ण, बेकिंग सोडा, धावन सोडा एवं प्लास्टर ऑफ पेरिस।" },
-        { no: 3, name: "धातु एवं अधातु", status: "ready", pdfUrl: "https://drive.google.com/file/d/1WZEghQNsIZpGVuX97iotx5SCuVnoFOWK/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "भौतिक व रासायनिक गुण, सक्रियता श्रेणी, आयनिक यौगिक एवं धातुकर्म।" },
-        { no: 4, name: "कार्बन एवं उसके यौगिक", status: "ready", pdfUrl: "https://drive.google.com/file/d/1srQSitWJmHK2sbEldnn9NWyLzDchFcQv/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सहसंयोजी आबंध, हाइड्रोकार्बन, प्रकार्यात्मक समूह, एथेनॉल एवं साबुनीकरण।" },
+        { no: 1, name: "रासायनिक अभिक्रियाएँ एवं समीकरण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1HKJAi-w8dAasabshNh0RgY1KNqqYIaei/view?usp=drivesdk/preview", pages: "10 पेज PDF", desc: "संयोजन, वियोजन, विस्थापन, रेडॉक्स अभिक्रियाएं और समीकरण संतुलन।" },
+        { no: 2, name: "अम्ल, क्षारक एवं लवण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1yvUxC6BkjlvylovAN27k405Id3z-Ln1t/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूचक, pH पैमाना, विरंजक चूर्ण, बेकिंग सोडा, धावन सोडा एवं प्लास्टर ऑफ पेरिस।" },
+        { no: 3, name: "धातु एवं अधातु", status: "ready", pdfUrl: "https://drive.google.com/file/d/19knFGdrUTiTQDf8W9gSzUYRLHWy9lGca/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "भौतिक व रासायनिक गुण, सक्रियता श्रेणी, आयनिक यौगिक एवं धातुकर्म।" },
+        { no: 4, name: "कार्बन एवं उसके यौगिक", status: "ready", pdfUrl: "https://drive.google.com/file/d/13wa0F-izNLPB0W_WJoeVxgj63mPCty6C/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सहसंयोजी आबंध, हाइड्रोकार्बन, प्रकार्यात्मक समूह, एथेनॉल एवं साबुनीकरण।" },
         { no: 5, name: "तत्वों का आवर्त वर्गीकरण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "डोबेराइनर, न्यूलैंड्स अष्टक नियम, मेंडलीव एवं आधुनिक आवर्त सारणी।" }
       ]
     },
