@@ -36,7 +36,7 @@ window.NischaySyllabus = {
       classTitle: "Class 11th",
       subjectTitle: "रसायन विज्ञान (Chemistry)",
       chapters: [
-        { no: 1, name: "रसायन विज्ञान की कुछ मूल अवधारणाएं (Some Basic Concepts of Chemistry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview", pages: "16 पेज PDF", desc: "मोल संकल्पना, मोलर द्रव्यमान, प्रतिशत संघटन एवं रससमीकरणमिति (Stoichiometry)।" },
+        { no: 1, name: "रसायन विज्ञान की कुछ मूल अवधारणाएं (Some Basic Concepts of Chemistry)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Pv2FgAYqL5FAPokFr6b_VjzRTd5sT3Hb/view?usp=drivesdk/preview", pages: "16 पेज PDF", desc: "मोल संकल्पना, मोलर द्रव्यमान, प्रतिशत संघटन एवं रससमीकरणमिति (Stoichiometry)।" },
         { no: 2, name: "परमाणु की संरचना (Structure of Atom)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "थॉमसन, रदरफोर्ड, बोहर मॉडल, क्वांटम संख्याएं एवं हुंड का नियम।" },
         { no: 3, name: "तत्वों का वर्गीकरण एवं गुणधर्मों में आवर्तिता (Classification & Periodicity)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "आधुनिक आवर्त सारणी, परमाणु त्रिज्या, आयनन ऊर्जा एवं इलेक्ट्रॉन लब्धि एन्थैल्पी।" },
         { no: 4, name: "रासायनिक आबंधन तथा आण्विक संरचना (Chemical Bonding & Molecular Structure)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "लुईस संरचना, VSEPR सिद्धांत, संकरण (Hybridization) एवं MO सिद्धांत।" },
@@ -78,7 +78,7 @@ window.NischaySyllabus = {
       classTitle: "Class 11th",
       subjectTitle: "गणित (Mathematics)",
       chapters: [
-        { no: 1, name: "समुच्चय (Sets)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview", pages: "14 पेज PDF", desc: "समुच्चय निरूपण, उपसमुच्चय, वेन आरेख एवं डी मॉर्गन नियम।" },
+        { no: 1, name: "समुच्चय (Sets)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1QeCMCS8CjPh8oHLQjOChXaXvLy6I67LM/view?usp=drivesdk/preview", pages: "14 पेज PDF", desc: "समुच्चय निरूपण, उपसमुच्चय, वेन आरेख एवं डी मॉर्गन नियम।" },
         { no: 2, name: "संबंध एवं फलन (Relations & Functions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "कार्तीय गुणन, फलन के प्रकार, प्रांत, सहप्रांत एवं परिसर।" },
         { no: 3, name: "त्रिकोणमितीय फलन (Trigonometric Functions)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रेडियन माप, संयुक्त कोण, रूपांतरण सूत्र एवं त्रिकोणमितीय सर्वसमिकाएं।" },
         { no: 4, name: "सम्मिश्र संख्याएं और द्विघातीय समीकरण (Complex Numbers & Quadratic)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सम्मिश्र संख्याओं का बीजगणित, मापांक, कोणांक एवं द्विघात हल।" },
