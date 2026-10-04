@@ -201,7 +201,7 @@ window.NischaySyllabus = {
         { no: 2, name: "अम्ल, क्षारक एवं लवण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1yvUxC6BkjlvylovAN27k405Id3z-Ln1t/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सूचक, pH पैमाना, विरंजक चूर्ण, बेकिंग सोडा, धावन सोडा एवं प्लास्टर ऑफ पेरिस।" },
         { no: 3, name: "धातु एवं अधातु", status: "ready", pdfUrl: "https://drive.google.com/file/d/19knFGdrUTiTQDf8W9gSzUYRLHWy9lGca/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "भौतिक व रासायनिक गुण, सक्रियता श्रेणी, आयनिक यौगिक एवं धातुकर्म।" },
         { no: 4, name: "कार्बन एवं उसके यौगिक", status: "ready", pdfUrl: "https://drive.google.com/file/d/13wa0F-izNLPB0W_WJoeVxgj63mPCty6C/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "सहसंयोजी आबंध, हाइड्रोकार्बन, प्रकार्यात्मक समूह, एथेनॉल एवं साबुनीकरण।" },
-        { no: 5, name: "तत्वों का आवर्त वर्गीकरण", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "डोबेराइनर, न्यूलैंड्स अष्टक नियम, मेंडलीव एवं आधुनिक आवर्त सारणी।" }
+        { no: 5, name: "तत्वों का आवर्त वर्गीकरण", status: "ready", pdfUrl: "https://drive.google.com/file/d/1Nlxxm8Xt3T88tf0aTdKSEGsaADDofykh/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "डोबेराइनर, न्यूलैंड्स अष्टक नियम, मेंडलीव एवं आधुनिक आवर्त सारणी।" }
       ]
     },
     {
