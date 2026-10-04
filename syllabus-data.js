@@ -308,12 +308,12 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "आपदा प्रबंधन (Disaster Management)",
       chapters: [
-        { no: 1, name: "प्राकृतिक आपदा: एक परिचय", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "आपदा की परिभाषा, प्राकृतिक एवं मानव जनित आपदाओं में अंतर।" },
-        { no: 2, name: "बाढ़ और सुखाड़", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "बाढ़ के कारण, उत्तर बिहार की बाढ़ विभीषिका, सुखाड़ के कारण एवं प्रबंधन।" },
-        { no: 3, name: "भूकंप एवं सुनामी", status: "ready", pdfUrl: "", pages: "हैंडनोट्स", desc: "भूकंपीय तरंगे (P, S, L), रिएक्टर पैमाना, भूकंप जोन एवं सुनामी से बचाव।" },
-        { no: 4, name: "जीवन रक्षक आकस्मिक प्रबंधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "प्राथमिक उपचार, अग्निकांड से बचाव एवं मलबे में दबे लोगों की खोज।" },
-        { no: 5, name: "आपदा काल में वैकल्पिक संचार व्यवस्था", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "रेडियो, हैम रेडियो, उपग्रह संचार प्रणाली की उपयोगिता।" },
-        { no: 6, name: "आपदा और सह-अस्तित्व", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "भूकंपरोधी मकानों का निर्माण, सामुदायिक प्रबंधन एवं पूर्व चेतावनी।" }
+        { no: 1, name: "प्राकृतिक आपदा: एक परिचय", status: "ready", pdfUrl: "https://drive.google.com/file/d/1pp5-3GRlF5qiHQj7eNfwWTwI0KveIhVH/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "आपदा की परिभाषा, प्राकृतिक एवं मानव जनित आपदाओं में अंतर।" },
+        { no: 2, name: "बाढ़ और सुखाड़", status: "ready", pdfUrl: "https://drive.google.com/file/d/1SFviCpjXECYbsrlcQJNn84frmPXxcSp9/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "बाढ़ के कारण, उत्तर बिहार की बाढ़ विभीषिका, सुखाड़ के कारण एवं प्रबंधन।" },
+        { no: 3, name: "भूकंप एवं सुनामी", status: "ready", pdfUrl: "https://drive.google.com/file/d/1gPUi5VkZ8ouo1OaaDaOCjepBC0yFmXac/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "भूकंपीय तरंगे (P, S, L), रिएक्टर पैमाना, भूकंप जोन एवं सुनामी से बचाव।" },
+        { no: 4, name: "जीवन रक्षक आकस्मिक प्रबंधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/1stBCVXnCOIhiXvpCVy0YhQyt6e18ADl9/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "प्राथमिक उपचार, अग्निकांड से बचाव एवं मलबे में दबे लोगों की खोज।" },
+        { no: 5, name: "आपदा काल में वैकल्पिक संचार व्यवस्था", status: "ready", pdfUrl: "https://drive.google.com/file/d/1jkZrlFjV6PbW8XeJVw4jSZiWTOFjVuRf/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "रेडियो, हैम रेडियो, उपग्रह संचार प्रणाली की उपयोगिता।" },
+        { no: 6, name: "आपदा और सह-अस्तित्व", status: "ready", pdfUrl: "https://drive.google.com/file/d/1IoH4as8O0j1MikbnfCr7gFY_aAuUhb3o/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "भूकंपरोधी मकानों का निर्माण, सामुदायिक प्रबंधन एवं पूर्व चेतावनी।" }
       ]
     },
 
