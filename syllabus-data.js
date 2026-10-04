@@ -209,12 +209,12 @@ window.NischaySyllabus = {
       classTitle: "Class 10th",
       subjectTitle: "जीव विज्ञान (Biology)",
       chapters: [
-        { no: 1, name: "जैव प्रक्रम (Life Processes)", status:"ready", pdfUrl: "https://drive.google.com/file/d/129B8o5NQHi9Xzw_N0eTF09HvF18KUWvS/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "स्वपोषी/विषमपोषी पोषण, मानव पाचन तंत्र, श्वसन, वहन एवं उत्सर्जन तंत्र।" },
-        { no: 2, name: "नियंत्रण एवं समन्वय (Control & Coordination)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1CbVTjqDP2qMtiktL6FgvSPIjhxKbcOxZ/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "न्यूरॉन, प्रतिवर्ती चाप, मानव मस्तिष्क, पादप हार्मोन एवं अंतःस्रावी ग्रंथियां।" },
-        { no: 3, name: "जीव जनन कैसे करते हैं? (How do Organisms Reproduce?)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1pnDVp8ZzZQLvkGJOgk_Aslpx0Nmi81z3/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "अलैंगिक जनन की विधियां, पुष्पी पादपों में जनन एवं मानव जनन तंत्र।" },
-        { no: 4, name: "आनुवंशिकता (Heredity)", status: "ready", pdfUrl: "https://drive.google.com/file/d/15GmUrNcLGk1GZFHXCPgIQ8t5aIB0kJtq/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "मेंडल के नियम, एकल व द्वि-संकरण क्रॉस एवं मानव में लिंग निर्धारण।" },
-        { no: 5, name: "हमारा पर्यावरण (Our Environment)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "पारितंत्र के घटक, आहार श्रृंखला, पोषी स्तर, जैव आवर्धन एवं ओजोन परत।" },
-        { no: 6, name: "प्राकृतिक संसाधनों का संपोषित प्रबंधन", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "वन, वन्यजीव, जल संचयन, कोयला और पेट्रोलियम का संरक्षण।" }
+        { no: 1, name: "जैव प्रक्रम (Life Processes)", status:"ready", pdfUrl: "https://drive.google.com/file/d/1dNCvxKmK3IEyD3W-cQBxkrhteyTBWw94/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "स्वपोषी/विषमपोषी पोषण, मानव पाचन तंत्र, श्वसन, वहन एवं उत्सर्जन तंत्र।" },
+        { no: 2, name: "नियंत्रण एवं समन्वय (Control & Coordination)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1t_SXK5-wysASeTuVRtmwFxvF3SV8-h0u/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "न्यूरॉन, प्रतिवर्ती चाप, मानव मस्तिष्क, पादप हार्मोन एवं अंतःस्रावी ग्रंथियां।" },
+        { no: 3, name: "जीव जनन कैसे करते हैं? (How do Organisms Reproduce?)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1FHhtZoNLLEL9JG5H4iFms06g_1_z69R1/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "अलैंगिक जनन की विधियां, पुष्पी पादपों में जनन एवं मानव जनन तंत्र।" },
+        { no: 4, name: "आनुवंशिकता (Heredity)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1cXp9E5QEVNZUGeXI25GzEga6UdW6Au26/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "मेंडल के नियम, एकल व द्वि-संकरण क्रॉस एवं मानव में लिंग निर्धारण।" },
+        { no: 5, name: "हमारा पर्यावरण (Our Environment)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1IEDr-VhyHJXFCy1XBlI8I5hC3gqMCgQM/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "पारितंत्र के घटक, आहार श्रृंखला, पोषी स्तर, जैव आवर्धन एवं ओजोन परत।" },
+        { no: 6, name: "प्राकृतिक संसाधनों का संपोषित प्रबंधन", status: "ready", pdfUrl: "https://drive.google.com/file/d/18gsOWtj4qAMhwg0TlVjWekba-O64Jilk/view?usp=drivesdk/preview", pages: "हैंडनोट्स", desc: "वन, वन्यजीव, जल संचयन, कोयला और पेट्रोलियम का संरक्षण।" }
       ]
     },
     {
