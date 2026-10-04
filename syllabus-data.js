@@ -15,8 +15,8 @@ window.NischaySyllabus = {
       classTitle: "Class 11th",
       subjectTitle: "भौतिक विज्ञान (Physics)",
       chapters: [
-        { no: 1, name: "मात्रक एवं मापन (Units & Measurements)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview", pages: "12 पेज PDF", desc: "SI मात्रक, विमीय सूत्र, सार्थक अंक एवं त्रुटि विश्लेषण।" },
-        { no: 2, name: "सरल रेखा में गति (Motion in a Straight Line)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview", pages: "14 पेज PDF", desc: "स्थिति, पथ लंबाई, विस्थापन, वेग-समय ग्राफ एवं गति के समीकरण।" },
+        { no: 1, name: "मात्रक एवं मापन (Units & Measurements)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1CUfiRAX_8JYTb4ueKDXfZR9WZN5gz5m0/view?usp=drivesdk/preview", pages: "12 पेज PDF", desc: "SI मात्रक, विमीय सूत्र, सार्थक अंक एवं त्रुटि विश्लेषण।" },
+        { no: 2, name: "सरल रेखा में गति (Motion in a Straight Line)", status: "ready", pdfUrl: "https://drive.google.com/file/d/1PDWRfFG2Tc6y82Ua7FoMAlh_57EnIBk3/view?usp=drivesdk/preview", pages: "14 पेज PDF", desc: "स्थिति, पथ लंबाई, विस्थापन, वेग-समय ग्राफ एवं गति के समीकरण।" },
         { no: 3, name: "समतल में गति (Motion in a Plane)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "सदिश बीजगणित (Vectors), प्रक्षेप्य गति एवं एकसमान वृत्तीय गति।" },
         { no: 4, name: "गति के नियम (Laws of Motion)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "न्यूटन के नियम, संवेग संरक्षण, घर्षण बल एवं वृत्तीय मोड़ पर गति।" },
         { no: 5, name: "कार्य, ऊर्जा और शक्ति (Work, Energy & Power)", status: "pending", pdfUrl: "", pages: "हैंडनोट्स", desc: "कार्य-ऊर्जा प्रमेय, स्थितिज ऊर्जा, संरक्षी बल एवं प्रत्यास्थ संघट्ट।" },
