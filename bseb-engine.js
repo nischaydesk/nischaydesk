@@ -1,13 +1,14 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v20.0 Strict)
+ * NischayDesk - BSEB Official Assessment Engine (v21.0 Strict)
  * Model: gemini-3.8-flash (with gemini-3.5-flash fallback)
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
  *   2. Universal Direct Google Login Handler
  *   3. Guaranteed Server Time Sync (Device tampering proof)
- *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
- *   5. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
- *   6. Seamless background evaluation & canvas annotation
+ *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit (No False Blur)
+ *   5. Strict 1-Exam Per Day Gatekeeper
+ *   6. Permanent Candidate Profile Lock
+ *   7. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
  */
 
 // ---------------------------------------------------------
@@ -89,7 +90,7 @@ async function getVerifiedServerDate() {
 }
 
 // ---------------------------------------------------------
-// 4. Cheating Prevention Engine (4-Warning Tab Switch)
+// 4. Cheating Prevention Engine (No False Alarm on Alert)
 // ---------------------------------------------------------
 let tabSwitchCount = 0;
 let isExamActive = false;
@@ -97,15 +98,13 @@ let isExamActive = false;
 function initAntiCheatingMonitor() {
   tabSwitchCount = 0;
   isExamActive = true;
-
+  // सिर्फ visibilitychange से ट्रैक होगा (Alert बॉक्स खुलने पर blur ट्रिगर नहीं होगा)
   document.addEventListener("visibilitychange", handleTabSwitch);
-  window.addEventListener("blur", handleWindowBlur);
 }
 
 function stopAntiCheatingMonitor() {
   isExamActive = false;
   document.removeEventListener("visibilitychange", handleTabSwitch);
-  window.removeEventListener("blur", handleWindowBlur);
 }
 
 function handleTabSwitch() {
@@ -113,15 +112,10 @@ function handleTabSwitch() {
   triggerCheatingViolation();
 }
 
-function handleWindowBlur() {
-  if (!isExamActive) return;
-  triggerCheatingViolation();
-}
-
 function triggerCheatingViolation() {
   tabSwitchCount++;
   if (tabSwitchCount <= 3) {
-    alert(`🚨 सख्त सुरक्षा चेतावनी (${tabSwitchCount}/3)!\n\nआपने परीक्षा स्क्रीन छोड़ दी है। बोर्ड परीक्षा के दौरान टैब बदलना या मिनिमाइज़ करना मना है।\n\nचौथी बार स्क्रीन छोड़ने पर पेपर स्वतः जमा (Auto-Submit) हो जाएगा!`);
+    alert(`🚨 सख्त सुरक्षा चेतावनी (${tabSwitchCount}/3)!\n\nआपने परीक्षा स्क्रीन छोड़ दी है। बोर्ड परीक्षा के दौरान टैब बदलना या ऐप मिनिमाइज़ करना मना है।\n\nचौथी बार स्क्रीन छोड़ने पर पेपर स्वतः जमा (Auto-Submit) हो जाएगा!`);
   } else {
     stopAntiCheatingMonitor();
     alert(`⛔ सुरक्षा उल्लंघन (4/4)!\n\nआपने बार-बार स्क्रीन छोड़ी है। नियमों के उल्लंघन के कारण परीक्षा तुरंत स्वतः जमा की जा रही है।`);
@@ -176,7 +170,7 @@ function generateUniqueCredentials(uid) {
 }
 
 // ---------------------------------------------------------
-// 7. Cloud Exam State Sync
+// 7. Cloud Exam State Sync (Profile Lock Supported)
 // ---------------------------------------------------------
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -193,6 +187,7 @@ async function getCloudExamState(user) {
     schoolName: "",
     motherName: "",
     fatherName: "",
+    isProfileLocked: false,
     startDate: serverDateObj.toISOString(),
     completedDays: {},
     savedOMR: {},
@@ -443,8 +438,9 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       fatherName: state.fatherName || "",
       motherName: state.motherName || "",
       schoolName: state.schoolName || "",
+      isProfileLocked: true, // प्रोफाइल हमेशा के लिए सील
       completedDays: { [day]: completedData },
-      lastExamDate: todayStr,
+      lastExamDate: todayStr, // आज की परीक्षा सील
       activeSession: null
     }, { merge: true });
 
