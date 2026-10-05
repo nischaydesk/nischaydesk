@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Advanced Styling Sheet -->
   <link rel="stylesheet" href="bseb-style.css" />
 
   <!-- Firebase Scripts -->
@@ -17,12 +16,11 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-  <!-- ✅ config.js को यहीं हेड में लोड किया गया ताकि Firebase तुरंत तैयार रहे -->
+  <!-- config.js हेड में लोड -->
   <script src="config.js"></script>
 </head>
 <body class="bseb-simulator-body">
 
-  <!-- Top Security Header with Theme Switcher -->
   <header class="app-header">
     <div class="nav-container">
       <div class="brand-entity">
@@ -31,7 +29,6 @@
       </div>
 
       <div class="nav-controls-right">
-        <!-- Dual Theme Toggle Button -->
         <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="togglePortalTheme()">
           ☀️ लाइट मोड
         </button>
@@ -43,7 +40,7 @@
 
   <main class="sim-main-viewport">
 
-    <!-- STEP 1: System Sync & Security Check -->
+    <!-- STEP 1: System Sync -->
     <section class="gateway-step active" id="step1SystemCheck">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.2rem; color: var(--bseb-accent); display:flex; align-items:center; gap:8px;">
@@ -104,6 +101,10 @@
             </div>
           </div>
 
+          <div id="profileLockBadge" style="display:none; background:rgba(34,197,94,0.1); border:1px solid var(--bseb-success); color:var(--bseb-success); padding:8px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; margin-bottom:14px; text-align:center;">
+            🔒 आपके विवरण बोर्ड रिकॉर्ड में स्थायी रूप से लॉक हैं।
+          </div>
+
           <div class="form-group-sim">
             <label>👤 परीक्षार्थी का नाम (Student Name) *</label>
             <input type="text" id="inputStudentName" placeholder="उदा. प्रिंस कुमार" />
@@ -156,11 +157,11 @@
       </div>
     </section>
 
-    <!-- STEP 4: Strict Rules & Declaration -->
+    <!-- STEP 4: Strict Rules & Declaration (Daily Strict Lock) -->
     <section class="gateway-step" id="step4Rules">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.2rem; color: var(--bseb-danger);">
-          ⚠️ चरण 4/6: सख्त परीक्षा नियम एवं घोषणा पत्र
+          ⚠️️ चरण 4/6: सख्त परीक्षा नियम एवं घोषणा पत्र
         </h2>
         
         <div style="background: rgba(239, 68, 68, 0.08); border: 1.5px solid var(--bseb-danger); padding: 14px; border-radius: 10px; margin-bottom: 18px; font-size: 0.85rem; line-height: 1.6;">
@@ -168,7 +169,7 @@
             सख्त चेतावनी (Anti-Cheating & Exam Discipline):
           </strong>
           <ul style="margin: 0; padding-left: 18px;">
-            <li>यह परीक्षा सीधे <strong>इंटरनेट सर्वर समय</strong> से नियंत्रित है। पेज रीफ्रेश करने पर समय नहीं रुकेगा।</li>
+            <li>यह परीक्षा सीधे <strong>इंटरनेट सर्वर समय</strong> से नियंत्रित है। 1 दिन में सिर्फ 1 विषय की परीक्षा मान्य है।</li>
             <li>परीक्षा के दौरान स्क्रीन छोड़ना या टैब बदलना सख्त वर्जित है (अधिकतम 3 चेतावनी)।</li>
             <li><strong>चौथी (4th) बार स्क्रीन छोड़ते ही</strong> उत्तर-पुस्तिका स्वतः (Auto-Submit) जमा हो जाएगी।</li>
             <li>उत्तर-पुस्तिका में कोरा पन्ना या फर्जी सामग्री अपलोड करने पर सीधे <strong>00 अंक (EXPELLED)</strong> दर्ज होगा।</li>
@@ -214,7 +215,6 @@
           प्रश्न-पत्र डिक्रिप्ट हो रहा है... ⏳
         </h3>
 
-        <!-- वो मुख्य बटन जो अनलॉक होगा -->
         <button id="btnProceedStep6" class="btn-sim-action" style="display:none; max-width:320px; margin:0 auto; background: var(--bseb-success);" onclick="launchExamHall()">
           🚀 START EXAM NOW
         </button>
@@ -235,9 +235,19 @@
       </button>
     </div>
 
+    <!-- मोबाइल व्यू टॉगल बटन (पेपर vs उत्तर पुस्तिका) -->
+    <div style="display:flex; gap:8px; margin-bottom:12px;">
+      <button type="button" id="btnShowPaperMobile" class="btn-sim-action" style="flex:1; padding:9px; font-size:0.82rem;" onclick="switchMobilePane('paper')">
+        📄 प्रश्न-पुस्तिका देखें
+      </button>
+      <button type="button" id="btnShowAnswerMobile" class="btn-sim-action" style="flex:1; padding:9px; font-size:0.82rem; background:var(--bseb-item-bg); color:var(--bseb-text);" onclick="switchMobilePane('answer')">
+        🔴 OMR व उत्तर भरें
+      </button>
+    </div>
+
     <div class="exam-split-wrapper">
       <!-- Left: Question Paper Booklet -->
-      <div class="exam-paper-container">
+      <div class="exam-paper-container" id="examPaperBox">
         <div class="paper-toolbar">
           <span>📄 प्रश्न-पुस्तिका (Question Booklet)</span>
           <div style="display:flex; gap:6px;">
@@ -252,7 +262,7 @@
       </div>
 
       <!-- Right: OMR & Subjective Answers Panel -->
-      <div class="exam-answer-container">
+      <div class="exam-answer-container" id="examAnswerBox">
         <div class="pane-tab-switcher">
           <button type="button" class="tab-btn active" id="tabBtnOmr" onclick="switchExamTab('omr')">
             🔴 OMR पत्रक (<span id="omrMarksLabel">50</span> अंक)
@@ -297,7 +307,6 @@
     let currentUser = null;
     let cloudState = null;
     let activeDay = 1;
-    let isDayLocked = false;
     let uploadedPagesList = [];
     let examTimerInterval = null;
     let currentPaperZoom = 1.0;
@@ -313,9 +322,6 @@
       ]
     };
 
-    // -------------------------------------------------------------
-    // थीम इंजन (Light / Dark Theme Controller)
-    // -------------------------------------------------------------
     function initPortalTheme() {
       const savedTheme = localStorage.getItem("nischay_theme") || "dark";
       applyPortalTheme(savedTheme);
@@ -335,35 +341,8 @@
       }
     }
 
-    // -------------------------------------------------------------
-    // पक्का Google लॉगिन (Direct + Redirect Fallback)
-    // -------------------------------------------------------------
     function triggerSimulatorLogin() {
-      const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
-                   ? window.NischayConfig.authInstance 
-                   : (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
-
-      if (!auth) {
-        alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद फिर से दबाएं!");
-        return;
-      }
-
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-
-      auth.signInWithPopup(provider)
-        .then((res) => {
-          if (res && res.user) {
-            handleUserLoggedIn(res.user);
-          }
-        })
-        .catch((err) => {
-          if (err.code === "auth/popup-blocked" || err.code === "auth/popup-closed-by-user") {
-            auth.signInWithRedirect(provider);
-          } else {
-            alert("लॉगिन असफल: " + err.message);
-          }
-        });
+      triggerGoogleLogin();
     }
 
     async function handleUserLoggedIn(user) {
@@ -386,20 +365,30 @@
 
       cloudState = await getCloudExamState(user);
       if (cloudState) {
-        document.getElementById("inputStudentName").value = cloudState.displayName || user.displayName || "";
-        document.getElementById("inputFatherName").value = cloudState.fatherName || "";
-        document.getElementById("inputMotherName").value = cloudState.motherName || "";
-        document.getElementById("inputSchoolName").value = cloudState.schoolName || "";
+        const sNameInput = document.getElementById("inputStudentName");
+        const fNameInput = document.getElementById("inputFatherName");
+        const mNameInput = document.getElementById("inputMotherName");
+        const schInput = document.getElementById("inputSchoolName");
+
+        sNameInput.value = cloudState.displayName || user.displayName || "";
+        fNameInput.value = cloudState.fatherName || "";
+        mNameInput.value = cloudState.motherName || "";
+        schInput.value = cloudState.schoolName || "";
+
+        // 🔒 अगर छात्र ने एक बार फॉर्म भर दिया है, तो फील्ड्स को हमेशा के लिए लॉक (Readonly) करें
+        if (cloudState.isProfileLocked || (cloudState.fatherName && cloudState.motherName && cloudState.schoolName)) {
+          sNameInput.readOnly = true;
+          fNameInput.readOnly = true;
+          mNameInput.readOnly = true;
+          schInput.readOnly = true;
+          document.getElementById("profileLockBadge").style.display = "block";
+        }
       }
     }
 
-    // -------------------------------------------------------------
-    // स्टेप 1: सिस्टम एनीमेशन व ऑटो-लॉगिन डिटेक्टर
-    // -------------------------------------------------------------
     document.addEventListener("DOMContentLoaded", () => {
       initPortalTheme();
 
-      // स्टेप 1 प्रोग्रेस एनीमेशन
       setTimeout(() => setStep1CheckOk("iconCheck1", "iconCheck2"), 600);
       setTimeout(() => setStep1CheckOk("iconCheck2", "iconCheck3"), 1200);
       setTimeout(() => {
@@ -407,7 +396,6 @@
         document.getElementById("btnProceedStep2").style.display = "block";
       }, 1800);
 
-      // ऑटो लॉगिन डिटेक्टर (अगर होम पेज से पहले से लॉग-इन हैं)
       const authInterval = setInterval(() => {
         const auth = (window.NischayConfig && window.NischayConfig.authInstance)
                      ? window.NischayConfig.authInstance
@@ -415,7 +403,6 @@
 
         if (auth) {
           clearInterval(authInterval);
-
           auth.onAuthStateChanged((user) => {
             if (user) {
               handleUserLoggedIn(user);
@@ -455,9 +442,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // -------------------------------------------------------------
-    // स्टेप्स नेविगेशन
-    // -------------------------------------------------------------
     function goToStep2() { switchView("step1SystemCheck", "step2Auth"); }
 
     async function goToStep3() {
@@ -480,6 +464,7 @@
             motherName: mName,
             fatherName: fName,
             schoolName: schName,
+            isProfileLocked: true, // प्रोफाइल हमेशा के लिए सील
             rollCode: creds.rollCode,
             rollNumber: creds.rollNumber,
             regNo: creds.regNo
@@ -497,21 +482,37 @@
       }, 2000);
     }
 
+    // -------------------------------------------------------------
+    // स्टेप 4: 1 दिन में सिर्फ 1 परीक्षा का कड़ा नियम
+    // -------------------------------------------------------------
     async function goToStep4() {
       switchView("step3Biometric", "step4Rules");
 
+      const serverDateObj = await getVerifiedServerDate();
+      const todayStr = serverDateObj.toISOString().split('T')[0];
+
+      // 🚫 अगर आज परीक्षा दी जा चुकी है तो तुरंत रोकें
+      if (cloudState?.lastExamDate === todayStr) {
+        alert("⛔ आज का परीक्षा कोटा समाप्त हो चुका है!\n\nबोर्ड नियमानुसार 1 दिन में केवल 1 विषय की ही परीक्षा दे सकते हैं। अगला विषय कल खुलेगा।");
+        window.location.href = "index.html";
+        return;
+      }
+
       const completed = cloudState?.completedDays || {};
       const completedCount = Object.keys(completed).length;
-      activeDay = Math.min(6, completedCount + 1);
 
+      if (completedCount >= 6) {
+        alert("🎉 बधाई! आपने सभी 6 विषयों की परीक्षा पूर्ण कर ली है। अब आप परिणाम पोर्टल पर अपना परिणाम देख सकते हैं।");
+        window.location.href = "bseb-result.html";
+        return;
+      }
+
+      activeDay = completedCount + 1;
       const subjects = CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       document.getElementById("displayActiveSubjectText").value = currentSub.name;
     }
 
-    // -------------------------------------------------------------
-    // स्टेप 5: बारकोड व ऑटो-डिक्रिप्शन
-    // -------------------------------------------------------------
     function goToStep5() {
       switchView("step4Rules", "step5Barcode");
 
@@ -545,9 +546,6 @@
       }, 100);
     }
 
-    // -------------------------------------------------------------
-    // स्टेप 6: मुख्य परीक्षा हॉल
-    // -------------------------------------------------------------
     function launchExamHall() {
       const mainViewport = document.querySelector(".main-viewport");
       if (mainViewport) mainViewport.style.display = "none";
@@ -590,9 +588,30 @@
       await initOrResumeStrictTimer(day);
     }
 
-    // -------------------------------------------------------------
-    // सख्त सर्वर टाइमर
-    // -------------------------------------------------------------
+    // मोबाइल पर पेपर और उत्तर पुस्तिका के बीच स्विच
+    function switchMobilePane(pane) {
+      const paperBox = document.getElementById("examPaperBox");
+      const answerBox = document.getElementById("examAnswerBox");
+      const btnP = document.getElementById("btnShowPaperMobile");
+      const btnA = document.getElementById("btnShowAnswerMobile");
+
+      if (pane === 'paper') {
+        paperBox.style.display = "flex";
+        answerBox.style.display = "none";
+        btnP.style.background = "var(--bseb-accent-gradient)";
+        btnP.style.color = "#ffffff";
+        btnA.style.background = "var(--bseb-item-bg)";
+        btnA.style.color = "var(--bseb-text)";
+      } else {
+        paperBox.style.display = "none";
+        answerBox.style.display = "flex";
+        btnA.style.background = "var(--bseb-accent-gradient)";
+        btnA.style.color = "#ffffff";
+        btnP.style.background = "var(--bseb-item-bg)";
+        btnP.style.color = "var(--bseb-text)";
+      }
+    }
+
     async function initOrResumeStrictTimer(day) {
       if (examTimerInterval) clearInterval(examTimerInterval);
       const clockEl = document.getElementById("examTimerClock");
@@ -640,9 +659,6 @@
       }, 1000);
     }
 
-    // -------------------------------------------------------------
-    // OMR रेंडरिंग व चयन
-    // -------------------------------------------------------------
     function renderOmrBubbles(totalQ, maxLimit) {
       const box = document.getElementById("omrBubblesMatrix");
       box.innerHTML = "";
@@ -690,9 +706,6 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    // -------------------------------------------------------------
-    // पन्नों का अल्ट्रा-लाइटवेट कंप्रेसर (26 पन्नों तक)
-    // -------------------------------------------------------------
     async function handleMasterUpload(e) {
       const files = Array.from(e.target.files);
       const txt = document.getElementById("uploadStatusText");
@@ -747,7 +760,6 @@
       txt.style.color = "var(--bseb-success)";
     }
 
-    // टैब स्विच (OMR vs Copy)
     function switchExamTab(tab) {
       document.getElementById("tabContentOmr").style.display = tab === "omr" ? "block" : "none";
       document.getElementById("tabContentSubj").style.display = tab === "subj" ? "block" : "none";
@@ -755,21 +767,18 @@
       document.getElementById("tabBtnSubj").className = tab === "subj" ? "tab-btn active" : "tab-btn";
     }
 
-    // ज़ूम कंट्रोल्स
     function adjustPaperZoom(delta) {
       currentPaperZoom = Math.min(2.5, Math.max(0.8, currentPaperZoom + delta));
       const iframe = document.getElementById("simPaperFrame");
       if (iframe) iframe.style.transform = `scale(${currentPaperZoom})`;
     }
+
     function resetPaperZoom() {
       currentPaperZoom = 1.0;
       const iframe = document.getElementById("simPaperFrame");
       if (iframe) iframe.style.transform = `scale(1)`;
     }
 
-    // -------------------------------------------------------------
-    // अंतिम सबमिशन
-    // -------------------------------------------------------------
     async function confirmFinalExamSubmission(isAutoSubmit = false) {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -804,7 +813,7 @@
         cloudState
       );
 
-      alert(`✓ ${currentSub.name} की परीक्षा सफलतापूर्वक जमा हो गई!\n\nअगला विषय अगले दिन सुबह 9:30 बजे खुलेगा।`);
+      alert(`✓ ${currentSub.name} की परीक्षा सफलतापूर्वक जमा हो गई!\n\nअगला विषय कल सुबह 9:30 बजे खुलेगा।`);
       window.location.href = "index.html";
     }
   </script>
