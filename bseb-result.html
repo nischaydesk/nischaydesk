@@ -678,32 +678,61 @@
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+        async function getEvaluatedSheetFromDB(uid, day) {
+      // 1. सबसे पहले लोकल IndexedDB मेमोरी से देखने की कोशिश करें
+      try {
+        const localData = await new Promise((resolve) => {
+          const req = indexedDB.open("NischaySheetsDB", 1);
+          req.onsuccess = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("sheets")) return resolve(null);
+            const tx = db.transaction("sheets", "readonly");
+            const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
+            getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
+            getReq.onerror = () => resolve(null);
+          };
+          req.onerror = () => resolve(null);
+        });
 
-    async function getEvaluatedSheetFromDB(uid, day) {
-      return new Promise((resolve) => {
-        const req = indexedDB.open("NischaySheetsDB", 1);
-        req.onsuccess = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains("sheets")) return resolve(null);
-          const tx = db.transaction("sheets", "readonly");
-          const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
-          getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
-          getReq.onerror = () => resolve(null);
-        };
-        req.onerror = () => resolve(null);
-      });
+        if (localData && localData.pages && localData.pages.length > 0) {
+          return localData;
+        }
+      } catch(e) {}
+
+      // 2. अगर लोकल मेमोरी खाली है, तो सीधे Firebase Firestore क्लाउड से बैकअप खींच लें!
+      if (window.NischayConfig && window.NischayConfig.dbInstance) {
+        try {
+          const db = window.NischayConfig.dbInstance;
+          const docSnap = await db.collection("bseb_exams_2026").doc(uid).get();
+          if (docSnap.exists) {
+            const cloudDoc = docSnap.data();
+            const dayRecord = cloudDoc.completedDays?.[day];
+            if (dayRecord && dayRecord.pages && dayRecord.pages.length > 0) {
+              return {
+                pages: dayRecord.pages,
+                evaluation: dayRecord.pagesEvaluation || [],
+                isExpelled: dayRecord.status === "EXPELLED"
+              };
+            }
+          }
+        } catch(err) {
+          console.warn("Cloud fallback fetch note:", err);
+        }
+      }
+
+      return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Overlap)
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Overlap & Cloud Backup Supported)
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord) {
+      // लोड होने तक उपयोगकर्ता को सूचना देने के लिए कर्सर या छोटा अलर्ट दिखा सकते हैं
       let cacheData = await getEvaluatedSheetFromDB(uid, day);
 
       if (!cacheData || !cacheData.pages || cacheData.pages.length === 0) {
-        alert(`Day ${day} (${subjectName}) की हस्तलिखित प्रतियां इस डिवाइस मेमोरी में नहीं मिलीं।`);
+        alert(`Day ${day} (${subjectName}) की हस्तलिखित प्रतियां न तो डिवाइस में मिलीं और न ही क्लाउड सर्वर पर उपलब्ध हैं।`);
         return;
       }
-
-      const pages = cacheData.pages || [];
+ const pages = cacheData.pages || [];
       const evalPages = examRecord?.pagesEvaluation || cacheData.evaluation || [];
       const isExpelled = examRecord?.status === "EXPELLED" || cacheData.isExpelled;
 
