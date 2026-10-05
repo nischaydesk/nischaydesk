@@ -20,7 +20,7 @@
   <script src="config.js"></script>
 
   <style>
-    /* 3-2-1 सबमिशन ओवरले स्टाइल */
+    /* 3-2-1 सजीव सबमिशन ओवरले */
     .submit-overlay-screen {
       display: none;
       position: fixed;
@@ -38,18 +38,18 @@
       display: flex;
     }
     .countdown-circle {
-      width: 110px;
-      height: 110px;
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       border: 4px solid var(--bseb-accent, #0284c7);
       border-top-color: var(--bseb-success, #22c55e);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3.5rem;
+      font-size: 3.2rem;
       font-weight: 900;
       color: #fff;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       animation: pulseCircle 1s ease-in-out infinite;
     }
     @keyframes pulseCircle {
@@ -72,10 +72,10 @@
 </head>
 <body class="bseb-simulator-body">
 
-  <!-- 3-2-1 ऑटोमैटिक सबमिशन ओवरले -->
+  <!-- 3-2-1 सजीव सबमिशन ओवरले -->
   <div class="submit-overlay-screen" id="submitOverlay">
     <div class="countdown-circle" id="overlayCountNum">3</div>
-    <div class="step-indicator-text" id="overlayStepText">उत्तर-पुस्तिका डिजिटल सील की जा रही है...</div>
+    <div class="step-indicator-text" id="overlayStepText">उत्तर-पुस्तिका डिजिटल सील हो रही है...</div>
     <div class="step-sub-desc" id="overlaySubText">कृपया प्रतीक्षा करें, आपका डेटा सुरक्षित एन्क्रिप्ट हो रहा है।</div>
   </div>
 
@@ -88,7 +88,7 @@
 
       <div class="nav-controls-right">
         <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="togglePortalTheme()">
-          ☀️ लाइट मोड
+          ☀️️ लाइट मोड
         </button>
         <span id="userDisplayBadge" class="user-name-tag" style="display:none;">परीक्षार्थी</span>
         <a href="index.html" class="btn-home-exit">🏠 बाहर निकलें</a>
@@ -219,7 +219,7 @@
     <section class="gateway-step" id="step4Rules">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.2rem; color: var(--bseb-danger);">
-          ⚠️️ चरण 4/6: सख्त परीक्षा नियम एवं घोषणा पत्र
+          ⚠ चरण 4/6: सख्त परीक्षा नियम एवं घोषणा पत्र
         </h2>
         
         <div style="background: rgba(239, 68, 68, 0.08); border: 1.5px solid var(--bseb-danger); padding: 14px; border-radius: 10px; margin-bottom: 18px; font-size: 0.85rem; line-height: 1.6;">
@@ -304,19 +304,18 @@
     </div>
 
     <div class="exam-split-wrapper">
-      <!-- Left: Question Paper Booklet -->
-      <div class="exam-paper-container" id="examPaperBox">
-        <div class="paper-toolbar">
+      <!-- Left: Question Paper Booklet (सीधे स्क्रीन पर पक्का दिखेगा) -->
+      <div class="exam-paper-container" id="examPaperBox" style="width:100%;">
+        <div class="paper-toolbar" style="display:flex; justify-content:space-between; align-items:center;">
           <span>📄 प्रश्न-पुस्तिका (Question Booklet)</span>
-          <div style="display:flex; gap:6px; align-items:center;">
-            <a id="btnExternalPdfLink" href="#" target="_blank" style="background:#0284c7; color:#fff; padding:4px 8px; border-radius:6px; font-size:0.75rem; text-decoration:none; font-weight:700;">↗️ पूरा पेपर खोलें</a>
+          <div style="display:flex; gap:6px;">
             <button type="button" class="btn-zoom" onclick="adjustPaperZoom(0.15)">➕</button>
             <button type="button" class="btn-zoom" onclick="adjustPaperZoom(-0.15)">➖</button>
             <button type="button" class="btn-zoom" onclick="resetPaperZoom()">↺</button>
           </div>
         </div>
-        <div class="paper-iframe-wrapper">
-          <iframe id="simPaperFrame" src="" allow="autoplay"></iframe>
+        <div class="paper-iframe-wrapper" style="width:100%; height:550px; background:#ffffff; border-radius:0 0 10px 10px; overflow:hidden;">
+          <iframe id="simPaperFrame" src="" style="width:100%; height:100%; border:none; display:block;" allow="autoplay"></iframe>
         </div>
       </div>
 
@@ -620,23 +619,28 @@
       resumeExamHall(activeDay || 1);
     }
 
+    // -------------------------------------------------------------
+    // प्रश्न-पत्र को 100% स्क्रीन पर लोड करने वाला फंक्शन (Bulletproof)
+    // -------------------------------------------------------------
     async function resumeExamHall(day) {
+      const papersDb = (typeof BSEB_PAPERS_DATABASE !== 'undefined') 
+                       ? BSEB_PAPERS_DATABASE 
+                       : (window.BSEB_PAPERS_DATABASE || {});
+
       const subjects = CLASS_SUBJECTS_MAP["10th"];
       const currentSub = subjects.find(s => s.day === day) || subjects[0];
-      const paperData = window.BSEB_PAPERS_DATABASE?.[currentSub.code] || window.BSEB_PAPERS_DATABASE?.["101-hindi"];
+      const paperData = papersDb[currentSub.code] || papersDb["101-hindi"];
 
       document.getElementById("hallDisplaySub").textContent = currentSub.name;
 
       const iframe = document.getElementById("simPaperFrame");
-      const extLink = document.getElementById("btnExternalPdfLink");
 
-      if (paperData && paperData.driveLink) {
-        let embedUrl = paperData.driveLink;
-        if (!embedUrl.includes("embedded=true")) {
-          embedUrl = embedUrl.replace("/preview", "/preview?embedded=true");
+      if (iframe && paperData && paperData.driveLink) {
+        let cleanLink = paperData.driveLink.replace("?embedded=true", "");
+        if (!cleanLink.endsWith("/preview")) {
+          cleanLink = cleanLink.replace(/\/view.*$/, "/preview");
         }
-        if (iframe) iframe.src = embedUrl;
-        if (extLink) extLink.href = paperData.driveLink.replace("/preview?embedded=true", "/view").replace("/preview", "/view");
+        iframe.src = cleanLink;
       }
 
       document.getElementById("pageLimitInstructionText").textContent = `(${currentSub.name}: कम से कम 1 और अधिकतम 26 पन्ने)`;
@@ -845,7 +849,7 @@
     }
 
     // -------------------------------------------------------------
-    // 3-2-1 सजीव सबमिशन इंजन (बिना रुकावट के सबमिट)
+    // 3-2-1 सजीव सबमिशन इंजन (Zero-Alert & Smooth Exit)
     // -------------------------------------------------------------
     async function confirmFinalExamSubmission(isAutoSubmit = false) {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
@@ -862,11 +866,10 @@
         }
       }
 
-      // टाइमर व चीटिंग मॉनिटर बंद
       if (examTimerInterval) clearInterval(examTimerInterval);
       if (typeof stopAntiCheatingMonitor === "function") stopAntiCheatingMonitor();
 
-      // सबमिशन ओवरले चालू करें
+      // ओवरले शुरू
       const overlay = document.getElementById("submitOverlay");
       const countNum = document.getElementById("overlayCountNum");
       const stepText = document.getElementById("overlayStepText");
@@ -878,12 +881,12 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = window.BSEB_PAPERS_DATABASE?.[currentSub.code];
 
-      // स्टेप 3: डिजिटल सील
+      // स्टेप 3
       countNum.textContent = "3";
       stepText.textContent = "उत्तर-पुस्तिका डिजिटल सील हो रही है...";
       subText.textContent = "OMR एवं हस्तलिखित कॉपियों का एन्क्रिप्शन तैयार किया जा रहा है।";
 
-      // बैकग्राउंड में क्लाउड सबमिशन चालू
+      // क्लाउड में जमा
       const submitPromise = submitExamToCloud(
         currentUser,
         activeDay,
@@ -895,24 +898,21 @@
 
       await new Promise(r => setTimeout(r, 1000));
 
-      // स्टेप 2: क्लाउड सर्वर पर स्थानांतरण
+      // स्टेप 2
       countNum.textContent = "2";
       stepText.textContent = "BSEB सर्वर पर डेटा सील हो गया...";
       subText.textContent = "परीक्षा सत्र को 24 घंटे के लिए लॉक किया जा रहा है।";
 
       await new Promise(r => setTimeout(r, 1000));
 
-      // स्टेप 1: पूर्ण सत्यापन
+      // स्टेप 1
       countNum.textContent = "1";
       stepText.textContent = "सत्यापन पूर्ण! परीक्षा सफलतापूर्वक जमा हुई ✅";
       subText.textContent = "होम स्क्रीन पर पुनः निर्देशित किया जा रहा है...";
 
-      // प्रॉमिस का पूर्ण होना सुनिश्चित करें
       try {
         await submitPromise;
-      } catch(e) {
-        console.warn("Background Submit Note:", e);
-      }
+      } catch(e) {}
 
       await new Promise(r => setTimeout(r, 800));
 
