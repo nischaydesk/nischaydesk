@@ -1,6 +1,6 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v21.0 Strict)
- * Model: gemini-3.8-flash (with gemini-3.5-flash fallback)
+ * NischayDesk - BSEB Official Assessment Engine (v21.1 Ultra-Stable)
+ * Model: gemini-3.8-flash (with Auto-Retry)
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
  *   2. Universal Direct Google Login Handler
@@ -9,6 +9,7 @@
  *   5. Strict 1-Exam Per Day Gatekeeper
  *   6. Permanent Candidate Profile Lock
  *   7. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
+ *   8. Bulletproof Non-blocking Cloud Submission
  */
 
 // ---------------------------------------------------------
@@ -98,7 +99,6 @@ let isExamActive = false;
 function initAntiCheatingMonitor() {
   tabSwitchCount = 0;
   isExamActive = true;
-  // सिर्फ visibilitychange से ट्रैक होगा (Alert बॉक्स खुलने पर blur ट्रिगर नहीं होगा)
   document.addEventListener("visibilitychange", handleTabSwitch);
 }
 
@@ -126,25 +126,33 @@ function triggerCheatingViolation() {
 }
 
 // ---------------------------------------------------------
-// 5. Local Database Storage (IndexedDB)
+// 5. Local Database Storage (IndexedDB Safe Wrapper)
 // ---------------------------------------------------------
 function saveEvaluatedSheetToDB(uid, day, dataObj) {
   return new Promise((resolve) => {
-    const req = indexedDB.open("NischaySheetsDB", 1);
-    req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains("sheets")) {
-        db.createObjectStore("sheets", { keyPath: "key" });
-      }
-    };
-    req.onsuccess = (e) => {
-      const db = e.target.result;
-      const tx = db.transaction("sheets", "readwrite");
-      tx.objectStore("sheets").put({ key: `${uid}_day_${day}`, data: dataObj });
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => resolve(false);
-    };
-    req.onerror = () => resolve(false);
+    try {
+      const req = indexedDB.open("NischaySheetsDB", 1);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains("sheets")) {
+          db.createObjectStore("sheets", { keyPath: "key" });
+        }
+      };
+      req.onsuccess = (e) => {
+        try {
+          const db = e.target.result;
+          const tx = db.transaction("sheets", "readwrite");
+          tx.objectStore("sheets").put({ key: `${uid}_day_${day}`, data: dataObj });
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch(err) {
+          resolve(false);
+        }
+      };
+      req.onerror = () => resolve(false);
+    } catch(err) {
+      resolve(false);
+    }
   });
 }
 
@@ -175,7 +183,11 @@ function generateUniqueCredentials(uid) {
 async function getCloudExamState(user) {
   if (!user) return null;
   const creds = generateUniqueCredentials(user.uid);
-  const serverDateObj = await getVerifiedServerDate();
+  let serverDateStr = new Date().toISOString();
+  try {
+    const serverDateObj = await getVerifiedServerDate();
+    serverDateStr = serverDateObj.toISOString();
+  } catch(e) {}
 
   let studentState = {
     uid: user.uid,
@@ -188,7 +200,7 @@ async function getCloudExamState(user) {
     motherName: "",
     fatherName: "",
     isProfileLocked: false,
-    startDate: serverDateObj.toISOString(),
+    startDate: serverDateStr,
     completedDays: {},
     savedOMR: {},
     lastExamDate: null,
@@ -239,7 +251,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
 }
 
 // ---------------------------------------------------------
-// 8. Gemini API Caller (Uses Obfuscated Key)
+// 8. Gemini API Caller (With Auto-Retry for High Demand)
 // ---------------------------------------------------------
 async function callGeminiApiFallback(parts) {
   const models = [BSEB_ENGINE_CONFIG.PRIMARY_MODEL, BSEB_ENGINE_CONFIG.BACKUP_MODEL];
@@ -247,22 +259,31 @@ async function callGeminiApiFallback(parts) {
   let lastErr = null;
 
   for (let model of models) {
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${activeKey}`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts }] })
-      });
-      const data = await res.json();
-      if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-        return data;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${activeKey}`;
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts }] })
+        });
+        const data = await res.json();
+        
+        if (data.error) {
+          lastErr = data.error.message;
+          if (data.error.message.includes("high demand") || data.error.code === 503) {
+            await new Promise(r => setTimeout(r, 2000));
+            continue;
+          }
+          break;
+        }
+
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+          return data;
+        }
+      } catch (err) {
+        lastErr = err.message;
       }
-      if (data.error) {
-        lastErr = data.error.message;
-      }
-    } catch (err) {
-      lastErr = err.message;
     }
   }
   throw new Error(lastErr || "AI मूल्यांकन सर्वर उपलब्ध नहीं है।");
@@ -341,7 +362,11 @@ Output STRICT JSON ONLY (no markdown backticks):
     let finalObj = isExpelled ? 0 : currentObjMarks;
     let finalTotal = finalObj + awarded;
 
-    const serverDateObj = await getVerifiedServerDate();
+    let serverDateIso = new Date().toISOString();
+    try {
+      const serverDateObj = await getVerifiedServerDate();
+      serverDateIso = serverDateObj.toISOString();
+    } catch(e) {}
 
     if (window.NischayConfig?.dbInstance) {
       await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
@@ -354,7 +379,7 @@ Output STRICT JSON ONLY (no markdown backticks):
             pagesEvaluation: parsed.pagesEvaluation || [],
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
-            aiEvaluatedAt: serverDateObj.toISOString()
+            aiEvaluatedAt: serverDateIso
           }
         }
       }, { merge: true });
@@ -374,7 +399,7 @@ Output STRICT JSON ONLY (no markdown backticks):
 }
 
 // ---------------------------------------------------------
-// 10. Single-Click Final Exam Submission
+// 10. Non-Blocking Single-Click Cloud Submission
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -386,7 +411,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   for (let i = 1; i <= 100; i++) {
     if (omr[i]) {
       count++;
-      if (answerKey && answerKey[i] && omr[i].toUpperCase() === answerKey[i].toUpperCase()) {
+      if (answerKey && answerKey[i] && String(omr[i]).toUpperCase() === String(answerKey[i]).toUpperCase()) {
         objMarks++;
       }
       if (count === 50) break;
@@ -397,8 +422,14 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
                     ? window.BSEB_PAPERS_DATABASE[subjectCode]
                     : null;
   const subjectName = paperInfo ? paperInfo.subjectName : subjectCode;
-  const serverDateObj = await getVerifiedServerDate();
-  const todayStr = serverDateObj.toISOString().split('T')[0];
+  
+  let todayStr = new Date().toISOString().split('T')[0];
+  let submitIso = new Date().toISOString();
+  try {
+    const serverDateObj = await getVerifiedServerDate();
+    todayStr = serverDateObj.toISOString().split('T')[0];
+    submitIso = serverDateObj.toISOString();
+  } catch(e) {}
 
   const creds = generateUniqueCredentials(user ? user.uid : null);
 
@@ -410,17 +441,20 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     totalMarks: objMarks,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
     status: "COMPLETED",
-    submittedAt: serverDateObj.toISOString()
+    submittedAt: submitIso
   };
 
-  if (imagesList && imagesList.length > 0) {
-    await saveEvaluatedSheetToDB(user.uid, day, {
-      subjectCode: subjectCode,
-      subjectName: subjectName,
-      pages: imagesList,
-      evaluation: []
-    });
-  }
+  // लोकल IndexedDB (गैर-अवरोधक)
+  try {
+    if (imagesList && imagesList.length > 0) {
+      saveEvaluatedSheetToDB(user.uid, day, {
+        subjectCode: subjectCode,
+        subjectName: subjectName,
+        pages: imagesList,
+        evaluation: []
+      });
+    }
+  } catch(e) {}
 
   if (!state.completedDays) state.completedDays = {};
   state.completedDays[day] = completedData;
@@ -438,13 +472,16 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       fatherName: state.fatherName || "",
       motherName: state.motherName || "",
       schoolName: state.schoolName || "",
-      isProfileLocked: true, // प्रोफाइल हमेशा के लिए सील
+      isProfileLocked: true,
       completedDays: { [day]: completedData },
-      lastExamDate: todayStr, // आज की परीक्षा सील
+      lastExamDate: todayStr,
       activeSession: null
     }, { merge: true });
 
-    runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
+    // बैकग्राउंड AI जांच
+    runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks).catch(err => {
+      console.warn("Background AI trigger note:", err);
+    });
   }
 
   return completedData;
