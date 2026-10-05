@@ -203,3 +203,6 @@ const BSEB_PAPERS_DATABASE = {
     }
   }
 };
+// ग्लोबल विंडो से जोड़ना ताकि iframe को डेटा 100% मिले
+window.BSEB_PAPERS_DATABASE = BSEB_PAPERS_DATABASE;
+
