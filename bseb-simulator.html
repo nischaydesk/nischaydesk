@@ -68,9 +68,108 @@
       max-width: 320px;
       line-height: 1.5;
     }
+
+    /* रंगीन कस्टम सबमिट पुष्टि बॉक्स (Color Modal Dialog) */
+    .confirm-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 99990;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .confirm-modal-overlay.active {
+      display: flex;
+    }
+    .confirm-modal-card {
+      background: #0f172a;
+      border: 2px solid var(--bseb-accent, #0284c7);
+      border-radius: 16px;
+      max-width: 400px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.6);
+      animation: popIn 0.25s ease-out;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .confirm-modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #f8fafc;
+      margin-bottom: 10px;
+    }
+    .confirm-modal-desc {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+    .confirm-modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .btn-modal-cancel {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border: 1.5px solid #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-modal-cancel:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+    .btn-modal-confirm {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      border: none;
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+      transition: 0.2s;
+    }
+    .btn-modal-confirm:hover {
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body class="bseb-simulator-body">
+
+  <!-- रंगीन कस्टम सबमिशन पुष्टि डायलॉग -->
+  <div class="confirm-modal-overlay" id="confirmModal">
+    <div class="confirm-modal-card">
+      <div style="font-size: 2.8rem; margin-bottom: 10px;">📜</div>
+      <div class="confirm-modal-title">क्या आप परीक्षा जमा करना चाहते हैं?</div>
+      <div class="confirm-modal-desc" id="confirmModalSubName">
+        एक बार जमा होने के बाद इस विषय की परीक्षा 24 घंटे के लिए लॉक हो जाएगी।
+      </div>
+      <div class="confirm-modal-actions">
+        <button type="button" class="btn-modal-cancel" onclick="closeSubmitConfirmModal()">
+          ❌ वापस जाएं
+        </button>
+        <button type="button" class="btn-modal-confirm" onclick="executeSubmissionCountdown()">
+          ✓ हाँ, जमा करें
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- 3-2-1 सजीव सबमिशन ओवरले -->
   <div class="submit-overlay-screen" id="submitOverlay">
@@ -88,7 +187,7 @@
 
       <div class="nav-controls-right">
         <button type="button" class="btn-theme-toggle" id="themeToggleBtn" onclick="togglePortalTheme()">
-          ☀️️ लाइट मोड
+          ☀️ लाइट मोड
         </button>
         <span id="userDisplayBadge" class="user-name-tag" style="display:none;">परीक्षार्थी</span>
         <a href="index.html" class="btn-home-exit">🏠 बाहर निकलें</a>
@@ -304,7 +403,7 @@
     </div>
 
     <div class="exam-split-wrapper">
-      <!-- Left: Question Paper Booklet (सीधे स्क्रीन पर पक्का दिखेगा) -->
+      <!-- Left: Question Paper Booklet -->
       <div class="exam-paper-container" id="examPaperBox" style="width:100%;">
         <div class="paper-toolbar" style="display:flex; justify-content:space-between; align-items:center;">
           <span>📄 प्रश्न-पुस्तिका (Question Booklet)</span>
@@ -433,12 +532,27 @@
         mNameInput.value = cloudState.motherName || "";
         schInput.value = cloudState.schoolName || "";
 
-        if (cloudState.isProfileLocked || (cloudState.fatherName && cloudState.motherName && cloudState.schoolName)) {
+        // 🔒 नियम: सिर्फ तभी लॉक करें जब चारों भरे हों!
+        const isComplete = Boolean(
+          sNameInput.value.trim() &&
+          fNameInput.value.trim() &&
+          mNameInput.value.trim() &&
+          schInput.value.trim()
+        );
+
+        if (cloudState.isProfileLocked && isComplete) {
           sNameInput.readOnly = true;
           fNameInput.readOnly = true;
           mNameInput.readOnly = true;
           schInput.readOnly = true;
           document.getElementById("profileLockBadge").style.display = "block";
+        } else {
+          // अगर कोई भी खाली है, तो अनलॉक रखें ताकि छात्र भर सके
+          sNameInput.readOnly = false;
+          fNameInput.readOnly = false;
+          mNameInput.readOnly = false;
+          schInput.readOnly = false;
+          document.getElementById("profileLockBadge").style.display = "none";
         }
       }
     }
@@ -508,7 +622,7 @@
       const schName = document.getElementById("inputSchoolName").value.trim();
 
       if (!sName || !mName || !fName || !schName) {
-        alert("⚠️ कृपया सभी चारों विवरण भरें!");
+        alert("⚠️ कृपया सभी चारों विवरण (परीक्षार्थी, माता, पिता और स्कूल का नाम) भरें!");
         return;
       }
 
@@ -521,12 +635,22 @@
             motherName: mName,
             fatherName: fName,
             schoolName: schName,
-            isProfileLocked: true,
+            isProfileLocked: true, // चारों भरने के बाद ही लॉक होगा
             rollCode: creds.rollCode,
             rollNumber: creds.rollNumber,
             regNo: creds.regNo
           }, { merge: true });
-        } catch(e){}
+
+          if (cloudState) {
+            cloudState.displayName = sName;
+            cloudState.motherName = mName;
+            cloudState.fatherName = fName;
+            cloudState.schoolName = schName;
+            cloudState.isProfileLocked = true;
+          }
+        } catch(e){
+          console.error("Profile update error:", e);
+        }
       }
 
       switchView("step2Auth", "step3Biometric");
@@ -619,9 +743,6 @@
       resumeExamHall(activeDay || 1);
     }
 
-    // -------------------------------------------------------------
-    // प्रश्न-पत्र को 100% स्क्रीन पर लोड करने वाला फंक्शन (Bulletproof)
-    // -------------------------------------------------------------
     async function resumeExamHall(day) {
       const papersDb = (typeof BSEB_PAPERS_DATABASE !== 'undefined') 
                        ? BSEB_PAPERS_DATABASE 
@@ -849,9 +970,9 @@
     }
 
     // -------------------------------------------------------------
-    // 3-2-1 सजीव सबमिशन इंजन (Zero-Alert & Smooth Exit)
+    // रंगीन सबमिशन पुष्टि एवं 3-2-1 सजीव सबमिशन इंजन
     // -------------------------------------------------------------
-    async function confirmFinalExamSubmission(isAutoSubmit = false) {
+    function confirmFinalExamSubmission(isAutoSubmit = false) {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
 
@@ -864,12 +985,30 @@
           alert("कृपया अपनी उत्तर-पुस्तिका का कम से कम 1 पन्ना अपलोड करें!");
           return;
         }
+
+        // रंगीन मॉडल खोलें
+        const subjects = CLASS_SUBJECTS_MAP["10th"];
+        const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
+        document.getElementById("confirmModalSubName").innerHTML = `क्या आप वाकई <strong>${currentSub.name}</strong> की परीक्षा जमा करना चाहते हैं?<br><span style="font-size:0.8rem; color:#ef4444;">(जमा होने के बाद इसे दोबारा नहीं दिया जा सकेगा)</span>`;
+        document.getElementById("confirmModal").classList.add("active");
+        return;
       }
+
+      // ऑटो सबमिट होने पर सीधे चलाएं
+      executeSubmissionCountdown();
+    }
+
+    function closeSubmitConfirmModal() {
+      document.getElementById("confirmModal").classList.remove("active");
+    }
+
+    async function executeSubmissionCountdown() {
+      closeSubmitConfirmModal();
 
       if (examTimerInterval) clearInterval(examTimerInterval);
       if (typeof stopAntiCheatingMonitor === "function") stopAntiCheatingMonitor();
 
-      // ओवरले शुरू
+      // 3-2-1 सजीव ओवरले सक्रिय करें
       const overlay = document.getElementById("submitOverlay");
       const countNum = document.getElementById("overlayCountNum");
       const stepText = document.getElementById("overlayStepText");
@@ -886,7 +1025,6 @@
       stepText.textContent = "उत्तर-पुस्तिका डिजिटल सील हो रही है...";
       subText.textContent = "OMR एवं हस्तलिखित कॉपियों का एन्क्रिप्शन तैयार किया जा रहा है।";
 
-      // क्लाउड में जमा
       const submitPromise = submitExamToCloud(
         currentUser,
         activeDay,
