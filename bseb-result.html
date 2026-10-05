@@ -127,19 +127,6 @@
     }
     .btn-search:hover { background: #0369a1; }
 
-    .countdown-lock-card {
-      display: none;
-      width: 100%;
-      max-width: 480px;
-      background: #ffffff;
-      border: 2px solid #eab308;
-      border-radius: 14px;
-      padding: 22px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-      margin-bottom: 25px;
-    }
-
     .error-banner {
       display: none;
       margin-top: 12px;
@@ -369,7 +356,7 @@
         padding: 0 !important;
         margin: 0 !important;
       }
-      .top-brand-bar, .search-card, .print-bar, .eval-copies-container, .countdown-lock-card {
+      .top-brand-bar, .search-card, .print-bar, .eval-copies-container {
         display: none !important;
       }
       .a4-marksheet-wrapper {
@@ -422,19 +409,6 @@
     </button>
 
     <div class="error-banner" id="errorBanner"></div>
-  </div>
-
-  <!-- 7-दिन का कड़ा लॉक / काउंटडाउन कार्ड -->
-  <div class="countdown-lock-card" id="lockCountdownCard">
-    <div style="font-size: 2.6rem; margin-bottom: 6px;">⏳</div>
-    <h2 style="color: #b45309; margin: 0 0 6px 0; font-size: 1.25rem;">परिणाम संकलन प्रक्रिया में है!</h2>
-    <p style="font-size: 0.85rem; color: #475569; margin: 0 0 14px 0; line-height: 1.4;">
-      बोर्ड परीक्षा के नियमानुसार, परिणाम परीक्षा प्रारंभ तिथि से ठीक <strong>7 दिन बाद</strong> प्रकाशित किया जाता है।
-    </p>
-    <div style="background: #fef08a; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 1.15rem; color: #854d0e; letter-spacing: 1px;" id="countdownTimerClock">
-      सर्वर से गणना हो रही है...
-    </div>
-    <button type="button" class="btn-action btn-reset" onclick="resetSearch()" style="margin-top: 16px; width: 100%;">← पीछे जाएं</button>
   </div>
 
   <!-- A4 मार्कशीट -->
@@ -528,7 +502,6 @@
 
   <script>
     let expectedCaptchaSum = 0;
-    let countdownInterval = null;
 
     function generateCaptcha() {
       const n1 = Math.floor(Math.random() * 20) + 5;
@@ -602,50 +575,8 @@
         return;
       }
 
-      // 🔒 7-दिन का सर्वर लॉक सत्यापन
-      const isUnlocked = await checkResultReleaseDate(studentData);
-      if (!isUnlocked) return;
-
+      // 🔓 डेवलपर बाईपास: 7-दिन का लॉक हटा दिया गया है, रिजल्ट तुरंत खुलेगा!
       renderA4Marksheet(studentData);
-    }
-
-    // 🔒 7 दिन की सख्त उलटी गिनती (Server-Time Driven)
-    async function checkResultReleaseDate(data) {
-      const serverDateObj = await getVerifiedServerDate();
-      const nowMs = serverDateObj.getTime();
-
-      const startMs = data.startDate ? new Date(data.startDate).getTime() : nowMs;
-      const releaseMs = startMs + (7 * 24 * 60 * 60 * 1000); // पूरे 7 दिन
-
-      if (nowMs < releaseMs) {
-        document.getElementById("searchBoxCard").style.display = "none";
-        document.getElementById("lockCountdownCard").style.display = "block";
-
-        if (countdownInterval) clearInterval(countdownInterval);
-
-        const updateTimer = () => {
-          const diff = releaseMs - (Date.now() + (cachedServerOffset || 0));
-          if (diff <= 0) {
-            clearInterval(countdownInterval);
-            document.getElementById("lockCountdownCard").style.display = "none";
-            renderA4Marksheet(data);
-            return;
-          }
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-          document.getElementById("countdownTimerClock").textContent = 
-            `⏳ ${days} दिन : ${String(hours).padStart(2,'0')} घंटे : ${String(minutes).padStart(2,'0')} मिनट : ${String(seconds).padStart(2,'0')} सेकंड`;
-        };
-
-        updateTimer();
-        countdownInterval = setInterval(updateTimer, 1000);
-        return false;
-      }
-
-      return true;
     }
 
     function renderA4Marksheet(data) {
@@ -743,7 +674,6 @@
       }
 
       document.getElementById("searchBoxCard").style.display = "none";
-      document.getElementById("lockCountdownCard").style.display = "none";
       document.getElementById("a4Marksheet").style.display = "block";
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -804,7 +734,6 @@
         ctx.fillText(`BIHAR SCHOOL EXAMINATION BOARD, PATNA | DAY ${day}: ${subjectName} | PAGE ${i + 1}/${pages.length}`, 30, 52);
 
         if (isExpelled) {
-          // ❌ निष्कासित / UFM बड़ा लाल क्रॉस
           ctx.strokeStyle = "rgba(220, 38, 38, 0.85)";
           ctx.lineWidth = 14;
           ctx.beginPath();
@@ -812,7 +741,6 @@
           ctx.moveTo(1050, 200); ctx.lineTo(150, 1500);
           ctx.stroke();
 
-          // UFM मुहर
           ctx.strokeStyle = "#dc2626";
           ctx.lineWidth = 8;
           ctx.strokeRect(350, 700, 500, 180);
@@ -824,11 +752,9 @@
           ctx.fillText("अनुचित सामग्री के कारण रद्द", 600, 830);
           ctx.textAlign = "left";
         } else {
-          // ✅ प्रामाणिक चेकिंग: टिक और अंक कोने के खाली मार्जिन में (बिना लिखावट काटे)
           const pEval = evalPages.find(p => p.pageIndex === i);
           const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 2);
 
-          // दाएँ कोने में लाल टिक मार्क (✓)
           ctx.strokeStyle = "#dc2626";
           ctx.lineWidth = 10;
           ctx.lineCap = "round";
@@ -836,7 +762,6 @@
           ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
           ctx.stroke();
 
-          // दाएँ कोने में गोल घेरे में अंक
           ctx.beginPath();
           ctx.arc(1040, 460, 70, 0, 2 * Math.PI);
           ctx.lineWidth = 6;
@@ -849,7 +774,6 @@
           ctx.fillText(`+${pageMarks}`, 1040, 478);
           ctx.textAlign = "left";
 
-          // पहले पन्ने पर BSEB मुख्य परीक्षक की गोल मुहर
           if (i === 0) {
             ctx.beginPath();
             ctx.arc(1040, 680, 85, 0, 2 * Math.PI);
@@ -866,7 +790,6 @@
           }
         }
 
-        // पन्ने के नीचे टिप्पणी पट्टी
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
         ctx.strokeStyle = "#dc2626";
@@ -886,10 +809,8 @@
     }
 
     function resetSearch() {
-      if (countdownInterval) clearInterval(countdownInterval);
       document.getElementById("a4Marksheet").style.display = "none";
       document.getElementById("printActionsBar").style.display = "none";
-      document.getElementById("lockCountdownCard").style.display = "none";
       document.getElementById("searchBoxCard").style.display = "block";
       generateCaptcha();
       hideError();
