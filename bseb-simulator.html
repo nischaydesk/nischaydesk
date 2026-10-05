@@ -16,6 +16,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- ✅ config.js को यहीं हेड में लोड किया गया ताकि Firebase तुरंत तैयार रहे -->
+  <script src="config.js"></script>
 </head>
 <body class="bseb-simulator-body">
 
@@ -66,7 +69,7 @@
         </div>
         
         <button id="btnProceedStep2" class="btn-sim-action" style="display:none; margin-top:20px;" onclick="goToStep2()">
-          सत्यापन पूर्ण: लॉगिन की ओर बढ़ें →
+          सत्यापन पूर्ण: आगे बढ़ें →
         </button>
       </div>
     </section>
@@ -83,7 +86,7 @@
           <p style="color: var(--bseb-text-muted); font-size: 0.92rem; margin-bottom: 20px;">
             परीक्षा कक्ष में प्रवेश के लिए आधिकारिक Google खाते से लॉगिन अनिवार्य है।
           </p>
-          <button type="button" onclick="triggerGoogleLogin()" class="btn-sim-action" style="max-width:280px; margin:0 auto;">
+          <button type="button" id="btnSimulatorLogin" onclick="triggerSimulatorLogin()" class="btn-sim-action" style="max-width:280px; margin:0 auto;">
             Google से लॉगिन करें
           </button>
         </div>
@@ -286,7 +289,6 @@
   </section>
 
   <!-- External Engine Scripts -->
-  <script src="config.js"></script>
   <script src="bseb-papers.js"></script>
   <script src="bseb-engine.js"></script>
 
@@ -334,50 +336,93 @@
     }
 
     // -------------------------------------------------------------
-    // स्टेप 1: सिस्टम एनीमेशन व ऑथ लिस्नर
+    // पक्का Google लॉगिन (Direct + Redirect Fallback)
+    // -------------------------------------------------------------
+    function triggerSimulatorLogin() {
+      const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
+                   ? window.NischayConfig.authInstance 
+                   : (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
+
+      if (!auth) {
+        alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद फिर से दबाएं!");
+        return;
+      }
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      auth.signInWithPopup(provider)
+        .then((res) => {
+          if (res && res.user) {
+            handleUserLoggedIn(res.user);
+          }
+        })
+        .catch((err) => {
+          if (err.code === "auth/popup-blocked" || err.code === "auth/popup-closed-by-user") {
+            auth.signInWithRedirect(provider);
+          } else {
+            alert("लॉगिन असफल: " + err.message);
+          }
+        });
+    }
+
+    async function handleUserLoggedIn(user) {
+      currentUser = user;
+      const banner = document.getElementById("authRequiredBanner");
+      const admitBox = document.getElementById("admitCardContentBox");
+      if (banner) banner.style.display = "none";
+      if (admitBox) admitBox.style.display = "block";
+
+      const badge = document.getElementById("userDisplayBadge");
+      if (badge) {
+        badge.textContent = (user.displayName || user.email.split('@')[0]).split(" ")[0];
+        badge.style.display = "inline-block";
+      }
+
+      const creds = generateUniqueCredentials(user.uid);
+      document.getElementById("outRollCode").textContent = creds.rollCode;
+      document.getElementById("outRollNumber").textContent = creds.rollNumber;
+      document.getElementById("outRegNo").textContent = creds.regNo;
+
+      cloudState = await getCloudExamState(user);
+      if (cloudState) {
+        document.getElementById("inputStudentName").value = cloudState.displayName || user.displayName || "";
+        document.getElementById("inputFatherName").value = cloudState.fatherName || "";
+        document.getElementById("inputMotherName").value = cloudState.motherName || "";
+        document.getElementById("inputSchoolName").value = cloudState.schoolName || "";
+      }
+    }
+
+    // -------------------------------------------------------------
+    // स्टेप 1: सिस्टम एनीमेशन व ऑटो-लॉगिन डिटेक्टर
     // -------------------------------------------------------------
     document.addEventListener("DOMContentLoaded", () => {
       initPortalTheme();
 
       // स्टेप 1 प्रोग्रेस एनीमेशन
-      setTimeout(() => setStep1CheckOk("iconCheck1", "iconCheck2"), 700);
-      setTimeout(() => setStep1CheckOk("iconCheck2", "iconCheck3"), 1400);
+      setTimeout(() => setStep1CheckOk("iconCheck1", "iconCheck2"), 600);
+      setTimeout(() => setStep1CheckOk("iconCheck2", "iconCheck3"), 1200);
       setTimeout(() => {
         setStep1CheckOk("iconCheck3", null);
         document.getElementById("btnProceedStep2").style.display = "block";
-      }, 2100);
+      }, 1800);
 
-      // Firebase Auth Listener
+      // ऑटो लॉगिन डिटेक्टर (अगर होम पेज से पहले से लॉग-इन हैं)
       const authInterval = setInterval(() => {
-        if (window.NischayConfig && window.NischayConfig.isCloudReady) {
+        const auth = (window.NischayConfig && window.NischayConfig.authInstance)
+                     ? window.NischayConfig.authInstance
+                     : (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
+
+        if (auth) {
           clearInterval(authInterval);
 
-          window.NischayConfig.authInstance.onAuthStateChanged(async (user) => {
+          auth.onAuthStateChanged((user) => {
             if (user) {
-              currentUser = user;
-              document.getElementById("authRequiredBanner").style.display = "none";
-              document.getElementById("admitCardContentBox").style.display = "block";
-
-              const badge = document.getElementById("userDisplayBadge");
-              badge.textContent = (user.displayName || user.email.split('@')[0]).split(" ")[0];
-              badge.style.display = "inline-block";
-
-              const creds = generateUniqueCredentials(user.uid);
-              document.getElementById("outRollCode").textContent = creds.rollCode;
-              document.getElementById("outRollNumber").textContent = creds.rollNumber;
-              document.getElementById("outRegNo").textContent = creds.regNo;
-
-              cloudState = await getCloudExamState(user);
-              if (cloudState) {
-                document.getElementById("inputStudentName").value = cloudState.displayName || "";
-                document.getElementById("inputFatherName").value = cloudState.fatherName || "";
-                document.getElementById("inputMotherName").value = cloudState.motherName || "";
-                document.getElementById("inputSchoolName").value = cloudState.schoolName || "";
-              }
+              handleUserLoggedIn(user);
             }
           });
         }
-      }, 150);
+      }, 100);
     });
 
     function setStep1CheckOk(currentId, nextId) {
@@ -449,13 +494,12 @@
         txt.textContent = "पहचान सत्यापित (Identity Verified) ✅";
         txt.style.color = "var(--bseb-success)";
         document.getElementById("btnProceedStep4").style.display = "block";
-      }, 2200);
+      }, 2000);
     }
 
     async function goToStep4() {
       switchView("step3Biometric", "step4Rules");
 
-      // एक्टिव सब्जेक्ट व शेड्यूल गणना
       const completed = cloudState?.completedDays || {};
       const completedCount = Object.keys(completed).length;
       activeDay = Math.min(6, completedCount + 1);
@@ -466,7 +510,7 @@
     }
 
     // -------------------------------------------------------------
-    // स्टेप 5: बारकोड व ऑटो-डिक्रिप्शन (FIXED)
+    // स्टेप 5: बारकोड व ऑटो-डिक्रिप्शन
     // -------------------------------------------------------------
     function goToStep5() {
       switchView("step4Rules", "step5Barcode");
@@ -502,7 +546,7 @@
     }
 
     // -------------------------------------------------------------
-    // स्टेप 6: परीक्षा कक्ष शुरुआत
+    // स्टेप 6: मुख्य परीक्षा हॉल
     // -------------------------------------------------------------
     function launchExamHall() {
       const mainViewport = document.querySelector(".main-viewport");
@@ -514,7 +558,6 @@
       const hall = document.getElementById("step6ExamHall");
       if (hall) hall.classList.add("active");
 
-      // एंटी-चीटिंग इंजन सक्रिय
       if (typeof initAntiCheatingMonitor === "function") {
         initAntiCheatingMonitor();
       }
