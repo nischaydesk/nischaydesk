@@ -162,7 +162,7 @@
       </div>
       <div class="confirm-modal-actions">
         <button type="button" class="btn-modal-cancel" onclick="closeSubmitConfirmModal()">
-          ❌ वापस जाएं
+          ❌ नहीं, वापस जाएं
         </button>
         <button type="button" class="btn-modal-confirm" onclick="executeSubmissionCountdown()">
           ✓ हाँ, जमा करें
@@ -532,7 +532,7 @@
         mNameInput.value = cloudState.motherName || "";
         schInput.value = cloudState.schoolName || "";
 
-        // 🔒 नियम: सिर्फ तभी लॉक करें जब चारों भरे हों!
+        // 🔒 नियम: सिर्फ तभी लॉक करें जब सचमुच चारों नाम भरे हों!
         const isComplete = Boolean(
           sNameInput.value.trim() &&
           fNameInput.value.trim() &&
@@ -547,7 +547,7 @@
           schInput.readOnly = true;
           document.getElementById("profileLockBadge").style.display = "block";
         } else {
-          // अगर कोई भी खाली है, तो अनलॉक रखें ताकि छात्र भर सके
+          // अगर कोई भी खाली है, तो अनलॉक रखें ताकि छात्र टाइप कर सके
           sNameInput.readOnly = false;
           fNameInput.readOnly = false;
           mNameInput.readOnly = false;
@@ -635,7 +635,7 @@
             motherName: mName,
             fatherName: fName,
             schoolName: schName,
-            isProfileLocked: true, // चारों भरने के बाद ही लॉक होगा
+            isProfileLocked: true,
             rollCode: creds.rollCode,
             rollNumber: creds.rollNumber,
             regNo: creds.regNo
@@ -743,6 +743,7 @@
       resumeExamHall(activeDay || 1);
     }
 
+    // प्रश्न-पत्र को 100% स्क्रीन पर लोड करने वाला फंक्शन
     async function resumeExamHall(day) {
       const papersDb = (typeof BSEB_PAPERS_DATABASE !== 'undefined') 
                        ? BSEB_PAPERS_DATABASE 
@@ -970,7 +971,7 @@
     }
 
     // -------------------------------------------------------------
-    // रंगीन सबमिशन पुष्टि एवं 3-2-1 सजीव सबमिशन इंजन
+    // रंगीन सबमिशन पुष्टि एवं सुपर-फास्ट 3-2-1 सजीव सबमिशन
     // -------------------------------------------------------------
     function confirmFinalExamSubmission(isAutoSubmit = false) {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
@@ -986,7 +987,7 @@
           return;
         }
 
-        // रंगीन मॉडल खोलें
+        // रंगीन पुष्टि मॉडल खोलें
         const subjects = CLASS_SUBJECTS_MAP["10th"];
         const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
         document.getElementById("confirmModalSubName").innerHTML = `क्या आप वाकई <strong>${currentSub.name}</strong> की परीक्षा जमा करना चाहते हैं?<br><span style="font-size:0.8rem; color:#ef4444;">(जमा होने के बाद इसे दोबारा नहीं दिया जा सकेगा)</span>`;
@@ -994,7 +995,6 @@
         return;
       }
 
-      // ऑटो सबमिट होने पर सीधे चलाएं
       executeSubmissionCountdown();
     }
 
@@ -1008,7 +1008,7 @@
       if (examTimerInterval) clearInterval(examTimerInterval);
       if (typeof stopAntiCheatingMonitor === "function") stopAntiCheatingMonitor();
 
-      // 3-2-1 सजीव ओवरले सक्रिय करें
+      // 3-2-1 सजीव ओवरले सक्रिय
       const overlay = document.getElementById("submitOverlay");
       const countNum = document.getElementById("overlayCountNum");
       const stepText = document.getElementById("overlayStepText");
@@ -1020,11 +1020,12 @@
       const currentSub = subjects.find(s => s.day === activeDay) || subjects[0];
       const paperData = window.BSEB_PAPERS_DATABASE?.[currentSub.code];
 
-      // स्टेप 3
+      // चरण 3: OMR और कॉपियों का डिजिटल एन्क्रिप्शन
       countNum.textContent = "3";
       stepText.textContent = "उत्तर-पुस्तिका डिजिटल सील हो रही है...";
       subText.textContent = "OMR एवं हस्तलिखित कॉपियों का एन्क्रिप्शन तैयार किया जा रहा है।";
 
+      // तुरंत डेटाबेस में सबमिट और कॉपियों को सुरक्षित सील करें
       const submitPromise = submitExamToCloud(
         currentUser,
         activeDay,
@@ -1036,25 +1037,27 @@
 
       await new Promise(r => setTimeout(r, 1000));
 
-      // स्टेप 2
+      // चरण 2: BSEB क्लाउड पर डेटा लॉक
       countNum.textContent = "2";
       stepText.textContent = "BSEB सर्वर पर डेटा सील हो गया...";
       subText.textContent = "परीक्षा सत्र को 24 घंटे के लिए लॉक किया जा रहा है।";
 
       await new Promise(r => setTimeout(r, 1000));
 
-      // स्टेप 1
+      // चरण 1: पूर्ण सत्यापन
       countNum.textContent = "1";
       stepText.textContent = "सत्यापन पूर्ण! परीक्षा सफलतापूर्वक जमा हुई ✅";
-      subText.textContent = "होम स्क्रीन पर पुनः निर्देशित किया जा रहा है...";
+      subText.textContent = "मुख्य पृष्ठ पर भेजा जा रहा है...";
 
       try {
         await submitPromise;
-      } catch(e) {}
+      } catch(e) {
+        console.warn("Fast submit note:", e);
+      }
 
       await new Promise(r => setTimeout(r, 800));
 
-      // होम स्क्रीन पर सुरक्षित प्रस्थान
+      // बिना किसी हैंग के तुरंत होम स्क्रीन पर प्रस्थान
       window.location.href = "index.html";
     }
   </script>
