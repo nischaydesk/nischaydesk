@@ -1,5 +1,5 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v21.1 Ultra-Stable)
+ * NischayDesk - BSEB Official Assessment Engine (v22.0 Silent Background Auto-Worker)
  * Model: gemini-3.8-flash (with Auto-Retry)
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
@@ -9,7 +9,7 @@
  *   5. Strict 1-Exam Per Day Gatekeeper
  *   6. Permanent Candidate Profile Lock
  *   7. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
- *   8. Bulletproof Non-blocking Cloud Submission
+ *   8. Silent Background AI Auto-Evaluator (Never Hangs UI)
  */
 
 // ---------------------------------------------------------
@@ -152,6 +152,29 @@ function saveEvaluatedSheetToDB(uid, day, dataObj) {
       req.onerror = () => resolve(false);
     } catch(err) {
       resolve(false);
+    }
+  });
+}
+
+function getEvaluatedSheetFromDB(uid, day) {
+  return new Promise((resolve) => {
+    try {
+      const req = indexedDB.open("NischaySheetsDB", 1);
+      req.onsuccess = (e) => {
+        try {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("sheets")) return resolve(null);
+          const tx = db.transaction("sheets", "readonly");
+          const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
+          getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
+          getReq.onerror = () => resolve(null);
+        } catch(err) {
+          resolve(null);
+        }
+      };
+      req.onerror = () => resolve(null);
+    } catch(e) {
+      resolve(null);
     }
   });
 }
@@ -393,6 +416,7 @@ Output STRICT JSON ONLY (no markdown backticks):
       isExpelled: isExpelled
     });
 
+    console.log(`✓ Day ${day} AI Evaluation Successfully Recorded to Firestore!`);
   } catch (err) {
     console.error("AI Background Evaluation note:", err);
   }
@@ -441,13 +465,14 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     totalMarks: objMarks,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
     status: "COMPLETED",
+    needsAiEvaluation: (imagesList && imagesList.length > 0),
     submittedAt: submitIso
   };
 
-  // लोकल IndexedDB (गैर-अवरोधक)
+  // लोकल IndexedDB में उत्तर-पुस्तिका सुरक्षित रखें
   try {
     if (imagesList && imagesList.length > 0) {
-      saveEvaluatedSheetToDB(user.uid, day, {
+      await saveEvaluatedSheetToDB(user.uid, day, {
         subjectCode: subjectCode,
         subjectName: subjectName,
         pages: imagesList,
@@ -477,12 +502,61 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       lastExamDate: todayStr,
       activeSession: null
     }, { merge: true });
-
-    // बैकग्राउंड AI जांच
-    runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks).catch(err => {
-      console.warn("Background AI trigger note:", err);
-    });
   }
 
   return completedData;
+}
+
+// ---------------------------------------------------------
+// 11. अदृश्य बैकग्राउंड ऑटो-इवैल्यूएटर (Silent Auto-Worker)
+// ---------------------------------------------------------
+// यह इंजन होम पेज (index.html) या किसी भी पेज पर स्वतः देखता है
+// कि क्या कोई कॉपी जमा हुई है जिसकी AI चेकिंग बाकी है।
+// यदि बाकी है, तो यह बिना स्क्रीन रोके बैकग्राउंड में कॉपी जाँचकर Firestore में सील कर देता है!
+async function triggerPendingAiEvaluations(user) {
+  if (!user || !window.NischayConfig?.dbInstance) return;
+
+  try {
+    const db = window.NischayConfig.dbInstance;
+    const docSnap = await db.collection("bseb_exams_2026").doc(user.uid).get();
+    if (!docSnap.exists) return;
+
+    const data = docSnap.data();
+    const completedDays = data.completedDays || {};
+
+    for (let dayKey of Object.keys(completedDays)) {
+      const exam = completedDays[dayKey];
+      // अगर परीक्षा COMPLETED है पर अभी तक EVALUATED नहीं हुई
+      if (exam && exam.status === "COMPLETED" && (!exam.aiFeedback || exam.status !== "EVALUATED")) {
+        const localCopy = await getEvaluatedSheetFromDB(user.uid, dayKey);
+        if (localCopy && localCopy.pages && localCopy.pages.length > 0) {
+          console.log(`[Silent Worker] Day ${dayKey} की AI चेकिंग बैकग्राउंड में शुरू हो रही है...`);
+          await runBackgroundGeminiEvaluation(
+            user.uid,
+            parseInt(dayKey, 10),
+            exam.subjectCode,
+            localCopy.pages,
+            exam.objectiveMarks || 0
+          );
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Silent worker note:", err);
+  }
+}
+
+// ऑटोमैटिकली लॉगिन होने पर बैकग्राउंड चेकिंग को चालू कर देना
+if (typeof window !== "undefined") {
+  const checkAuthInterval = setInterval(() => {
+    const auth = window.NischayConfig?.authInstance || (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
+    if (auth) {
+      clearInterval(checkAuthInterval);
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          triggerPendingAiEvaluations(user);
+        }
+      });
+    }
+  }, 500);
 }
