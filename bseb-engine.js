@@ -3,10 +3,11 @@
  * Model: gemini-3.8-flash (with gemini-3.5-flash fallback)
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
- *   2. Guaranteed Server Time Sync (Device tampering proof)
- *   3. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
- *   4. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
- *   5. Seamless background evaluation & canvas annotation
+ *   2. Universal Direct Google Login Handler
+ *   3. Guaranteed Server Time Sync (Device tampering proof)
+ *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
+ *   5. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
+ *   6. Seamless background evaluation & canvas annotation
  */
 
 // ---------------------------------------------------------
@@ -29,7 +30,42 @@ const BSEB_ENGINE_CONFIG = {
 };
 
 // ---------------------------------------------------------
-// 2. Server Time Engine (Mobile clock tamper prevention)
+// 2. Direct Google Auth Trigger (Popup + Redirect Fallback)
+// ---------------------------------------------------------
+function triggerGoogleLogin() {
+  const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
+               ? window.NischayConfig.authInstance 
+               : (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
+
+  if (!auth) {
+    alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
+    return;
+  }
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+
+  auth.signInWithPopup(provider)
+    .then((result) => {
+      if (result && result.user) {
+        if (typeof handleUserLoggedIn === "function") {
+          handleUserLoggedIn(result.user);
+        } else {
+          window.location.reload();
+        }
+      }
+    })
+    .catch((err) => {
+      if (err.code === "auth/popup-blocked" || err.code === "auth/popup-closed-by-user") {
+        auth.signInWithRedirect(provider);
+      } else {
+        alert("लॉगिन त्रुटि: " + err.message);
+      }
+    });
+}
+
+// ---------------------------------------------------------
+// 3. Server Time Engine (Mobile clock tamper prevention)
 // ---------------------------------------------------------
 let cachedServerOffset = null;
 
@@ -53,7 +89,7 @@ async function getVerifiedServerDate() {
 }
 
 // ---------------------------------------------------------
-// 3. Cheating Prevention Engine (4-Warning Tab Switch)
+// 4. Cheating Prevention Engine (4-Warning Tab Switch)
 // ---------------------------------------------------------
 let tabSwitchCount = 0;
 let isExamActive = false;
@@ -85,10 +121,10 @@ function handleWindowBlur() {
 function triggerCheatingViolation() {
   tabSwitchCount++;
   if (tabSwitchCount <= 3) {
-    alert(`🚨 sakht suraksha chetavani (${tabSwitchCount}/3)!\n\nAapne pariksha screen chhod di hai. Pariksha ke dauran tab badalna ya minimize karna manaa hai.\n\n4th baar screen chhodne par paper auto-submit ho jayega!`);
+    alert(`🚨 सख्त सुरक्षा चेतावनी (${tabSwitchCount}/3)!\n\nआपने परीक्षा स्क्रीन छोड़ दी है। बोर्ड परीक्षा के दौरान टैब बदलना या मिनिमाइज़ करना मना है।\n\nचौथी बार स्क्रीन छोड़ने पर पेपर स्वतः जमा (Auto-Submit) हो जाएगा!`);
   } else {
     stopAntiCheatingMonitor();
-    alert(`⛔ Suraksha ullanghan (4/4)!\n\nAapne baar-baar screen chhodi hai. Pariksha turant jama ki ja rahi hai.`);
+    alert(`⛔ सुरक्षा उल्लंघन (4/4)!\n\nआपने बार-बार स्क्रीन छोड़ी है। नियमों के उल्लंघन के कारण परीक्षा तुरंत स्वतः जमा की जा रही है।`);
     if (typeof confirmFinalExamSubmission === "function") {
       confirmFinalExamSubmission(true);
     }
@@ -96,7 +132,7 @@ function triggerCheatingViolation() {
 }
 
 // ---------------------------------------------------------
-// 4. Local Database Storage (IndexedDB)
+// 5. Local Database Storage (IndexedDB)
 // ---------------------------------------------------------
 function saveEvaluatedSheetToDB(uid, day, dataObj) {
   return new Promise((resolve) => {
@@ -119,7 +155,7 @@ function saveEvaluatedSheetToDB(uid, day, dataObj) {
 }
 
 // ---------------------------------------------------------
-// 5. Unique Credentials Generator
+// 6. Unique Credentials Generator
 // ---------------------------------------------------------
 function generateUniqueCredentials(uid) {
   if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
@@ -140,7 +176,7 @@ function generateUniqueCredentials(uid) {
 }
 
 // ---------------------------------------------------------
-// 6. Cloud Exam State Sync
+// 7. Cloud Exam State Sync
 // ---------------------------------------------------------
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -208,7 +244,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
 }
 
 // ---------------------------------------------------------
-// 7. Gemini API Caller (Uses Obfuscated Key)
+// 8. Gemini API Caller (Uses Obfuscated Key)
 // ---------------------------------------------------------
 async function callGeminiApiFallback(parts) {
   const models = [BSEB_ENGINE_CONFIG.PRIMARY_MODEL, BSEB_ENGINE_CONFIG.BACKUP_MODEL];
@@ -234,11 +270,11 @@ async function callGeminiApiFallback(parts) {
       lastErr = err.message;
     }
   }
-  throw new Error(lastErr || "AI mulyankan server uplabdh nahi hai.");
+  throw new Error(lastErr || "AI मूल्यांकन सर्वर उपलब्ध नहीं है।");
 }
 
 // ---------------------------------------------------------
-// 8. Background AI Evaluation & Anti-Fraud Logic
+// 9. Background AI Evaluation & Anti-Fraud Logic
 // ---------------------------------------------------------
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return;
@@ -273,11 +309,11 @@ Max Subjective Marks: ${maxSubjective}.
 CRITICAL VERIFICATION RULES:
 1. Examine student handwritten answers carefully.
 2. ZERO TOLERANCE / FRAUD CHECK:
-   If pages are BLANK, contain songs, movie dialogues, personal pleas ("sir pass kar do"), selfies, drawings, or are completely IRRELEVANT to Class 10 "${subjectName}":
+   If pages are BLANK, contain songs, movie dialogues, personal pleas ("सर पास कर दो"), selfies, drawings, or are completely IRRELEVANT to Class 10 "${subjectName}":
    -> Set "isValid": false
    -> Set "status": "EXPELLED"
    -> Set "totalSubjectiveMarks": 0
-   -> Set "overallRemarks": "Farzi/anuchit samagri upload karne ke karan parinam nishkasit (UFM) kiya gaya."
+   -> Set "overallRemarks": "फर्जी/अनुचित सामग्री अपलोड करने के कारण परिणाम निष्कासित (UFM) किया गया।"
 3. If genuine, award fair marks step-by-step up to ${maxSubjective}.
 
 Output STRICT JSON ONLY (no markdown backticks):
@@ -285,12 +321,12 @@ Output STRICT JSON ONLY (no markdown backticks):
   "isValid": <true or false>,
   "totalSubjectiveMarks": <integer 0 to ${maxSubjective}>,
   "status": "<EVALUATED or EXPELLED>",
-  "overallRemarks": "<Hindi me sankshipt tippani>",
+  "overallRemarks": "<हिंदी में संक्षिप्त टिप्पणी>",
   "pagesEvaluation": [
     {
       "pageIndex": 0,
       "marksOnThisPage": 4,
-      "pageRemark": "Charanbaddh uttar sahi",
+      "pageRemark": "चरणबद्ध उत्तर सही",
       "ticks": [
         {"label": "Q1: 2/2", "xRatio": 0.82, "yRatio": 0.28, "type": "correct"}
       ]
@@ -319,7 +355,7 @@ Output STRICT JSON ONLY (no markdown backticks):
             objectiveMarks: finalObj,
             subjectiveMarks: awarded,
             totalMarks: finalTotal,
-            aiFeedback: parsed.overallRemarks || (isExpelled ? "Pariksha radd" : "Mulyankan sampann"),
+            aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द" : "मूल्यांकन संपन्न"),
             pagesEvaluation: parsed.pagesEvaluation || [],
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
@@ -343,7 +379,7 @@ Output STRICT JSON ONLY (no markdown backticks):
 }
 
 // ---------------------------------------------------------
-// 9. Single-Click Final Exam Submission
+// 10. Single-Click Final Exam Submission
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
