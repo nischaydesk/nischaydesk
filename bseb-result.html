@@ -384,7 +384,7 @@
 
   <!-- सर्च गेटवे -->
   <div class="search-card" id="searchBoxCard">
-    <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
+    <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026 (टेस्ट मोड)</h2>
     <p class="search-subtitle">
       बिहार विद्यालय परीक्षा समिति आधिकारिक डिजिटल परिणाम पोर्टल<br />
       सत्यापित रोल कोड एवं रोल नंबर दर्ज करें
@@ -544,7 +544,7 @@
       }
 
       if (isNaN(captchaAns) || captchaAns !== expectedCaptchaSum) {
-        showError("⚠️ गलत सुरक्षा कोड (कैप्चा)! कृपया जोड़ का सही उत्तर लिखें।");
+        showError("⚠️️ गलत सुरक्षा कोड (कैप्चा)! कृपया जोड़ का सही उत्तर लिखें।");
         generateCaptcha();
         return;
       }
@@ -565,6 +565,7 @@
 
           if (!querySnap.empty) {
             studentData = querySnap.docs[0].data();
+            studentData.uid = querySnap.docs[0].id;
           }
         } catch (e) {
           console.warn("Firestore fetch note:", e);
@@ -580,57 +581,17 @@
         return;
       }
 
-      // 🔒 7-दिन का कड़ा बोर्ड लॉक (Strict 7-Day / 6-Exams Lock + Countdown Timer)
-      const completed = studentData.completedDays || {};
-      const completedCount = Object.keys(completed).length;
-
-      // 1. यदि 6 दिन की परीक्षा पूरी नहीं हुई है
-      if (completedCount < 6) {
-        showError(
-          `⏳ परिणाम अभी जारी नहीं हुआ है!\n\n` +
-          `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
-          `📌 नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
-        );
-        generateCaptcha();
-        return;
-      }
-
-      // 2. सात दिन (168 घंटे) का सटीक समय मिलान
-      let serverNowMs = Date.now();
-      try {
-        if (typeof getVerifiedServerTimestamp === "function") {
-          serverNowMs = await getVerifiedServerTimestamp();
-        }
-      } catch (e) {}
-
-      const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
-      const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000); // 7 पूरे दिन
-
-      if (serverNowMs < requiredReleaseMs) {
-        const remainingMs = requiredReleaseMs - serverNowMs;
-        const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
-        const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-
-        showError(
-          `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
-          `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
-          `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
-        );
-        generateCaptcha();
-        return;
-      }
-
-      // 7वें दिन परिणाम स्क्रीन पर खुलेगा
+      // 🔓 7-DAY और 6-EXAM लॉक को बाईपास कर दिया गया है! 
+      // अब चाहे 1 ही परीक्षा दी हो, तुरंत मार्कशीट सामने खुल जाएगी!
       renderA4Marksheet(studentData);
     }
 
     function renderA4Marksheet(data) {
       document.getElementById("outUniqueId").textContent = data.uid ? data.uid.substring(0, 14).toUpperCase() : "12671309250009";
-      document.getElementById("outStudentName").textContent = (data.displayName || "PRINCE KUMAR").toUpperCase();
-      document.getElementById("outFatherName").textContent = (data.fatherName || "राजेश शर्मा").toUpperCase();
-      document.getElementById("outMotherName").textContent = (data.motherName || "संजू देवी").toUpperCase();
-      document.getElementById("outSchoolName").textContent = (data.schoolName || "HIGH SCHOOL TELWA BAZAR, JAMUI").toUpperCase();
+      document.getElementById("outStudentName").textContent = (data.displayName || "STUDENT").toUpperCase();
+      document.getElementById("outFatherName").textContent = (data.fatherName || "--").toUpperCase();
+      document.getElementById("outMotherName").textContent = (data.motherName || "--").toUpperCase();
+      document.getElementById("outSchoolName").textContent = (data.schoolName || "BSEB HIGH SCHOOL").toUpperCase();
       document.getElementById("outRollCode").textContent = data.rollCode;
       document.getElementById("outRollNumber").textContent = data.rollNumber;
       document.getElementById("outRegNo").textContent = data.regNo || `${data.rollCode}-00027-25`;
@@ -665,14 +626,13 @@
             isExpelled = true;
             theoryDisplay = "EXP";
             isCandidateFailed = true;
-          } else if (examRecord.status === "COMPLETED" || examRecord.status === "EVALUATED") {
+          } else {
             numericScore = examRecord.totalMarks || 0;
             theoryDisplay = String(numericScore).padStart(3, '0');
           }
         } else {
           isAbsent = true;
           theoryDisplay = "ABS";
-          isCandidateFailed = true;
         }
 
         if (!sub.isExtra && !isAbsent && !isExpelled) {
@@ -680,7 +640,7 @@
           aggregateMarks += numericScore;
         }
 
-        // 🔘 विषयवार सर्टिफाइड कॉपी डाउनलोड बॉक्स
+        // 🔘 विषयवार सर्टिफाइड कॉपी डाउनलोड बटन
         if (!isAbsent) {
           const btn = document.createElement("button");
           btn.type = "button";
@@ -726,52 +686,33 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 🔄 स्मार्ट स्टोरेज फ़ेचर (Firestore優先 / Cloud First)
+    // 🔄 सब-कलेक्शन से कॉपियाँ खींचने का नया और पक्का तरीका (day_1_pages sync)
     async function getEvaluatedSheetFromDB(uid, day) {
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
-          const userDocRef = db.collection("bseb_exams_2026").doc(uid);
-          const docSnap = await userDocRef.get();
-
-          if (docSnap.exists) {
-            const cloudDoc = docSnap.data();
-            const dayRecord = cloudDoc.completedDays?.[day];
-            if (dayRecord && dayRecord.pages && dayRecord.pages.length > 0) {
-              return {
-                pages: dayRecord.pages,
-                evaluation: dayRecord.pagesEvaluation || [],
-                isExpelled: dayRecord.status === "EXPELLED"
-              };
-            }
-          }
-
-          const subColPagesSnap = await userDocRef
-            .collection("exam_copies")
-            .doc(`day_${day}`)
-            .collection("pages")
+          
+          // सब-कलेक्शन `day_1_pages` से तस्वीरें खींचना
+          const subColSnap = await db.collection("bseb_exams_2026")
+            .doc(uid)
+            .collection(`day_${day}_pages`)
             .orderBy("pageNumber", "asc")
             .get();
 
-          if (!subColPagesSnap.empty) {
+          if (!subColSnap.empty) {
             const subPages = [];
-            subColPagesSnap.forEach(d => {
-              subPages.push({
-                pageNumber: d.data().pageNumber,
-                dataUrl: d.data().dataUrl
-              });
+            subColSnap.forEach(d => {
+              const dt = d.data();
+              if (dt.imageData) subPages.push(dt.imageData);
             });
-
-            return {
-              pages: subPages,
-              evaluation: []
-            };
+            return { pages: subPages };
           }
         } catch(err) {
           console.warn("Cloud retrieval error:", err);
         }
       }
 
+      // लोकल IndexedDB बैकअप
       try {
         const localData = await new Promise((resolve) => {
           const req = indexedDB.open("NischaySheetsDB", 1);
@@ -794,7 +735,7 @@
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Cache + Instant Success Popup Alert)
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -812,8 +753,6 @@
         let cacheData = await getEvaluatedSheetFromDB(uid, day);
         if (cacheData && cacheData.pages) {
           pages = cacheData.pages;
-          if (!evalPages.length) evalPages = cacheData.evaluation || [];
-          if (cacheData.isExpelled) isExpelled = true;
         }
       }
 
@@ -837,7 +776,7 @@
         if (i > 0) doc.addPage();
 
         const pageItem = pages[i];
-        const base64Data = typeof pageItem === "string" ? pageItem : pageItem.dataUrl;
+        const base64Data = typeof pageItem === "string" ? pageItem : (pageItem.dataUrl || pageItem.imageData);
 
         const canvas = document.createElement("canvas");
         canvas.width = 1200;
@@ -932,7 +871,6 @@
         doc.addImage(annotatedImg, "JPEG", 0, 0, 210, 297);
       }
 
-      // ⏱️ टाइमस्टैम्प से फाइल का विशिष्ट नाम
       const realTimeId = Date.now();
       const fileName = `BSEB_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}_${realTimeId}.pdf`;
       doc.save(fileName);
@@ -945,8 +883,7 @@
         }, 3000);
       }
 
-      // 📢 स्पष्ट अलर्ट: छात्र को तुरंत पता चल जाएगा कि फ़ाइल डाउनलोड हो गई है
-      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) सफलतापूर्वक तैयार होकर आपके फ़ोन के 'Downloads' फ़ोल्डर में सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
+      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) सफलतापूर्वक तैयार होकर 'Downloads' में सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
     }
 
     function resetSearch() {
