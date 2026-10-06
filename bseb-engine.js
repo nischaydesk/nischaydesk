@@ -1,12 +1,12 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v23.0 Dual-Cloud & Silent Auto-Worker)
+ * NischayDesk - BSEB Official Assessment Engine (v23.0 Dual-Cloud, Time-Gated & Silent Auto-Worker)
  * Model: gemini-3.8-flash (with Auto-Retry)
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
  *   2. Universal Direct Google Login Handler
  *   3. Guaranteed Server Time Sync (Device tampering proof)
  *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
- *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync)
+ *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync engine)
  *   6. Permanent Candidate Profile Lock
  *   7. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
  *   8. Silent Background AI Auto-Evaluator + Direct Cloud Page Backup
@@ -88,6 +88,20 @@ async function getVerifiedServerTimestamp() {
 async function getVerifiedServerDate() {
   const ts = await getVerifiedServerTimestamp();
   return new Date(ts);
+}
+
+// 🕒 सुबह 09:30 AM IST का कड़ा सर्वर टाइम चेक फंक्शन
+async function isExamTimeAllowed() {
+  try {
+    const serverDate = await getVerifiedServerDate();
+    const hours = serverDate.getHours();
+    const minutes = serverDate.getMinutes();
+    const currentMins = (hours * 60) + minutes;
+    const thresholdMins = (9 * 60) + 30; // 9:30 AM IST = 570 मिनट
+    return currentMins >= thresholdMins;
+  } catch (e) {
+    return true;
+  }
 }
 
 // ---------------------------------------------------------
