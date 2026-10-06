@@ -579,7 +579,7 @@
         return;
       }
 
-      // 🔓 डेवलपर बाईपास: 7-दिन का लॉक हटा दिया गया है, रिजल्ट तुरंत खुलेगा!
+      // 🔓 डेवलपर बाईपास: रिजल्ट सीधे स्क्रीन पर प्रदर्शित होगा
       renderA4Marksheet(studentData);
     }
 
@@ -684,29 +684,9 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 🔄 स्मार्ट 3-लेयर स्टोरेज फ़ेचर (IndexedDB + Cloud Doc + Cloud Subcollection)
+    // 🔄 स्मार्ट स्टोरेज फ़ेचर (Firestore優先 / Cloud First)
     async function getEvaluatedSheetFromDB(uid, day) {
-      // लेयर 1: डिवाइस की लोकल IndexedDB मेमोरी
-      try {
-        const localData = await new Promise((resolve) => {
-          const req = indexedDB.open("NischaySheetsDB", 1);
-          req.onsuccess = (e) => {
-            const db = e.target.result;
-            if (!db.objectStoreNames.contains("sheets")) return resolve(null);
-            const tx = db.transaction("sheets", "readonly");
-            const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
-            getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
-            getReq.onerror = () => resolve(null);
-          };
-          req.onerror = () => resolve(null);
-        });
-
-        if (localData && localData.pages && localData.pages.length > 0) {
-          return localData;
-        }
-      } catch(e) {}
-
-      // लेयर 2: Firestore के मुख्य डॉक्यूमेंट से pages
+      // 1. सबसे पहले Firestore क्लाउड से ताज़ा पन्ने खींचें
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
@@ -725,7 +705,7 @@
             }
           }
 
-          // लेयर 3: Firestore का सब-कलेक्शन (exam_copies -> pages)
+          // सब-कलेक्शन में जाँचें
           const subColPagesSnap = await userDocRef
             .collection("exam_copies")
             .doc(`day_${day}`)
@@ -752,10 +732,30 @@
         }
       }
 
+      // 2. यदि क्लाउड पर न मिले, तब ही लोकल IndexedDB देखें
+      try {
+        const localData = await new Promise((resolve) => {
+          const req = indexedDB.open("NischaySheetsDB", 1);
+          req.onsuccess = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("sheets")) return resolve(null);
+            const tx = db.transaction("sheets", "readonly");
+            const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
+            getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
+            getReq.onerror = () => resolve(null);
+          };
+          req.onerror = () => resolve(null);
+        });
+
+        if (localData && localData.pages && localData.pages.length > 0) {
+          return localData;
+        }
+      } catch(e) {}
+
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Overlap & Dual-Sync)
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Firestore Record Priority)
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -763,10 +763,25 @@
         triggerBtn.innerHTML = `<span>⏳ लोड हो रहा है...</span>`;
       }
 
-      let cacheData = await getEvaluatedSheetFromDB(uid, day);
+      let pages = [];
+      let evalPages = examRecord?.pagesEvaluation || [];
+      let isExpelled = examRecord?.status === "EXPELLED" || examRecord?.isFraud;
 
-      if (!cacheData || !cacheData.pages || cacheData.pages.length === 0) {
-        alert(`Day ${day} (${subjectName}) की हस्तलिखित प्रतियां इस डिवाइस अथवा क्लाउड सर्वर पर उपलब्ध नहीं हैं।`);
+      // 1. सीधे वर्तमान परीक्षा रिकॉर्ड (Firestore Snap) से पन्ने लें
+      if (examRecord && examRecord.pages && examRecord.pages.length > 0) {
+        pages = examRecord.pages;
+      } else {
+        // यदि यहाँ न हों, तब डेटाबेस हेल्पर से मँगवाएँ
+        let cacheData = await getEvaluatedSheetFromDB(uid, day);
+        if (cacheData && cacheData.pages) {
+          pages = cacheData.pages;
+          if (!evalPages.length) evalPages = cacheData.evaluation || [];
+          if (cacheData.isExpelled) isExpelled = true;
+        }
+      }
+
+      if (!pages || pages.length === 0) {
+        alert(`Day ${day} (${subjectName}) की हस्तलिखित प्रतियां सर्वर पर उपलब्ध नहीं हैं।`);
         if (triggerBtn) {
           triggerBtn.disabled = false;
           triggerBtn.innerHTML = origHtml;
@@ -777,10 +792,6 @@
       if (triggerBtn) {
         triggerBtn.innerHTML = `<span>⚙️ PDF तैयार हो रही है...</span>`;
       }
-
-      const pages = cacheData.pages || [];
-      const evalPages = examRecord?.pagesEvaluation || cacheData.evaluation || [];
-      const isExpelled = examRecord?.status === "EXPELLED" || cacheData.isExpelled;
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
@@ -801,7 +812,7 @@
         await new Promise(r => { img.onload = r; img.onerror = r; });
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 1. आधिकारिक हेडर पट्टी
+        // आधिकारिक हेडर पट्टी
         ctx.fillStyle = isExpelled ? "rgba(220, 38, 38, 0.95)" : "rgba(2, 132, 199, 0.92)";
         ctx.fillRect(0, 0, canvas.width, 80);
         ctx.fillStyle = "#ffffff";
@@ -828,7 +839,7 @@
           ctx.textAlign = "left";
         } else {
           const pEval = evalPages.find(p => p.pageIndex === i);
-          const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 2);
+          const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 0);
 
           // लाल टिक मार्क (✓)
           ctx.strokeStyle = "#dc2626";
@@ -877,7 +888,7 @@
 
         ctx.fillStyle = "#dc2626";
         ctx.font = "bold 24px Arial";
-        const remarkText = isExpelled ? "अनुचित सामग्री अपलोड करने के कारण परिणाम रद्द।" : (examRecord?.aiFeedback || "मूल्यांकन संपन्न। उत्तर व्यवस्थित हैं।");
+        const remarkText = isExpelled ? "अनुचित सामग्री अपलोड करने के कारण परिणाम रद्द।" : (examRecord?.aiFeedback || "मूल्यांकन संपन्न।");
         ctx.fillText(`परीक्षक टिप्पणी: ${remarkText}`, 60, canvas.height - 62);
 
         const annotatedImg = canvas.toDataURL("image/jpeg", 0.85);
