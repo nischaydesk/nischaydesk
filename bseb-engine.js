@@ -1,14 +1,14 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v23.0 Dual-Cloud, Time-Gated & Silent Auto-Worker)
+ * NischayDesk - BSEB Official Assessment Engine (v24.0 Blueprint-Verified & Silent Auto-Worker)
  * Model: gemini-3.8-flash (with Auto-Retry)
  * Features:
- *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
+ *   1. Obfuscated API Key Resolver (GitHub scanner safe)
  *   2. Universal Direct Google Login Handler
  *   3. Guaranteed Server Time Sync (Device tampering proof)
  *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
- *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync engine)
- *   6. Permanent Candidate Profile Lock
- *   7. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
+ *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync)
+ *   6. Subjective Blueprint Strict Matcher (Evaluates strictly against bseb-papers.js)
+ *   7. Zero Tolerance for fake/irrelevant/out-of-syllabus uploads (UFM/Expelled)
  *   8. Silent Background AI Auto-Evaluator + Direct Cloud Page Backup
  */
 
@@ -90,14 +90,14 @@ async function getVerifiedServerDate() {
   return new Date(ts);
 }
 
-// 🕒 सुबह 09:30 AM IST का कड़ा सर्वर टाइम चेक फंक्शन
+// 🕒 सुबह 09:30 AM IST का कड़ा सर्वर टाइम चेक
 async function isExamTimeAllowed() {
   try {
     const serverDate = await getVerifiedServerDate();
     const hours = serverDate.getHours();
     const minutes = serverDate.getMinutes();
     const currentMins = (hours * 60) + minutes;
-    const thresholdMins = (9 * 60) + 30; // 9:30 AM IST = 570 मिनट
+    const thresholdMins = (9 * 60) + 30; // 09:30 AM IST
     return currentMins >= thresholdMins;
   } catch (e) {
     return true;
@@ -105,7 +105,7 @@ async function isExamTimeAllowed() {
 }
 
 // ---------------------------------------------------------
-// 4. Cheating Prevention Engine (No False Alarm on Alert)
+// 4. Cheating Prevention Engine
 // ---------------------------------------------------------
 let tabSwitchCount = 0;
 let isExamActive = false;
@@ -327,7 +327,7 @@ async function callGeminiApiFallback(parts) {
 }
 
 // ---------------------------------------------------------
-// 9. Background AI Evaluation & Anti-Fraud Logic
+// 9. Background AI Evaluation & Blueprint-Matching Logic
 // ---------------------------------------------------------
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return;
@@ -355,31 +355,44 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, 
   const subjectName = paperInfo ? paperInfo.subjectName : subjectCode;
   const maxSubjective = paperInfo?.subjectiveBlueprint?.totalSubjectiveMarks || 50;
 
-  const promptText = `You are the Chief Examiner of BSEB Patna conducting strict evaluation for Class 10 Subjective Copy: "${subjectName}".
+  // 🎯 bseb-papers.js से पूरे प्रश्न-पत्र का ब्लूप्रिंट स्ट्रिंग में बदलना
+  const blueprintDetails = paperInfo?.subjectiveBlueprint
+    ? JSON.stringify(paperInfo.subjectiveBlueprint, null, 2)
+    : "Standard Class 10 Subject Syllabus";
+
+  const promptText = `You are the Chief Examiner of the Bihar School Examination Board (BSEB), Patna, conducting strict evaluation for Class 10 Subjective Copy: "${subjectName}".
 Total Pages submitted: ${totalPages}.
 Max Subjective Marks: ${maxSubjective}.
 
-CRITICAL VERIFICATION RULES:
-1. Examine student handwritten answers carefully.
-2. ZERO TOLERANCE / FRAUD CHECK:
-   If pages are BLANK, contain songs, movie dialogues, personal pleas ("सर पास कर दो"), selfies, drawings, or are completely IRRELEVANT to Class 10 "${subjectName}":
-   -> Set "isValid": false
-   -> Set "status": "EXPELLED"
-   -> Set "totalSubjectiveMarks": 0
-   -> Set "overallRemarks": "फर्जी/अनुचित सामग्री अपलोड करने के कारण परिणाम निष्कासित (UFM) किया गया।"
-3. If genuine, award fair marks step-by-step up to ${maxSubjective}.
+OFFICIAL QUESTION PAPER BLUEPRINT TO MATCH (QUESTIONS, ESSAYS, SECTIONS & MARKING SCHEME):
+${blueprintDetails}
 
-Output STRICT JSON ONLY (no markdown backticks):
+CRITICAL VERIFICATION RULES:
+1. Examine student handwritten answers page-by-page.
+2. ZERO TOLERANCE / FRAUD / SUBJECT-MISMATCH CHECK:
+   - If pages are BLANK, contain songs, movie dialogues, personal pleas ("सर पास कर दो"), selfies, drawings.
+   - If pages belong to an ENTIRELY DIFFERENT SUBJECT (e.g. Sanskrit copy uploaded in Hindi exam, Science in Math).
+   - If answers are completely IRRELEVANT or NOT ATTEMPTING any questions from the Official Question Paper Blueprint above:
+     -> Set "isValid": false
+     -> Set "status": "EXPELLED"
+     -> Set "totalSubjectiveMarks": 0
+     -> Set "overallRemarks": "अनुचित/अप्रासंगिक या भिन्न विषय की उत्तर-पुस्तिका अपलोड करने के कारण परिणाम निष्कासित (UFM) किया गया।"
+3. STRICT BLUEPRINT QUESTION MATCHING:
+   - Match handwritten answers against the questions, essays, passages, and short/long problems defined in the blueprint.
+   - Award fair, step-by-step marks up to the question limit defined in the blueprint.
+   - If a student solved genuine problems matching the blueprint, allocate realistic page marks and positive remarks.
+
+Output STRICT JSON ONLY (no markdown backticks, no extra text):
 {
   "isValid": <true or false>,
   "totalSubjectiveMarks": <integer 0 to ${maxSubjective}>,
   "status": "<EVALUATED or EXPELLED>",
-  "overallRemarks": "<हिंदी में संक्षिप्त टिप्पणी>",
+  "overallRemarks": "<हिंदी में संक्षिप्त टिप्पणी (उदा. 'प्रश्न 3 (निबंध) एवं पाठ्यपुस्तक के उत्तर सटीक, 38/50 अंक')>",
   "pagesEvaluation": [
     {
       "pageIndex": 0,
       "marksOnThisPage": 4,
-      "pageRemark": "चरणबद्ध उत्तर सही",
+      "pageRemark": "उत्तर चरणबद्ध व प्रासंगिक",
       "ticks": [
         {"label": "Q1: 2/2", "xRatio": 0.82, "yRatio": 0.28, "type": "correct"}
       ]
@@ -431,14 +444,14 @@ Output STRICT JSON ONLY (no markdown backticks):
       isExpelled: isExpelled
     });
 
-    console.log(`✓ Day ${day} AI Evaluation Successfully Recorded to Firestore!`);
+    console.log(`✓ Day ${day} AI Evaluation Successfully Completed and Verified against Official Blueprint!`);
   } catch (err) {
     console.error("AI Background Evaluation note:", err);
   }
 }
 
 // ---------------------------------------------------------
-// 10. Non-Blocking Single-Click Cloud Submission (Pages Backup Included)
+// 10. Non-Blocking Single-Click Cloud Submission
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -479,13 +492,13 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     subjectiveMarks: 0,
     totalMarks: objMarks,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
-    pages: imagesList || [], // पन्ने सीधे क्लाउड पर भी सुरक्षित
+    pages: imagesList || [], // पन्ने सीधे क्लाउड पर सुरक्षित
     status: "COMPLETED",
     needsAiEvaluation: (imagesList && imagesList.length > 0),
     submittedAt: submitIso
   };
 
-  // लोकल IndexedDB में भी उत्तर-पुस्तिका सुरक्षित रखें
+  // लोकल IndexedDB में भी बैकअप सुरक्षित करें
   try {
     if (imagesList && imagesList.length > 0) {
       await saveEvaluatedSheetToDB(user.uid, day, {
@@ -549,7 +562,7 @@ async function triggerPendingAiEvaluations(user) {
         }
 
         if (pagesToEval.length > 0) {
-          console.log(`[Silent Worker] Day ${dayKey} की AI चेकिंग बैकग्राउंड में शुरू हो रही है...`);
+          console.log(`[Silent Worker] Day ${dayKey} की AI चेकिंग आधिकारिक ब्लूप्रिंट से शुरू हो रही है...`);
           await runBackgroundGeminiEvaluation(
             user.uid,
             parseInt(dayKey, 10),
@@ -565,7 +578,7 @@ async function triggerPendingAiEvaluations(user) {
   }
 }
 
-// ऑटोमैटिकली लॉगिन होने पर बैकग्राउंड चेकिंग को चालू कर देना
+// लॉगिन होने पर बैकग्राउंड चेकिंग को स्वतः ट्रिगर करना
 if (typeof window !== "undefined") {
   const checkAuthInterval = setInterval(() => {
     const auth = window.NischayConfig?.authInstance || (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
