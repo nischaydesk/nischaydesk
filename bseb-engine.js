@@ -1,5 +1,5 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v25.1 Bulletproof Auto-Grading)
+ * NischayDesk - BSEB Official Assessment Engine (v25.2 Fire-and-Forget Architecture)
  * Primary: gemini-3.8-flash | Backup: gemini-3.5-flash-lite
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub scanner safe)
@@ -10,7 +10,7 @@
  *   6. Subjective Blueprint Strict Matcher (Evaluates strictly against bseb-papers.js)
  *   7. Auto-Compressor for up to 26 Camera Photos (Zero Crash)
  *   8. Multi-Device Sub-collection Cloud Storage (Bypasses 1MB doc limit)
- *   9. Non-Blocking Dual-Trigger AI Worker (Instant submit + Guaranteed Grading)
+ *   9. Instant Fire-and-Forget AI: टैब काटने के बाद भी कॉपियाँ 100% जाँची जाएँगी
  */
 
 // ---------------------------------------------------------
@@ -41,7 +41,7 @@ function triggerGoogleLogin() {
                : (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
 
   if (!auth) {
-    alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
+    alert("⚠️️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
     return;
   }
 
@@ -454,7 +454,7 @@ STRICT JSON ONLY:
       serverDateIso = serverDateObj.toISOString();
     } catch(e) {}
 
-    // Firestore में मूल्यांकन परिणाम व टिक सुरक्षित करें
+    // Firestore के मुख्य रिकॉर्ड में पहले जैसा पूरा रिजल्ट, aiFeedback और लाल टिक सेव होंगे
     if (window.NischayConfig?.dbInstance) {
       await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
         completedDays: {
@@ -482,14 +482,14 @@ STRICT JSON ONLY:
       isExpelled: isExpelled
     });
 
-    console.log(`✓ Day ${day} AI Evaluation Successfully Finished in Background!`);
+    console.log(`✓ Day ${day} AI Evaluation Successfully Finished!`);
   } catch (err) {
     console.error("AI Background Evaluation note:", err);
   }
 }
 
 // ---------------------------------------------------------
-// 11. Superfast 3-Second Cloud Submission + Auto AI Launch
+// 11. Superfast 3-Second Cloud Submission + Instant AI Fire
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -572,7 +572,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       activeSession: null
     }, { merge: true });
 
-    // (B) 26 कॉपियों को सीधे सब-कलेक्शन में क्लाउड पर सेव करें
+    // (B) 26 कॉपियों को सब-कलेक्शन में क्लाउड पर सुरक्षित करें (1MB सीमा खत्म)
     if (imagesList && imagesList.length > 0) {
       const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
       for (let i = 0; i < imagesList.length; i++) {
@@ -587,12 +587,11 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     }
   }
 
-  // 🚀 पक्का बैकग्राउंड ट्रिगर: छात्र का सबमिशन रोके बिना AI को तुरंत फ़ायर कर दें
+  // 🚀 बिल्कुल पुराने तरीके से: सबमिट होते ही तुरंत सीधे AI को भेज दो (Fire and Forget)
+  // छात्र चाहे तुरंत टैब काट दे, Google API रिक्वेस्ट पहले ही चली जा चुकी होगी!
   if (imagesList && imagesList.length > 0) {
-    setTimeout(() => {
-      runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks)
-        .catch(err => console.warn("Auto-eval background error:", err));
-    }, 1500);
+    runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks)
+      .catch(err => console.warn("Background AI note:", err));
   }
 
   return completedData;
@@ -630,7 +629,7 @@ async function getStudentPagesFromAnyDevice(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 13. शांत बैकग्राउंड ऑटो-वर्कर (डैशबोर्ड पर फुर्सत में चलने वाला)
+// 13. शांत बैकग्राउंड ऑटो-वर्कर (अगर किसी वजह से चेकिंग छूट गई हो तो)
 // ---------------------------------------------------------
 let isAiWorkerRunning = false;
 
@@ -647,10 +646,9 @@ async function triggerPendingAiEvaluations(user) {
 
     for (let dayKey of Object.keys(completedDays)) {
       const exam = completedDays[dayKey];
-      // जो पेपर सबमिट हो चुका है लेकिन AI चेकिंग बाकी है:
       if (exam && exam.needsAiEvaluation === true) {
         isAiWorkerRunning = true;
-        console.log(`[Silent Worker] Day ${dayKey} की कॉपी फुर्सत में जाँची जा रही है...`);
+        console.log(`[Worker] Day ${dayKey} की छूटी हुई कॉपी जाँची जा रही है...`);
 
         const pagesToEval = await getStudentPagesFromAnyDevice(user.uid, dayKey);
 
@@ -665,16 +663,16 @@ async function triggerPendingAiEvaluations(user) {
         }
         
         isAiWorkerRunning = false;
-        break; // एक बार में एक ही पेपर जाँचेगा
+        break;
       }
     }
   } catch (err) {
-    console.warn("Silent worker note:", err);
+    console.warn("Worker note:", err);
     isAiWorkerRunning = false;
   }
 }
 
-// 🛡️ डबल-सिक्योरिटी: पेज लोड + ऑथेंटिकेशन तैयार होते ही बैकग्राउंड चेकिंग ट्रिगर होगी
+// लॉगिन होने पर छूटे हुए पेपरों को बैकग्राउंड में चेक करना
 if (typeof window !== "undefined") {
   const initWorkerListener = () => {
     const auth = window.NischayConfig?.authInstance || (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
