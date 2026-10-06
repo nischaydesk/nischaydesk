@@ -20,99 +20,109 @@
   <script src="config.js"></script>
 
   <style>
-    /* 🌟 20-सेकंड लाइव डिजिटल मूल्यांकन ओवरले */
+    /* 🌟 30-सेकंड सजीव AI डिजिटल मूल्यांकन ओवरले (खतरनाक विजुअल्स) */
     .submit-overlay-screen {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(7, 12, 24, 0.96);
-      backdrop-filter: blur(10px);
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.99));
+      backdrop-filter: blur(14px);
       z-index: 99999;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 20px;
+      padding: 16px;
     }
     .submit-overlay-screen.active {
       display: flex;
     }
 
     .eval-card-box {
-      background: #0f172a;
+      background: #090e1a;
       border: 2px solid var(--bseb-accent, #0284c7);
-      border-radius: 20px;
-      max-width: 440px;
+      border-radius: 22px;
+      max-width: 450px;
       width: 100%;
       padding: 26px 20px;
-      box-shadow: 0 15px 45px rgba(0,0,0,0.7);
+      box-shadow: 0 0 50px rgba(2, 132, 199, 0.35), 0 20px 40px rgba(0,0,0,0.8);
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
     .eval-badge-icon {
-      font-size: 3.2rem;
-      margin-bottom: 12px;
+      font-size: 3.4rem;
+      margin-bottom: 10px;
       display: inline-block;
-      animation: floatPulse 1.8s ease-in-out infinite;
+      animation: pulseGlow 1.4s ease-in-out infinite;
     }
-    @keyframes floatPulse {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-6px) scale(1.08); }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px #0284c7); }
+      50% { transform: scale(1.12); filter: drop-shadow(0 0 22px #22c55e); }
     }
 
     .eval-main-heading {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: #f8fafc;
-      margin: 0 0 6px 0;
+      margin: 0 0 4px 0;
+      letter-spacing: 0.5px;
     }
 
     .eval-sub-heading {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       color: #94a3b8;
-      margin: 0 0 18px 0;
-      line-height: 1.4;
+      margin: 0 0 16px 0;
+      font-weight: 600;
     }
 
     .eval-progress-container {
       width: 100%;
-      height: 10px;
+      height: 12px;
       background: #1e293b;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       margin-bottom: 16px;
-      border: 1px solid #334155;
+      border: 1.5px solid #334155;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .eval-progress-bar {
       width: 5%;
       height: 100%;
-      background: linear-gradient(90deg, #0284c7, #22c55e);
-      border-radius: 10px;
+      background: linear-gradient(90deg, #0284c7, #38bdf8, #22c55e);
+      border-radius: 12px;
       transition: width 0.4s ease;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
     }
 
     .eval-live-status {
-      background: rgba(2, 132, 199, 0.12);
-      border: 1.5px dashed #0284c7;
-      border-radius: 10px;
-      padding: 12px;
+      background: rgba(2, 132, 199, 0.08);
+      border: 1.5px solid #0284c7;
+      border-radius: 12px;
+      padding: 14px 12px;
       color: #38bdf8;
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       font-weight: 800;
-      min-height: 52px;
+      min-height: 58px;
       display: flex;
       align-items: center;
       justify-content: center;
       line-height: 1.4;
+      text-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
     }
 
     .eval-warning-tag {
       margin-top: 14px;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: #ef4444;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     /* रंगीन कस्टम सबमिट पुष्टि बॉक्स */
@@ -217,7 +227,7 @@
     </div>
   </div>
 
-  <!-- 🌟 20-सेकंड सजीव AI मूल्यांकन स्क्रीन -->
+  <!-- 🌟 30-सेकंड सजीव AI मूल्यांकन स्क्रीन -->
   <div class="submit-overlay-screen" id="submitOverlay">
     <div class="eval-card-box">
       <div class="eval-badge-icon" id="overlayEvalIcon">📑</div>
@@ -229,11 +239,11 @@
       </div>
 
       <div class="eval-live-status" id="overlayEvalStatus">
-        1/5: ओएमआर एवं सभी उत्तर-पुस्तिकाएं सर्वर पर अपलोड हो रही हैं...
+        1/7: ओएमआर एवं सभी कॉपियां सुरक्षित सर्वर पर अपलोड हो रही हैं...
       </div>
 
       <div class="eval-warning-tag">
-        ⚠️ मूल्यांकन जारी है, कृपया बैक न करें और न ही स्क्रीन काटें!
+        ⚠️ लाइव मूल्यांकन जारी है, कृपया स्क्रीन न काटें और न ही बैक करें!
       </div>
     </div>
   </div>
@@ -968,7 +978,7 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    // 🌟 हाई-क्वालिटी सुरक्षित इमेज कंप्रेसर (900px, 0.55 क्वालिटी - नो क्रैश)
+    // 🌟 26-पेज सेफ कंप्रेसर (900px, 0.55 क्वालिटी - नो क्रैश)
     async function handleMasterUpload(e) {
       const files = Array.from(e.target.files);
       const txt = document.getElementById("uploadStatusText");
@@ -991,7 +1001,7 @@
           img.onload = () => {
             URL.revokeObjectURL(blobUrl);
             let w = img.width, h = img.height;
-            const maxDim = 900; // 900px पर सेट
+            const maxDim = 900;
             if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
             else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
 
@@ -1042,7 +1052,7 @@
     }
 
     // -------------------------------------------------------------
-    // रंगीन सबमिशन पुष्टि एवं 20-सेकंड सजीव AI मूल्यांकन
+    // रंगीन सबमिशन पुष्टि एवं 30-सेकंड सजीव AI मूल्यांकन
     // -------------------------------------------------------------
     function confirmFinalExamSubmission(isAutoSubmit = false) {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
@@ -1072,7 +1082,7 @@
       document.getElementById("confirmModal").classList.remove("active");
     }
 
-    // 🌟 20-सेकंड लाइव सजीव सबमिशन + ऑटो AI मूल्यांकन
+    // 🌟 30-सेकंड सजीव AI मूल्यांकन (7-चरण रियलिस्टिक विजुअल + डायनामिक Await)
     async function executeSubmissionCountdown() {
       closeSubmitConfirmModal();
 
@@ -1097,9 +1107,10 @@
         if (statusTxt) statusTxt.textContent = text;
       };
 
-      // चरण 1 (0-3s): क्लाउड सबमिशन शुरू
-      setEvalState(15, "📤", "1/5: ओएमआर एवं सभी कॉपियां BSEB सुरक्षित सर्वर पर अपलोड हो रही हैं...");
+      // चरण 1 (0-4s): सुरक्षित क्लाउड अपलोड शुरू
+      setEvalState(12, "📤", "1/7: ओएमआर एवं सभी कॉपियां BSEB सुरक्षित सर्वर पर अपलोड हो रही हैं...");
 
+      // बैकग्राउंड AI टास्क को शुरू कर दिया (यह पूरा होने तक इंतज़ार करेगा)
       const submitTask = submitExamToCloud(
         currentUser,
         activeDay,
@@ -1109,33 +1120,41 @@
         cloudState
       );
 
-      await new Promise(r => setTimeout(r, 3500));
-
-      // चरण 2 (3-7s): AI परीक्षक का आवंटन
-      setEvalState(35, "🔍", "2/5: BSEB पटना मुख्य परीक्षक (Gemini AI Engine) को कॉपियां सौंपी जा रही हैं...");
       await new Promise(r => setTimeout(r, 4000));
 
-      // चरण 3 (7-12s): हस्तलेखन एवं उत्तरों की ब्लूप्रिंट जांच
-      setEvalState(60, "🖋️", "3/5: हस्तलेखन, अपठित गद्यांश, निबंध एवं व्याकरण की बिंदुवार जांच जारी...");
+      // चरण 2 (4-8s): AI परीक्षक को सौंपना
+      setEvalState(28, "🔍", "2/7: BSEB पटना मुख्य परीक्षक (Gemini Flash AI) को कॉपियां आवंटित की जा रही हैं...");
+      await new Promise(r => setTimeout(r, 4000));
+
+      // चरण 3 (8-13s): विषय व ब्लूप्रिंट मिलान
+      setEvalState(45, "📚", "3/7: विषय कोड, ब्लूप्रिंट एवं पाठ्यक्रम की प्रामाणिकता जाँची जा रही है...");
       await new Promise(r => setTimeout(r, 5000));
 
-      // चरण 4 (12-16s): लाल पेन टिक एवं मुहर
-      setEvalState(85, "📜", "4/5: उत्तर-पुस्तिका पर लाल पेन टिक-मार्क (+अंक) एवं आधिकारिक मुहर अंकित हो रही है...");
-      await new Promise(r => setTimeout(r, 4000));
+      // चरण 4 (13-18s): हस्तलेखन और गद्यांश/निबंध जांच
+      setEvalState(62, "🖋️", "4/7: हस्तलेखन, अपठित गद्यांश, निबंध एवं व्याकरण की गहन बिंदुवार जांच जारी...");
+      await new Promise(r => setTimeout(r, 5000));
 
-      // चरण 5 (16-20s): सबमिशन पूर्ण होने की प्रतीक्षा
-      setEvalState(95, "🔒", "5/5: अंतिम अंकपत्र एवं मूल्यांकन परिणाम सुरक्षित रूप से सील किया जा रहा है...");
+      // चरण 5 (18-23s): लघु व दीर्घ प्रश्नों का विश्लेषण
+      setEvalState(78, "📝", "5/7: लघु एवं दीर्घ उत्तरीय प्रश्नों के उत्तरों का सटीक शब्द-मिलान जारी...");
+      await new Promise(r => setTimeout(r, 5000));
+
+      // चरण 6 (23-28s): लाल टिक और गोल मुहर
+      setEvalState(90, "📜", "6/7: उत्तर-पुस्तिका पर लाल पेन टिक (+अंक) एवं BSEB मुख्य परीक्षक की गोल मुहर अंकित हो रही है...");
+      await new Promise(r => setTimeout(r, 5000));
+
+      // चरण 7 (28s+): जब तक AI पूरा रिस्पॉन्स डेटाबेस में सेव न कर ले, तब तक इंतज़ार
+      setEvalState(96, "🔒", "7/7: अंतिम मूल्यांकन अंकपत्र एवं परिणाम डेटाबेस में सुरक्षित रूप से सील किया जा रहा है...");
       
       try {
-        await submitTask;
+        await submitTask; // 🛑 असली जादू: AI चेकिंग पूरी होने का 100% पक्का इंतज़ार
       } catch (err) {
         console.warn("Submit background note:", err);
       }
 
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise(r => setTimeout(r, 1500));
 
-      // 100% पूरा
-      setEvalState(100, "🎉", "✅ मूल्यांकन संपन्न! परीक्षा सफलतापूर्वक जमा हुई। मुख्य पृष्ठ पर भेजा जा रहा है...");
+      // 100% पूर्ण
+      setEvalState(100, "🎉", "✅ मूल्यांकन शत-प्रतिशत संपन्न! परिणाम सुरक्षित कर दिया गया है।");
       await new Promise(r => setTimeout(r, 1200));
 
       window.location.href = "index.html";
