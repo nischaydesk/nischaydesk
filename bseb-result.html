@@ -317,6 +317,10 @@
       background: #0284c7;
       color: #fff;
     }
+    .btn-download-copy:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
 
     .marksheet-footer {
       font-size: 0.72rem;
@@ -639,8 +643,9 @@
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-download-copy";
+          btn.id = `btnCopyDay_${sub.day}`;
           btn.innerHTML = `<span>📄 Day ${sub.day}: ${sub.name.split(' ')[0]}</span> <span style="font-size:0.75rem;">डाउनलोड 📥</span>`;
-          btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord);
+          btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord, btn);
           buttonsGrid.appendChild(btn);
         }
 
@@ -678,8 +683,10 @@
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-        async function getEvaluatedSheetFromDB(uid, day) {
-      // 1. सबसे पहले लोकल IndexedDB मेमोरी से देखने की कोशिश करें
+
+    // 🔄 स्मार्ट 3-लेयर स्टोरेज फ़ेचर (IndexedDB + Cloud Doc + Cloud Subcollection)
+    async function getEvaluatedSheetFromDB(uid, day) {
+      // लेयर 1: डिवाइस की लोकल IndexedDB मेमोरी
       try {
         const localData = await new Promise((resolve) => {
           const req = indexedDB.open("NischaySheetsDB", 1);
@@ -699,11 +706,13 @@
         }
       } catch(e) {}
 
-      // 2. अगर लोकल मेमोरी खाली है, तो सीधे Firebase Firestore क्लाउड से बैकअप खींच लें!
+      // लेयर 2: Firestore के मुख्य डॉक्यूमेंट से pages
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
-          const docSnap = await db.collection("bseb_exams_2026").doc(uid).get();
+          const userDocRef = db.collection("bseb_exams_2026").doc(uid);
+          const docSnap = await userDocRef.get();
+
           if (docSnap.exists) {
             const cloudDoc = docSnap.data();
             const dayRecord = cloudDoc.completedDays?.[day];
@@ -715,24 +724,61 @@
               };
             }
           }
+
+          // लेयर 3: Firestore का सब-कलेक्शन (exam_copies -> pages)
+          const subColPagesSnap = await userDocRef
+            .collection("exam_copies")
+            .doc(`day_${day}`)
+            .collection("pages")
+            .orderBy("pageNumber", "asc")
+            .get();
+
+          if (!subColPagesSnap.empty) {
+            const subPages = [];
+            subColPagesSnap.forEach(d => {
+              subPages.push({
+                pageNumber: d.data().pageNumber,
+                dataUrl: d.data().dataUrl
+              });
+            });
+
+            return {
+              pages: subPages,
+              evaluation: []
+            };
+          }
         } catch(err) {
-          console.warn("Cloud fallback fetch note:", err);
+          console.warn("Cloud retrieval error:", err);
         }
       }
 
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Overlap & Cloud Backup Supported)
-    async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord) {
-      // लोड होने तक उपयोगकर्ता को सूचना देने के लिए कर्सर या छोटा अलर्ट दिखा सकते हैं
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Overlap & Dual-Sync)
+    async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
+      const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
+      if (triggerBtn) {
+        triggerBtn.disabled = true;
+        triggerBtn.innerHTML = `<span>⏳ लोड हो रहा है...</span>`;
+      }
+
       let cacheData = await getEvaluatedSheetFromDB(uid, day);
 
       if (!cacheData || !cacheData.pages || cacheData.pages.length === 0) {
-        alert(`Day ${day} (${subjectName}) की हस्तलिखित प्रतियां न तो डिवाइस में मिलीं और न ही क्लाउड सर्वर पर उपलब्ध हैं।`);
+        alert(`Day ${day} (${subjectName}) की हस्तलिखित प्रतियां इस डिवाइस अथवा क्लाउड सर्वर पर उपलब्ध नहीं हैं।`);
+        if (triggerBtn) {
+          triggerBtn.disabled = false;
+          triggerBtn.innerHTML = origHtml;
+        }
         return;
       }
- const pages = cacheData.pages || [];
+
+      if (triggerBtn) {
+        triggerBtn.innerHTML = `<span>⚙️ PDF तैयार हो रही है...</span>`;
+      }
+
+      const pages = cacheData.pages || [];
       const evalPages = examRecord?.pagesEvaluation || cacheData.evaluation || [];
       const isExpelled = examRecord?.status === "EXPELLED" || cacheData.isExpelled;
 
@@ -784,6 +830,7 @@
           const pEval = evalPages.find(p => p.pageIndex === i);
           const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 2);
 
+          // लाल टिक मार्क (✓)
           ctx.strokeStyle = "#dc2626";
           ctx.lineWidth = 10;
           ctx.lineCap = "round";
@@ -791,6 +838,7 @@
           ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
           ctx.stroke();
 
+          // लाल गोल घेरे में अंक
           ctx.beginPath();
           ctx.arc(1040, 460, 70, 0, 2 * Math.PI);
           ctx.lineWidth = 6;
@@ -803,6 +851,7 @@
           ctx.fillText(`+${pageMarks}`, 1040, 478);
           ctx.textAlign = "left";
 
+          // पहले पन्ने पर BSEB की आधिकारिक गोल मुहर
           if (i === 0) {
             ctx.beginPath();
             ctx.arc(1040, 680, 85, 0, 2 * Math.PI);
@@ -819,6 +868,7 @@
           }
         }
 
+        // पन्ने के नीचे परीक्षक की टिप्पणी पट्टी
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
         ctx.strokeStyle = "#dc2626";
@@ -835,6 +885,11 @@
       }
 
       doc.save(`BSEB_Certified_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}.pdf`);
+
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.innerHTML = origHtml;
+      }
     }
 
     function resetSearch() {
