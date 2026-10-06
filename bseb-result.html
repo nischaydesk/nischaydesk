@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSEB Annual Exam Result 2026 | NischayDesk</title>
+  <title>BSEB Secondary Examination Result 2026 | NischayDesk</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -15,64 +15,44 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', Arial, sans-serif;
+      font-family: 'Roboto', 'Plus Jakarta Sans', Arial, sans-serif;
       background: #f1f5f9;
-      margin: 0;
-      padding: 12px;
-      color: #0f172a;
+      padding: 16px 8px;
+      color: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
 
-    .top-brand-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .brand-logo-badge {
-      background: #0284c7 !important;
-      color: #ffffff !important;
-      font-weight: 900;
-      font-size: 1.1rem;
-      padding: 4px 10px;
-      border-radius: 8px;
-    }
-    .brand-name {
-      font-weight: 900;
-      font-size: 1.25rem;
-      color: #0f172a;
-    }
-
+    /* सर्च बॉक्स */
     .search-card {
       width: 100%;
       max-width: 480px;
       background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
       margin-bottom: 25px;
     }
     .search-title {
-      margin: 0 0 4px 0;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: #0284c7;
       text-align: center;
+      margin-bottom: 4px;
     }
     .search-subtitle {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: #64748b;
       text-align: center;
-      margin: 0 0 16px 0;
+      margin-bottom: 18px;
       line-height: 1.4;
     }
-    .form-group { margin-bottom: 12px; }
+    .form-group { margin-bottom: 14px; }
     .form-group label {
       display: block;
       font-size: 0.82rem;
@@ -84,29 +64,25 @@
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid #94a3b8;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 0.95rem;
       font-weight: 700;
       outline: none;
-      transition: 0.2s;
     }
-    .form-input:focus {
-      border-color: #0284c7;
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
-    }
+    .form-input:focus { border-color: #0284c7; }
     .captcha-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
       background: #f8fafc;
       padding: 8px 12px;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px dashed #0284c7;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .captcha-badge {
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       color: #0284c7;
       letter-spacing: 2px;
     }
@@ -118,290 +94,271 @@
       font-size: 0.95rem;
       font-weight: 800;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
     }
     .btn-search:hover { background: #0369a1; }
 
     .error-banner {
       display: none;
-      margin-top: 12px;
+      margin-top: 14px;
       padding: 12px;
       background: #fef2f2;
       border: 1.5px solid #ef4444;
-      border-radius: 8px;
+      border-radius: 6px;
       color: #dc2626;
       font-size: 0.86rem;
       font-weight: 700;
-      text-align: left;
       line-height: 1.5;
       white-space: pre-line;
+      text-align: left;
     }
 
-    .a4-marksheet-wrapper {
+    /* 📄 आधिकारिक A4 मार्कशीट लेआउट */
+    .official-marksheet-card {
       display: none;
       width: 100%;
       max-width: 820px;
       background: #ffffff;
-      border: 2px solid #1e3a8a;
-      border-radius: 8px;
-      padding: 20px;
+      border: 1.5px solid #334155;
+      padding: 18px 24px;
       position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 25px rgba(0,0,0,0.1);
       margin-bottom: 20px;
-      overflow-x: auto;
+      overflow: hidden;
     }
 
+    /* तिरछा WEB COPY वाटरमार्क */
     .watermark-webcopy {
       position: absolute;
-      top: 50%;
+      top: 55%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(-32deg);
-      font-size: clamp(2rem, 6vw, 4rem);
+      font-size: 5rem;
       font-weight: 900;
-      color: rgba(2, 132, 199, 0.05);
+      color: rgba(148, 163, 184, 0.16);
       pointer-events: none;
       white-space: nowrap;
-      letter-spacing: 6px;
+      letter-spacing: 8px;
       z-index: 1;
+      user-select: none;
     }
 
-    .marksheet-header {
-      text-align: center;
-      border-bottom: 2px solid #0284c7;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-    }
-    .header-logo-row {
+    /* हेडर */
+    .marksheet-header-box {
       display: flex;
-      justify-content: center;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 4px;
-    }
-    .header-logo-box {
-      background: #0284c7 !important;
-      color: #ffffff !important;
-      font-weight: 900;
-      font-size: 1.2rem;
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1.5px solid #0284c7;
-    }
-    .bseb-logo-text {
-      font-size: 1.25rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin: 0;
-      color: #0f172a;
-    }
-    .bseb-sub-text {
-      font-size: 0.9rem;
-      font-weight: 800;
-      margin: 2px 0;
-      color: #0284c7;
-      letter-spacing: 1px;
-    }
-    .bseb-exam-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin: 2px 0 0 0;
-    }
-
-    .student-data-table {
-      width: 100%;
-      border-collapse: collapse;
+      justify-content: center;
+      gap: 16px;
       margin-bottom: 12px;
-      font-size: 0.84rem;
+      position: relative;
     }
-    .student-data-table td {
-      border: 1px solid #64748b;
-      padding: 6px 8px;
+    .brand-circle-logo {
+      width: 52px;
+      height: 52px;
+      background: #0284c7;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      font-weight: 900;
+      border: 2px solid #0369a1;
+      flex-shrink: 0;
     }
-    .student-data-table td.field-name {
-      background: #f8fafc;
-      font-weight: 700;
-      width: 22%;
-      color: #334155;
+    .header-text-center {
+      text-align: center;
     }
-    .student-data-table td.field-val {
+    .org-title {
+      font-size: 1.25rem;
       font-weight: 800;
-      width: 28%;
       color: #000;
       text-transform: uppercase;
     }
-
-    .marks-band-title {
-      background: #0284c7 !important;
-      color: #ffffff !important;
-      border: 1px solid #0369a1;
-      border-bottom: none;
-      text-align: center;
-      font-weight: 900;
-      font-size: 0.86rem;
-      padding: 6px;
-      text-transform: uppercase;
+    .org-sub-result {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 2px 0;
     }
-    .marks-matrix-table {
+    .org-exam-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #000;
+      letter-spacing: 0.5px;
+    }
+
+    /* परीक्षार्थी डेटा तालिका */
+    .details-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       font-size: 0.82rem;
+    }
+    .details-table td {
+      border: 1px solid #64748b;
+      padding: 5px 8px;
+    }
+    .details-table td.col-head {
+      font-weight: 700;
+      background: #ffffff;
+      width: 25%;
+      color: #000;
+    }
+    .details-table td.col-data {
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #000;
+    }
+
+    /* नारंगी 'Marks Details' स्ट्रिप */
+    .marks-header-strip {
+      background: #f59e0b !important;
+      color: #ffffff !important;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 5px;
+      letter-spacing: 0.5px;
+      border: 1px solid #d97706;
+      border-bottom: none;
+    }
+
+    /* मुख्य विषय अंक तालिका */
+    .marks-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
       text-align: center;
       position: relative;
       z-index: 2;
     }
-    .marks-matrix-table th, .marks-matrix-table td {
-      border: 1px solid #475569;
-      padding: 6px 4px;
+    .marks-table th, .marks-table td {
+      border: 1px solid #64748b;
+      padding: 5px 4px;
     }
-    .marks-matrix-table th {
+    .marks-table th {
       background: #ffffff;
-      font-weight: 800;
-    }
-    .marks-matrix-table td.sub-name {
-      text-align: left;
       font-weight: 700;
+      color: #000;
+    }
+    .marks-table td.subject-title {
+      text-align: left;
+      font-weight: 600;
       padding-left: 8px;
     }
-    .final-row {
-      font-weight: 900;
-      background: #f8fafc;
+    .row-summary {
+      font-weight: 700;
     }
-    .division-tag {
-      font-size: 1rem;
-      color: #16a34a;
+    .row-summary td {
+      padding: 6px 4px;
     }
 
+    /* सर्टिफाइड कॉपी डाउनलोड ग्रिड */
     .eval-copies-container {
       margin-top: 16px;
       background: #f8fafc;
       border: 1.5px solid #0284c7;
       border-radius: 8px;
       padding: 12px;
+      position: relative;
+      z-index: 2;
     }
     .eval-copies-title {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 800;
       color: #0284c7;
       margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     .eval-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 10px;
     }
     .btn-download-copy {
       background: #ffffff;
       border: 1.5px solid #0284c7;
-      padding: 10px 12px;
+      padding: 8px 10px;
       border-radius: 6px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: #0284c7;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 4px;
-      transition: all 0.2s;
     }
     .btn-download-copy:hover {
       background: #0284c7;
-      color: #fff;
-    }
-    .btn-download-copy:disabled {
-      opacity: 0.6;
-      cursor: wait;
+      color: #ffffff;
     }
 
-    .marksheet-footer {
-      font-size: 0.72rem;
-      color: #475569;
-      line-height: 1.5;
-      border-top: 1px dashed #94a3b8;
-      padding-top: 8px;
-      margin-top: 6px;
+    /* फुटर */
+    .marksheet-footer-text {
+      font-size: 0.7rem;
+      color: #334155;
+      margin-top: 10px;
+      line-height: 1.4;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 6px;
     }
 
-    .print-bar {
+    /* प्रिंट बार */
+    .print-actions-wrap {
       display: flex;
       gap: 12px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       width: 100%;
       max-width: 820px;
       justify-content: center;
     }
-    .btn-action {
-      padding: 10px 22px;
+    .btn-print-action {
+      padding: 10px 20px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: 800;
       font-size: 0.9rem;
       cursor: pointer;
     }
-    .btn-print { background: #16a34a; color: #fff; }
-    .btn-reset { background: #64748b; color: #fff; }
+    .btn-p-green { background: #16a34a; color: #fff; }
+    .btn-p-gray { background: #64748b; color: #fff; }
 
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 8mm 10mm;
-      }
-      body {
-        background: #ffffff !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      .top-brand-bar, .search-card, .print-bar, .eval-copies-container {
-        display: none !important;
-      }
-      .a4-marksheet-wrapper {
+      body { background: #ffffff !important; padding: 0 !important; }
+      .search-card, .print-actions-wrap, .eval-copies-container { display: none !important; }
+      .official-marksheet-card {
         display: block !important;
-        width: 100% !important;
-        border: 2px solid #000 !important;
+        border: 1.5px solid #000 !important;
         box-shadow: none !important;
-        padding: 6mm 8mm !important;
-        margin: 0 !important;
+        padding: 5mm !important;
+        width: 100% !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="top-brand-bar">
-    <div class="brand-logo-badge">N</div>
-    <div class="brand-name">Nischay<span style="color:#0284c7;">Desk</span> BSEB Portal</div>
-  </div>
-
   <!-- सर्च गेटवे -->
   <div class="search-card" id="searchBoxCard">
-    <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026 (टेस्ट मोड)</h2>
+    <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
     <p class="search-subtitle">
-      बिहार विद्यालय परीक्षा समिति आधिकारिक डिजिटल परिणाम पोर्टल<br />
+      NischayDesk BSEB सिम्युलेशन पोर्टल<br />
       सत्यापित रोल कोड एवं रोल नंबर दर्ज करें
     </p>
 
     <div class="form-group">
       <label for="inputRollCode">रोल कोड (Roll Code) *</label>
-      <input type="number" id="inputRollCode" class="form-input" placeholder="उदा. 33193" autocomplete="off" />
+      <input type="number" id="inputRollCode" class="form-input" placeholder="उदा. 22021" autocomplete="off" />
     </div>
 
     <div class="form-group">
       <label for="inputRollNumber">रोल नंबर (Roll Number) *</label>
-      <input type="number" id="inputRollNumber" class="form-input" placeholder="उदा. 26017186" autocomplete="off" />
+      <input type="number" id="inputRollNumber" class="form-input" placeholder="उदा. 26010157" autocomplete="off" />
     </div>
 
     <div class="captcha-wrap">
-      <span class="captcha-badge" id="captchaEquation">12 + 6 = ?</span>
+      <span class="captcha-badge" id="captchaEquation">14 + 5 = ?</span>
       <button type="button" onclick="generateCaptcha()" style="border:none; background:none; color:#0284c7; cursor:pointer; font-weight:bold; font-size:0.8rem;">🔄 नया कैप्चा</button>
     </div>
 
@@ -416,89 +373,107 @@
     <div class="error-banner" id="errorBanner"></div>
   </div>
 
-  <!-- A4 मार्कशीट -->
-  <div class="a4-marksheet-wrapper" id="a4Marksheet">
-    <div class="watermark-webcopy">NISCHAYDESK WEB COPY</div>
+  <!-- A4 मार्कशीट कार्ड -->
+  <div class="official-marksheet-card" id="officialMarksheetBox">
+    <div class="watermark-webcopy">WEB COPY</div>
 
-    <div class="marksheet-header">
-      <div class="header-logo-row">
-        <div class="header-logo-box">N</div>
-        <h1 class="bseb-logo-text">NischayDesk Examination Council</h1>
+    <!-- हेडर -->
+    <div class="marksheet-header-box">
+      <div class="brand-circle-logo">N</div>
+      <div class="header-text-center">
+        <h1 class="org-title">Bihar School Examination Board</h1>
+        <div class="org-sub-result">RESULT</div>
+        <div class="org-exam-title">ANNUAL SECONDARY EXAMINATION - 2026</div>
       </div>
-      <div class="bseb-sub-text">BSEB REAL EXAM SIMULATION EVALUATION - 2026</div>
-      <div class="bseb-exam-title">ANNUAL SECONDARY EXAMINATION WEB COPY</div>
     </div>
 
-    <table class="student-data-table">
+    <!-- परीक्षार्थी तालिका -->
+    <table class="details-table">
       <tr>
-        <td class="field-name">BSEB Unique Id</td>
-        <td class="field-val" id="outUniqueId">--</td>
-        <td class="field-name">Student Name</td>
-        <td class="field-val" id="outStudentName">--</td>
+        <td class="col-head">BSEB Unique Id</td>
+        <td class="col-data" id="outUniqueId">--</td>
       </tr>
       <tr>
-        <td class="field-name">Father's Name</td>
-        <td class="field-val" id="outFatherName">--</td>
-        <td class="field-name">Mother's Name</td>
-        <td class="field-val" id="outMotherName">--</td>
+        <td class="col-head">Student Name</td>
+        <td class="col-data" id="outStudentName">--</td>
       </tr>
       <tr>
-        <td class="field-name">School Name</td>
-        <td class="field-val" colspan="3" id="outSchoolName">--</td>
+        <td class="col-head">Father's Name</td>
+        <td class="col-data" id="outFatherName">--</td>
       </tr>
       <tr>
-        <td class="field-name">Roll Code</td>
-        <td class="field-val" id="outRollCode">--</td>
-        <td class="field-name">Roll Number</td>
-        <td class="field-val" id="outRollNumber">--</td>
+        <td class="col-head">School Name</td>
+        <td class="col-data" id="outSchoolName">--</td>
       </tr>
       <tr>
-        <td class="field-name">Registration No.</td>
-        <td class="field-val" colspan="3" id="outRegNo">--</td>
+        <td class="col-head">Roll Code</td>
+        <td class="col-data" id="outRollCode">--</td>
+      </tr>
+      <tr>
+        <td class="col-head">Roll Number</td>
+        <td class="col-data" id="outRollNumber">--</td>
+      </tr>
+      <tr>
+        <td class="col-head">Registration Number</td>
+        <td class="col-data" id="outRegNo">--</td>
       </tr>
     </table>
 
-    <div class="marks-band-title">Marks Details</div>
+    <!-- नारंगी स्ट्रिप -->
+    <div class="marks-header-strip">Marks Details</div>
 
-    <table class="marks-matrix-table">
+    <!-- अंक तालिका -->
+    <table class="marks-table">
       <thead>
         <tr>
-          <th style="width: 32%;">Subject</th>
+          <th style="width: 28%;">Subject</th>
           <th style="width: 12%;">F.Marks</th>
           <th style="width: 12%;">P.Marks</th>
-          <th style="width: 14%;">Theory (Obj+Subj)</th>
+          <th style="width: 14%;">Theory</th>
           <th style="width: 14%;">INT/PRAC</th>
-          <th style="width: 16%;">Subject Total</th>
+          <th style="width: 10%;">Regulation</th>
+          <th style="width: 10%;">Subject Total</th>
         </tr>
       </thead>
-      <tbody id="matrixTableBody"></tbody>
-      <tfoot>
-        <tr class="final-row">
-          <td colspan="2">Final Result / Division</td>
-          <td colspan="2" class="division-tag" id="outDivision">--</td>
-          <td>Total Marks</td>
-          <td id="outGrandTotal" style="font-size:1.1rem; color:#0f172a;">--</td>
+      <tbody id="primarySubjectsBody"></tbody>
+      
+      <!-- परिणाम एवं कुल अंक सारांश -->
+      <tbody>
+        <tr class="row-summary">
+          <td colspan="7" style="background: #f8fafc; font-weight:800; font-size:0.85rem;">Final Result</td>
         </tr>
-      </tfoot>
+        <tr class="row-summary">
+          <td colspan="2">Result/Division</td>
+          <td colspan="2" id="outFinalDivision" style="font-weight: 800; color: #16a34a;">--</td>
+          <td colspan="2">Total Marks</td>
+          <td id="outGrandTotal" style="font-weight: 800;">--</td>
+        </tr>
+      </tbody>
+
+      <!-- अंग्रेजी (अलग रो, प्राप्तांक में नहीं जुड़ेगा) -->
+      <tbody id="englishSubjectBody"></tbody>
     </table>
 
-    <!-- 🖋️ विषयवार जाँची गई कॉपी डाउनलोड सेक्शन -->
+    <!-- डिजिटल जाँची गई उत्तर-पुस्तिकाएं -->
     <div class="eval-copies-container" id="evaluatedCopiesBox">
       <div class="eval-copies-title">
-        <span>🖋️ डिजिटल जाँची गई उत्तर-पुस्तिकाएँ (Red-Pen Certified Copies PDF):</span>
+        <span>🖋 डिजिटल जाँची गई उत्तर-पुस्तिकाएँ (Red-Pen Certified Copies PDF):</span>
       </div>
       <div class="eval-grid" id="evalButtonsGrid"></div>
     </div>
 
-    <div class="marksheet-footer">
-      <strong>Abbreviations used:</strong> • F -> Fail • P -> Pass • ABS -> Absent • EXP -> Expelled (UFM) • INT -> Internal Assessment • PRAC -> Practical Assessment<br />
-      <em>Disclaimer:</em> This Web Copy is published by NischayDesk Real Examination Simulator for immediate evaluation of Class 10th students. Certified digital copy verified by NischayDesk Evaluation Engine.
+    <!-- फुटर संक्षिप्त रूप -->
+    <div class="marksheet-footer-text">
+      <strong>Abbreviations used :</strong><br />
+      • F -> Fail &nbsp; • C -> Compartmental &nbsp; • U/R -> Under Regulation &nbsp; • ABS -> Absent &nbsp; • INT -> Internal &nbsp; • PRAC -> Practical<br />
+      • CCE -> Continuous and Comprehensive Evaluation &nbsp; • EXP -> Expelled &nbsp; • Disclaimer: Certified digital web copy verified by NischayDesk Evaluation Engine.
     </div>
   </div>
 
-  <div class="print-bar" id="printActionsBar" style="display: none;">
-    <button type="button" class="btn-action btn-print" onclick="window.print()">🖨️ A4 साइज में प्रिंट / PDF सेव करें</button>
-    <button type="button" class="btn-action btn-reset" onclick="resetSearch()">🔍 दूसरा रिजल्ट खोजें</button>
+  <!-- प्रिंट एवं रीसेट बार -->
+  <div class="print-actions-wrap" id="printActionsBar" style="display: none;">
+    <button type="button" class="btn-print-action btn-p-green" onclick="window.print()">🖨️ A4 साइज में प्रिंट / PDF सेव करें</button>
+    <button type="button" class="btn-print-action btn-p-gray" onclick="resetSearch()">🔍 दूसरा रिजल्ट खोजें</button>
   </div>
 
   <script src="config.js"></script>
@@ -539,12 +514,12 @@
       const btn = document.getElementById("btnSearchSubmit");
 
       if (!rCode || !rNum) {
-        showError("⚠️ कृपया रोल कोड और रोल नंबर दोनों दर्ज करें!");
+        showError("⚠️️ कृपया रोल कोड और रोल नंबर दोनों दर्ज करें!");
         return;
       }
 
       if (isNaN(captchaAns) || captchaAns !== expectedCaptchaSum) {
-        showError("⚠️️ गलत सुरक्षा कोड (कैप्चा)! कृपया जोड़ का सही उत्तर लिखें।");
+        showError("⚠️ गलत सुरक्षा कोड (कैप्चा)! कृपया जोड़ का सही उत्तर लिखें।");
         generateCaptcha();
         return;
       }
@@ -581,91 +556,150 @@
         return;
       }
 
-      // 🔓 7-DAY और 6-EXAM लॉक को बाईपास कर दिया गया है! 
-      // अब चाहे 1 ही परीक्षा दी हो, तुरंत मार्कशीट सामने खुल जाएगी!
-      renderA4Marksheet(studentData);
+      // 🔒 7-दिन और 6-विषय कड़ा लॉक सत्यापन
+      const completed = studentData.completedDays || {};
+      const completedCount = Object.keys(completed).length;
+
+      if (completedCount < 6) {
+        showError(
+          `⏳ परिणाम अभी जारी नहीं हुआ है!\n\n` +
+          `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
+          `📌 बोर्ड नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
+        );
+        generateCaptcha();
+        return;
+      }
+
+      let serverNowMs = Date.now();
+      try {
+        if (typeof getVerifiedServerTimestamp === "function") {
+          serverNowMs = await getVerifiedServerTimestamp();
+        }
+      } catch (e) {}
+
+      const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
+      const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
+
+      if (serverNowMs < requiredReleaseMs) {
+        const remainingMs = requiredReleaseMs - serverNowMs;
+        const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+        const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        showError(
+          `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
+          `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
+          `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
+        );
+        generateCaptcha();
+        return;
+      }
+
+      renderOfficialMarksheet(studentData);
     }
 
-    function renderA4Marksheet(data) {
-      document.getElementById("outUniqueId").textContent = data.uid ? data.uid.substring(0, 14).toUpperCase() : "12671309250009";
-      document.getElementById("outStudentName").textContent = (data.displayName || "STUDENT").toUpperCase();
+    function renderOfficialMarksheet(data) {
+      document.getElementById("outUniqueId").textContent = data.uid ? data.uid.substring(0, 13).toUpperCase() : "12671309250009";
+      document.getElementById("outStudentName").textContent = (data.displayName || "PRINCE KUMAR").toUpperCase();
       document.getElementById("outFatherName").textContent = (data.fatherName || "--").toUpperCase();
-      document.getElementById("outMotherName").textContent = (data.motherName || "--").toUpperCase();
-      document.getElementById("outSchoolName").textContent = (data.schoolName || "BSEB HIGH SCHOOL").toUpperCase();
+      document.getElementById("outSchoolName").textContent = (data.schoolName || "HIGH SCHOOL TELWA BAZAR, JAMUI").toUpperCase();
       document.getElementById("outRollCode").textContent = data.rollCode;
       document.getElementById("outRollNumber").textContent = data.rollNumber;
       document.getElementById("outRegNo").textContent = data.regNo || `${data.rollCode}-00027-25`;
 
-      const tbody = document.getElementById("matrixTableBody");
+      const primaryTbody = document.getElementById("primarySubjectsBody");
+      const englishTbody = document.getElementById("englishSubjectBody");
       const buttonsGrid = document.getElementById("evalButtonsGrid");
-      tbody.innerHTML = "";
+
+      primaryTbody.innerHTML = "";
+      englishTbody.innerHTML = "";
       buttonsGrid.innerHTML = "";
 
-      const subjects = [
-        { day: 1, code: "101-hindi", name: "M.I.L. HINDI", full: 100, pass: 30, isExtra: false },
-        { day: 2, code: "105-sanskrit", name: "S.I.L. SANSKRIT", full: 100, pass: 30, isExtra: false },
-        { day: 3, code: "110-math", name: "MATHEMATICS", full: 100, pass: 30, isExtra: false },
-        { day: 4, code: "112-science", name: "SCIENCE", full: 100, pass: 30, isExtra: false },
-        { day: 5, code: "113-sst", name: "SOCIAL SCIENCE", full: 100, pass: 30, isExtra: false },
-        { day: 6, code: "114-english", name: "ENGLISH", full: 100, pass: 30, isExtra: true }
+      // मुख्य 5 विषय
+      const mainSubjects = [
+        { day: 1, name: "M.I.L. HINDI", full: 100, pass: "030", hasPractical: false },
+        { day: 2, name: "S.I.L. SANSKRIT", full: 100, pass: "030", hasPractical: false },
+        { day: 3, name: "MATHEMATICS", full: 100, pass: "030", hasPractical: false },
+        { day: 5, name: "SOCIAL SCIENCE", full: 100, pass: "030", hasPractical: true },
+        { day: 4, name: "SCIENCE", full: 100, pass: "030", hasPractical: true }
       ];
+
+      // अंग्रेजी (जिसके अंक नहीं जुड़ेंगे)
+      const englishSub = { day: 6, name: "ENGLISH", full: 100, pass: "030" };
 
       const completed = data.completedDays || {};
       let aggregateMarks = 0;
       let isCandidateFailed = false;
 
-      subjects.forEach(sub => {
+      // मुख्य 5 विषयों की पंक्तियाँ
+      mainSubjects.forEach(sub => {
         const examRecord = completed[sub.day];
-        let theoryDisplay = "000";
+        let theoryScore = "000";
+        let intPrac = "-";
         let isAbsent = false;
         let isExpelled = false;
-        let numericScore = 0;
+        let numericTheory = 0;
+        let subjectFinalTotal = 0;
 
         if (examRecord) {
           if (examRecord.status === "EXPELLED" || examRecord.isFraud) {
             isExpelled = true;
-            theoryDisplay = "EXP";
+            theoryScore = "EXP";
             isCandidateFailed = true;
           } else {
-            numericScore = examRecord.totalMarks || 0;
-            theoryDisplay = String(numericScore).padStart(3, '0');
+            numericTheory = examRecord.totalMarks || 0;
+            theoryScore = String(numericTheory).padStart(3, '0');
           }
         } else {
           isAbsent = true;
-          theoryDisplay = "ABS";
+          theoryScore = "ABS";
+          isCandidateFailed = true;
         }
 
-        if (!sub.isExtra && !isAbsent && !isExpelled) {
-          if (numericScore < sub.pass) isCandidateFailed = true;
-          aggregateMarks += numericScore;
+        // 🌟 साइंस और सोशल साइंस में स्कूल प्रैक्टिकल के पूरे 20 नंबर जोड़ना
+        if (sub.hasPractical) {
+          intPrac = "020";
+          if (!isAbsent && !isExpelled) {
+            subjectFinalTotal = numericTheory + 20; // 80 थ्योरी + 20 प्रैक्टिकल = 100
+          } else {
+            subjectFinalTotal = 0;
+          }
+        } else {
+          intPrac = "-";
+          subjectFinalTotal = numericTheory;
         }
 
-        // 🔘 विषयवार सर्टिफाइड कॉपी डाउनलोड बटन
+        if (!isAbsent && !isExpelled) {
+          if (subjectFinalTotal < 30) isCandidateFailed = true;
+          aggregateMarks += subjectFinalTotal;
+        }
+
+        // डाउनलोड बटन
         if (!isAbsent) {
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-download-copy";
-          btn.id = `btnCopyDay_${sub.day}`;
-          btn.innerHTML = `<span>📄 Day ${sub.day}: ${sub.name.split(' ')[0]}</span> <span style="font-size:0.75rem;">डाउनलोड 📥</span>`;
+          btn.innerHTML = `<span>📄 Day ${sub.day}: ${sub.name.split(' ')[0]}</span> <span style="font-size:0.72rem;">डाउनलोड 📥</span>`;
           btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord, btn);
           buttonsGrid.appendChild(btn);
         }
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td class="sub-name">${sub.name}</td>
+          <td class="subject-title">${sub.name}</td>
           <td>${sub.full}</td>
-          <td>0${sub.pass}</td>
-          <td style="${isExpelled ? 'color:#dc2626; font-weight:900;' : ''}">${theoryDisplay}</td>
+          <td>${sub.pass}</td>
+          <td style="${isExpelled ? 'color:#dc2626; font-weight:800;' : ''}">${theoryScore}</td>
+          <td style="${sub.hasPractical ? 'font-weight:700;' : ''}">${intPrac}</td>
           <td>-</td>
-          <td style="font-weight:800; ${isExpelled ? 'color:#dc2626;' : ''}">${isExpelled ? '000' : (isAbsent ? '000' : theoryDisplay)}</td>
+          <td style="font-weight:700; ${isExpelled ? 'color:#dc2626;' : ''}">${isExpelled ? '000' : String(subjectFinalTotal).padStart(3, '0')}</td>
         `;
-        tbody.appendChild(tr);
+        primaryTbody.appendChild(tr);
       });
 
+      // कुल प्राप्तांक और डिवीज़न
       document.getElementById("outGrandTotal").textContent = String(aggregateMarks).padStart(3, '0');
-
-      const divTag = document.getElementById("outDivision");
+      const divTag = document.getElementById("outFinalDivision");
       if (isCandidateFailed || aggregateMarks < 150) {
         divTag.textContent = "FAIL";
         divTag.style.color = "#dc2626";
@@ -680,19 +714,53 @@
         divTag.style.color = "#d97706";
       }
 
+      // 🌟 अंग्रेजी की अलग पंक्ति (जो फाइनल रिजल्ट के नीचे स्क्रीनशॉट की तरह दिखेगी)
+      const engRecord = completed[englishSub.day];
+      let engTheory = "000";
+      let isEngExp = false;
+      if (engRecord) {
+        if (engRecord.status === "EXPELLED" || engRecord.isFraud) {
+          isEngExp = true;
+          engTheory = "EXP";
+        } else {
+          engTheory = String(engRecord.totalMarks || 0).padStart(3, '0');
+        }
+      } else {
+        engTheory = "ABS";
+      }
+
+      if (engRecord) {
+        const btnEng = document.createElement("button");
+        btnEng.type = "button";
+        btnEng.className = "btn-download-copy";
+        btnEng.innerHTML = `<span>📄 Day 6: ENGLISH</span> <span style="font-size:0.72rem;">डाउनलोड 📥</span>`;
+        btnEng.onclick = () => downloadEvaluatedCopyPdf(data.uid, englishSub.day, englishSub.name, engRecord, btnEng);
+        buttonsGrid.appendChild(btnEng);
+      }
+
+      const engTr = document.createElement("tr");
+      engTr.innerHTML = `
+        <td class="subject-title">${englishSub.name}</td>
+        <td>${englishSub.full}</td>
+        <td>${englishSub.pass}</td>
+        <td style="${isEngExp ? 'color:#dc2626; font-weight:800;' : ''}">${engTheory}</td>
+        <td>-</td>
+        <td>-</td>
+        <td style="font-weight:700; ${isEngExp ? 'color:#dc2626;' : ''}">${isEngExp ? '000' : engTheory}</td>
+      `;
+      englishTbody.appendChild(engTr);
+
       document.getElementById("searchBoxCard").style.display = "none";
-      document.getElementById("a4Marksheet").style.display = "block";
+      document.getElementById("officialMarksheetBox").style.display = "block";
       document.getElementById("printActionsBar").style.display = "flex";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 🔄 सब-कलेक्शन से कॉपियाँ खींचने का नया और पक्का तरीका (day_1_pages sync)
+    // सब-कलेक्शन से कॉपियाँ लोड करने का हेल्पर
     async function getEvaluatedSheetFromDB(uid, day) {
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
-          
-          // सब-कलेक्शन `day_1_pages` से तस्वीरें खींचना
           const subColSnap = await db.collection("bseb_exams_2026")
             .doc(uid)
             .collection(`day_${day}_pages`)
@@ -712,7 +780,6 @@
         }
       }
 
-      // लोकल IndexedDB बैकअप
       try {
         const localData = await new Promise((resolve) => {
           const req = indexedDB.open("NischaySheetsDB", 1);
@@ -735,7 +802,7 @@
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेटर
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -788,7 +855,7 @@
         await new Promise(r => { img.onload = r; img.onerror = r; });
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // 1. आधिकारिक हेडर पट्टी
+        // हेडर पट्टी
         ctx.fillStyle = isExpelled ? "rgba(220, 38, 38, 0.95)" : "rgba(2, 132, 199, 0.92)";
         ctx.fillRect(0, 0, canvas.width, 80);
         ctx.fillStyle = "#ffffff";
@@ -817,7 +884,7 @@
           const pEval = evalPages.find(p => p.pageIndex === i);
           const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 0);
 
-          // लाल टिक मार्क (✓)
+          // लाल टिक (✓)
           ctx.strokeStyle = "#dc2626";
           ctx.lineWidth = 10;
           ctx.lineCap = "round";
@@ -825,7 +892,7 @@
           ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
           ctx.stroke();
 
-          // लाल गोल घेरे में अंक
+          // लाल घेरे में अंक
           ctx.beginPath();
           ctx.arc(1040, 460, 70, 0, 2 * Math.PI);
           ctx.lineWidth = 6;
@@ -838,7 +905,7 @@
           ctx.fillText(`+${pageMarks}`, 1040, 478);
           ctx.textAlign = "left";
 
-          // पहले पन्ने पर BSEB की आधिकारिक गोल मुहर
+          // पहले पन्ने पर BSEB गोल मुहर
           if (i === 0) {
             ctx.beginPath();
             ctx.arc(1040, 680, 85, 0, 2 * Math.PI);
@@ -855,7 +922,7 @@
           }
         }
 
-        // पन्ने के नीचे परीक्षक की टिप्पणी पट्टी
+        // नीचे टिप्पणी पट्टी
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
         ctx.strokeStyle = "#dc2626";
@@ -878,16 +945,14 @@
       if (triggerBtn) {
         triggerBtn.disabled = false;
         triggerBtn.innerHTML = `<span>✅ डाउनलोड पूर्ण</span>`;
-        setTimeout(() => {
-          triggerBtn.innerHTML = origHtml;
-        }, 3000);
+        setTimeout(() => { triggerBtn.innerHTML = origHtml; }, 3000);
       }
 
-      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) सफलतापूर्वक तैयार होकर 'Downloads' में सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
+      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) आपके 'Downloads' में सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
     }
 
     function resetSearch() {
-      document.getElementById("a4Marksheet").style.display = "none";
+      document.getElementById("officialMarksheetBox").style.display = "none";
       document.getElementById("printActionsBar").style.display = "none";
       document.getElementById("searchBoxCard").style.display = "block";
       generateCaptcha();
