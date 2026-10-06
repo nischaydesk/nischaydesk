@@ -1,16 +1,6 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v25.2 Fire-and-Forget Architecture)
+ * NischayDesk - BSEB Official Assessment Engine (v25.3 Full-Batch Sync)
  * Primary: gemini-3.8-flash | Backup: gemini-3.5-flash-lite
- * Features:
- *   1. Obfuscated API Key Resolver (GitHub scanner safe)
- *   2. Universal Direct Google Login Handler
- *   3. Guaranteed Server Time Sync (Device tampering proof)
- *   4. Anti-Cheating (Safely Pauses during Camera / File Upload)
- *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync)
- *   6. Subjective Blueprint Strict Matcher (Evaluates strictly against bseb-papers.js)
- *   7. Auto-Compressor for up to 26 Camera Photos (Zero Crash)
- *   8. Multi-Device Sub-collection Cloud Storage (Bypasses 1MB doc limit)
- *   9. Instant Fire-and-Forget AI: टैब काटने के बाद भी कॉपियाँ 100% जाँची जाएँगी
  */
 
 // ---------------------------------------------------------
@@ -41,7 +31,7 @@ function triggerGoogleLogin() {
                : (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
 
   if (!auth) {
-    alert("⚠️️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
+    alert("⚠ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
     return;
   }
 
@@ -203,7 +193,7 @@ function getEvaluatedSheetFromDB(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 6. Camera Photo Fast-Compressor (Zero Memory Crash)
+// 6. Camera Photo Fast-Compressor (Zero Memory Crash - 900px Optimized)
 // ---------------------------------------------------------
 function compressCameraImage(file) {
   return new Promise((resolve) => {
@@ -212,7 +202,7 @@ function compressCameraImage(file) {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxDim = 1100;
+        const maxDim = 900; // 👈 1100 से घटाकर 900 किया ताकि मोबाइल रैम न भरे
         let w = img.width;
         let h = img.height;
 
@@ -231,7 +221,7 @@ function compressCameraImage(file) {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, w, h);
 
-        const compressed = canvas.toDataURL("image/jpeg", 0.68);
+        const compressed = canvas.toDataURL("image/jpeg", 0.55); // 👈 0.68 से घटाकर 0.55 किया
         img.src = "";
         canvas.width = 0;
         canvas.height = 0;
@@ -382,7 +372,7 @@ async function callGeminiApiFallback(parts) {
 }
 
 // ---------------------------------------------------------
-// 10. Background AI Evaluation & Blueprint Matching Logic
+// 10. Background AI Evaluation Logic
 // ---------------------------------------------------------
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return;
@@ -454,7 +444,7 @@ STRICT JSON ONLY:
       serverDateIso = serverDateObj.toISOString();
     } catch(e) {}
 
-    // Firestore के मुख्य रिकॉर्ड में पहले जैसा पूरा रिजल्ट, aiFeedback और लाल टिक सेव होंगे
+    // Firestore के मुख्य रिकॉर्ड में रिजल्ट और टिक दर्ज करें
     if (window.NischayConfig?.dbInstance) {
       await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
         completedDays: {
@@ -489,7 +479,7 @@ STRICT JSON ONLY:
 }
 
 // ---------------------------------------------------------
-// 11. Superfast 3-Second Cloud Submission + Instant AI Fire
+// 11. Guaranteed Full Batch Cloud Submission (All 6+ Pages)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -556,7 +546,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
     
-    // (A) मुख्य रिकॉर्ड (हल्का, 1MB से बहुत नीचे)
+    // (A) मुख्य रिकॉर्ड सेव करें
     await db.collection("bseb_exams_2026").doc(user.uid).set({
       uid: user.uid,
       rollCode: state.rollCode || creds.rollCode,
@@ -572,23 +562,26 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       activeSession: null
     }, { merge: true });
 
-    // (B) 26 कॉपियों को सब-कलेक्शन में क्लाउड पर सुरक्षित करें (1MB सीमा खत्म)
+    // (B) 🌟 सभी पेजों को पक्का और पूरा सेव करें (Promise.all से इंतज़ार करें)
     if (imagesList && imagesList.length > 0) {
       const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
-      for (let i = 0; i < imagesList.length; i++) {
-        const item = imagesList[i];
+      
+      const uploadPromises = imagesList.map((item, i) => {
         const b64 = typeof item === 'string' ? item : (item.dataUrl || item.data);
-        dayPagesColRef.doc(`p_${i + 1}`).set({
+        return dayPagesColRef.doc(`p_${i + 1}`).set({
           pageNumber: i + 1,
           imageData: b64,
           savedAt: submitIso
-        }).catch(err => console.warn(`Page ${i+1} save note:`, err));
-      }
+        });
+      });
+
+      // 🛑 जब तक सभी 6 (या जितने भी) पन्ने अपलोड नहीं होते, तब तक इंतज़ार करें
+      await Promise.all(uploadPromises);
+      console.log(`✓ All ${imagesList.length} pages saved to sub-collection!`);
     }
   }
 
-  // 🚀 बिल्कुल पुराने तरीके से: सबमिट होते ही तुरंत सीधे AI को भेज दो (Fire and Forget)
-  // छात्र चाहे तुरंत टैब काट दे, Google API रिक्वेस्ट पहले ही चली जा चुकी होगी!
+  // 🚀 AI को तुरंत बैकग्राउंड में भेजें
   if (imagesList && imagesList.length > 0) {
     runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks)
       .catch(err => console.warn("Background AI note:", err));
@@ -629,7 +622,7 @@ async function getStudentPagesFromAnyDevice(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 13. शांत बैकग्राउंड ऑटो-वर्कर (अगर किसी वजह से चेकिंग छूट गई हो तो)
+// 13. शांत बैकग्राउंड ऑटो-वर्कर
 // ---------------------------------------------------------
 let isAiWorkerRunning = false;
 
@@ -672,7 +665,6 @@ async function triggerPendingAiEvaluations(user) {
   }
 }
 
-// लॉगिन होने पर छूटे हुए पेपरों को बैकग्राउंड में चेक करना
 if (typeof window !== "undefined") {
   const initWorkerListener = () => {
     const auth = window.NischayConfig?.authInstance || (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
