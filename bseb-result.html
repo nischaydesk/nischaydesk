@@ -579,7 +579,6 @@
         return;
       }
 
-      // 🔓 डेवलपर बाईपास: रिजल्ट सीधे स्क्रीन पर प्रदर्शित होगा
       renderA4Marksheet(studentData);
     }
 
@@ -684,9 +683,9 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 🔄 स्मार्ट स्टोरेज फ़ेचर (Firestore優先 / Cloud First)
+    // 🔄 स्मार्ट स्टोरेज फ़ेचर (Firestore优先 / Cloud First)
     async function getEvaluatedSheetFromDB(uid, day) {
-      // 1. सबसे पहले Firestore क्लाउड से ताज़ा पन्ने खींचें
+      // 1. सीधे Firestore क्लाउड से ताज़ा पन्ने लोड करें
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
@@ -732,7 +731,7 @@
         }
       }
 
-      // 2. यदि क्लाउड पर न मिले, तब ही लोकल IndexedDB देखें
+      // 2. केवल बैकअप के तौर पर IndexedDB देखें
       try {
         const localData = await new Promise((resolve) => {
           const req = indexedDB.open("NischaySheetsDB", 1);
@@ -755,7 +754,7 @@
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Firestore Record Priority)
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Cache + Timestamped Unique Filename)
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -767,11 +766,10 @@
       let evalPages = examRecord?.pagesEvaluation || [];
       let isExpelled = examRecord?.status === "EXPELLED" || examRecord?.isFraud;
 
-      // 1. सीधे वर्तमान परीक्षा रिकॉर्ड (Firestore Snap) से पन्ने लें
+      // सीधे वर्तमान परीक्षा रिकॉर्ड से पन्ने लें
       if (examRecord && examRecord.pages && examRecord.pages.length > 0) {
         pages = examRecord.pages;
       } else {
-        // यदि यहाँ न हों, तब डेटाबेस हेल्पर से मँगवाएँ
         let cacheData = await getEvaluatedSheetFromDB(uid, day);
         if (cacheData && cacheData.pages) {
           pages = cacheData.pages;
@@ -812,7 +810,7 @@
         await new Promise(r => { img.onload = r; img.onerror = r; });
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // आधिकारिक हेडर पट्टी
+        // 1. आधिकारिक हेडर पट्टी
         ctx.fillStyle = isExpelled ? "rgba(220, 38, 38, 0.95)" : "rgba(2, 132, 199, 0.92)";
         ctx.fillRect(0, 0, canvas.width, 80);
         ctx.fillStyle = "#ffffff";
@@ -895,7 +893,9 @@
         doc.addImage(annotatedImg, "JPEG", 0, 0, 210, 297);
       }
 
-      doc.save(`BSEB_Certified_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}.pdf`);
+      // ⏱️ टाइमस्टैम्प से फाइल का बिल्कुल नया और अलग नाम बनेगा (Chrome PDF Preview Cache Fix)
+      const realTimeId = Date.now();
+      doc.save(`BSEB_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}_${realTimeId}.pdf`);
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
