@@ -1,5 +1,5 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v25.3 Full-Batch Sync)
+ * NischayDesk - BSEB Official Assessment Engine (v25.4 Bulletproof 26-Page Batch Sync)
  * Primary: gemini-3.8-flash | Backup: gemini-3.5-flash-lite
  */
 
@@ -193,7 +193,7 @@ function getEvaluatedSheetFromDB(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 6. Camera Photo Fast-Compressor (Zero Memory Crash - 900px Optimized)
+// 6. Camera Photo Fast-Compressor (Zero Memory Crash - 26 Pages Safe)
 // ---------------------------------------------------------
 function compressCameraImage(file) {
   return new Promise((resolve) => {
@@ -202,7 +202,7 @@ function compressCameraImage(file) {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxDim = 900; // 👈 1100 से घटाकर 900 किया ताकि मोबाइल रैम न भरे
+        const maxDim = 850; // 26 पन्नों के लिए सबसे सुरक्षित साइज
         let w = img.width;
         let h = img.height;
 
@@ -221,7 +221,7 @@ function compressCameraImage(file) {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, w, h);
 
-        const compressed = canvas.toDataURL("image/jpeg", 0.55); // 👈 0.68 से घटाकर 0.55 किया
+        const compressed = canvas.toDataURL("image/jpeg", 0.50);
         img.src = "";
         canvas.width = 0;
         canvas.height = 0;
@@ -382,7 +382,7 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, 
 
   for (let i = 0; i < totalPages; i++) {
     const item = imagesList[i];
-    const base64Str = typeof item === 'string' ? item : (item.dataUrl || item.data);
+    const base64Str = typeof item === 'string' ? item : (item.dataUrl || item.imageData || item.data);
     if (base64Str) {
       const cleanB64 = base64Str.split(",")[1] ? base64Str.split(",")[1].replace(/[\r\n\s]/g, "") : base64Str;
       imageParts.push({
@@ -479,7 +479,7 @@ STRICT JSON ONLY:
 }
 
 // ---------------------------------------------------------
-// 11. Guaranteed Full Batch Cloud Submission (All 6+ Pages)
+// 11. Guaranteed 26-Page Batch Submission + Immediate AI Sync
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -562,12 +562,12 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       activeSession: null
     }, { merge: true });
 
-    // (B) 🌟 सभी पेजों को पक्का और पूरा सेव करें (Promise.all से इंतज़ार करें)
+    // (B) 🌟 26 के 26 पूरे पेजों को सब-कलेक्शन में पक्का सेव करें (Promise.all)
     if (imagesList && imagesList.length > 0) {
       const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
       
       const uploadPromises = imagesList.map((item, i) => {
-        const b64 = typeof item === 'string' ? item : (item.dataUrl || item.data);
+        const b64 = typeof item === 'string' ? item : (item.dataUrl || item.imageData || item.data);
         return dayPagesColRef.doc(`p_${i + 1}`).set({
           pageNumber: i + 1,
           imageData: b64,
@@ -575,16 +575,21 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
         });
       });
 
-      // 🛑 जब तक सभी 6 (या जितने भी) पन्ने अपलोड नहीं होते, तब तक इंतज़ार करें
+      // जब तक 26 के 26 पन्ने Firestore में नहीं पहुँचते, आगे नहीं बढ़ेंगे
       await Promise.all(uploadPromises);
-      console.log(`✓ All ${imagesList.length} pages saved to sub-collection!`);
+      console.log(`✓ All ${imagesList.length} pages fully uploaded to day_${day}_pages!`);
     }
   }
 
-  // 🚀 AI को तुरंत बैकग्राउंड में भेजें
+  // 🚀 C. 20-सेकंड लोडर के दौरान ही AI मूल्यांकन को यहीं पूरा करवाएं (Guaranteed Await)
   if (imagesList && imagesList.length > 0) {
-    runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks)
-      .catch(err => console.warn("Background AI note:", err));
+    try {
+      console.log("Starting instant synchronous AI evaluation...");
+      await runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
+      console.log("AI evaluation finished directly during submit!");
+    } catch (err) {
+      console.warn("Direct submit AI eval error:", err);
+    }
   }
 
   return completedData;
@@ -622,7 +627,7 @@ async function getStudentPagesFromAnyDevice(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 13. शांत बैकग्राउंड ऑटो-वर्कर
+// 13. शांत बैकग्राउंड ऑटो-वर्कर (Failsafe)
 // ---------------------------------------------------------
 let isAiWorkerRunning = false;
 
