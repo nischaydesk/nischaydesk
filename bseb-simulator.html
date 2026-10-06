@@ -314,7 +314,7 @@
       </div>
     </section>
 
-    <!-- STEP 4: Strict Rules & Declaration (Daily Strict Lock) -->
+    <!-- STEP 4: Strict Rules & Declaration (Daily Strict Lock & 09:30 AM Timer) -->
     <section class="gateway-step" id="step4Rules">
       <div class="sim-card-box">
         <h2 style="margin: 0 0 10px 0; font-size: 1.2rem; color: var(--bseb-danger);">
@@ -326,7 +326,8 @@
             सख्त चेतावनी (Anti-Cheating & Exam Discipline):
           </strong>
           <ul style="margin: 0; padding-left: 18px;">
-            <li>यह परीक्षा सीधे <strong>इंटरनेट सर्वर समय</strong> से नियंत्रित है। 1 दिन में सिर्फ 1 विषय की परीक्षा मान्य है।</li>
+            <li>यह परीक्षा सीधे <strong>इंटरनेट सर्वर समय</strong> से नियंत्रित है। प्रतिदिन परीक्षा <strong>सुबह 09:30 AM</strong> पर ही खुलेगी।</li>
+            <li>1 दिन में सिर्फ 1 विषय की परीक्षा मान्य है।</li>
             <li>परीक्षा के दौरान स्क्रीन छोड़ना या टैब बदलना सख्त वर्जित है (अधिकतम 3 चेतावनी)।</li>
             <li><strong>चौथी (4th) बार स्क्रीन छोड़ते ही</strong> उत्तर-पुस्तिका स्वतः (Auto-Submit) जमा हो जाएगी।</li>
             <li>उत्तर-पुस्तिका में कोरा पन्ना या फर्जी सामग्री अपलोड करने पर सीधे <strong>00 अंक (EXPELLED)</strong> दर्ज होगा।</li>
@@ -666,14 +667,27 @@
     async function goToStep4() {
       switchView("step3Biometric", "step4Rules");
 
-      let todayStr = new Date().toISOString().split('T')[0];
+      let serverNow = new Date();
       try {
-        const serverDateObj = await getVerifiedServerDate();
-        todayStr = serverDateObj.toISOString().split('T')[0];
+        serverNow = await getVerifiedServerDate();
       } catch(e){}
 
+      // 🕒 सुबह 09:30 AM का कड़ा सर्वर टाइम लॉक
+      const currentHours = serverNow.getHours();
+      const currentMinutes = serverNow.getMinutes();
+      const currentTimeInMinutes = (currentHours * 60) + currentMinutes;
+      const examStartThreshold = (9 * 60) + 30; // 9:30 AM = 570 मिनट
+
+      if (currentTimeInMinutes < examStartThreshold) {
+        alert("⛔ परीक्षा कक्ष अभी बंद है!\n\nबोर्ड नियमानुसार परीक्षा प्रतिदिन सुबह 09:30 AM बजे ही प्रारंभ होगी। कृपया 09:30 बजे पुनः प्रयास करें।");
+        window.location.href = "index.html";
+        return;
+      }
+
+      const todayStr = serverNow.toISOString().split('T')[0];
+
       if (cloudState?.lastExamDate === todayStr) {
-        alert("⛔ आज का परीक्षा कोटा समाप्त हो चुका है!\n\nबोर्ड नियमानुसार 1 दिन में केवल 1 विषय की ही परीक्षा दे सकते हैं। अगला विषय कल सुबह खुलेगा।");
+        alert("⛔ आज का परीक्षा कोटा समाप्त हो चुका है!\n\nबोर्ड नियमानुसार 1 दिन में केवल 1 विषय की ही परीक्षा दे सकते हैं। अगला विषय कल सुबह 09:30 बजे खुलेगा।");
         window.location.href = "index.html";
         return;
       }
