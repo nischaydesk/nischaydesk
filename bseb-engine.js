@@ -1,5 +1,5 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v24.1 High-Resilience & Camera Engine)
+ * NischayDesk - BSEB Official Assessment Engine (v24.2 Multi-Device Cloud Pages Engine)
  * Primary: gemini-3.8-flash | Backup: gemini-3.5-flash-lite
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub scanner safe)
@@ -9,7 +9,8 @@
  *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync)
  *   6. Subjective Blueprint Strict Matcher (Evaluates strictly against bseb-papers.js)
  *   7. Auto-Compressor for 25+ Camera Photos (Zero Crash / Zero 503)
- *   8. Silent Background AI Auto-Evaluator + Direct IndexedDB Sheet Backup
+ *   8. Sub-collection Cloud Storage: 25+ pages saved on Firestore safely (Multi-device viewable, bypasses 1MB doc limit)
+ *   9. Silent Background AI Auto-Evaluator + Red Pen Ticks Engine
  */
 
 // ---------------------------------------------------------
@@ -28,7 +29,7 @@ function getProtectedKey() {
 
 const BSEB_ENGINE_CONFIG = {
   PRIMARY_MODEL: "gemini-3.8-flash",
-  BACKUP_MODEL: "gemini-3.5-flash-lite" // सबसे स्टेबल और हाई-कोटा बैकअप
+  BACKUP_MODEL: "gemini-3.5-flash-lite"
 };
 
 // ---------------------------------------------------------
@@ -132,7 +133,6 @@ function stopAntiCheatingMonitor() {
 
 function handleTabSwitch() {
   if (!isExamActive || document.visibilityState === "visible") return;
-  // अगर छात्र कैमरे से फ़ोटो ले रहा है तो चेतावनी बाईपास करें
   if (isUploadingAnswerSheet) return;
   triggerCheatingViolation();
 }
@@ -462,6 +462,7 @@ Output STRICT JSON ONLY:
       serverDateIso = serverDateObj.toISOString();
     } catch(e) {}
 
+    // 1. मुख्य डॉक्यूमेंट में रिजल्ट अपडेट करें
     if (window.NischayConfig?.dbInstance) {
       await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
         completedDays: {
@@ -473,12 +474,14 @@ Output STRICT JSON ONLY:
             pagesEvaluation: parsed.pagesEvaluation || [],
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
+            needsAiEvaluation: false,
             aiEvaluatedAt: serverDateIso
           }
         }
       }, { merge: true });
     }
 
+    // 2. लोकल डेटाबेस बैकअप
     await saveEvaluatedSheetToDB(uid, day, {
       subjectCode: subjectCode,
       subjectName: subjectName,
@@ -487,14 +490,14 @@ Output STRICT JSON ONLY:
       isExpelled: isExpelled
     });
 
-    console.log(`✓ Day ${day} AI Evaluation Successfully Completed!`);
+    console.log(`✓ Day ${day} AI Evaluation Successfully Completed and Synced!`);
   } catch (err) {
     console.error("AI Background Evaluation note:", err);
   }
 }
 
 // ---------------------------------------------------------
-// 11. Instant Non-Blocking Cloud Submission (No 1-Second Freeze)
+// 11. Multi-Device Cloud Submission (Sub-collection Model)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -529,7 +532,6 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 
   const creds = generateUniqueCredentials(user ? user.uid : null);
 
-  // 1 MB Firestore Limit Fix: कॉपियों का भारी डेटा IndexedDB में रखा जाएगा, क्लाउड में केवल पेज काउंट
   const completedData = {
     subjectCode: subjectCode,
     subjectName: subjectName,
@@ -542,7 +544,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     submittedAt: submitIso
   };
 
-  // लोकल डेटाबेस में 25 पन्नों का पूरा बैकअप
+  // लोकल डेटाबेस बैकअप
   try {
     if (imagesList && imagesList.length > 0) {
       await saveEvaluatedSheetToDB(user.uid, day, {
@@ -561,6 +563,8 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
+    
+    // (A) मुख्य छात्र रिकॉर्ड अपडेट करें (हल्का डेटा - 100% सुरक्षित)
     await db.collection("bseb_exams_2026").doc(user.uid).set({
       uid: user.uid,
       rollCode: state.rollCode || creds.rollCode,
@@ -575,9 +579,23 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       lastExamDate: todayStr,
       activeSession: null
     }, { merge: true });
+
+    // (B) 🌟 हर पेज को सब-कलेक्शन में क्लाउड पर सुरक्षित करें (दूसरे फोन पर भी दिखेगा)
+    if (imagesList && imagesList.length > 0) {
+      const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
+      for (let i = 0; i < imagesList.length; i++) {
+        const item = imagesList[i];
+        const b64 = typeof item === 'string' ? item : (item.dataUrl || item.data);
+        dayPagesColRef.doc(`p_${i + 1}`).set({
+          pageNumber: i + 1,
+          imageData: b64,
+          savedAt: submitIso
+        }).catch(err => console.warn(`Page ${i+1} cloud save note:`, err));
+      }
+    }
   }
 
-  // बैकग्राउंड में तुरंत AI चेकिंग ट्रिगर करें (सबमिशन रुकेगा नहीं)
+  // बैकग्राउंड में तुरंत AI चेकिंग ट्रिगर करें (पेज बिना अटके तुरंत सबमिट होगा)
   if (imagesList && imagesList.length > 0) {
     setTimeout(() => {
       runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
@@ -588,7 +606,40 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 }
 
 // ---------------------------------------------------------
-// 12. साइलेंट बैकग्राउंड ऑटो-वर्कर (Silent Auto-Worker)
+// 12. किसी भी डिवाइस से कॉपियाँ खींचने का हेल्पर (Multi-Device Loader)
+// ---------------------------------------------------------
+async function getStudentPagesFromAnyDevice(uid, day) {
+  // 1. पहले लोकल डेटाबेस देखें (अगर उसी फोन पर है)
+  const localCopy = await getEvaluatedSheetFromDB(uid, day);
+  if (localCopy && localCopy.pages && localCopy.pages.length > 0) {
+    return localCopy.pages;
+  }
+
+  // 2. अगर दूसरा फोन या नया ब्राउज़र है तो Firestore Sub-collection से खींचें
+  if (window.NischayConfig?.dbInstance) {
+    try {
+      const db = window.NischayConfig.dbInstance;
+      const snapshot = await db.collection("bseb_exams_2026").doc(uid)
+                               .collection(`day_${day}_pages`)
+                               .orderBy("pageNumber", "asc")
+                               .get();
+      if (!snapshot.empty) {
+        const pages = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          if (d.imageData) pages.push(d.imageData);
+        });
+        return pages;
+      }
+    } catch (e) {
+      console.warn("Cloud pages fetch note:", e);
+    }
+  }
+  return [];
+}
+
+// ---------------------------------------------------------
+// 13. साइलेंट बैकग्राउंड ऑटो-वर्कर (Silent Auto-Worker)
 // ---------------------------------------------------------
 async function triggerPendingAiEvaluations(user) {
   if (!user || !window.NischayConfig?.dbInstance) return;
@@ -604,14 +655,16 @@ async function triggerPendingAiEvaluations(user) {
     for (let dayKey of Object.keys(completedDays)) {
       const exam = completedDays[dayKey];
       if (exam && exam.status === "COMPLETED" && (!exam.aiFeedback || exam.status !== "EVALUATED")) {
-        const localCopy = await getEvaluatedSheetFromDB(user.uid, dayKey);
-        if (localCopy && localCopy.pages && localCopy.pages.length > 0) {
+        // मल्टी-डिवाइस लोडर से पेज लाएँ
+        const pagesToEval = await getStudentPagesFromAnyDevice(user.uid, dayKey);
+
+        if (pagesToEval.length > 0) {
           console.log(`[Silent Worker] Day ${dayKey} AI Evaluation Starting...`);
           await runBackgroundGeminiEvaluation(
             user.uid,
             parseInt(dayKey, 10),
             exam.subjectCode,
-            localCopy.pages,
+            pagesToEval,
             exam.objectiveMarks || 0
           );
         }
