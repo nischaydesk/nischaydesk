@@ -1,15 +1,15 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v24.0 Blueprint-Verified & Silent Auto-Worker)
- * Model: gemini-3.8-flash (with Auto-Retry)
+ * NischayDesk - BSEB Official Assessment Engine (v24.1 High-Resilience & Camera Engine)
+ * Primary: gemini-3.8-flash | Backup: gemini-3.5-flash-lite
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub scanner safe)
  *   2. Universal Direct Google Login Handler
  *   3. Guaranteed Server Time Sync (Device tampering proof)
- *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
+ *   4. Anti-Cheating (Safely Pauses during Camera / File Upload)
  *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync)
  *   6. Subjective Blueprint Strict Matcher (Evaluates strictly against bseb-papers.js)
- *   7. Zero Tolerance for fake/irrelevant/out-of-syllabus uploads (UFM/Expelled)
- *   8. Silent Background AI Auto-Evaluator + Direct Cloud Page Backup
+ *   7. Auto-Compressor for 25+ Camera Photos (Zero Crash / Zero 503)
+ *   8. Silent Background AI Auto-Evaluator + Direct IndexedDB Sheet Backup
  */
 
 // ---------------------------------------------------------
@@ -28,7 +28,7 @@ function getProtectedKey() {
 
 const BSEB_ENGINE_CONFIG = {
   PRIMARY_MODEL: "gemini-3.8-flash",
-  BACKUP_MODEL: "gemini-3.5-flash"
+  BACKUP_MODEL: "gemini-3.5-flash-lite" // सबसे स्टेबल और हाई-कोटा बैकअप
 };
 
 // ---------------------------------------------------------
@@ -105,10 +105,19 @@ async function isExamTimeAllowed() {
 }
 
 // ---------------------------------------------------------
-// 4. Cheating Prevention Engine
+// 4. Cheating Prevention Engine (Safe Upload Mode Supported)
 // ---------------------------------------------------------
 let tabSwitchCount = 0;
 let isExamActive = false;
+let isUploadingAnswerSheet = false; // कैमरा या फ़ाइल चुनते समय चेतावनी रोकने के लिए
+
+function setUploadMode(active) {
+  isUploadingAnswerSheet = active;
+  if (active) {
+    // 3 मिनट तक सेफ़ विंडो (छात्र बिना चेतावनी के फोटो खींच सके)
+    setTimeout(() => { isUploadingAnswerSheet = false; }, 180000);
+  }
+}
 
 function initAntiCheatingMonitor() {
   tabSwitchCount = 0;
@@ -123,6 +132,8 @@ function stopAntiCheatingMonitor() {
 
 function handleTabSwitch() {
   if (!isExamActive || document.visibilityState === "visible") return;
+  // अगर छात्र कैमरे से फ़ोटो ले रहा है तो चेतावनी बाईपास करें
+  if (isUploadingAnswerSheet) return;
   triggerCheatingViolation();
 }
 
@@ -194,7 +205,50 @@ function getEvaluatedSheetFromDB(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 6. Unique Credentials Generator
+// 6. Camera Photo Fast-Compressor (Zero Memory Crash)
+// ---------------------------------------------------------
+function compressCameraImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 1100;
+        let w = img.width;
+        let h = img.height;
+
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+
+        const compressed = canvas.toDataURL("image/jpeg", 0.68);
+        img.src = "";
+        canvas.width = 0;
+        canvas.height = 0;
+        resolve(compressed);
+      };
+      img.onerror = () => resolve(e.target.result);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+
+// ---------------------------------------------------------
+// 7. Unique Credentials Generator
 // ---------------------------------------------------------
 function generateUniqueCredentials(uid) {
   if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
@@ -215,7 +269,7 @@ function generateUniqueCredentials(uid) {
 }
 
 // ---------------------------------------------------------
-// 7. Cloud Exam State Sync (Profile Lock Supported)
+// 8. Cloud Exam State Sync (Profile Lock Supported)
 // ---------------------------------------------------------
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -288,7 +342,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
 }
 
 // ---------------------------------------------------------
-// 8. Gemini API Caller (With Auto-Retry for High Demand)
+// 9. Gemini API Caller (With Auto-Retry for High Demand)
 // ---------------------------------------------------------
 async function callGeminiApiFallback(parts) {
   const models = [BSEB_ENGINE_CONFIG.PRIMARY_MODEL, BSEB_ENGINE_CONFIG.BACKUP_MODEL];
@@ -301,15 +355,18 @@ async function callGeminiApiFallback(parts) {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${activeKey}`;
         const res = await fetch(url, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "x-goog-api-key": activeKey
+          },
           body: JSON.stringify({ contents: [{ parts }] })
         });
         const data = await res.json();
         
         if (data.error) {
           lastErr = data.error.message;
-          if (data.error.message.includes("high demand") || data.error.code === 503) {
-            await new Promise(r => setTimeout(r, 2000));
+          if (data.error.message.includes("high demand") || data.error.code === 503 || data.error.code === 429) {
+            await new Promise(r => setTimeout(r, 2500));
             continue;
           }
           break;
@@ -327,17 +384,17 @@ async function callGeminiApiFallback(parts) {
 }
 
 // ---------------------------------------------------------
-// 9. Background AI Evaluation & Blueprint-Matching Logic
+// 10. Background AI Evaluation & Blueprint-Matching Logic
 // ---------------------------------------------------------
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return;
 
-  const totalPages = Math.min(imagesList.length, 24);
+  const totalPages = Math.min(imagesList.length, 25);
   let imageParts = [];
 
   for (let i = 0; i < totalPages; i++) {
     const item = imagesList[i];
-    const base64Str = typeof item === 'string' ? item : item.dataUrl;
+    const base64Str = typeof item === 'string' ? item : (item.dataUrl || item.data);
     if (base64Str) {
       const cleanB64 = base64Str.split(",")[1] ? base64Str.split(",")[1].replace(/[\r\n\s]/g, "") : base64Str;
       imageParts.push({
@@ -355,7 +412,6 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, 
   const subjectName = paperInfo ? paperInfo.subjectName : subjectCode;
   const maxSubjective = paperInfo?.subjectiveBlueprint?.totalSubjectiveMarks || 50;
 
-  // 🎯 bseb-papers.js से पूरे प्रश्न-पत्र का ब्लूप्रिंट स्ट्रिंग में बदलना
   const blueprintDetails = paperInfo?.subjectiveBlueprint
     ? JSON.stringify(paperInfo.subjectiveBlueprint, null, 2)
     : "Standard Class 10 Subject Syllabus";
@@ -364,38 +420,26 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, 
 Total Pages submitted: ${totalPages}.
 Max Subjective Marks: ${maxSubjective}.
 
-OFFICIAL QUESTION PAPER BLUEPRINT TO MATCH (QUESTIONS, ESSAYS, SECTIONS & MARKING SCHEME):
+OFFICIAL QUESTION PAPER BLUEPRINT TO MATCH:
 ${blueprintDetails}
 
-CRITICAL VERIFICATION RULES:
+CRITICAL RULES:
 1. Examine student handwritten answers page-by-page.
-2. ZERO TOLERANCE / FRAUD / SUBJECT-MISMATCH CHECK:
-   - If pages are BLANK, contain songs, movie dialogues, personal pleas ("सर पास कर दो"), selfies, drawings.
-   - If pages belong to an ENTIRELY DIFFERENT SUBJECT (e.g. Sanskrit copy uploaded in Hindi exam, Science in Math).
-   - If answers are completely IRRELEVANT or NOT ATTEMPTING any questions from the Official Question Paper Blueprint above:
-     -> Set "isValid": false
-     -> Set "status": "EXPELLED"
-     -> Set "totalSubjectiveMarks": 0
-     -> Set "overallRemarks": "अनुचित/अप्रासंगिक या भिन्न विषय की उत्तर-पुस्तिका अपलोड करने के कारण परिणाम निष्कासित (UFM) किया गया।"
-3. STRICT BLUEPRINT QUESTION MATCHING:
-   - Match handwritten answers against the questions, essays, passages, and short/long problems defined in the blueprint.
-   - Award fair, step-by-step marks up to the question limit defined in the blueprint.
-   - If a student solved genuine problems matching the blueprint, allocate realistic page marks and positive remarks.
+2. ZERO TOLERANCE: Blank, songs, completely irrelevant, or wrong subject -> Set "isValid": false, "status": "EXPELLED", "totalSubjectiveMarks": 0.
+3. Match handwritten questions to blueprint and award genuine marks up to ${maxSubjective}.
 
-Output STRICT JSON ONLY (no markdown backticks, no extra text):
+Output STRICT JSON ONLY:
 {
-  "isValid": <true or false>,
-  "totalSubjectiveMarks": <integer 0 to ${maxSubjective}>,
-  "status": "<EVALUATED or EXPELLED>",
-  "overallRemarks": "<हिंदी में संक्षिप्त टिप्पणी (उदा. 'प्रश्न 3 (निबंध) एवं पाठ्यपुस्तक के उत्तर सटीक, 38/50 अंक')>",
+  "isValid": true,
+  "totalSubjectiveMarks": 8,
+  "status": "EVALUATED",
+  "overallRemarks": "मूल्यांकन टिप्पणी...",
   "pagesEvaluation": [
     {
       "pageIndex": 0,
       "marksOnThisPage": 4,
-      "pageRemark": "उत्तर चरणबद्ध व प्रासंगिक",
-      "ticks": [
-        {"label": "Q1: 2/2", "xRatio": 0.82, "yRatio": 0.28, "type": "correct"}
-      ]
+      "pageRemark": "उत्तर संतोषप्रद",
+      "ticks": [{"label": "+4", "xRatio": 0.85, "yRatio": 0.25, "type": "correct"}]
     }
   ]
 }`;
@@ -427,7 +471,6 @@ Output STRICT JSON ONLY (no markdown backticks, no extra text):
             totalMarks: finalTotal,
             aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द" : "मूल्यांकन संपन्न"),
             pagesEvaluation: parsed.pagesEvaluation || [],
-            pages: imagesList || [], // पन्नों का बैकअप ताकि परिणाम पोर्टल पर कभी एरर न आए
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
             aiEvaluatedAt: serverDateIso
@@ -444,17 +487,18 @@ Output STRICT JSON ONLY (no markdown backticks, no extra text):
       isExpelled: isExpelled
     });
 
-    console.log(`✓ Day ${day} AI Evaluation Successfully Completed and Verified against Official Blueprint!`);
+    console.log(`✓ Day ${day} AI Evaluation Successfully Completed!`);
   } catch (err) {
     console.error("AI Background Evaluation note:", err);
   }
 }
 
 // ---------------------------------------------------------
-// 10. Non-Blocking Single-Click Cloud Submission
+// 11. Instant Non-Blocking Cloud Submission (No 1-Second Freeze)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
+  isUploadingAnswerSheet = false;
 
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
 
@@ -485,6 +529,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 
   const creds = generateUniqueCredentials(user ? user.uid : null);
 
+  // 1 MB Firestore Limit Fix: कॉपियों का भारी डेटा IndexedDB में रखा जाएगा, क्लाउड में केवल पेज काउंट
   const completedData = {
     subjectCode: subjectCode,
     subjectName: subjectName,
@@ -492,13 +537,12 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     subjectiveMarks: 0,
     totalMarks: objMarks,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
-    pages: imagesList || [], // पन्ने सीधे क्लाउड पर सुरक्षित
     status: "COMPLETED",
     needsAiEvaluation: (imagesList && imagesList.length > 0),
     submittedAt: submitIso
   };
 
-  // लोकल IndexedDB में भी बैकअप सुरक्षित करें
+  // लोकल डेटाबेस में 25 पन्नों का पूरा बैकअप
   try {
     if (imagesList && imagesList.length > 0) {
       await saveEvaluatedSheetToDB(user.uid, day, {
@@ -533,11 +577,18 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     }, { merge: true });
   }
 
+  // बैकग्राउंड में तुरंत AI चेकिंग ट्रिगर करें (सबमिशन रुकेगा नहीं)
+  if (imagesList && imagesList.length > 0) {
+    setTimeout(() => {
+      runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
+    }, 1000);
+  }
+
   return completedData;
 }
 
 // ---------------------------------------------------------
-// 11. अदृश्य बैकग्राउंड ऑटो-इवैल्यूएटर (Silent Auto-Worker)
+// 12. साइलेंट बैकग्राउंड ऑटो-वर्कर (Silent Auto-Worker)
 // ---------------------------------------------------------
 async function triggerPendingAiEvaluations(user) {
   if (!user || !window.NischayConfig?.dbInstance) return;
@@ -553,21 +604,14 @@ async function triggerPendingAiEvaluations(user) {
     for (let dayKey of Object.keys(completedDays)) {
       const exam = completedDays[dayKey];
       if (exam && exam.status === "COMPLETED" && (!exam.aiFeedback || exam.status !== "EVALUATED")) {
-        let pagesToEval = [];
         const localCopy = await getEvaluatedSheetFromDB(user.uid, dayKey);
         if (localCopy && localCopy.pages && localCopy.pages.length > 0) {
-          pagesToEval = localCopy.pages;
-        } else if (exam.pages && exam.pages.length > 0) {
-          pagesToEval = exam.pages;
-        }
-
-        if (pagesToEval.length > 0) {
-          console.log(`[Silent Worker] Day ${dayKey} की AI चेकिंग आधिकारिक ब्लूप्रिंट से शुरू हो रही है...`);
+          console.log(`[Silent Worker] Day ${dayKey} AI Evaluation Starting...`);
           await runBackgroundGeminiEvaluation(
             user.uid,
             parseInt(dayKey, 10),
             exam.subjectCode,
-            pagesToEval,
+            localCopy.pages,
             exam.objectiveMarks || 0
           );
         }
