@@ -130,15 +130,16 @@
     .error-banner {
       display: none;
       margin-top: 12px;
-      padding: 10px 12px;
+      padding: 12px;
       background: #fef2f2;
-      border: 1px solid #ef4444;
+      border: 1.5px solid #ef4444;
       border-radius: 8px;
       color: #dc2626;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 700;
-      text-align: center;
-      line-height: 1.4;
+      text-align: left;
+      line-height: 1.5;
+      white-space: pre-line;
     }
 
     .a4-marksheet-wrapper {
@@ -579,6 +580,48 @@
         return;
       }
 
+      // 🔒 7-दिन का कड़ा बोर्ड लॉक (Strict 7-Day / 6-Exams Lock + Countdown Timer)
+      const completed = studentData.completedDays || {};
+      const completedCount = Object.keys(completed).length;
+
+      // 1. यदि 6 दिन की परीक्षा पूरी नहीं हुई है
+      if (completedCount < 6) {
+        showError(
+          `⏳ परिणाम अभी जारी नहीं हुआ है!\n\n` +
+          `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
+          `📌 नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
+        );
+        generateCaptcha();
+        return;
+      }
+
+      // 2. सात दिन (168 घंटे) का सटीक समय मिलान
+      let serverNowMs = Date.now();
+      try {
+        if (typeof getVerifiedServerTimestamp === "function") {
+          serverNowMs = await getVerifiedServerTimestamp();
+        }
+      } catch (e) {}
+
+      const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
+      const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000); // 7 पूरे दिन
+
+      if (serverNowMs < requiredReleaseMs) {
+        const remainingMs = requiredReleaseMs - serverNowMs;
+        const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+        const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        showError(
+          `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
+          `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
+          `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
+        );
+        generateCaptcha();
+        return;
+      }
+
+      // 7वें दिन परिणाम स्क्रीन पर खुलेगा
       renderA4Marksheet(studentData);
     }
 
@@ -683,9 +726,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 🔄 स्मार्ट स्टोरेज फ़ेचर (Firestore优先 / Cloud First)
+    // 🔄 स्मार्ट स्टोरेज फ़ेचर (Firestore優先 / Cloud First)
     async function getEvaluatedSheetFromDB(uid, day) {
-      // 1. सीधे Firestore क्लाउड से ताज़ा पन्ने लोड करें
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
           const db = window.NischayConfig.dbInstance;
@@ -704,7 +746,6 @@
             }
           }
 
-          // सब-कलेक्शन में जाँचें
           const subColPagesSnap = await userDocRef
             .collection("exam_copies")
             .doc(`day_${day}`)
@@ -731,7 +772,6 @@
         }
       }
 
-      // 2. केवल बैकअप के तौर पर IndexedDB देखें
       try {
         const localData = await new Promise((resolve) => {
           const req = indexedDB.open("NischaySheetsDB", 1);
@@ -754,7 +794,7 @@
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Cache + Timestamped Unique Filename)
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेशन इंजन (Anti-Cache + Instant Success Popup Alert)
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -766,7 +806,6 @@
       let evalPages = examRecord?.pagesEvaluation || [];
       let isExpelled = examRecord?.status === "EXPELLED" || examRecord?.isFraud;
 
-      // सीधे वर्तमान परीक्षा रिकॉर्ड से पन्ने लें
       if (examRecord && examRecord.pages && examRecord.pages.length > 0) {
         pages = examRecord.pages;
       } else {
@@ -893,14 +932,21 @@
         doc.addImage(annotatedImg, "JPEG", 0, 0, 210, 297);
       }
 
-      // ⏱️ टाइमस्टैम्प से फाइल का बिल्कुल नया और अलग नाम बनेगा (Chrome PDF Preview Cache Fix)
+      // ⏱️ टाइमस्टैम्प से फाइल का विशिष्ट नाम
       const realTimeId = Date.now();
-      doc.save(`BSEB_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}_${realTimeId}.pdf`);
+      const fileName = `BSEB_Copy_Day${day}_${subjectName.replace(/\s+/g, '_')}_${realTimeId}.pdf`;
+      doc.save(fileName);
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.innerHTML = origHtml;
+        triggerBtn.innerHTML = `<span>✅ डाउनलोड पूर्ण</span>`;
+        setTimeout(() => {
+          triggerBtn.innerHTML = origHtml;
+        }, 3000);
       }
+
+      // 📢 स्पष्ट अलर्ट: छात्र को तुरंत पता चल जाएगा कि फ़ाइल डाउनलोड हो गई है
+      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) सफलतापूर्वक तैयार होकर आपके फ़ोन के 'Downloads' फ़ोल्डर में सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
     }
 
     function resetSearch() {
