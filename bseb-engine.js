@@ -1,15 +1,15 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v22.0 Silent Background Auto-Worker)
+ * NischayDesk - BSEB Official Assessment Engine (v23.0 Dual-Cloud & Silent Auto-Worker)
  * Model: gemini-3.8-flash (with Auto-Retry)
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub secret scanner safe)
  *   2. Universal Direct Google Login Handler
  *   3. Guaranteed Server Time Sync (Device tampering proof)
- *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit (No False Blur)
- *   5. Strict 1-Exam Per Day Gatekeeper
+ *   4. Anti-Cheating: 3 Warnings -> 4th Tab Switch = Instant Auto-Submit
+ *   5. Strict 1-Exam Per Day Gatekeeper (09:30 AM IST sync)
  *   6. Permanent Candidate Profile Lock
  *   7. Zero Tolerance for fake/irrelevant uploads (UFM/Expelled)
- *   8. Silent Background AI Auto-Evaluator (Never Hangs UI)
+ *   8. Silent Background AI Auto-Evaluator + Direct Cloud Page Backup
  */
 
 // ---------------------------------------------------------
@@ -400,6 +400,7 @@ Output STRICT JSON ONLY (no markdown backticks):
             totalMarks: finalTotal,
             aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द" : "मूल्यांकन संपन्न"),
             pagesEvaluation: parsed.pagesEvaluation || [],
+            pages: imagesList || [], // पन्नों का बैकअप ताकि परिणाम पोर्टल पर कभी एरर न आए
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
             aiEvaluatedAt: serverDateIso
@@ -423,7 +424,7 @@ Output STRICT JSON ONLY (no markdown backticks):
 }
 
 // ---------------------------------------------------------
-// 10. Non-Blocking Single-Click Cloud Submission
+// 10. Non-Blocking Single-Click Cloud Submission (Pages Backup Included)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -464,12 +465,13 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     subjectiveMarks: 0,
     totalMarks: objMarks,
     uploadedPagesCount: imagesList ? imagesList.length : 0,
+    pages: imagesList || [], // पन्ने सीधे क्लाउड पर भी सुरक्षित
     status: "COMPLETED",
     needsAiEvaluation: (imagesList && imagesList.length > 0),
     submittedAt: submitIso
   };
 
-  // लोकल IndexedDB में उत्तर-पुस्तिका सुरक्षित रखें
+  // लोकल IndexedDB में भी उत्तर-पुस्तिका सुरक्षित रखें
   try {
     if (imagesList && imagesList.length > 0) {
       await saveEvaluatedSheetToDB(user.uid, day, {
@@ -510,9 +512,6 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 // ---------------------------------------------------------
 // 11. अदृश्य बैकग्राउंड ऑटो-इवैल्यूएटर (Silent Auto-Worker)
 // ---------------------------------------------------------
-// यह इंजन होम पेज (index.html) या किसी भी पेज पर स्वतः देखता है
-// कि क्या कोई कॉपी जमा हुई है जिसकी AI चेकिंग बाकी है।
-// यदि बाकी है, तो यह बिना स्क्रीन रोके बैकग्राउंड में कॉपी जाँचकर Firestore में सील कर देता है!
 async function triggerPendingAiEvaluations(user) {
   if (!user || !window.NischayConfig?.dbInstance) return;
 
@@ -526,16 +525,22 @@ async function triggerPendingAiEvaluations(user) {
 
     for (let dayKey of Object.keys(completedDays)) {
       const exam = completedDays[dayKey];
-      // अगर परीक्षा COMPLETED है पर अभी तक EVALUATED नहीं हुई
       if (exam && exam.status === "COMPLETED" && (!exam.aiFeedback || exam.status !== "EVALUATED")) {
+        let pagesToEval = [];
         const localCopy = await getEvaluatedSheetFromDB(user.uid, dayKey);
         if (localCopy && localCopy.pages && localCopy.pages.length > 0) {
+          pagesToEval = localCopy.pages;
+        } else if (exam.pages && exam.pages.length > 0) {
+          pagesToEval = exam.pages;
+        }
+
+        if (pagesToEval.length > 0) {
           console.log(`[Silent Worker] Day ${dayKey} की AI चेकिंग बैकग्राउंड में शुरू हो रही है...`);
           await runBackgroundGeminiEvaluation(
             user.uid,
             parseInt(dayKey, 10),
             exam.subjectCode,
-            localCopy.pages,
+            pagesToEval,
             exam.objectiveMarks || 0
           );
         }
