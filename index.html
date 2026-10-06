@@ -85,6 +85,80 @@
       border-radius: 8px;
       transition: width 0.1s ease-out;
     }
+
+    /* फ़ाउंडर एवं प्राइवेसी बार स्टाइल */
+    .founder-privacy-strip {
+      margin-top: 24px;
+      padding: 14px 18px;
+      background: rgba(2, 132, 199, 0.06);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .founder-card-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .founder-photo-img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #38bdf8;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+    .founder-name-text {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-primary, #ffffff);
+      line-height: 1.2;
+    }
+    .founder-role-subtext {
+      font-size: 0.74rem;
+      color: #38bdf8;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .privacy-badge-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #38bdf8 !important;
+      text-decoration: none;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    .privacy-badge-link:hover {
+      background: #0284c7;
+      color: #ffffff !important;
+      border-color: #0284c7;
+    }
+
+    html.light-mode .founder-name-text,
+    html[data-theme="light"] .founder-name-text {
+      color: #0f172a !important;
+    }
+    html.light-mode .privacy-badge-link,
+    html[data-theme="light"] .privacy-badge-link {
+      background: #e0f2fe !important;
+      color: #0284c7 !important;
+      border-color: #bae6fd !important;
+    }
+    html.light-mode .privacy-badge-link:hover,
+    html[data-theme="light"] .privacy-badge-link:hover {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+    }
   </style>
 </head>
 <body class="app-body">
@@ -216,7 +290,7 @@
     <section class="hero-studio-banner" style="padding-top: 24px; padding-bottom: 24px;">
       <div class="hero-content">
         
-        <!-- Personalized User Welcome Strip (लाइट और डार्क मोड दोनों में क्रिस्टल क्लियर) -->
+        <!-- Personalized User Welcome Strip -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 14px;">
           <div id="welcomeGreetingText" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">छात्र</span> 👋
@@ -632,6 +706,25 @@
       </div>
     </div>
 
+    <!-- 👨‍💻 डेवलपर एवं प्राइवेसी पॉलिसी सेक्शन -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 16px;">
+      <div class="founder-privacy-strip">
+        <div class="founder-card-box">
+          <img src="Prince.jpg" alt="Prince Kumar" class="founder-photo-img" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
+          <div>
+            <div class="founder-name-text">प्रिंस कुमार</div>
+            <div class="founder-role-subtext">फाउंडर एवं डेवलपर, NischayDesk</div>
+          </div>
+        </div>
+
+        <div>
+          <a href="privacy.html" class="privacy-badge-link">
+            <span>🔒</span> प्राइवेसी पॉलिसी (Privacy Policy)
+          </a>
+        </div>
+      </div>
+    </div>
+
     <div class="footer-bottom-bar">
       <div class="server-status-tag">
         &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● सिस्टम सक्रिय है</span>
@@ -872,19 +965,16 @@
           const file = files[i];
           const curPage = i + 1;
 
-          // प्रगति अपडेट
           statusText.textContent = `पेज ${curPage} ऑप्टिमाइज़ व संपीड़ित हो रहा है...`;
           pageCounter.textContent = `${curPage} / ${files.length} पेज`;
           const pct = Math.round((curPage / files.length) * 100);
           fillBar.style.width = pct + '%';
           percentEl.textContent = pct + '%';
 
-          // मेमोरी-सेफ इमेज लोडर विथ कैनवस कंप्रेशन
           const compressedDataUrl = await compressAndLoadImage(file);
 
           if (i > 0) pdf.addPage();
 
-          // ऑटो फिट स्केलिंग
           const imgProps = pdf.getImageProperties(compressedDataUrl);
           const imgRatio = imgProps.width / imgProps.height;
 
@@ -901,7 +991,6 @@
 
           pdf.addImage(compressedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
 
-          // ब्राउज़र को फ्रीज होने से बचाने के लिए छोटा ब्रेक
           await new Promise(r => setTimeout(r, 15));
         }
 
@@ -923,7 +1012,6 @@
       }
     });
 
-    // ब्राउज़र क्रैश रोधी कैनवस डाउनसैम्पलर
     function compressAndLoadImage(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -931,7 +1019,7 @@
           const img = new Image();
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            const maxDimension = 1600; // 50 पेज के लिए अनुकूलित रेजोल्यूशन
+            const maxDimension = 1600;
             let w = img.width;
             let h = img.height;
 
@@ -948,7 +1036,6 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, w, h);
 
-            // 0.72 क्वालिटी: हाई क्लैरिटी के साथ हल्का साइज
             resolve(canvas.toDataURL('image/jpeg', 0.72));
           };
           img.onerror = reject;
