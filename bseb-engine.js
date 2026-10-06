@@ -1,5 +1,5 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v25.0 Ultimate Non-Blocking Architecture)
+ * NischayDesk - BSEB Official Assessment Engine (v25.1 Bulletproof Auto-Grading)
  * Primary: gemini-3.8-flash | Backup: gemini-3.5-flash-lite
  * Features:
  *   1. Obfuscated API Key Resolver (GitHub scanner safe)
@@ -10,7 +10,7 @@
  *   6. Subjective Blueprint Strict Matcher (Evaluates strictly against bseb-papers.js)
  *   7. Auto-Compressor for up to 26 Camera Photos (Zero Crash)
  *   8. Multi-Device Sub-collection Cloud Storage (Bypasses 1MB doc limit)
- *   9. Lazy Background Silent Worker (Evaluates quietly when student is idle)
+ *   9. Non-Blocking Dual-Trigger AI Worker (Instant submit + Guaranteed Grading)
  */
 
 // ---------------------------------------------------------
@@ -489,7 +489,7 @@ STRICT JSON ONLY:
 }
 
 // ---------------------------------------------------------
-// 11. Superfast 3-Second Cloud Submission (AI Calls Removed from Here)
+// 11. Superfast 3-Second Cloud Submission + Auto AI Launch
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -587,7 +587,14 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     }
   }
 
-  // ✅ सबमिट होते समय AI कभी नहीं चलेगा—छात्र 2 सेकंड में स्मूथली फ्री हो जाएगा
+  // 🚀 पक्का बैकग्राउंड ट्रिगर: छात्र का सबमिशन रोके बिना AI को तुरंत फ़ायर कर दें
+  if (imagesList && imagesList.length > 0) {
+    setTimeout(() => {
+      runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks)
+        .catch(err => console.warn("Auto-eval background error:", err));
+    }, 1500);
+  }
+
   return completedData;
 }
 
@@ -667,14 +674,24 @@ async function triggerPendingAiEvaluations(user) {
   }
 }
 
-// जब छात्र डैशबोर्ड पर हो, पेज लोड होने के 3 सेकंड बाद बैकग्राउंड में चेकिंग शुरू होगी
+// 🛡️ डबल-सिक्योरिटी: पेज लोड + ऑथेंटिकेशन तैयार होते ही बैकग्राउंड चेकिंग ट्रिगर होगी
 if (typeof window !== "undefined") {
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      const auth = window.NischayConfig?.authInstance || (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
-      if (auth && auth.currentUser) {
-        triggerPendingAiEvaluations(auth.currentUser);
-      }
-    }, 3000);
-  });
+  const initWorkerListener = () => {
+    const auth = window.NischayConfig?.authInstance || (typeof firebase !== "undefined" && firebase.auth ? firebase.auth() : null);
+    if (auth) {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          setTimeout(() => {
+            triggerPendingAiEvaluations(user);
+          }, 2000);
+        }
+      });
+    }
+  };
+
+  if (document.readyState === "complete") {
+    initWorkerListener();
+  } else {
+    window.addEventListener("load", initWorkerListener);
+  }
 }
