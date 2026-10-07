@@ -1,7 +1,7 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v35.0 Ultimate Touch & Fast-Upload Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v36.0 Universal Format & Touch Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: High-Res Safe Gallery Upload (Direct 60-80KB), Responsive 4-Corner Touch Cropper,
+ * Features: Auto HEIC-to-JPEG, High-Res Safe Gallery Upload, 4-Corner Touch Cropper,
  *           Anti-Crash Memory Handling, Zero Auto-Submit, 3-Day Reset Cooldown
  */
 
@@ -161,31 +161,49 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. ⚡ मेमोरी-सेफ़ डायरेक्ट गैलरी कंप्रेसर (15MB-50MB इमेज भी 0.1s में रेडी)
+// 5. ⚡ यूनिवर्सल गैलरी कंप्रेसर (HEIC, JPG, PNG सभी के लिए)
 // ---------------------------------------------------------
 async function compressDirectImage(file) {
   try {
-    let sourceWidth, sourceHeight, imgSource;
+    if (!file) return null;
 
-    if (window.createImageBitmap) {
-      imgSource = await createImageBitmap(file);
-      sourceWidth = imgSource.width;
-      sourceHeight = imgSource.height;
-    } else {
-      imgSource = await new Promise((resolve, reject) => {
-        const img = new Image();
-        const objUrl = URL.createObjectURL(file);
-        img.onload = () => { URL.revokeObjectURL(objUrl); resolve(img); };
-        img.onerror = () => { URL.revokeObjectURL(objUrl); reject(null); };
-        img.src = objUrl;
-      });
-      sourceWidth = imgSource.width;
-      sourceHeight = imgSource.height;
+    // 1. अगर फ़ोटो HEIC / HEIF है तो उसे पहले JPEG Blob में बदलें
+    const isHeic = file.type === "image/heic" || 
+                   file.type === "image/heif" || 
+                   (file.name && file.name.toLowerCase().endsWith(".heic")) || 
+                   (file.name && file.name.toLowerCase().endsWith(".heif"));
+
+    if (isHeic && window.heic2any) {
+      try {
+        const converted = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.75
+        });
+        file = Array.isArray(converted) ? converted[0] : converted;
+      } catch (convErr) {
+        console.warn("HEIC Auto-Conversion Note:", convErr);
+      }
     }
 
-    const maxDim = 1050; // साफ़ लिखावट, साइज 60-80KB
-    let w = sourceWidth;
-    let h = sourceHeight;
+    // 2. इमेज को मेमोरी-सेफ़ तरीक़े से लोड करना
+    const imgSource = await new Promise((resolve, reject) => {
+      const img = new Image();
+      const objUrl = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(objUrl);
+        resolve(img);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objUrl);
+        reject(new Error("Image Load Failed"));
+      };
+      img.src = objUrl;
+    });
+
+    const maxDim = 1050; // स्पष्ट लिखावट, साइज़ मात्र 60-80KB
+    let w = imgSource.width;
+    let h = imgSource.height;
 
     if (w > maxDim || h > maxDim) {
       if (w > h) {
@@ -206,8 +224,6 @@ async function compressDirectImage(file) {
     ctx.filter = "contrast(1.15) brightness(1.02)";
     ctx.drawImage(imgSource, 0, 0, w, h);
 
-    if (imgSource.close) imgSource.close();
-
     const compressed = canvas.toDataURL("image/jpeg", 0.58);
     canvas.width = 0;
     canvas.height = 0;
@@ -219,9 +235,26 @@ async function compressDirectImage(file) {
 }
 
 // ---------------------------------------------------------
-// 6. 📸 सिर्फ कैमरा फोटो हेतु 4-कॉर्नर असली टच-क्रॉपर व रोटेटर
+// 6. 📸 सिर्फ़ कैमरा फ़ोटो हेतु 4-कॉर्नर टच-क्रॉपर व रोटेटर
 // ---------------------------------------------------------
-function openCameraImageCropper(imageFile, pageIndex = 1) {
+async function openCameraImageCropper(imageFile, pageIndex = 1) {
+  // अगर कैमरे से भी HEIC आए तो पहले JPEG बनाएँ
+  const isHeic = imageFile.type === "image/heic" || 
+                 imageFile.type === "image/heif" || 
+                 (imageFile.name && imageFile.name.toLowerCase().endsWith(".heic")) || 
+                 (imageFile.name && imageFile.name.toLowerCase().endsWith(".heif"));
+
+  if (isHeic && window.heic2any) {
+    try {
+      const converted = await heic2any({
+        blob: imageFile,
+        toType: "image/jpeg",
+        quality: 0.8
+      });
+      imageFile = Array.isArray(converted) ? converted[0] : converted;
+    } catch (e) {}
+  }
+
   return new Promise((resolve) => {
     setUploadMode(true);
 
@@ -334,7 +367,7 @@ function openCameraImageCropper(imageFile, pageIndex = 1) {
       cropGuide.style.height = `${cropState.h}px`;
     }
 
-    // 🌟 1. कोनों को खींचकर छोटा/बड़ा (Resize) करने का पक्का हैंडलर
+    // कोनों को खींचकर छोटा/बड़ा करना
     let activeCorner = null;
     let startX = 0, startY = 0;
     let origBox = { x: 0, y: 0, w: 0, h: 0 };
@@ -342,7 +375,7 @@ function openCameraImageCropper(imageFile, pageIndex = 1) {
     overlay.querySelectorAll(".crop-corner-handle").forEach(hEl => {
       hEl.addEventListener("pointerdown", (ev) => {
         ev.preventDefault();
-        ev.stopPropagation(); // पूरे डब्बे को हिलने से रोकें
+        ev.stopPropagation();
         activeCorner = hEl.getAttribute("data-corner");
         startX = ev.clientX;
         startY = ev.clientY;
@@ -391,9 +424,9 @@ function openCameraImageCropper(imageFile, pageIndex = 1) {
       });
     });
 
-    // 🌟 2. पूरे डब्बे को बीच से पकड़कर हिलाना (Move)
+    // डब्बे को बीच से पकड़कर हिलाना
     cropGuide.addEventListener("pointerdown", (ev) => {
-      if (ev.target.closest(".crop-corner-handle")) return; // कोने पर टच हो तो मूव न करें
+      if (ev.target.closest(".crop-corner-handle")) return;
       ev.preventDefault();
       startX = ev.clientX;
       startY = ev.clientY;
