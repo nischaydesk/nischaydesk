@@ -27,7 +27,7 @@
       min-height: 100vh;
     }
 
-    /* शीर्ष ब्रांड बार */
+    /* शीर्ष NischayDesk ब्रांड बार */
     .portal-branding-top {
       display: flex;
       align-items: center;
@@ -36,27 +36,25 @@
       margin-bottom: 16px;
     }
     .top-logo-badge {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
+      width: 44px;
+      height: 44px;
+      background: #0284c7;
       color: #ffffff;
       font-weight: 900;
-      border-radius: 10px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.6rem;
+      border: 2px solid #0369a1;
       box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
     }
     .top-branding-title {
       font-size: 1.35rem;
       font-weight: 900;
       color: #0f172a;
-      letter-spacing: -0.5px;
     }
-    .top-branding-title span {
-      color: #0284c7;
-    }
+    .top-branding-title span { color: #0284c7; }
 
     .search-card {
       width: 100%;
@@ -189,11 +187,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.8rem;
       font-weight: 900;
       border: 2px solid #0369a1;
       flex-shrink: 0;
-      letter-spacing: -1px;
     }
     .header-text-center { text-align: center; }
     .org-title {
@@ -237,6 +234,7 @@
       color: #000;
     }
 
+    /* नारंगी स्ट्रिप - प्रिंट सुरक्षित */
     .marks-header-strip {
       background: #f59e0b !important;
       color: #ffffff !important;
@@ -247,6 +245,8 @@
       letter-spacing: 0.5px;
       border: 1px solid #d97706;
       border-bottom: none;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
 
     .marks-table {
@@ -340,8 +340,14 @@
     .btn-p-green { background: #16a34a; color: #fff; }
     .btn-p-gray { background: #64748b; color: #fff; }
 
+    /* प्रिंट मीडिया नियम - बैकग्राउंड कलर हमेशा दिखेगा */
     @media print {
-      body { background: #ffffff !important; padding: 0 !important; }
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       .search-card, .print-actions-wrap, .eval-copies-container, .portal-branding-top { display: none !important; }
       .official-marksheet-card {
         display: block !important;
@@ -349,15 +355,35 @@
         box-shadow: none !important;
         padding: 5mm !important;
         width: 100% !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .marks-header-strip {
+        background: #f59e0b !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .brand-circle-logo {
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .watermark-webcopy {
+        display: block !important;
+        color: rgba(148, 163, 184, 0.2) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- NischayDesk शीर्ष लोगो -->
+  <!-- शीर्ष NischayDesk ब्रांड बार -->
   <div class="portal-branding-top">
-    <div class="top-logo-badge">ND</div>
+    <div class="top-logo-badge">N</div>
     <div class="top-branding-title">Nischay<span>Desk</span></div>
   </div>
 
@@ -398,7 +424,7 @@
     <div class="watermark-webcopy">WEB COPY</div>
 
     <div class="marksheet-header-box">
-      <div class="brand-circle-logo">ND</div>
+      <div class="brand-circle-logo">N</div>
       <div class="header-text-center">
         <h1 class="org-title">Bihar School Examination Board</h1>
         <div class="org-sub-result">RESULT / MARKS SHEET</div>
@@ -478,7 +504,7 @@
     <div class="marksheet-footer-text">
       <strong>Abbreviations used :</strong><br />
       • F -> Fail &nbsp; • C -> Compartmental &nbsp; • U/R -> Under Regulation &nbsp; • ABS -> Absent &nbsp; • INT -> Internal &nbsp; • PRAC -> Practical<br />
-      • REJ -> Mismatch Rejected &nbsp; • EXP -> Expelled &nbsp; • Disclaimer: Certified digital web copy verified by NischayDesk Evaluation Engine.
+      • REJ -> Subjective Rejected &nbsp; • EXP -> Expelled &nbsp; • Disclaimer: Certified digital web copy verified by NischayDesk Evaluation Engine.
     </div>
   </div>
 
@@ -573,7 +599,6 @@
       const completed = studentData.completedDays || {};
       const completedCount = Object.keys(completed).length;
 
-      // 🔒 यदि टेस्टिंग बाईपास बंद है तो ही 6-दिन और 7-दिन का कड़ा लॉक लागू होगा
       if (!BYPASS_LOCK_FOR_TESTING) {
         if (completedCount < 6) {
           showError(
@@ -648,18 +673,21 @@
         const examRecord = completed[sub.day];
         let theoryScore = "--";
         let intPrac = "-";
-        let isAbsent = false;
-        let isExpelled = false;
         let numericTheory = 0;
         let subjectFinalTotal = 0;
+        let isExpelled = false;
 
         if (examRecord) {
-          if (examRecord.status === "EXPELLED" || examRecord.status === "MISMATCH_REJECTED" || examRecord.isFraud) {
+          if (examRecord.status === "EXPELLED" || examRecord.isFraud) {
             isExpelled = true;
-            theoryScore = examRecord.status === "MISMATCH_REJECTED" ? "REJ" : "EXP";
+            theoryScore = "EXP";
             isCandidateFailed = true;
+            numericTheory = 0;
           } else {
-            numericTheory = examRecord.totalMarks || 0;
+            // 🌟 अगर सब्जेक्टिव रिजेक्ट भी हुआ है, तब भी ऑब्जेक्टिव के नंबर सुरक्षित रहेंगे
+            const objMarks = examRecord.objectiveMarks || 0;
+            const subMarks = examRecord.subjectiveMarks || 0;
+            numericTheory = objMarks + subMarks;
             theoryScore = String(numericTheory).padStart(3, '0');
           }
 
@@ -676,7 +704,6 @@
             aggregateMarks += subjectFinalTotal;
           }
 
-          // डाउनलोड बटन केवल दिए गए विषय के लिए
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-download-copy";
@@ -685,7 +712,6 @@
           buttonsGrid.appendChild(btn);
 
         } else {
-          isAbsent = true;
           theoryScore = BYPASS_LOCK_FOR_TESTING ? "--" : "ABS";
           if (!BYPASS_LOCK_FOR_TESTING) isCandidateFailed = true;
         }
@@ -723,11 +749,13 @@
       let engTheory = "--";
       let isEngExp = false;
       if (engRecord) {
-        if (engRecord.status === "EXPELLED" || engRecord.status === "MISMATCH_REJECTED" || engRecord.isFraud) {
+        if (engRecord.status === "EXPELLED" || engRecord.isFraud) {
           isEngExp = true;
-          engTheory = engRecord.status === "MISMATCH_REJECTED" ? "REJ" : "EXP";
+          engTheory = "EXP";
         } else {
-          engTheory = String(engRecord.totalMarks || 0).padStart(3, '0');
+          const engObj = engRecord.objectiveMarks || 0;
+          const engSubMarks = engRecord.subjectiveMarks || 0;
+          engTheory = String(engObj + engSubMarks).padStart(3, '0');
         }
 
         const btnEng = document.createElement("button");
@@ -758,7 +786,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // सब-कलेक्शन से कॉपियाँ (Image URLs या Base64) लोड करने का सुरक्षित हेल्पर
     async function getEvaluatedSheetFromDB(uid, day) {
       if (window.NischayConfig && window.NischayConfig.dbInstance) {
         try {
@@ -805,7 +832,7 @@
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेटर (CORS-Safe + ImgBB URL Supported)
+    // 🔴 सर्टिफाइड लाल कलम PDF जनरेटर (Live Progress Indicator के साथ)
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -835,14 +862,13 @@
         return;
       }
 
-      if (triggerBtn) {
-        triggerBtn.innerHTML = `<span>⚙️ PDF तैयार हो रही है...</span>`;
-      }
-
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
 
       for (let i = 0; i < pages.length; i++) {
+        if (triggerBtn) {
+          triggerBtn.innerHTML = `<span>⏳ पेज ${i + 1}/${pages.length} तैयार...</span>`;
+        }
         if (i > 0) doc.addPage();
 
         const pageItem = pages[i];
@@ -880,9 +906,9 @@
           ctx.fillStyle = "#dc2626";
           ctx.font = "bold 44px Arial";
           ctx.textAlign = "center";
-          ctx.fillText("REJECTED / EXPELLED", 600, 780);
+          ctx.fillText("SUBJECTIVE REJECTED", 600, 780);
           ctx.font = "bold 24px Arial";
-          ctx.fillText("अमान्य विषय / अनुचित सामग्री के कारण रद्द", 600, 840);
+          ctx.fillText("अमान्य विषय के कारण 0 अंक (केवल वस्तुनिष्ठ अंक मान्य)", 600, 840);
           ctx.textAlign = "left";
         } else {
           const pEval = evalPages.find(p => p.pageIndex === i);
@@ -935,7 +961,7 @@
 
         ctx.fillStyle = "#dc2626";
         ctx.font = "bold 24px Arial";
-        const remarkText = isRejected ? "अमान्य विषय की प्रतिलिपि संलग्न होने के कारण रद्द।" : (examRecord?.aiFeedback || "मूल्यांकन संपन्न।");
+        const remarkText = isRejected ? "अमान्य विषय की प्रतिलिपि संलग्न होने के कारण 0 अंक।" : (examRecord?.aiFeedback || "मूल्यांकन संपन्न।");
         ctx.fillText(`परीक्षक टिप्पणी: ${remarkText}`, 60, canvas.height - 62);
 
         const annotatedImg = canvas.toDataURL("image/jpeg", 0.85);
