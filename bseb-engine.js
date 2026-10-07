@@ -1,12 +1,12 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v28.0 Fast-Submit Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v31.0 Timed-Reset Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: ImgBB Cloud Hosting (Zero 1MB Limit), Instant 3-2-1 Cinematic Success Chamber, 
- *           Zero Client Freezing, Safe Firestore Sub-Collection Sync
+ * Features: 3-Day (72-Hour) Post-Exam Cooldown Live Timer, Safe Re-attempt Reset,
+ *           Primary Camera Locking, Document Cropper, Firestore + ImgBB Sync
  */
 
 // ---------------------------------------------------------
-// 1. Chhipi Hui API Key (Scanner Safe Resolver)
+// 1. Scanner Safe API Resolver
 // ---------------------------------------------------------
 function getProtectedKey() {
   const p1 = "QVEuQWI4Uk42SVFJQll5MTcwQ3Rta1ZF";
@@ -22,7 +22,8 @@ function getProtectedKey() {
 const BSEB_ENGINE_CONFIG = {
   PRIMARY_MODEL: "gemini-2.5-flash",
   BACKUP_MODEL: "gemini-2.5-flash",
-  IMGBB_KEY: "3e83d4f2017fafb76b04d4f92a0d901b"
+  IMGBB_KEY: "3e83d4f2017fafb76b04d4f92a0d901b",
+  RESET_COOLDOWN_DAYS: 3 // 6 दिन पूरे होने के 3 दिन बाद रीसेट अनलॉक होगा
 };
 
 // ---------------------------------------------------------
@@ -98,7 +99,7 @@ async function isExamTimeAllowed() {
 }
 
 // ---------------------------------------------------------
-// 4. Cheating Prevention Engine
+// 4. Cheating Prevention Engine (Zero Auto-Submit)
 // ---------------------------------------------------------
 let tabSwitchCount = 0;
 let isExamActive = false;
@@ -107,7 +108,7 @@ let isUploadingAnswerSheet = false;
 function setUploadMode(active) {
   isUploadingAnswerSheet = active;
   if (active) {
-    setTimeout(() => { isUploadingAnswerSheet = false; }, 180000);
+    setTimeout(() => { isUploadingAnswerSheet = false; }, 600000);
   }
 }
 
@@ -115,6 +116,12 @@ function initAntiCheatingMonitor() {
   tabSwitchCount = 0;
   isExamActive = true;
   document.addEventListener("visibilitychange", handleTabSwitch);
+
+  document.querySelectorAll('input[type="file"]').forEach(inp => {
+    inp.setAttribute("accept", "image/*");
+    inp.setAttribute("capture", "environment");
+    inp.addEventListener("click", () => setUploadMode(true));
+  });
 }
 
 function stopAntiCheatingMonitor() {
@@ -123,92 +130,113 @@ function stopAntiCheatingMonitor() {
 }
 
 function handleTabSwitch() {
-  if (!isExamActive || document.visibilityState === "visible") return;
-  if (isUploadingAnswerSheet) return;
-  triggerCheatingViolation();
-}
+  if (!isExamActive || isUploadingAnswerSheet) return;
 
-function triggerCheatingViolation() {
-  tabSwitchCount++;
-  if (tabSwitchCount <= 3) {
-    alert(`🚨 सख्त सुरक्षा चेतावनी (${tabSwitchCount}/3)!\n\nआपने परीक्षा स्क्रीन छोड़ दी है। बोर्ड परीक्षा के दौरान टैब बदलना या ऐप मिनिमाइज़ करना मना है।\n\nचौथी बार स्क्रीन छोड़ने पर पेपर स्वतः जमा हो जाएगा!`);
-  } else {
-    stopAntiCheatingMonitor();
-    alert(`⛔ सुरक्षा उल्लंघन (4/4)!\n\nपरीक्षा तुरंत स्वतः जमा की जा रही है।`);
-    if (typeof confirmFinalExamSubmission === "function") {
-      confirmFinalExamSubmission(true);
-    }
+  if (document.visibilityState === "hidden") {
+    tabSwitchCount++;
+    console.log(`[सुरक्षा सूचना] स्क्रीन स्विच दर्ज: ${tabSwitchCount}`);
+  } else if (document.visibilityState === "visible" && tabSwitchCount > 0) {
+    showNonBlockingWarning(`⚠️ ध्यान दें: परीक्षा के दौरान अन्य ऐप्स या ब्राउज़र टैब न खोलें।`);
   }
 }
 
-// ---------------------------------------------------------
-// 5. Local Database Storage (IndexedDB Safe Wrapper)
-// ---------------------------------------------------------
-function saveEvaluatedSheetToDB(uid, day, dataObj) {
-  return new Promise((resolve) => {
-    try {
-      const req = indexedDB.open("NischaySheetsDB", 1);
-      req.onupgradeneeded = (e) => {
-        const db = e.target.result;
-        if (!db.objectStoreNames.contains("sheets")) {
-          db.createObjectStore("sheets", { keyPath: "key" });
-        }
-      };
-      req.onsuccess = (e) => {
-        try {
-          const db = e.target.result;
-          const tx = db.transaction("sheets", "readwrite");
-          tx.objectStore("sheets").put({ key: `${uid}_day_${day}`, data: dataObj });
-          tx.oncomplete = () => resolve(true);
-          tx.onerror = () => resolve(false);
-        } catch(err) {
-          resolve(false);
-        }
-      };
-      req.onerror = () => resolve(false);
-    } catch(err) {
-      resolve(false);
-    }
-  });
-}
-
-function getEvaluatedSheetFromDB(uid, day) {
-  return new Promise((resolve) => {
-    try {
-      const req = indexedDB.open("NischaySheetsDB", 1);
-      req.onsuccess = (e) => {
-        try {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains("sheets")) return resolve(null);
-          const tx = db.transaction("sheets", "readonly");
-          const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
-          getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
-          getReq.onerror = () => resolve(null);
-        } catch(err) {
-          resolve(null);
-        }
-      };
-      req.onerror = () => resolve(null);
-    } catch(e) {
-      resolve(null);
-    }
-  });
+function showNonBlockingWarning(msg) {
+  let toast = document.getElementById("nischayAlertToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "nischayAlertToast";
+    toast.style.cssText = `
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      background: #ef4444; color: #ffffff; padding: 10px 18px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 700; z-index: 999999; box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      transition: opacity 0.3s ease; text-align: center; max-width: 90%;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.display = "block";
+  toast.style.opacity = "1";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => { toast.style.display = "none"; }, 300);
+  }, 4000);
 }
 
 // ---------------------------------------------------------
-// 6. HD Fast-Compressor (अक्षर साफ, साइज 60-80KB)
+// 5. इन-बिल्ट मोबाइल डॉक्यूमेंट क्रॉपर (Crop & Rotate UI)
 // ---------------------------------------------------------
-function compressCameraImage(file) {
+function openNischayImageCropper(imageFile) {
   return new Promise((resolve) => {
+    setUploadMode(true);
     const reader = new FileReader();
     reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const maxDim = 850;
-        let w = img.width;
-        let h = img.height;
+      const srcUrl = e.target.result;
+      const overlay = document.createElement("div");
+      overlay.id = "nischayCropperModal";
+      overlay.style.cssText = `
+        position: fixed; inset: 0; z-index: 99999999;
+        background: #020617; display: flex; flex-direction: column;
+        align-items: center; justify-content: space-between; padding: 14px;
+        touch-action: none; font-family: 'Plus Jakarta Sans', sans-serif;
+      `;
 
+      overlay.innerHTML = `
+        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: #fff;">
+          <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">✂️ उत्तर-पुस्तिका क्रॉप करें</span>
+          <button id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">🔄 90° घुमाएँ</button>
+        </div>
+
+        <div style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
+          <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; border: 1px solid #334155;"></canvas>
+        </div>
+
+        <div style="width: 100%; max-width: 480px; display: flex; gap: 10px;">
+          <button id="btnCancelCrop" style="flex: 1; padding: 12px; background: #334155; color: #fff; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">रद्द करें</button>
+          <button id="btnSaveCrop" style="flex: 2; padding: 12px; background: #0284c7; color: #fff; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">✓ फ़ोटो सेव करें</button>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const canvas = document.getElementById("cropCanvas");
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+      let rotation = 0;
+
+      img.onload = () => { setupCanvas(); };
+      img.src = srcUrl;
+
+      function setupCanvas() {
+        if (rotation % 180 === 0) {
+          canvas.width = img.width;
+          canvas.height = img.height;
+        } else {
+          canvas.width = img.height;
+          canvas.height = img.width;
+        }
+
+        ctx.save();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((rotation * Math.PI) / 180);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.restore();
+      }
+
+      document.getElementById("btnCropRotate").onclick = () => {
+        rotation = (rotation + 90) % 360;
+        setupCanvas();
+      };
+
+      document.getElementById("btnCancelCrop").onclick = () => {
+        overlay.remove();
+        resolve(null);
+      };
+
+      document.getElementById("btnSaveCrop").onclick = async () => {
+        const maxDim = 1200;
+        let w = canvas.width;
+        let h = canvas.height;
         if (w > maxDim || h > maxDim) {
           if (w > h) {
             h = Math.round((h * maxDim) / w);
@@ -219,27 +247,29 @@ function compressCameraImage(file) {
           }
         }
 
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, w, h);
-        ctx.filter = "contrast(1.15) brightness(1.02)";
-        ctx.drawImage(img, 0, 0, w, h);
+        const outCanvas = document.createElement("canvas");
+        outCanvas.width = w;
+        outCanvas.height = h;
+        const outCtx = outCanvas.getContext("2d");
+        outCtx.fillStyle = "#ffffff";
+        outCtx.fillRect(0, 0, w, h);
+        outCtx.filter = "contrast(1.15) brightness(1.02)";
+        outCtx.drawImage(canvas, 0, 0, w, h);
 
-        const compressed = canvas.toDataURL("image/jpeg", 0.52);
-        img.src = "";
-        canvas.width = 0;
-        canvas.height = 0;
-        resolve(compressed);
+        const finalBase64 = outCanvas.toDataURL("image/jpeg", 0.65);
+        overlay.remove();
+        resolve(finalBase64);
       };
-      img.onerror = () => resolve(e.target.result);
-      img.src = e.target.result;
     };
-    reader.onerror = () => resolve(null);
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(imageFile);
   });
+}
+
+// ---------------------------------------------------------
+// 6. HD Compressor Helper
+// ---------------------------------------------------------
+function compressCameraImage(file) {
+  return openNischayImageCropper(file);
 }
 
 // ---------------------------------------------------------
@@ -261,7 +291,7 @@ async function uploadToImgBB(base64Data) {
     }
     return null;
   } catch (err) {
-    console.warn("ImgBB upload error:", err);
+    console.warn("ImgBB upload note:", err);
     return null;
   }
 }
@@ -314,6 +344,7 @@ async function getCloudExamState(user) {
     completedDays: {},
     savedOMR: {},
     lastExamDate: null,
+    allDaysCompletedAt: null, // पूरे 6 दिन खत्म होने का समय
     activeSession: null
   };
 
@@ -506,7 +537,7 @@ function startCinematicSubmissionChamber() {
 }
 
 // ---------------------------------------------------------
-// 12. कड़क सबमिशन (Fast Cloud URL + Firestore + Instant 3-2-1 Exit)
+// 12. कड़क सबमिशन (Day 6 Completion Timestamp Track)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -556,7 +587,15 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 
   chamber.updateProgress(40, "ओएमआर डेटा व रिकॉर्ड क्लाउड में सुरक्षित हो रहा है...");
 
-  // 1. मुख्य रिकॉर्ड राइट करें
+  if (!state.completedDays) state.completedDays = {};
+  state.completedDays[day] = completedData;
+
+  // यदि 6 के 6 दिन पूरे हो गए हैं, तो 3-दिन के रीसेट टाइमर का समय दर्ज करें
+  let allDaysFinishedTime = state.allDaysCompletedAt || null;
+  if (Object.keys(state.completedDays).length >= 6 && !allDaysFinishedTime) {
+    allDaysFinishedTime = submitIso;
+  }
+
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
 
@@ -572,10 +611,10 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       isProfileLocked: true,
       completedDays: { [day]: completedData },
       lastExamDate: todayStr,
+      allDaysCompletedAt: allDaysFinishedTime,
       activeSession: null
     }, { merge: true });
 
-    // 2. ImgBB पर अपलोड और सब-कलेक्शन में लिंक सेव करना
     if (imagesList && imagesList.length > 0) {
       const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
       
@@ -600,7 +639,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     }
   }
 
-  // 3. Local IndexedDB Cache me save karein
+  // Local IndexedDB Cache
   await saveEvaluatedSheetToDB(user ? user.uid : "local", day, {
     subjectCode: subjectCode,
     subjectName: subjectName,
@@ -609,12 +648,10 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     isExpelled: false
   });
 
-  if (!state.completedDays) state.completedDays = {};
-  state.completedDays[day] = completedData;
   state.lastExamDate = todayStr;
+  state.allDaysCompletedAt = allDaysFinishedTime;
   state.activeSession = null;
 
-  // 4. Mast 3-2-1 Countdown screen & Home redirection
   await chamber.triggerFinalSuccess();
   window.location.href = "index.html";
 
@@ -652,7 +689,228 @@ async function getStudentPagesFromAnyDevice(uid, day) {
   }
   return [];
 }
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = { BSEB_PAPERS_DATABASE };
+
+// ---------------------------------------------------------
+// 14. IndexedDB Helpers
+// ---------------------------------------------------------
+function saveEvaluatedSheetToDB(uid, day, dataObj) {
+  return new Promise((resolve) => {
+    try {
+      const req = indexedDB.open("NischaySheetsDB", 1);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains("sheets")) {
+          db.createObjectStore("sheets", { keyPath: "key" });
+        }
+      };
+      req.onsuccess = (e) => {
+        try {
+          const db = e.target.result;
+          const tx = db.transaction("sheets", "readwrite");
+          tx.objectStore("sheets").put({ key: `${uid}_day_${day}`, data: dataObj });
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch(err) {
+          resolve(false);
+        }
+      };
+      req.onerror = () => resolve(false);
+    } catch(err) {
+      resolve(false);
+    }
+  });
 }
 
+function getEvaluatedSheetFromDB(uid, day) {
+  return new Promise((resolve) => {
+    try {
+      const req = indexedDB.open("NischaySheetsDB", 1);
+      req.onsuccess = (e) => {
+        try {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("sheets")) return resolve(null);
+          const tx = db.transaction("sheets", "readonly");
+          const getReq = tx.objectStore("sheets").get(`${uid}_day_${day}`);
+          getReq.onsuccess = () => resolve(getReq.result ? getReq.result.data : null);
+          getReq.onerror = () => resolve(null);
+        } catch(err) {
+          resolve(null);
+        }
+      };
+      req.onerror = () => resolve(null);
+    } catch(e) {
+      resolve(null);
+    }
+  });
+}
+
+// ---------------------------------------------------------
+// 15. 🌟 3-Day Countdown & Re-attempt Reset Engine
+// ---------------------------------------------------------
+let resetTimerInterval = null;
+
+/**
+ * डैशबोर्ड या प्रोफ़ाइल में लाइव 3-दिन की उल्टी गिनती और रीसेट बटन रेंडर करने का हेल्पर
+ * @param {HTMLElement|string} containerElementOrId 
+ * @param {Object} studentState 
+ * @param {Object} user 
+ */
+async function renderResetExamCountdown(containerElementOrId, studentState, user) {
+  const container = typeof containerElementOrId === "string" 
+                    ? document.getElementById(containerElementOrId) 
+                    : containerElementOrId;
+
+  if (!container || !studentState) return;
+
+  const completed = studentState.completedDays || {};
+  const completedCount = Object.keys(completed).length;
+
+  // यदि अभी 6 विषय पूरे नहीं हुए हैं
+  if (completedCount < 6) {
+    container.innerHTML = `
+      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; text-align: center; color: #475569;">
+        <div style="font-weight: 800; font-size: 0.92rem; color: #0284c7; margin-bottom: 4px;">📝 परीक्षा प्रगति: ${completedCount}/6 विषय पूर्ण</div>
+        <div style="font-size: 0.78rem;">पूरे 6 विषयों की परीक्षा समाप्त होने के बाद ही री-अटेम्प्ट (Reset) का विकल्प उपलब्ध होगा।</div>
+      </div>
+    `;
+    return;
+  }
+
+  // सर्वर टाइम के अनुसार 3 दिन (72 घंटे) का हिसाब
+  let serverNowMs = Date.now();
+  try {
+    serverNowMs = await getVerifiedServerTimestamp();
+  } catch(e) {}
+
+  const finishedAtStr = studentState.allDaysCompletedAt || studentState.lastExamDate || new Date().toISOString();
+  const finishMs = new Date(finishedAtStr).getTime();
+  const cooldownPeriodMs = BSEB_ENGINE_CONFIG.RESET_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
+  const unlockTimeMs = finishMs + cooldownPeriodMs;
+
+  if (resetTimerInterval) clearInterval(resetTimerInterval);
+
+  function updateClock() {
+    serverNowMs += 1000;
+    const diffMs = unlockTimeMs - serverNowMs;
+
+    if (diffMs > 0) {
+      // अभी 3 दिन पूरे नहीं हुए -> लाइव उल्टी गिनती दिखाओ
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      container.innerHTML = `
+        <div style="background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px; padding: 16px; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <div style="font-size: 0.95rem; font-weight: 800; color: #b45309; margin-bottom: 6px;">
+            ⏳ पुनः परीक्षा (Re-attempt) लॉक है
+          </div>
+          <p style="font-size: 0.8rem; color: #78350f; margin-bottom: 12px; line-height: 1.4;">
+            आपने सभी 6 विषय पूरे कर लिए हैं। बोर्ड नियमानुसार परिणाम समीक्षा हेतु 3 दिन की अवधि निर्धारित है। इसके उपरांत ही आप दोबारा परीक्षा दे सकेंगे।
+          </p>
+          <div style="display: flex; justify-content: center; gap: 8px; font-weight: 800;">
+            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
+              <span style="font-size: 1.1rem; color: #b45309;">${days}</span><br><span style="font-size: 0.65rem; color: #78350f;">दिन</span>
+            </div>
+            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
+              <span style="font-size: 1.1rem; color: #b45309;">${String(hours).padStart(2, '0')}</span><br><span style="font-size: 0.65rem; color: #78350f;">घंटे</span>
+            </div>
+            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
+              <span style="font-size: 1.1rem; color: #b45309;">${String(minutes).padStart(2, '0')}</span><br><span style="font-size: 0.65rem; color: #78350f;">मिनट</span>
+            </div>
+            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
+              <span style="font-size: 1.1rem; color: #dc2626;">${String(seconds).padStart(2, '0')}</span><br><span style="font-size: 0.65rem; color: #78350f;">सेकंड</span>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      // 3 दिन पूरे हो गए -> रीसेट बटन अनलॉक कर दो!
+      clearInterval(resetTimerInterval);
+      container.innerHTML = `
+        <div style="background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 12px; padding: 16px; text-align: center;">
+          <div style="font-size: 0.95rem; font-weight: 800; color: #047857; margin-bottom: 6px;">
+            ✅ पुनः परीक्षा (Re-attempt) उपलब्ध है!
+          </div>
+          <p style="font-size: 0.8rem; color: #065f46; margin-bottom: 14px;">
+            3 दिन की समीक्षा अवधि समाप्त हो चुकी है। आप अपना रोल कोड और रोल नंबर बनाए रखते हुए दोबारा परीक्षा दे सकते हैं।
+          </p>
+          <button type="button" id="btnTriggerResetExam" style="background: #ef4444; color: #ffffff; border: none; padding: 12px 22px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);">
+            🔄 संपूर्ण टेस्ट रीसेट करें एवं दोबारा दें
+          </button>
+        </div>
+      `;
+
+      const btn = document.getElementById("btnTriggerResetExam");
+      if (btn) {
+        btn.onclick = () => executeSafeExamReset(user);
+      }
+    }
+  }
+
+  updateClock();
+  resetTimerInterval = setInterval(updateClock, 1000);
+}
+
+// सुरक्षित रीसेट: क्रेडेंशियल्स (रोल कोड / नंबर / नाम) सुरक्षित रखते हुए टेस्ट डेटा शून्य करना
+async function executeSafeExamReset(user) {
+  if (!user) {
+    alert("⚠️ कृपया पहले लॉगिन करें!");
+    return;
+  }
+
+  const c1 = confirm("⚠️ क्या आप सचमुच अपनी पूरी वार्षिक परीक्षा रीसेट करना चाहते हैं?\n\nआपके सभी 6 विषयों के पुराने अंक एवं कॉपियाँ हटा दी जाएँगी।");
+  if (!c1) return;
+
+  const c2 = confirm("⚠️ अंतिम पुष्टि: आपका रोल कोड एवं रोल नंबर वही रहेगा, परंतु आप Day 1 (हिन्दी) से पुनः परीक्षा प्रारंभ करेंगे। क्या आप सहमत हैं?");
+  if (!c2) return;
+
+  try {
+    const db = window.NischayConfig.dbInstance;
+    const uid = user.uid;
+    const todayIso = new Date().toISOString();
+
+    // 1. फायरबेस में केवल परीक्षा का डेटा खाली करें
+    await db.collection("bseb_exams_2026").doc(uid).update({
+      completedDays: {},
+      savedOMR: {},
+      startDate: todayIso,
+      submittedAt: null,
+      lastExamDate: null,
+      allDaysCompletedAt: null,
+      activeSession: null,
+      isProfileLocked: false
+    });
+
+    // 2. सब-कलेक्शंस के पन्नों को साफ़ करें
+    for (let day = 1; day <= 6; day++) {
+      const snap = await db.collection("bseb_exams_2026").doc(uid).collection(`day_${day}_pages`).get();
+      if (!snap.empty) {
+        const batch = db.batch();
+        snap.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
+      }
+    }
+
+    // 3. Local IndexedDB साफ़ करें
+    try {
+      const req = indexedDB.open("NischaySheetsDB", 1);
+      req.onsuccess = (e) => {
+        const idb = e.target.result;
+        if (idb.objectStoreNames.contains("sheets")) {
+          const tx = idb.transaction("sheets", "readwrite");
+          for (let d = 1; d <= 6; d++) {
+            tx.objectStore("sheets").delete(`${uid}_day_${d}`);
+          }
+        }
+      };
+    } catch(err) {}
+
+    alert("✅ आपकी परीक्षा सफलतापूर्वक रीसेट कर दी गई है!\n\nअब आप Day 1 (हिन्दी) से नए सिरे से परीक्षा दे सकते हैं।");
+    window.location.reload();
+
+  } catch (error) {
+    console.error("Exam Reset Error:", error);
+    alert("❌ रीसेट करने में त्रुटि: " + error.message);
+  }
+}
