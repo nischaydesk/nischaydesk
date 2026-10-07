@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSEB Secondary Examination Result 2026 | NischayDesk</title>
+  <title>BSEB Secondary Examination Simulation Result 2026 | NischayDesk</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,7 +27,6 @@
       min-height: 100vh;
     }
 
-    /* शीर्ष NischayDesk ब्रांड बार */
     .portal-branding-top {
       display: flex;
       align-items: center;
@@ -160,12 +159,12 @@
       top: 55%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(-32deg);
-      font-size: 5rem;
+      font-size: 4.8rem;
       font-weight: 900;
       color: rgba(148, 163, 184, 0.16);
       pointer-events: none;
       white-space: nowrap;
-      letter-spacing: 8px;
+      letter-spacing: 6px;
       z-index: 1;
       user-select: none;
     }
@@ -194,15 +193,15 @@
     }
     .header-text-center { text-align: center; }
     .org-title {
-      font-size: 1.25rem;
+      font-size: 1.18rem;
       font-weight: 800;
       color: #000;
       text-transform: uppercase;
     }
     .org-sub-result {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
-      color: #1e293b;
+      color: #0284c7;
       margin: 2px 0;
     }
     .org-exam-title {
@@ -234,7 +233,6 @@
       color: #000;
     }
 
-    /* नारंगी स्ट्रिप - प्रिंट सुरक्षित */
     .marks-header-strip {
       background: #f59e0b !important;
       color: #ffffff !important;
@@ -340,7 +338,6 @@
     .btn-p-green { background: #16a34a; color: #fff; }
     .btn-p-gray { background: #64748b; color: #fff; }
 
-    /* प्रिंट मीडिया नियम - बैकग्राउंड कलर हमेशा दिखेगा */
     @media print {
       body {
         background: #ffffff !important;
@@ -381,7 +378,6 @@
 </head>
 <body>
 
-  <!-- शीर्ष NischayDesk ब्रांड बार -->
   <div class="portal-branding-top">
     <div class="top-logo-badge">N</div>
     <div class="top-branding-title">Nischay<span>Desk</span></div>
@@ -421,14 +417,14 @@
   </div>
 
   <div class="official-marksheet-card" id="officialMarksheetBox">
-    <div class="watermark-webcopy">WEB COPY</div>
+    <div class="watermark-webcopy">PRACTICE WEB COPY</div>
 
     <div class="marksheet-header-box">
       <div class="brand-circle-logo">N</div>
       <div class="header-text-center">
-        <h1 class="org-title">Bihar School Examination Board</h1>
-        <div class="org-sub-result">RESULT / MARKS SHEET</div>
-        <div class="org-exam-title">ANNUAL SECONDARY EXAMINATION - 2026</div>
+        <h1 class="org-title">BIHAR SCHOOL EXAMINATION BOARD (BSEB)</h1>
+        <div class="org-sub-result">SIMULATION MARKS SHEET</div>
+        <div class="org-exam-title">ANNUAL SECONDARY PRACTICE EXAMINATION - 2026</div>
       </div>
     </div>
 
@@ -504,7 +500,7 @@
     <div class="marksheet-footer-text">
       <strong>Abbreviations used :</strong><br />
       • F -> Fail &nbsp; • C -> Compartmental &nbsp; • U/R -> Under Regulation &nbsp; • ABS -> Absent &nbsp; • INT -> Internal &nbsp; • PRAC -> Practical<br />
-      • REJ -> Subjective Rejected &nbsp; • EXP -> Expelled &nbsp; • Disclaimer: Certified digital web copy verified by NischayDesk Evaluation Engine.
+      • REJ -> Subjective Rejected &nbsp; • EXP -> Expelled &nbsp; • <strong>Disclaimer:</strong> NischayDesk BSEB Simulation Portal. Certified digital web copy verified by NischayDesk Evaluation Engine for student practice only.
     </div>
   </div>
 
@@ -518,9 +514,6 @@
   <script src="bseb-engine.js"></script>
 
   <script>
-    // ⚙️ टेस्टिंग फ्लैग: टेस्टिंग के लिए true रखें, फाइनल लॉन्च के समय false कर दें
-    const BYPASS_LOCK_FOR_TESTING = true;
-
     let expectedCaptchaSum = 0;
 
     function generateCaptcha() {
@@ -599,41 +592,52 @@
       const completed = studentData.completedDays || {};
       const completedCount = Object.keys(completed).length;
 
-      if (!BYPASS_LOCK_FOR_TESTING) {
-        if (completedCount < 6) {
-          showError(
-            `⏳ परिणाम अभी जारी नहीं हुआ है!\n\n` +
-            `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
-            `📌 बोर्ड नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
-          );
-          generateCaptcha();
-          return;
+      // स्थिति 1: छात्र ने एक भी विषय की परीक्षा नहीं दी (0 Attempts)
+      if (completedCount === 0) {
+        showError(
+          `❌ परीक्षा में अनुपस्थित (No Exam Attempted)!\n\n` +
+          `📌 सूचना: आपका रोल कोड (${rCode}) और रोल नंबर (${rNum}) सिस्टम में पंजीकृत है, लेकिन आपने अभी तक किसी भी विषय की परीक्षा प्रारंभ नहीं की है।\n\n` +
+          `👉 कृपया परीक्षा पोर्टल पर लॉगिन करके पहले अपनी परीक्षा पूर्ण करें।`
+        );
+        generateCaptcha();
+        return;
+      }
+
+      // स्थिति 2: छात्र ने 6 से कम विषय पूरे किए हैं (1 से 5 Attempts)
+      if (completedCount < 6) {
+        showError(
+          `⏳ वार्षिक परीक्षा अभी अपूर्ण है!\n\n` +
+          `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
+          `📌 बोर्ड नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
+        );
+        generateCaptcha();
+        return;
+      }
+
+      // स्थिति 3: 6 विषय पूरे हैं, अब 7 दिन के टाइमर लॉक की सख्त जाँच (Server Time)
+      let serverNowMs = Date.now();
+      try {
+        if (typeof getVerifiedServerTimestamp === "function") {
+          serverNowMs = await getVerifiedServerTimestamp();
         }
+      } catch (e) {}
 
-        let serverNowMs = Date.now();
-        try {
-          if (typeof getVerifiedServerTimestamp === "function") {
-            serverNowMs = await getVerifiedServerTimestamp();
-          }
-        } catch (e) {}
+      const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
+      const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
 
-        const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
-        const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
+      if (serverNowMs < requiredReleaseMs) {
+        const remainingMs = requiredReleaseMs - serverNowMs;
+        const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+        const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
 
-        if (serverNowMs < requiredReleaseMs) {
-          const remainingMs = requiredReleaseMs - serverNowMs;
-          const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
-          const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-
-          showError(
-            `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
-            `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
-            `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
-          );
-          generateCaptcha();
-          return;
-        }
+        showError(
+          `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
+          `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
+          `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
+        );
+        generateCaptcha();
+        return;
       }
 
       renderOfficialMarksheet(studentData);
@@ -641,7 +645,7 @@
 
     function renderOfficialMarksheet(data) {
       document.getElementById("outUniqueId").textContent = data.uid ? data.uid.substring(0, 13).toUpperCase() : "12671309250009";
-      document.getElementById("outStudentName").textContent = (data.displayName || "PRINCE KUMAR").toUpperCase();
+      document.getElementById("outStudentName").textContent = (data.displayName || "STUDENT NAME").toUpperCase();
       document.getElementById("outFatherName").textContent = (data.fatherName || "--").toUpperCase();
       document.getElementById("outSchoolName").textContent = (data.schoolName || "HIGH SCHOOL TELWA BAZAR, JAMUI").toUpperCase();
       document.getElementById("outRollCode").textContent = data.rollCode;
@@ -669,7 +673,7 @@
       let aggregateMarks = 0;
       let isCandidateFailed = false;
 
-      // मुख्य 5 विषयों की पंक्तियाँ
+      // मुख्य 5 विषयों की चेकिंग व अंक तालिका
       mainSubjects.forEach(sub => {
         const examRecord = completed[sub.day];
         let theoryScore = "--";
@@ -686,7 +690,7 @@
             isCandidateFailed = true;
             numericTheory = 0;
           } else {
-            // 🌟 ऑब्जेक्टिव और सब्जेक्टिव दोनों अंक जुड़ेंगे
+            // OMR + AI Subjective अंक
             const objMarks = examRecord.objectiveMarks || 0;
             const subMarks = examRecord.subjectiveMarks || 0;
             numericTheory = objMarks + subMarks;
@@ -701,7 +705,7 @@
             subjectFinalTotal = numericTheory;
           }
 
-          // 🌟 बोर्ड नियम: 30 से कम नंबर तो उस विषय में F और पूरा रिजल्ट FAIL
+          // किसी भी विषय में 30 से कम तो F और फाइनल फेल
           if (!isExpelled) {
             if (subjectFinalTotal < 30) {
               isSubFailed = true;
@@ -718,14 +722,13 @@
           buttonsGrid.appendChild(btn);
 
         } else {
-          theoryScore = BYPASS_LOCK_FOR_TESTING ? "--" : "ABS";
-          if (!BYPASS_LOCK_FOR_TESTING) isCandidateFailed = true;
+          theoryScore = "ABS";
+          isCandidateFailed = true;
         }
 
-        // नंबर के बगल में F टैग
         const marksDisplay = examRecord 
           ? (isExpelled ? '000' : (isSubFailed ? `<span style="color:#dc2626; font-weight:800;">${String(subjectFinalTotal).padStart(3, '0')} F</span>` : String(subjectFinalTotal).padStart(3, '0')))
-          : '--';
+          : 'ABS';
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -740,7 +743,7 @@
         primaryTbody.appendChild(tr);
       });
 
-      // 🌟 फाइनल रिजल्ट एवं डिवीज़न निर्णय
+      // फाइनल रिजल्ट एवं डिवीज़न
       document.getElementById("outGrandTotal").textContent = String(aggregateMarks).padStart(3, '0');
       const divTag = document.getElementById("outFinalDivision");
 
@@ -758,7 +761,7 @@
         divTag.style.color = "#d97706";
       }
 
-      // अंग्रेजी विषय
+      // अंग्रेजी (Day 6)
       const engRecord = completed[englishSub.day];
       let engTheory = "--";
       let isEngExp = false;
@@ -783,12 +786,12 @@
         btnEng.onclick = () => downloadEvaluatedCopyPdf(data.uid, englishSub.day, englishSub.name, engRecord, btnEng);
         buttonsGrid.appendChild(btnEng);
       } else {
-        engTheory = BYPASS_LOCK_FOR_TESTING ? "--" : "ABS";
+        engTheory = "ABS";
       }
 
       const engDisplay = engRecord 
         ? (isEngExp ? '000' : (isEngFailed ? `<span style="color:#dc2626; font-weight:800;">${engTheory} F</span>` : engTheory))
-        : '--';
+        : 'ABS';
 
       const engTr = document.createElement("tr");
       engTr.innerHTML = `
@@ -854,7 +857,6 @@
       return null;
     }
 
-    // 🔴 सर्टिफाइड लाल कलम PDF जनरेटर (Live Progress Indicator के साथ)
     async function downloadEvaluatedCopyPdf(uid, day, subjectName, examRecord, triggerBtn) {
       const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
       if (triggerBtn) {
@@ -912,7 +914,7 @@
         ctx.fillRect(0, 0, canvas.width, 80);
         ctx.fillStyle = "#ffffff";
         ctx.font = "bold 30px 'Plus Jakarta Sans', Arial";
-        ctx.fillText(`BIHAR SCHOOL EXAMINATION BOARD, PATNA | DAY ${day}: ${subjectName} | PAGE ${i + 1}/${pages.length}`, 30, 52);
+        ctx.fillText(`BIHAR SCHOOL EXAMINATION BOARD (BSEB) | DAY ${day}: ${subjectName} | PAGE ${i + 1}/${pages.length}`, 30, 52);
 
         if (isRejected) {
           ctx.strokeStyle = "rgba(220, 38, 38, 0.85)";
@@ -936,7 +938,7 @@
           const pEval = evalPages.find(p => p.pageIndex === i);
           const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 0);
 
-          // लाल टिक (✓)
+          // लाल टिक
           ctx.strokeStyle = "#dc2626";
           ctx.lineWidth = 10;
           ctx.lineCap = "round";
@@ -944,7 +946,7 @@
           ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
           ctx.stroke();
 
-          // लाल घेरे में अंक
+          // गोल घेरे में अंक
           ctx.beginPath();
           ctx.arc(1040, 460, 70, 0, 2 * Math.PI);
           ctx.lineWidth = 6;
@@ -957,7 +959,7 @@
           ctx.fillText(`+${pageMarks}`, 1040, 478);
           ctx.textAlign = "left";
 
-          // पहले पन्ने पर BSEB गोल मुहर
+          // पहले पन्ने पर BSEB मुहर
           if (i === 0) {
             ctx.beginPath();
             ctx.arc(1040, 680, 85, 0, 2 * Math.PI);
