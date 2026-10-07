@@ -9,7 +9,7 @@ let serviceAccount;
 try {
   serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 } catch (e) {
-  console.error("FIREBASE_SERVICE_ACCOUNT सीक्रेट खाली है या अमान्य JSON है!");
+  console.error("FIREBASE_SERVICE_ACCOUNT secret is missing or invalid JSON!");
   process.exit(1);
 }
 
@@ -22,14 +22,15 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 
-async function callGeminiWithRetry(prompt, imageParts) {
-  let attempts = 0;
+async function callGemini(prompt, imageParts) {
+  // प्रिंस भाई के ओरिजिनल Flash 3.8 और 3.5 मॉडल्स
+  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
   
-  while (attempts < 3) {
-    attempts++;
+  for (const model of models) {
     try {
-      console.log(`Calling Gemini API (Attempt ${attempts})...`);
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`;
+      console.log(`Trying Gemini Model: ${model}...`);
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
+      
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -41,14 +42,14 @@ async function callGeminiWithRetry(prompt, imageParts) {
       });
       
       const data = await res.json();
+
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         return data.candidates[0].content.parts[0].text;
       }
-      console.log(`AI Response error/busy:`, JSON.stringify(data));
-      await new Promise(r => setTimeout(r, 3000));
+      
+      console.log(`API response note on ${model}:`, data.error ? data.error.message : "No content returned");
     } catch (e) {
-      console.log(`Network retry error:`, e.message);
-      await new Promise(r => setTimeout(r, 3000));
+      console.log(`Error calling ${model}:`, e.message);
     }
   }
   return null;
@@ -65,11 +66,9 @@ async function startEvaluationProcess() {
     for (const day of Object.keys(completedDays)) {
       const exam = completedDays[day];
 
-      // अगर कॉपी चेक होना बाकी है
       if (exam && exam.needsAiEvaluation === true) {
         console.log(`Evaluating UID: ${doc.id}, Day: ${day}`);
 
-        // सब-कलेक्शन से इमेज लिंक्स निकालना
         const pagesSnap = await db.collection("bseb_exams_2026")
           .doc(doc.id)
           .collection(`day_${day}_pages`)
@@ -88,7 +87,6 @@ async function startEvaluationProcess() {
               const arrayBuffer = await imgRes.arrayBuffer();
               const b64 = Buffer.from(arrayBuffer).toString("base64");
               
-              // Gemini API expects "inlineData" with camelCase
               imageParts.push({
                 inlineData: { mimeType: "image/jpeg", data: b64 }
               });
@@ -109,7 +107,7 @@ Output STRICT JSON ONLY:
 }`;
 
           console.log(`Sending ${imageParts.length} pages to Gemini AI...`);
-          const aiResponse = await callGeminiWithRetry(prompt, imageParts);
+          const aiResponse = await callGemini(prompt, imageParts);
           
           if (aiResponse) {
             try {
@@ -118,13 +116,12 @@ Output STRICT JSON ONLY:
               const marks = parseInt(parsed.totalSubjectiveMarks, 10) || 0;
               const total = (exam.objectiveMarks || 0) + marks;
 
-              // Firestore में फाइनल रिज़ल्ट लॉक करें
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
                     subjectiveMarks: marks,
                     totalMarks: total,
-                    aiFeedback: parsed.overallRemarks,
+                    aiFeedback: parsed.overallRemarks || "मूल्यांकन संपन्न",
                     status: "EVALUATED",
                     needsAiEvaluation: false,
                     evaluatedByServerAt: new Date().toISOString()
@@ -137,7 +134,7 @@ Output STRICT JSON ONLY:
               console.error("JSON parse error:", err);
             }
           } else {
-            console.error("Gemini failed to return valid evaluation response.");
+            console.error("Gemini failed to return evaluation.");
           }
         } else {
           console.log("No valid images found to evaluate.");
