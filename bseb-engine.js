@@ -1,7 +1,7 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v33.0 Perfect Touch-Cropper Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v34.0 Hybrid Fast-Upload Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: 4-Corner Responsive Touch Resizing, Real 90° Canvas Rotation,
+ * Features: Direct Fast Gallery Upload (Zero Crop/Rotate), Camera-Only 4-Corner Cropper,
  *           Zero Auto-Submit, 3-Day Cooldown Reset, Firestore Sync
  */
 
@@ -23,7 +23,7 @@ const BSEB_ENGINE_CONFIG = {
   PRIMARY_MODEL: "gemini-3.8-flash",
   BACKUP_MODEL: "gemini-3.5-flash-lite",
   IMGBB_KEY: "3e83d4f2017fafb76b04d4f92a0d901b",
-  RESET_COOLDOWN_DAYS: 3 // 6 दिन पूरे होने के 3 दिन बाद रीसेट खुलेगा
+  RESET_COOLDOWN_DAYS: 3
 };
 
 // ---------------------------------------------------------
@@ -117,7 +117,6 @@ function initAntiCheatingMonitor() {
   isExamActive = true;
   document.addEventListener("visibilitychange", handleTabSwitch);
 
-  // केवल क्लिक पर 10-मिनट ग्रेस मोड चालू होगा (इनपुट के capture एट्रिब्यूट से कोई छेड़छाड़ नहीं होगी)
   document.querySelectorAll('input[type="file"]').forEach(inp => {
     inp.addEventListener("click", () => setUploadMode(true));
   });
@@ -162,9 +161,52 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. 🌟 4-कॉर्नर असली टच-क्रॉपर इंजन (Touch Resizing & Box Drag)
+// 5. ⚡ गैलरी के लिए डायरेक्ट फास्ट कंप्रेसर (No Crop / No Rotate)
 // ---------------------------------------------------------
-function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
+function compressDirectImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxDim = 1050; // स्पष्ट लिखावट, साइज 60-80KB
+        let w = img.width;
+        let h = img.height;
+
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+        ctx.filter = "contrast(1.15) brightness(1.02)";
+        ctx.drawImage(img, 0, 0, w, h);
+
+        const compressed = canvas.toDataURL("image/jpeg", 0.55);
+        resolve(compressed);
+      };
+      img.onerror = () => resolve(null);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+
+// ---------------------------------------------------------
+// 6. 📸 सिर्फ कैमरा फोटो के लिए 4-कॉर्नर टच-क्रॉपर व रोटेटर
+// ---------------------------------------------------------
+function openCameraImageCropper(imageFile, pageIndex = 1) {
   return new Promise((resolve) => {
     setUploadMode(true);
     const reader = new FileReader();
@@ -183,7 +225,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
       overlay.innerHTML = `
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: #fff;">
           <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">
-            ✂️ पन्ना ${pageIndex}/${totalPages}: कोने खींचकर क्रॉप करें
+            📸 कैमरा पन्ना ${pageIndex}: कोने खींचकर क्रॉप करें
           </span>
           <button type="button" id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">
             🔄 90° घुमाएँ
@@ -193,13 +235,11 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         <div id="cropperViewport" style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
           <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; object-fit: contain;"></canvas>
           
-          <!-- क्रॉपिंग बॉक्स गाइड -->
           <div id="cropBoxGuide" style="position: absolute; border: 2.5px dashed #38bdf8; background: rgba(56, 189, 248, 0.18); box-sizing: border-box; touch-action: none; cursor: move;">
-            <!-- 4 कोने (36px चौड़े टच हैंडल ताकि उंगली से आसानी से खींचा जा सके) -->
-            <div class="crop-corner-handle" data-corner="tl" style="position: absolute; top: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nwse-resize;"></div>
-            <div class="crop-corner-handle" data-corner="tr" style="position: absolute; top: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nesw-resize;"></div>
-            <div class="crop-corner-handle" data-corner="bl" style="position: absolute; bottom: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nesw-resize;"></div>
-            <div class="crop-corner-handle" data-corner="br" style="position: absolute; bottom: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nwse-resize;"></div>
+            <div class="crop-corner-handle" data-corner="tl" style="position: absolute; top: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
+            <div class="crop-corner-handle" data-corner="tr" style="position: absolute; top: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
+            <div class="crop-corner-handle" data-corner="bl" style="position: absolute; bottom: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
+            <div class="crop-corner-handle" data-corner="br" style="position: absolute; bottom: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
           </div>
         </div>
 
@@ -271,7 +311,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         cropGuide.style.height = `${cropState.h}px`;
       }
 
-      // 🌟 1. असली 4-कॉर्नर टच रिसाइजिंग (Corner Handle Logic)
+      // 4-कोने खींचने की कार्यप्रणाली
       let activeHandle = null;
       let startPointerX = 0, startPointerY = 0;
       let initialBox = { x: 0, y: 0, w: 0, h: 0 };
@@ -279,7 +319,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
       overlay.querySelectorAll(".crop-corner-handle").forEach(hEl => {
         hEl.addEventListener("pointerdown", (ev) => {
           ev.preventDefault();
-          ev.stopPropagation(); // मुख्य डब्बे के ड्रैग को तुरंत ब्लॉक करें
+          ev.stopPropagation();
           activeHandle = hEl.getAttribute("data-corner");
           startPointerX = ev.clientX;
           startPointerY = ev.clientY;
@@ -328,7 +368,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         });
       });
 
-      // 🌟 2. पूरे बॉक्स को बीच से पकड़कर खिसकाना (Move)
+      // बॉक्स को बीच से खिसकाना
       cropGuide.addEventListener("pointerdown", (ev) => {
         if (ev.target.classList.contains("crop-corner-handle")) return;
         ev.preventDefault();
@@ -394,7 +434,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
           srcH = Math.min(canvas.height - srcY, cropState.h * scaleY);
         }
 
-        const maxDim = 1100;
+        const maxDim = 1050;
         let outW = srcW;
         let outH = srcH;
         if (outW > maxDim || outH > maxDim) {
@@ -415,7 +455,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         eCtx.filter = "contrast(1.18) brightness(1.02)";
         eCtx.drawImage(canvas, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
 
-        const finalB64 = exportCanvas.toDataURL("image/jpeg", 0.62);
+        const finalB64 = exportCanvas.toDataURL("image/jpeg", 0.60);
         overlay.remove();
         resolve(finalB64);
       }
@@ -424,12 +464,8 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
   });
 }
 
-function compressCameraImage(file, index = 1, total = 1) {
-  return openNischayImageCropper(file, index, total);
-}
-
 // ---------------------------------------------------------
-// 6. ImgBB Cloud Uploader Helper
+// 7. ImgBB Cloud Uploader Helper
 // ---------------------------------------------------------
 async function uploadToImgBB(base64Data) {
   try {
@@ -453,7 +489,7 @@ async function uploadToImgBB(base64Data) {
 }
 
 // ---------------------------------------------------------
-// 7. Unique Credentials Generator
+// 8. Unique Credentials Generator
 // ---------------------------------------------------------
 function generateUniqueCredentials(uid) {
   if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
@@ -474,7 +510,7 @@ function generateUniqueCredentials(uid) {
 }
 
 // ---------------------------------------------------------
-// 8. Cloud Exam State Sync
+// 9. Cloud Exam State Sync
 // ---------------------------------------------------------
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -548,7 +584,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
 }
 
 // ---------------------------------------------------------
-// 9. Voice Alert
+// 10. Voice Alert
 // ---------------------------------------------------------
 function speakHindiAlert(text) {
   try {
@@ -566,7 +602,7 @@ function speakHindiAlert(text) {
 }
 
 // ---------------------------------------------------------
-// 10. Fast Cinematic Submission Chamber
+// 11. Fast Cinematic Submission Chamber
 // ---------------------------------------------------------
 function startCinematicSubmissionChamber() {
   const oldModal = document.getElementById("nischayFastChamberModal");
@@ -693,7 +729,7 @@ function startCinematicSubmissionChamber() {
 }
 
 // ---------------------------------------------------------
-// 11. सबमिशन हैंडलर
+// 12. सबमिशन हैंडलर
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -812,7 +848,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 }
 
 // ---------------------------------------------------------
-// 12. Local IndexedDB Cache
+// 13. Local IndexedDB Cache
 // ---------------------------------------------------------
 function saveEvaluatedSheetToDB(uid, day, dataObj) {
   return new Promise((resolve) => {
@@ -866,7 +902,7 @@ function getEvaluatedSheetFromDB(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 13. Safe Exam Re-attempt Reset Engine
+// 14. Safe Exam Re-attempt Reset Engine
 // ---------------------------------------------------------
 async function executeSafeExamReset(user) {
   if (!user) {
