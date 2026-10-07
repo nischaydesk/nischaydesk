@@ -20,8 +20,8 @@ function getProtectedKey() {
 }
 
 const BSEB_ENGINE_CONFIG = {
-  PRIMARY_MODEL: "gemini-2.5-flash",
-  BACKUP_MODEL: "gemini-2.5-flash",
+  PRIMARY_MODEL: "gemini-3.8-flash",
+  BACKUP_MODEL: "gemini-3.5-flash-lite",
   IMGBB_KEY: "3e83d4f2017fafb76b04d4f92a0d901b",
   RESET_COOLDOWN_DAYS: 3 // 6 दिन पूरे होने के 3 दिन बाद रीसेट अनलॉक होगा
 };
