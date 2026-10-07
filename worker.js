@@ -122,7 +122,6 @@ async function startEvaluationProcess() {
         }
 
         if (imageParts.length > 0) {
-          // एआई के लिए कड़ा और स्टेप-बाय-स्टेप मूल्यांकन निर्देश
           const prompt = `You are the Official Chief Examiner of Bihar School Examination Board (BSEB, Patna).
 Evaluate this Class 10th Board subjective answer sheet strictly based on official BSEB marking schemes.
 
@@ -175,7 +174,6 @@ STRICT STEP-BY-STEP EVALUATION RULES:
               const total = (exam.objectiveMarks || 0) + marks;
               const feedback = parsed.overallRemarks || "मूल्यांकन संपन्न";
 
-              // Firestore में पूरा परिणाम सुरक्षित दर्ज करें
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
