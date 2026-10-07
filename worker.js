@@ -4,21 +4,31 @@
  */
 const admin = require("firebase-admin");
 
-// 1. Firebase Admin Init
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+// 1. Firebase Admin Init (Safe Parse)
+let serviceAccount;
+try {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} catch (e) {
+  console.error("FIREBASE_SERVICE_ACCOUNT सीक्रेट खाली है या अमान्य JSON है!");
+  process.exit(1);
+}
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+}
+
 const db = admin.firestore();
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 
 async function callGeminiWithRetry(prompt, imageParts) {
-  let success = false;
   let attempts = 0;
   
-  while (!success && attempts < 5) {
+  while (attempts < 3) {
     attempts++;
     try {
+      console.log(`Calling Gemini API (Attempt ${attempts})...`);
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`;
       const res = await fetch(url, {
         method: "POST",
@@ -34,11 +44,11 @@ async function callGeminiWithRetry(prompt, imageParts) {
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         return data.candidates[0].content.parts[0].text;
       }
-      console.log(`AI busy, retry attempt ${attempts}...`);
-      await new Promise(r => setTimeout(r, 4000));
+      console.log(`AI Response error/busy:`, JSON.stringify(data));
+      await new Promise(r => setTimeout(r, 3000));
     } catch (e) {
-      console.log(`Network retry ${attempts}...`);
-      await new Promise(r => setTimeout(r, 4000));
+      console.log(`Network retry error:`, e.message);
+      await new Promise(r => setTimeout(r, 3000));
     }
   }
   return null;
@@ -66,16 +76,25 @@ async function startEvaluationProcess() {
           .orderBy("pageNumber", "asc")
           .get();
 
+        console.log(`Found ${pagesSnap.docs.length} uploaded pages for Day ${day}.`);
+
         let imageParts = [];
         for (const pDoc of pagesSnap.docs) {
           const imgUrl = pDoc.data().imageUrl;
           if (imgUrl) {
-            const imgRes = await fetch(imgUrl);
-            const arrayBuffer = await imgRes.arrayBuffer();
-            const b64 = Buffer.from(arrayBuffer).toString("base64");
-            imageParts.push({
-              inline_data: { mime_type: "image/jpeg", data: b64 }
-            });
+            try {
+              console.log(`Downloading page image: ${imgUrl}`);
+              const imgRes = await fetch(imgUrl);
+              const arrayBuffer = await imgRes.arrayBuffer();
+              const b64 = Buffer.from(arrayBuffer).toString("base64");
+              
+              // Gemini API expects "inlineData" with camelCase
+              imageParts.push({
+                inlineData: { mimeType: "image/jpeg", data: b64 }
+              });
+            } catch (err) {
+              console.error(`Failed to download image ${imgUrl}:`, err.message);
+            }
           }
         }
 
@@ -89,7 +108,9 @@ Output STRICT JSON ONLY:
   "status": "EVALUATED"
 }`;
 
+          console.log(`Sending ${imageParts.length} pages to Gemini AI...`);
           const aiResponse = await callGeminiWithRetry(prompt, imageParts);
+          
           if (aiResponse) {
             try {
               const cleanJson = aiResponse.replace(/```json|```/g, "").trim();
@@ -111,11 +132,15 @@ Output STRICT JSON ONLY:
                 }
               }, { merge: true });
 
-              console.log(`✓ Successfully Evaluated & Saved: UID ${doc.id}, Day ${day}`);
+              console.log(`✓ Successfully Evaluated & Saved: UID ${doc.id}, Day ${day}, Subjective Marks: ${marks}, Total: ${total}`);
             } catch (err) {
               console.error("JSON parse error:", err);
             }
+          } else {
+            console.error("Gemini failed to return valid evaluation response.");
           }
+        } else {
+          console.log("No valid images found to evaluate.");
         }
       }
     }
@@ -125,4 +150,7 @@ Output STRICT JSON ONLY:
 startEvaluationProcess().then(() => {
   console.log("Evaluation run completed.");
   process.exit(0);
+}).catch(err => {
+  console.error("Fatal error:", err);
+  process.exit(1);
 });
