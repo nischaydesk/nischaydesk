@@ -499,7 +499,7 @@
               (कम से कम 1 और अधिकतम 26 पन्नों की साफ़ तस्वीरें)
             </p>
             
-            <!-- 🌟 दो स्पष्ट अलग-अलग विकल्प -->
+            <!-- 🌟 दो अलग-अलग विकल्प: कैमरा और गैलरी -->
             <div class="upload-dual-actions">
               <!-- कैमरा विकल्प: capture="environment" से सीधा बैक कैमरा खुलेगा -->
               <label for="cameraUploadInput" class="btn-upload-choice btn-choice-cam">
@@ -1114,10 +1114,14 @@
       badge.textContent = `⏳ गैलरी से ${files.length} पन्ने तेजी से लोड हो रहे हैं...`;
 
       for (let i = 0; i < files.length; i++) {
-        const nextNum = uploadedPagesList.length + 1;
+        // UI को सांस लेने के लिए 5ms का समय (ताकि फोन हैंग न हो)
+        await new Promise(r => setTimeout(r, 5));
+
         const compressed = await compressDirectImage(files[i]);
         if (compressed) {
+          const nextNum = uploadedPagesList.length + 1;
           uploadedPagesList.push({ pageNumber: nextNum, dataUrl: compressed });
+          updateUploadedDisplay(); // हर पन्ने के साथ लाइव काउंटर अपडेट होगा
         }
       }
 
