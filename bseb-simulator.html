@@ -440,7 +440,8 @@
               (कम से कम 1 और अधिकतम 26 पन्नों की साफ़ तस्वीरें)
             </p>
             
-            <input type="file" id="masterAnswerInput" accept="image/*" capture="environment" multiple onchange="handleMasterUpload(event)" style="width:100%; max-width:300px; padding:10px; border-radius:8px; border:1px solid var(--bseb-border); background:var(--bseb-input-bg); color:var(--bseb-text); font-size:0.8rem;" />
+            <!-- 🌟 capture हटा दिया गया है ताकि कैमरा और गैलरी दोनों का विकल्प खुले -->
+            <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width:100%; max-width:300px; padding:10px; border-radius:8px; border:1px solid var(--bseb-border); background:var(--bseb-input-bg); color:var(--bseb-text); font-size:0.8rem;" />
             <div id="uploadStatusText" style="margin-top:12px; font-weight:800; font-size:0.85rem; color:var(--bseb-success);"></div>
           </div>
         </div>
@@ -516,7 +517,6 @@
 
       cloudState = await getCloudExamState(user);
       if (cloudState) {
-        // 🌟 6 दिन पूरे होने की जाँच: यदि 6 दिन पूरे हैं, तो तुरंत 3-दिन का डिजिटल टाइमर पॉपअप दिखाओ
         const completed = cloudState.completedDays || {};
         if (Object.keys(completed).length >= 6) {
           showCooldownModal(cloudState);
@@ -556,7 +556,6 @@
       }
     }
 
-    // 🌟 3 दिन का डिजिटल टाइमर व रीसेट हैंडलर
     async function showCooldownModal(state) {
       const modal = document.getElementById("resetCooldownModal");
       const clockBox = document.getElementById("countdownClockDisplay");
@@ -592,7 +591,6 @@
             <div class="timer-digit-card"><span class="digit-val" style="color:#ef4444;">${String(seconds).padStart(2, '0')}</span><span class="digit-lbl">सेकंड</span></div>
           `;
         } else {
-          // 3 दिन पूरे -> रीसेट बटन अनलॉक!
           clearInterval(cooldownTimerInterval);
           clockBox.style.display = "none";
           document.getElementById("cooldownModalTitle").textContent = "✅ पुनः परीक्षा उपलब्ध है!";
@@ -964,6 +962,7 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
+    // 🌟 बहु-फ़ोटो (कैमरा या गैलरी) क्रॉपर लूप
     async function handleMasterUpload(e) {
       const files = Array.from(e.target.files);
       const txt = document.getElementById("uploadStatusText");
@@ -971,7 +970,7 @@
 
       const MAX_ALLOWED = 26;
       if (files.length > MAX_ALLOWED) {
-        alert(`⚠️ अधिकतम ${MAX_ALLOWED} पन्ने ही अपलोड कर सकते हैं!`);
+        alert(`⚠️ सीमा समाप्त! आप अधिकतम ${MAX_ALLOWED} पन्ने ही अपलोड कर सकते हैं।`);
         e.target.value = "";
         return;
       }
@@ -980,15 +979,20 @@
       txt.style.color = "var(--bseb-accent)";
 
       for (let i = 0; i < files.length; i++) {
-        txt.textContent = `⏳ पन्ना ${i + 1}/${files.length} तैयार हो रहा है...`;
-        const compressed = await compressCameraImage(files[i]);
+        txt.textContent = `⏳ पन्ना ${i + 1}/${files.length} समायोजित करें...`;
+        const compressed = await compressCameraImage(files[i], i + 1, files.length);
         if (compressed) {
-          uploadedPagesList.push({ pageNumber: i + 1, dataUrl: compressed });
+          uploadedPagesList.push({ pageNumber: uploadedPagesList.length + 1, dataUrl: compressed });
         }
       }
 
-      txt.textContent = `✓ कुल ${uploadedPagesList.length} पन्ने लोड हो गए!`;
-      txt.style.color = "var(--bseb-success)";
+      if (uploadedPagesList.length > 0) {
+        txt.textContent = `✓ कुल ${uploadedPagesList.length} पन्ने तैयार हैं!`;
+        txt.style.color = "var(--bseb-success)";
+      } else {
+        txt.textContent = "⚠️ कोई पन्ना नहीं चुना गया।";
+        txt.style.color = "var(--bseb-danger)";
+      }
     }
 
     function switchExamTab(tab) {
@@ -1018,8 +1022,15 @@
           alert("कृपया कम से कम 1 OMR प्रश्न का उत्तर दें!");
           return;
         }
-        if (uploadedPagesList.length === 0) {
-          alert("कृपया अपनी उत्तर-पुस्तिका का कम से कम 1 पन्ना अपलोड करें!");
+
+        // 🌟 न्यूनतम 1 और अधिकतम 26 पन्ने का कड़ा नियम
+        if (uploadedPagesList.length < 1) {
+          alert("⚠️ कृपया अपनी उत्तर-पुस्तिका का कम से कम 1 पन्ना अपलोड करें!");
+          return;
+        }
+
+        if (uploadedPagesList.length > 26) {
+          alert("⚠️ अधिकतम 26 पन्ने ही मान्य हैं!");
           return;
         }
 
