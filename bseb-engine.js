@@ -1,8 +1,8 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v34.0 Hybrid Fast-Upload Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v35.0 Ultimate Touch & Fast-Upload Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: Direct Fast Gallery Upload (Zero Crop/Rotate), Camera-Only 4-Corner Cropper,
- *           Zero Auto-Submit, 3-Day Cooldown Reset, Firestore Sync
+ * Features: High-Res Safe Gallery Upload (Direct 60-80KB), Responsive 4-Corner Touch Cropper,
+ *           Anti-Crash Memory Handling, Zero Auto-Submit, 3-Day Reset Cooldown
  */
 
 // ---------------------------------------------------------
@@ -161,306 +161,329 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. ⚡ गैलरी के लिए डायरेक्ट फास्ट कंप्रेसर (No Crop / No Rotate)
+// 5. ⚡ मेमोरी-सेफ़ डायरेक्ट गैलरी कंप्रेसर (15MB-50MB इमेज भी 0.1s में रेडी)
 // ---------------------------------------------------------
-function compressDirectImage(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const maxDim = 1050; // स्पष्ट लिखावट, साइज 60-80KB
-        let w = img.width;
-        let h = img.height;
+async function compressDirectImage(file) {
+  try {
+    let sourceWidth, sourceHeight, imgSource;
 
-        if (w > maxDim || h > maxDim) {
-          if (w > h) {
-            h = Math.round((h * maxDim) / w);
-            w = maxDim;
-          } else {
-            w = Math.round((w * maxDim) / h);
-            h = maxDim;
-          }
-        }
+    if (window.createImageBitmap) {
+      imgSource = await createImageBitmap(file);
+      sourceWidth = imgSource.width;
+      sourceHeight = imgSource.height;
+    } else {
+      imgSource = await new Promise((resolve, reject) => {
+        const img = new Image();
+        const objUrl = URL.createObjectURL(file);
+        img.onload = () => { URL.revokeObjectURL(objUrl); resolve(img); };
+        img.onerror = () => { URL.revokeObjectURL(objUrl); reject(null); };
+        img.src = objUrl;
+      });
+      sourceWidth = imgSource.width;
+      sourceHeight = imgSource.height;
+    }
 
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, w, h);
-        ctx.filter = "contrast(1.15) brightness(1.02)";
-        ctx.drawImage(img, 0, 0, w, h);
+    const maxDim = 1050; // साफ़ लिखावट, साइज 60-80KB
+    let w = sourceWidth;
+    let h = sourceHeight;
 
-        const compressed = canvas.toDataURL("image/jpeg", 0.55);
-        resolve(compressed);
-      };
-      img.onerror = () => resolve(null);
-      img.src = e.target.result;
-    };
-    reader.onerror = () => resolve(null);
-    reader.readAsDataURL(file);
-  });
+    if (w > maxDim || h > maxDim) {
+      if (w > h) {
+        h = Math.round((h * maxDim) / w);
+        w = maxDim;
+      } else {
+        w = Math.round((w * maxDim) / h);
+        h = maxDim;
+      }
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d", { alpha: false });
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+    ctx.filter = "contrast(1.15) brightness(1.02)";
+    ctx.drawImage(imgSource, 0, 0, w, h);
+
+    if (imgSource.close) imgSource.close();
+
+    const compressed = canvas.toDataURL("image/jpeg", 0.58);
+    canvas.width = 0;
+    canvas.height = 0;
+    return compressed;
+  } catch (err) {
+    console.error("Direct Compress Error:", err);
+    return null;
+  }
 }
 
 // ---------------------------------------------------------
-// 6. 📸 सिर्फ कैमरा फोटो के लिए 4-कॉर्नर टच-क्रॉपर व रोटेटर
+// 6. 📸 सिर्फ कैमरा फोटो हेतु 4-कॉर्नर असली टच-क्रॉपर व रोटेटर
 // ---------------------------------------------------------
 function openCameraImageCropper(imageFile, pageIndex = 1) {
   return new Promise((resolve) => {
     setUploadMode(true);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const srcUrl = e.target.result;
-      const overlay = document.createElement("div");
-      overlay.id = "nischayCropperModal";
-      overlay.style.cssText = `
-        position: fixed; inset: 0; z-index: 99999999;
-        background: #020617; display: flex; flex-direction: column;
-        align-items: center; justify-content: space-between; padding: 12px;
-        touch-action: none; -webkit-user-select: none; user-select: none;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-      `;
 
-      overlay.innerHTML = `
-        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: #fff;">
-          <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">
-            📸 कैमरा पन्ना ${pageIndex}: कोने खींचकर क्रॉप करें
-          </span>
-          <button type="button" id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">
-            🔄 90° घुमाएँ
-          </button>
-        </div>
+    const objUrl = URL.createObjectURL(imageFile);
+    const overlay = document.createElement("div");
+    overlay.id = "nischayCropperModal";
+    overlay.style.cssText = `
+      position: fixed; inset: 0; z-index: 99999999;
+      background: #020617; display: flex; flex-direction: column;
+      align-items: center; justify-content: space-between; padding: 12px;
+      touch-action: none; -webkit-user-select: none; user-select: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    `;
 
-        <div id="cropperViewport" style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
-          <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; object-fit: contain;"></canvas>
-          
-          <div id="cropBoxGuide" style="position: absolute; border: 2.5px dashed #38bdf8; background: rgba(56, 189, 248, 0.18); box-sizing: border-box; touch-action: none; cursor: move;">
-            <div class="crop-corner-handle" data-corner="tl" style="position: absolute; top: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
-            <div class="crop-corner-handle" data-corner="tr" style="position: absolute; top: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
-            <div class="crop-corner-handle" data-corner="bl" style="position: absolute; bottom: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
-            <div class="crop-corner-handle" data-corner="br" style="position: absolute; bottom: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10;"></div>
+    overlay.innerHTML = `
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: #fff;">
+        <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">
+          📸 कैमरा पन्ना ${pageIndex}: कोने खींचकर क्रॉप करें
+        </span>
+        <button type="button" id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">
+          🔄 90° घुमाएँ
+        </button>
+      </div>
+
+      <div id="cropperViewport" style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
+        <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none;"></canvas>
+        
+        <div id="cropBoxGuide" style="position: absolute; border: 2.5px dashed #38bdf8; background: rgba(56, 189, 248, 0.18); box-sizing: border-box; touch-action: none; cursor: move;">
+          <div class="crop-corner-handle" data-corner="tl" style="position: absolute; top: -20px; left: -20px; width: 44px; height: 44px; background: radial-gradient(circle, #38bdf8 45%, transparent 50%); border-radius: 50%; touch-action: none; z-index: 50;">
+            <div style="position: absolute; top: 12px; left: 12px; width: 20px; height: 20px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%;"></div>
+          </div>
+          <div class="crop-corner-handle" data-corner="tr" style="position: absolute; top: -20px; right: -20px; width: 44px; height: 44px; background: radial-gradient(circle, #38bdf8 45%, transparent 50%); border-radius: 50%; touch-action: none; z-index: 50;">
+            <div style="position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%;"></div>
+          </div>
+          <div class="crop-corner-handle" data-corner="bl" style="position: absolute; bottom: -20px; left: -20px; width: 44px; height: 44px; background: radial-gradient(circle, #38bdf8 45%, transparent 50%); border-radius: 50%; touch-action: none; z-index: 50;">
+            <div style="position: absolute; bottom: 12px; left: 12px; width: 20px; height: 20px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%;"></div>
+          </div>
+          <div class="crop-corner-handle" data-corner="br" style="position: absolute; bottom: -20px; right: -20px; width: 44px; height: 44px; background: radial-gradient(circle, #38bdf8 45%, transparent 50%); border-radius: 50%; touch-action: none; z-index: 50;">
+            <div style="position: absolute; bottom: 12px; right: 12px; width: 20px; height: 20px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%;"></div>
           </div>
         </div>
+      </div>
 
-        <div style="width: 100%; max-width: 480px; display: flex; gap: 8px;">
-          <button type="button" id="btnCancelCrop" style="flex: 1; padding: 12px; background: #334155; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
-            रद्द करें
-          </button>
-          <button type="button" id="btnKeepFull" style="flex: 1; padding: 12px; background: #475569; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
-            पूरा पन्ना रखें
-          </button>
-          <button type="button" id="btnSaveCrop" style="flex: 1.5; padding: 12px; background: #0284c7; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
-            ✓ फ़ोटो सेव करें
-          </button>
-        </div>
-      `;
+      <div style="width: 100%; max-width: 480px; display: flex; gap: 8px;">
+        <button type="button" id="btnCancelCrop" style="flex: 1; padding: 12px; background: #334155; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
+          रद्द करें
+        </button>
+        <button type="button" id="btnKeepFull" style="flex: 1; padding: 12px; background: #475569; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
+          पूरा पन्ना रखें
+        </button>
+        <button type="button" id="btnSaveCrop" style="flex: 1.5; padding: 12px; background: #0284c7; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
+          ✓ फ़ोटो सेव करें
+        </button>
+      </div>
+    `;
 
-      document.body.appendChild(overlay);
+    document.body.appendChild(overlay);
 
-      const canvas = document.getElementById("cropCanvas");
-      const ctx = canvas.getContext("2d");
-      const cropGuide = document.getElementById("cropBoxGuide");
-      const viewport = document.getElementById("cropperViewport");
-      const img = new Image();
-      let rotation = 0;
+    const canvas = document.getElementById("cropCanvas");
+    const ctx = canvas.getContext("2d");
+    const cropGuide = document.getElementById("cropBoxGuide");
+    const viewport = document.getElementById("cropperViewport");
+    const img = new Image();
+    let rotation = 0;
 
-      let cropState = { x: 30, y: 30, w: 240, h: 320, isFull: false };
+    let cropState = { x: 30, y: 30, w: 240, h: 320, isFull: false };
 
-      img.onload = () => {
-        setupCanvas();
-        resetCropGuide();
-      };
-      img.src = srcUrl;
+    img.onload = () => {
+      URL.revokeObjectURL(objUrl);
+      setupCanvas();
+      resetCropGuide();
+    };
+    img.src = objUrl;
 
-      function setupCanvas() {
-        if (rotation % 180 === 0) {
-          canvas.width = img.width;
-          canvas.height = img.height;
-        } else {
-          canvas.width = img.height;
-          canvas.height = img.width;
-        }
-
-        ctx.save();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate((rotation * Math.PI) / 180);
-        ctx.drawImage(img, -img.width / 2, -img.height / 2);
-        ctx.restore();
+    function setupCanvas() {
+      if (rotation % 180 === 0) {
+        canvas.width = img.width;
+        canvas.height = img.height;
+      } else {
+        canvas.width = img.height;
+        canvas.height = img.width;
       }
 
-      function resetCropGuide() {
-        const rect = canvas.getBoundingClientRect();
-        const vRect = viewport.getBoundingClientRect();
-        const leftOff = rect.left - vRect.left;
-        const topOff = rect.top - vRect.top;
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate((rotation * Math.PI) / 180);
+      ctx.drawImage(img, -img.width / 2, -img.height / 2);
+      ctx.restore();
+    }
 
-        cropState.x = Math.max(0, leftOff + 10);
-        cropState.y = Math.max(0, topOff + 10);
-        cropState.w = Math.max(100, rect.width - 20);
-        cropState.h = Math.max(100, rect.height - 20);
+    function resetCropGuide() {
+      const rect = canvas.getBoundingClientRect();
+      const vRect = viewport.getBoundingClientRect();
+      const leftOff = rect.left - vRect.left;
+      const topOff = rect.top - vRect.top;
 
-        updateGuideStyles();
-      }
+      cropState.x = Math.max(0, leftOff + 10);
+      cropState.y = Math.max(0, topOff + 10);
+      cropState.w = Math.max(100, rect.width - 20);
+      cropState.h = Math.max(100, rect.height - 20);
 
-      function updateGuideStyles() {
-        cropGuide.style.left = `${cropState.x}px`;
-        cropGuide.style.top = `${cropState.y}px`;
-        cropGuide.style.width = `${cropState.w}px`;
-        cropGuide.style.height = `${cropState.h}px`;
-      }
+      updateGuideStyles();
+    }
 
-      // 4-कोने खींचने की कार्यप्रणाली
-      let activeHandle = null;
-      let startPointerX = 0, startPointerY = 0;
-      let initialBox = { x: 0, y: 0, w: 0, h: 0 };
+    function updateGuideStyles() {
+      cropGuide.style.left = `${cropState.x}px`;
+      cropGuide.style.top = `${cropState.y}px`;
+      cropGuide.style.width = `${cropState.w}px`;
+      cropGuide.style.height = `${cropState.h}px`;
+    }
 
-      overlay.querySelectorAll(".crop-corner-handle").forEach(hEl => {
-        hEl.addEventListener("pointerdown", (ev) => {
-          ev.preventDefault();
-          ev.stopPropagation();
-          activeHandle = hEl.getAttribute("data-corner");
-          startPointerX = ev.clientX;
-          startPointerY = ev.clientY;
-          initialBox = { ...cropState };
-          hEl.setPointerCapture(ev.pointerId);
+    // 🌟 1. कोनों को खींचकर छोटा/बड़ा (Resize) करने का पक्का हैंडलर
+    let activeCorner = null;
+    let startX = 0, startY = 0;
+    let origBox = { x: 0, y: 0, w: 0, h: 0 };
 
-          const onCornerMove = (mEv) => {
-            if (!activeHandle) return;
-            const dx = mEv.clientX - startPointerX;
-            const dy = mEv.clientY - startPointerY;
-            const minSize = 70;
-
-            if (activeHandle === "br") {
-              cropState.w = Math.max(minSize, initialBox.w + dx);
-              cropState.h = Math.max(minSize, initialBox.h + dy);
-            } else if (activeHandle === "bl") {
-              const targetW = Math.max(minSize, initialBox.w - dx);
-              cropState.x = initialBox.x + (initialBox.w - targetW);
-              cropState.w = targetW;
-              cropState.h = Math.max(minSize, initialBox.h + dy);
-            } else if (activeHandle === "tr") {
-              cropState.w = Math.max(minSize, initialBox.w + dx);
-              const targetH = Math.max(minSize, initialBox.h - dy);
-              cropState.y = initialBox.y + (initialBox.h - targetH);
-              cropState.h = targetH;
-            } else if (activeHandle === "tl") {
-              const targetW = Math.max(minSize, initialBox.w - dx);
-              const targetH = Math.max(minSize, initialBox.h - dy);
-              cropState.x = initialBox.x + (initialBox.w - targetW);
-              cropState.y = initialBox.y + (initialBox.h - targetH);
-              cropState.w = targetW;
-              cropState.h = targetH;
-            }
-            updateGuideStyles();
-          };
-
-          const onCornerUp = (uEv) => {
-            activeHandle = null;
-            try { hEl.releasePointerCapture(uEv.pointerId); } catch(err){}
-            hEl.removeEventListener("pointermove", onCornerMove);
-            hEl.removeEventListener("pointerup", onCornerUp);
-          };
-
-          hEl.addEventListener("pointermove", onCornerMove);
-          hEl.addEventListener("pointerup", onCornerUp);
-        });
-      });
-
-      // बॉक्स को बीच से खिसकाना
-      cropGuide.addEventListener("pointerdown", (ev) => {
-        if (ev.target.classList.contains("crop-corner-handle")) return;
+    overlay.querySelectorAll(".crop-corner-handle").forEach(hEl => {
+      hEl.addEventListener("pointerdown", (ev) => {
         ev.preventDefault();
-        startPointerX = ev.clientX;
-        startPointerY = ev.clientY;
-        const originX = cropState.x;
-        const originY = cropState.y;
-        cropGuide.setPointerCapture(ev.pointerId);
+        ev.stopPropagation(); // पूरे डब्बे को हिलने से रोकें
+        activeCorner = hEl.getAttribute("data-corner");
+        startX = ev.clientX;
+        startY = ev.clientY;
+        origBox = { ...cropState };
+        hEl.setPointerCapture(ev.pointerId);
 
-        const onBoxDrag = (mEv) => {
-          cropState.x = originX + (mEv.clientX - startPointerX);
-          cropState.y = originY + (mEv.clientY - startPointerY);
+        const onCornerMove = (mEv) => {
+          if (!activeCorner) return;
+          const dx = mEv.clientX - startX;
+          const dy = mEv.clientY - startY;
+          const minDim = 70;
+
+          if (activeCorner === "br") {
+            cropState.w = Math.max(minDim, origBox.w + dx);
+            cropState.h = Math.max(minDim, origBox.h + dy);
+          } else if (activeCorner === "bl") {
+            const targetW = Math.max(minDim, origBox.w - dx);
+            cropState.x = origBox.x + (origBox.w - targetW);
+            cropState.w = targetW;
+            cropState.h = Math.max(minDim, origBox.h + dy);
+          } else if (activeCorner === "tr") {
+            cropState.w = Math.max(minDim, origBox.w + dx);
+            const targetH = Math.max(minDim, origBox.h - dy);
+            cropState.y = origBox.y + (origBox.h - targetH);
+            cropState.h = targetH;
+          } else if (activeCorner === "tl") {
+            const targetW = Math.max(minDim, origBox.w - dx);
+            const targetH = Math.max(minDim, origBox.h - dy);
+            cropState.x = origBox.x + (origBox.w - targetW);
+            cropState.y = origBox.y + (origBox.h - targetH);
+            cropState.w = targetW;
+            cropState.h = targetH;
+          }
           updateGuideStyles();
         };
 
-        const onBoxDragEnd = (uEv) => {
-          try { cropGuide.releasePointerCapture(uEv.pointerId); } catch(err){}
-          cropGuide.removeEventListener("pointermove", onBoxDrag);
-          cropGuide.removeEventListener("pointerup", onBoxDragEnd);
+        const onCornerUp = (uEv) => {
+          activeCorner = null;
+          try { hEl.releasePointerCapture(uEv.pointerId); } catch(err){}
+          hEl.removeEventListener("pointermove", onCornerMove);
+          hEl.removeEventListener("pointerup", onCornerUp);
         };
 
-        cropGuide.addEventListener("pointermove", onBoxDrag);
-        cropGuide.addEventListener("pointerup", onBoxDragEnd);
+        hEl.addEventListener("pointermove", onCornerMove);
+        hEl.addEventListener("pointerup", onCornerUp);
       });
+    });
 
-      document.getElementById("btnCropRotate").onclick = () => {
-        rotation = (rotation + 90) % 360;
-        setupCanvas();
-        setTimeout(resetCropGuide, 60);
+    // 🌟 2. पूरे डब्बे को बीच से पकड़कर हिलाना (Move)
+    cropGuide.addEventListener("pointerdown", (ev) => {
+      if (ev.target.closest(".crop-corner-handle")) return; // कोने पर टच हो तो मूव न करें
+      ev.preventDefault();
+      startX = ev.clientX;
+      startY = ev.clientY;
+      const initialX = cropState.x;
+      const initialY = cropState.y;
+      cropGuide.setPointerCapture(ev.pointerId);
+
+      const onBoxMove = (mEv) => {
+        cropState.x = initialX + (mEv.clientX - startX);
+        cropState.y = initialY + (mEv.clientY - startY);
+        updateGuideStyles();
       };
 
-      document.getElementById("btnCancelCrop").onclick = () => {
-        overlay.remove();
-        resolve(null);
+      const onBoxUp = (uEv) => {
+        try { cropGuide.releasePointerCapture(uEv.pointerId); } catch(err){}
+        cropGuide.removeEventListener("pointermove", onBoxMove);
+        cropGuide.removeEventListener("pointerup", onBoxUp);
       };
 
-      document.getElementById("btnKeepFull").onclick = () => {
-        cropState.isFull = true;
-        finishAndExport();
-      };
+      cropGuide.addEventListener("pointermove", onBoxMove);
+      cropGuide.addEventListener("pointerup", onBoxUp);
+    });
 
-      document.getElementById("btnSaveCrop").onclick = () => {
-        cropState.isFull = false;
-        finishAndExport();
-      };
-
-      function finishAndExport() {
-        let exportCanvas = document.createElement("canvas");
-        const cRect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / cRect.width;
-        const scaleY = canvas.height / cRect.height;
-
-        let srcX = 0, srcY = 0, srcW = canvas.width, srcH = canvas.height;
-
-        if (!cropState.isFull) {
-          const vRect = viewport.getBoundingClientRect();
-          const leftOff = cRect.left - vRect.left;
-          const topOff = cRect.top - vRect.top;
-
-          srcX = Math.max(0, (cropState.x - leftOff) * scaleX);
-          srcY = Math.max(0, (cropState.y - topOff) * scaleY);
-          srcW = Math.min(canvas.width - srcX, cropState.w * scaleX);
-          srcH = Math.min(canvas.height - srcY, cropState.h * scaleY);
-        }
-
-        const maxDim = 1050;
-        let outW = srcW;
-        let outH = srcH;
-        if (outW > maxDim || outH > maxDim) {
-          if (outW > outH) {
-            outH = Math.round((outH * maxDim) / outW);
-            outW = maxDim;
-          } else {
-            outW = Math.round((outW * maxDim) / outH);
-            outH = maxDim;
-          }
-        }
-
-        exportCanvas.width = outW;
-        exportCanvas.height = outH;
-        const eCtx = exportCanvas.getContext("2d");
-        eCtx.fillStyle = "#ffffff";
-        eCtx.fillRect(0, 0, outW, outH);
-        eCtx.filter = "contrast(1.18) brightness(1.02)";
-        eCtx.drawImage(canvas, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
-
-        const finalB64 = exportCanvas.toDataURL("image/jpeg", 0.60);
-        overlay.remove();
-        resolve(finalB64);
-      }
+    document.getElementById("btnCropRotate").onclick = () => {
+      rotation = (rotation + 90) % 360;
+      setupCanvas();
+      setTimeout(resetCropGuide, 50);
     };
-    reader.readAsDataURL(imageFile);
+
+    document.getElementById("btnCancelCrop").onclick = () => {
+      overlay.remove();
+      resolve(null);
+    };
+
+    document.getElementById("btnKeepFull").onclick = () => {
+      cropState.isFull = true;
+      finishAndExport();
+    };
+
+    document.getElementById("btnSaveCrop").onclick = () => {
+      cropState.isFull = false;
+      finishAndExport();
+    };
+
+    function finishAndExport() {
+      let exportCanvas = document.createElement("canvas");
+      const cRect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / cRect.width;
+      const scaleY = canvas.height / cRect.height;
+
+      let srcX = 0, srcY = 0, srcW = canvas.width, srcH = canvas.height;
+
+      if (!cropState.isFull) {
+        const vRect = viewport.getBoundingClientRect();
+        const leftOff = cRect.left - vRect.left;
+        const topOff = cRect.top - vRect.top;
+
+        srcX = Math.max(0, (cropState.x - leftOff) * scaleX);
+        srcY = Math.max(0, (cropState.y - topOff) * scaleY);
+        srcW = Math.min(canvas.width - srcX, cropState.w * scaleX);
+        srcH = Math.min(canvas.height - srcY, cropState.h * scaleY);
+      }
+
+      const maxDim = 1050;
+      let outW = srcW;
+      let outH = srcH;
+      if (outW > maxDim || outH > maxDim) {
+        if (outW > outH) {
+          outH = Math.round((outH * maxDim) / outW);
+          outW = maxDim;
+        } else {
+          outW = Math.round((outW * maxDim) / outH);
+          outH = maxDim;
+        }
+      }
+
+      exportCanvas.width = outW;
+      exportCanvas.height = outH;
+      const eCtx = exportCanvas.getContext("2d", { alpha: false });
+      eCtx.fillStyle = "#ffffff";
+      eCtx.fillRect(0, 0, outW, outH);
+      eCtx.filter = "contrast(1.18) brightness(1.02)";
+      eCtx.drawImage(canvas, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
+
+      const finalB64 = exportCanvas.toDataURL("image/jpeg", 0.60);
+      exportCanvas.width = 0;
+      exportCanvas.height = 0;
+      overlay.remove();
+      resolve(finalB64);
+    }
   });
 }
 
