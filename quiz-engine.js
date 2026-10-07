@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Real-Time Test Simulation Engine (v5.0 Ultimate Pro)
+   NischayDesk Real-Time Test Simulation Engine (v6.0 Ultimate Pro)
    Architected by: Prince Kumar (NischayDesk)
-   Features: Robust JSON Fetch, Bulletproof Option Highlighting,
-             Dashboard Score Sync, Negative Marking & Zero DOM Collision
+   Features: 50-Q Chapter Wise, 1-Hour Full Syllabus, 
+             Top 50 Leaderboard & Real-Time Sync
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentQIndex = 0;
   let userResponses = {};
   let timerInterval = null;
-  let timeRemaining = 900;
+  let timeRemaining = 1800; // डिफ़ॉल्ट 30 मिनट
+  let totalTestDuration = 1800;
+  let testStartTime = 0;
 
   // 1. 11th और 12th चुनते ही अलर्ट
   if (testClassSelect) {
@@ -145,16 +147,18 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
+    // प्रश्नों को रैंडमाइज़ करना
     currentQuestions.sort(() => Math.random() - 0.5);
 
-    if (!isFull && currentQuestions.length > 20) {
-      currentQuestions = currentQuestions.slice(0, 20);
+    // 🌟 चैप्टर-वाइज में अब 20 नहीं, पूरे 50 प्रश्न आएँगे
+    if (!isFull && currentQuestions.length > 50) {
+      currentQuestions = currentQuestions.slice(0, 50);
     }
 
     return true;
   }
 
-  // 2. स्टार्ट बटन और टाइमर
+  // 2. स्टार्ट बटन और डायनामिक टाइमर सेट करना
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
       const cls = testClassSelect ? testClassSelect.value.trim() : "10";
@@ -175,16 +179,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
       userResponses = {};
       currentQIndex = 0;
+      testStartTime = Date.now();
 
       const isFull = isFullSyllabusSelected();
-      timeRemaining = isFull ? (30 * 60) : (15 * 60);
+      // 🌟 फुल सिलेबस = 60 मिनट (1 घंटा) | चैप्टर-वाइज = 30 मिनट
+      timeRemaining = isFull ? (60 * 60) : (30 * 60);
+      totalTestDuration = timeRemaining;
 
       if (testLobbyScreen) testLobbyScreen.classList.remove('active');
       if (testResultScreen) testResultScreen.classList.remove('active');
       if (testRunningScreen) testRunningScreen.classList.add('active');
 
       const subTxt = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
-      if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subTxt.split(' ')[0]}`;
+      if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subTxt.split(' ')[0]} • ${isFull ? 'फुल सिलेबस (60m)' : 'चैप्टर टेस्ट (30m)'}`;
 
       startTimer();
       renderPalette();
@@ -193,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. सवाल व विकल्प रेंडरिंग (100% कंट्रास्ट और नो-झबना लॉजिक)
+  // 3. सवाल व विकल्प रेंडरिंग
   function renderQuestion(index) {
     if (index < 0 || index >= currentQuestions.length) return;
     currentQIndex = index;
@@ -231,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePaletteStatus();
   }
 
-  // 4. NTA OMR पैलेट
+  // 4. OMR पैलेट
   function renderPalette() {
     if (!paletteButtonsGrid) return;
     paletteButtonsGrid.innerHTML = '';
@@ -312,13 +319,13 @@ document.addEventListener('DOMContentLoaded', function () {
       timerDigits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
       const timerBox = document.getElementById('examTimerBox');
       if (timerBox) {
-        if (timeRemaining <= 120) timerBox.classList.add('timer-warning');
+        if (timeRemaining <= 180) timerBox.classList.add('timer-warning');
         else timerBox.classList.remove('timer-warning');
       }
     }
   }
 
-  // 6. रिजल्ट व डैशबोर्ड सिंक
+  // 6. रिजल्ट, स्कोर गणना और टॉप 50 लीडरबोर्ड सिंक
   function finishAndSubmitExam() {
     clearInterval(timerInterval);
     let correctCount = 0, wrongCount = 0;
@@ -335,8 +342,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalScore = (correctCount * 4) - (wrongCount * 1);
     const maxScore = totalQuestions * 4;
     const accuracyVal = Math.round((correctCount / (correctCount + wrongCount || 1)) * 100);
+    const timeTakenSec = Math.max(1, totalTestDuration - timeRemaining);
 
-    // डैशबोर्ड के लिए स्कोर सुरक्षित करना
+    // लोकल स्टोरेज में सेव
     localStorage.setItem('nischay_last_test_score', `${totalScore} / ${maxScore}`);
     localStorage.setItem('nischay_last_test_accuracy', `${accuracyVal}%`);
 
@@ -345,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (resCorrectCount) resCorrectCount.innerText = correctCount;
     if (resWrongCount) resWrongCount.innerText = wrongCount;
 
+    // व्याख्या सूची रेंडर करना
     if (solutionsAccordionList) {
       solutionsAccordionList.innerHTML = '';
       const letters = ['A', 'B', 'C', 'D'];
@@ -367,9 +376,125 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
+    // 🏆 टॉप 50 लीडरबोर्ड में स्कोर भेजना और प्रदर्शित करना
+    syncAndDisplayLeaderboard(totalScore, maxScore, accuracyVal, timeTakenSec);
+
     if (testRunningScreen) testRunningScreen.classList.remove('active');
     if (testResultScreen) testResultScreen.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // 🏆 टॉप 50 लीडरबोर्ड फ़ायरबेस सिंक फ़ंक्शन
+  async function syncAndDisplayLeaderboard(score, maxMarks, accuracy, timeTakenSec) {
+    let boardContainer = document.getElementById('leaderboardTop50Box');
+    
+    // अगर लीडरबोर्ड का डिफ़ॉल्ट कंटेनर नहीं है, तो रिजल्ट स्क्रीन में ऑटो-इंजेक्ट करना
+    if (!boardContainer && testResultScreen) {
+      boardContainer = document.createElement('div');
+      boardContainer.id = 'leaderboardTop50Box';
+      boardContainer.style.cssText = "margin-top: 24px; background: #0f172a; border: 1.5px solid #0284c7; border-radius: 12px; padding: 18px; color: #fff;";
+      testResultScreen.appendChild(boardContainer);
+    }
+
+    if (!boardContainer) return;
+
+    boardContainer.innerHTML = `
+      <div style="text-align:center; padding: 10px;">
+        <h3 style="color:#38bdf8; font-size:1.2rem; margin-bottom:6px;">🏆 टॉप 50 मेधावी छात्र (Live Leaderboard)</h3>
+        <p style="font-size:0.8rem; color:#94a3b8;">रैंकिंग लोड हो रही है...</p>
+      </div>
+    `;
+
+    const subName = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text.split(' ')[0] : "General";
+    const testId = `${getTargetJsonFile()}_${isFullSyllabusSelected() ? 'full' : 'ch'}`;
+
+    if (window.firebase && firebase.auth && window.NischayConfig && window.NischayConfig.dbInstance) {
+      try {
+        const user = firebase.auth().currentUser;
+        const db = window.NischayConfig.dbInstance;
+
+        if (user) {
+          const userName = user.displayName || user.email.split('@')[0] || "छात्र";
+          // 1. स्कोर सबमिट करना
+          await db.collection("chapter_test_scores").add({
+            uid: user.uid,
+            userName: userName,
+            userPhoto: user.photoURL || "",
+            testId: testId,
+            subject: subName,
+            score: score,
+            maxMarks: maxMarks,
+            accuracy: accuracy,
+            timeTakenSec: timeTakenSec,
+            submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+
+        // 2. टॉप 50 छात्रों को फेच करना
+        const snap = await db.collection("chapter_test_scores")
+          .where("testId", "==", testId)
+          .orderBy("score", "desc")
+          .orderBy("timeTakenSec", "asc")
+          .limit(50)
+          .get();
+
+        if (snap.empty) {
+          boardContainer.innerHTML = `
+            <h3 style="color:#38bdf8; font-size:1.1rem; text-align:center; margin-bottom:6px;">🏆 टॉप 50 मेधावी छात्र</h3>
+            <p style="text-align:center; color:#94a3b8; font-size:0.85rem;">आप इस टेस्ट के पहले प्रतिभागी हैं! बहुत बढ़िया प्रदर्शन।</p>
+          `;
+          return;
+        }
+
+        let rankHtml = `
+          <h3 style="color:#38bdf8; font-size:1.2rem; text-align:center; margin-bottom:14px;">🏆 टॉप 50 मेधावी छात्र (${subName})</h3>
+          <div style="max-height: 420px; overflow-y: auto; border: 1px solid #334155; border-radius: 8px;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.82rem; text-align:left;">
+              <thead>
+                <tr style="background:#1e293b; color:#94a3b8; border-bottom:1px solid #334155;">
+                  <th style="padding:8px 10px; width:15%;">रैंक</th>
+                  <th style="padding:8px 10px; width:45%;">छात्र का नाम</th>
+                  <th style="padding:8px 10px; width:20%;">स्कोर</th>
+                  <th style="padding:8px 10px; width:20%;">समय</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        let currentRank = 1;
+        snap.forEach(doc => {
+          const d = doc.data();
+          let rankBadge = `${currentRank}`;
+          if (currentRank === 1) rankBadge = "🥇 1";
+          else if (currentRank === 2) rankBadge = "🥈 2";
+          else if (currentRank === 3) rankBadge = "🥉 3";
+
+          const mins = Math.floor((d.timeTakenSec || 0) / 60);
+          const secs = (d.timeTakenSec || 0) % 60;
+          const timeStr = `${mins}m ${secs}s`;
+
+          rankHtml += `
+            <tr style="border-bottom:1px solid #1e293b; background:${currentRank % 2 === 0 ? 'rgba(30, 41, 59, 0.4)' : 'transparent'};">
+              <td style="padding:8px 10px; font-weight:800; color:${currentRank <= 3 ? '#fbbf24' : '#94a3b8'};">${rankBadge}</td>
+              <td style="padding:8px 10px; font-weight:700; color:#fff;">${d.userName || 'छात्र'}</td>
+              <td style="padding:8px 10px; font-weight:800; color:#22c55e;">${d.score}</td>
+              <td style="padding:8px 10px; color:#cbd5e1;">${timeStr}</td>
+            </tr>
+          `;
+          currentRank++;
+        });
+
+        rankHtml += `</tbody></table></div>`;
+        boardContainer.innerHTML = rankHtml;
+
+      } catch (err) {
+        console.warn("Leaderboard error:", err);
+        boardContainer.innerHTML = `
+          <h3 style="color:#38bdf8; font-size:1.1rem; text-align:center;">🏆 टॉप 50 मेधावी छात्र</h3>
+          <p style="text-align:center; color:#94a3b8; font-size:0.8rem;">लीडरबोर्ड लोड करने के लिए Google लॉगिन सुनिश्चित करें।</p>
+        `;
+      }
+    }
   }
 
   if (restartTestBtn) {
