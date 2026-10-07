@@ -39,7 +39,7 @@
       background: #0f172a;
       border: 2px solid var(--bseb-accent, #0284c7);
       border-radius: 16px;
-      max-width: 400px;
+      max-width: 440px;
       width: 100%;
       padding: 24px;
       text-align: center;
@@ -99,6 +99,32 @@
     .btn-modal-confirm:hover {
       transform: translateY(-1px);
     }
+
+    /* 3-Day Countdown Timer Box */
+    .timer-digits-grid {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 16px 0;
+      font-weight: 800;
+    }
+    .timer-digit-card {
+      background: #1e293b;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 8px 10px;
+      min-width: 58px;
+    }
+    .digit-val {
+      font-size: 1.25rem;
+      color: #fbbf24;
+      display: block;
+    }
+    .digit-lbl {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body class="bseb-simulator-body">
@@ -118,6 +144,29 @@
         <button type="button" class="btn-modal-confirm" onclick="executeSubmissionCountdown()">
           ✓ हाँ, जमा करें
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-दिन लाइव काउंटडाउन एवं रीसेट डायलॉग -->
+  <div class="confirm-modal-overlay" id="resetCooldownModal">
+    <div class="confirm-modal-card">
+      <div style="font-size: 2.8rem; margin-bottom: 8px;">⏳</div>
+      <div class="confirm-modal-title" id="cooldownModalTitle">पुनः परीक्षा समीक्षा अवधि</div>
+      <div class="confirm-modal-desc" id="cooldownModalDesc">
+        आपने सभी 6 विषयों की परीक्षा पूर्ण कर ली है। नियमानुसार परिणाम समीक्षा हेतु 3 दिन की अवधि निर्धारित है।
+      </div>
+
+      <div id="countdownClockDisplay" class="timer-digits-grid"></div>
+
+      <div id="resetButtonContainer" style="margin-top: 15px;">
+        <a href="bseb-result.html" class="btn-sim-action" style="background:#0284c7; text-decoration:none; display:inline-block; margin-bottom:10px;">
+          📊 परिणाम व मार्कशीट देखें
+        </a>
+        <br>
+        <a href="index.html" style="color:#94a3b8; font-size:0.85rem; text-decoration:none; font-weight:700;">
+          🏠 होम पेज पर वापस जाएं
+        </a>
       </div>
     </div>
   </div>
@@ -272,9 +321,8 @@
           <ul style="margin: 0; padding-left: 18px;">
             <li>यह परीक्षा सीधे <strong>इंटरनेट सर्वर समय</strong> से नियंत्रित है। प्रतिदिन परीक्षा <strong>सुबह 09:30 AM</strong> पर ही खुलेगी।</li>
             <li>1 दिन में सिर्फ 1 विषय की परीक्षा मान्य है।</li>
-            <li>परीक्षा के दौरान स्क्रीन छोड़ना या टैब बदलना सख्त वर्जित है (अधिकतम 3 चेतावनी)।</li>
-            <li><strong>चौथी (4th) बार स्क्रीन छोड़ते ही</strong> उत्तर-पुस्तिका स्वतः (Auto-Submit) जमा हो जाएगी।</li>
-            <li>उत्तर-पुस्तिका में कोरा पन्ना या फर्जी सामग्री अपलोड करने पर सीधे <strong>00 अंक (EXPELLED)</strong> दर्ज होगा।</li>
+            <li>परीक्षा के दौरान स्क्रीन छोड़ना या टैब बदलना सख्त वर्जित है।</li>
+            <li>उत्तर-पुस्तिका में कोरा पन्ना या गलत विषय अपलोड करने पर शून्य अंक दर्ज होगा।</li>
           </ul>
         </div>
 
@@ -392,7 +440,7 @@
               (कम से कम 1 और अधिकतम 26 पन्नों की साफ़ तस्वीरें)
             </p>
             
-            <input type="file" id="masterAnswerInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="width:100%; max-width:300px; padding:10px; border-radius:8px; border:1px solid var(--bseb-border); background:var(--bseb-input-bg); color:var(--bseb-text); font-size:0.8rem;" />
+            <input type="file" id="masterAnswerInput" accept="image/*" capture="environment" multiple onchange="handleMasterUpload(event)" style="width:100%; max-width:300px; padding:10px; border-radius:8px; border:1px solid var(--bseb-border); background:var(--bseb-input-bg); color:var(--bseb-text); font-size:0.8rem;" />
             <div id="uploadStatusText" style="margin-top:12px; font-weight:800; font-size:0.85rem; color:var(--bseb-success);"></div>
           </div>
         </div>
@@ -412,6 +460,7 @@
     let uploadedPagesList = [];
     let examTimerInterval = null;
     let currentPaperZoom = 1.0;
+    let cooldownTimerInterval = null;
 
     const CLASS_SUBJECTS_MAP = {
       "10th": [
@@ -467,6 +516,13 @@
 
       cloudState = await getCloudExamState(user);
       if (cloudState) {
+        // 🌟 6 दिन पूरे होने की जाँच: यदि 6 दिन पूरे हैं, तो तुरंत 3-दिन का डिजिटल टाइमर पॉपअप दिखाओ
+        const completed = cloudState.completedDays || {};
+        if (Object.keys(completed).length >= 6) {
+          showCooldownModal(cloudState);
+          return;
+        }
+
         const sNameInput = document.getElementById("inputStudentName");
         const fNameInput = document.getElementById("inputFatherName");
         const mNameInput = document.getElementById("inputMotherName");
@@ -498,6 +554,63 @@
           document.getElementById("profileLockBadge").style.display = "none";
         }
       }
+    }
+
+    // 🌟 3 दिन का डिजिटल टाइमर व रीसेट हैंडलर
+    async function showCooldownModal(state) {
+      const modal = document.getElementById("resetCooldownModal");
+      const clockBox = document.getElementById("countdownClockDisplay");
+      const btnBox = document.getElementById("resetButtonContainer");
+      modal.classList.add("active");
+
+      let serverNow = Date.now();
+      try {
+        serverNow = await getVerifiedServerTimestamp();
+      } catch(e) {}
+
+      const finishStr = state.allDaysCompletedAt || state.lastExamDate || new Date().toISOString();
+      const finishMs = new Date(finishStr).getTime();
+      const cooldownMs = (window.BSEB_ENGINE_CONFIG?.RESET_COOLDOWN_DAYS || 3) * 24 * 60 * 60 * 1000;
+      const unlockMs = finishMs + cooldownMs;
+
+      if (cooldownTimerInterval) clearInterval(cooldownTimerInterval);
+
+      function refreshCountdown() {
+        serverNow += 1000;
+        const diffMs = unlockMs - serverNow;
+
+        if (diffMs > 0) {
+          const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+          clockBox.innerHTML = `
+            <div class="timer-digit-card"><span class="digit-val">${days}</span><span class="digit-lbl">दिन</span></div>
+            <div class="timer-digit-card"><span class="digit-val">${String(hours).padStart(2, '0')}</span><span class="digit-lbl">घंटे</span></div>
+            <div class="timer-digit-card"><span class="digit-val">${String(minutes).padStart(2, '0')}</span><span class="digit-lbl">मिनट</span></div>
+            <div class="timer-digit-card"><span class="digit-val" style="color:#ef4444;">${String(seconds).padStart(2, '0')}</span><span class="digit-lbl">सेकंड</span></div>
+          `;
+        } else {
+          // 3 दिन पूरे -> रीसेट बटन अनलॉक!
+          clearInterval(cooldownTimerInterval);
+          clockBox.style.display = "none";
+          document.getElementById("cooldownModalTitle").textContent = "✅ पुनः परीक्षा उपलब्ध है!";
+          document.getElementById("cooldownModalDesc").textContent = "3 दिन की समीक्षा अवधि समाप्त हो गई है। आप नए सिरे से परीक्षा दे सकते हैं।";
+          
+          btnBox.innerHTML = `
+            <button type="button" id="btnLiveReset" class="btn-sim-action" style="background:#ef4444; width:100%; margin-bottom:12px;" onclick="executeSafeExamReset(currentUser)">
+              🔄 संपूर्ण टेस्ट रीसेट करें एवं Day 1 से दोबारा दें
+            </button>
+            <a href="index.html" style="color:#94a3b8; font-size:0.85rem; text-decoration:none; font-weight:700;">
+              🏠 होम पेज पर वापस जाएं
+            </a>
+          `;
+        }
+      }
+
+      refreshCountdown();
+      cooldownTimerInterval = setInterval(refreshCountdown, 1000);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -637,8 +750,7 @@
       const completedCount = Object.keys(completed).length;
 
       if (completedCount >= 6) {
-        alert("🎉 बधाई! आपने सभी 6 विषयों की परीक्षा पूर्ण कर ली है। अब आप परिणाम पोर्टल पर अपना परिणाम देख सकते हैं।");
-        window.location.href = "bseb-result.html";
+        showCooldownModal(cloudState);
         return;
       }
 
@@ -852,7 +964,6 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    // 🌟 26-पेज अल्ट्रा-सेफ कंप्रेसर (ImgBB और मोबाइल के लिए मक्खन)
     async function handleMasterUpload(e) {
       const files = Array.from(e.target.files);
       const txt = document.getElementById("uploadStatusText");
@@ -868,53 +979,9 @@
       uploadedPagesList = [];
       txt.style.color = "var(--bseb-accent)";
 
-      const compress = (file) => {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            const img = new Image();
-            img.onload = () => {
-              let w = img.width;
-              let h = img.height;
-              const maxDim = 800; // लिखावट एकदम साफ, साइज सिर्फ 60-80KB
-
-              if (w > maxDim || h > maxDim) {
-                if (w > h) {
-                  h = Math.round((h * maxDim) / w);
-                  w = maxDim;
-                } else {
-                  w = Math.round((w * maxDim) / h);
-                  h = maxDim;
-                }
-              }
-
-              const cvs = document.createElement("canvas");
-              cvs.width = w;
-              cvs.height = h;
-              const ctx = cvs.getContext("2d", { alpha: false });
-              ctx.fillStyle = "#ffffff";
-              ctx.fillRect(0, 0, w, h);
-              ctx.filter = "contrast(1.2) brightness(1.0)";
-              ctx.drawImage(img, 0, 0, w, h);
-
-              const compressed = cvs.toDataURL("image/jpeg", 0.48);
-              cvs.width = 0;
-              cvs.height = 0;
-              img.src = "";
-              resolve(compressed);
-            };
-            img.onerror = () => resolve(ev.target.result);
-            img.src = ev.target.result;
-          };
-          reader.onerror = () => resolve(null);
-          reader.readAsDataURL(file);
-        });
-      };
-
       for (let i = 0; i < files.length; i++) {
         txt.textContent = `⏳ पन्ना ${i + 1}/${files.length} तैयार हो रहा है...`;
-        await new Promise(r => setTimeout(r, 15));
-        const compressed = await compress(files[i]);
+        const compressed = await compressCameraImage(files[i]);
         if (compressed) {
           uploadedPagesList.push({ pageNumber: i + 1, dataUrl: compressed });
         }
@@ -942,9 +1009,6 @@
       if (iframe) iframe.style.transform = `scale(1)`;
     }
 
-    // -------------------------------------------------------------
-    // रंगीन सबमिशन पुष्टि एवं डिजिटल मूल्यांकन ट्रिगर
-    // -------------------------------------------------------------
     function confirmFinalExamSubmission(isAutoSubmit = false) {
       const omr = cloudState?.savedOMR?.[activeDay] || {};
       const count = Object.keys(omr).length;
@@ -973,7 +1037,6 @@
       document.getElementById("confirmModal").classList.remove("active");
     }
 
-    // 🌟 100% कड़क सबमिशन गेट (जब तक सब-कलेक्शन और AI पूरा न हो, बाहर नहीं जाएगा)
     async function executeSubmissionCountdown() {
       closeSubmitConfirmModal();
 
