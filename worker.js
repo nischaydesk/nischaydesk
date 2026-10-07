@@ -23,12 +23,12 @@ const db = admin.firestore();
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
 
 async function callGemini(prompt, imageParts) {
-  // प्रिंस भाई के ओरिजिनल Flash 3.8 और 3.5 मॉडल्स
-  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
+  // Google के निर्देशानुसार gemini-3.8-flash और बैकअप gemini-3.5-flash
+  const models = ["gemini-3.8-flash", "gemini-3.5-flash"];
   
   for (const model of models) {
     try {
-      console.log(`Trying Gemini Model: ${model}...`);
+      console.log(`Calling Gemini Model: ${model}...`);
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
       
       const res = await fetch(url, {
@@ -47,7 +47,7 @@ async function callGemini(prompt, imageParts) {
         return data.candidates[0].content.parts[0].text;
       }
       
-      console.log(`API response note on ${model}:`, data.error ? data.error.message : "No content returned");
+      console.log(`API response on ${model}:`, data.error ? data.error.message : "No content");
     } catch (e) {
       console.log(`Error calling ${model}:`, e.message);
     }
@@ -134,7 +134,7 @@ Output STRICT JSON ONLY:
               console.error("JSON parse error:", err);
             }
           } else {
-            console.error("Gemini failed to return evaluation.");
+            console.error("Gemini failed to return valid evaluation response.");
           }
         } else {
           console.log("No valid images found to evaluate.");
