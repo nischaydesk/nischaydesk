@@ -1,7 +1,7 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v32.0 Multi-Upload & Touch Cropper Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v33.0 Perfect Touch-Cropper Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: 4-Corner Interactive Touch Cropper, 90° Rotation,
+ * Features: 4-Corner Responsive Touch Resizing, Real 90° Canvas Rotation,
  *           Zero Auto-Submit, 3-Day Cooldown Reset, Firestore Sync
  */
 
@@ -117,9 +117,8 @@ function initAntiCheatingMonitor() {
   isExamActive = true;
   document.addEventListener("visibilitychange", handleTabSwitch);
 
+  // केवल क्लिक पर 10-मिनट ग्रेस मोड चालू होगा (इनपुट के capture एट्रिब्यूट से कोई छेड़छाड़ नहीं होगी)
   document.querySelectorAll('input[type="file"]').forEach(inp => {
-    inp.setAttribute("accept", "image/*");
-    inp.removeAttribute("capture");
     inp.addEventListener("click", () => setUploadMode(true));
   });
 }
@@ -163,7 +162,7 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. 🌟 4-कॉर्नर टच-क्रॉपर (असली रिसाइज़ और ड्रैग लॉजिक)
+// 5. 🌟 4-कॉर्नर असली टच-क्रॉपर इंजन (Touch Resizing & Box Drag)
 // ---------------------------------------------------------
 function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
   return new Promise((resolve) => {
@@ -177,7 +176,8 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         position: fixed; inset: 0; z-index: 99999999;
         background: #020617; display: flex; flex-direction: column;
         align-items: center; justify-content: space-between; padding: 12px;
-        touch-action: none; font-family: 'Plus Jakarta Sans', sans-serif;
+        touch-action: none; -webkit-user-select: none; user-select: none;
+        font-family: 'Plus Jakarta Sans', sans-serif;
       `;
 
       overlay.innerHTML = `
@@ -193,11 +193,13 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         <div id="cropperViewport" style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
           <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; object-fit: contain;"></canvas>
           
-          <div id="cropBoxGuide" style="position: absolute; border: 2px dashed #38bdf8; background: rgba(56, 189, 248, 0.15); box-sizing: border-box; touch-action: none;">
-            <div class="crop-handle" data-corner="tl" style="position: absolute; top: -14px; left: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
-            <div class="crop-handle" data-corner="tr" style="position: absolute; top: -14px; right: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
-            <div class="crop-handle" data-corner="bl" style="position: absolute; bottom: -14px; left: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
-            <div class="crop-handle" data-corner="br" style="position: absolute; bottom: -14px; right: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
+          <!-- क्रॉपिंग बॉक्स गाइड -->
+          <div id="cropBoxGuide" style="position: absolute; border: 2.5px dashed #38bdf8; background: rgba(56, 189, 248, 0.18); box-sizing: border-box; touch-action: none; cursor: move;">
+            <!-- 4 कोने (36px चौड़े टच हैंडल ताकि उंगली से आसानी से खींचा जा सके) -->
+            <div class="crop-corner-handle" data-corner="tl" style="position: absolute; top: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nwse-resize;"></div>
+            <div class="crop-corner-handle" data-corner="tr" style="position: absolute; top: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nesw-resize;"></div>
+            <div class="crop-corner-handle" data-corner="bl" style="position: absolute; bottom: -16px; left: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nesw-resize;"></div>
+            <div class="crop-corner-handle" data-corner="br" style="position: absolute; bottom: -16px; right: -16px; width: 34px; height: 34px; background: #38bdf8; border: 3px solid #ffffff; border-radius: 50%; touch-action: none; z-index: 10; cursor: nwse-resize;"></div>
           </div>
         </div>
 
@@ -223,7 +225,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
       const img = new Image();
       let rotation = 0;
 
-      let cropState = { x: 30, y: 30, w: 260, h: 360, isFull: false };
+      let cropState = { x: 30, y: 30, w: 240, h: 320, isFull: false };
 
       img.onload = () => {
         setupCanvas();
@@ -254,10 +256,10 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         const leftOff = rect.left - vRect.left;
         const topOff = rect.top - vRect.top;
 
-        cropState.x = leftOff + 10;
-        cropState.y = topOff + 10;
-        cropState.w = Math.max(120, rect.width - 20);
-        cropState.h = Math.max(120, rect.height - 20);
+        cropState.x = Math.max(0, leftOff + 10);
+        cropState.y = Math.max(0, topOff + 10);
+        cropState.w = Math.max(100, rect.width - 20);
+        cropState.h = Math.max(100, rect.height - 20);
 
         updateGuideStyles();
       }
@@ -269,86 +271,93 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         cropGuide.style.height = `${cropState.h}px`;
       }
 
-      // 1. कोनों को खींचकर छोटा/बड़ा करना
-      let activeCorner = null;
-      let startX, startY, origBox;
+      // 🌟 1. असली 4-कॉर्नर टच रिसाइजिंग (Corner Handle Logic)
+      let activeHandle = null;
+      let startPointerX = 0, startPointerY = 0;
+      let initialBox = { x: 0, y: 0, w: 0, h: 0 };
 
-      overlay.querySelectorAll(".crop-handle").forEach(handle => {
-        handle.addEventListener("pointerdown", (ev) => {
-          ev.stopPropagation();
-          activeCorner = handle.getAttribute("data-corner");
-          startX = ev.clientX;
-          startY = ev.clientY;
-          origBox = { ...cropState };
-          handle.setPointerCapture(ev.pointerId);
+      overlay.querySelectorAll(".crop-corner-handle").forEach(hEl => {
+        hEl.addEventListener("pointerdown", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation(); // मुख्य डब्बे के ड्रैग को तुरंत ब्लॉक करें
+          activeHandle = hEl.getAttribute("data-corner");
+          startPointerX = ev.clientX;
+          startPointerY = ev.clientY;
+          initialBox = { ...cropState };
+          hEl.setPointerCapture(ev.pointerId);
 
-          const onCornerMove = (moveEv) => {
-            const dx = moveEv.clientX - startX;
-            const dy = moveEv.clientY - startY;
+          const onCornerMove = (mEv) => {
+            if (!activeHandle) return;
+            const dx = mEv.clientX - startPointerX;
+            const dy = mEv.clientY - startPointerY;
+            const minSize = 70;
 
-            if (activeCorner === "br") {
-              cropState.w = Math.max(80, origBox.w + dx);
-              cropState.h = Math.max(80, origBox.h + dy);
-            } else if (activeCorner === "bl") {
-              const newW = Math.max(80, origBox.w - dx);
-              cropState.x = origBox.x + (origBox.w - newW);
-              cropState.w = newW;
-              cropState.h = Math.max(80, origBox.h + dy);
-            } else if (activeCorner === "tr") {
-              cropState.w = Math.max(80, origBox.w + dx);
-              const newH = Math.max(80, origBox.h - dy);
-              cropState.y = origBox.y + (origBox.h - newH);
-              cropState.h = newH;
-            } else if (activeCorner === "tl") {
-              const newW = Math.max(80, origBox.w - dx);
-              const newH = Math.max(80, origBox.h - dy);
-              cropState.x = origBox.x + (origBox.w - newW);
-              cropState.y = origBox.y + (origBox.h - newH);
-              cropState.w = newW;
-              cropState.h = newH;
+            if (activeHandle === "br") {
+              cropState.w = Math.max(minSize, initialBox.w + dx);
+              cropState.h = Math.max(minSize, initialBox.h + dy);
+            } else if (activeHandle === "bl") {
+              const targetW = Math.max(minSize, initialBox.w - dx);
+              cropState.x = initialBox.x + (initialBox.w - targetW);
+              cropState.w = targetW;
+              cropState.h = Math.max(minSize, initialBox.h + dy);
+            } else if (activeHandle === "tr") {
+              cropState.w = Math.max(minSize, initialBox.w + dx);
+              const targetH = Math.max(minSize, initialBox.h - dy);
+              cropState.y = initialBox.y + (initialBox.h - targetH);
+              cropState.h = targetH;
+            } else if (activeHandle === "tl") {
+              const targetW = Math.max(minSize, initialBox.w - dx);
+              const targetH = Math.max(minSize, initialBox.h - dy);
+              cropState.x = initialBox.x + (initialBox.w - targetW);
+              cropState.y = initialBox.y + (initialBox.h - targetH);
+              cropState.w = targetW;
+              cropState.h = targetH;
             }
             updateGuideStyles();
           };
 
-          const onCornerUp = () => {
-            activeCorner = null;
-            handle.removeEventListener("pointermove", onCornerMove);
-            handle.removeEventListener("pointerup", onCornerUp);
+          const onCornerUp = (uEv) => {
+            activeHandle = null;
+            try { hEl.releasePointerCapture(uEv.pointerId); } catch(err){}
+            hEl.removeEventListener("pointermove", onCornerMove);
+            hEl.removeEventListener("pointerup", onCornerUp);
           };
 
-          handle.addEventListener("pointermove", onCornerMove);
-          handle.addEventListener("pointerup", onCornerUp);
+          hEl.addEventListener("pointermove", onCornerMove);
+          hEl.addEventListener("pointerup", onCornerUp);
         });
       });
 
-      // 2. पूरे बॉक्स को पकड़कर हिलाना
+      // 🌟 2. पूरे बॉक्स को बीच से पकड़कर खिसकाना (Move)
       cropGuide.addEventListener("pointerdown", (ev) => {
-        if (ev.target.classList.contains("crop-handle")) return;
-        startX = ev.clientX;
-        startY = ev.clientY;
-        const initialX = cropState.x;
-        const initialY = cropState.y;
+        if (ev.target.classList.contains("crop-corner-handle")) return;
+        ev.preventDefault();
+        startPointerX = ev.clientX;
+        startPointerY = ev.clientY;
+        const originX = cropState.x;
+        const originY = cropState.y;
         cropGuide.setPointerCapture(ev.pointerId);
 
-        const onBoxMove = (moveEv) => {
-          cropState.x = initialX + (moveEv.clientX - startX);
-          cropState.y = initialY + (moveEv.clientY - startY);
+        const onBoxDrag = (mEv) => {
+          cropState.x = originX + (mEv.clientX - startPointerX);
+          cropState.y = originY + (mEv.clientY - startPointerY);
           updateGuideStyles();
         };
 
-        const onBoxUp = () => {
-          cropGuide.removeEventListener("pointermove", onBoxMove);
-          cropGuide.removeEventListener("pointerup", onBoxUp);
+        const onBoxDragEnd = (uEv) => {
+          try { cropGuide.releasePointerCapture(uEv.pointerId); } catch(err){}
+          cropGuide.removeEventListener("pointermove", onBoxDrag);
+          cropGuide.removeEventListener("pointerup", onBoxDragEnd);
         };
 
-        cropGuide.addEventListener("pointermove", onBoxMove);
-        cropGuide.addEventListener("pointerup", onBoxUp);
+        cropGuide.addEventListener("pointermove", onBoxDrag);
+        cropGuide.addEventListener("pointerup", onBoxDragEnd);
       });
 
       document.getElementById("btnCropRotate").onclick = () => {
         rotation = (rotation + 90) % 360;
         setupCanvas();
-        setTimeout(resetCropGuide, 50);
+        setTimeout(resetCropGuide, 60);
       };
 
       document.getElementById("btnCancelCrop").onclick = () => {
