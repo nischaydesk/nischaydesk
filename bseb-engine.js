@@ -1,8 +1,8 @@
 /**
  * NischayDesk - BSEB Official Assessment Engine (v32.0 Multi-Upload & Touch Cropper Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: Multi-Page Gallery + Camera Support, 4-Corner Interactive Touch Cropper,
- *           90° Rotation, Zero Auto-Submit, 3-Day Cooldown Reset, Firestore Sync
+ * Features: 4-Corner Interactive Touch Cropper, 90° Rotation,
+ *           Zero Auto-Submit, 3-Day Cooldown Reset, Firestore Sync
  */
 
 // ---------------------------------------------------------
@@ -108,7 +108,6 @@ let isUploadingAnswerSheet = false;
 function setUploadMode(active) {
   isUploadingAnswerSheet = active;
   if (active) {
-    // 10 मिनट की ग्रेस ताकि छात्र आराम से 20 पन्ने फ़ोटो खींच/चुन सके
     setTimeout(() => { isUploadingAnswerSheet = false; }, 600000);
   }
 }
@@ -118,7 +117,6 @@ function initAntiCheatingMonitor() {
   isExamActive = true;
   document.addEventListener("visibilitychange", handleTabSwitch);
 
-  // 🌟 यहाँ से capture हटाया गया ताकि कैमरा + गैलरी दोनों आएं
   document.querySelectorAll('input[type="file"]').forEach(inp => {
     inp.setAttribute("accept", "image/*");
     inp.removeAttribute("capture");
@@ -165,7 +163,7 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. टच-सपोर्ट 4-कॉर्नर क्रॉप व रोटेट इंजन (Touch/Drag Cropper)
+// 5. 🌟 4-कॉर्नर टच-क्रॉपर (असली रिसाइज़ और ड्रैग लॉजिक)
 // ---------------------------------------------------------
 function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
   return new Promise((resolve) => {
@@ -185,7 +183,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
       overlay.innerHTML = `
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: #fff;">
           <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">
-            ✂️ पन्ना ${pageIndex}/${totalPages}: क्रॉप व रोटेट
+            ✂️ पन्ना ${pageIndex}/${totalPages}: कोने खींचकर क्रॉप करें
           </span>
           <button type="button" id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">
             🔄 90° घुमाएँ
@@ -194,11 +192,12 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
 
         <div id="cropperViewport" style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
           <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; object-fit: contain;"></canvas>
+          
           <div id="cropBoxGuide" style="position: absolute; border: 2px dashed #38bdf8; background: rgba(56, 189, 248, 0.15); box-sizing: border-box; touch-action: none;">
-            <div style="position: absolute; top: -6px; left: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
-            <div style="position: absolute; top: -6px; right: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
-            <div style="position: absolute; bottom: -6px; left: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
-            <div style="position: absolute; bottom: -6px; right: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
+            <div class="crop-handle" data-corner="tl" style="position: absolute; top: -14px; left: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
+            <div class="crop-handle" data-corner="tr" style="position: absolute; top: -14px; right: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
+            <div class="crop-handle" data-corner="bl" style="position: absolute; bottom: -14px; left: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
+            <div class="crop-handle" data-corner="br" style="position: absolute; bottom: -14px; right: -14px; width: 28px; height: 28px; background: #38bdf8; border: 2px solid #fff; border-radius: 50%; touch-action: none;"></div>
           </div>
         </div>
 
@@ -224,8 +223,7 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
       const img = new Image();
       let rotation = 0;
 
-      // क्रॉप बॉक्स निर्देशांक
-      let cropState = { x: 20, y: 20, w: 260, h: 360, isFull: false };
+      let cropState = { x: 30, y: 30, w: 260, h: 360, isFull: false };
 
       img.onload = () => {
         setupCanvas();
@@ -271,30 +269,80 @@ function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
         cropGuide.style.height = `${cropState.h}px`;
       }
 
-      // टच/ड्रैग हैंडलर
-      let startX, startY, origX, origY;
+      // 1. कोनों को खींचकर छोटा/बड़ा करना
+      let activeCorner = null;
+      let startX, startY, origBox;
+
+      overlay.querySelectorAll(".crop-handle").forEach(handle => {
+        handle.addEventListener("pointerdown", (ev) => {
+          ev.stopPropagation();
+          activeCorner = handle.getAttribute("data-corner");
+          startX = ev.clientX;
+          startY = ev.clientY;
+          origBox = { ...cropState };
+          handle.setPointerCapture(ev.pointerId);
+
+          const onCornerMove = (moveEv) => {
+            const dx = moveEv.clientX - startX;
+            const dy = moveEv.clientY - startY;
+
+            if (activeCorner === "br") {
+              cropState.w = Math.max(80, origBox.w + dx);
+              cropState.h = Math.max(80, origBox.h + dy);
+            } else if (activeCorner === "bl") {
+              const newW = Math.max(80, origBox.w - dx);
+              cropState.x = origBox.x + (origBox.w - newW);
+              cropState.w = newW;
+              cropState.h = Math.max(80, origBox.h + dy);
+            } else if (activeCorner === "tr") {
+              cropState.w = Math.max(80, origBox.w + dx);
+              const newH = Math.max(80, origBox.h - dy);
+              cropState.y = origBox.y + (origBox.h - newH);
+              cropState.h = newH;
+            } else if (activeCorner === "tl") {
+              const newW = Math.max(80, origBox.w - dx);
+              const newH = Math.max(80, origBox.h - dy);
+              cropState.x = origBox.x + (origBox.w - newW);
+              cropState.y = origBox.y + (origBox.h - newH);
+              cropState.w = newW;
+              cropState.h = newH;
+            }
+            updateGuideStyles();
+          };
+
+          const onCornerUp = () => {
+            activeCorner = null;
+            handle.removeEventListener("pointermove", onCornerMove);
+            handle.removeEventListener("pointerup", onCornerUp);
+          };
+
+          handle.addEventListener("pointermove", onCornerMove);
+          handle.addEventListener("pointerup", onCornerUp);
+        });
+      });
+
+      // 2. पूरे बॉक्स को पकड़कर हिलाना
       cropGuide.addEventListener("pointerdown", (ev) => {
+        if (ev.target.classList.contains("crop-handle")) return;
         startX = ev.clientX;
         startY = ev.clientY;
-        origX = cropState.x;
-        origY = cropState.y;
+        const initialX = cropState.x;
+        const initialY = cropState.y;
         cropGuide.setPointerCapture(ev.pointerId);
 
-        const onPointerMove = (moveEv) => {
-          const dx = moveEv.clientX - startX;
-          const dy = moveEv.clientY - startY;
-          cropState.x = Math.max(0, origX + dx);
-          cropState.y = Math.max(0, origY + dy);
+        const onBoxMove = (moveEv) => {
+          cropState.x = initialX + (moveEv.clientX - startX);
+          cropState.y = initialY + (moveEv.clientY - startY);
           updateGuideStyles();
         };
 
-        const onPointerUp = (upEv) => {
-          cropGuide.removeEventListener("pointermove", onPointerMove);
-          cropGuide.removeEventListener("pointerup", onPointerUp);
+        const onBoxUp = () => {
+          cropGuide.removeEventListener("pointermove", onBoxMove);
+          cropGuide.removeEventListener("pointerup", onBoxUp);
         };
 
-        cropGuide.addEventListener("pointermove", onPointerMove);
-        cropGuide.addEventListener("pointerup", onPointerUp);
+        cropGuide.addEventListener("pointermove", onBoxMove);
+        cropGuide.addEventListener("pointerup", onBoxUp);
       });
 
       document.getElementById("btnCropRotate").onclick = () => {
@@ -636,7 +684,7 @@ function startCinematicSubmissionChamber() {
 }
 
 // ---------------------------------------------------------
-// 11. सबमिशन हैंडलर (Day 6 Timestamp Sync)
+// 11. सबमिशन हैंडलर
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
