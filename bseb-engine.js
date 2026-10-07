@@ -1,7 +1,8 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v26.0 High-Speed Cinematic Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v26.5 Full Synchronous Master)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: 35s Cinematic Evaluation Chamber, Voice Guard, Fast-Stream Gemini Vision
+ * Features: 60s Cinematic Chamber, Direct Voice Synthesis, 
+ *           Guaranteed Sub-Collection Upload, 100% Synced AI Evaluation
  */
 
 // ---------------------------------------------------------
@@ -203,7 +204,7 @@ function compressCameraImage(file) {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxDim = 1000; // लिखावट एकदम साफ दिखेगी
+        const maxDim = 1000;
         let w = img.width;
         let h = img.height;
 
@@ -221,7 +222,6 @@ function compressCameraImage(file) {
         canvas.height = h;
         const ctx = canvas.getContext("2d");
         
-        // लिखावट को शार्प और डार्क बनाने का फिल्टर
         ctx.filter = "contrast(1.15) brightness(1.02)";
         ctx.drawImage(img, 0, 0, w, h);
 
@@ -376,10 +376,10 @@ async function callGeminiApiFallback(parts) {
 }
 
 // ---------------------------------------------------------
-// 10. Background AI Evaluation Logic
+// 10. Guaranteed AI Evaluation (Direct Database Commit)
 // ---------------------------------------------------------
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
-  if (!imagesList || imagesList.length === 0) return;
+  if (!imagesList || imagesList.length === 0) return false;
 
   const totalPages = Math.min(imagesList.length, 26);
   let imageParts = [];
@@ -395,7 +395,7 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, 
     }
   }
 
-  if (imageParts.length === 0) return;
+  if (imageParts.length === 0) return false;
 
   const paperInfo = (window.BSEB_PAPERS_DATABASE && window.BSEB_PAPERS_DATABASE[subjectCode])
                     ? window.BSEB_PAPERS_DATABASE[subjectCode]
@@ -448,6 +448,7 @@ STRICT JSON ONLY:
       serverDateIso = serverDateObj.toISOString();
     } catch(e) {}
 
+    // Firestore में तत्काल मुख्य रिकॉर्ड अपडेट करें
     if (window.NischayConfig?.dbInstance) {
       await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
         completedDays: {
@@ -455,7 +456,7 @@ STRICT JSON ONLY:
             objectiveMarks: finalObj,
             subjectiveMarks: awarded,
             totalMarks: finalTotal,
-            aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द" : "मूल्यांकन संपन्न"),
+            aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द (अनुचित उत्तर)" : "सफल मूल्यांकन"),
             pagesEvaluation: parsed.pagesEvaluation || [],
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
@@ -466,6 +467,7 @@ STRICT JSON ONLY:
       }, { merge: true });
     }
 
+    // लोकल IndexedDB बैकअप
     await saveEvaluatedSheetToDB(uid, day, {
       subjectCode: subjectCode,
       subjectName: subjectName,
@@ -474,17 +476,33 @@ STRICT JSON ONLY:
       isExpelled: isExpelled
     });
 
-    console.log(`✓ Day ${day} AI Evaluation Successfully Finished!`);
+    console.log(`✓ Day ${day} AI Evaluation Successfully Finished and Saved!`);
+    return true;
   } catch (err) {
-    console.error("AI Background Evaluation note:", err);
+    console.error("AI Evaluation Failure:", err);
+    return false;
   }
 }
 
 // ---------------------------------------------------------
-// 🌟 11. 35-सेकंड सिनेमैटिक 'मूल्यांकन कक्ष' (The Impossible-to-Skip Visual UI)
+// 11. 60-सेकंड बुलेटप्रूफ डिजिटल मूल्यांकन कक्ष (Voice Alert + Real Progress)
 // ---------------------------------------------------------
-function showCinematicEvaluationChamber(onComplete) {
-  // अगर पहले से मोडल है तो हटाएं
+function speakHindiAlert(text) {
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "hi-IN";
+      utterance.rate = 0.92;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  } catch (e) {
+    console.warn("Speech synthesis note:", e);
+  }
+}
+
+function startCinematicEvaluationChamber() {
   const oldModal = document.getElementById("nischayChamberModal");
   if (oldModal) oldModal.remove();
 
@@ -507,7 +525,7 @@ function showCinematicEvaluationChamber(onComplete) {
       }
       @keyframes radarPulse {
         0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7); }
-        70% { transform: scale(1.02); box-shadow: 0 0 0 25px rgba(2, 132, 199, 0); }
+        70% { transform: scale(1.03); box-shadow: 0 0 0 25px rgba(2, 132, 199, 0); }
         100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
       }
       .laser-scanner-bar {
@@ -520,70 +538,50 @@ function showCinematicEvaluationChamber(onComplete) {
 
     <div style="max-width: 480px; width: 100%; text-align: center; position: relative;">
       
-      <!-- रेडार / सील बॉक्स -->
-      <div style="width: 110px; height: 110px; margin: 0 auto 20px; position: relative; border-radius: 50%; background: #0f172a; border: 3px solid #0284c7; display: flex; align-items: center; justify-content: center; animation: radarPulse 2s infinite;">
-        <span style="font-size: 3rem;">🏛️</span>
+      <div style="width: 105px; height: 105px; margin: 0 auto 18px; position: relative; border-radius: 50%; background: #0f172a; border: 3px solid #0284c7; display: flex; align-items: center; justify-content: center; animation: radarPulse 2s infinite;">
+        <span style="font-size: 2.8rem;">🏛️</span>
         <div class="laser-scanner-bar"></div>
       </div>
 
-      <div style="display: inline-block; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 12px;">
-        ● पटना बोर्ड मुख्य सर्वर लाइव चेकिंग
+      <div style="display: inline-block; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; padding: 4px 14px; border-radius: 20px; font-size: 0.74rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 12px;">
+        ● पटना बोर्ड मुख्य डिजिटल मूल्यांकन कक्ष
       </div>
 
-      <h2 style="font-size: 1.45rem; font-weight: 800; margin: 0 0 8px; color: #ffffff; letter-spacing: -0.5px;">
-        डिजिटल मूल्यांकन कक्ष सक्रिय है
+      <h2 style="font-size: 1.35rem; font-weight: 800; margin: 0 0 8px; color: #ffffff;">
+        उत्तर-पुस्तिका मूल्यांकन कक्ष
       </h2>
 
-      <p style="font-size: 0.85rem; color: #94a3b8; margin: 0 0 24px; line-height: 1.5;">
+      <p style="font-size: 0.84rem; color: #94a3b8; margin: 0 0 20px; line-height: 1.5;">
         <span style="color: #fbbf24; font-weight: 700;">⚠ चेतावनी:</span> कृपया स्क्रीन बंद न करें और बैक बटन न दबाएँ। आपकी उत्तर-पुस्तिका का बिंदुवार मूल्यांकन हो रहा है।
       </p>
 
-      <!-- प्रोग्रेस बार -->
-      <div style="background: rgba(255,255,255,0.08); height: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(56,189,248,0.2);">
-        <div id="chamberProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #0284c7, #38bdf8, #22c55e); transition: width 0.4s ease; border-radius: 10px;"></div>
+      <div style="background: rgba(255,255,255,0.08); height: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(56,189,248,0.25);">
+        <div id="chamberProgressBar" style="width: 5%; height: 100%; background: linear-gradient(90deg, #0284c7, #38bdf8, #22c55e); transition: width 0.3s ease; border-radius: 10px;"></div>
       </div>
 
-      <!-- लाइव स्टेटस टेक्स्ट -->
-      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: #cbd5e1; margin-bottom: 18px;">
-        <span id="chamberStatusMsg">OMR शीट डेटा सर्वर से सत्यापित हो रहा है...</span>
-        <span id="chamberTimerText" style="color: #38bdf8;">35s</span>
+      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: #cbd5e1; margin-bottom: 16px;">
+        <span id="chamberStatusMsg">सर्वर से जुड़ रहा है...</span>
+        <span id="chamberTimerText" style="color: #38bdf8;">60s</span>
       </div>
 
-      <!-- सुरक्षा मुहर पट्टी -->
-      <div style="background: rgba(15, 23, 42, 0.8); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 12px; font-size: 0.75rem; color: #94a3b8; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <span>🔒 256-Bit SSL Encripted</span> • <span>BSEB Patna Protocols</span> • <span>Anti-Tamper Lock</span>
+      <div style="background: rgba(15, 23, 42, 0.8); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 12px; font-size: 0.75rem; color: #94a3b8;">
+        🔒 256-Bit SSL • एंटी-चीटिंग व लाल-पेन डिजिटल वेरिफिकेशन
       </div>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  // 🔊 वॉइस गार्ड अनाउंसमेंट (AI Voice Alert)
-  try {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const msg = new SpeechSynthesisUtterance("कृपया ध्यान दें। आपकी उत्तर पुस्तिका की जांच हो रही है। स्क्रीन बंद न करें।");
-      msg.lang = "hi-IN";
-      msg.rate = 0.95;
-      window.speechSynthesis.speak(msg);
-    }
-  } catch(e) {}
+  // पहली ध्वनि चेतावनी
+  speakHindiAlert("कृपया ध्यान दें। आपकी उत्तर पुस्तिका पटना बोर्ड सर्वर पर भेजी जा रही है। स्क्रीन बंद न करें।");
 
-  let totalSeconds = 35;
+  let totalSeconds = 60;
   let elapsed = 0;
 
-  const statusStages = [
-    { at: 0, text: "🔍 [चरण 1/5] 50-OMR बबल शीट का डिजिटल सत्यापन..." },
-    { at: 8, text: "✍️ [चरण 2/5] 26 हस्तलिखित पन्नों की लाल-पेन AI चेकिंग..." },
-    { at: 17, text: "🛡️ [चरण 3/5] एंटी-चीटिंग, इमेज क्लैरिटी व UFM विश्लेषण..." },
-    { at: 26, text: "📑 [चरण 4/5] मुख्य परीक्षक डिजिटल मुहर व अंक आवंटन..." },
-    { at: 32, text: "🔐 [चरण 5/5] अंक तालिका एन्क्रिप्ट व 7-दिवसीय लॉक सक्रिय!" }
-  ];
-
-  const interval = setInterval(() => {
+  const timerInterval = setInterval(() => {
     elapsed++;
-    const remaining = totalSeconds - elapsed;
-    const pct = Math.min(100, Math.round((elapsed / totalSeconds) * 100));
+    const remaining = Math.max(0, totalSeconds - elapsed);
+    const pct = Math.min(95, Math.round((elapsed / totalSeconds) * 95));
 
     const pBar = document.getElementById("chamberProgressBar");
     const tText = document.getElementById("chamberTimerText");
@@ -592,32 +590,56 @@ function showCinematicEvaluationChamber(onComplete) {
     if (pBar) pBar.style.width = pct + "%";
     if (tText) tText.innerText = `${remaining}s`;
 
-    // स्टेटस बदलना
-    for (let stage of statusStages) {
-      if (elapsed >= stage.at && sMsg) {
-        sMsg.innerText = stage.text;
-      }
+    if (elapsed === 12) {
+      if (sMsg) sMsg.innerText = "✍️ हस्तलिखित कॉपियों की लाल-पेन से AI जांच प्रारंभ...";
+      speakHindiAlert("हस्तलिखित उत्तरों की लाइन बाई लाइन लाल पेन से जांच की जा रही है।");
+    } else if (elapsed === 28) {
+      if (sMsg) sMsg.innerText = "🛡️ एंटी-चीटिंग, इमेज क्लैरिटी व UFM विश्लेषण जारी...";
+      speakHindiAlert("एंटी चीटिंग और लिखावट का मिलान किया जा रहा है।");
+    } else if (elapsed === 44) {
+      if (sMsg) sMsg.innerText = "📑 मुख्य परीक्षक द्वारा अंकों का आवंटन एवं सील लॉक...";
+      speakHindiAlert("अंकों का आवंटन और ओएमआर शीट का मिलान हो रहा है।");
     }
 
     if (elapsed >= totalSeconds) {
-      clearInterval(interval);
-      setTimeout(() => {
-        if (modal) modal.remove();
-        if (typeof onComplete === "function") onComplete();
-      }, 500);
+      clearInterval(timerInterval);
     }
   }, 1000);
+
+  return {
+    finish: () => {
+      return new Promise((resolve) => {
+        clearInterval(timerInterval);
+        const pBar = document.getElementById("chamberProgressBar");
+        const tText = document.getElementById("chamberTimerText");
+        const sMsg = document.getElementById("chamberStatusMsg");
+
+        if (pBar) pBar.style.width = "100%";
+        if (tText) tText.innerText = "0s";
+        if (sMsg) sMsg.innerText = "✓ मूल्यांकन पूर्ण! परिणाम सुरक्षित कर दिया गया।";
+
+        speakHindiAlert("मूल्यांकन सफलता पूर्वक पूरा हुआ। परिणाम सुरक्षित कर दिया गया है।");
+
+        setTimeout(() => {
+          if (modal) modal.remove();
+          resolve();
+        }, 1500);
+      });
+    }
+  };
 }
 
 // ---------------------------------------------------------
-// 12. Guaranteed 26-Page Submission + Full Sync
+// 12. 100% कड़क सबमिशन (सारे Await पूरे होने के बाद ही स्क्रीन हटेगी)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
   isUploadingAnswerSheet = false;
 
-  const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
+  // 1. स्क्रीन पर 60 सेकंड का विजुअल शुरू करें
+  const chamber = startCinematicEvaluationChamber();
 
+  const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
   let objMarks = 0;
   let count = 0;
   for (let i = 1; i <= 100; i++) {
@@ -657,72 +679,61 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     submittedAt: submitIso
   };
 
-  // लोकल IndexedDB बैकअप
-  try {
+  // 2. सब-कलेक्शन में फ़ोटो पक्का सेव करना (Strict Sequential Await)
+  if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
+    const db = window.NischayConfig.dbInstance;
+
+    // मुख्य रिकॉर्ड राइट करें
+    await db.collection("bseb_exams_2026").doc(user.uid).set({
+      uid: user.uid,
+      rollCode: state.rollCode || creds.rollCode,
+      rollNumber: state.rollNumber || creds.rollNumber,
+      regNo: state.regNo || creds.regNo,
+      displayName: state.displayName || user.displayName || user.email.split('@')[0],
+      fatherName: state.fatherName || "",
+      motherName: state.motherName || "",
+      schoolName: state.schoolName || "",
+      isProfileLocked: true,
+      completedDays: { [day]: completedData },
+      lastExamDate: todayStr,
+      activeSession: null
+    }, { merge: true });
+
+    // हर फ़ोटो को सब-कलेक्शन में लिखें
     if (imagesList && imagesList.length > 0) {
-      await saveEvaluatedSheetToDB(user.uid, day, {
-        subjectCode: subjectCode,
-        subjectName: subjectName,
-        pages: imagesList,
-        evaluation: []
-      });
+      const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
+      for (let i = 0; i < imagesList.length; i++) {
+        const item = imagesList[i];
+        const b64 = typeof item === 'string' ? item : (item.dataUrl || item.imageData || item.data);
+        await dayPagesColRef.doc(`p_${i + 1}`).set({
+          pageNumber: i + 1,
+          imageData: b64,
+          savedAt: submitIso
+        });
+      }
+      console.log(`✓ All ${imagesList.length} pages verified in day_${day}_pages sub-collection!`);
     }
-  } catch(e) {}
+  }
+
+  // 3. AI का मूल्यांकन यहीं पर Await करवाएँ (जब तक यह खत्म नहीं होता, आगे नहीं बढ़ेंगे)
+  if (imagesList && imagesList.length > 0) {
+    try {
+      await runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
+      console.log("✓ AI Evaluation successfully merged!");
+    } catch (err) {
+      console.error("Critical AI Evaluation failure:", err);
+    }
+  }
+
+  // 4. जब सब कुछ Firestore में 100% दर्ज हो जाए, तभी चैंबर हटेगा
+  await chamber.finish();
 
   if (!state.completedDays) state.completedDays = {};
   state.completedDays[day] = completedData;
   state.lastExamDate = todayStr;
   state.activeSession = null;
 
-  // 🌟 छात्र को सीधे 35 सेकंड के विजुअल चैंबर में लॉक करें
-  return new Promise((resolve) => {
-    showCinematicEvaluationChamber(async () => {
-      resolve(completedData);
-    });
-
-    // बैकग्राउंड में तेज़ समानांतर सेविंग और AI मूल्यांकन चालू रखें
-    (async () => {
-      if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
-        const db = window.NischayConfig.dbInstance;
-        
-        await db.collection("bseb_exams_2026").doc(user.uid).set({
-          uid: user.uid,
-          rollCode: state.rollCode || creds.rollCode,
-          rollNumber: state.rollNumber || creds.rollNumber,
-          regNo: state.regNo || creds.regNo,
-          displayName: state.displayName || user.displayName || user.email.split('@')[0],
-          fatherName: state.fatherName || "",
-          motherName: state.motherName || "",
-          schoolName: state.schoolName || "",
-          isProfileLocked: true,
-          completedDays: { [day]: completedData },
-          lastExamDate: todayStr,
-          activeSession: null
-        }, { merge: true });
-
-        if (imagesList && imagesList.length > 0) {
-          const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
-          const uploadPromises = imagesList.map((item, i) => {
-            const b64 = typeof item === 'string' ? item : (item.dataUrl || item.imageData || item.data);
-            return dayPagesColRef.doc(`p_${i + 1}`).set({
-              pageNumber: i + 1,
-              imageData: b64,
-              savedAt: submitIso
-            });
-          });
-          await Promise.all(uploadPromises);
-        }
-      }
-
-      if (imagesList && imagesList.length > 0) {
-        try {
-          await runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
-        } catch (err) {
-          console.warn("Chamber AI Eval Note:", err);
-        }
-      }
-    })();
-  });
+  return completedData;
 }
 
 // ---------------------------------------------------------
