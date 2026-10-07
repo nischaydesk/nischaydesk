@@ -1,8 +1,8 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v31.0 Timed-Reset Edition)
+ * NischayDesk - BSEB Official Assessment Engine (v32.0 Multi-Upload & Touch Cropper Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: 3-Day (72-Hour) Post-Exam Cooldown Live Timer, Safe Re-attempt Reset,
- *           Primary Camera Locking, Document Cropper, Firestore + ImgBB Sync
+ * Features: Multi-Page Gallery + Camera Support, 4-Corner Interactive Touch Cropper,
+ *           90° Rotation, Zero Auto-Submit, 3-Day Cooldown Reset, Firestore Sync
  */
 
 // ---------------------------------------------------------
@@ -23,7 +23,7 @@ const BSEB_ENGINE_CONFIG = {
   PRIMARY_MODEL: "gemini-3.8-flash",
   BACKUP_MODEL: "gemini-3.5-flash-lite",
   IMGBB_KEY: "3e83d4f2017fafb76b04d4f92a0d901b",
-  RESET_COOLDOWN_DAYS: 3 // 6 दिन पूरे होने के 3 दिन बाद रीसेट अनलॉक होगा
+  RESET_COOLDOWN_DAYS: 3 // 6 दिन पूरे होने के 3 दिन बाद रीसेट खुलेगा
 };
 
 // ---------------------------------------------------------
@@ -108,6 +108,7 @@ let isUploadingAnswerSheet = false;
 function setUploadMode(active) {
   isUploadingAnswerSheet = active;
   if (active) {
+    // 10 मिनट की ग्रेस ताकि छात्र आराम से 20 पन्ने फ़ोटो खींच/चुन सके
     setTimeout(() => { isUploadingAnswerSheet = false; }, 600000);
   }
 }
@@ -117,9 +118,10 @@ function initAntiCheatingMonitor() {
   isExamActive = true;
   document.addEventListener("visibilitychange", handleTabSwitch);
 
+  // 🌟 यहाँ से capture हटाया गया ताकि कैमरा + गैलरी दोनों आएं
   document.querySelectorAll('input[type="file"]').forEach(inp => {
     inp.setAttribute("accept", "image/*");
-    inp.setAttribute("capture", "environment");
+    inp.removeAttribute("capture");
     inp.addEventListener("click", () => setUploadMode(true));
   });
 }
@@ -163,9 +165,9 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. इन-बिल्ट मोबाइल डॉक्यूमेंट क्रॉपर (Crop & Rotate UI)
+// 5. टच-सपोर्ट 4-कॉर्नर क्रॉप व रोटेट इंजन (Touch/Drag Cropper)
 // ---------------------------------------------------------
-function openNischayImageCropper(imageFile) {
+function openNischayImageCropper(imageFile, pageIndex = 1, totalPages = 1) {
   return new Promise((resolve) => {
     setUploadMode(true);
     const reader = new FileReader();
@@ -176,23 +178,40 @@ function openNischayImageCropper(imageFile) {
       overlay.style.cssText = `
         position: fixed; inset: 0; z-index: 99999999;
         background: #020617; display: flex; flex-direction: column;
-        align-items: center; justify-content: space-between; padding: 14px;
+        align-items: center; justify-content: space-between; padding: 12px;
         touch-action: none; font-family: 'Plus Jakarta Sans', sans-serif;
       `;
 
       overlay.innerHTML = `
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: #fff;">
-          <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">✂️ उत्तर-पुस्तिका क्रॉप करें</span>
-          <button id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">🔄 90° घुमाएँ</button>
+          <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">
+            ✂️ पन्ना ${pageIndex}/${totalPages}: क्रॉप व रोटेट
+          </span>
+          <button type="button" id="btnCropRotate" style="background: #1e293b; color: #fff; border: 1px solid #475569; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">
+            🔄 90° घुमाएँ
+          </button>
         </div>
 
-        <div style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
-          <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; border: 1px solid #334155;"></canvas>
+        <div id="cropperViewport" style="position: relative; width: 100%; max-width: 480px; flex: 1; margin: 10px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px;">
+          <canvas id="cropCanvas" style="max-width: 100%; max-height: 100%; object-fit: contain;"></canvas>
+          <div id="cropBoxGuide" style="position: absolute; border: 2px dashed #38bdf8; background: rgba(56, 189, 248, 0.15); box-sizing: border-box; touch-action: none;">
+            <div style="position: absolute; top: -6px; left: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
+            <div style="position: absolute; top: -6px; right: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -6px; left: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -6px; right: -6px; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></div>
+          </div>
         </div>
 
-        <div style="width: 100%; max-width: 480px; display: flex; gap: 10px;">
-          <button id="btnCancelCrop" style="flex: 1; padding: 12px; background: #334155; color: #fff; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">रद्द करें</button>
-          <button id="btnSaveCrop" style="flex: 2; padding: 12px; background: #0284c7; color: #fff; border: none; border-radius: 6px; font-weight: 800; cursor: pointer;">✓ फ़ोटो सेव करें</button>
+        <div style="width: 100%; max-width: 480px; display: flex; gap: 8px;">
+          <button type="button" id="btnCancelCrop" style="flex: 1; padding: 12px; background: #334155; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
+            रद्द करें
+          </button>
+          <button type="button" id="btnKeepFull" style="flex: 1; padding: 12px; background: #475569; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
+            पूरा पन्ना रखें
+          </button>
+          <button type="button" id="btnSaveCrop" style="flex: 1.5; padding: 12px; background: #0284c7; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">
+            ✓ फ़ोटो सेव करें
+          </button>
         </div>
       `;
 
@@ -200,10 +219,18 @@ function openNischayImageCropper(imageFile) {
 
       const canvas = document.getElementById("cropCanvas");
       const ctx = canvas.getContext("2d");
+      const cropGuide = document.getElementById("cropBoxGuide");
+      const viewport = document.getElementById("cropperViewport");
       const img = new Image();
       let rotation = 0;
 
-      img.onload = () => { setupCanvas(); };
+      // क्रॉप बॉक्स निर्देशांक
+      let cropState = { x: 20, y: 20, w: 260, h: 360, isFull: false };
+
+      img.onload = () => {
+        setupCanvas();
+        resetCropGuide();
+      };
       img.src = srcUrl;
 
       function setupCanvas() {
@@ -223,9 +250,57 @@ function openNischayImageCropper(imageFile) {
         ctx.restore();
       }
 
+      function resetCropGuide() {
+        const rect = canvas.getBoundingClientRect();
+        const vRect = viewport.getBoundingClientRect();
+        const leftOff = rect.left - vRect.left;
+        const topOff = rect.top - vRect.top;
+
+        cropState.x = leftOff + 10;
+        cropState.y = topOff + 10;
+        cropState.w = Math.max(120, rect.width - 20);
+        cropState.h = Math.max(120, rect.height - 20);
+
+        updateGuideStyles();
+      }
+
+      function updateGuideStyles() {
+        cropGuide.style.left = `${cropState.x}px`;
+        cropGuide.style.top = `${cropState.y}px`;
+        cropGuide.style.width = `${cropState.w}px`;
+        cropGuide.style.height = `${cropState.h}px`;
+      }
+
+      // टच/ड्रैग हैंडलर
+      let startX, startY, origX, origY;
+      cropGuide.addEventListener("pointerdown", (ev) => {
+        startX = ev.clientX;
+        startY = ev.clientY;
+        origX = cropState.x;
+        origY = cropState.y;
+        cropGuide.setPointerCapture(ev.pointerId);
+
+        const onPointerMove = (moveEv) => {
+          const dx = moveEv.clientX - startX;
+          const dy = moveEv.clientY - startY;
+          cropState.x = Math.max(0, origX + dx);
+          cropState.y = Math.max(0, origY + dy);
+          updateGuideStyles();
+        };
+
+        const onPointerUp = (upEv) => {
+          cropGuide.removeEventListener("pointermove", onPointerMove);
+          cropGuide.removeEventListener("pointerup", onPointerUp);
+        };
+
+        cropGuide.addEventListener("pointermove", onPointerMove);
+        cropGuide.addEventListener("pointerup", onPointerUp);
+      });
+
       document.getElementById("btnCropRotate").onclick = () => {
         rotation = (rotation + 90) % 360;
         setupCanvas();
+        setTimeout(resetCropGuide, 50);
       };
 
       document.getElementById("btnCancelCrop").onclick = () => {
@@ -233,47 +308,71 @@ function openNischayImageCropper(imageFile) {
         resolve(null);
       };
 
-      document.getElementById("btnSaveCrop").onclick = async () => {
-        const maxDim = 1200;
-        let w = canvas.width;
-        let h = canvas.height;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) {
-            h = Math.round((h * maxDim) / w);
-            w = maxDim;
+      document.getElementById("btnKeepFull").onclick = () => {
+        cropState.isFull = true;
+        finishAndExport();
+      };
+
+      document.getElementById("btnSaveCrop").onclick = () => {
+        cropState.isFull = false;
+        finishAndExport();
+      };
+
+      function finishAndExport() {
+        let exportCanvas = document.createElement("canvas");
+        const cRect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / cRect.width;
+        const scaleY = canvas.height / cRect.height;
+
+        let srcX = 0, srcY = 0, srcW = canvas.width, srcH = canvas.height;
+
+        if (!cropState.isFull) {
+          const vRect = viewport.getBoundingClientRect();
+          const leftOff = cRect.left - vRect.left;
+          const topOff = cRect.top - vRect.top;
+
+          srcX = Math.max(0, (cropState.x - leftOff) * scaleX);
+          srcY = Math.max(0, (cropState.y - topOff) * scaleY);
+          srcW = Math.min(canvas.width - srcX, cropState.w * scaleX);
+          srcH = Math.min(canvas.height - srcY, cropState.h * scaleY);
+        }
+
+        const maxDim = 1100;
+        let outW = srcW;
+        let outH = srcH;
+        if (outW > maxDim || outH > maxDim) {
+          if (outW > outH) {
+            outH = Math.round((outH * maxDim) / outW);
+            outW = maxDim;
           } else {
-            w = Math.round((w * maxDim) / h);
-            h = maxDim;
+            outW = Math.round((outW * maxDim) / outH);
+            outH = maxDim;
           }
         }
 
-        const outCanvas = document.createElement("canvas");
-        outCanvas.width = w;
-        outCanvas.height = h;
-        const outCtx = outCanvas.getContext("2d");
-        outCtx.fillStyle = "#ffffff";
-        outCtx.fillRect(0, 0, w, h);
-        outCtx.filter = "contrast(1.15) brightness(1.02)";
-        outCtx.drawImage(canvas, 0, 0, w, h);
+        exportCanvas.width = outW;
+        exportCanvas.height = outH;
+        const eCtx = exportCanvas.getContext("2d");
+        eCtx.fillStyle = "#ffffff";
+        eCtx.fillRect(0, 0, outW, outH);
+        eCtx.filter = "contrast(1.18) brightness(1.02)";
+        eCtx.drawImage(canvas, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
 
-        const finalBase64 = outCanvas.toDataURL("image/jpeg", 0.65);
+        const finalB64 = exportCanvas.toDataURL("image/jpeg", 0.62);
         overlay.remove();
-        resolve(finalBase64);
-      };
+        resolve(finalB64);
+      }
     };
     reader.readAsDataURL(imageFile);
   });
 }
 
-// ---------------------------------------------------------
-// 6. HD Compressor Helper
-// ---------------------------------------------------------
-function compressCameraImage(file) {
-  return openNischayImageCropper(file);
+function compressCameraImage(file, index = 1, total = 1) {
+  return openNischayImageCropper(file, index, total);
 }
 
 // ---------------------------------------------------------
-// 7. ImgBB Cloud Uploader Helper
+// 6. ImgBB Cloud Uploader Helper
 // ---------------------------------------------------------
 async function uploadToImgBB(base64Data) {
   try {
@@ -297,7 +396,7 @@ async function uploadToImgBB(base64Data) {
 }
 
 // ---------------------------------------------------------
-// 8. Unique Credentials Generator
+// 7. Unique Credentials Generator
 // ---------------------------------------------------------
 function generateUniqueCredentials(uid) {
   if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
@@ -318,7 +417,7 @@ function generateUniqueCredentials(uid) {
 }
 
 // ---------------------------------------------------------
-// 9. Cloud Exam State Sync
+// 8. Cloud Exam State Sync
 // ---------------------------------------------------------
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -344,7 +443,7 @@ async function getCloudExamState(user) {
     completedDays: {},
     savedOMR: {},
     lastExamDate: null,
-    allDaysCompletedAt: null, // पूरे 6 दिन खत्म होने का समय
+    allDaysCompletedAt: null,
     activeSession: null
   };
 
@@ -392,7 +491,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
 }
 
 // ---------------------------------------------------------
-// 10. Voice Alert
+// 9. Voice Alert
 // ---------------------------------------------------------
 function speakHindiAlert(text) {
   try {
@@ -410,7 +509,7 @@ function speakHindiAlert(text) {
 }
 
 // ---------------------------------------------------------
-// 11. Fast Cinematic 3-2-1 Chamber & Success Overlay
+// 10. Fast Cinematic Submission Chamber
 // ---------------------------------------------------------
 function startCinematicSubmissionChamber() {
   const oldModal = document.getElementById("nischayFastChamberModal");
@@ -537,7 +636,7 @@ function startCinematicSubmissionChamber() {
 }
 
 // ---------------------------------------------------------
-// 12. कड़क सबमिशन (Day 6 Completion Timestamp Track)
+// 11. सबमिशन हैंडलर (Day 6 Timestamp Sync)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
@@ -590,7 +689,6 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
   if (!state.completedDays) state.completedDays = {};
   state.completedDays[day] = completedData;
 
-  // यदि 6 के 6 दिन पूरे हो गए हैं, तो 3-दिन के रीसेट टाइमर का समय दर्ज करें
   let allDaysFinishedTime = state.allDaysCompletedAt || null;
   if (Object.keys(state.completedDays).length >= 6 && !allDaysFinishedTime) {
     allDaysFinishedTime = submitIso;
@@ -635,11 +733,9 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
           savedAt: submitIso
         });
       }
-      console.log(`✓ All ${imagesList.length} pages hosted on ImgBB and URLs saved to day_${day}_pages!`);
     }
   }
 
-  // Local IndexedDB Cache
   await saveEvaluatedSheetToDB(user ? user.uid : "local", day, {
     subjectCode: subjectCode,
     subjectName: subjectName,
@@ -659,39 +755,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 }
 
 // ---------------------------------------------------------
-// 13. Student Pages Getter Helper
-// ---------------------------------------------------------
-async function getStudentPagesFromAnyDevice(uid, day) {
-  const localCopy = await getEvaluatedSheetFromDB(uid, day);
-  if (localCopy && localCopy.pages && localCopy.pages.length > 0) {
-    return localCopy.pages;
-  }
-
-  if (window.NischayConfig?.dbInstance) {
-    try {
-      const db = window.NischayConfig.dbInstance;
-      const snapshot = await db.collection("bseb_exams_2026").doc(uid)
-                               .collection(`day_${day}_pages`)
-                               .orderBy("pageNumber", "asc")
-                               .get();
-      if (!snapshot.empty) {
-        const pages = [];
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          if (d.imageUrl) pages.push(d.imageUrl);
-          else if (d.imageData) pages.push(d.imageData);
-        });
-        return pages;
-      }
-    } catch (e) {
-      console.warn("Cloud fetch note:", e);
-    }
-  }
-  return [];
-}
-
-// ---------------------------------------------------------
-// 14. IndexedDB Helpers
+// 12. Local IndexedDB Cache
 // ---------------------------------------------------------
 function saveEvaluatedSheetToDB(uid, day, dataObj) {
   return new Promise((resolve) => {
@@ -745,114 +809,8 @@ function getEvaluatedSheetFromDB(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 15. 🌟 3-Day Countdown & Re-attempt Reset Engine
+// 13. Safe Exam Re-attempt Reset Engine
 // ---------------------------------------------------------
-let resetTimerInterval = null;
-
-/**
- * डैशबोर्ड या प्रोफ़ाइल में लाइव 3-दिन की उल्टी गिनती और रीसेट बटन रेंडर करने का हेल्पर
- * @param {HTMLElement|string} containerElementOrId 
- * @param {Object} studentState 
- * @param {Object} user 
- */
-async function renderResetExamCountdown(containerElementOrId, studentState, user) {
-  const container = typeof containerElementOrId === "string" 
-                    ? document.getElementById(containerElementOrId) 
-                    : containerElementOrId;
-
-  if (!container || !studentState) return;
-
-  const completed = studentState.completedDays || {};
-  const completedCount = Object.keys(completed).length;
-
-  // यदि अभी 6 विषय पूरे नहीं हुए हैं
-  if (completedCount < 6) {
-    container.innerHTML = `
-      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 14px; text-align: center; color: #475569;">
-        <div style="font-weight: 800; font-size: 0.92rem; color: #0284c7; margin-bottom: 4px;">📝 परीक्षा प्रगति: ${completedCount}/6 विषय पूर्ण</div>
-        <div style="font-size: 0.78rem;">पूरे 6 विषयों की परीक्षा समाप्त होने के बाद ही री-अटेम्प्ट (Reset) का विकल्प उपलब्ध होगा।</div>
-      </div>
-    `;
-    return;
-  }
-
-  // सर्वर टाइम के अनुसार 3 दिन (72 घंटे) का हिसाब
-  let serverNowMs = Date.now();
-  try {
-    serverNowMs = await getVerifiedServerTimestamp();
-  } catch(e) {}
-
-  const finishedAtStr = studentState.allDaysCompletedAt || studentState.lastExamDate || new Date().toISOString();
-  const finishMs = new Date(finishedAtStr).getTime();
-  const cooldownPeriodMs = BSEB_ENGINE_CONFIG.RESET_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
-  const unlockTimeMs = finishMs + cooldownPeriodMs;
-
-  if (resetTimerInterval) clearInterval(resetTimerInterval);
-
-  function updateClock() {
-    serverNowMs += 1000;
-    const diffMs = unlockTimeMs - serverNowMs;
-
-    if (diffMs > 0) {
-      // अभी 3 दिन पूरे नहीं हुए -> लाइव उल्टी गिनती दिखाओ
-      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-      container.innerHTML = `
-        <div style="background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px; padding: 16px; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif;">
-          <div style="font-size: 0.95rem; font-weight: 800; color: #b45309; margin-bottom: 6px;">
-            ⏳ पुनः परीक्षा (Re-attempt) लॉक है
-          </div>
-          <p style="font-size: 0.8rem; color: #78350f; margin-bottom: 12px; line-height: 1.4;">
-            आपने सभी 6 विषय पूरे कर लिए हैं। बोर्ड नियमानुसार परिणाम समीक्षा हेतु 3 दिन की अवधि निर्धारित है। इसके उपरांत ही आप दोबारा परीक्षा दे सकेंगे।
-          </p>
-          <div style="display: flex; justify-content: center; gap: 8px; font-weight: 800;">
-            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
-              <span style="font-size: 1.1rem; color: #b45309;">${days}</span><br><span style="font-size: 0.65rem; color: #78350f;">दिन</span>
-            </div>
-            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
-              <span style="font-size: 1.1rem; color: #b45309;">${String(hours).padStart(2, '0')}</span><br><span style="font-size: 0.65rem; color: #78350f;">घंटे</span>
-            </div>
-            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
-              <span style="font-size: 1.1rem; color: #b45309;">${String(minutes).padStart(2, '0')}</span><br><span style="font-size: 0.65rem; color: #78350f;">मिनट</span>
-            </div>
-            <div style="background: #ffffff; border: 1px solid #f59e0b; padding: 6px 10px; border-radius: 6px; min-width: 50px;">
-              <span style="font-size: 1.1rem; color: #dc2626;">${String(seconds).padStart(2, '0')}</span><br><span style="font-size: 0.65rem; color: #78350f;">सेकंड</span>
-            </div>
-          </div>
-        </div>
-      `;
-    } else {
-      // 3 दिन पूरे हो गए -> रीसेट बटन अनलॉक कर दो!
-      clearInterval(resetTimerInterval);
-      container.innerHTML = `
-        <div style="background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 12px; padding: 16px; text-align: center;">
-          <div style="font-size: 0.95rem; font-weight: 800; color: #047857; margin-bottom: 6px;">
-            ✅ पुनः परीक्षा (Re-attempt) उपलब्ध है!
-          </div>
-          <p style="font-size: 0.8rem; color: #065f46; margin-bottom: 14px;">
-            3 दिन की समीक्षा अवधि समाप्त हो चुकी है। आप अपना रोल कोड और रोल नंबर बनाए रखते हुए दोबारा परीक्षा दे सकते हैं।
-          </p>
-          <button type="button" id="btnTriggerResetExam" style="background: #ef4444; color: #ffffff; border: none; padding: 12px 22px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);">
-            🔄 संपूर्ण टेस्ट रीसेट करें एवं दोबारा दें
-          </button>
-        </div>
-      `;
-
-      const btn = document.getElementById("btnTriggerResetExam");
-      if (btn) {
-        btn.onclick = () => executeSafeExamReset(user);
-      }
-    }
-  }
-
-  updateClock();
-  resetTimerInterval = setInterval(updateClock, 1000);
-}
-
-// सुरक्षित रीसेट: क्रेडेंशियल्स (रोल कोड / नंबर / नाम) सुरक्षित रखते हुए टेस्ट डेटा शून्य करना
 async function executeSafeExamReset(user) {
   if (!user) {
     alert("⚠️ कृपया पहले लॉगिन करें!");
@@ -870,7 +828,6 @@ async function executeSafeExamReset(user) {
     const uid = user.uid;
     const todayIso = new Date().toISOString();
 
-    // 1. फायरबेस में केवल परीक्षा का डेटा खाली करें
     await db.collection("bseb_exams_2026").doc(uid).update({
       completedDays: {},
       savedOMR: {},
@@ -882,7 +839,6 @@ async function executeSafeExamReset(user) {
       isProfileLocked: false
     });
 
-    // 2. सब-कलेक्शंस के पन्नों को साफ़ करें
     for (let day = 1; day <= 6; day++) {
       const snap = await db.collection("bseb_exams_2026").doc(uid).collection(`day_${day}_pages`).get();
       if (!snap.empty) {
@@ -892,7 +848,6 @@ async function executeSafeExamReset(user) {
       }
     }
 
-    // 3. Local IndexedDB साफ़ करें
     try {
       const req = indexedDB.open("NischaySheetsDB", 1);
       req.onsuccess = (e) => {
