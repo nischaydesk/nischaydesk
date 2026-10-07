@@ -27,6 +27,37 @@
       min-height: 100vh;
     }
 
+    /* शीर्ष ब्रांड बार */
+    .portal-branding-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .top-logo-badge {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #ffffff;
+      font-weight: 900;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+    .top-branding-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+    .top-branding-title span {
+      color: #0284c7;
+    }
+
     .search-card {
       width: 100%;
       max-width: 480px;
@@ -158,10 +189,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.7rem;
+      font-size: 1.25rem;
       font-weight: 900;
       border: 2px solid #0369a1;
       flex-shrink: 0;
+      letter-spacing: -1px;
     }
     .header-text-center { text-align: center; }
     .org-title {
@@ -310,7 +342,7 @@
 
     @media print {
       body { background: #ffffff !important; padding: 0 !important; }
-      .search-card, .print-actions-wrap, .eval-copies-container { display: none !important; }
+      .search-card, .print-actions-wrap, .eval-copies-container, .portal-branding-top { display: none !important; }
       .official-marksheet-card {
         display: block !important;
         border: 1.5px solid #000 !important;
@@ -323,6 +355,12 @@
 </head>
 <body>
 
+  <!-- NischayDesk शीर्ष लोगो -->
+  <div class="portal-branding-top">
+    <div class="top-logo-badge">ND</div>
+    <div class="top-branding-title">Nischay<span>Desk</span></div>
+  </div>
+
   <div class="search-card" id="searchBoxCard">
     <h2 class="search-title">वार्षिक परीक्षा परिणाम 2026</h2>
     <p class="search-subtitle">
@@ -332,12 +370,12 @@
 
     <div class="form-group">
       <label for="inputRollCode">रोल कोड (Roll Code) *</label>
-      <input type="number" id="inputRollCode" class="form-input" placeholder="उदा. 22021" autocomplete="off" />
+      <input type="number" id="inputRollCode" class="form-input" placeholder="उदा. 33559" autocomplete="off" />
     </div>
 
     <div class="form-group">
       <label for="inputRollNumber">रोल नंबर (Roll Number) *</label>
-      <input type="number" id="inputRollNumber" class="form-input" placeholder="उदा. 26010157" autocomplete="off" />
+      <input type="number" id="inputRollNumber" class="form-input" placeholder="उदा. 26016837" autocomplete="off" />
     </div>
 
     <div class="captcha-wrap">
@@ -360,10 +398,10 @@
     <div class="watermark-webcopy">WEB COPY</div>
 
     <div class="marksheet-header-box">
-      <div class="brand-circle-logo">N</div>
+      <div class="brand-circle-logo">ND</div>
       <div class="header-text-center">
         <h1 class="org-title">Bihar School Examination Board</h1>
-        <div class="org-sub-result">RESULT</div>
+        <div class="org-sub-result">RESULT / MARKS SHEET</div>
         <div class="org-exam-title">ANNUAL SECONDARY EXAMINATION - 2026</div>
       </div>
     </div>
@@ -440,7 +478,7 @@
     <div class="marksheet-footer-text">
       <strong>Abbreviations used :</strong><br />
       • F -> Fail &nbsp; • C -> Compartmental &nbsp; • U/R -> Under Regulation &nbsp; • ABS -> Absent &nbsp; • INT -> Internal &nbsp; • PRAC -> Practical<br />
-      • CCE -> Continuous and Comprehensive Evaluation &nbsp; • EXP -> Expelled &nbsp; • Disclaimer: Certified digital web copy verified by NischayDesk Evaluation Engine.
+      • REJ -> Mismatch Rejected &nbsp; • EXP -> Expelled &nbsp; • Disclaimer: Certified digital web copy verified by NischayDesk Evaluation Engine.
     </div>
   </div>
 
@@ -454,6 +492,9 @@
   <script src="bseb-engine.js"></script>
 
   <script>
+    // ⚙️ टेस्टिंग फ्लैग: टेस्टिंग के लिए true रखें, फाइनल लॉन्च के समय false कर दें
+    const BYPASS_LOCK_FOR_TESTING = true;
+
     let expectedCaptchaSum = 0;
 
     function generateCaptcha() {
@@ -532,39 +573,42 @@
       const completed = studentData.completedDays || {};
       const completedCount = Object.keys(completed).length;
 
-      if (completedCount < 6) {
-        showError(
-          `⏳ परिणाम अभी जारी नहीं हुआ है!\n\n` +
-          `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
-          `📌 बोर्ड नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
-        );
-        generateCaptcha();
-        return;
-      }
-
-      let serverNowMs = Date.now();
-      try {
-        if (typeof getVerifiedServerTimestamp === "function") {
-          serverNowMs = await getVerifiedServerTimestamp();
+      // 🔒 यदि टेस्टिंग बाईपास बंद है तो ही 6-दिन और 7-दिन का कड़ा लॉक लागू होगा
+      if (!BYPASS_LOCK_FOR_TESTING) {
+        if (completedCount < 6) {
+          showError(
+            `⏳ परिणाम अभी जारी नहीं हुआ है!\n\n` +
+            `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
+            `📌 बोर्ड नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
+          );
+          generateCaptcha();
+          return;
         }
-      } catch (e) {}
 
-      const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
-      const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
+        let serverNowMs = Date.now();
+        try {
+          if (typeof getVerifiedServerTimestamp === "function") {
+            serverNowMs = await getVerifiedServerTimestamp();
+          }
+        } catch (e) {}
 
-      if (serverNowMs < requiredReleaseMs) {
-        const remainingMs = requiredReleaseMs - serverNowMs;
-        const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
-        const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+        const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
+        const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
 
-        showError(
-          `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
-          `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
-          `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
-        );
-        generateCaptcha();
-        return;
+        if (serverNowMs < requiredReleaseMs) {
+          const remainingMs = requiredReleaseMs - serverNowMs;
+          const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+          const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+
+          showError(
+            `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
+            `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
+            `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
+          );
+          generateCaptcha();
+          return;
+        }
       }
 
       renderOfficialMarksheet(studentData);
@@ -602,7 +646,7 @@
 
       mainSubjects.forEach(sub => {
         const examRecord = completed[sub.day];
-        let theoryScore = "000";
+        let theoryScore = "--";
         let intPrac = "-";
         let isAbsent = false;
         let isExpelled = false;
@@ -618,36 +662,32 @@
             numericTheory = examRecord.totalMarks || 0;
             theoryScore = String(numericTheory).padStart(3, '0');
           }
-        } else {
-          isAbsent = true;
-          theoryScore = "ABS";
-          isCandidateFailed = true;
-        }
 
-        if (sub.hasPractical) {
-          intPrac = "020";
-          if (!isAbsent && !isExpelled) {
-            subjectFinalTotal = numericTheory + 20;
+          if (sub.hasPractical) {
+            intPrac = "020";
+            subjectFinalTotal = isExpelled ? 0 : (numericTheory + 20);
           } else {
-            subjectFinalTotal = 0;
+            intPrac = "-";
+            subjectFinalTotal = numericTheory;
           }
-        } else {
-          intPrac = "-";
-          subjectFinalTotal = numericTheory;
-        }
 
-        if (!isAbsent && !isExpelled) {
-          if (subjectFinalTotal < 30) isCandidateFailed = true;
-          aggregateMarks += subjectFinalTotal;
-        }
+          if (!isExpelled) {
+            if (subjectFinalTotal < 30) isCandidateFailed = true;
+            aggregateMarks += subjectFinalTotal;
+          }
 
-        if (!isAbsent) {
+          // डाउनलोड बटन केवल दिए गए विषय के लिए
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "btn-download-copy";
           btn.innerHTML = `<span>📄 Day ${sub.day}: ${sub.name.split(' ')[0]}</span> <span style="font-size:0.72rem;">डाउनलोड 📥</span>`;
           btn.onclick = () => downloadEvaluatedCopyPdf(data.uid, sub.day, sub.name, examRecord, btn);
           buttonsGrid.appendChild(btn);
+
+        } else {
+          isAbsent = true;
+          theoryScore = BYPASS_LOCK_FOR_TESTING ? "--" : "ABS";
+          if (!BYPASS_LOCK_FOR_TESTING) isCandidateFailed = true;
         }
 
         const tr = document.createElement("tr");
@@ -656,9 +696,9 @@
           <td>${sub.full}</td>
           <td>${sub.pass}</td>
           <td style="${isExpelled ? 'color:#dc2626; font-weight:800;' : ''}">${theoryScore}</td>
-          <td style="${sub.hasPractical ? 'font-weight:700;' : ''}">${intPrac}</td>
+          <td style="${sub.hasPractical && examRecord ? 'font-weight:700;' : ''}">${examRecord ? intPrac : '-'}</td>
           <td>-</td>
-          <td style="font-weight:700; ${isExpelled ? 'color:#dc2626;' : ''}">${isExpelled ? '000' : String(subjectFinalTotal).padStart(3, '0')}</td>
+          <td style="font-weight:700; ${isExpelled ? 'color:#dc2626;' : ''}">${examRecord ? (isExpelled ? '000' : String(subjectFinalTotal).padStart(3, '0')) : '--'}</td>
         `;
         primaryTbody.appendChild(tr);
       });
@@ -680,7 +720,7 @@
       }
 
       const engRecord = completed[englishSub.day];
-      let engTheory = "000";
+      let engTheory = "--";
       let isEngExp = false;
       if (engRecord) {
         if (engRecord.status === "EXPELLED" || engRecord.status === "MISMATCH_REJECTED" || engRecord.isFraud) {
@@ -689,17 +729,15 @@
         } else {
           engTheory = String(engRecord.totalMarks || 0).padStart(3, '0');
         }
-      } else {
-        engTheory = "ABS";
-      }
 
-      if (engRecord) {
         const btnEng = document.createElement("button");
         btnEng.type = "button";
         btnEng.className = "btn-download-copy";
         btnEng.innerHTML = `<span>📄 Day 6: ENGLISH</span> <span style="font-size:0.72rem;">डाउनलोड 📥</span>`;
         btnEng.onclick = () => downloadEvaluatedCopyPdf(data.uid, englishSub.day, englishSub.name, engRecord, btnEng);
         buttonsGrid.appendChild(btnEng);
+      } else {
+        engTheory = BYPASS_LOCK_FOR_TESTING ? "--" : "ABS";
       }
 
       const engTr = document.createElement("tr");
@@ -710,7 +748,7 @@
         <td style="${isEngExp ? 'color:#dc2626; font-weight:800;' : ''}">${engTheory}</td>
         <td>-</td>
         <td>-</td>
-        <td style="font-weight:700; ${isEngExp ? 'color:#dc2626;' : ''}">${isEngExp ? '000' : engTheory}</td>
+        <td style="font-weight:700; ${isEngExp ? 'color:#dc2626;' : ''}">${engRecord ? (isEngExp ? '000' : engTheory) : '--'}</td>
       `;
       englishTbody.appendChild(engTr);
 
@@ -735,7 +773,6 @@
             const subPages = [];
             subColSnap.forEach(d => {
               const dt = d.data();
-              // ImgBB URL या Base64 डेटा दोनों स्वीकार्य
               const validSrc = dt.imageUrl || dt.imageData || dt.url;
               if (validSrc) subPages.push(validSrc);
             });
@@ -817,7 +854,7 @@
         const ctx = canvas.getContext("2d");
 
         const img = new Image();
-        img.crossOrigin = "anonymous"; // ImgBB लोड करने के लिए अति आवश्यक
+        img.crossOrigin = "anonymous";
         img.src = imageSource;
         await new Promise(r => { img.onload = r; img.onerror = r; });
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
