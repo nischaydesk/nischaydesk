@@ -652,3 +652,7 @@ async function getStudentPagesFromAnyDevice(uid, day) {
   }
   return [];
 }
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { BSEB_PAPERS_DATABASE };
+}
+
