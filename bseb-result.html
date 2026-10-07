@@ -669,6 +669,7 @@
       let aggregateMarks = 0;
       let isCandidateFailed = false;
 
+      // मुख्य 5 विषयों की पंक्तियाँ
       mainSubjects.forEach(sub => {
         const examRecord = completed[sub.day];
         let theoryScore = "--";
@@ -676,6 +677,7 @@
         let numericTheory = 0;
         let subjectFinalTotal = 0;
         let isExpelled = false;
+        let isSubFailed = false;
 
         if (examRecord) {
           if (examRecord.status === "EXPELLED" || examRecord.isFraud) {
@@ -684,7 +686,7 @@
             isCandidateFailed = true;
             numericTheory = 0;
           } else {
-            // 🌟 अगर सब्जेक्टिव रिजेक्ट भी हुआ है, तब भी ऑब्जेक्टिव के नंबर सुरक्षित रहेंगे
+            // 🌟 ऑब्जेक्टिव और सब्जेक्टिव दोनों अंक जुड़ेंगे
             const objMarks = examRecord.objectiveMarks || 0;
             const subMarks = examRecord.subjectiveMarks || 0;
             numericTheory = objMarks + subMarks;
@@ -699,8 +701,12 @@
             subjectFinalTotal = numericTheory;
           }
 
+          // 🌟 बोर्ड नियम: 30 से कम नंबर तो उस विषय में F और पूरा रिजल्ट FAIL
           if (!isExpelled) {
-            if (subjectFinalTotal < 30) isCandidateFailed = true;
+            if (subjectFinalTotal < 30) {
+              isSubFailed = true;
+              isCandidateFailed = true;
+            }
             aggregateMarks += subjectFinalTotal;
           }
 
@@ -716,6 +722,11 @@
           if (!BYPASS_LOCK_FOR_TESTING) isCandidateFailed = true;
         }
 
+        // नंबर के बगल में F टैग
+        const marksDisplay = examRecord 
+          ? (isExpelled ? '000' : (isSubFailed ? `<span style="color:#dc2626; font-weight:800;">${String(subjectFinalTotal).padStart(3, '0')} F</span>` : String(subjectFinalTotal).padStart(3, '0')))
+          : '--';
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td class="subject-title">${sub.name}</td>
@@ -724,13 +735,15 @@
           <td style="${isExpelled ? 'color:#dc2626; font-weight:800;' : ''}">${theoryScore}</td>
           <td style="${sub.hasPractical && examRecord ? 'font-weight:700;' : ''}">${examRecord ? intPrac : '-'}</td>
           <td>-</td>
-          <td style="font-weight:700; ${isExpelled ? 'color:#dc2626;' : ''}">${examRecord ? (isExpelled ? '000' : String(subjectFinalTotal).padStart(3, '0')) : '--'}</td>
+          <td style="font-weight:700;">${marksDisplay}</td>
         `;
         primaryTbody.appendChild(tr);
       });
 
+      // 🌟 फाइनल रिजल्ट एवं डिवीज़न निर्णय
       document.getElementById("outGrandTotal").textContent = String(aggregateMarks).padStart(3, '0');
       const divTag = document.getElementById("outFinalDivision");
+
       if (isCandidateFailed || aggregateMarks < 150) {
         divTag.textContent = "FAIL";
         divTag.style.color = "#dc2626";
@@ -745,9 +758,12 @@
         divTag.style.color = "#d97706";
       }
 
+      // अंग्रेजी विषय
       const engRecord = completed[englishSub.day];
       let engTheory = "--";
       let isEngExp = false;
+      let isEngFailed = false;
+
       if (engRecord) {
         if (engRecord.status === "EXPELLED" || engRecord.isFraud) {
           isEngExp = true;
@@ -755,7 +771,9 @@
         } else {
           const engObj = engRecord.objectiveMarks || 0;
           const engSubMarks = engRecord.subjectiveMarks || 0;
-          engTheory = String(engObj + engSubMarks).padStart(3, '0');
+          const engTot = engObj + engSubMarks;
+          engTheory = String(engTot).padStart(3, '0');
+          if (engTot < 30) isEngFailed = true;
         }
 
         const btnEng = document.createElement("button");
@@ -768,6 +786,10 @@
         engTheory = BYPASS_LOCK_FOR_TESTING ? "--" : "ABS";
       }
 
+      const engDisplay = engRecord 
+        ? (isEngExp ? '000' : (isEngFailed ? `<span style="color:#dc2626; font-weight:800;">${engTheory} F</span>` : engTheory))
+        : '--';
+
       const engTr = document.createElement("tr");
       engTr.innerHTML = `
         <td class="subject-title">${englishSub.name}</td>
@@ -776,7 +798,7 @@
         <td style="${isEngExp ? 'color:#dc2626; font-weight:800;' : ''}">${engTheory}</td>
         <td>-</td>
         <td>-</td>
-        <td style="font-weight:700; ${isEngExp ? 'color:#dc2626;' : ''}">${engRecord ? (isEngExp ? '000' : engTheory) : '--'}</td>
+        <td style="font-weight:700;">${engDisplay}</td>
       `;
       englishTbody.appendChild(engTr);
 
