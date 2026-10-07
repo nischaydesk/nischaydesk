@@ -499,27 +499,27 @@
               (कम से कम 1 और अधिकतम 26 पन्नों की साफ़ तस्वीरें)
             </p>
             
-            <!-- 🌟 दो अलग-अलग विकल्प: कैमरा और गैलरी -->
+            <!-- 🌟 दो स्पष्ट अलग-अलग विकल्प -->
             <div class="upload-dual-actions">
-              <!-- कैमरा विकल्प -->
+              <!-- कैमरा विकल्प: capture="environment" से सीधा बैक कैमरा खुलेगा -->
               <label for="cameraUploadInput" class="btn-upload-choice btn-choice-cam">
                 📸 कैमरा से खींचें
               </label>
               <input type="file" id="cameraUploadInput" accept="image/*" capture="environment" onchange="handleSingleCameraUpload(event)" style="display: none;" />
 
-              <!-- गैलरी विकल्प -->
+              <!-- गैलरी विकल्प: multiple से एक साथ कई पन्ने चुने जा सकेंगे -->
               <label for="galleryUploadInput" class="btn-upload-choice btn-choice-gal">
                 🖼️ गैलरी से चुनें
               </label>
               <input type="file" id="galleryUploadInput" accept="image/*" multiple onchange="handleMasterUpload(event)" style="display: none;" />
             </div>
 
-            <!-- लाइव पन्नों का काउंटर -->
+            <!-- लाइव पन्नों का काउंटर बैज -->
             <div id="uploadStatusBadge" style="display:inline-block; padding: 6px 14px; background: rgba(34,197,94,0.15); border: 1.5px solid #22c55e; border-radius: 999px; font-weight: 800; font-size: 0.85rem; color: #22c55e; margin-bottom: 8px;">
               📄 कुल पन्ने: 0 / 26
             </div>
 
-            <!-- अपलोड किए गए पन्नों की लिस्ट व हटाने का विकल्प -->
+            <!-- अपलोड किए गए पन्नों की ट्रे -->
             <div class="uploaded-pages-tray" id="uploadedPagesTray" style="display: none;"></div>
           </div>
         </div>
@@ -1040,7 +1040,7 @@
       syncBubbleToCloud(currentUser, activeDay, q, currentAnswers[q] || null, cloudState);
     }
 
-    // 🌟 लाइव पन्नों का काउंटर और चिप्स अपडेट करने वाला फ़ंक्शन
+    // 🌟 लाइव काउंटर व चिप्स अपडेटर
     function updateUploadedDisplay() {
       const badge = document.getElementById("uploadStatusBadge");
       const tray = document.getElementById("uploadedPagesTray");
@@ -1073,15 +1073,13 @@
       }
     }
 
-    // पन्ना हटाने की सुविधा
     function removeUploadedPage(idx) {
       uploadedPagesList.splice(idx, 1);
-      // पेज नंबर री-असाइन करना
       uploadedPagesList.forEach((p, i) => { p.pageNumber = i + 1; });
       updateUploadedDisplay();
     }
 
-    // 🌟 1. कैमरा से 1-1 पन्ना जोड़ने का हैंडलर
+    // 🌟 1. सिर्फ कैमरा: फोटो खींचने पर क्रॉपर व रोटेटर खुलेगा
     async function handleSingleCameraUpload(e) {
       const files = Array.from(e.target.files);
       if (!files || files.length === 0) return;
@@ -1093,15 +1091,15 @@
       }
 
       const nextNum = uploadedPagesList.length + 1;
-      const compressed = await compressCameraImage(files[0], nextNum, 26);
-      if (compressed) {
-        uploadedPagesList.push({ pageNumber: nextNum, dataUrl: compressed });
+      const croppedBase64 = await openCameraImageCropper(files[0], nextNum);
+      if (croppedBase64) {
+        uploadedPagesList.push({ pageNumber: nextNum, dataUrl: croppedBase64 });
         updateUploadedDisplay();
       }
       e.target.value = "";
     }
 
-    // 🌟 2. गैलरी से एक साथ बहु-पन्ने चुनने का हैंडलर
+    // 🌟 2. सिर्फ गैलरी: एक झटके में सारे पन्ने कंप्रेस होकर जुड़ेंगे (No Crop / No Rotate)
     async function handleMasterUpload(e) {
       const files = Array.from(e.target.files);
       if (!files || files.length === 0) return;
@@ -1112,14 +1110,18 @@
         return;
       }
 
+      const badge = document.getElementById("uploadStatusBadge");
+      badge.textContent = `⏳ गैलरी से ${files.length} पन्ने तेजी से लोड हो रहे हैं...`;
+
       for (let i = 0; i < files.length; i++) {
         const nextNum = uploadedPagesList.length + 1;
-        const compressed = await compressCameraImage(files[i], nextNum, 26);
+        const compressed = await compressDirectImage(files[i]);
         if (compressed) {
           uploadedPagesList.push({ pageNumber: nextNum, dataUrl: compressed });
-          updateUploadedDisplay();
         }
       }
+
+      updateUploadedDisplay();
       e.target.value = "";
     }
 
@@ -1151,7 +1153,6 @@
           return;
         }
 
-        // 🌟 न्यूनतम 1 और अधिकतम 26 पन्ने का कड़ा नियम
         if (uploadedPagesList.length < 1) {
           alert("⚠️ कृपया अपनी उत्तर-पुस्तिका का कम से कम 1 पन्ना अपलोड करें!");
           return;
