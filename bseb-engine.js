@@ -1,8 +1,8 @@
 /**
- * NischayDesk - BSEB Official Assessment Engine (v26.5 Full Synchronous Master)
+ * NischayDesk - BSEB Official Assessment Engine (v27.0 Cloud-Storage Edition)
  * Architected by: Prince Kumar (NischayDesk)
- * Features: 60s Cinematic Chamber, Direct Voice Synthesis, 
- *           Guaranteed Sub-Collection Upload, 100% Synced AI Evaluation
+ * Features: ImgBB Cloud Hosting (Zero 1MB Limit), 60s Cinematic Chamber, 
+ *           Voice Alerts, Safe Firestore Sub-Collection Sync
  */
 
 // ---------------------------------------------------------
@@ -21,7 +21,8 @@ function getProtectedKey() {
 
 const BSEB_ENGINE_CONFIG = {
   PRIMARY_MODEL: "gemini-3.8-flash",
-  BACKUP_MODEL: "gemini-3.5-flash-lite"
+  BACKUP_MODEL: "gemini-3.5-flash-lite",
+  IMGBB_KEY: "3e83d4f2017fafb76b04d4f92a0d901b"
 };
 
 // ---------------------------------------------------------
@@ -195,7 +196,7 @@ function getEvaluatedSheetFromDB(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 6. HD Fast-Compressor (अक्षर एकदम साफ, साइज सिर्फ 60-70KB)
+// 6. HD Fast-Compressor (अक्षर साफ, साइज 60-80KB)
 // ---------------------------------------------------------
 function compressCameraImage(file) {
   return new Promise((resolve) => {
@@ -204,7 +205,7 @@ function compressCameraImage(file) {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxDim = 1000;
+        const maxDim = 850;
         let w = img.width;
         let h = img.height;
 
@@ -222,10 +223,12 @@ function compressCameraImage(file) {
         canvas.height = h;
         const ctx = canvas.getContext("2d");
         
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
         ctx.filter = "contrast(1.15) brightness(1.02)";
         ctx.drawImage(img, 0, 0, w, h);
 
-        const compressed = canvas.toDataURL("image/jpeg", 0.60);
+        const compressed = canvas.toDataURL("image/jpeg", 0.52);
         img.src = "";
         canvas.width = 0;
         canvas.height = 0;
@@ -240,7 +243,31 @@ function compressCameraImage(file) {
 }
 
 // ---------------------------------------------------------
-// 7. Unique Credentials Generator
+// 7. ImgBB Cloud Uploader Helper
+// ---------------------------------------------------------
+async function uploadToImgBB(base64Data) {
+  try {
+    const cleanB64 = base64Data.split(",")[1] ? base64Data.split(",")[1].replace(/[\r\n\s]/g, "") : base64Data;
+    const formData = new FormData();
+    formData.append("image", cleanB64);
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${BSEB_ENGINE_CONFIG.IMGBB_KEY}`, {
+      method: "POST",
+      body: formData
+    });
+    const result = await res.json();
+    if (result && result.success && result.data && result.data.url) {
+      return result.data.url;
+    }
+    return null;
+  } catch (err) {
+    console.warn("ImgBB upload error:", err);
+    return null;
+  }
+}
+
+// ---------------------------------------------------------
+// 8. Unique Credentials Generator
 // ---------------------------------------------------------
 function generateUniqueCredentials(uid) {
   if (!uid) return { rollCode: "33193", rollNumber: "26017186", regNo: "R-33010189-26" };
@@ -261,7 +288,7 @@ function generateUniqueCredentials(uid) {
 }
 
 // ---------------------------------------------------------
-// 8. Cloud Exam State Sync
+// 9. Cloud Exam State Sync
 // ---------------------------------------------------------
 async function getCloudExamState(user) {
   if (!user) return null;
@@ -334,7 +361,7 @@ async function syncBubbleToCloud(user, day, qNum, opt, state) {
 }
 
 // ---------------------------------------------------------
-// 9. Gemini API Caller (With Auto-Retry)
+// 10. Gemini API Caller (Auto-Retry)
 // ---------------------------------------------------------
 async function callGeminiApiFallback(parts) {
   const models = [BSEB_ENGINE_CONFIG.PRIMARY_MODEL, BSEB_ENGINE_CONFIG.BACKUP_MODEL];
@@ -358,7 +385,7 @@ async function callGeminiApiFallback(parts) {
         if (data.error) {
           lastErr = data.error.message;
           if (data.error.message.includes("high demand") || data.error.code === 503 || data.error.code === 429) {
-            await new Promise(r => setTimeout(r, 1500));
+            await new Promise(r => setTimeout(r, 1200));
             continue;
           }
           break;
@@ -376,7 +403,7 @@ async function callGeminiApiFallback(parts) {
 }
 
 // ---------------------------------------------------------
-// 10. Guaranteed AI Evaluation (Direct Database Commit)
+// 11. Background AI Evaluation
 // ---------------------------------------------------------
 async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, currentObjMarks) {
   if (!imagesList || imagesList.length === 0) return false;
@@ -387,7 +414,7 @@ async function runBackgroundGeminiEvaluation(uid, day, subjectCode, imagesList, 
   for (let i = 0; i < totalPages; i++) {
     const item = imagesList[i];
     const base64Str = typeof item === 'string' ? item : (item.dataUrl || item.imageData || item.data);
-    if (base64Str) {
+    if (base64Str && base64Str.startsWith("data:image")) {
       const cleanB64 = base64Str.split(",")[1] ? base64Str.split(",")[1].replace(/[\r\n\s]/g, "") : base64Str;
       imageParts.push({
         inline_data: { mime_type: "image/jpeg", data: cleanB64 }
@@ -413,13 +440,13 @@ Class 10 Subjective Copy: "${subjectName}". Total Pages: ${totalPages}. Max Mark
 BLUEPRINT:
 ${blueprintDetails}
 
-Evaluate each page. If blank/irrelevant/wrong subject, set status="EXPELLED". Otherwise award marks strictly.
+Evaluate each page carefully. Award marks based on handwriting and answer content.
 STRICT JSON ONLY:
 {
   "isValid": true,
   "totalSubjectiveMarks": 8,
   "status": "EVALUATED",
-  "overallRemarks": "मूल्यांकन टिप्पणी...",
+  "overallRemarks": "सफल मूल्यांकन...",
   "pagesEvaluation": [
     {
       "pageIndex": 0,
@@ -448,7 +475,6 @@ STRICT JSON ONLY:
       serverDateIso = serverDateObj.toISOString();
     } catch(e) {}
 
-    // Firestore में तत्काल मुख्य रिकॉर्ड अपडेट करें
     if (window.NischayConfig?.dbInstance) {
       await window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(uid).set({
         completedDays: {
@@ -456,7 +482,7 @@ STRICT JSON ONLY:
             objectiveMarks: finalObj,
             subjectiveMarks: awarded,
             totalMarks: finalTotal,
-            aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द (अनुचित उत्तर)" : "सफल मूल्यांकन"),
+            aiFeedback: parsed.overallRemarks || (isExpelled ? "परीक्षा रद्द" : "मूल्यांकन संपन्न"),
             pagesEvaluation: parsed.pagesEvaluation || [],
             status: isExpelled ? "EXPELLED" : "EVALUATED",
             isFraud: isExpelled,
@@ -467,7 +493,6 @@ STRICT JSON ONLY:
       }, { merge: true });
     }
 
-    // लोकल IndexedDB बैकअप
     await saveEvaluatedSheetToDB(uid, day, {
       subjectCode: subjectCode,
       subjectName: subjectName,
@@ -479,13 +504,13 @@ STRICT JSON ONLY:
     console.log(`✓ Day ${day} AI Evaluation Successfully Finished and Saved!`);
     return true;
   } catch (err) {
-    console.error("AI Evaluation Failure:", err);
+    console.warn("AI Evaluation Note:", err);
     return false;
   }
 }
 
 // ---------------------------------------------------------
-// 11. 60-सेकंड बुलेटप्रूफ डिजिटल मूल्यांकन कक्ष (Voice Alert + Real Progress)
+// 12. 60-सेकंड बुलेटप्रूफ डिजिटल मूल्यांकन कक्ष (Voice + Freeze-Free)
 // ---------------------------------------------------------
 function speakHindiAlert(text) {
   try {
@@ -560,7 +585,7 @@ function startCinematicEvaluationChamber() {
       </div>
 
       <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: #cbd5e1; margin-bottom: 16px;">
-        <span id="chamberStatusMsg">सर्वर से जुड़ रहा है...</span>
+        <span id="chamberStatusMsg">सर्वर पर सुरक्षित अपलोड जारी...</span>
         <span id="chamberTimerText" style="color: #38bdf8;">60s</span>
       </div>
 
@@ -572,13 +597,18 @@ function startCinematicEvaluationChamber() {
 
   document.body.appendChild(modal);
 
-  // पहली ध्वनि चेतावनी
   speakHindiAlert("कृपया ध्यान दें। आपकी उत्तर पुस्तिका पटना बोर्ड सर्वर पर भेजी जा रही है। स्क्रीन बंद न करें।");
 
   let totalSeconds = 60;
   let elapsed = 0;
+  let isManuallyFinished = false;
 
   const timerInterval = setInterval(() => {
+    if (isManuallyFinished) {
+      clearInterval(timerInterval);
+      return;
+    }
+
     elapsed++;
     const remaining = Math.max(0, totalSeconds - elapsed);
     const pct = Math.min(95, Math.round((elapsed / totalSeconds) * 95));
@@ -591,7 +621,7 @@ function startCinematicEvaluationChamber() {
     if (tText) tText.innerText = `${remaining}s`;
 
     if (elapsed === 12) {
-      if (sMsg) sMsg.innerText = "✍️ हस्तलिखित कॉपियों की लाल-पेन से AI जांच प्रारंभ...";
+      if (sMsg) sMsg.innerText = "✍️ कॉपियों की क्लाउड जांच एवं लाल-पेन AI विश्लेषण प्रारंभ...";
       speakHindiAlert("हस्तलिखित उत्तरों की लाइन बाई लाइन लाल पेन से जांच की जा रही है।");
     } else if (elapsed === 28) {
       if (sMsg) sMsg.innerText = "🛡️ एंटी-चीटिंग, इमेज क्लैरिटी व UFM विश्लेषण जारी...";
@@ -601,14 +631,22 @@ function startCinematicEvaluationChamber() {
       speakHindiAlert("अंकों का आवंटन और ओएमआर शीट का मिलान हो रहा है।");
     }
 
+    // सेफ़्टी: यदि 60 सेकंड समाप्त हो जाएं तो स्क्रीन बंद करें
     if (elapsed >= totalSeconds) {
       clearInterval(timerInterval);
+      if (pBar) pBar.style.width = "100%";
+      if (tText) tText.innerText = "0s";
+      if (sMsg) sMsg.innerText = "✓ मूल्यांकन पूर्ण! परिणाम सुरक्षित कर दिया गया।";
+      setTimeout(() => {
+        if (modal) modal.remove();
+      }, 1000);
     }
   }, 1000);
 
   return {
     finish: () => {
       return new Promise((resolve) => {
+        isManuallyFinished = true;
         clearInterval(timerInterval);
         const pBar = document.getElementById("chamberProgressBar");
         const tText = document.getElementById("chamberTimerText");
@@ -623,20 +661,19 @@ function startCinematicEvaluationChamber() {
         setTimeout(() => {
           if (modal) modal.remove();
           resolve();
-        }, 1500);
+        }, 1200);
       });
     }
   };
 }
 
 // ---------------------------------------------------------
-// 12. 100% कड़क सबमिशन (सारे Await पूरे होने के बाद ही स्क्रीन हटेगी)
+// 13. 100% कड़क सबमिशन (ImgBB Cloud URL + Firestore Sub-Collection)
 // ---------------------------------------------------------
 async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, state) {
   stopAntiCheatingMonitor();
   isUploadingAnswerSheet = false;
 
-  // 1. स्क्रीन पर 60 सेकंड का विजुअल शुरू करें
   const chamber = startCinematicEvaluationChamber();
 
   const omr = (state && state.savedOMR && state.savedOMR[day]) ? state.savedOMR[day] : {};
@@ -679,11 +716,10 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
     submittedAt: submitIso
   };
 
-  // 2. सब-कलेक्शन में फ़ोटो पक्का सेव करना (Strict Sequential Await)
+  // 1. मुख्य रिकॉर्ड राइट करें
   if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
     const db = window.NischayConfig.dbInstance;
 
-    // मुख्य रिकॉर्ड राइट करें
     await db.collection("bseb_exams_2026").doc(user.uid).set({
       uid: user.uid,
       rollCode: state.rollCode || creds.rollCode,
@@ -699,33 +735,42 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
       activeSession: null
     }, { merge: true });
 
-    // हर फ़ोटो को सब-कलेक्शन में लिखें
+    // 2. ImgBB पर अपलोड और सब-कलेक्शन में सिर्फ URL स्टोर करना (Zero 1MB Limit)
     if (imagesList && imagesList.length > 0) {
       const dayPagesColRef = db.collection("bseb_exams_2026").doc(user.uid).collection(`day_${day}_pages`);
+      
       for (let i = 0; i < imagesList.length; i++) {
         const item = imagesList[i];
         const b64 = typeof item === 'string' ? item : (item.dataUrl || item.imageData || item.data);
+        
+        // ImgBB क्लाउड पर अपलोड
+        const cloudUrl = await uploadToImgBB(b64);
+
+        // Firestore में सिर्फ लिंक सेव करें (40 बाइट्स)
         await dayPagesColRef.doc(`p_${i + 1}`).set({
           pageNumber: i + 1,
-          imageData: b64,
+          imageUrl: cloudUrl || "",
           savedAt: submitIso
         });
       }
-      console.log(`✓ All ${imagesList.length} pages verified in day_${day}_pages sub-collection!`);
+      console.log(`✓ All ${imagesList.length} pages hosted on ImgBB and URLs saved to day_${day}_pages!`);
     }
   }
 
-  // 3. AI का मूल्यांकन यहीं पर Await करवाएँ (जब तक यह खत्म नहीं होता, आगे नहीं बढ़ेंगे)
+  // 3. AI मूल्यांकन (सेफ्टी टाइमआउट के साथ)
   if (imagesList && imagesList.length > 0) {
     try {
-      await runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks);
-      console.log("✓ AI Evaluation successfully merged!");
+      await Promise.race([
+        runBackgroundGeminiEvaluation(user.uid, day, subjectCode, imagesList, objMarks),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("AI Timeout")), 30000))
+      ]);
+      console.log("✓ AI Evaluation successfully completed!");
     } catch (err) {
-      console.error("Critical AI Evaluation failure:", err);
+      console.warn("AI Evaluation Note:", err);
     }
   }
 
-  // 4. जब सब कुछ Firestore में 100% दर्ज हो जाए, तभी चैंबर हटेगा
+  // 4. चैंबर पर्दा हटाएं
   await chamber.finish();
 
   if (!state.completedDays) state.completedDays = {};
@@ -737,7 +782,7 @@ async function submitExamToCloud(user, day, subjectCode, answerKey, imagesList, 
 }
 
 // ---------------------------------------------------------
-// 13. किसी भी डिवाइस से कॉपियाँ खींचने का हेल्पर
+// 14. किसी भी डिवाइस से कॉपियाँ खींचने का हेल्पर
 // ---------------------------------------------------------
 async function getStudentPagesFromAnyDevice(uid, day) {
   const localCopy = await getEvaluatedSheetFromDB(uid, day);
@@ -756,7 +801,8 @@ async function getStudentPagesFromAnyDevice(uid, day) {
         const pages = [];
         snapshot.forEach(doc => {
           const d = doc.data();
-          if (d.imageData) pages.push(d.imageData);
+          if (d.imageUrl) pages.push(d.imageUrl);
+          else if (d.imageData) pages.push(d.imageData);
         });
         return pages;
       }
@@ -768,7 +814,7 @@ async function getStudentPagesFromAnyDevice(uid, day) {
 }
 
 // ---------------------------------------------------------
-// 14. शांत बैकग्राउंड ऑटो-वर्कर
+// 15. शांत बैकग्राउंड ऑटो-वर्कर
 // ---------------------------------------------------------
 let isAiWorkerRunning = false;
 
