@@ -1,469 +1,536 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>मॉक टेस्ट सीरीज पोर्टल | NischayDesk - Smart Exam Engine</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>मॉक टेस्ट सीरीज पोर्टल | NischayDesk - Smart Exam Engine</title>
 
-    <!-- Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Core Theme & Test Engine Stylesheets -->
-    <link rel="stylesheet" href="main.css" />
-    <link rel="stylesheet" href="navbar.css" />
-    <link rel="stylesheet" href="dashboard.css" />
-    <link rel="stylesheet" href="test-engine.css" />
+  <!-- Core Theme & Test Engine Stylesheets -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="test-engine.css" />
 
-    <!-- Advanced Animation & Glassmorphism Enhancements -->
-    <style>
-        :root {
-            --primary-glow: rgba(56, 189, 248, 0.4);
-            --success-glow: rgba(74, 222, 128, 0.4);
-            --danger-glow: rgba(248, 113, 113, 0.4);
-        }
-
-        .test-view-panel {
-            display: none;
-            opacity: 0;
-            transform: translateY(15px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .test-view-panel.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Animated Question Stage */
-        .question-stage-box {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            animation: stageEnter 0.5s ease-out forwards;
-        }
-
-        @keyframes stageEnter {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Smooth Option Buttons Animation */
-        .option-card-item {
-            background: rgba(30, 41, 59, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 14px 18px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            color: #f1f5f9;
-            font-size: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .option-card-item:hover {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: #38bdf8;
-            transform: translateX(6px);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .option-card-item.selected {
-            background: rgba(56, 189, 248, 0.25);
-            border-color: #38bdf8;
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .option-card-item.correct {
-            background: rgba(34, 197, 94, 0.25) !important;
-            border-color: #22c55e !important;
-            box-shadow: 0 0 20px var(--success-glow);
-            animation: pulseCorrect 0.4s ease;
-        }
-
-        .option-card-item.incorrect {
-            background: rgba(239, 68, 68, 0.25) !important;
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 20px var(--danger-glow);
-            animation: shake 0.4s ease;
-        }
-
-        @keyframes pulseCorrect {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
-        }
-
-        /* OMR Palette Buttons Animation */
-        .palette-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #1e293b;
-            border: 1.5px solid #334155;
-            color: #94a3b8;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .palette-btn:hover {
-            transform: scale(1.1);
-            border-color: #38bdf8;
-            color: #fff;
-        }
-
-        .palette-btn.answered {
-            background: #22c55e;
-            border-color: #16a34a;
-            color: #fff;
-        }
-
-        .palette-btn.current {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px #38bdf8;
-        }
-    </style>
-
-    <!-- Firebase Modular Compat SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase Modular Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="app-body">
 
-    <!-- 1. TOP NAVBAR -->
-    <header class="app-header">
-        <nav class="nav-container">
-            <div class="nav-brand-group">
-                <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <a href="index.html" class="brand-entity">
-                    <div class="brand-badge-icon">N</div>
-                    <div class="brand-typography">
-                        <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
-                        <span class="brand-tagline">Smart Student Portal</span>
-                    </div>
-                </a>
-            </div>
+  <!-- 1. TOP NAVBAR -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
 
-            <div class="nav-links-desktop">
-                <a href="index.html" class="nav-item">डैशबोर्ड</a>
-                <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
-                <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
-                <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
-                <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
-                <a href="test.html" class="nav-item active">📝 चैप्टर टेस्ट</a>
-                <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
-                <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
-                <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
-            </div>
+        <a href="index.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">Smart Student Portal</span>
+          </div>
+        </a>
+      </div>
 
-            <div class="nav-actions">
-                <button class="btn-auth-primary" id="headerAuthBtn">
-                    <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
-                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
-                        <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
-                        <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
-                    </svg>
-                    <span id="authBtnLabel">Google लॉगिन</span>
-                </button>
+      <div class="nav-links-desktop">
+        <a href="index.html" class="nav-item">डैशबोर्ड</a>
+        <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
+        <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
+        <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
+        <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
+        <a href="test.html" class="nav-item active">📝 चैप्टर टेस्ट</a>
+        <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
+        <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
+        <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
+      </div>
 
-                <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
-                    <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
-                    <div class="user-info-text">
-                        <span class="user-display-name" id="userDisplayName">छात्र</span>
-                        <span class="user-session-badge" id="userSessionBadge">Class 10th ▾</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+      <div class="nav-actions">
+        <button class="btn-auth-primary" id="headerAuthBtn">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Google लॉगिन</span>
+        </button>
 
-    <!-- 2. MOBILE DRAWER -->
-    <div class="drawer-scrim" id="drawerScrim"></div>
-    <aside class="side-drawer" id="sideDrawer">
-        <div class="drawer-header">
-            <div class="drawer-brand">
-                <div class="brand-badge-icon sm">N</div>
-                <span>NischayDesk</span>
-            </div>
-            <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
+          <div class="user-info-text">
+            <span class="user-display-name" id="userDisplayName">छात्र</span>
+            <span class="user-session-badge" id="userSessionBadge">Class 10th ▾</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 2. MOBILE DRAWER -->
+  <div class="drawer-scrim" id="drawerScrim"></div>
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-badge-icon sm">N</div>
+        <span>NischayDesk</span>
+      </div>
+      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+    </div>
+
+    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
+      <p class="drawer-user-prompt">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+    </div>
+
+    <nav class="drawer-nav-list">
+      <a href="index.html" class="drawer-nav-item">
+        <span class="icon">📊</span> मुख्य डैशबोर्ड
+      </a>
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
+        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
+      </a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;">
+        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
+      </a>
+      <a href="syllabus.html" class="drawer-nav-item">
+        <span class="icon">📋</span> बोर्ड सिलेबस हब
+      </a>
+      <a href="notes.html" class="drawer-nav-item">
+        <span class="icon">📚</span> नोट्स लाइब्रेरी
+      </a>
+      <a href="test.html" class="drawer-nav-item active">
+        <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
+      </a>
+      <a href="pyq.html" class="drawer-nav-item">
+        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
+      </a>
+      <a href="model-paper.html" class="drawer-nav-item">
+        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
+      </a>
+      <a href="ai-desk.html" class="drawer-nav-item">
+        <span class="icon">🤖</span> AI डाउट स्टूडियो
+      </a>
+      <a href="index.html#quickTools" class="drawer-nav-item">
+        <span class="icon">🛠️</span> स्मार्ट टूल्स
+      </a>
+      <div class="drawer-theme-row">
+        <span class="theme-label">🌙 डार्क / लाइट मोड</span>
+        <label class="switch">
+          <input type="checkbox" id="themeSwitch">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </nav>
+
+    <div class="drawer-footer">
+      <span class="platform-meta">NischayDesk Production</span>
+    </div>
+  </aside>
+
+  <!-- 3. MAIN EXAM VIEWPORT -->
+  <main class="test-portal-container">
+
+    <!-- BREADCRUMB BAR -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
+      <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-accent); text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: var(--radius-pill);">
+        <span>🏠</span> मुख्य डैशबोर्ड
+      </a>
+      <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk Test Simulator</span>
+    </div>
+
+    <!-- SCREEN 1: LOBBY & DYNAMIC CHAPTER SELECTION -->
+    <section class="test-view-panel active" id="testLobbyScreen">
+      <div class="lobby-card">
+        <div class="status-pill">
+          <span class="pulsing-dot"></span> बिहार बोर्ड & NTA सिमुलेटर
+        </div>
+        <h1 class="lobby-title">अध्याय-वार <span class="gradient-text">ऑनलाइन टेस्ट</span> पोर्टल</h1>
+        <p class="lobby-subtitle">
+          कक्षा, विषय और अपना मनपसंद अध्याय चुनें। समय प्रबंधन, निगेटिव मार्किंग और तुरंत विस्तृत व्याख्या के साथ परीक्षा दें।
+        </p>
+
+        <!-- Selection Controls Grid -->
+        <div class="test-selection-grid">
+          
+          <!-- 1. Class Select -->
+          <div class="select-field-box">
+            <label for="testClassSelect">1. कक्षा चुनें (Class):</label>
+            <select id="testClassSelect" class="exam-dropdown">
+              <option value="10" selected>Class 10th (मैट्रिक)</option>
+              <option value="11">Class 11th (साइंस)</option>
+              <option value="12">Class 12th (साइंस)</option>
+            </select>
+          </div>
+
+          <!-- 2. Subject Select -->
+          <div class="select-field-box">
+            <label for="testSubjectSelect">2. विषय चुनें (Subject):</label>
+            <select id="testSubjectSelect" class="exam-dropdown"></select>
+          </div>
+
+          <!-- 3. Dynamic Chapter Filter -->
+          <div class="select-field-box">
+            <label for="testChapterSelect">3. अध्याय चुनें (Chapter):</label>
+            <select id="testChapterSelect" class="exam-dropdown">
+              <option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>
+            </select>
+          </div>
+
+          <!-- 4. Exam Pattern -->
+          <div class="select-field-box">
+            <label for="testPatternSelect">4. परीक्षा का समय व प्रकार:</label>
+            <select id="testPatternSelect" class="exam-dropdown">
+              <option value="speed" selected>क्विक स्पीड टेस्ट (15 मिनट)</option>
+              <option value="board">बोर्ड फुल टेस्ट (30 मिनट / 30 प्रश्न)</option>
+            </select>
+          </div>
+
         </div>
 
-        <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
-            <p class="drawer-user-prompt">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+        <!-- Instructions Box -->
+        <div class="instructions-box">
+          <h3>📌 परीक्षा के सामान्य नियम:</h3>
+          <ul>
+            <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
+            <li>नेगेटिव मार्किंग: प्रत्येक गलत उत्तर पर <strong>-1 अंक</strong> काटा जाएगा।</li>
+            <li>टाइमर पूरा होते ही आपका टेस्ट स्वतः सबमिट हो जाएगा।</li>
+            <li>टेस्ट सबमिट करने के तुरंत बाद आपको स्कोरकार्ड और हर प्रश्न का विस्तृत हल मिलेगा।</li>
+          </ul>
         </div>
 
-        <nav class="drawer-nav-list">
-            <a href="index.html" class="drawer-nav-item"><span class="icon">📊</span> मुख्य डैशबोर्ड</a>
-            <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;"><span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल</a>
-            <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;"><span class="icon">🔍</span> परिणाम देखें</a>
-            <a href="syllabus.html" class="drawer-nav-item"><span class="icon">📋</span> बोर्ड सिलेबस हब</a>
-            <a href="notes.html" class="drawer-nav-item"><span class="icon">📚</span> नोट्स लाइब्रेरी</a>
-            <a href="test.html" class="drawer-nav-item active"><span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज</a>
-            <a href="pyq.html" class="drawer-nav-item"><span class="icon">📖</span> क्वेश्चन बैंक (PYQ)</a>
-            <a href="model-paper.html" class="drawer-nav-item"><span class="icon">📝</span> ऑफिशियल मॉडल पेपर</a>
-            <a href="ai-desk.html" class="drawer-nav-item"><span class="icon">🤖</span> AI डाउट स्टूडियो</a>
-        </nav>
-    </aside>
+        <button class="btn-start-exam" id="startExamBtn" style="margin: 0 auto; display: block;">
+          ⚡ टेस्ट शुरू करें (Start Exam)
+        </button>
+      </div>
+    </section>
 
-    <!-- 3. MAIN EXAM VIEWPORT -->
-    <main class="test-portal-container" style="max-width: 900px; margin: 20px auto; padding: 0 15px;">
-
-        <!-- BREADCRUMB BAR -->
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
-            <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: #38bdf8; text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: 50px;">
-                <span>🏠</span> मुख्य डैशबोर्ड
-            </a>
-            <span style="font-size: 0.78rem; color: #94a3b8; font-weight: 600;">NischayDesk Test Simulator - 2026</span>
+    <!-- SCREEN 2: RUNNING TEST SCREEN -->
+    <section class="test-view-panel" id="testRunningScreen">
+      <div class="exam-status-bar">
+        <div class="exam-active-subject">
+          <span class="subject-badge" id="liveExamBadge">Class 10th</span>
+          <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 30</span>
         </div>
 
-        <!-- SCREEN 1: LOBBY & DYNAMIC CHAPTER SELECTION -->
-        <section class="test-view-panel active" id="testLobbyScreen">
-            <div class="lobby-card" style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 16px; padding: 25px;">
-                <div class="status-pill" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 12px;">
-                    <span class="pulsing-dot" style="width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; display: inline-block;"></span> बिहार बोर्ड परीक्षा सिमुलेटर
-                </div>
-                <h1 class="lobby-title" style="font-size: 1.8rem; margin-bottom: 10px; color: #fff;">अध्याय-वार <span class="gradient-text" style="color: #38bdf8;">ऑनलाइन टेस्ट</span> पोर्टल</h1>
-                <p class="lobby-subtitle" style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">
-                    कक्षा, विषय और अपना मनपसंद अध्याय चुनें। समय प्रबंधन और तुरंत विस्तृत व्याख्या के साथ एनिमेटेड टेस्ट दें।
-                </p>
+        <div class="exam-timer-box" id="examTimerBox">
+          <span class="timer-icon">⏳</span>
+          <span class="timer-digits" id="timerDigits">15:00</span>
+        </div>
 
-                <!-- Selection Controls Grid -->
-                <div class="test-selection-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
-                    <div class="select-field-box">
-                        <label for="testClassSelect" style="display: block; font-size: 0.82rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">1. कक्षा चुनें (Class):</label>
-                        <select id="testClassSelect" class="exam-dropdown" style="width: 100%; background: #0b1329; border: 1.5px solid #1e3a8a; color: #fff; padding: 10px; border-radius: 8px; font-weight: 600;">
-                            <option value="10" selected>Class 10th (मैट्रिक)</option>
-                            <option value="11">Class 11th (साइंस)</option>
-                            <option value="12">Class 12th (साइंस)</option>
-                        </select>
-                    </div>
+        <button class="btn-submit-exam-early" id="submitExamEarlyBtn">
+          सबमिट करें ✓
+        </button>
+      </div>
 
-                    <div class="select-field-box">
-                        <label for="testSubjectSelect" style="display: block; font-size: 0.82rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">2. विषय चुनें (Subject):</label>
-                        <select id="testSubjectSelect" class="exam-dropdown" style="width: 100%; background: #0b1329; border: 1.5px solid #1e3a8a; color: #fff; padding: 10px; border-radius: 8px; font-weight: 600;"></select>
-                    </div>
+      <div class="exam-workspace-grid">
+        <div class="question-stage-box">
+          <div class="question-header">
+            <span class="q-number-pill" id="displayQNumber">Q.1</span>
+            <span class="q-marks-tag">+4.0, -1.0</span>
+          </div>
 
-                    <div class="select-field-box">
-                        <label for="testChapterSelect" style="display: block; font-size: 0.82rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">3. अध्याय चुनें (Chapter):</label>
-                        <select id="testChapterSelect" class="exam-dropdown" style="width: 100%; background: #0b1329; border: 1.5px solid #1e3a8a; color: #fff; padding: 10px; border-radius: 8px; font-weight: 600;">
-                            <option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>
-                        </select>
-                    </div>
-                </div>
+          <div class="question-text" id="displayQText">
+            प्रश्न लोड हो रहा है...
+          </div>
 
-                <button class="btn-start-exam" id="startExamBtn" onclick="startTestEngine()" style="width: 100%; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); transition: 0.3s;">
-                    ⚡ टेस्ट शुरू करें (Start Exam)
-                </button>
-            </div>
-        </section>
+          <div class="options-group" id="displayOptionsGroup"></div>
 
-        <!-- SCREEN 2: RUNNING TEST SCREEN -->
-        <section class="test-view-panel" id="testRunningScreen">
-            <div class="exam-status-bar" style="display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.9); padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(56, 189, 248, 0.2);">
-                <div class="exam-active-subject">
-                    <span class="subject-badge" id="liveExamBadge" style="background: #1e3a8a; color: #38bdf8; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">Class 10th</span>
-                    <span class="question-counter" id="liveQuestionCounter" style="margin-left: 10px; font-weight: 700; color: #fff;">प्रश्न 1 / 10</span>
-                </div>
+          <div class="stage-nav-bar">
+            <button class="btn-stage-secondary" id="prevQBtn" disabled>&larr; पिछला</button>
+            <button class="btn-stage-ghost" id="clearSelectionBtn">विकल्प हटाएं</button>
+            <button class="btn-stage-primary" id="nextQBtn">अगला प्रश्न &rarr;</button>
+          </div>
+        </div>
 
-                <div class="exam-timer-box" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 5px 12px; border-radius: 8px; color: #f87171; font-weight: 800;">
-                    <span class="timer-icon">⏳</span> <span id="timerDigits">15:00</span>
-                </div>
+        <aside class="question-palette-box">
+          <h4 class="palette-title">प्रश्न पैलेट (OMR Status)</h4>
+          <div class="palette-legend">
+            <span><span class="dot-legend answered"></span> हल किया</span>
+            <span><span class="dot-legend unanswered"></span> शेष</span>
+          </div>
+          <div class="palette-buttons-grid" id="paletteButtonsGrid"></div>
+        </aside>
+      </div>
+    </section>
 
-                <button class="btn-submit-exam-early" onclick="submitExam()" style="background: #22c55e; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer;">सबमिट करें ✓</button>
-            </div>
+    <!-- SCREEN 3: RESULT & SCORECARD -->
+    <section class="test-view-panel" id="testResultScreen">
+      <div class="result-card-container">
+        
+        <div class="result-header-badge">
+          <span class="trophy-icon">🏆</span>
+          <h2>टेस्ट परिणाम स्कोरकार्ड</h2>
+          <p id="resultSubMeta">स्कोर रिपोर्ट</p>
+        </div>
 
-            <div class="exam-workspace-grid" style="display: grid; grid-template-columns: 1fr 280px; gap: 20px;">
-                <div class="question-stage-box">
-                    <div class="question-header" style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.85rem; color: #94a3b8;">
-                        <span class="q-number-pill" id="displayQNumber" style="font-weight: 700; color: #38bdf8;">Q.1</span>
-                        <span>अंक: +4, -1</span>
-                    </div>
+        <div class="result-tiles-grid">
+          <div class="res-tile score-tile">
+            <span class="tile-label">कुल प्राप्तांक</span>
+            <span class="tile-val" id="resTotalMarks">0 / 120</span>
+          </div>
+          <div class="res-tile accuracy-tile">
+            <span class="tile-label">सटीकता (Accuracy)</span>
+            <span class="tile-val" id="resAccuracy">0%</span>
+          </div>
+          <div class="res-tile correct-tile">
+            <span class="tile-label">सही उत्तर</span>
+            <span class="tile-val" id="resCorrectCount">0</span>
+          </div>
+          <div class="res-tile wrong-tile">
+            <span class="tile-label">गलत उत्तर</span>
+            <span class="tile-val" id="resWrongCount">0</span>
+          </div>
+        </div>
 
-                    <div class="question-text" id="displayQText" style="font-size: 1.15rem; font-weight: 700; margin-bottom: 20px; color: #fff; line-height: 1.5;">
-                        प्रश्न लोड हो रहा है...
-                    </div>
+        <div class="solutions-review-section">
+          <h3 class="solutions-heading">📖 विस्तृत उत्तर एवं हल (Answer Key):</h3>
+          <div class="solutions-accordion-list" id="solutionsAccordionList"></div>
+        </div>
 
-                    <div class="options-group" id="displayOptionsGroup"></div>
+        <div class="result-actions-footer">
+          <button class="btn-start-exam" id="restartTestBtn">🔄 दूसरा टेस्ट दें</button>
+          <a href="index.html" class="btn-stage-primary" style="text-decoration:none; display:inline-flex; align-items:center;">📊 डैशबोर्ड पर जाएं</a>
+        </div>
 
-                    <div class="stage-nav-bar" style="display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                        <button class="btn-stage-secondary" id="prevQBtn" onclick="prevQuestion()" style="background: #1e293b; color: #fff; border: 1px solid #334155; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;">&larr; पिछला</button>
-                        <button class="btn-stage-primary" id="nextQBtn" onclick="nextQuestion()" style="background: #0284c7; color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">अगला प्रश्न &rarr;</button>
-                    </div>
-                </div>
+      </div>
+    </section>
 
-                <!-- OMR Palette Sidebar -->
-                <aside class="question-palette-box" style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 16px; padding: 15px; height: fit-content;">
-                    <h4 class="palette-title" style="font-size: 0.9rem; margin-bottom: 10px; color: #fff; font-weight: 700;">प्रश्न पैलेट (OMR Status)</h4>
-                    <div class="palette-buttons-grid" id="paletteButtonsGrid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;"></div>
-                </aside>
-            </div>
-        </section>
+  </main>
 
-        <!-- SCREEN 3: RESULT & SCORECARD -->
-        <section class="test-view-panel" id="testResultScreen">
-            <div class="result-card-container" style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 30px; text-align: center;">
-                <div class="result-header-badge">
-                    <span style="font-size: 3rem;">🏆</span>
-                    <h2 style="font-size: 1.8rem; color: #ffd700; margin: 10px 0 5px;">टेस्ट परिणाम स्कोरकार्ड</h2>
-                    <p id="resultSubMeta" style="color: #94a3b8; font-size: 0.9rem;">उत्कृष्ट प्रयास!</p>
-                </div>
+  <!-- DEDICATED USER PROFILE & CLASS SELECTION MODAL -->
+  <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+    <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
+      
+      <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      
+      <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
+        <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
+        <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
+      </div>
 
-                <div class="result-tiles-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0;">
-                    <div style="background: rgba(30, 41, 59, 0.7); padding: 15px; border-radius: 10px; border: 1px solid #1e3a8a;">
-                        <span style="font-size: 0.8rem; color: #94a3b8; display: block;">कुल प्राप्तांक</span>
-                        <span style="font-size: 1.4rem; font-weight: 800; color: #38bdf8;" id="resTotalMarks">0 / 40</span>
-                    </div>
-                    <div style="background: rgba(30, 41, 59, 0.7); padding: 15px; border-radius: 10px; border: 1px solid #1e3a8a;">
-                        <span style="font-size: 0.8rem; color: #94a3b8; display: block;">सटीकता (Accuracy)</span>
-                        <span style="font-size: 1.4rem; font-weight: 800; color: #4ade80;" id="resAccuracy">0%</span>
-                    </div>
-                </div>
+      <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
+      <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
-                <button class="btn-start-exam" onclick="location.reload()" style="background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; cursor: pointer;">🔄 दूसरा टेस्ट दें</button>
-            </div>
-        </section>
+      <div style="text-align: left; margin-bottom: 16px;">
+        <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
+        <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
+          <option value="10th">कक्षा 10वीं (मैट्रिक)</option>
+          <option value="11th">कक्षा 11वीं (साइंस)</option>
+          <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
+        </select>
 
-    </main>
+        <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
+          💾 कक्षा सेव करें (Save Class)
+        </button>
+      </div>
 
-    <!-- Interactive Test Engine JS Script -->
-    <script>
-        const sampleQuestions = [
-            { q: "प्रकाश की चाल निर्वात में कितनी होती है?", options: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10¹⁰ m/s", "3 × 10⁵ m/s"], ans: 0 },
-            { q: "दाढ़ी बनाने के लिए किस दर्पण का उपयोग होता है?", options: ["उत्तल दर्पण", "अवतल दर्पण", "समतल दर्पण", "इनमें से कोई नहीं"], ans: 1 },
-            { q: "विद्युत धारा का SI मात्रक क्या है?", options: ["वोल्ट", "ओम", "एम्पियर", "वाट"], ans: 2 },
-            { q: "निकट दृष्टि दोष दूर करने के लिए किस लेंस का उपयोग होता है?", options: ["उत्तल लेंस", "अवतल लेंस", "बेलनाकार लेंस", "द्विफोकस लेंस"], ans: 1 },
-            { q: "शुद्ध जल का pH मान कितना होता है?", options: ["7", "0", "14", "4"], ans: 0 },
-            { q: "लोहे को जंग से बचाने के लिए किसकी परत चढ़ाई जाती है?", options: ["तांबा", "जस्ता (Zinc)", "एल्युमिनियम", "चांदी"], ans: 1 },
-            { q: "मानव हृदय में कितने कोष्ठ (Chambers) होते हैं?", options: ["2", "3", "4", "5"], ans: 2 },
-            { q: "पौधों में जल का परिवहन किसके द्वारा होता है?", options: ["जाइलम", "फ्लोएम", "रंध्र", "मूलरोम"], ans: 0 },
-            { q: "ऊर्जा का मुख्य स्रोत क्या है?", options: ["कोयला", "पेट्रोलियम", "सूर्य", "पवन"], ans: 2 },
-            { q: "विद्युत शक्ति का मात्रक क्या है?", options: ["वाट", "जूल", "ओम", "एम्पियर"], ans: 0 }
-        ];
+      <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+        🚪 लॉगआउट करें (Logout)
+      </button>
 
-        let currentQIndex = 0;
-        let userAnswers = {};
-        let timerInterval;
-        let timeLeft = 900; // 15 mins
+      <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
+        ⏳ सुरक्षित लॉगआउट हो रहा है...
+      </div>
 
-        function startTestEngine() {
-            document.getElementById('testLobbyScreen').classList.remove('active');
-            document.getElementById('testRunningScreen').classList.add('active');
-            buildPalette();
-            loadQuestion(0);
-            startTimer();
+    </div>
+  </div>
+
+  <!-- 4. FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      
+      <div class="brand-col">
+        <div class="footer-brand">
+          <div class="brand-badge-icon sm">N</div>
+          <span class="brand-title">Nischay<span style="color: var(--brand-accent);">Desk</span></span>
+        </div>
+        <p class="footer-summary">
+          बिहार बोर्ड मैट्रिक व इंटर परीक्षा की तैयारी के लिए समर्पित डिजिटल सिमुलेटर।
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">नेविगेशन</h4>
+        <ul class="footer-nav">
+          <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
+          <li><a href="bseb-simulator.html">➔ 3h 15m बोर्ड परीक्षा</a></li>
+          <li><a href="bseb-result.html">➔ रिजल्ट पोर्टल</a></li>
+          <li><a href="syllabus.html">➔ बोर्ड सिलेबस हब</a></li>
+          <li><a href="notes.html">➔ नोट्स हब</a></li>
+          <li><a href="pyq.html">➔ क्वेश्चन बैंक</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="server-status-tag">
+        &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● एग्जाम इंजन लाइव है</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="syllabus-data.js"></script>
+  <script src="quiz-engine.js"></script>
+  <script src="main.js"></script>
+
+  <!-- Modal & Dynamic Dropdown Script -->
+  <script>
+    function openProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (!modal) return;
+
+      const nameEl = document.getElementById('modalUserName');
+      const emailEl = document.getElementById('modalUserEmail');
+      const imgEl = document.getElementById('modalUserImg');
+      const classSelect = document.getElementById('quickClassSwitchSelect');
+
+      const savedClass = localStorage.getItem('nd_selected_class') || '10th';
+      if (classSelect) classSelect.value = savedClass;
+
+      if (window.firebase && firebase.auth) {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
+          const firstName = rawName.trim().split(' ')[0];
+
+          if (nameEl) nameEl.textContent = firstName;
+          if (emailEl) emailEl.textContent = user.email || 'Google Verified';
+          if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
         }
+      }
+      modal.style.display = 'flex';
+    }
 
-        function loadQuestion(index) {
-            currentQIndex = index;
-            let qData = sampleQuestions[index];
-            document.getElementById('displayQNumber').textContent = `Q.${index + 1}`;
-            document.getElementById('liveQuestionCounter').textContent = `प्रश्न ${index + 1} / ${sampleQuestions.length}`;
-            document.getElementById('displayQText').textContent = qData.q;
+    function closeProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (modal) modal.style.display = 'none';
+      const loader = document.getElementById('logoutLoadingState');
+      if (loader) loader.style.display = 'none';
+      const btn = document.getElementById('btnPerformLogout');
+      if (btn) btn.disabled = false;
+    }
 
-            let optGroup = document.getElementById('displayOptionsGroup');
-            optGroup.innerHTML = '';
+    function confirmSaveClassSelection() {
+      const classSelect = document.getElementById('quickClassSwitchSelect');
+      if (!classSelect) return;
 
-            qData.options.forEach((optText, oIdx) => {
-                let isSelected = userAnswers[index] === oIdx;
-                let div = document.createElement('div');
-                div.className = `option-card-item ${isSelected ? 'selected' : ''}`;
-                div.innerHTML = `<span><b>${String.fromCharCode(65 + oIdx)}.</b></span> <span>${optText}</span>`;
-                div.onclick = () => selectOption(index, oIdx, div);
-                optGroup.appendChild(div);
-            });
+      const chosen = classSelect.value;
+      localStorage.setItem("nd_selected_class", chosen);
+      localStorage.setItem("nischay_student_class", chosen.replace(/[^0-9]/g, ''));
+      localStorage.setItem("user_class", chosen);
 
-            updatePaletteUI();
+      if (window.firebase && firebase.auth) {
+        const user = firebase.auth().currentUser;
+        if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
+          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).set({
+            selectedClass: chosen
+          }, { merge: true });
         }
+      }
 
-        function selectOption(qIdx, oIdx, element) {
-            userAnswers[qIdx] = oIdx;
-            let siblings = element.parentNode.children;
-            for (let sib of siblings) {
-                sib.classList.remove('selected');
-            }
-            element.classList.add('selected');
-            updatePaletteUI();
+      alert(`✓ आपकी कक्षा Class ${chosen} सेव हो गई है!`);
+      closeProfileModal();
+      location.reload();
+    }
+
+    function handleSlowLogout() {
+      const btn = document.getElementById('btnPerformLogout');
+      const loader = document.getElementById('logoutLoadingState');
+      if (btn) btn.disabled = true;
+      if (loader) loader.style.display = 'block';
+
+      setTimeout(() => {
+        if (window.firebase && firebase.auth) {
+          firebase.auth().signOut().finally(() => {
+            closeProfileModal();
+            window.location.reload();
+          });
+        } else {
+          closeProfileModal();
+          window.location.reload();
         }
+      }, 800);
+    }
 
-        function nextQuestion() {
-            if (currentQIndex < sampleQuestions.length - 1) {
-                loadQuestion(currentQIndex + 1);
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+      const classSelect = document.getElementById('testClassSelect');
+      const subjectSelect = document.getElementById('testSubjectSelect');
+      const chapterSelect = document.getElementById('testChapterSelect');
+
+      if (!classSelect || !subjectSelect || !chapterSelect) return;
+
+      const rawCls = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_student_class') || '10th';
+      const savedCls = String(rawCls).replace(/[^0-9]/g, '') || '10';
+      if (['10', '11', '12'].includes(savedCls)) {
+        classSelect.value = savedCls;
+      }
+
+      const classSubjectsMap = {
+        "10": [
+          { id: "physics", syllabusId: "10-science-phy", name: "भौतिकी (Physics)" },
+          { id: "chemistry", syllabusId: "10-science-chem", name: "रसायन विज्ञान (Chemistry)" },
+          { id: "biology", syllabusId: "10-science-bio", name: "जीव विज्ञान (Biology)" },
+          { id: "math", syllabusId: "10-math", name: "गणित (Mathematics)" },
+          { id: "sst", syllabusId: "10-sst", name: "सामाजिक विज्ञान (SST)" },
+          { id: "sanskrit", syllabusId: "10-sanskrit", name: "संस्कृत (Sanskrit)" }
+        ],
+        "11": [
+          { id: "physics", syllabusId: "11-physics", name: "भौतिक विज्ञान (Physics)" },
+          { id: "chemistry", syllabusId: "11-chemistry", name: "रसायन विज्ञान (Chemistry)" },
+          { id: "math", syllabusId: "11-math", name: "गणित (Mathematics)" },
+          { id: "biology", syllabusId: "11-biology", name: "जीव विज्ञान (Biology)" }
+        ],
+        "12": [
+          { id: "physics", syllabusId: "12-physics", name: "भौतिक विज्ञान (Physics)" },
+          { id: "chemistry", syllabusId: "12-chemistry", name: "रसायन विज्ञान (Chemistry)" },
+          { id: "math", syllabusId: "12-math", name: "गणित (Mathematics)" },
+          { id: "biology", syllabusId: "12-biology", name: "जीव विज्ञान (Biology)" }
+        ]
+      };
+
+      function updateSubjects() {
+        const cls = classSelect.value;
+        const subjects = classSubjectsMap[cls] || [];
+        subjectSelect.innerHTML = subjects.map(s => `<option value="${s.id}" data-sylid="${s.syllabusId}">${s.name}</option>`).join('');
+        updateChapters();
+      }
+
+      function updateChapters() {
+        chapterSelect.innerHTML = '<option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>';
+        const selectedOpt = subjectSelect.options[subjectSelect.selectedIndex];
+        if (!selectedOpt || !window.NischaySyllabus || !window.NischaySyllabus.subjects) return;
+
+        const sylId = selectedOpt.getAttribute('data-sylid');
+        const subData = window.NischaySyllabus.subjects.find(s => s.id === sylId);
+
+        if (subData && subData.chapters) {
+          subData.chapters.forEach(ch => {
+            const opt = document.createElement('option');
+            opt.value = `ch${ch.no}`;
+            opt.textContent = `अध्याय ${ch.no}: ${ch.name}`;
+            chapterSelect.appendChild(opt);
+          });
         }
+      }
 
-        function prevQuestion() {
-            if (currentQIndex > 0) {
-                loadQuestion(currentQIndex - 1);
-            }
-        }
+      classSelect.addEventListener('change', updateSubjects);
+      subjectSelect.addEventListener('change', updateChapters);
 
-        function buildPalette() {
-            let grid = document.getElementById('paletteButtonsGrid');
-            grid.innerHTML = '';
-            sampleQuestions.forEach((_, idx) => {
-                let btn = document.createElement('button');
-                btn.className = 'palette-btn';
-                btn.textContent = idx + 1;
-                btn.id = `paletteBtn-${idx}`;
-                btn.onclick = () => loadQuestion(idx);
-                grid.appendChild(btn);
-            });
-        }
-
-        function updatePaletteUI() {
-            sampleQuestions.forEach((_, idx) => {
-                let btn = document.getElementById(`paletteBtn-${idx}`);
-                if (!btn) return;
-                btn.classList.remove('answered', 'current');
-                if (userAnswers[idx] !== undefined) {
-                    btn.classList.add('answered');
-                }
-                if (idx === currentQIndex) {
-                    btn.classList.add('current');
-                }
-            });
-        }
-
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitExam();
-                    return;
-                }
-                timeLeft--;
-                let m = Math.floor(timeLeft / 60);
-                let s = timeLeft % 60;
-                document.getElementById('timerDigits').textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        function submitExam() {
-            clearInterval(timerInterval);
-            document.getElementById('testRunning
+      updateSubjects();
+    });
+  </script>
+</body>
+    </html>
