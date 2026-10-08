@@ -36,7 +36,8 @@
       --blue-btn: #0284c7;
       --code-bg: #050811;
       --table-border: rgba(56, 189, 248, 0.25);
-      --table-header: rgba(56, 189, 248, 0.12);
+      --table-header: rgba(56, 189, 248, 0.15);
+      --table-row-even: rgba(255, 255, 255, 0.03);
     }
 
     html.light-mode {
@@ -53,7 +54,8 @@
       --blue-btn: #0284c7;
       --code-bg: #0f172a;
       --table-border: #cbd5e1;
-      --table-header: #f1f5f9;
+      --table-header: #e0f2fe;
+      --table-row-even: #f8fafc;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -166,21 +168,21 @@
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 18px 16px 240px;
+      padding: 18px 12px 240px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
       max-width: 840px;
       width: 100%;
       margin: 0 auto;
     }
 
     .gemini-welcome {
-      margin-top: 30px;
+      margin-top: 25px;
     }
 
     .gemini-welcome h1 {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       font-weight: 800;
       line-height: 1.25;
       margin-bottom: 8px;
@@ -190,9 +192,9 @@
     }
 
     .gemini-welcome p {
-      font-size: 1.02rem;
+      font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .chips-col {
@@ -227,110 +229,113 @@
     .msg-user-bubble {
       background: var(--user-bubble);
       color: var(--text-main);
-      padding: 13px 20px;
-      border-radius: 22px;
+      padding: 12px 18px;
+      border-radius: 20px;
       border-bottom-right-radius: 4px;
-      max-width: 85%;
-      font-size: 1rem;
-      line-height: 1.6;
+      max-width: 88%;
+      font-size: 0.98rem;
+      line-height: 1.55;
       word-break: break-word;
       border: 1px solid var(--border);
     }
 
     .msg-ai-row {
       display: flex;
-      gap: 14px;
+      gap: 10px;
       width: 100%;
       align-items: flex-start;
     }
 
     .ai-sparkle-box {
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
       flex-shrink: 0;
       margin-top: 4px;
       background: linear-gradient(135deg, #0284c7, #38bdf8);
-      border-radius: 10px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px var(--primary-glow);
+      box-shadow: 0 4px 10px var(--primary-glow);
     }
 
     .ai-render-content {
       flex: 1;
       min-width: 0;
-      font-size: 1.05rem;
-      line-height: 1.85;
+      font-size: 1rem;
+      line-height: 1.75;
       color: var(--text-main);
       word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .ai-render-content h1, .ai-render-content h2, .ai-render-content h3 {
-      font-size: 1.22rem;
+      font-size: 1.18rem;
       font-weight: 800;
-      margin: 18px 0 8px;
+      margin: 16px 0 8px;
       color: #38bdf8;
     }
 
-    .ai-render-content p { margin-bottom: 12px; }
-    .ai-render-content ul, .ai-render-content ol { margin-left: 20px; margin-bottom: 12px; }
-    .ai-render-content li { margin-bottom: 8px; }
+    .ai-render-content p { margin-bottom: 10px; }
+    .ai-render-content ul, .ai-render-content ol { margin-left: 18px; margin-bottom: 10px; }
+    .ai-render-content li { margin-bottom: 6px; }
 
-    /* 📊 TABLES / CHARTS FORMATTING (सुंदर ग्रिड लेआउट, मोबाइल स्क्रॉल के साथ) */
-    .table-container {
-      width: 100%;
-      overflow-x: auto;
-      margin: 16px 0;
-      border-radius: 12px;
-      border: 1px solid var(--table-border);
-      background: var(--surface);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      scrollbar-width: thin;
+    /* 100% RESPONSIVE SCREEN-FIT TABLE */
+    .ai-render-content table {
+      width: 100% !important;
+      max-width: 100% !important;
+      table-layout: fixed !important;
+      border-collapse: collapse !important;
+      margin: 14px 0 !important;
+      border-radius: 12px !important;
+      border: 1.5px solid var(--table-border) !important;
+      background: var(--surface) !important;
+      overflow: hidden !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      font-size: 0.95rem;
+    .ai-render-content th,
+    .ai-render-content td {
+      padding: 8px 6px !important;
+      border: 1px solid var(--table-border) !important;
+      text-align: left !important;
+      vertical-align: top !important;
+      white-space: normal !important;
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+      font-size: 0.84rem !important;
+      line-height: 1.45 !important;
     }
 
-    th, td {
-      padding: 10px 14px;
-      border: 1px solid var(--table-border);
-      white-space: nowrap;
+    .ai-render-content th {
+      background: var(--table-header) !important;
+      color: var(--accent) !important;
+      font-weight: 800 !important;
+      text-align: center !important;
     }
 
-    th {
-      background: var(--table-header);
-      color: var(--accent);
-      font-weight: 800;
-      font-size: 0.98rem;
-    }
-
-    tr:nth-child(even) {
-      background: rgba(255, 255, 255, 0.02);
+    .ai-render-content tr:nth-child(even) {
+      background: var(--table-row-even) !important;
     }
 
     /* CODE BLOCK */
     .code-block-wrapper {
       background: var(--code-bg);
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      margin: 16px 0;
+      margin: 14px 0;
       border: 1px solid #1f2937;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
 
     .code-block-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 16px;
+      padding: 8px 14px;
       background: #0b1120;
       border-bottom: 1px solid #1e293b;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: #94a3b8;
       font-family: 'JetBrains Mono', monospace;
       text-transform: uppercase;
@@ -345,7 +350,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       padding: 4px 8px;
       border-radius: 6px;
       transition: all 0.2s;
@@ -357,36 +362,36 @@
 
     .code-block-wrapper pre {
       margin: 0;
-      padding: 16px;
+      padding: 14px;
       overflow-x: auto;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.94rem;
-      line-height: 1.6;
+      font-size: 0.88rem;
+      line-height: 1.55;
       color: #e2e8f0;
     }
 
     /* Math Formulas */
     .katex-display {
       display: block !important;
-      margin: 12px 0 !important;
-      padding: 14px 18px !important;
+      margin: 10px 0 !important;
+      padding: 10px 14px !important;
       background: var(--surface) !important;
       border: 1px solid var(--border) !important;
-      border-left: 4px solid var(--accent) !important;
-      border-radius: 14px !important;
+      border-left: 3.5px solid var(--accent) !important;
+      border-radius: 12px !important;
       overflow-x: auto !important;
       scrollbar-width: thin;
       text-align: left !important;
     }
-    .katex { font-size: 1.15em !important; color: #38bdf8 !important; }
+    .katex { font-size: 1.05em !important; color: #38bdf8 !important; }
 
-    /* ✍️ TYPEWRITER BLINKING CURSOR */
-    .typewriter-cursor {
+    /* REAL GEMINI LIVE STREAMING CURSOR */
+    .stream-cursor {
       display: inline-block;
-      width: 8px;
-      height: 18px;
+      width: 7px;
+      height: 16px;
       background: #38bdf8;
-      margin-left: 4px;
+      margin-left: 3px;
       vertical-align: middle;
       animation: blinkCursor 0.75s infinite;
       border-radius: 2px;
@@ -400,8 +405,8 @@
     .ai-bottom-tools {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 14px;
+      gap: 8px;
+      margin-top: 12px;
       flex-wrap: wrap;
     }
 
@@ -410,13 +415,13 @@
       border: 1px solid var(--border);
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 6px 12px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      border-radius: 12px;
+      gap: 5px;
+      border-radius: 10px;
       transition: all 0.15s;
     }
     .btn-tool-icon:hover {
@@ -425,7 +430,7 @@
       border-color: var(--accent);
     }
 
-    /* FLOATING LISTENING WAVE BAR */
+    /* FLOATING LISTENING BAR */
     .floating-listening-bar {
       display: none;
       align-items: center;
@@ -481,7 +486,7 @@
       left: 0;
       width: 100%;
       background: linear-gradient(to top, var(--bg) 80%, transparent);
-      padding: 10px 16px 20px;
+      padding: 10px 14px 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -491,16 +496,16 @@
     .gemini-pill-card {
       width: 100%;
       max-width: 760px;
-      min-height: 58px;
+      min-height: 56px;
       background: var(--input-bg);
       border: 1.5px solid var(--border);
       backdrop-filter: blur(20px);
       border-radius: 35px;
-      padding: 6px 10px 6px 20px;
+      padding: 6px 8px 6px 18px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .gemini-pill-card:focus-within {
       border-color: var(--accent);
@@ -512,7 +517,7 @@
       background: transparent;
       border: none;
       outline: none;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-family: inherit;
       color: var(--text-main);
     }
@@ -526,8 +531,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       flex-shrink: 0;
       transition: all 0.2s;
@@ -542,8 +547,8 @@
       background: linear-gradient(135deg, #0284c7, #0369a1);
       border: 1px solid #38bdf8;
       color: #ffffff;
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -571,7 +576,7 @@
   <header class="topbar-pro">
     <div class="topbar-left">
       <a href="index.html" class="btn-back-link" title="होम">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
@@ -580,7 +585,11 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#brandGrad)"/>
           <defs>
-            <linearGradient id="brandGrad" x1="2" y1="2" x2="22" y2="22"><stop stop-color="#4285f4"/><stop offset="0.5" stop-color="#9b72cb"/><stop offset="1" stop-color="#d96570"/></linearGradient>
+            <linearGradient id="brandGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4285f4"/>
+              <stop offset="0.5" stop-color="#9b72cb"/>
+              <stop offset="1" stop-color="#d96570"/>
+            </linearGradient>
           </defs>
         </svg>
         <span>Nischay AI</span>
@@ -617,13 +626,13 @@
         <div class="chip-item" onclick="askQuick('गोलीय लेंस के लिए लेंस सूत्र 1/f = 1/v - 1/u का निगमन कीजिए।')">
           🔭 लेंस सूत्र का निगमन (5 मार्क्स बोर्ड स्पेशल)
         </div>
-        <div class="chip-item" onclick="askQuick('त्रिकोणमिति के मानक कोणों के मान की पूरी टेबल बनाइए।')">
-          📊 त्रिकोणमिति मानों की पूरी टेबल (Chart)
+        <div class="chip-item" onclick="askQuick('चाल और वेग में क्या अंतर होता है? स्पष्ट सारणी बनाकर समझाइए।')">
+          📊 चाल और वेग में अंतर (फुल-स्क्रीन सारणी)
         </div>
       </div>
     </div>
 
-    <div id="chatFeed" style="display:flex; flex-direction:column; gap:24px;"></div>
+    <div id="chatFeed" style="display:flex; flex-direction:column; gap:20px;"></div>
 
   </main>
 
@@ -654,7 +663,7 @@
 
       <!-- Mic Button -->
       <button class="dock-icon-btn" id="micBtn" onclick="toggleVoiceInput()" title="बोलकर लिखें">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
           <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
           <line x1="12" y1="19" x2="12" y2="23"></line>
@@ -679,10 +688,10 @@
       return _s.map(c => String.fromCharCode(c - 5)).join('');
     }
 
-    // 2. Custom Renderers (Code + Tables)
+    // 2. Custom Code Block Renderer
     const renderer = new marked.Renderer();
     renderer.code = function(code, language) {
-      const validLang = language || 'code';
+      const validLang = language || (typeof code === 'object' ? code.lang : '') || 'code';
       const cleanCode = typeof code === 'object' ? (code.text || '') : code;
       const escaped = escapeHtml(cleanCode);
       return `
@@ -699,19 +708,11 @@
       `;
     };
 
-    // टेबल को स्क्रॉल कंटेनर में रैप करें
-    renderer.table = function(header, body) {
-      return `
-        <div class="table-container">
-          <table>
-            <thead>${header}</thead>
-            <tbody>${body}</tbody>
-          </table>
-        </div>
-      `;
-    };
-
-    marked.setOptions({ renderer: renderer });
+    marked.setOptions({ 
+      renderer: renderer,
+      gfm: true,
+      breaks: true
+    });
 
     function copySnippet(btn) {
       const codeText = btn.closest('.code-block-wrapper').querySelector('pre code').innerText;
@@ -721,7 +722,7 @@
       setTimeout(() => span.innerText = "कॉपी", 1500);
     }
 
-    // 3. Greeting (Session Only)
+    // 3. User Greeting (Session Only)
     (function loadUser() {
       const stored = sessionStorage.getItem('nischay_user_name') || "";
       const head = document.getElementById('userGreetingHeading');
@@ -804,6 +805,7 @@
         .replace(/\$\$(.*?)\$\$/gs, ' ')
         .replace(/\$(.*?)\$/g, ' ')
         .replace(/```[\s\S]*?```/g, ' कोड उपलब्ध है। ')
+        .replace(/\|.*?\|/g, ' ')
         .replace(/\\\[(.*?)\\\]/gs, ' ')
         .replace(/\\times/g, ' गुणा ')
         .replace(/[#*`_~\[\]\\]/g, '')
@@ -844,19 +846,21 @@
     const MODEL_NAME = "gemini-3.5-flash-lite";
     let isBusy = false;
 
-    const SYSTEM_INSTRUCTION_TEXT = `You are NischayDesk AI, a premier academic AI tutor for Bihar Board (BSEB Matric & Inter Science) students.
+    const SYSTEM_INSTRUCTION_TEXT = `You are NischayDesk AI, an advanced academic tutor for Bihar Board (BSEB Matric & Inter Science) students.
+The current academic session is 2026. Always remember that the year is 2026.
 
 CRITICAL INSTRUCTIONS:
-1. DIRECT ANSWERING: Answer directly without unnecessary greetings.
-2. CREATOR CONFIDENTIALITY: Mention "Prince Kumar" ONLY IF the user explicitly asks "who created you?" or "developer kaun hai?". Otherwise, never mention it.
-3. MATHEMATICAL FORMULAS: Format every formula and equation in clean LaTeX display math blocks with "$$":
-$$ (A - B)^2 = A^2 - 2AB + B^2 $$
-4. TABLES & CHARTS: When asked for charts, trigonometry values, formulas list, or comparisons, ALWAYS use clean Markdown Table format (| Header 1 | Header 2 |) with all rows cleanly aligned. Do not output values as plain messy text.
-5. CODE BLOCKS: Always format code with language fences like:
-\`\`\`html
-<!-- code -->
-\`\`\`
-6. TONE: Clear, structured, encouraging, and natural Hindi.`;
+1. COMPLETE CODE GENERATION: When providing code, NEVER truncate or cut code in the middle. Always provide complete, fully functional, and end-to-end code blocks up to the last line.
+2. DIRECT ANSWERING: Answer directly without unnecessary greetings.
+3. CREATOR CONFIDENTIALITY: Mention "Prince Kumar" ONLY IF the user explicitly asks "who created you?" or "developer kaun hai?". Otherwise, never mention it.
+4. MATHEMATICAL FORMULAS: Format standalone equations in clean display math blocks ($$...$$). Do not output isolated broken brackets inside tables.
+5. COMPACT TABLES & CHARTS: When asked for comparisons, differences (like speed vs velocity), values, or charts, ALWAYS output clean Markdown Tables:
+| गुण | चाल (Speed) | वेग (Velocity) |
+|---|---|---|
+| परिभाषा | एकांक समय में तय दूरी | एकांक समय में विस्थापन |
+Keep table contents concise and clear so that all columns fit easily on a mobile screen.
+6. CODE BLOCKS: Always format code with language fences like \`\`\`html.
+7. TONE: Clear, structured, encouraging, and natural Hindi.`;
 
     let chatMemory = [];
 
@@ -905,7 +909,7 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
       const contentElem = btn.closest('.ai-render-content').querySelector('.slot-text');
       
       const opt = {
-        margin:       12,
+        margin:       10,
         filename:     `NischayDesk_Notes_${new Date().toISOString().slice(0,10)}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true },
@@ -926,35 +930,15 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
       });
     }
 
-    // 7. ✍️ SMART TYPEWRITER ANIMATION ENGINE (एक-एक टाइप होता हुआ दिखेगा)
-    function typewriteResponse(slot, fullText, onFinish) {
-      let index = 0;
-      const step = Math.max(3, Math.floor(fullText.length / 80)); // स्मूथ स्पीड
-      slot.innerHTML = `<span class="typed-content"></span><span class="typewriter-cursor"></span>`;
-      
-      const contentSpan = slot.querySelector('.typed-content');
-      const cursorSpan = slot.querySelector('.typewriter-cursor');
-
-      const normalized = normalizeFormulas(fullText);
-
-      function typeTick() {
-        if (index < normalized.length) {
-          index += step;
-          contentSpan.innerHTML = marked.parse(normalized.slice(0, index));
-          smoothScrollBottom();
-          requestAnimationFrame(typeTick);
-        } else {
-          if (cursorSpan) cursorSpan.remove();
-          contentSpan.innerHTML = marked.parse(normalized);
-          renderKaTeXSafe(contentSpan);
-          smoothScrollBottom();
-          if (onFinish) onFinish();
-        }
+    // 🌟 7. NO-SHAKE, NO-WARNING FLUID STREAM RENDERER (GEMINI LIKE)
+    function instantScroll() {
+      const vp = document.getElementById('chatArea');
+      if (vp) {
+        vp.scrollTop = vp.scrollHeight;
       }
-      typeTick();
     }
 
-    // 8. SEND USER QUERY
+    // 8. SEND USER QUERY (REAL-TIME SSE STREAMING)
     async function sendUserQuery() {
       const input = document.getElementById('userInput');
       const feed = document.getElementById('chatFeed');
@@ -971,7 +955,7 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
         </div>`;
 
       input.value = '';
-      smoothScrollBottom();
+      instantScroll();
 
       chatMemory.push({ role: "user", content: q });
       if (chatMemory.length > 20) chatMemory = chatMemory.slice(-16);
@@ -994,11 +978,13 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
           </div>
         </div>
       `;
-      smoothScrollBottom();
+      instantScroll();
 
       const aiRow = document.getElementById(loadId);
       const slot = aiRow.querySelector('.slot-text');
       const tools = aiRow.querySelector('.ai-bottom-tools');
+
+      let accumulatedText = "";
 
       try {
         const geminiContents = chatMemory.map(m => ({
@@ -1007,7 +993,7 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
         }));
 
         const activeKey = getDecodedKey();
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${activeKey}`;
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:streamGenerateContent?alt=sse&key=${activeKey}`;
         
         const response = await fetch(endpoint, {
           method: "POST",
@@ -1020,38 +1006,72 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
             system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION_TEXT }] },
             generationConfig: {
               temperature: 0.25,
-              maxOutputTokens: 2048
+              maxOutputTokens: 8192
             }
           })
         });
 
-        const resData = await response.json();
-
         if (!response.ok) {
-          throw new Error(resData.error?.message || `HTTP ${response.status}`);
+          const errData = await response.json();
+          throw new Error(errData.error?.message || `HTTP ${response.status}`);
         }
 
-        const answer = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let buffer = "";
 
-        if (answer) {
-          chatMemory.push({ role: "model", content: answer });
+        // स्ट्रीमिंग शुरू होते ही लोडर हटाएं
+        slot.innerHTML = `<span class="stream-text"></span><span class="stream-cursor"></span>`;
+        const textSpan = slot.querySelector('.stream-text');
 
-          // 🌟 टाइपराइटर एनीमेशन के साथ टाइप होना
-          typewriteResponse(slot, answer, () => {
-            tools.style.display = 'flex';
-            smoothScrollBottom();
-            if (isVoiceActive) speakText(answer);
-          });
-        } else {
-          slot.innerHTML = `<span style="color:#ef4444; font-weight:700;">⚠️ कोई उत्तर प्राप्त नहीं हुआ।</span>`;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop();
+
+          for (const line of lines) {
+            if (line.startsWith("data: ")) {
+              const jsonStr = line.slice(6).trim();
+              if (jsonStr === "[DONE]") continue;
+
+              try {
+                const parsed = JSON.parse(jsonStr);
+                const chunk = parsed.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                if (chunk) {
+                  accumulatedText += chunk;
+                  // बिना DOM तोड़े केवल साफ़ टेक्स्ट जोड़ें ताकि कंपन न हो
+                  textSpan.innerText = accumulatedText;
+                  instantScroll();
+                }
+              } catch(e) {}
+            }
+          }
         }
+
+        // स्ट्रीम पूरा होने के बाद कर्सर हटाएं और केवल एक बार फ़ॉर्मूला व टेबल रेंडर करें
+        const cursor = slot.querySelector('.stream-cursor');
+        if (cursor) cursor.remove();
+        
+        const normalized = normalizeFormulas(accumulatedText);
+        slot.innerHTML = marked.parse(normalized);
+        renderKaTeXSafe(slot);
+
+        chatMemory.push({ role: "model", content: accumulatedText });
+
+        tools.style.display = 'flex';
+        instantScroll();
+
+        if (isVoiceActive) speakText(accumulatedText);
 
       } catch (err) {
         console.error(err);
         slot.innerHTML = `<span style="color:#ef4444; font-weight:700;">⚠️ त्रुटि: ${escapeHtml(err.message)}</span>`;
       } finally {
         isBusy = false;
-        smoothScrollBottom();
+        instantScroll();
       }
     }
 
@@ -1078,7 +1098,6 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
         return;
       }
 
-      // 🛑 1. माइक चालू होते ही AI का बोलना तुरंत बंद हो जाए
       stopSpeakingImmediately();
 
       recognition = new Speech();
@@ -1087,7 +1106,7 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
       recognition.onstart = () => {
         isRec = true;
         micBtn.classList.add('recording');
-        listenBar.classList.add('active'); // 🌟 फ्लोटिंग वेव बार दिखेगा
+        listenBar.classList.add('active');
       };
 
       recognition.onresult = (e) => {
@@ -1117,11 +1136,6 @@ $$ (A - B)^2 = A^2 - 2AB + B^2 $$
 
     function escapeHtml(str) {
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    function smoothScrollBottom() {
-      const vp = document.getElementById('chatArea');
-      vp.scrollTo({ top: vp.scrollHeight, behavior: 'smooth' });
     }
   </script>
 </body>
