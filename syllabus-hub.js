@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Official Syllabus Repository & Interactive Controller (v5.0 Pro)
+   NischayDesk Official Syllabus Repository & Interactive Controller (v5.1 Complete)
    Classes: 10th Matric, 11th Science & 12th Science
    Curated by: Prince Kumar (NischayDesk)
-   Fixed: DOM ID Synchronization with syllabus.html, In-App Safe Viewer Integration
+   Features: Complete Chapters Directory, In-App Safe Viewer, Smart URL Deep-Linking
    ========================================================================== */
 
 window.NischaySyllabusHubData = {
@@ -303,7 +303,7 @@ window.NischaySyllabusHubData = {
 };
 
 // ============================================================================
-// DUAL COMPATIBILITY DOM CONTROLLER FOR SYLLABUS.HTML
+// DUAL COMPATIBILITY DOM CONTROLLER FOR SYLLABUS.HTML WITH URL PARAMETERS
 // ============================================================================
 document.addEventListener('DOMContentLoaded', function () {
   const classSelect = document.getElementById('sylClassFilter') || document.getElementById('syllabusClassSelect');
@@ -312,22 +312,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!classSelect || !subjectSelect || !chaptersContainer) return;
 
-  const savedProfile = localStorage.getItem('nischay_user_profile');
-  let studentLockedClass = '10';
-  if (savedProfile) {
-    try {
-      const parsed = JSON.parse(savedProfile);
-      if (parsed.class) studentLockedClass = parsed.class;
-    } catch (e) {}
+  // 1. URL से क्लास और सब्जेक्ट पैरामीटर्स पढ़ें
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlClass = urlParams.get('class');
+  const urlSubject = urlParams.get('subject');
+
+  let activeClass = '10';
+
+  if (urlClass) {
+    const cleanNum = String(urlClass).replace(/[^0-9]/g, '');
+    if (['10', '11', '12'].includes(cleanNum)) activeClass = cleanNum;
   } else {
-    studentLockedClass = localStorage.getItem('nischay_student_class') || '10';
+    const savedProfile = localStorage.getItem('nischay_user_profile');
+    if (savedProfile) {
+      try {
+        const parsed = JSON.parse(savedProfile);
+        if (parsed.class) activeClass = String(parsed.class).replace(/[^0-9]/g, '');
+      } catch (e) {}
+    } else {
+      const stored = localStorage.getItem('nischay_student_class') || localStorage.getItem('nd_selected_class') || '10';
+      activeClass = String(stored).replace(/[^0-9]/g, '');
+    }
   }
 
-  if (window.NischaySyllabusHubData[studentLockedClass]) {
-    classSelect.value = studentLockedClass;
+  if (!['10', '11', '12'].includes(activeClass)) activeClass = '10';
+
+  if (window.NischaySyllabusHubData && window.NischaySyllabusHubData[activeClass]) {
+    classSelect.value = activeClass;
   }
 
-  function populateSubjects() {
+  function populateSubjects(targetSubjectToSelect) {
     const selectedClass = classSelect.value;
     const classData = window.NischaySyllabusHubData[selectedClass];
 
@@ -344,6 +358,11 @@ document.addEventListener('DOMContentLoaded', function () {
       opt.textContent = classData.subjects[subKey].title;
       subjectSelect.appendChild(opt);
     });
+
+    // अगर URL से कोई खास सब्जेक्ट आया हो तो उसे सेलेक्ट करें
+    if (targetSubjectToSelect && classData.subjects[targetSubjectToSelect]) {
+      subjectSelect.value = targetSubjectToSelect;
+    }
 
     loadChapters();
   }
@@ -365,9 +384,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!chapters || chapters.length === 0) {
       chaptersContainer.innerHTML = `
-        <div class="loading-state-box">
+        <div class="loading-state-box" style="text-align:center; padding:30px 16px;">
           <div style="font-size:2.2rem; margin-bottom:8px;">📋</div>
-          <p>इस विषय का आधिकारिक सिलेबस शीघ्र जोड़ा जा रहा है।</p>
+          <p style="color:var(--text-secondary);">इस विषय का आधिकारिक सिलेबस शीघ्र जोड़ा जा रहा है।</p>
         </div>
       `;
       return;
@@ -380,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const hasPdf = ch.pdf && ch.pdf.trim() !== '' && ch.pdf !== '#';
       const actionButton = hasPdf
         ? `<button class="btn-view-syllabus" onclick="window.openPdfViewer ? window.openPdfViewer('${ch.pdf}', '${ch.name.replace(/'/g, "\\'")}') : window.open('${ch.pdf}', '_blank')">📖 <span>सिलेबस देखें</span></button>`
-        : `<button class="btn-view-syllabus" style="background:var(--surface-elevated); border:1px solid var(--border-subtle); color:var(--brand-accent);" onclick="alert('अध्याय ${ch.no} का आधिकारिक सिलेबस PDF जल्द लिंक किया जा रहा है!')">📖 <span>जल्द आ रहा है</span></button>`;
+        : `<button class="btn-view-syllabus" style="background:var(--surface-elevated, rgba(255,255,255,0.06)); border:1px solid var(--border-subtle, rgba(255,255,255,0.1)); color:var(--brand-accent, #38bdf8);" onclick="alert('अध्याय ${ch.no} का आधिकारिक सिलेबस PDF जल्द लिंक किया जा रहा है!')">📖 <span>जल्द आ रहा है</span></button>`;
 
       card.innerHTML = `
         <div class="chapter-meta-wrap">
@@ -394,8 +413,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  classSelect.addEventListener('change', populateSubjects);
+  classSelect.addEventListener('change', () => populateSubjects(null));
   subjectSelect.addEventListener('change', loadChapters);
 
-  populateSubjects();
+  // पहली बार लोड होते ही URL का सब्जेक्ट पास करें
+  populateSubjects(urlSubject);
 });
