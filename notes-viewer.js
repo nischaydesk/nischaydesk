@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (v5.0 Strict Class-Filter Edition)
+   NischayDesk Complete Notes Controller (v5.1 Smart URL-Filter Edition)
    Architected by: Prince Kumar (NischayDesk)
    Features: Strict Class Separation (10th/11th/12th), Dynamic Pills,
-             In-App HD Google Drive Previewer & Universal Theme Contrast
+             URL Auto-Subject Select, In-App HD Google Drive Previewer
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -76,6 +76,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 🎯 छात्र की सक्रिय कक्षा के अनुसार सिर्फ़ उसी क्लास का डेटा लोड करना
   function getActiveStudentClass() {
+    // अगर URL में क्लास दी हो (जैसे ?class=10th) तो उसे प्राथमिकता दें
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlClass = urlParams.get('class');
+    if (urlClass) {
+      const numOnly = String(urlClass).replace(/[^0-9]/g, '');
+      if (numOnly === '11' || numOnly === '12' || numOnly === '10') return numOnly;
+    }
+
     const rawClass = localStorage.getItem('nd_selected_class') || 
                      localStorage.getItem('nischay_student_class') || 
                      localStorage.getItem('nischay_user_class') || '10th';
@@ -91,13 +99,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const activeClass = getActiveStudentClass();
 
-    // 1. फ़िल्टर पिल्स (बटनों) को चुनी गई क्लास के अनुसार एडजस्ट करें
-    adjustFilterPills(activeClass);
-
-    // 2. मास्टर लिस्ट में सिर्फ़ सक्रिय क्लास के चैप्टर्स डालें
+    // 1. मास्टर लिस्ट में सिर्फ़ सक्रिय क्लास के चैप्टर्स डालें
     allChaptersMaster = [];
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      // यदि सब्जेक्ट आईडी उस क्लास से शुरू नहीं होती, तो पूरी तरह छोड़ दें
       if (!subject.id.startsWith(activeClass + '-')) return;
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
@@ -116,33 +120,58 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    currentFilterSubject = 'all';
+    // 2. 🌟 URL से फ़िल्टर चेक करें (जैसे ?filter=10-math या ?subject=10-math)
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedFilter = urlParams.get('filter') || urlParams.get('subject');
+
+    if (requestedFilter) {
+      currentFilterSubject = requestedFilter;
+    } else {
+      currentFilterSubject = 'all';
+    }
+
+    // 3. फ़िल्टर पिल्स (बटन) को एडजस्ट और एक्टिवेट करें
+    adjustFilterPills(activeClass, currentFilterSubject);
+
+    // 4. ग्रिड रेंडर करें
     renderNotesGrid();
   }
 
-  function adjustFilterPills(sClass) {
+  function adjustFilterPills(sClass, selectedFilter) {
     if (!filterPillContainer) return;
     const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
+    let matchedButton = null;
 
     filterButtons.forEach(btn => {
       const filterVal = btn.getAttribute('data-filter');
-      
-      // "सभी विषय" का बटन हमेशा दिखेगा
+      btn.classList.remove('active');
+
+      // "सभी विषय" का बटन
       if (filterVal === 'all') {
         btn.style.display = 'inline-block';
-        btn.classList.add('active');
+        if (selectedFilter === 'all') btn.classList.add('active');
         return;
       }
 
-      btn.classList.remove('active');
-
-      // केवल उसी क्लास के विषय बटन दिखेंगे जो छात्र ने चुनी है
+      // केवल छात्र की कक्षा के विषय बटन दिखाना
       if (filterVal.startsWith(sClass + '-')) {
         btn.style.display = 'inline-block';
+        if (filterVal === selectedFilter) {
+          btn.classList.add('active');
+          matchedButton = btn;
+        }
       } else {
         btn.style.display = 'none';
       }
     });
+
+    // अगर कोई बटन मैच हो गया, तो उसे स्क्रॉल करके सामने लाएं
+    if (matchedButton) {
+      matchedButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    } else if (selectedFilter === 'all') {
+      const allBtn = filterPillContainer.querySelector('[data-filter="all"]');
+      if (allBtn) allBtn.classList.add('active');
+    }
   }
 
   function renderNotesGrid() {
