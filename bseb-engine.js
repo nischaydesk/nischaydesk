@@ -161,35 +161,42 @@ function showNonBlockingWarning(msg) {
 }
 
 // ---------------------------------------------------------
-// 5. ⚡ यूनिवर्सल गैलरी कंप्रेसर (HEIC, JPG, PNG सभी के लिए)
+// 5. ⚡ यूनिवर्सल गैलरी कंप्रेसर (HEIC क्रैश-प्रूफ सिस्टम)
 // ---------------------------------------------------------
-async function compressDirectImage(file) {
+async function compressDirectImage(file, badgeElement = null, currentIndex = 1, totalFiles = 1) {
   try {
     if (!file) return null;
 
-    // 1. अगर फ़ोटो HEIC / HEIF है तो उसे पहले JPEG Blob में बदलें
+    let processFile = file;
+
+    // HEIC/HEIF चेकर
     const isHeic = file.type === "image/heic" || 
                    file.type === "image/heif" || 
-                   (file.name && file.name.toLowerCase().endsWith(".heic")) || 
-                   (file.name && file.name.toLowerCase().endsWith(".heif"));
+                   (file.name && /\.(heic|heif)$/i.test(file.name));
 
+    // अगर फोटो iPhone (HEIC) की है
     if (isHeic && window.heic2any) {
+      if(badgeElement) badgeElement.textContent = `⏳ पेज ${currentIndex}/${totalFiles}: iPhone (HEIC) फॉर्मेट बदला जा रहा है...`;
       try {
         const converted = await heic2any({
           blob: file,
           toType: "image/jpeg",
-          quality: 0.75
+          quality: 0.6 // मेमोरी बचाने और स्पीड के लिए
         });
-        file = Array.isArray(converted) ? converted[0] : converted;
+        processFile = Array.isArray(converted) ? converted[0] : converted;
       } catch (convErr) {
-        console.warn("HEIC Auto-Conversion Note:", convErr);
+        console.warn("HEIC Conversion Failed:", convErr);
+        alert(`पेज ${currentIndex} (HEIC) को बदलने में त्रुटि। कृपया सामान्य फोटो लें।`);
+        return null;
       }
     }
 
-    // 2. इमेज को मेमोरी-सेफ़ तरीक़े से लोड करना
+    if(badgeElement) badgeElement.textContent = `⏳ पेज ${currentIndex}/${totalFiles}: फोटो ऑप्टिमाइज़ हो रही है...`;
+
+    // मेमोरी-सेफ़ तरीके से इमेज लोड करना
     const imgSource = await new Promise((resolve, reject) => {
       const img = new Image();
-      const objUrl = URL.createObjectURL(file);
+      const objUrl = URL.createObjectURL(processFile);
       img.onload = () => {
         URL.revokeObjectURL(objUrl);
         resolve(img);
@@ -219,14 +226,19 @@ async function compressDirectImage(file) {
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext("2d", { alpha: false });
+    
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, w, h);
     ctx.filter = "contrast(1.15) brightness(1.02)";
     ctx.drawImage(imgSource, 0, 0, w, h);
 
-    const compressed = canvas.toDataURL("image/jpeg", 0.58);
+    const compressed = canvas.toDataURL("image/jpeg", 0.60);
+
+    // 🚀 तगड़ा मेमोरी क्लीनअप (RAM खाली करना)
     canvas.width = 0;
     canvas.height = 0;
+    imgSource.src = "";
+
     return compressed;
   } catch (err) {
     console.error("Direct Compress Error:", err);
