@@ -1,6 +1,6 @@
 /**
  * NischayDesk - Official Cloud AI Evaluator Worker
- * BSEB Class 10 Strict Step-by-Step Evaluation Engine (Zero Global Rejection Edition)
+ * BSEB Class 10 Strict Step-by-Step Evaluation Engine (Dynamic Marks & Error-Tracking Edition)
  */
 const admin = require("firebase-admin");
 
@@ -92,6 +92,9 @@ async function startEvaluationProcess() {
         const subjectName = paperData.subjectName || exam.subjectName || "बिहार बोर्ड मैट्रिक परीक्षा";
         const blueprint = JSON.stringify(paperData.subjectiveBlueprint || {});
 
+        // विज्ञान और सामाजिक विज्ञान में 40 अंक, बाकी में 50 अंक
+        const maxSubjective = (paperKey === "112-science" || paperKey === "113-sst") ? 40 : 50;
+
         const pagesSnap = await db.collection("bseb_exams_2026")
           .doc(doc.id)
           .collection(`day_${day}_pages`)
@@ -121,37 +124,51 @@ async function startEvaluationProcess() {
 
         if (imageParts.length > 0) {
           const prompt = `You are the Official Chief Examiner of Bihar School Examination Board (BSEB, Patna).
-Evaluate this Class 10th Board subjective answer sheet based on the official BSEB blueprint.
+Evaluate this Class 10th Board subjective answer sheet page-by-page.
 
 TARGET EXAM: "${subjectName}" (Code: ${paperKey}).
-MAX SUBJECTIVE MARKS: 50.
+MAX SUBJECTIVE MARKS: ${maxSubjective}.
+TOTAL ATTACHED PAGES: ${imageParts.length}.
 
 OFFICIAL QUESTIONS BLUEPRINT FOR THIS EXAM:
 ${blueprint}
 
-ABSOLUTE EVALUATION RULES (MUST FOLLOW STRICTLY):
-1. INDEPENDENT PAGE EVALUATION (DO NOT REJECT THE WHOLE SCRIPT):
-   - You will evaluate each page (starting from pageIndex 0) completely INDEPENDENTLY.
-   - If a page contains notes from another subject/class (e.g. Mathematics/Sets notes on a Hindi paper, blank page, or doodles), assign marksOnThisPage: 0 FOR THAT SPECIFIC PAGE ONLY.
-   - DO NOT reject the entire exam or set status to "MISMATCH_REJECTED" if ANY valid answers exist.
-   - On valid pages, match the student's handwritten answers to the blueprint. Award generous step marks for all legitimate attempts from the blueprint (e.g., Unseen Passage, Essay, Letter, Textbook Qs).
+STRICT EVALUATION INSTRUCTIONS:
+1. PAGE-BY-PAGE INDEPENDENT EVALUATION:
+   - There are exactly ${imageParts.length} pages attached, indexed from 0 to ${imageParts.length - 1}.
+   - Evaluate each page INDEPENDENTLY.
+   - DO NOT dump all marks onto pageIndex 0. Marks must belong to the exact page where the answer is written.
+   - If a page contains out-of-syllabus notes (e.g. Class 11 sets/maths on Hindi paper), non-exam images, or irrelevant text, set "marksOnThisPage": 0 and "errorNote": "अप्रासंगिक सामग्री / ब्लूप्रिंट से बाहर". DO NOT reject the valid pages.
 
-2. TOTAL SCORE:
-   - "totalSubjectiveMarks" MUST be the exact sum of marks from all individual pages in "pagesEvaluation".
+2. STEP-BY-STEP CHECKING & SPECIFIC MISTAKE REPORTING:
+   - For legitimate answers from the blueprint, evaluate step-by-step.
+   - If an answer has a calculation error, incorrect formula, spelling mistake, or incomplete conclusion, award fair partial marks and EXPLICITLY state the exact issue in "errorNote" (e.g., "चरण 2 में गणना गलत है (-1 अंक)" or "निष्कर्ष अधूरा छोड़ा गया").
+   - If an answer is completely correct, set "errorNote": "".
 
-3. STRICT JSON OUTPUT FORMAT (NO MARKDOWN WRAPPERS):
+3. MARKS SUM:
+   - "totalSubjectiveMarks" MUST be the exact sum of all "marksOnThisPage" values. It CANNOT exceed ${maxSubjective}.
+
+4. STRICT JSON FORMAT ONLY (NO MARKDOWN BLOCKS):
 {
-  "totalSubjectiveMarks": 35,
-  "stepBreakdown": "P0: 0m (अमान्य विषय), P1: 8m (गद्यांश), P2: 5m (पत्र), P3: 10m (निबंध), P4: 12m (लघु/दीर्घ प्रश्न), P5: 0m (अमान्य विषय)",
-  "overallRemarks": "मान्य उत्तरों का निष्पक्ष मूल्यांकन संपन्न। अप्रासंगिक पृष्ठों को शून्य अंक दिए गए।",
+  "totalSubjectiveMarks": 32,
+  "maxSubjective": ${maxSubjective},
+  "overallRemarks": "गद्यांश और पत्र लेखन उत्कृष्ट है। व्याकरण में कुछ अशुद्धियाँ पाई गईं।",
   "status": "EVALUATED",
   "pagesEvaluation": [
-    {"pageIndex": 0, "marksOnThisPage": 0, "reason": "Out of blueprint/irrelevant subject"},
-    {"pageIndex": 1, "marksOnThisPage": 8, "reason": "Unseen passage answers"},
-    {"pageIndex": 2, "marksOnThisPage": 5, "reason": "Letter writing"},
-    {"pageIndex": 3, "marksOnThisPage": 10, "reason": "Essay writing"},
-    {"pageIndex": 4, "marksOnThisPage": 12, "reason": "Short and long textbook questions"},
-    {"pageIndex": 5, "marksOnThisPage": 0, "reason": "Out of blueprint/irrelevant subject"}
+    {
+      "pageIndex": 0,
+      "pageNumber": 1,
+      "marksOnThisPage": 8,
+      "errorNote": "प्र० 1(घ) में उत्तर अधूरा है (-2 अंक)",
+      "remarks": "गद्यांश आधारित उत्तर संतोषजनक"
+    },
+    {
+      "pageIndex": 1,
+      "pageNumber": 2,
+      "marksOnThisPage": 5,
+      "errorNote": "",
+      "remarks": "पत्र लेखन का प्रारूप पूर्णतः शुद्ध"
+    }
   ]
 }`;
 
@@ -163,7 +180,6 @@ ABSOLUTE EVALUATION RULES (MUST FOLLOW STRICTLY):
               const cleanJson = aiResponse.replace(/```json|```/g, "").trim();
               const parsed = JSON.parse(cleanJson);
               
-              // पन्नों के अंकों का सुरक्षित जोड़ (Never 0 if valid pages have marks)
               let pagesEval = Array.isArray(parsed.pagesEvaluation) ? parsed.pagesEvaluation : [];
               let calculatedMarks = 0;
               
@@ -173,14 +189,17 @@ ABSOLUTE EVALUATION RULES (MUST FOLLOW STRICTLY):
                 calculatedMarks = parseInt(parsed.totalSubjectiveMarks, 10) || 0;
               }
 
+              // कुल अंक अधिकतम सीमा (40 या 50) से अधिक न हों
+              calculatedMarks = Math.min(calculatedMarks, maxSubjective);
+
               const total = (exam.objectiveMarks || 0) + calculatedMarks;
               const feedback = parsed.overallRemarks || "मूल्यांकन संपन्न।";
 
-              // Always EVALUATED — कभी भी पूरे पेपर को MISMATCH_REJECTED नहीं करना
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
                     subjectiveMarks: calculatedMarks,
+                    maxSubjectiveMarks: maxSubjective,
                     totalMarks: total,
                     aiFeedback: feedback,
                     stepBreakdown: parsed.stepBreakdown || "",
@@ -192,7 +211,7 @@ ABSOLUTE EVALUATION RULES (MUST FOLLOW STRICTLY):
                 }
               }, { merge: true });
 
-              console.log(`✓ Result Saved: UID ${doc.id}, Day ${day} -> Sub: ${calculatedMarks}, Total: ${total}, Status: EVALUATED`);
+              console.log(`✓ Result Saved: UID ${doc.id}, Day ${day} -> Sub: ${calculatedMarks}/${maxSubjective}, Total: ${total}, Status: EVALUATED`);
             } catch (err) {
               console.error("JSON parse error from Gemini response:", err);
               console.error("Raw Response:", aiResponse);
