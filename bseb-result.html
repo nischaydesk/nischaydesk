@@ -514,6 +514,14 @@
   <script src="bseb-engine.js"></script>
 
   <script>
+    // =========================================================================
+    // ⚙️ TESTING MODE TOGGLE (बाईपास कंट्रोल स्विच)
+    // =========================================================================
+    // true  = बाईपास सक्रिय: 1 विषय देने पर भी तुरंत रिजल्ट व कॉपी खुलेगी (नो 7 डेज वेट)
+    // false = ओरिजिनल बोर्ड नियम: पूरे 6 विषय + 7 दिन का सर्वर लॉक आवश्यक
+    const IS_TESTING_BYPASS = true; 
+    // =========================================================================
+
     let expectedCaptchaSum = 0;
 
     function generateCaptcha() {
@@ -592,18 +600,58 @@
       const completed = studentData.completedDays || {};
       const completedCount = Object.keys(completed).length;
 
-      // केवल तब रोकेगा जब छात्र ने एक भी (0) विषय का एग्जाम नहीं दिया हो
+      // स्थिति 1: छात्र ने एक भी विषय की परीक्षा नहीं दी (0 Attempts)
       if (completedCount === 0) {
         showError(
           `❌ परीक्षा में अनुपस्थित (No Exam Attempted)!\n\n` +
           `📌 सूचना: आपका रोल कोड (${rCode}) और रोल नंबर (${rNum}) सिस्टम में पंजीकृत है, लेकिन आपने अभी तक किसी भी विषय की परीक्षा प्रारंभ नहीं की है।\n\n` +
-          `👉 कृपया परीक्षा पोर्टल पर लॉगिन करके पहले अपनी परीक्षा प्रारंभ करें।`
+          `👉 कृपया परीक्षा पोर्टल पर लॉगिन करके पहले अपनी परीक्षा पूर्ण करें।`
         );
         generateCaptcha();
         return;
       }
 
-      // कम से कम 1 विषय का एग्जाम दिया है, तो सीधे रिजल्ट रेंडर होगा
+      // 🌟 बाईपास चेक: अगर IS_TESTING_BYPASS true है तो 6 विषय और 7 दिन का लॉक बाईपास हो जाएगा
+      if (!IS_TESTING_BYPASS) {
+        // स्थिति 2: छात्र ने 6 से कम विषय पूरे किए हैं (1 से 5 Attempts)
+        if (completedCount < 6) {
+          showError(
+            `⏳ वार्षिक परीक्षा अभी अपूर्ण है!\n\n` +
+            `📊 आपकी प्रगति: आपने अभी केवल ${completedCount}/6 विषयों की परीक्षा पूरी की है।\n` +
+            `📌 बोर्ड नियम: जब आप पूरे 6 विषयों (Day 1 से Day 6) की परीक्षा दे देंगे, तब 7वें दिन आपका वार्षिक परिणाम प्रकाशित होगा।`
+          );
+          generateCaptcha();
+          return;
+        }
+
+        // स्थिति 3: 6 विषय पूरे हैं, 7 दिन के टाइमर लॉक की सख्त जाँच (Server Time)
+        let serverNowMs = Date.now();
+        try {
+          if (typeof getVerifiedServerTimestamp === "function") {
+            serverNowMs = await getVerifiedServerTimestamp();
+          }
+        } catch (e) {}
+
+        const startMs = new Date(studentData.startDate || studentData.submittedAt || serverNowMs).getTime();
+        const requiredReleaseMs = startMs + (7 * 24 * 60 * 60 * 1000);
+
+        if (serverNowMs < requiredReleaseMs) {
+          const remainingMs = requiredReleaseMs - serverNowMs;
+          const remDays = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+          const remHours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const remMins = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+
+          showError(
+            `⏳ वार्षिक परिणाम अभी सुरक्षित लॉक (Locked) है!\n\n` +
+            `बिहार विद्यालय परीक्षा समिति के नियमानुसार सभी 6 विषयों के मूल्यांकन के उपरांत 7वें दिन परिणाम घोषित किया जाता है।\n\n` +
+            `🕒 परिणाम प्रकाशन में शेष समय:\n👉 ${remDays} दिन, ${remHours} घंटे, ${remMins} मिनट शेष`
+          );
+          generateCaptcha();
+          return;
+        }
+      }
+
+      // परिणाम प्रदर्शित करें
       renderOfficialMarksheet(studentData);
     }
 
@@ -654,7 +702,6 @@
             isCandidateFailed = true;
             numericTheory = 0;
           } else {
-            // OMR + AI Subjective अंक
             const objMarks = examRecord.objectiveMarks || 0;
             const subMarks = examRecord.subjectiveMarks || 0;
             numericTheory = objMarks + subMarks;
@@ -669,7 +716,6 @@
             subjectFinalTotal = numericTheory;
           }
 
-          // किसी भी विषय में 30 से कम तो F और फाइनल फेल
           if (!isExpelled) {
             if (subjectFinalTotal < 30) {
               isSubFailed = true;
@@ -687,7 +733,7 @@
 
         } else {
           theoryScore = "ABS";
-          isCandidateFailed = true;
+          if (!IS_TESTING_BYPASS) isCandidateFailed = true;
         }
 
         const marksDisplay = examRecord 
@@ -830,7 +876,9 @@
 
       let pages = [];
       let evalPages = examRecord?.pagesEvaluation || [];
-      let isRejected = examRecord?.status === "EXPELLED" || examRecord?.status === "MISMATCH_REJECTED" || examRecord?.isFraud;
+      
+      // 🌟 सिर्फ निष्कासित होने पर ही लाल काँटा लगेगा, सामान्य कॉपी पर कभी नहीं!
+      let isRejected = examRecord?.status === "EXPELLED" || examRecord?.isFraud;
 
       if (examRecord && examRecord.pages && examRecord.pages.length > 0) {
         pages = examRecord.pages;
@@ -852,6 +900,10 @@
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+
+      // विज्ञान (Day 4) और सामाजिक विज्ञान (Day 5) में 40 अंक, बाकी में 50 अंक
+      const maxSubMarks = (day === 4 || day === 5 || examRecord?.subjectCode === "112-science" || examRecord?.subjectCode === "113-sst") ? 40 : 50;
+      const totalSubMarks = examRecord?.subjectiveMarks || 0;
 
       for (let i = 0; i < pages.length; i++) {
         if (triggerBtn) {
@@ -881,6 +933,7 @@
         ctx.fillText(`BIHAR SCHOOL EXAMINATION BOARD (BSEB) | DAY ${day}: ${subjectName} | PAGE ${i + 1}/${pages.length}`, 30, 52);
 
         if (isRejected) {
+          // निष्कासित (Expelled) होने पर ही बड़ा क्रॉस
           ctx.strokeStyle = "rgba(220, 38, 38, 0.85)";
           ctx.lineWidth = 14;
           ctx.beginPath();
@@ -894,13 +947,19 @@
           ctx.fillStyle = "#dc2626";
           ctx.font = "bold 44px Arial";
           ctx.textAlign = "center";
-          ctx.fillText("SUBJECTIVE REJECTED", 600, 780);
+          ctx.fillText("EXAM EXPELLED", 600, 780);
           ctx.font = "bold 24px Arial";
-          ctx.fillText("अमान्य विषय के कारण 0 अंक (केवल वस्तुनिष्ठ अंक मान्य)", 600, 840);
+          ctx.fillText("अनुचित साधन के कारण परीक्षा रद्द", 600, 840);
           ctx.textAlign = "left";
         } else {
-          const pEval = evalPages.find(p => p.pageIndex === i);
-          const pageMarks = pEval ? pEval.marksOnThisPage : (i === 0 ? (examRecord?.subjectiveMarks || 0) : 0);
+          // 🌟 0-Index और 1-Index दोनों को पकड़ने वाला सटीक लॉजिक
+          const pEval = evalPages.find(p => p.pageIndex === i || p.pageIndex === (i + 1) || p.pageNumber === (i + 1));
+          let pageMarks = 0;
+          if (pEval && typeof pEval.marksOnThisPage === "number") {
+            pageMarks = pEval.marksOnThisPage;
+          } else if (evalPages.length === 0 && examRecord?.subjectiveMarks) {
+            pageMarks = Math.round((examRecord.subjectiveMarks || 0) / Math.max(1, pages.length));
+          }
 
           // लाल टिक
           ctx.strokeStyle = "#dc2626";
@@ -910,20 +969,39 @@
           ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
           ctx.stroke();
 
-          // गोल घेरे में अंक
-          ctx.beginPath();
-          ctx.arc(1040, 460, 70, 0, 2 * Math.PI);
-          ctx.lineWidth = 6;
-          ctx.strokeStyle = "#dc2626";
-          ctx.stroke();
+          const isLastPage = (i === pages.length - 1);
 
-          ctx.fillStyle = "#dc2626";
-          ctx.font = "bold 50px Arial";
-          ctx.textAlign = "center";
-          ctx.fillText(`+${pageMarks}`, 1040, 478);
-          ctx.textAlign = "left";
+          // 🌟 गोल घेरे में अंक: अगर आखिरी पेज है तो कुल अंक (Total Marks), नहीं तो उस पेज के अंक
+          if (isLastPage) {
+            ctx.beginPath();
+            ctx.arc(1040, 460, 80, 0, 2 * Math.PI);
+            ctx.lineWidth = 7;
+            ctx.strokeStyle = "#dc2626";
+            ctx.stroke();
 
-          // पहले पन्ने पर BSEB मुहर
+            ctx.fillStyle = "#dc2626";
+            ctx.font = "bold 44px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(`${totalSubMarks}/${maxSubMarks}`, 1040, 452);
+
+            ctx.font = "bold 16px Arial";
+            ctx.fillText("TOTAL MARKS", 1040, 490);
+            ctx.textAlign = "left";
+          } else {
+            ctx.beginPath();
+            ctx.arc(1040, 460, 70, 0, 2 * Math.PI);
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = "#dc2626";
+            ctx.stroke();
+
+            ctx.fillStyle = "#dc2626";
+            ctx.font = "bold 50px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(`+${pageMarks}`, 1040, 478);
+            ctx.textAlign = "left";
+          }
+
+          // पहले पन्ने पर आधिकारिक BSEB मुहर
           if (i === 0) {
             ctx.beginPath();
             ctx.arc(1040, 680, 85, 0, 2 * Math.PI);
@@ -940,17 +1018,23 @@
           }
         }
 
-        // नीचे टिप्पणी पट्टी
+        // 🌟 नीचे टिप्पणी पट्टी (त्रुटि व फीडबैक के साथ)
         ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
         ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
         ctx.strokeStyle = "#dc2626";
         ctx.lineWidth = 3;
         ctx.strokeRect(40, canvas.height - 110, canvas.width - 80, 80);
 
+        const pEvalCur = evalPages.find(p => p.pageIndex === i || p.pageIndex === (i + 1) || p.pageNumber === (i + 1));
+        const errNote = pEvalCur?.errorNote ? ` [त्रुटि: ${pEvalCur.errorNote}]` : "";
+
         ctx.fillStyle = "#dc2626";
-        ctx.font = "bold 24px Arial";
-        const remarkText = isRejected ? "अमान्य विषय की प्रतिलिपि संलग्न होने के कारण 0 अंक।" : (examRecord?.aiFeedback || "मूल्यांकन संपन्न।");
-        ctx.fillText(`परीक्षक टिप्पणी: ${remarkText}`, 60, canvas.height - 62);
+        ctx.font = "bold 21px Arial";
+        const remarkText = isRejected 
+          ? "अनुचित साधन के कारण शून्य अंक।" 
+          : ((examRecord?.aiFeedback || "मूल्यांकन संपन्न।") + errNote);
+        
+        ctx.fillText(`परीक्षक टिप्पणी: ${remarkText.substring(0, 85)}`, 60, canvas.height - 62);
 
         const annotatedImg = canvas.toDataURL("image/jpeg", 0.85);
         doc.addImage(annotatedImg, "JPEG", 0, 0, 210, 297);
