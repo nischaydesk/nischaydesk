@@ -1,6 +1,6 @@
 /**
  * NischayDesk - Official Cloud AI Evaluator Worker
- * BSEB Class 10 Strict Step-by-Step Evaluation Engine (Dynamic Marks & Error-Tracking Edition)
+ * BSEB Class 10 Strict Step-by-Step Evaluation Engine (Auto-Recover & Zero Rejection Edition)
  */
 const admin = require("firebase-admin");
 
@@ -74,7 +74,7 @@ async function callGemini(prompt, imageParts) {
 }
 
 async function startEvaluationProcess() {
-  console.log("Checking Firestore for pending evaluations...");
+  console.log("Checking Firestore for pending or rejected evaluations...");
   const snapshot = await db.collection("bseb_exams_2026").get();
 
   for (const doc of snapshot.docs) {
@@ -84,7 +84,10 @@ async function startEvaluationProcess() {
     for (const day of Object.keys(completedDays)) {
       const exam = completedDays[day];
 
-      if (exam && exam.needsAiEvaluation === true) {
+      // 🌟 जादू: पेंडिंग हो या गलती से MISMATCH_REJECTED हुआ हो, यह दोनों को तुरंत उठाएगा!
+      const shouldEvaluate = exam && (exam.needsAiEvaluation === true || exam.status === "MISMATCH_REJECTED");
+
+      if (shouldEvaluate) {
         console.log(`Processing Copy for UID: ${doc.id}, Day: ${day}`);
 
         const paperKey = exam.subjectKey || DAY_TO_KEY[String(day)] || "101-hindi";
@@ -92,7 +95,6 @@ async function startEvaluationProcess() {
         const subjectName = paperData.subjectName || exam.subjectName || "बिहार बोर्ड मैट्रिक परीक्षा";
         const blueprint = JSON.stringify(paperData.subjectiveBlueprint || {});
 
-        // विज्ञान और सामाजिक विज्ञान में 40 अंक, बाकी में 50 अंक
         const maxSubjective = (paperKey === "112-science" || paperKey === "113-sst") ? 40 : 50;
 
         const pagesSnap = await db.collection("bseb_exams_2026")
@@ -134,40 +136,39 @@ OFFICIAL QUESTIONS BLUEPRINT FOR THIS EXAM:
 ${blueprint}
 
 STRICT EVALUATION INSTRUCTIONS:
-1. PAGE-BY-PAGE INDEPENDENT EVALUATION:
-   - There are exactly ${imageParts.length} pages attached, indexed from 0 to ${imageParts.length - 1}.
-   - Evaluate each page INDEPENDENTLY.
-   - DO NOT dump all marks onto pageIndex 0. Marks must belong to the exact page where the answer is written.
-   - If a page contains out-of-syllabus notes (e.g. Class 11 sets/maths on Hindi paper), non-exam images, or irrelevant text, set "marksOnThisPage": 0 and "errorNote": "अप्रासंगिक सामग्री / ब्लूप्रिंट से बाहर". DO NOT reject the valid pages.
+1. INDEPENDENT PAGE EVALUATION (ZERO GLOBAL REJECTION):
+   - Evaluate each page from pageIndex 0 to ${imageParts.length - 1} independently.
+   - If ANY page contains out-of-syllabus notes (e.g., Sets/Maths on a Hindi paper), personal photos, or irrelevant pages, assign "marksOnThisPage": 0 and "errorNote": "अप्रासंगिक / ब्लूप्रिंट से बाहर".
+   - CRITICAL: DO NOT reject valid pages! Legitimate answers must be awarded step marks according to the blueprint.
 
-2. STEP-BY-STEP CHECKING & SPECIFIC MISTAKE REPORTING:
-   - For legitimate answers from the blueprint, evaluate step-by-step.
-   - If an answer has a calculation error, incorrect formula, spelling mistake, or incomplete conclusion, award fair partial marks and EXPLICITLY state the exact issue in "errorNote" (e.g., "चरण 2 में गणना गलत है (-1 अंक)" or "निष्कर्ष अधूरा छोड़ा गया").
-   - If an answer is completely correct, set "errorNote": "".
+2. STEP-BY-STEP CHECKING:
+   - For valid answers, check step-by-step.
+   - If an answer has mistakes or missing steps, mention the specific issue in "errorNote" and award partial marks.
+   - If completely correct, leave "errorNote": "".
 
 3. MARKS SUM:
    - "totalSubjectiveMarks" MUST be the exact sum of all "marksOnThisPage" values. It CANNOT exceed ${maxSubjective}.
 
-4. STRICT JSON FORMAT ONLY (NO MARKDOWN BLOCKS):
+4. STRICT JSON FORMAT ONLY (NO MARKDOWN WRAPPERS):
 {
-  "totalSubjectiveMarks": 32,
+  "totalSubjectiveMarks": 35,
   "maxSubjective": ${maxSubjective},
-  "overallRemarks": "गद्यांश और पत्र लेखन उत्कृष्ट है। व्याकरण में कुछ अशुद्धियाँ पाई गईं।",
+  "overallRemarks": "मान्य उत्तरों का निष्पक्ष मूल्यांकन संपन्न। अप्रासंगिक पृष्ठों को शून्य अंक दिए गए।",
   "status": "EVALUATED",
   "pagesEvaluation": [
     {
       "pageIndex": 0,
       "pageNumber": 1,
       "marksOnThisPage": 8,
-      "errorNote": "प्र० 1(घ) में उत्तर अधूरा है (-2 अंक)",
-      "remarks": "गद्यांश आधारित उत्तर संतोषजनक"
+      "errorNote": "",
+      "remarks": "गद्यांश उत्तर सही हैं"
     },
     {
       "pageIndex": 1,
       "pageNumber": 2,
-      "marksOnThisPage": 5,
-      "errorNote": "",
-      "remarks": "पत्र लेखन का प्रारूप पूर्णतः शुद्ध"
+      "marksOnThisPage": 0,
+      "errorNote": "समुच्चय के नोट्स (आउट ऑफ सिलेबस)",
+      "remarks": "अप्रासंगिक सामग्री पर 0 अंक"
     }
   ]
 }`;
@@ -189,12 +190,11 @@ STRICT EVALUATION INSTRUCTIONS:
                 calculatedMarks = parseInt(parsed.totalSubjectiveMarks, 10) || 0;
               }
 
-              // कुल अंक अधिकतम सीमा (40 या 50) से अधिक न हों
               calculatedMarks = Math.min(calculatedMarks, maxSubjective);
-
               const total = (exam.objectiveMarks || 0) + calculatedMarks;
               const feedback = parsed.overallRemarks || "मूल्यांकन संपन्न।";
 
+              // 🌟 यहाँ हमेशा status: "EVALUATED" सेव होगा!
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
