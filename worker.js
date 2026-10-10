@@ -1,6 +1,6 @@
 /**
  * NischayDesk - Official Cloud AI Evaluator Worker
- * BSEB Class 10 Strict Step-by-Step Evaluation Engine
+ * BSEB Class 10 Strict Step-by-Step Evaluation Engine (Updated for Blueprint Validation)
  */
 const admin = require("firebase-admin");
 
@@ -44,7 +44,7 @@ const DAY_TO_KEY = {
 
 async function callGemini(prompt, imageParts) {
   // Flash 3.8 प्राथमिक और Flash 3.5 बैकअप
-  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
+  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-1.5-pro"];
   
   for (const model of models) {
     try {
@@ -87,7 +87,7 @@ async function startEvaluationProcess() {
 
       // केवल वे कॉपियाँ जो चेकिंग के लिए पेंडिंग हैं
       if (exam && exam.needsAiEvaluation === true) {
-        console.log(`Processing Copy for UID: ${doc.id}, Day: ${day}`);
+        console.log(`Processing Copy for UID: ${doc.id}, Day:${day}`);
 
         const paperKey = exam.subjectKey || DAY_TO_KEY[String(day)] || "101-hindi";
         const paperData = BSEB_PAPERS_DATABASE[paperKey] || {};
@@ -123,7 +123,7 @@ async function startEvaluationProcess() {
 
         if (imageParts.length > 0) {
           const prompt = `You are the Official Chief Examiner of Bihar School Examination Board (BSEB, Patna).
-Evaluate this Class 10th Board subjective answer sheet strictly based on official BSEB marking schemes.
+Evaluate this Class 10th Board subjective answer sheet STRICTLY based on the official BSEB blueprint provided below.
 
 TARGET EXAM: "${subjectName}" (Code: ${paperKey}).
 MAX SUBJECTIVE MARKS: 50.
@@ -131,25 +131,29 @@ MAX SUBJECTIVE MARKS: 50.
 OFFICIAL QUESTIONS BLUEPRINT FOR THIS EXAM:
 ${blueprint}
 
-STRICT STEP-BY-STEP EVALUATION RULES:
-1. SUBJECT INTEGRITY CHECK:
-   - Check if the answers in the images match the target subject ("${subjectName}").
-   - If the student uploaded answers of a DIFFERENT subject (e.g. Mathematics uploaded for Hindi, or blank/irrelevant pages), set "isValid": false, "totalSubjectiveMarks": 0, "status": "MISMATCH_REJECTED", and "overallRemarks": "अमान्य विषय: निर्धारित विषय की जगह अन्य विषय की उत्तर पुस्तिका अपलोड की गई है।"
+CRITICAL RULES FOR EVALUATION (READ CAREFULLY):
+1. STRICT BLUEPRINT MATCHING:
+   - Only award marks if the student's answer corresponds to a question present in the provided blueprint.
+   - If the student attempts a question from the blueprint but the answer is partially incorrect, incomplete, or has spelling mistakes, BE LENIENT and award legitimate step-marks (e.g., 2 out of 5, or 1 out of 2). DO NOT give 0 if they genuinely tried to answer a blueprint question.
+   - REJECTION RULE: If a page contains answers to questions NOT in the blueprint, out-of-syllabus content (like Class 11/12 notes, e.g., 'Sets/समुच्चय'), irrelevant text, songs, or blank spaces, you MUST assign EXACTLY 0 marks to that specific page. Do not reject the entire sheet, just reject that invalid page.
 
-2. STEP-BY-STEP MARKING CRITERIA (If Valid):
-   - Award marks per step. For Math/Science: formula step (1m), calculation step (1m), final answer with unit (1m).
-   - For Language/Social Science: introduction (1m), core points/grammar (2-3m), neat conclusion (1m).
-   - Deduct marks for missing steps, wrong formulas, or incomplete explanations.
-   - Do NOT award generic or free marks. If an answer is half-correct, award only partial step marks.
+2. PAGE-BY-PAGE BREAKDOWN REQUIRED:
+   - You will receive multiple images representing pages. Page index starts at 0.
+   - You MUST output the marks awarded for each page individually in the "pagesEvaluation" array.
 
-3. FINAL OUTPUT FORMAT:
-   - You must output STRICT JSON ONLY. Do not enclose in markdown blocks if possible, no preamble.
+3. FINAL OUTPUT FORMAT (STRICT JSON ONLY, NO MARKDOWN):
+   - Output valid JSON only, without \`\`\`json wrappers.
 {
   "isValid": true,
-  "totalSubjectiveMarks": 24,
-  "stepBreakdown": "Q1: 2/2, Q2: 1.5/2 (गणना अधूरी), Q3: 3/5...",
-  "overallRemarks": "हैंडराइटिंग अच्छी है, लेकिन दीर्घ उत्तरीय प्रश्नों में स्टेप्स पूरे लिखें।",
-  "status": "EVALUATED"
+  "totalSubjectiveMarks": 15,
+  "stepBreakdown": "Q1: 2/2, Q2: 1.5/2, Q31: 3/5",
+  "overallRemarks": "कुछ उत्तर सही हैं, लेकिन अन्य पन्नों पर अप्रासंगिक/अमान्य सामग्री होने के कारण उन पन्नों को 0 अंक दिए गए हैं।",
+  "status": "EVALUATED",
+  "pagesEvaluation": [
+    {"pageIndex": 0, "marksOnThisPage": 0, "reason": "Irrelevant/Out of blueprint content rejected."},
+    {"pageIndex": 1, "marksOnThisPage": 5, "reason": "Attempted Q1 and Q2 from blueprint with partial correctness."},
+    {"pageIndex": 2, "marksOnThisPage": 10, "reason": "Correct answers for Q31 and Q32."}
+  ]
 }`;
 
           console.log(`Sending ${imageParts.length} pages to Gemini for step-by-step evaluation...`);
@@ -181,6 +185,7 @@ STRICT STEP-BY-STEP EVALUATION RULES:
                     totalMarks: total,
                     aiFeedback: feedback,
                     stepBreakdown: parsed.stepBreakdown || "",
+                    pagesEvaluation: parsed.pagesEvaluation || [], // <-- New array for page-wise marks
                     status: finalStatus,
                     needsAiEvaluation: false,
                     evaluatedByServerAt: new Date().toISOString()
@@ -191,6 +196,7 @@ STRICT STEP-BY-STEP EVALUATION RULES:
               console.log(`✓ Result Saved: UID ${doc.id}, Day ${day} -> Sub: ${marks}, Total: ${total}, Status: ${finalStatus}`);
             } catch (err) {
               console.error("JSON parse error from Gemini response:", err);
+              console.error("Raw Response:", aiResponse);
             }
           } else {
             console.error("Gemini failed to return response.");
