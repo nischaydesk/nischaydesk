@@ -611,9 +611,8 @@
         return;
       }
 
-      // 🌟 बाईपास चेक: अगर IS_TESTING_BYPASS true है तो 6 विषय और 7 दिन का लॉक बाईपास हो जाएगा
+      // बाईपास चेक: अगर IS_TESTING_BYPASS false है तो सख्त नियम लागू होंगे
       if (!IS_TESTING_BYPASS) {
-        // स्थिति 2: छात्र ने 6 से कम विषय पूरे किए हैं (1 से 5 Attempts)
         if (completedCount < 6) {
           showError(
             `⏳ वार्षिक परीक्षा अभी अपूर्ण है!\n\n` +
@@ -624,7 +623,6 @@
           return;
         }
 
-        // स्थिति 3: 6 विषय पूरे हैं, 7 दिन के टाइमर लॉक की सख्त जाँच (Server Time)
         let serverNowMs = Date.now();
         try {
           if (typeof getVerifiedServerTimestamp === "function") {
@@ -651,7 +649,6 @@
         }
       }
 
-      // परिणाम प्रदर्शित करें
       renderOfficialMarksheet(studentData);
     }
 
@@ -685,7 +682,6 @@
       let aggregateMarks = 0;
       let isCandidateFailed = false;
 
-      // मुख्य 5 विषयों की चेकिंग व अंक तालिका
       mainSubjects.forEach(sub => {
         const examRecord = completed[sub.day];
         let theoryScore = "--";
@@ -753,7 +749,6 @@
         primaryTbody.appendChild(tr);
       });
 
-      // फाइनल रिजल्ट एवं डिवीज़न
       document.getElementById("outGrandTotal").textContent = String(aggregateMarks).padStart(3, '0');
       const divTag = document.getElementById("outFinalDivision");
 
@@ -771,7 +766,6 @@
         divTag.style.color = "#d97706";
       }
 
-      // अंग्रेजी (Day 6)
       const engRecord = completed[englishSub.day];
       let engTheory = "--";
       let isEngExp = false;
@@ -875,9 +869,18 @@
       }
 
       let pages = [];
-      let evalPages = examRecord?.pagesEvaluation || [];
       
-      // 🌟 सिर्फ निष्कासित होने पर ही लाल काँटा लगेगा, सामान्य कॉपी पर कभी नहीं!
+      // 🌟 1. Firestore Array या Map/Object दोनों को सुरक्षित सामान्य सूची में बदलें
+      const rawEval = examRecord?.pagesEvaluation;
+      let evalPages = [];
+      if (Array.isArray(rawEval)) {
+        evalPages = rawEval;
+      } else if (rawEval && typeof rawEval === "object") {
+        evalPages = Object.keys(rawEval)
+          .sort((a, b) => Number(a) - Number(b))
+          .map(k => rawEval[k]);
+      }
+      
       let isRejected = examRecord?.status === "EXPELLED" || examRecord?.isFraud;
 
       if (examRecord && examRecord.pages && examRecord.pages.length > 0) {
@@ -901,7 +904,6 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
 
-      // विज्ञान (Day 4) और सामाजिक विज्ञान (Day 5) में 40 अंक, बाकी में 50 अंक
       const maxSubMarks = (day === 4 || day === 5 || examRecord?.subjectCode === "112-science" || examRecord?.subjectCode === "113-sst") ? 40 : 50;
       const totalSubMarks = examRecord?.subjectiveMarks || 0;
 
@@ -933,7 +935,6 @@
         ctx.fillText(`BIHAR SCHOOL EXAMINATION BOARD (BSEB) | DAY ${day}: ${subjectName} | PAGE ${i + 1}/${pages.length}`, 30, 52);
 
         if (isRejected) {
-          // निष्कासित (Expelled) होने पर ही बड़ा क्रॉस
           ctx.strokeStyle = "rgba(220, 38, 38, 0.85)";
           ctx.lineWidth = 14;
           ctx.beginPath();
@@ -952,40 +953,59 @@
           ctx.fillText("अनुचित साधन के कारण परीक्षा रद्द", 600, 840);
           ctx.textAlign = "left";
         } else {
-          // 🌟 0-Index और 1-Index दोनों को पकड़ने वाला सटीक लॉजिक
-          const pEval = evalPages.find(p => p.pageIndex === i || p.pageIndex === (i + 1) || p.pageNumber === (i + 1));
-          let pageMarks = 0;
-          if (pEval && typeof pEval.marksOnThisPage === "number") {
-            pageMarks = pEval.marksOnThisPage;
-          } else if (evalPages.length === 0 && examRecord?.subjectiveMarks) {
-            pageMarks = Math.round((examRecord.subjectiveMarks || 0) / Math.max(1, pages.length));
+          // 🌟 2. पेज इंडेक्स मिलान (0-based, 1-based, string, number सब चलेगा)
+          let pEval = evalPages.find(p => p && (Number(p.pageIndex) === i || Number(p.pageNumber) === (i + 1)));
+          if (!pEval && evalPages[i]) {
+            pEval = evalPages[i];
           }
 
-          // लाल टिक
-          ctx.strokeStyle = "#dc2626";
-          ctx.lineWidth = 10;
-          ctx.lineCap = "round";
-          ctx.beginPath();
-          ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
-          ctx.stroke();
+          let pageMarks = 0;
+          if (pEval && (pEval.marksOnThisPage !== undefined && pEval.marksOnThisPage !== null)) {
+            pageMarks = Number(pEval.marksOnThisPage) || 0;
+          } else if (evalPages.length === 0 && examRecord?.subjectiveMarks) {
+            pageMarks = (i === 0) ? Number(examRecord.subjectiveMarks) : 0;
+          }
 
           const isLastPage = (i === pages.length - 1);
 
-          // 🌟 गोल घेरे में अंक: अगर आखिरी पेज है तो कुल अंक (Total Marks), नहीं तो उस पेज के अंक
+          // 🌟 3. अंक के अनुसार टिक या क्रॉस
+          if (pageMarks > 0) {
+            ctx.strokeStyle = "#dc2626";
+            ctx.lineWidth = 10;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(960, 280); ctx.lineTo(1010, 340); ctx.lineTo(1120, 230);
+            ctx.stroke();
+          } else {
+            // 0 अंक वाले अमान्य पेज पर स्पष्ट क्रॉस (✗)
+            ctx.strokeStyle = "#dc2626";
+            ctx.lineWidth = 8;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(980, 260); ctx.lineTo(1080, 340);
+            ctx.moveTo(1080, 260); ctx.lineTo(980, 340);
+            ctx.stroke();
+          }
+
+          // 🌟 4. लाल घेरा (Circle Marks)
           if (isLastPage) {
             ctx.beginPath();
-            ctx.arc(1040, 460, 80, 0, 2 * Math.PI);
+            ctx.arc(1040, 460, 85, 0, 2 * Math.PI);
             ctx.lineWidth = 7;
             ctx.strokeStyle = "#dc2626";
             ctx.stroke();
 
             ctx.fillStyle = "#dc2626";
-            ctx.font = "bold 44px Arial";
+            ctx.font = "bold 40px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(`${totalSubMarks}/${maxSubMarks}`, 1040, 452);
+            ctx.fillText(`${totalSubMarks}/${maxSubMarks}`, 1040, 450);
 
-            ctx.font = "bold 16px Arial";
-            ctx.fillText("TOTAL MARKS", 1040, 490);
+            ctx.font = "bold 15px Arial";
+            ctx.fillText("TOTAL MARKS", 1040, 480);
+            if (pageMarks > 0) {
+              ctx.font = "bold 14px Arial";
+              ctx.fillText(`(Page: +${pageMarks})`, 1040, 502);
+            }
             ctx.textAlign = "left";
           } else {
             ctx.beginPath();
@@ -1018,23 +1038,41 @@
           }
         }
 
-        // 🌟 नीचे टिप्पणी पट्टी (त्रुटि व फीडबैक के साथ)
-        ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-        ctx.fillRect(40, canvas.height - 110, canvas.width - 80, 80);
+        // 🌟 5. नीचे दोहरी टिप्पणी पट्टी (परीक्षक रिमार्क + वास्तविक त्रुटि)
+        ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+        ctx.fillRect(40, canvas.height - 115, canvas.width - 80, 85);
         ctx.strokeStyle = "#dc2626";
         ctx.lineWidth = 3;
-        ctx.strokeRect(40, canvas.height - 110, canvas.width - 80, 80);
-
-        const pEvalCur = evalPages.find(p => p.pageIndex === i || p.pageIndex === (i + 1) || p.pageNumber === (i + 1));
-        const errNote = pEvalCur?.errorNote ? ` [त्रुटि: ${pEvalCur.errorNote}]` : "";
+        ctx.strokeRect(40, canvas.height - 115, canvas.width - 80, 85);
 
         ctx.fillStyle = "#dc2626";
-        ctx.font = "bold 21px Arial";
-        const remarkText = isRejected 
-          ? "अनुचित साधन के कारण शून्य अंक।" 
-          : ((examRecord?.aiFeedback || "मूल्यांकन संपन्न।") + errNote);
-        
-        ctx.fillText(`परीक्षक टिप्पणी: ${remarkText.substring(0, 85)}`, 60, canvas.height - 62);
+        ctx.textAlign = "left";
+
+        if (isRejected) {
+          ctx.font = "bold 22px Arial";
+          ctx.fillText("परीक्षक टिप्पणी: अनुचित साधन / अमान्य विषय के कारण 0 अंक।", 60, canvas.height - 65);
+        } else {
+          let pEvalCur = evalPages.find(p => p && (Number(p.pageIndex) === i || Number(p.pageNumber) === (i + 1)));
+          if (!pEvalCur && evalPages[i]) pEvalCur = evalPages[i];
+
+          const curRemark = pEvalCur?.remarks || (pEvalCur?.marksOnThisPage === 0 ? "अमान्य उत्तर / पाठ्यक्रम से बाहर" : "उत्तर संतोषजनक।");
+          const curError = pEvalCur?.errorNote || "";
+
+          // लाइन 1: उस पन्ने का रिमार्क
+          ctx.font = "bold 20px 'Noto Sans Devanagari', Arial";
+          ctx.fillText(`परीक्षक टिप्पणी: ${curRemark.substring(0, 90)}`, 60, canvas.height - 75);
+
+          // लाइन 2: विशेष चिह्नित त्रुटि या पूर्णता
+          if (curError && curError.trim() !== "") {
+            ctx.font = "bold 18px 'Noto Sans Devanagari', Arial";
+            ctx.fillStyle = "#b91c1c";
+            ctx.fillText(`📌 जाँची गई त्रुटि / कमी: ${curError.substring(0, 85)}`, 60, canvas.height - 45);
+          } else if (pEvalCur && Number(pEvalCur.marksOnThisPage) > 0) {
+            ctx.font = "bold 16px 'Noto Sans Devanagari', Arial";
+            ctx.fillStyle = "#15803d";
+            ctx.fillText(`✓ इस पृष्ठ के सभी चरण पूर्णतः शुद्ध पाए गए।`, 60, canvas.height - 45);
+          }
+        }
 
         const annotatedImg = canvas.toDataURL("image/jpeg", 0.85);
         doc.addImage(annotatedImg, "JPEG", 0, 0, 210, 297);
@@ -1050,7 +1088,7 @@
         setTimeout(() => { triggerBtn.innerHTML = origHtml; }, 3000);
       }
 
-      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) आपके 'Downloads' में सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
+      alert(`✅ डाउनलोड सफल!\n\nआपकी डिजिटल जाँची गई उत्तर-पुस्तिका (${subjectName}) सुरक्षित हो गई है।\n\nफ़ाइल नाम:\n${fileName}`);
     }
 
     function resetSearch() {
