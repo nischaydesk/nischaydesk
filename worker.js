@@ -1,6 +1,6 @@
 /**
  * NischayDesk - Official Cloud AI Evaluator Worker
- * BSEB Class 10 Step-by-Step Evaluation Engine (100% Bulletproof & Deep Micro-Checking Edition)
+ * BSEB Class 10 Step-by-Step Evaluation Engine (26-Pages Optimized & 8192 Tokens Edition)
  */
 const admin = require("firebase-admin");
 
@@ -67,11 +67,11 @@ function safeParseJson(text) {
 }
 
 async function callGemini(prompt, imageParts) {
-  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-1.5-pro"];
+  const models = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-1.5-flash"];
   
   for (const model of models) {
     try {
-      console.log(`Calling Gemini Model: ${model}...`);
+      console.log(`Calling Gemini Model: ${model} with ${imageParts.length} pages...`);
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
       
       const res = await fetch(url, {
@@ -80,7 +80,11 @@ async function callGemini(prompt, imageParts) {
         body: JSON.stringify({
           contents: [{
             parts: [{ text: prompt }, ...imageParts]
-          }]
+          }],
+          generationConfig: {
+            maxOutputTokens: 8192, // 🌟 26 पन्नों के लिए पूरा आउटपुट बिना कटे आएगा
+            temperature: 0.1       // 🌟 सख्त और सटीक मूल्यांकन के लिए
+          }
         })
       });
       
@@ -130,24 +134,25 @@ async function startEvaluationProcess() {
         const totalPagesCount = pagesSnap.docs.length;
         console.log(`Found ${totalPagesCount} uploaded pages for Day ${day} (${subjectName}).`);
 
-        let imageParts = [];
-        for (const pDoc of pagesSnap.docs) {
+        // 🌟 26 पन्नों को तेज़ी से डाउनलोड करने के लिए Parallel Fetch
+        const downloadPromises = pagesSnap.docs.map(async (pDoc) => {
           const imgUrl = pDoc.data().imageUrl;
-          if (imgUrl) {
-            try {
-              console.log(`Downloading page image: ${imgUrl}`);
-              const imgRes = await fetch(imgUrl);
-              const arrayBuffer = await imgRes.arrayBuffer();
-              const b64 = Buffer.from(arrayBuffer).toString("base64");
-              
-              imageParts.push({
-                inlineData: { mimeType: "image/jpeg", data: b64 }
-              });
-            } catch (err) {
-              console.error(`Failed to download image ${imgUrl}:`, err.message);
-            }
+          if (!imgUrl) return null;
+          try {
+            const imgRes = await fetch(imgUrl);
+            const arrayBuffer = await imgRes.arrayBuffer();
+            const b64 = Buffer.from(arrayBuffer).toString("base64");
+            return {
+              inlineData: { mimeType: "image/jpeg", data: b64 }
+            };
+          } catch (err) {
+            console.error(`Failed to download image ${imgUrl}:`, err.message);
+            return null;
           }
-        }
+        });
+
+        const downloadedImages = await Promise.all(downloadPromises);
+        const imageParts = downloadedImages.filter(img => img !== null);
 
         if (imageParts.length > 0) {
           const prompt = `You are the Official Strict Chief Examiner of Bihar School Examination Board (BSEB, Patna).
@@ -161,26 +166,21 @@ OFFICIAL QUESTIONS BLUEPRINT FOR THIS EXAM:
 ${blueprint}
 
 STRICT EVALUATION INSTRUCTIONS:
-1. PAGE-BY-PAGE INDEPENDENT EVALUATION:
-   - There are exactly ${imageParts.length} pages attached, indexed from 0 to ${imageParts.length - 1}.
-   - You MUST evaluate each page INDEPENDENTLY.
-   - If a page contains out-of-blueprint content (e.g. Class 11 sets/maths on Hindi paper, registration forms, personal photos, QR codes, blank sheets): assign "marksOnThisPage": 0, "errorNote": "ब्लूप्रिंट से बाहर / अमान्य पृष्ठ", and "remarks": "अमान्य सामग्री पर 0 अंक".
-   - CRITICAL: DO NOT reject valid pages! Award legitimate step marks on correct pages.
+1. THERE ARE EXACTLY ${imageParts.length} PAGES (from pageIndex 0 to ${imageParts.length - 1}). You MUST evaluate EACH page independently and return an entry in "pagesEvaluation" for EVERY single page.
+2. INDEPENDENT PAGE GRADING:
+   - If a page contains out-of-blueprint content (e.g. Class 11 notes, registration forms, personal photos, QR codes, website screenshots, blank sheets): assign "marksOnThisPage": 0, "errorNote": "ब्लूप्रिंट से बाहर / अमान्य पृष्ठ", and "remarks": "अमान्य सामग्री पर 0 अंक".
+   - CRITICAL: DO NOT reject the entire exam! Award legitimate step marks on valid pages according to the blueprint.
+3. SURGICAL STEP-BY-STEP CHECKING:
+   - For Mathematics: Check each step. Pinpoint sign errors, wrong formulas, or calculation slips in "errorNote" (e.g., "चरण 2 में चिह्न त्रुटि (-1 अंक)").
+   - For Language/Social Science: Check factual correctness, spelling, and completeness. Point out factual issues in "errorNote" (e.g., "प्र० 5(घ) तथ्यात्मक त्रुटि (-2 अंक)").
+   - If a page's answers are 100% correct, set "errorNote": "".
+4. CONCISE DESCRIPTIONS (KEEP SHORT TO PRESERVE TOKENS):
+   - "remarks": Clear reason for marks (max 50 chars). E.g., "गद्यांश 1 के उत्तर पूर्णतः शुद्ध (+10 अंक)"
+   - "errorNote": Specific mistake (max 40 chars). E.g., "प्र० 5(घ) तथ्यात्मक भूल (-2 अंक)"
+5. TOTAL SUM:
+   - "totalSubjectiveMarks" MUST be the exact sum of all "marksOnThisPage" values across all pages (Max: ${maxSubjective}).
 
-2. SURGICAL STEP-BY-STEP CHECKING & ERROR IDENTIFICATION:
-   - For every question attempt, check every single line, step, equation, sign (+/-), and factual detail.
-   - For Mathematics: Check each step. If there is a calculation mistake, wrong formula, or sign error (e.g., (-) instead of (+)), specify it explicitly in "errorNote" (e.g., "चरण 2 में चिह्न त्रुटि: (-) की जगह (+) लिखा (-1 अंक)").
-   - For Hindi/Language: Check question facts, grammar, and format. If an answer is factually wrong (e.g. wrong character description) or word count is deficient, explicitly report it in "errorNote" (e.g., "प्र० 5(घ) तथ्यात्मक त्रुटि (-2 अंक)").
-   - If a page's answers are 100% correct without errors, set "errorNote": "".
-
-3. SHORT HINDI DESCRIPTIONS (REQUIRED):
-   - "remarks": Clear reason for marks awarded (max 60 characters). E.g., "गद्यांश 1 के सभी 5 उत्तर पूर्णतः शुद्ध (+10 अंक)"
-   - "errorNote": Specific mistake or deficiency (max 50 characters). E.g., "प्र० 5(घ) में तथ्यात्मक गलती (-2 अंक)"
-
-4. TOTAL SUM:
-   - "totalSubjectiveMarks" MUST be the exact sum of all "marksOnThisPage" values (Max: ${maxSubjective}).
-
-OUTPUT MUST BE VALID JSON ONLY (NO EXTRA TEXT):
+OUTPUT MUST BE VALID JSON ONLY (NO EXTRA MARKDOWN OR TEXT):
 {
   "totalSubjectiveMarks": 35,
   "maxSubjective": ${maxSubjective},
@@ -192,19 +192,12 @@ OUTPUT MUST BE VALID JSON ONLY (NO EXTRA TEXT):
       "pageNumber": 1,
       "marksOnThisPage": 10,
       "errorNote": "",
-      "remarks": "गद्यांश 1 के सभी 5 उत्तर पूर्णतः शुद्ध (+10 अंक)"
-    },
-    {
-      "pageIndex": 1,
-      "pageNumber": 2,
-      "marksOnThisPage": 0,
-      "errorNote": "कक्षा 11वीं समुच्चय नोट्स (आउट ऑफ सिलेबस)",
-      "remarks": "अमान्य सामग्री / 0 अंक"
+      "remarks": "गद्यांश 1 के उत्तर पूर्णतः शुद्ध (+10 अंक)"
     }
   ]
 }`;
 
-          console.log(`Sending ${imageParts.length} pages to Gemini for step-by-step evaluation...`);
+          console.log(`Sending ${imageParts.length} pages to Gemini for evaluation...`);
           const aiResponse = await callGemini(prompt, imageParts);
           
           if (aiResponse) {
@@ -255,6 +248,7 @@ OUTPUT MUST BE VALID JSON ONLY (NO EXTRA TEXT):
               const total = (exam.objectiveMarks || 0) + calculatedMarks;
               const feedback = parsed.overallRemarks || "मूल्यांकन संपन्न।";
 
+              // 🌟 Firestore में सभी 26 पन्नों का डेटा सुरक्षित सेव
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
