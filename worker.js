@@ -1,6 +1,6 @@
 /**
  * NischayDesk - Official Cloud AI Evaluator Worker
- * BSEB Class 10 Step-by-Step Evaluation Engine (100% Bulletproof & Auto-Recover Edition)
+ * BSEB Class 10 Step-by-Step Evaluation Engine (100% Bulletproof & Deep Micro-Checking Edition)
  */
 const admin = require("firebase-admin");
 
@@ -108,7 +108,6 @@ async function startEvaluationProcess() {
     for (const day of Object.keys(completedDays)) {
       const exam = completedDays[day];
 
-      // 🌟 जादू: अगर मूल्यांकन अधूरा है, रिजेक्ट हुआ है, या pagesEvaluation गायब है तो इसे तुरंत प्रोसेस करेगा
       const isMissingPagesEval = !Array.isArray(exam?.pagesEvaluation) || exam.pagesEvaluation.length === 0;
       const shouldEvaluate = exam && (exam.needsAiEvaluation === true || exam.status === "MISMATCH_REJECTED" || isMissingPagesEval);
 
@@ -151,8 +150,8 @@ async function startEvaluationProcess() {
         }
 
         if (imageParts.length > 0) {
-          const prompt = `You are the Official Chief Examiner of Bihar School Examination Board (BSEB, Patna).
-Evaluate this Class 10th Board subjective answer sheet page-by-page.
+          const prompt = `You are the Official Strict Chief Examiner of Bihar School Examination Board (BSEB, Patna).
+Evaluate this Class 10th Board subjective answer sheet page-by-page with surgical, step-by-step precision.
 
 TARGET EXAM: "${subjectName}" (Code: ${paperKey}).
 MAX SUBJECTIVE MARKS: ${maxSubjective}.
@@ -162,19 +161,30 @@ OFFICIAL QUESTIONS BLUEPRINT FOR THIS EXAM:
 ${blueprint}
 
 STRICT EVALUATION INSTRUCTIONS:
-1. THERE ARE EXACTLY ${imageParts.length} PAGES. You MUST provide a page-level evaluation for each page from pageIndex 0 to ${imageParts.length - 1}.
-2. INDEPENDENT PAGE GRADING:
-   - If a page has irrelevant content, Class 11 notes, non-subject notes, registration forms, personal photos, or QR codes: assign "marksOnThisPage": 0 and "errorNote": "ब्लूप्रिंट से बाहर / अमान्य पृष्ठ".
-   - DO NOT reject the overall exam. Evaluate valid pages independently and award genuine step marks according to the blueprint.
-3. STEP CHECKING:
-   - On valid pages, identify errors or missing steps in "errorNote" (e.g., "प्रश्न 5(घ) तथ्यात्मक रूप से गलत (-2 अंक)").
-4. "totalSubjectiveMarks" must be the sum of all "marksOnThisPage" values (Max: ${maxSubjective}).
+1. PAGE-BY-PAGE INDEPENDENT EVALUATION:
+   - There are exactly ${imageParts.length} pages attached, indexed from 0 to ${imageParts.length - 1}.
+   - You MUST evaluate each page INDEPENDENTLY.
+   - If a page contains out-of-blueprint content (e.g. Class 11 sets/maths on Hindi paper, registration forms, personal photos, QR codes, blank sheets): assign "marksOnThisPage": 0, "errorNote": "ब्लूप्रिंट से बाहर / अमान्य पृष्ठ", and "remarks": "अमान्य सामग्री पर 0 अंक".
+   - CRITICAL: DO NOT reject valid pages! Award legitimate step marks on correct pages.
 
-OUTPUT MUST BE VALID JSON ONLY:
+2. SURGICAL STEP-BY-STEP CHECKING & ERROR IDENTIFICATION:
+   - For every question attempt, check every single line, step, equation, sign (+/-), and factual detail.
+   - For Mathematics: Check each step. If there is a calculation mistake, wrong formula, or sign error (e.g., (-) instead of (+)), specify it explicitly in "errorNote" (e.g., "चरण 2 में चिह्न त्रुटि: (-) की जगह (+) लिखा (-1 अंक)").
+   - For Hindi/Language: Check question facts, grammar, and format. If an answer is factually wrong (e.g. wrong character description) or word count is deficient, explicitly report it in "errorNote" (e.g., "प्र० 5(घ) तथ्यात्मक त्रुटि (-2 अंक)").
+   - If a page's answers are 100% correct without errors, set "errorNote": "".
+
+3. SHORT HINDI DESCRIPTIONS (REQUIRED):
+   - "remarks": Clear reason for marks awarded (max 60 characters). E.g., "गद्यांश 1 के सभी 5 उत्तर पूर्णतः शुद्ध (+10 अंक)"
+   - "errorNote": Specific mistake or deficiency (max 50 characters). E.g., "प्र० 5(घ) में तथ्यात्मक गलती (-2 अंक)"
+
+4. TOTAL SUM:
+   - "totalSubjectiveMarks" MUST be the exact sum of all "marksOnThisPage" values (Max: ${maxSubjective}).
+
+OUTPUT MUST BE VALID JSON ONLY (NO EXTRA TEXT):
 {
   "totalSubjectiveMarks": 35,
   "maxSubjective": ${maxSubjective},
-  "overallRemarks": "मूल्यांकन संपन्न। अमान्य पृष्ठों को शून्य अंक दिए गए।",
+  "overallRemarks": "मूल्यांकन संपन्न। अमान्य पृष्ठों पर शून्य एवं वैध चरणों पर नियमानुसार अंक प्रदान किए गए।",
   "status": "EVALUATED",
   "pagesEvaluation": [
     {
@@ -182,7 +192,14 @@ OUTPUT MUST BE VALID JSON ONLY:
       "pageNumber": 1,
       "marksOnThisPage": 10,
       "errorNote": "",
-      "remarks": "गद्यांश 1 पूर्णतः शुद्ध"
+      "remarks": "गद्यांश 1 के सभी 5 उत्तर पूर्णतः शुद्ध (+10 अंक)"
+    },
+    {
+      "pageIndex": 1,
+      "pageNumber": 2,
+      "marksOnThisPage": 0,
+      "errorNote": "कक्षा 11वीं समुच्चय नोट्स (आउट ऑफ सिलेबस)",
+      "remarks": "अमान्य सामग्री / 0 अंक"
     }
   ]
 }`;
@@ -194,13 +211,17 @@ OUTPUT MUST BE VALID JSON ONLY:
             const parsed = safeParseJson(aiResponse);
             
             if (parsed) {
-              const rawPagesList = parsed.pagesEvaluation || parsed.pages || parsed.pageEvaluations || [];
+              let rawPagesList = parsed.pagesEvaluation || parsed.pages || parsed.pageEvaluations || [];
+              if (!Array.isArray(rawPagesList) && typeof rawPagesList === "object") {
+                rawPagesList = Object.values(rawPagesList);
+              }
+
               let finalPagesEvaluation = [];
 
               for (let idx = 0; idx < imageParts.length; idx++) {
                 let match = null;
                 if (Array.isArray(rawPagesList)) {
-                  match = rawPagesList.find(p => p && (p.pageIndex === idx || p.pageNumber === (idx + 1)));
+                  match = rawPagesList.find(p => p && (Number(p.pageIndex) === idx || Number(p.pageNumber) === (idx + 1)));
                   if (!match && rawPagesList[idx]) match = rawPagesList[idx];
                 }
 
@@ -234,7 +255,6 @@ OUTPUT MUST BE VALID JSON ONLY:
               const total = (exam.objectiveMarks || 0) + calculatedMarks;
               const feedback = parsed.overallRemarks || "मूल्यांकन संपन्न।";
 
-              // 🌟 Firestore में अब pagesEvaluation 100% पक्का सेव होगा!
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
