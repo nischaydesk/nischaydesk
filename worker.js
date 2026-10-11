@@ -1,6 +1,6 @@
 /**
  * NischayDesk - Official Cloud AI Evaluator Worker
- * BSEB Class 10 Strict Step-by-Step Evaluation Engine (Auto-Recover & Zero Rejection Edition)
+ * BSEB Class 10 Step-by-Step Evaluation Engine (100% Bulletproof & Auto-Recover Edition)
  */
 const admin = require("firebase-admin");
 
@@ -42,6 +42,30 @@ const DAY_TO_KEY = {
   "6": "114-english"
 };
 
+function safeParseJson(text) {
+  if (!text) return null;
+  try {
+    return JSON.parse(text.trim());
+  } catch (e) {}
+
+  const matchBlock = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (matchBlock && matchBlock[1]) {
+    try {
+      return JSON.parse(matchBlock[1].trim());
+    } catch (e) {}
+  }
+
+  const firstBrace = text.indexOf('{');
+  const lastBrace = text.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    try {
+      return JSON.parse(text.substring(firstBrace, lastBrace + 1));
+    } catch (e) {}
+  }
+
+  return null;
+}
+
 async function callGemini(prompt, imageParts) {
   const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-1.5-pro"];
   
@@ -74,7 +98,7 @@ async function callGemini(prompt, imageParts) {
 }
 
 async function startEvaluationProcess() {
-  console.log("Checking Firestore for pending or rejected evaluations...");
+  console.log("Checking Firestore for pending or unindexed evaluations...");
   const snapshot = await db.collection("bseb_exams_2026").get();
 
   for (const doc of snapshot.docs) {
@@ -84,8 +108,9 @@ async function startEvaluationProcess() {
     for (const day of Object.keys(completedDays)) {
       const exam = completedDays[day];
 
-      // 🌟 जादू: पेंडिंग हो या गलती से MISMATCH_REJECTED हुआ हो, यह दोनों को तुरंत उठाएगा!
-      const shouldEvaluate = exam && (exam.needsAiEvaluation === true || exam.status === "MISMATCH_REJECTED");
+      // 🌟 जादू: अगर मूल्यांकन अधूरा है, रिजेक्ट हुआ है, या pagesEvaluation गायब है तो इसे तुरंत प्रोसेस करेगा
+      const isMissingPagesEval = !Array.isArray(exam?.pagesEvaluation) || exam.pagesEvaluation.length === 0;
+      const shouldEvaluate = exam && (exam.needsAiEvaluation === true || exam.status === "MISMATCH_REJECTED" || isMissingPagesEval);
 
       if (shouldEvaluate) {
         console.log(`Processing Copy for UID: ${doc.id}, Day: ${day}`);
@@ -103,7 +128,8 @@ async function startEvaluationProcess() {
           .orderBy("pageNumber", "asc")
           .get();
 
-        console.log(`Found ${pagesSnap.docs.length} uploaded pages for Day ${day} (${subjectName}).`);
+        const totalPagesCount = pagesSnap.docs.length;
+        console.log(`Found ${totalPagesCount} uploaded pages for Day ${day} (${subjectName}).`);
 
         let imageParts = [];
         for (const pDoc of pagesSnap.docs) {
@@ -136,39 +162,27 @@ OFFICIAL QUESTIONS BLUEPRINT FOR THIS EXAM:
 ${blueprint}
 
 STRICT EVALUATION INSTRUCTIONS:
-1. INDEPENDENT PAGE EVALUATION (ZERO GLOBAL REJECTION):
-   - Evaluate each page from pageIndex 0 to ${imageParts.length - 1} independently.
-   - If ANY page contains out-of-syllabus notes (e.g., Sets/Maths on a Hindi paper), personal photos, or irrelevant pages, assign "marksOnThisPage": 0 and "errorNote": "अप्रासंगिक / ब्लूप्रिंट से बाहर".
-   - CRITICAL: DO NOT reject valid pages! Legitimate answers must be awarded step marks according to the blueprint.
+1. THERE ARE EXACTLY ${imageParts.length} PAGES. You MUST provide a page-level evaluation for each page from pageIndex 0 to ${imageParts.length - 1}.
+2. INDEPENDENT PAGE GRADING:
+   - If a page has irrelevant content, Class 11 notes, non-subject notes, registration forms, personal photos, or QR codes: assign "marksOnThisPage": 0 and "errorNote": "ब्लूप्रिंट से बाहर / अमान्य पृष्ठ".
+   - DO NOT reject the overall exam. Evaluate valid pages independently and award genuine step marks according to the blueprint.
+3. STEP CHECKING:
+   - On valid pages, identify errors or missing steps in "errorNote" (e.g., "प्रश्न 5(घ) तथ्यात्मक रूप से गलत (-2 अंक)").
+4. "totalSubjectiveMarks" must be the sum of all "marksOnThisPage" values (Max: ${maxSubjective}).
 
-2. STEP-BY-STEP CHECKING:
-   - For valid answers, check step-by-step.
-   - If an answer has mistakes or missing steps, mention the specific issue in "errorNote" and award partial marks.
-   - If completely correct, leave "errorNote": "".
-
-3. MARKS SUM:
-   - "totalSubjectiveMarks" MUST be the exact sum of all "marksOnThisPage" values. It CANNOT exceed ${maxSubjective}.
-
-4. STRICT JSON FORMAT ONLY (NO MARKDOWN WRAPPERS):
+OUTPUT MUST BE VALID JSON ONLY:
 {
   "totalSubjectiveMarks": 35,
   "maxSubjective": ${maxSubjective},
-  "overallRemarks": "मान्य उत्तरों का निष्पक्ष मूल्यांकन संपन्न। अप्रासंगिक पृष्ठों को शून्य अंक दिए गए।",
+  "overallRemarks": "मूल्यांकन संपन्न। अमान्य पृष्ठों को शून्य अंक दिए गए।",
   "status": "EVALUATED",
   "pagesEvaluation": [
     {
       "pageIndex": 0,
       "pageNumber": 1,
-      "marksOnThisPage": 8,
+      "marksOnThisPage": 10,
       "errorNote": "",
-      "remarks": "गद्यांश उत्तर सही हैं"
-    },
-    {
-      "pageIndex": 1,
-      "pageNumber": 2,
-      "marksOnThisPage": 0,
-      "errorNote": "समुच्चय के नोट्स (आउट ऑफ सिलेबस)",
-      "remarks": "अप्रासंगिक सामग्री पर 0 अंक"
+      "remarks": "गद्यांश 1 पूर्णतः शुद्ध"
     }
   ]
 }`;
@@ -177,24 +191,50 @@ STRICT EVALUATION INSTRUCTIONS:
           const aiResponse = await callGemini(prompt, imageParts);
           
           if (aiResponse) {
-            try {
-              const cleanJson = aiResponse.replace(/```json|```/g, "").trim();
-              const parsed = JSON.parse(cleanJson);
+            const parsed = safeParseJson(aiResponse);
+            
+            if (parsed) {
+              const rawPagesList = parsed.pagesEvaluation || parsed.pages || parsed.pageEvaluations || [];
+              let finalPagesEvaluation = [];
+
+              for (let idx = 0; idx < imageParts.length; idx++) {
+                let match = null;
+                if (Array.isArray(rawPagesList)) {
+                  match = rawPagesList.find(p => p && (p.pageIndex === idx || p.pageNumber === (idx + 1)));
+                  if (!match && rawPagesList[idx]) match = rawPagesList[idx];
+                }
+
+                if (match) {
+                  finalPagesEvaluation.push({
+                    pageIndex: idx,
+                    pageNumber: idx + 1,
+                    marksOnThisPage: Number(match.marksOnThisPage != null ? match.marksOnThisPage : (match.marks || 0)) || 0,
+                    errorNote: String(match.errorNote || match.error || ""),
+                    remarks: String(match.remarks || match.reason || "")
+                  });
+                } else {
+                  finalPagesEvaluation.push({
+                    pageIndex: idx,
+                    pageNumber: idx + 1,
+                    marksOnThisPage: 0,
+                    errorNote: "पेज का विवरण अनुपलब्ध",
+                    remarks: "0 अंक"
+                  });
+                }
+              }
+
+              let calculatedMarks = finalPagesEvaluation.reduce((sum, p) => sum + (Number(p.marksOnThisPage) || 0), 0);
               
-              let pagesEval = Array.isArray(parsed.pagesEvaluation) ? parsed.pagesEvaluation : [];
-              let calculatedMarks = 0;
-              
-              if (pagesEval.length > 0) {
-                calculatedMarks = pagesEval.reduce((sum, p) => sum + (Number(p.marksOnThisPage) || 0), 0);
-              } else {
-                calculatedMarks = parseInt(parsed.totalSubjectiveMarks, 10) || 0;
+              if (calculatedMarks === 0 && parsed.totalSubjectiveMarks > 0) {
+                calculatedMarks = Number(parsed.totalSubjectiveMarks) || 0;
+                finalPagesEvaluation[0].marksOnThisPage = calculatedMarks;
               }
 
               calculatedMarks = Math.min(calculatedMarks, maxSubjective);
               const total = (exam.objectiveMarks || 0) + calculatedMarks;
               const feedback = parsed.overallRemarks || "मूल्यांकन संपन्न।";
 
-              // 🌟 यहाँ हमेशा status: "EVALUATED" सेव होगा!
+              // 🌟 Firestore में अब pagesEvaluation 100% पक्का सेव होगा!
               await db.collection("bseb_exams_2026").doc(doc.id).set({
                 completedDays: {
                   [day]: {
@@ -203,7 +243,7 @@ STRICT EVALUATION INSTRUCTIONS:
                     totalMarks: total,
                     aiFeedback: feedback,
                     stepBreakdown: parsed.stepBreakdown || "",
-                    pagesEvaluation: pagesEval,
+                    pagesEvaluation: finalPagesEvaluation,
                     status: "EVALUATED",
                     needsAiEvaluation: false,
                     evaluatedByServerAt: new Date().toISOString()
@@ -211,16 +251,13 @@ STRICT EVALUATION INSTRUCTIONS:
                 }
               }, { merge: true });
 
-              console.log(`✓ Result Saved: UID ${doc.id}, Day ${day} -> Sub: ${calculatedMarks}/${maxSubjective}, Total: ${total}, Status: EVALUATED`);
-            } catch (err) {
-              console.error("JSON parse error from Gemini response:", err);
-              console.error("Raw Response:", aiResponse);
+              console.log(`✓ Result Saved: UID ${doc.id}, Day ${day} -> Sub: ${calculatedMarks}/${maxSubjective}, Pages: ${finalPagesEvaluation.length}, Status: EVALUATED`);
+            } else {
+              console.error("Failed to parse Gemini JSON. Raw text:", aiResponse);
             }
           } else {
             console.error("Gemini failed to return response.");
           }
-        } else {
-          console.log("No valid images found for this candidate.");
         }
       }
     }
