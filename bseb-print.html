@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BSEB Bulk PDF & Preview Generator • NischayDesk</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Noto+Sans+Devanagari:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+    }
+
+    body {
+      background-color: #060b18;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 14px 60px;
+    }
+
+    .app-box {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .main-header {
+      text-align: center;
+      background: #0b152d;
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 18px;
+      padding: 22px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .tag-badge {
+      display: inline-block;
+      background: rgba(2, 132, 199, 0.2);
+      color: #38bdf8;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid #0284c7;
+      text-transform: uppercase;
+    }
+
+    .main-header h1 {
+      font-size: 1.55rem;
+      font-weight: 900;
+      margin-top: 10px;
+      color: #ffffff;
+    }
+
+    .main-header p {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .work-card {
+      background: #0b152d;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .work-card:hover {
+      border-color: #0284c7;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      background: #040814;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .preview-box {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #334155;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .preview-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .preview-box:hover::after {
+      content: "🔍 क्लिक करके पूरा देखें";
+      position: absolute;
+      background: rgba(2, 132, 199, 0.9);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .count-control {
+      background: #040814;
+      border: 1.5px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .count-control label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #cbd5e1;
+    }
+
+    .count-control input[type="number"] {
+      width: 90px;
+      background: #0b152d;
+      border: 1.5px solid #0284c7;
+      color: #38bdf8;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 900;
+      text-align: center;
+      outline: none;
+    }
+
+    .count-control input[type="number"]::placeholder {
+      color: #64748b;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .limit-hint {
+      font-size: 0.74rem;
+      color: #94a3b8;
+      margin-top: -4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      border-radius: 11px;
+      font-size: 0.92rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-copy {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    }
+
+    /* बटन हाइड क्लास */
+    .hidden-btn {
+      display: none !important;
+    }
+
+    .btn-preview {
+      background: rgba(15, 23, 42, 0.8);
+      color: #cbd5e1;
+      border: 1.5px solid #334155;
+      padding: 9px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-preview:hover {
+      background: #1e293b;
+      color: #fff;
+    }
+
+    .status-msg {
+      font-size: 0.82rem;
+      text-align: center;
+      min-height: 20px;
+      font-weight: 700;
+    }
+
+    /* फुल स्क्रीन प्रीव्यू मोडल */
+    .preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      backdrop-filter: blur(5px);
+    }
+
+    .preview-modal.active {
+      display: flex;
+    }
+
+    .modal-content-wrapper {
+      position: relative;
+      max-width: 95vw;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-image {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 2px solid #0284c7;
+      background: #fff;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      background: #ef4444;
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .modal-title-bar {
+      margin-top: 10px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #38bdf8;
+      background: #0b152d;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid #0284c7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-box">
+    
+    <div class="main-header">
+      <span class="tag-badge">BSEB बल्क प्रिंट इंजन</span>
+      <h1>बिहार बोर्ड OMR एवं आंसर कॉपी जनरेटर</h1>
+      <p>संख्या टाइप करें और सीधे A4 साइज़ मल्टी-पेज PDF डाउनलोड करें।</p>
+    </div>
+
+    <div class="card-grid">
+      
+      <!-- 1. OMR शीट (1 से 30) -->
+      <div class="work-card">
+        <div>
+          <div class="card-title-row">
+            <div class="card-icon">🎯</div>
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 900;">BSEB OMR शीट</h3>
+              <span style="font-size: 0.78rem; color: #38bdf8; font-weight: 700;">100 प्रश्न • A4 Portrait</span>
+            </div>
+          </div>
+
+          <div class="preview-box" style="margin: 14px 0;" onclick="openFullscreenPreview('omr')">
+            <img id="omrImg" src="omr-sheet.png" alt="BSEB OMR Sheet">
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="count-control">
+            <label for="omrCount">OMR शीट की संख्या:</label>
+            <input type="number" id="omrCount" placeholder="टाइप..." oninput="checkInput('omr')">
+          </div>
+          <div class="limit-hint">
+            <span>न्यूनतम: 1</span>
+            <span>अधिकतम: 30</span>
+          </div>
+
+          <div class="status-msg" id="omrStatus">
+            <span style="color: #94a3b8;">संख्या टाइप करें (1 से 30)</span>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-download hidden-btn" id="omrBtn" onclick="generateBulkPDF('omr')">
+              📥 बल्क OMR PDF डाउनलोड करें
+            </button>
+            <button class="btn-preview" onclick="openFullscreenPreview('omr')">
+              👁️ पूरा OMR प्रीव्यू देखें (Full View)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. आंसर कॉपी (1 से 25) -->
+      <div class="work-card">
+        <div>
+          <div class="card-title-row">
+            <div class="card-icon">📝</div>
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 900;">BSEB उत्तर पुस्तिका (कॉपी)</h3>
+              <span style="font-size: 0.78rem; color: #10b981; font-weight: 700;">रूलर अभ्यास पन्ना • A4 Full Landscape</span>
+            </div>
+          </div>
+
+          <div class="preview-box" style="margin: 14px 0;" onclick="openFullscreenPreview('copy')">
+            <img id="copyImg" src="answer-copy.png" alt="BSEB Answer Copy">
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="count-control">
+            <label for="copyCount">कॉपी पन्नों की संख्या:</label>
+            <input type="number" id="copyCount" placeholder="टाइप..." oninput="checkInput('copy')">
+          </div>
+          <div class="limit-hint">
+            <span>न्यूनतम: 1</span>
+            <span>अधिकतम: 25</span>
+          </div>
+
+          <div class="status-msg" id="copyStatus">
+            <span style="color: #94a3b8;">संख्या टाइप करें (1 से 25)</span>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn-download btn-copy hidden-btn" id="copyBtn" onclick="generateBulkPDF('copy')">
+              📥 बल्क कॉपी PDF डाउनलोड करें
+            </button>
+            <button class="btn-preview" onclick="openFullscreenPreview('copy')">
+              👁️ पूरा कॉपी प्रीव्यू देखें (Full View)
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- फुल स्क्रीन प्रीव्यू मोडल -->
+  <div class="preview-modal" id="previewModal" onclick="closeFullscreenPreview(event)">
+    <div class="modal-content-wrapper">
+      <div class="modal-close-btn" onclick="closeModalDirect()">✕</div>
+      <img id="modalPreviewImg" class="modal-image" src="" alt="Full Preview">
+      <div class="modal-title-bar" id="modalTitle">फुल एचडी शीट प्रीव्यू</div>
+    </div>
+  </div>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+
+    // यूजर के टाइप करते ही चेक करना (बिना ज़बरदस्ती नंबर बदले)
+    function checkInput(type) {
+      const isOmr = type === 'omr';
+      const input = document.getElementById(isOmr ? 'omrCount' : 'copyCount');
+      const btn = document.getElementById(isOmr ? 'omrBtn' : 'copyBtn');
+      const status = document.getElementById(isOmr ? 'omrStatus' : 'copyStatus');
+      const maxLimit = isOmr ? 30 : 25;
+      const rawVal = input.value.trim();
+
+      // अगर खाली है
+      if (rawVal === "") {
+        btn.classList.add('hidden-btn');
+        status.innerHTML = `<span style="color: #94a3b8;">संख्या टाइप करें (1 से ${maxLimit})</span>`;
+        return;
+      }
+
+      const val = parseInt(rawVal, 10);
+
+      // अगर 0 या नेगेटिव है
+      if (isNaN(val) || val < 1) {
+        btn.classList.add('hidden-btn');
+        status.innerHTML = `<span style="color: #ef4444;">⚠️ 1 से कम मान्य नहीं है! (कम से कम 1 लिखें)</span>`;
+      } 
+      // अगर लिमिट से ज़्यादा है
+      else if (val > maxLimit) {
+        btn.classList.add('hidden-btn');
+        status.innerHTML = `<span style="color: #f59e0b;">⚠️ अधिकतम सीमा ${maxLimit} है! कृपया ${maxLimit} या उससे कम लिखें।</span>`;
+      } 
+      // बिल्कुल सही संख्या है
+      else {
+        btn.classList.remove('hidden-btn');
+        status.innerHTML = `<span style="color: #38bdf8;">✓ ${val} पन्नों की PDF तैयार की जा सकती है</span>`;
+      }
+    }
+
+    // फुल स्क्रीन प्रीव्यू खोलना
+    function openFullscreenPreview(type) {
+      const modal = document.getElementById('previewModal');
+      const modalImg = document.getElementById('modalPreviewImg');
+      const modalTitle = document.getElementById('modalTitle');
+
+      if (type === 'omr') {
+        modalImg.src = 'omr-sheet.png';
+        modalTitle.innerText = "🎯 BSEB 100-ऑब्जेक्टिव OMR शीट (A4 Portrait)";
+      } else {
+        modalImg.src = 'answer-copy.png';
+        modalTitle.innerText = "📝 BSEB आधिकारिक उत्तर पुस्तिका (16:9 Landscape)";
+      }
+      modal.classList.add('active');
+    }
+
+    function closeModalDirect() {
+      document.getElementById('previewModal').classList.remove('active');
+    }
+
+    function closeFullscreenPreview(event) {
+      if (event.target.id === 'previewModal') {
+        closeModalDirect();
+      }
+    }
+
+    // इमेज कम्प्रेशन
+    function getOptimizedImageData(imgElement) {
+      const canvas = document.createElement("canvas");
+      canvas.width = imgElement.naturalWidth || imgElement.width;
+      canvas.height = imgElement.naturalHeight || imgElement.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(imgElement, 0, 0);
+      return canvas.toDataURL("image/jpeg", 0.78);
+    }
+
+    // बल्क PDF डाउनलोड
+    async function generateBulkPDF(type) {
+      const isOmr = type === 'omr';
+      const input = document.getElementById(isOmr ? 'omrCount' : 'copyCount');
+      const btn = document.getElementById(isOmr ? 'omrBtn' : 'copyBtn');
+      const status = document.getElementById(isOmr ? 'omrStatus' : 'copyStatus');
+      const imgElement = document.getElementById(isOmr ? 'omrImg' : 'copyImg');
+
+      const totalPages = parseInt(input.value.trim(), 10);
+      const maxLimit = isOmr ? 30 : 25;
+
+      if (isNaN(totalPages) || totalPages < 1 || totalPages > maxLimit) {
+        checkInput(type);
+        return;
+      }
+
+      btn.disabled = true;
+      status.innerHTML = `⚡ <strong>${totalPages} पन्नों</strong> की PDF तैयार हो रही है...`;
+
+      setTimeout(() => {
+        try {
+          const imgData = getOptimizedImageData(imgElement);
+
+          const doc = new jsPDF({
+            orientation: isOmr ? 'portrait' : 'landscape',
+            unit: 'mm',
+            format: 'a4',
+            compress: true
+          });
+
+          const pageWidth = isOmr ? 210 : 297;
+          const pageHeight = isOmr ? 297 : 210;
+
+          for (let i = 0; i < totalPages; i++) {
+            if (i > 0) {
+              doc.addPage('a4', isOmr ? 'portrait' : 'landscape');
+            }
+            doc.addImage(imgData, 'JPEG', 3, 3, pageWidth - 6, pageHeight - 6, undefined, 'FAST');
+          }
+
+          const fileName = isOmr 
+            ? `BSEB_OMR_${totalPages}_Sheets_NischayDesk.pdf` 
+            : `BSEB_Copy_${totalPages}_Pages_NischayDesk.pdf`;
+
+          const blob = doc.output('blob');
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          status.innerHTML = `✓ सफलता! <strong>${totalPages} पन्नों</strong> की PDF डाउनलोड हो गई।`;
+        } catch (err) {
+          console.error(err);
+          status.innerHTML = `<span style="color: #ef4444;">❌ एरर: कृपया पेज रीफ़्रेश करें।</span>`;
+        } finally {
+          btn.disabled = false;
+        }
+      }, 50);
+    }
+  </script>
+</body>
+</html>
