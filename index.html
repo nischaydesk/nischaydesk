@@ -11,8 +11,8 @@
   <!-- Primary SEO Tags -->
   <link rel="canonical" href="https://nischaydesk.github.io/" />
   <meta name="title" content="NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal" />
-  <meta name="description" content="NischayDesk (निश्चय-डेस्क) - बिहार बोर्ड (BSEB) मैट्रिक व इंटर के छात्रों के लिए 100% मुफ़्त टॉपर नोट्स, 3h 15m बोर्ड परीक्षा सिमुलेटर, मॉडल पेपर, क्वेश्चन बैंक और स्मार्ट टूल्स।" />
-  <meta name="keywords" content="NischayDesk, Nischay Desk, निश्चय डेस्क, निश्चय-डेस्क, BSEB 10th Notes, BSEB 12th Notes, Bihar Board Exam Simulator, Nischay Docs, Prince Kumar" />
+  <meta name="description" content="NischayDesk (निश्चय-डेस्क) - बिहार बोर्ड (BSEB) मैट्रिक व इंटर के छात्रों के लिए 100% मुफ़्त टॉपर नोट्स, 3h 15m बोर्ड परीक्षा सिमुलेटर, OMR व कॉपी जनरेटर, मॉडल पेपर, क्वेश्चन बैंक और स्मार्ट टूल्स।" />
+  <meta name="keywords" content="NischayDesk, Nischay Desk, निश्चय डेस्क, निश्चय-डेस्क, BSEB 10th Notes, BSEB 12th Notes, Bihar Board Exam Simulator, BSEB OMR, Prince Kumar" />
   <meta name="author" content="Prince Kumar" />
   <meta name="robots" content="index, follow" />
 
@@ -20,7 +20,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://nischaydesk.github.io/" />
   <meta property="og:title" content="NischayDesk | निश्चय-डेस्क - Smart Student Portal" />
-  <meta property="og:description" content="बिहार बोर्ड टॉपर नोट्स, 3h 15m लाइव परीक्षा सिमुलेटर, OMR स्कैनर और स्टूडेंट टूल्स।" />
+  <meta property="og:description" content="बिहार बोर्ड टॉपर नोट्स, 3h 15m लाइव परीक्षा सिमुलेटर, OMR एवं कॉपी जनरेटर और स्टूडेंट टूल्स।" />
   <meta property="og:image" content="https://nischaydesk.github.io/logo.png" />
 
   <!-- Twitter Meta Tags -->
@@ -202,34 +202,55 @@
       margin-top: 2px;
     }
 
-    /* 🌟 DAILY 1-QUESTION INTERACTIVE POLL */
+    /* 🌟 DAILY DYNAMIC ROTATING OMR POLL (स्टाइलिश ऑटोमैटिक चेंज) */
     .daily-poll-card {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.12), rgba(16, 185, 129, 0.08));
-      border: 1.5px solid rgba(56, 189, 248, 0.3);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09));
+      border: 1.5px solid rgba(56, 189, 248, 0.32);
       border-radius: 16px;
       padding: 16px;
       margin-top: 18px;
+      position: relative;
     }
     .poll-tag-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .poll-badge {
       background: #0284c7;
       color: #fff;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 800;
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .poll-counter-indicator {
+      font-size: 0.72rem;
+      color: #38bdf8;
+      font-weight: 800;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .poll-dynamic-box {
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .poll-dynamic-box.fade-out {
+      opacity: 0;
+      transform: translateY(-6px);
     }
     .poll-question-text {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 800;
       margin-bottom: 12px;
       color: var(--text-main);
-      line-height: 1.4;
+      line-height: 1.45;
+      min-height: 42px;
     }
     .poll-options-grid {
       display: grid;
@@ -246,7 +267,7 @@
       font-size: 0.8rem;
       cursor: pointer;
       text-align: left;
-      transition: 0.2s;
+      transition: all 0.2s;
     }
     .poll-opt-btn:hover {
       border-color: #38bdf8;
@@ -602,6 +623,37 @@
       font-size: 1.25rem;
     }
 
+    /* 🌟 साइड ड्रॉअर को पूरा नीचे तक स्क्रॉल कराने का स्टाइल (No Cutting) */
+    .side-drawer {
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer-nav-list {
+      flex: 1 0 auto;
+      padding-bottom: 20px;
+    }
+    .drawer-footer-custom {
+      margin-top: auto;
+      padding: 16px 14px 90px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+      background: rgba(4, 9, 20, 0.5);
+    }
+    .developer-branding-tag {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #38bdf8;
+      display: inline-block;
+      line-height: 1.5;
+    }
+    .developer-sub-badge {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
     /* PDF MODAL STYLE */
     #heavyPdfModal {
       display: none;
@@ -668,12 +720,12 @@
         <a href="index.html" class="nav-item active">डैशबोर्ड</a>
         <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
         <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
+        <a href="bseb-print.html" class="nav-item" style="color: #38bdf8; font-weight: 800;">🎯 OMR एवं कॉपी जनरेटर</a>
         <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
         <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
         <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट</a>
         <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
         <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
-        <a href="docs/index.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">⚡ निश्चय डॉक्स</a>
       </div>
 
       <div class="nav-actions">
@@ -698,7 +750,7 @@
     </nav>
   </header>
 
-  <!-- 2. SIDE DRAWER -->
+  <!-- 2. SIDE DRAWER (पूरा नीचे तक स्क्रॉल + बाय प्रिंस कुमार (डेवलपर)) -->
   <div class="drawer-scrim" id="drawerScrim"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -717,8 +769,8 @@
       <a href="index.html" class="drawer-nav-item active">
         <span class="icon">📊</span> मुख्य डैशबोर्ड
       </a>
-      <a href="docs/index.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
-        <span class="icon">⚡</span> निश्चय डॉक्स (फ़ाइल रिसाइज़र)
+      <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800; background: rgba(2, 132, 199, 0.12); border-radius: 10px;">
+        <span class="icon">🎯</span> BSEB OMR एवं कॉपी जनरेटर
       </a>
       <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
         <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
@@ -747,10 +799,6 @@
       <a href="model-paper.html" class="drawer-nav-item">
         <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
       </a>
-      <a href="bseb-print.html" style="background: #0284c7; color: #fff; padding: 10px 18px; border-radius: 10px; font-weight: 800; text-decoration: none;">
-  ⚡ BSEB OMR एवं कॉपी जनरेटर टूल
-</a>
-
 
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
@@ -761,8 +809,14 @@
       </div>
     </nav>
 
-    <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk Official Portal</span>
+    <!-- मेन्यू के सबसे नीचे डेवलपर ब्रांडिंग -->
+    <div class="drawer-footer-custom">
+      <div class="developer-branding-tag">
+        बाय प्रिंस कुमार (डेवलपर) ⚡
+      </div>
+      <div class="developer-sub-badge">
+        NischayDesk Official Portal • 2026
+      </div>
     </div>
   </aside>
 
@@ -790,7 +844,7 @@
         <div class="hero-chip-tag">⚡ BSEB 2026 OFFICIAL SIMULATION & STUDENT HUB</div>
         <h1 class="hero-main-title">सफलता का सटीक निश्चय, <span>NischayDesk</span> के साथ।</h1>
         <p class="hero-desc-p">
-          बिहार विद्यालय परीक्षा समिति (BSEB) के छात्रों के लिए निःशुल्क टॉपर नोट्स, 50-OMR परीक्षा सिमुलेटर और उपयोगी टूल्स।
+          बिहार विद्यालय परीक्षा समिति (BSEB) के छात्रों के लिए निःशुल्क टॉपर नोट्स, 100-OMR परीक्षा सिमुलेटर और प्रैक्टिस टूल्स।
         </p>
 
         <!-- 2 मुख्य एक्शन बटन -->
@@ -798,26 +852,27 @@
           <a href="bseb-simulator.html" class="hero-btn-primary">
             <span>🏛️ परीक्षा हॉल में जाएँ</span>
           </a>
-          <a href="notes.html" class="hero-btn-secondary">
-            <span>📚 टॉपर्स नोट्स पढ़ें</span>
+          <a href="bseb-print.html" class="hero-btn-secondary">
+            <span>🎯 OMR एवं कॉपी टूल</span>
           </a>
         </div>
 
-        <!-- 🌟 इंटरैक्टिव "डेली 1 OMR सवाल" -->
+        <!-- 🌟 इंटरैक्टिव "स्टाइलिश ऑटो-चेंजिंग OMR सवाल" -->
         <div class="daily-poll-card">
           <div class="poll-tag-row">
-            <span class="poll-badge">🎯 आज का बोर्ड प्रश्न (Live)</span>
-            <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 700;">1 OMR प्रैक्टिस</span>
+            <span class="poll-badge">🎯 लाइव बोर्ड सवाल (Auto-Changing)</span>
+            <span class="poll-counter-indicator" id="pollCounter">प्रश्न: 1 / 5</span>
           </div>
-          <div class="poll-question-text" id="dailyPollQ">
-            प्रकाश के परावर्तन के कितने नियम होते हैं?
+
+          <div class="poll-dynamic-box" id="pollDynamicWrap">
+            <div class="poll-question-text" id="dailyPollQ">
+              लोड हो रहा है...
+            </div>
+            <div class="poll-options-grid" id="pollOptionsGrid">
+              <!-- विकल्प जावास्क्रिप्ट से गतिशील बनेंगे -->
+            </div>
           </div>
-          <div class="poll-options-grid">
-            <button type="button" class="poll-opt-btn" onclick="checkLivePollAnswer(this, false)">A. 1</button>
-            <button type="button" class="poll-opt-btn" onclick="checkLivePollAnswer(this, true)">B. 2</button>
-            <button type="button" class="poll-opt-btn" onclick="checkLivePollAnswer(this, false)">C. 3</button>
-            <button type="button" class="poll-opt-btn" onclick="checkLivePollAnswer(this, false)">D. 4</button>
-          </div>
+
           <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
         </div>
 
@@ -831,8 +886,8 @@
         <p>रियल सिमुलेटर</p>
       </div>
       <div class="trust-stat-box">
-        <h4>50 OMR</h4>
-        <p>AI स्कैनिंग</p>
+        <h4>100 OMR</h4>
+        <p>प्रिंट व स्कैन</p>
       </div>
       <div class="trust-stat-box">
         <h4>100%</h4>
@@ -847,7 +902,7 @@
     <!-- HORIZONTAL PILLS SCROLLER -->
     <div class="pills-scroll-tray">
       <a href="#quickTools" class="pill-anchor active">🔥 स्मार्ट टूल्स</a>
-      <a href="docs/index.html" class="pill-anchor" style="border-color: #38bdf8; color: #38bdf8;">⚡ निश्चय डॉक्स</a>
+      <a href="bseb-print.html" class="pill-anchor" style="border-color: #38bdf8; color: #38bdf8;">🎯 OMR व कॉपी टूल</a>
       <a href="notes.html" class="pill-anchor">📖 टॉपर्स नोट्स</a>
       <a href="model-paper.html" class="pill-anchor">📑 मॉडल पेपर</a>
       <a href="pyq.html" class="pill-anchor">📚 क्वेश्चन बैंक</a>
@@ -863,10 +918,10 @@
       </div>
 
       <div class="pro-icons-grid">
-        <!-- ⚡ निश्चय डॉक्स टूल लिंक (Google SEO Anchor) -->
-        <a href="docs/index.html" class="pro-icon-link">
-          <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">⚡</div>
-          <span style="color:#38bdf8; font-weight: 800;">निश्चय डॉक्स</span>
+        <!-- 🎯 BSEB OMR एवं कॉपी जनरेटर लिंक -->
+        <a href="bseb-print.html" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">🎯</div>
+          <span style="color:#38bdf8; font-weight: 800;">OMR व कॉपी</span>
         </a>
 
         <a href="bseb-simulator.html" class="pro-icon-link">
@@ -1210,7 +1265,7 @@
           <div class="footer-column-title">पोर्टल मेनू</div>
           <ul class="footer-ul-links">
             <li><a href="index.html">होम पेज</a></li>
-            <li><a href="docs/index.html">निश्चय डॉक्स (फ़ाइल रिसाइज़र)</a></li>
+            <li><a href="bseb-print.html">BSEB OMR एवं कॉपी जनरेटर</a></li>
             <li><a href="bseb-simulator.html">3h 15m बोर्ड परीक्षा</a></li>
             <li><a href="bseb-result.html">परिणाम व मार्कशीट</a></li>
             <li><a href="model-paper.html">मॉडल पेपर 2026</a></li>
@@ -1278,7 +1333,81 @@
 
   <!-- 6. ALL JAVASCRIPT LOGIC -->
   <script>
-    function checkLivePollAnswer(btn, isCorrect) {
+    /* ================= 🌟 डायनामिक ऑटो-चेंजिंग OMR क्विज़ इंजन ================= */
+    const rotatingBoardQuestions = [
+      {
+        question: "प्रकाश के परावर्तन के कितने नियम होते हैं?",
+        options: ["1", "2", "3", "4"],
+        correctIndex: 1,
+        note: "प्रकाश के परावर्तन के 2 नियम होते हैं।"
+      },
+      {
+        question: "दाढ़ी बनाने में किस प्रकार के दर्पण का उपयोग किया जाता है?",
+        options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "इनमें कोई नहीं"],
+        correctIndex: 2,
+        note: "अवतल दर्पण चेहरे का बड़ा व सीधा प्रतिबिंब बनाता है।"
+      },
+      {
+        question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?",
+        options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी", "बेलनाकार"],
+        correctIndex: 0,
+        note: "मानव नेत्र में प्राकृतिक रूप से उत्तल लेंस होता है।"
+      },
+      {
+        question: "विद्युत धारा का SI मात्रक क्या होता है?",
+        options: ["वोल्ट", "एम्पियर", "ओम", "वाट"],
+        correctIndex: 1,
+        note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।"
+      },
+      {
+        question: "अम्ल का pH मान कितना होता है?",
+        options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"],
+        correctIndex: 0,
+        note: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।"
+      }
+    ];
+
+    let currentQIndex = 0;
+    let autoRotateTimer = null;
+
+    function renderDynamicQuestion(index) {
+      const qData = rotatingBoardQuestions[index];
+      const wrapEl = document.getElementById('pollDynamicWrap');
+      const qTextEl = document.getElementById('dailyPollQ');
+      const gridEl = document.getElementById('pollOptionsGrid');
+      const countEl = document.getElementById('pollCounter');
+      const feedbackEl = document.getElementById('pollFeedbackMsg');
+
+      feedbackEl.style.display = 'none';
+      countEl.textContent = `प्रश्न: ${index + 1} / ${rotatingBoardQuestions.length}`;
+
+      // स्मूद फेड-आउट इफ़ेक्ट
+      wrapEl.classList.add('fade-out');
+
+      setTimeout(() => {
+        qTextEl.textContent = qData.question;
+        gridEl.innerHTML = '';
+
+        const optionLabels = ['A', 'B', 'C', 'D'];
+        qData.options.forEach((optText, optIdx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'poll-opt-btn';
+          btn.textContent = `${optionLabels[optIdx]}. ${optText}`;
+          btn.onclick = function() {
+            checkDynamicAnswer(this, optIdx, qData);
+          };
+          gridEl.appendChild(btn);
+        });
+
+        wrapEl.classList.remove('fade-out');
+      }, 300);
+    }
+
+    function checkDynamicAnswer(btn, selectedIdx, qData) {
+      // उत्तर देने पर ऑटो-रोटेशन रोकें
+      clearInterval(autoRotateTimer);
+
       const parent = btn.parentElement;
       const allBtns = parent.querySelectorAll('.poll-opt-btn');
       allBtns.forEach(b => b.disabled = true);
@@ -1286,18 +1415,38 @@
       const msg = document.getElementById('pollFeedbackMsg');
       msg.style.display = 'block';
 
-      if (isCorrect) {
+      if (selectedIdx === qData.correctIndex) {
         btn.classList.add('correct');
-        msg.textContent = "✓ बिल्कुल सही जवाब! (प्रकाश के परावर्तन के 2 नियम होते हैं)";
+        msg.textContent = `✓ बिल्कुल सही जवाब! (${qData.note})`;
         msg.style.color = "#34d399";
       } else {
         btn.classList.add('wrong');
-        allBtns[1].classList.add('correct');
-        msg.textContent = "❌ गलत उत्तर! सही उत्तर (B. 2) है।";
+        allBtns[qData.correctIndex].classList.add('correct');
+        msg.textContent = `❌ गलत उत्तर! सही उत्तर (${String.fromCharCode(65 + qData.correctIndex)}) है। (${qData.note})`;
         msg.style.color = "#f87171";
       }
+
+      // उत्तर देने के 6 सेकंड बाद अगले सवाल पर अपने आप जाएँ
+      setTimeout(() => {
+        nextRotatingQuestion();
+        startQuestionRotation();
+      }, 6000);
     }
 
+    function nextRotatingQuestion() {
+      currentQIndex = (currentQIndex + 1) % rotatingBoardQuestions.length;
+      renderDynamicQuestion(currentQIndex);
+    }
+
+    function startQuestionRotation() {
+      clearInterval(autoRotateTimer);
+      // हर 7 सेकंड में सवाल बदलेगा
+      autoRotateTimer = setInterval(() => {
+        nextRotatingQuestion();
+      }, 7000);
+    }
+
+    /* ================= 🌟 DRAWER & UI LOGIC ================= */
     const menuBtn = document.getElementById('mobileMenuBtn');
     const sideDrawerEl = document.getElementById('sideDrawer');
     const scrimEl = document.getElementById('drawerScrim');
@@ -1321,7 +1470,7 @@
     function shareNischayDeskWebsite() {
       const shareData = {
         title: 'NischayDesk - बिहार बोर्ड टॉपर स्टडी पोर्टल',
-        text: '🔥 बिहार बोर्ड मैट्रिक एवं इंटर के सभी टॉपर नोट्स और 3 घंटे 15 मिनट रियल बोर्ड परीक्षा सिमुलेटर बिल्कुल फ्री! अभी टेस्ट दें:',
+        text: '🔥 बिहार बोर्ड मैट्रिक एवं इंटर के सभी टॉपर नोट्स, 100-OMR शीट व आंसर कॉपी जनरेटर बिल्कुल फ्री! अभी देखें:',
         url: 'https://nischaydesk.github.io/'
       };
       if (navigator.share) {
@@ -1420,6 +1569,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       const initialClass = localStorage.getItem('nd_selected_class') || '10th';
       applyStudentClass(initialClass);
+
+      // सवाल चक्र शुरू करें
+      renderDynamicQuestion(0);
+      startQuestionRotation();
 
       const authBtn = document.getElementById('headerAuthBtn');
       if (authBtn) {
