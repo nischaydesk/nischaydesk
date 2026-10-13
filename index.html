@@ -88,6 +88,144 @@
       padding-bottom: 74px;
     }
 
+    /* 🌟 WELCOME INTRO SPLASH SCREEN */
+    #nischaySplashOverlay {
+      position: fixed;
+      inset: 0;
+      background-color: #040914;
+      z-index: 9999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      overflow: hidden;
+    }
+
+    #nischaySplashOverlay.fade-away {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .splash-logo-wrapper {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 18px;
+    }
+
+    .splash-animated-logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+      animation: splashZoomIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                 splashGlow 2s infinite alternate ease-in-out;
+    }
+
+    .splash-welcome-title {
+      font-size: 0.76rem;
+      font-weight: 900;
+      color: #38bdf8;
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+      opacity: 0;
+      animation: splashFadeInUp 0.6s 0.25s forwards;
+    }
+
+    .splash-brand-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+      opacity: 0;
+      animation: splashFadeInUp 0.6s 0.45s forwards;
+    }
+
+    .splash-brand-title span {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .splash-tagline {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: splashFadeInUp 0.6s 0.65s forwards;
+    }
+
+    .splash-pulse-loader {
+      width: 44px;
+      height: 4px;
+      background: rgba(56, 189, 248, 0.2);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: splashFadeIn 0.5s 0.8s forwards;
+    }
+
+    .splash-pulse-loader::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 100%;
+      background: #38bdf8;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: -20px;
+      animation: splashLoadingSlide 1.2s infinite ease-in-out;
+    }
+
+    .splash-developer-badge {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 14px;
+      opacity: 0;
+      animation: splashFadeInUp 0.6s 0.95s forwards;
+    }
+
+    .splash-developer-badge .dev-name {
+      color: #38bdf8;
+    }
+
+    @keyframes splashZoomIn {
+      0% { transform: scale(0.35); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes splashGlow {
+      0% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+      100% { box-shadow: 0 0 35px rgba(2, 132, 199, 0.65), 0 0 12px rgba(56, 189, 248, 0.35); }
+    }
+    @keyframes splashFadeInUp {
+      0% { transform: translateY(14px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes splashFadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes splashLoadingSlide {
+      0% { left: -20px; }
+      50% { left: 44px; }
+      100% { left: -20px; }
+    }
+
     /* 🌟 HERO SPOTLIGHT SECTION */
     .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
@@ -202,7 +340,7 @@
       margin-top: 2px;
     }
 
-    /* 🌟 DAILY DYNAMIC ROTATING OMR POLL (स्टाइलिश ऑटोमैटिक चेंज) */
+    /* 🌟 DAILY DYNAMIC ROTATING OMR POLL */
     .daily-poll-card {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09));
       border: 1.5px solid rgba(56, 189, 248, 0.32);
@@ -623,7 +761,7 @@
       font-size: 1.25rem;
     }
 
-    /* 🌟 साइड ड्रॉअर को पूरा नीचे तक स्क्रॉल कराने का स्टाइल (No Cutting) */
+    /* 🌟 SIDE DRAWER & BRANDING */
     .side-drawer {
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
@@ -642,16 +780,18 @@
       background: rgba(4, 9, 20, 0.5);
     }
     .developer-branding-tag {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: #38bdf8;
       display: inline-block;
       line-height: 1.5;
+      letter-spacing: 0.3px;
     }
     .developer-sub-badge {
       font-size: 0.7rem;
       color: #94a3b8;
       font-weight: 600;
+      margin-top: 2px;
     }
 
     /* PDF MODAL STYLE */
@@ -696,6 +836,22 @@
   </style>
 </head>
 <body class="app-body">
+
+  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY (2 Seconds) -->
+  <div id="nischaySplashOverlay">
+    <div class="splash-content-box">
+      <div class="splash-logo-wrapper">
+        <img src="logo.png" alt="NischayDesk Logo" class="splash-animated-logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
+      </div>
+      <h2 class="splash-welcome-title">WELCOME TO</h2>
+      <h1 class="splash-brand-title">Nischay<span>Desk</span></h1>
+      <p class="splash-tagline">Smart EdTech & Student Portal</p>
+      <div class="splash-pulse-loader"></div>
+      <div class="splash-developer-badge">
+        By <span class="dev-name">Prince Kumar</span> (Developer) ⚡
+      </div>
+    </div>
+  </div>
 
   <!-- 1. TOP NAVBAR -->
   <header class="app-header">
@@ -750,7 +906,7 @@
     </nav>
   </header>
 
-  <!-- 2. SIDE DRAWER (पूरा नीचे तक स्क्रॉल + बाय प्रिंस कुमार (डेवलपर)) -->
+  <!-- 2. SIDE DRAWER -->
   <div class="drawer-scrim" id="drawerScrim"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -809,10 +965,10 @@
       </div>
     </nav>
 
-    <!-- मेन्यू के सबसे नीचे डेवलपर ब्रांडिंग -->
+    <!-- मेन्यू के सबसे नीचे डेवलपर ब्रांडिंग (English) -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
-        बाय प्रिंस कुमार (डेवलपर) ⚡
+        By Prince Kumar (Developer) ⚡
       </div>
       <div class="developer-sub-badge">
         NischayDesk Official Portal • 2026
@@ -918,7 +1074,6 @@
       </div>
 
       <div class="pro-icons-grid">
-        <!-- 🎯 BSEB OMR एवं कॉपी जनरेटर लिंक -->
         <a href="bseb-print.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">🎯</div>
           <span style="color:#38bdf8; font-weight: 800;">OMR व कॉपी</span>
@@ -954,7 +1109,6 @@
           <span>सिलेबस</span>
         </a>
 
-        <!-- 📸 इमेज टू PDF कनवर्टर -->
         <div class="pro-icon-link" onclick="triggerFastPdfConverter()" style="cursor: pointer;">
           <div class="icon-squircle-bubble" style="color:#38bdf8;">📄</div>
           <span>इमेज टू PDF</span>
@@ -1292,8 +1446,8 @@
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
           <div class="founder-meta-text">
-            <h5>प्रिंस कुमार</h5>
-            <p>फाउंडर एवं डेवलपर, NischayDesk</p>
+            <h5>Prince Kumar</h5>
+            <p>Founder & Developer, NischayDesk</p>
           </div>
         </div>
 
@@ -1333,6 +1487,19 @@
 
   <!-- 6. ALL JAVASCRIPT LOGIC -->
   <script>
+    /* 🌟 2-Second Splash Screen Loader */
+    document.addEventListener("DOMContentLoaded", () => {
+      const splash = document.getElementById("nischaySplashOverlay");
+      if (splash) {
+        setTimeout(() => {
+          splash.classList.add("fade-away");
+          setTimeout(() => {
+            splash.style.display = "none";
+          }, 500);
+        }, 2000);
+      }
+    });
+
     /* ================= 🌟 डायनामिक ऑटो-चेंजिंग OMR क्विज़ इंजन ================= */
     const rotatingBoardQuestions = [
       {
@@ -1381,7 +1548,6 @@
       feedbackEl.style.display = 'none';
       countEl.textContent = `प्रश्न: ${index + 1} / ${rotatingBoardQuestions.length}`;
 
-      // स्मूद फेड-आउट इफ़ेक्ट
       wrapEl.classList.add('fade-out');
 
       setTimeout(() => {
@@ -1405,7 +1571,6 @@
     }
 
     function checkDynamicAnswer(btn, selectedIdx, qData) {
-      // उत्तर देने पर ऑटो-रोटेशन रोकें
       clearInterval(autoRotateTimer);
 
       const parent = btn.parentElement;
@@ -1426,7 +1591,6 @@
         msg.style.color = "#f87171";
       }
 
-      // उत्तर देने के 6 सेकंड बाद अगले सवाल पर अपने आप जाएँ
       setTimeout(() => {
         nextRotatingQuestion();
         startQuestionRotation();
@@ -1440,7 +1604,6 @@
 
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
-      // हर 7 सेकंड में सवाल बदलेगा
       autoRotateTimer = setInterval(() => {
         nextRotatingQuestion();
       }, 7000);
@@ -1570,7 +1733,6 @@
       const initialClass = localStorage.getItem('nd_selected_class') || '10th';
       applyStudentClass(initialClass);
 
-      // सवाल चक्र शुरू करें
       renderDynamicQuestion(0);
       startQuestionRotation();
 
@@ -1619,7 +1781,7 @@
 
     function closeProfileModal() {
       const modal = document.getElementById('customProfileModal');
-      if (modal) modal.style.display = 'none';
+      if (!modal) return;
       const loader = document.getElementById('logoutLoadingState');
       if (loader) loader.style.display = 'none';
       const btn = document.getElementById('btnPerformLogout');
