@@ -54,6 +54,13 @@
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
 
+  <!-- अगर सेशन में पहले से खुला हुआ है, तो स्क्रीन झपकने से पहले ही छुपा दें -->
+  <script>
+    if (sessionStorage.getItem("nd_splash_seen")) {
+      document.documentElement.classList.add("skip-splash");
+    }
+  </script>
+
   <style>
     /* 🌟 THEME VARIABLES */
     :root {
@@ -88,16 +95,20 @@
       padding-bottom: 74px;
     }
 
-    /* 🌟 WELCOME INTRO SPLASH SCREEN */
+    /* 🌟 सुपर-क्लीन लाइट मोड स्प्लैश स्क्रीन (Light Theme Splash) */
+    html.skip-splash #nischaySplashOverlay {
+      display: none !important;
+    }
+
     #nischaySplashOverlay {
       position: fixed;
       inset: 0;
-      background-color: #040914;
+      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
       z-index: 9999999;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
       overflow: hidden;
     }
 
@@ -112,12 +123,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 24px;
     }
 
     .splash-logo-wrapper {
-      width: 90px;
-      height: 90px;
+      width: 92px;
+      height: 92px;
       margin-bottom: 18px;
     }
 
@@ -125,105 +136,101 @@
       width: 100%;
       height: 100%;
       border-radius: 24px;
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
-      animation: splashZoomIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-                 splashGlow 2s infinite alternate ease-in-out;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+      animation: splashZoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     .splash-welcome-title {
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 900;
-      color: #38bdf8;
-      letter-spacing: 4px;
+      color: #0284c7;
+      letter-spacing: 3.5px;
       margin-bottom: 6px;
       opacity: 0;
-      animation: splashFadeInUp 0.6s 0.25s forwards;
+      animation: splashFadeInUp 0.5s 0.2s forwards;
     }
 
     .splash-brand-title {
-      font-size: 2.1rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      color: #ffffff;
+      color: #0f172a; /* एकदम साफ़ डार्क टेक्स्ट */
       margin-bottom: 4px;
       letter-spacing: -0.5px;
       opacity: 0;
-      animation: splashFadeInUp 0.6s 0.45s forwards;
+      animation: splashFadeInUp 0.5s 0.35s forwards;
     }
 
     .splash-brand-title span {
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .splash-tagline {
-      font-size: 0.82rem;
-      color: #94a3b8;
-      font-weight: 600;
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 700;
       margin-bottom: 24px;
       opacity: 0;
-      animation: splashFadeInUp 0.6s 0.65s forwards;
+      animation: splashFadeInUp 0.5s 0.5s forwards;
     }
 
     .splash-pulse-loader {
       width: 44px;
       height: 4px;
-      background: rgba(56, 189, 248, 0.2);
+      background: #e2e8f0;
       border-radius: 4px;
       position: relative;
       overflow: hidden;
       margin-bottom: 28px;
       opacity: 0;
-      animation: splashFadeIn 0.5s 0.8s forwards;
+      animation: splashFadeIn 0.4s 0.65s forwards;
     }
 
     .splash-pulse-loader::after {
       content: "";
       display: block;
-      width: 20px;
+      width: 22px;
       height: 100%;
-      background: #38bdf8;
+      background: #0284c7;
       border-radius: 4px;
       position: absolute;
       top: 0;
-      left: -20px;
-      animation: splashLoadingSlide 1.2s infinite ease-in-out;
+      left: -22px;
+      animation: splashLoadingSlide 1.1s infinite ease-in-out;
     }
 
     .splash-developer-badge {
-      font-size: 0.8rem;
-      color: #94a3b8;
+      font-size: 0.82rem;
+      color: #334155;
       font-weight: 800;
       letter-spacing: 0.5px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1.5px solid #e2e8f0;
       padding-top: 14px;
       opacity: 0;
-      animation: splashFadeInUp 0.6s 0.95s forwards;
+      animation: splashFadeInUp 0.5s 0.8s forwards;
     }
 
     .splash-developer-badge .dev-name {
-      color: #38bdf8;
+      color: #0284c7;
     }
 
     @keyframes splashZoomIn {
-      0% { transform: scale(0.35); opacity: 0; }
+      0% { transform: scale(0.4); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-    @keyframes splashGlow {
-      0% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
-      100% { box-shadow: 0 0 35px rgba(2, 132, 199, 0.65), 0 0 12px rgba(56, 189, 248, 0.35); }
-    }
     @keyframes splashFadeInUp {
-      0% { transform: translateY(14px); opacity: 0; }
+      0% { transform: translateY(12px); opacity: 0; }
       100% { transform: translateY(0); opacity: 1; }
     }
     @keyframes splashFadeIn {
       to { opacity: 1; }
     }
     @keyframes splashLoadingSlide {
-      0% { left: -20px; }
+      0% { left: -22px; }
       50% { left: 44px; }
-      100% { left: -20px; }
+      100% { left: -22px; }
     }
 
     /* 🌟 HERO SPOTLIGHT SECTION */
@@ -837,7 +844,7 @@
 </head>
 <body class="app-body">
 
-  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY (2 Seconds) -->
+  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY (Clean Light Mode • Only Once per Session) -->
   <div id="nischaySplashOverlay">
     <div class="splash-content-box">
       <div class="splash-logo-wrapper">
@@ -1487,16 +1494,23 @@
 
   <!-- 6. ALL JAVASCRIPT LOGIC -->
   <script>
-    /* 🌟 2-Second Splash Screen Loader */
+    /* 🌟 स्मार्ट स्प्लैश स्क्रीन (सिर्फ पहली बार खुलेगी, रिफ्रेश या पेज बदलने पर नहीं) */
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("nischaySplashOverlay");
-      if (splash) {
-        setTimeout(() => {
-          splash.classList.add("fade-away");
+      const alreadySeen = sessionStorage.getItem("nd_splash_seen");
+
+      if (alreadySeen) {
+        if (splash) splash.style.display = "none";
+      } else {
+        sessionStorage.setItem("nd_splash_seen", "true");
+        if (splash) {
           setTimeout(() => {
-            splash.style.display = "none";
-          }, 500);
-        }, 2000);
+            splash.classList.add("fade-away");
+            setTimeout(() => {
+              splash.style.display = "none";
+            }, 400);
+          }, 1800);
+        }
       }
     });
 
