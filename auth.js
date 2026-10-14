@@ -1,6 +1,6 @@
 /* ==========================================================================
    NischayDesk User Auth & Profile State Management Engine (v5.0 Unified)
-   Fixed: Sidebar Dark/Light Name Visibility & Cloud Firestore Key Sync
+   Fixed: Hybrid Mobile Webview (Median.co) & Browser Redirect Login
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -52,12 +52,25 @@ document.addEventListener('DOMContentLoaded', function () {
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
 
+  // 1. रीडायरेक्ट लॉगिन का परिणाम कैप्चर करना (Mobile App & Browser)
+  auth.getRedirectResult()
+    .then((result) => {
+      if (result && result.user) {
+        console.log("रीडायरेक्ट लॉगिन सफल:", result.user.displayName);
+      }
+    })
+    .catch((err) => {
+      if (err && err.code && err.code !== 'auth/popup-closed-by-user') {
+        alert("लॉगिन त्रुटि: " + err.message);
+      }
+    });
+
+  // 2. लॉगिन बटन क्लिक हैंडलर
   if (headerAuthBtn) {
     headerAuthBtn.addEventListener('click', function () {
-      auth.signInWithPopup(provider).catch(err => {
-        if (err.code !== 'auth/popup-closed-by-user') {
-          alert("लॉगिन त्रुटि: " + err.message);
-        }
+      // मोबाइल ऐप और ब्राउज़र दोनों के लिए 100% सुरक्षित Redirect तरीका
+      auth.signInWithRedirect(provider).catch(err => {
+        alert("लॉगिन शुरू करने में त्रुटि: " + err.message);
       });
     });
   }
