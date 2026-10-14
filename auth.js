@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk User Auth & Profile State Management Engine (v5.0 Unified)
-   Fixed: Hybrid Mobile Webview (Median.co) & Browser Redirect Login
+   NischayDesk User Auth & Profile State Management Engine (v5.1 Final Fix)
+   Fixed: Auto-Close App Browser Window & Silent Popup Handling
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -52,25 +52,35 @@ document.addEventListener('DOMContentLoaded', function () {
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
 
-  // 1. रीडायरेक्ट लॉगिन का परिणाम कैप्चर करना (Mobile App & Browser)
+  // 1. रीडायरेक्ट परिणाम कैप्चर करना
   auth.getRedirectResult()
     .then((result) => {
       if (result && result.user) {
         console.log("रीडायरेक्ट लॉगिन सफल:", result.user.displayName);
+        // अगर यह अलग विंडो में खुला है तो इसे बंद कर दें
+        if (window.opener) {
+          window.close();
+        }
       }
     })
     .catch((err) => {
-      if (err && err.code && err.code !== 'auth/popup-closed-by-user') {
-        alert("लॉगिन त्रुटि: " + err.message);
+      // यूजर द्वारा पॉप-अप बंद करने वाले अलर्ट को पूरी तरह दबा दें
+      if (err && err.code && err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
+        console.warn("Auth Notice:", err.message);
       }
     });
 
-  // 2. लॉगिन बटन क्लिक हैंडलर
+  // 2. लॉगिन बटन क्लिक हैंडलर (Fallback सपोर्ट के साथ)
   if (headerAuthBtn) {
     headerAuthBtn.addEventListener('click', function () {
-      // मोबाइल ऐप और ब्राउज़र दोनों के लिए 100% सुरक्षित Redirect तरीका
+      // मोबाइल ऐप और ब्राउज़र दोनों में काम करने वाला तरीका
       auth.signInWithRedirect(provider).catch(err => {
-        alert("लॉगिन शुरू करने में त्रुटि: " + err.message);
+        // अगर रीडायरेक्ट किसी कारण से ब्लॉक हो, तो पॉप-अप ट्राई करें
+        auth.signInWithPopup(provider).catch(popupErr => {
+          if (popupErr.code !== 'auth/popup-closed-by-user' && popupErr.code !== 'auth/cancelled-popup-request') {
+            alert("लॉगिन त्रुटि: " + popupErr.message);
+          }
+        });
       });
     });
   }
@@ -134,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // 3. ऑथ स्टेट बदलना (यूजर लॉग-इन होने पर)
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       if (headerAuthBtn) headerAuthBtn.style.display = 'none';
