@@ -66,9 +66,9 @@ function safeParseJson(text) {
   return null;
 }
 
-// 🌟 अपडेटेड AI कॉलिंग फंक्शन (Gemini 3.8 Flash & 3.5 Flash Lite) 🌟
+// 🌟 स्टेबल और 100% वर्किंग ऑफिशियल जेमिनी विज़न मॉडल्स 🌟
 async function callGemini(prompt, imageParts) {
-  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
+  const models = ["gemini-1.5-flash", "gemini-1.5-pro"];
   
   for (const model of models) {
     try {
