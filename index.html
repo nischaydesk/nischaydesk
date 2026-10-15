@@ -12,7 +12,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-WXM8RJ080H');
 </script>
   <!-- Primary SEO Tags -->
@@ -160,7 +159,7 @@
     .splash-brand-title {
       font-size: 2.2rem;
       font-weight: 900;
-      color: #0f172a; /* एकदम साफ़ डार्क टेक्स्ट */
+      color: #0f172a;
       margin-bottom: 4px;
       letter-spacing: -0.5px;
       opacity: 0;
@@ -240,7 +239,7 @@
       100% { left: -22px; }
     }
 
-    /* 🌟 NEW SEARCH BAR STYLE */
+    /* 🌟 LIVE LOCAL SEARCH BAR STYLE */
     .top-search-wrapper {
       padding: 10px 16px;
       background: var(--brand-navy);
@@ -332,7 +331,7 @@
       line-height: 1.55;
     }
 
-    /* 🌟 NEW BANNER BUTTON FOR NISCHAY QUIZ */
+    /* 🌟 NISCHAY QUIZ BANNER */
     .quiz-banner-btn {
       display: flex;
       align-items: center;
@@ -952,15 +951,33 @@
       height: 16px;
       fill: currentColor;
     }
+
+    /* 📱 MOBILE RESPONSIVE FIX FOR HEADER (WhatsApp + Google Login) */
+    @media (max-width: 500px) {
+      .hide-on-mobile {
+        display: none !important;
+      }
+      .nav-wa-btn {
+        padding: 8px !important;
+        border-radius: 50% !important;
+      }
+      .btn-auth-primary {
+        padding: 8px !important;
+        border-radius: 50% !important;
+      }
+      .nav-actions {
+        gap: 6px !important;
+      }
+    }
   </style>
 </head>
 <body class="app-body">
 
-  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY (Clean Light Mode • Only Once per Session) -->
+  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY -->
   <div id="nischaySplashOverlay">
     <div class="splash-content-box">
       <div class="splash-logo-wrapper">
-        <img src="logo.png" alt="NischayDesk Logo" class="splash-animated-logo" onerror="this.src='https://dummyimage.com/92x92/0284c7/ffffff&text=N'">
+        <img src="logo.png" alt="NischayDesk Logo" class="splash-animated-logo" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=N&backgroundColor=0284c7&textColor=ffffff'">
       </div>
       <h2 class="splash-welcome-title">WELCOME TO</h2>
       <h1 class="splash-brand-title">Nischay<span>Desk</span></h1>
@@ -1005,19 +1022,21 @@
       </div>
 
       <div class="nav-actions">
-        <!-- New WhatsApp Header Button -->
+        <!-- WhatsApp Header Button -->
         <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="nav-wa-btn">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.575-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp
+          <span class="hide-on-mobile">WhatsApp</span>
         </a>
-        <button class="btn-auth-primary" id="headerAuthBtn">
+        
+        <!-- Google Login Button (type="button" added to prevent form reload) -->
+        <button type="button" class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
             <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
             <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
             <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
           </svg>
-          <span id="authBtnLabel">Google लॉगिन</span>
+          <span id="authBtnLabel" class="hide-on-mobile">Google लॉगिन</span>
         </button>
 
         <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
@@ -1031,7 +1050,7 @@
     </nav>
   </header>
 
-  <!-- NEW GLOBAL SEARCH BAR -->
+  <!-- LIVE LOCAL SEARCH BAR -->
   <div class="top-search-wrapper">
     <div class="search-input-box">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -1101,7 +1120,6 @@
       </div>
     </nav>
 
-    <!-- मेन्यू के सबसे नीचे डेवलपर ब्रांडिंग (English) -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         By Prince Kumar (Developer) ⚡
@@ -1139,8 +1157,8 @@
           बिहार विद्यालय परीक्षा समिति (BSEB) के छात्रों के लिए निःशुल्क टॉपर नोट्स, 100-OMR परीक्षा सिमुलेटर और प्रैक्टिस टूल्स।
         </p>
 
-        <!-- 🌟 NEW: NISCHAY QUIZ BANNER -->
-        <a href="https://nischaydesk.github.io/nischay-quiz/" class="quiz-banner-btn">
+        <!-- 🌟 NISCHAY QUIZ BANNER -->
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="quiz-banner-btn searchable-item">
           <div class="quiz-text">
             <span>🏆 आज का डेली क्विज़ खेलें और टॉपर बनें (Live)</span>
             <span class="quiz-sub">कक्षा 10वीं, 11वीं, 12वीं का नया सेट उपलब्ध है।</span>
@@ -1149,7 +1167,7 @@
         </a>
 
         <!-- 2 मुख्य एक्शन बटन -->
-        <div class="hero-buttons-duo">
+        <div class="hero-buttons-duo searchable-item">
           <a href="bseb-simulator.html" class="hero-btn-primary">
             <span>🏛️ परीक्षा हॉल में जाएँ</span>
           </a>
@@ -1159,7 +1177,7 @@
         </div>
 
         <!-- 🌟 इंटरैक्टिव "स्टाइलिश ऑटो-चेंजिंग OMR सवाल" -->
-        <div class="daily-poll-card">
+        <div class="daily-poll-card searchable-item">
           <div class="poll-tag-row">
             <span class="poll-badge">🎯 लाइव बोर्ड सवाल (Auto-Changing)</span>
             <span class="poll-counter-indicator" id="pollCounter">प्रश्न: 1 / 5</span>
@@ -1170,10 +1188,8 @@
               लोड हो रहा है...
             </div>
             <div class="poll-options-grid" id="pollOptionsGrid">
-              <!-- विकल्प जावास्क्रिप्ट से गतिशील बनेंगे -->
             </div>
           </div>
-
           <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
         </div>
 
@@ -1201,7 +1217,7 @@
     </div>
 
     <!-- HORIZONTAL PILLS SCROLLER -->
-    <div class="pills-scroll-tray">
+    <div class="pills-scroll-tray searchable-item">
       <a href="#quickTools" class="pill-anchor active">🔥 स्मार्ट टूल्स</a>
       <a href="https://nischaydesk.github.io/nischay-quiz/" class="pill-anchor" style="border-color:#f59e0b; color:#f59e0b;">🏆 डेली क्विज़</a>
       <a href="bseb-print.html" class="pill-anchor" style="border-color: #38bdf8; color: #38bdf8;">🎯 OMR व कॉपी टूल</a>
@@ -1213,49 +1229,49 @@
     </div>
 
     <!-- 🌟 4-COLUMN COMPACT APP ICONS -->
-    <section class="portal-section-wrap" id="quickTools">
+    <section class="portal-section-wrap searchable-item" id="quickTools">
       <div class="section-head-pro">
         <h3>छात्र स्मार्ट टूल्स (NischayDesk Tools)</h3>
         <a href="javascript:void(0)" onclick="openProfileModal()">क्लास बदलें ⚙️</a>
       </div>
 
       <div class="pro-icons-grid">
-        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-icon-link">
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#f59e0b; border: 1.5px solid #f59e0b;">🏆</div>
           <span style="color:#f59e0b; font-weight: 800;">डेली क्विज़</span>
         </a>
 
-        <a href="bseb-print.html" class="pro-icon-link">
+        <a href="bseb-print.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">🎯</div>
           <span style="color:#38bdf8; font-weight: 800;">OMR व कॉपी</span>
         </a>
 
-        <a href="bseb-simulator.html" class="pro-icon-link">
+        <a href="bseb-simulator.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#0284c7;">🏛️</div>
           <span>एग्जाम हॉल</span>
         </a>
 
-        <a href="bseb-result.html" class="pro-icon-link">
+        <a href="bseb-result.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#10b981;">📊</div>
           <span>रिजल्ट</span>
         </a>
 
-        <a href="notes.html" class="pro-icon-link">
+        <a href="notes.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#f59e0b;">📖</div>
           <span>स्टडी नोट्स</span>
         </a>
 
-        <a href="model-paper.html" class="pro-icon-link">
+        <a href="model-paper.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#8b5cf6;">📑</div>
           <span>मॉडल पेपर</span>
         </a>
 
-        <a href="pyq.html" class="pro-icon-link">
+        <a href="pyq.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#ea580c;">📚</div>
           <span>क्वेश्चन बैंक</span>
         </a>
 
-        <a href="syllabus.html" class="pro-icon-link">
+        <a href="syllabus.html" class="pro-icon-link searchable-item">
           <div class="icon-squircle-bubble" style="color:#06b6d4;">📋</div>
           <span>सिलेबस</span>
         </a>
@@ -1264,57 +1280,57 @@
 
     <!-- 🌟 CLASS 10TH MATRIC SECTION -->
     <section class="portal-section-wrap" id="sectionClass10" data-class="10th">
-      <div class="section-head-pro">
+      <div class="section-head-pro searchable-item">
         <h3>कक्षा 10वीं सम्पूर्ण अध्ययन हब</h3>
         <a href="notes.html">सब देखें →</a>
       </div>
 
       <div class="pro-rows-container">
-        <a href="notes.html?filter=10-math" class="pro-list-row">
+        <a href="notes.html?filter=10-math" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📐</div>
             <div class="pro-row-text">
-              <h4>गणित (Mathematics)</h4>
+              <h4>गणित (Mathematics) 10th</h4>
               <p>वास्तविक संख्याएं, त्रिकोणमिति, द्विघात समीकरण एवं नोट्स</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="notes.html?filter=10-science-phy" class="pro-list-row">
+        <a href="notes.html?filter=10-science-phy" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
             <div class="pro-row-text">
-              <h4>विज्ञान (Physics, Chemistry, Biology)</h4>
+              <h4>विज्ञान (Physics, Chemistry, Biology) 10th</h4>
               <p>प्रकाश, अम्ल-क्षार, रासायनिक अभिक्रियाएँ और जैव प्रक्रम</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="notes.html?filter=10-sst-all" class="pro-list-row">
+        <a href="notes.html?filter=10-sst-all" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(245, 158, 11, 0.12); color:#f59e0b;">🌍</div>
             <div class="pro-row-text">
-              <h4>सामाजिक विज्ञान (SST)</h4>
+              <h4>सामाजिक विज्ञान (SST) 10th</h4>
               <p>इतिहास, भूगोल, राजनीति विज्ञान और अर्थशास्त्र</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
         
-        <a href="notes.html?filter=10-sanskrit" class="pro-list-row">
+        <a href="notes.html?filter=10-sanskrit" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(139, 92, 246, 0.12); color:#8b5cf6;">🕉️</div>
             <div class="pro-row-text">
-              <h4>संस्कृत (Sanskrit)</h4>
+              <h4>संस्कृत (Sanskrit) 10th</h4>
               <p>पीयूषम्, व्याकरण, और पत्र लेखन</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="test.html" class="pro-list-row">
+        <a href="test.html" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
             <div class="pro-row-text">
@@ -1329,35 +1345,35 @@
 
     <!-- 🌟 CLASS 11TH SCIENCE SECTION -->
     <section class="portal-section-wrap" id="sectionClass11" data-class="11th" style="display: none;">
-      <div class="section-head-pro">
+      <div class="section-head-pro searchable-item">
         <h3>कक्षा 11वीं साइंस हब (NCERT & फाउंडेशन)</h3>
         <a href="notes.html">सब देखें →</a>
       </div>
 
       <div class="pro-rows-container">
-        <a href="notes.html?filter=11-physics" class="pro-list-row">
+        <a href="notes.html?filter=11-physics" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">⚡</div>
             <div class="pro-row-text">
-              <h4>भौतिकी (Physics)</h4>
+              <h4>भौतिकी (Physics) 11th</h4>
               <p>मात्रक एवं मापन, गति के नियम, कार्य ऊर्जा एवं शक्ति</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="notes.html?filter=11-chemistry" class="pro-list-row">
+        <a href="notes.html?filter=11-chemistry" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
             <div class="pro-row-text">
-              <h4>रसायन विज्ञान (Chemistry)</h4>
+              <h4>रसायन विज्ञान (Chemistry) 11th</h4>
               <p>परमाणु संरचना, मोल संकल्पना, ऊष्मागतिकी</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="test.html" class="pro-list-row">
+        <a href="test.html" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
             <div class="pro-row-text">
@@ -1372,13 +1388,13 @@
 
     <!-- 🌟 CLASS 12TH SCIENCE SECTION -->
     <section class="portal-section-wrap" id="sectionClass12" data-class="12th" style="display: none;">
-      <div class="section-head-pro">
+      <div class="section-head-pro searchable-item">
         <h3>कक्षा 12वीं साइंस हब (बोर्ड स्पेशल)</h3>
         <a href="notes.html">सब देखें →</a>
       </div>
 
       <div class="pro-rows-container">
-        <a href="notes.html?filter=12-physics" class="pro-list-row">
+        <a href="notes.html?filter=12-physics" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">⚡</div>
             <div class="pro-row-text">
@@ -1389,7 +1405,7 @@
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="notes.html?filter=12-math" class="pro-list-row">
+        <a href="notes.html?filter=12-math" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">📐</div>
             <div class="pro-row-text">
@@ -1400,7 +1416,7 @@
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="test.html" class="pro-list-row">
+        <a href="test.html" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">🎯</div>
             <div class="pro-row-text">
@@ -1415,12 +1431,12 @@
 
     <!-- 🌟 PYQ & MODEL PAPER SECTION -->
     <section class="portal-section-wrap" id="sectionPyqModel">
-      <div class="section-head-pro">
+      <div class="section-head-pro searchable-item">
         <h3>क्वेश्चन बैंक एवं मॉडल पेपर</h3>
       </div>
 
       <div class="pro-rows-container">
-        <a href="pyq.html" class="pro-list-row">
+        <a href="pyq.html" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📖</div>
             <div class="pro-row-text">
@@ -1431,7 +1447,7 @@
           <span class="pro-row-arrow">›</span>
         </a>
 
-        <a href="model-paper.html" class="pro-list-row">
+        <a href="model-paper.html" class="pro-list-row searchable-item">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">📝</div>
             <div class="pro-row-text">
@@ -1445,7 +1461,7 @@
     </section>
 
     <!-- 🌟 TOPPERS HALL OF FAME -->
-    <section class="portal-section-wrap">
+    <section class="portal-section-wrap searchable-item">
       <div class="section-head-pro">
         <h3>टॉपर्स हॉल ऑफ फेम (Hall of Fame)</h3>
         <span style="font-size:0.75rem; color:#10b981; font-weight:800;">● हालिया परिणाम</span>
@@ -1515,7 +1531,7 @@
         <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">&times;</button>
         
         <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
-          <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;" onerror="this.src='https://dummyimage.com/72x72/0284c7/ffffff&text=G'">
+          <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=G&backgroundColor=0284c7&textColor=ffffff'">
           <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
         </div>
 
@@ -1537,7 +1553,7 @@
           </button>
         </div>
 
-        <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+        <button type="button" id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
           🚪 लॉगआउट करें (Logout)
         </button>
 
@@ -1591,7 +1607,7 @@
       <!-- 👨‍💻 डेवलपर एवं प्राइवेसी पॉलिसी सेक्शन -->
       <div class="founder-pro-strip">
         <div class="founder-info-left">
-          <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://dummyimage.com/44x44/0284c7/ffffff&text=P'" />
+          <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=Prince+Kumar&backgroundColor=0284c7&textColor=ffffff'" />
           <div class="founder-meta-text">
             <h5>Prince Kumar</h5>
             <p>Founder & Developer, NischayDesk</p>
@@ -1634,7 +1650,7 @@
 
   <!-- 6. ALL JAVASCRIPT LOGIC -->
   <script>
-    /* 🌟 स्मार्ट स्प्लैश स्क्रीन (सिर्फ पहली बार खुलेगी, रिफ्रेश या पेज बदलने पर नहीं) */
+    /* 🌟 स्मार्ट स्प्लैश स्क्रीन */
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("nischaySplashOverlay");
       const alreadySeen = sessionStorage.getItem("nd_splash_seen");
@@ -1656,36 +1672,11 @@
 
     /* ================= 🌟 डायनामिक ऑटो-चेंजिंग OMR क्विज़ इंजन ================= */
     const rotatingBoardQuestions = [
-      {
-        question: "प्रकाश के परावर्तन के कितने नियम होते हैं?",
-        options: ["1", "2", "3", "4"],
-        correctIndex: 1,
-        note: "प्रकाश के परावर्तन के 2 नियम होते हैं।"
-      },
-      {
-        question: "दाढ़ी बनाने में किस प्रकार के दर्पण का उपयोग किया जाता है?",
-        options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "इनमें कोई नहीं"],
-        correctIndex: 2,
-        note: "अवतल दर्पण चेहरे का बड़ा व सीधा प्रतिबिंब बनाता है।"
-      },
-      {
-        question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?",
-        options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी", "बेलनाकार"],
-        correctIndex: 0,
-        note: "मानव नेत्र में प्राकृतिक रूप से उत्तल लेंस होता है।"
-      },
-      {
-        question: "विद्युत धारा का SI मात्रक क्या होता है?",
-        options: ["वोल्ट", "एम्पियर", "ओम", "वाट"],
-        correctIndex: 1,
-        note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।"
-      },
-      {
-        question: "अम्ल का pH मान कितना होता है?",
-        options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"],
-        correctIndex: 0,
-        note: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।"
-      }
+      { question: "प्रकाश के परावर्तन के कितने नियम होते हैं?", options: ["1", "2", "3", "4"], correctIndex: 1, note: "प्रकाश के परावर्तन के 2 नियम होते हैं।" },
+      { question: "दाढ़ी बनाने में किस प्रकार के दर्पण का उपयोग किया जाता है?", options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "इनमें कोई नहीं"], correctIndex: 2, note: "अवतल दर्पण चेहरे का बड़ा व सीधा प्रतिबिंब बनाता है।" },
+      { question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?", options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी", "बेलनाकार"], correctIndex: 0, note: "मानव नेत्र में प्राकृतिक रूप से उत्तल लेंस होता है।" },
+      { question: "विद्युत धारा का SI मात्रक क्या होता है?", options: ["वोल्ट", "एम्पियर", "ओम", "वाट"], correctIndex: 1, note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।" },
+      { question: "अम्ल का pH मान कितना होता है?", options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"], correctIndex: 0, note: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।" }
     ];
 
     let currentQIndex = 0;
@@ -1701,32 +1692,26 @@
 
       feedbackEl.style.display = 'none';
       countEl.textContent = `प्रश्न: ${index + 1} / ${rotatingBoardQuestions.length}`;
-
       wrapEl.classList.add('fade-out');
 
       setTimeout(() => {
         qTextEl.textContent = qData.question;
         gridEl.innerHTML = '';
-
         const optionLabels = ['A', 'B', 'C', 'D'];
         qData.options.forEach((optText, optIdx) => {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'poll-opt-btn';
           btn.textContent = `${optionLabels[optIdx]}. ${optText}`;
-          btn.onclick = function() {
-            checkDynamicAnswer(this, optIdx, qData);
-          };
+          btn.onclick = function() { checkDynamicAnswer(this, optIdx, qData); };
           gridEl.appendChild(btn);
         });
-
         wrapEl.classList.remove('fade-out');
       }, 300);
     }
 
     function checkDynamicAnswer(btn, selectedIdx, qData) {
       clearInterval(autoRotateTimer);
-
       const parent = btn.parentElement;
       const allBtns = parent.querySelectorAll('.poll-opt-btn');
       allBtns.forEach(b => b.disabled = true);
@@ -1758,9 +1743,7 @@
 
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
-      autoRotateTimer = setInterval(() => {
-        nextRotatingQuestion();
-      }, 7000);
+      autoRotateTimer = setInterval(() => { nextRotatingQuestion(); }, 7000);
     }
 
     /* ================= 🌟 DRAWER & UI LOGIC ================= */
@@ -1798,7 +1781,23 @@
       }
     }
 
-    /* ================= 🌟 UPDATED CLASS DISPLAY LOGIC (SHOW ALL BY DEFAULT) ================= */
+    /* ================= 🌟 LIVE LOCAL SEARCH BAR ================= */
+    function handleGlobalSearch(e) {
+      const query = e.target.value.toLowerCase().trim();
+      // हम उन सभी कार्ड्स और बटन्स को लेंगे जिनपर 'searchable-item' क्लास है
+      const items = document.querySelectorAll('.searchable-item');
+      
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(query)) {
+          item.style.display = ''; 
+        } else {
+          item.style.display = 'none'; 
+        }
+      });
+    }
+
+    /* ================= 🌟 CLASS DISPLAY LOGIC (SHOW ALL BY DEFAULT) ================= */
     function applyStudentClass(selectedClass) {
       const b1 = document.getElementById('userSessionBadge');
       const b2 = document.getElementById('displayStudentClass');
@@ -1808,7 +1807,6 @@
       const sec12 = document.getElementById('sectionClass12');
 
       if (selectedClass === "all" || !selectedClass) {
-        // Show everything
         if (b1) b1.textContent = `सभी कक्षाएं ▾`;
         if (b2) b2.textContent = `All Classes`;
         if (classSelect) classSelect.value = "all";
@@ -1817,7 +1815,6 @@
         if (sec11) sec11.style.display = "block";
         if (sec12) sec12.style.display = "block";
       } else {
-        // Show specific class
         let cleanClass = "10th";
         if (String(selectedClass).includes("11")) cleanClass = "11th";
         else if (String(selectedClass).includes("12")) cleanClass = "12th";
@@ -1874,7 +1871,6 @@
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
 
-      // Default to "all" if not set
       const savedClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_user_class') || 'all';
       applyStudentClass(savedClass);
 
@@ -1884,7 +1880,7 @@
 
         if (userDisplay) userDisplay.textContent = firstName;
         if (welcomeDisplay) welcomeDisplay.textContent = firstName;
-        if (userImg) userImg.src = user.photoURL || ('https://dummyimage.com/72x72/0284c7/ffffff&text=' + encodeURIComponent(firstName.charAt(0)));
+        if (userImg) userImg.src = user.photoURL || ('https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(firstName) + '&backgroundColor=0284c7&textColor=ffffff');
 
         if (authBtn) authBtn.style.display = 'none';
         if (profileWidget) profileWidget.style.display = 'flex';
@@ -1906,7 +1902,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // If user hasn't selected a class, show all
       const initialClass = localStorage.getItem('nd_selected_class') || 'all';
       applyStudentClass(initialClass);
 
@@ -1950,16 +1945,16 @@
 
           if (nameEl) nameEl.textContent = firstName;
           if (emailEl) emailEl.textContent = user.email || 'Google Verified';
-          if (imgEl) imgEl.src = user.photoURL || ('https://dummyimage.com/72x72/0284c7/ffffff&text=' + encodeURIComponent(firstName.charAt(0)));
+          if (imgEl) imgEl.src = user.photoURL || ('https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(firstName) + '&backgroundColor=0284c7&textColor=ffffff');
         } else {
            if (nameEl) nameEl.textContent = "अतिथि (Guest)";
            if (emailEl) emailEl.textContent = "लॉगिन नहीं है";
-           if (imgEl) imgEl.src = 'https://dummyimage.com/72x72/0284c7/ffffff&text=G';
+           if (imgEl) imgEl.src = 'https://api.dicebear.com/7.x/initials/svg?seed=Guest&backgroundColor=0284c7&textColor=ffffff';
         }
       } else {
            if (nameEl) nameEl.textContent = "अतिथि (Guest)";
            if (emailEl) emailEl.textContent = "लॉगिन नहीं है";
-           if (imgEl) imgEl.src = 'https://dummyimage.com/72x72/0284c7/ffffff&text=G';
+           if (imgEl) imgEl.src = 'https://api.dicebear.com/7.x/initials/svg?seed=Guest&backgroundColor=0284c7&textColor=ffffff';
       }
       modal.style.display = 'flex';
     }
@@ -1993,17 +1988,6 @@
           window.location.reload();
         }
       }, 800);
-    }
-
-    // GLOBAL SEARCH FUNCTION
-    function handleGlobalSearch(e) {
-      if(e.key === 'Enter') {
-          const query = document.getElementById('globalSearchInput').value.trim().toLowerCase();
-          if(query) {
-              // Redirect to notes page with search query
-              window.location.href = `notes.html?search=${encodeURIComponent(query)}`;
-          }
-      }
     }
 
     // 🚀 PDF ENGINE
