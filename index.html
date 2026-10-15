@@ -891,6 +891,7 @@
         <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
         <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
         <a href="bseb-print.html" class="nav-item" style="color: #38bdf8; font-weight: 800;">🎯 OMR एवं कॉपी जनरेटर</a>
+        <a href="ai-desk.html" class="nav-item" style="color: #f59e0b; font-weight: 800;">🤖 AI-Desk</a>
         <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
         <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
         <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट</a>
@@ -939,7 +940,10 @@
       <a href="index.html" class="drawer-nav-item active">
         <span class="icon">📊</span> मुख्य डैशबोर्ड
       </a>
-      <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800; background: rgba(2, 132, 199, 0.12); border-radius: 10px;">
+      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
+        <span class="icon">🤖</span> AI-Desk (स्मार्ट AI टूल)
+      </a>
+      <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
         <span class="icon">🎯</span> BSEB OMR एवं कॉपी जनरेटर
       </a>
       <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
@@ -969,9 +973,6 @@
       <a href="model-paper.html" class="drawer-nav-item">
         <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
       </a>
-      a href="ai-desk.html" class="drawer-nav-item">
-        <span class="icon">📝</span> ai Doubt Solver
-    </a>
 
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
@@ -1025,8 +1026,8 @@
           <a href="bseb-simulator.html" class="hero-btn-primary">
             <span>🏛️ परीक्षा हॉल में जाएँ</span>
           </a>
-          <a href="bseb-print.html" class="hero-btn-secondary">
-            <span>🎯 OMR एवं कॉपी टूल</span>
+          <a href="ai-desk.html" class="hero-btn-secondary" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none;">
+            <span>🤖 AI-Desk खोलें</span>
           </a>
         </div>
 
@@ -1046,6 +1047,7 @@
             </div>
           </div>
 
+          <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
         </div>
 
       </div>
@@ -1074,6 +1076,7 @@
     <!-- HORIZONTAL PILLS SCROLLER -->
     <div class="pills-scroll-tray">
       <a href="#quickTools" class="pill-anchor active">🔥 स्मार्ट टूल्स</a>
+      <a href="ai-desk.html" class="pill-anchor" style="border-color: #f59e0b; color: #f59e0b;">🤖 AI-Desk</a>
       <a href="bseb-print.html" class="pill-anchor" style="border-color: #38bdf8; color: #38bdf8;">🎯 OMR व कॉपी टूल</a>
       <a href="notes.html" class="pill-anchor">📖 टॉपर्स नोट्स</a>
       <a href="model-paper.html" class="pill-anchor">📑 मॉडल पेपर</a>
@@ -1090,6 +1093,11 @@
       </div>
 
       <div class="pro-icons-grid">
+        <a href="ai-desk.html" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#f59e0b; border: 1.5px solid #f59e0b;">🤖</div>
+          <span style="color:#f59e0b; font-weight: 800;">AI-Desk</span>
+        </a>
+
         <a href="bseb-print.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">🎯</div>
           <span style="color:#38bdf8; font-weight: 800;">OMR व कॉपी</span>
@@ -1118,11 +1126,6 @@
         <a href="pyq.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ea580c;">📚</div>
           <span>क्वेश्चन बैंक</span>
-        </a>
-
-        <a href="syllabus.html" class="pro-icon-link">
-          <div class="icon-squircle-bubble" style="color:#06b6d4;">📋</div>
-          <span>सिलेबस</span>
         </a>
 
         <div class="pro-icon-link" onclick="triggerFastPdfConverter()" style="cursor: pointer;">
@@ -1435,6 +1438,7 @@
           <div class="footer-column-title">पोर्टल मेनू</div>
           <ul class="footer-ul-links">
             <li><a href="index.html">होम पेज</a></li>
+            <li><a href="ai-desk.html">AI-Desk (स्मार्ट AI टूल)</a></li>
             <li><a href="bseb-print.html">BSEB OMR एवं कॉपी जनरेटर</a></li>
             <li><a href="bseb-simulator.html">3h 15m बोर्ड परीक्षा</a></li>
             <li><a href="bseb-result.html">परिणाम व मार्कशीट</a></li>
@@ -1545,7 +1549,7 @@
       },
       {
         question: "विद्युत धारा का SI मात्रक क्या होता है?",
-        options: ["0", "एम्पियर", "ओम", "वाट"],
+        options: ["वोल्ट", "एम्पियर", "ओम", "वाट"],
         correctIndex: 1,
         note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।"
       },
@@ -1574,7 +1578,6 @@
       wrapEl.classList.add('fade-out');
 
       setTimeout(() => {
-        qText_ = qData.question;
         qTextEl.textContent = qData.question;
         gridEl.innerHTML = '';
 
@@ -1760,7 +1763,7 @@
       renderDynamicQuestion(0);
       startQuestionRotation();
 
-      /* 🌟 UPDATED LOGIN INTEGRATION USING bseb-engine.js TRIGGER 🌟 */
+      /* 🌟 SECURE LOGIN TRIGGER LINKED WITH bseb-engine.js 🌟 */
       const authBtn = document.getElementById('headerAuthBtn');
       if (authBtn) {
         authBtn.onclick = () => {
