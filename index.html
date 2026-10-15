@@ -1043,7 +1043,6 @@
             </div>
           </div>
 
-          <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
         </div>
 
       </div>
@@ -1543,7 +1542,7 @@
       },
       {
         question: "विद्युत धारा का SI मात्रक क्या होता है?",
-        options: ["वोल्ट", "एम्पियर", "ओम", "वाट"],
+        options: ["0", "एम्पियर", "ओम", "वाट"],
         correctIndex: 1,
         note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।"
       },
@@ -1572,6 +1571,7 @@
       wrapEl.classList.add('fade-out');
 
       setTimeout(() => {
+        qText_ = qData.question;
         qTextEl.textContent = qData.question;
         gridEl.innerHTML = '';
 
@@ -1757,12 +1757,20 @@
       renderDynamicQuestion(0);
       startQuestionRotation();
 
+      /* 🌟 UPDATED LOGIN INTEGRATION USING bseb-engine.js TRIGGER 🌟 */
       const authBtn = document.getElementById('headerAuthBtn');
       if (authBtn) {
         authBtn.onclick = () => {
-          if (window.firebase && firebase.auth) {
+          if (typeof triggerGoogleLogin === "function") {
+            triggerGoogleLogin();
+          } else if (window.firebase && firebase.auth) {
             const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider).catch(e => alert(e.message));
+            provider.setCustomParameters({ prompt: 'select_account' });
+            firebase.auth().signInWithPopup(provider).catch(() => {
+              firebase.auth().signInWithRedirect(provider);
+            });
+          } else {
+            alert("⚠️ ऑथेंटिकेशन सिस्टम लोड हो रहा है, कृपया 2 सेकंड प्रतीक्षा करें!");
           }
         };
       }
@@ -1946,6 +1954,7 @@
   </script>
 
   <!-- External Script Dependencies -->
+  <script src="bseb-engine.js"></script>
   <script src="main.js"></script>
 </body>
-    </html>
+</html>
