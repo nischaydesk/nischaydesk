@@ -68,7 +68,7 @@ function safeParseJson(text) {
 
 // 🌟 स्टेबल और 100% वर्किंग ऑफिशियल जेमिनी विज़न मॉडल्स 🌟
 async function callGemini(prompt, imageParts) {
-  const models = ["gemini-1.5-flash", "gemini-1.5-pro"];
+  const models = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
   
   for (const model of models) {
     try {
