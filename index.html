@@ -57,7 +57,6 @@
 
   <!-- External App Configs -->
   <script src="config.js"></script>
-  <script src="auth.js"></script>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
 
@@ -1385,7 +1384,7 @@
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
         
-        <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; z-index: 10000;">&times;</button>
         
         <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
           <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
@@ -1409,7 +1408,7 @@
           </button>
         </div>
 
-        <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+        <button type="button" id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
           🚪 लॉगआउट करें (Logout)
         </button>
 
@@ -1717,6 +1716,7 @@
 
       alert(`✓ आपकी कक्षा Class ${chosen} सफलतापूर्वक सेव कर दी गई है!`);
       closeProfileModal();
+      window.location.reload(); // पेज रीफ्रेश ताकि UI अपडेट हो जाए
     }
 
     function syncUserAuthState(user) {
@@ -1821,6 +1821,7 @@
       if (loader) loader.style.display = 'none';
       const btn = document.getElementById('btnPerformLogout');
       if (btn) btn.disabled = false;
+      modal.style.display = 'none'; // मोडल को छिपाएँ
     }
 
     function handleSlowLogout() {
@@ -1960,7 +1961,6 @@
   </script>
 
   <!-- External Script Dependencies -->
-  <script src="bseb-engine.js"></script>
   <script src="bseb-engine.js"></script>
   <script src="main.js"></script>
 </body>
