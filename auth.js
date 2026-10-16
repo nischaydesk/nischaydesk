@@ -1,6 +1,6 @@
 /* ==========================================================================
    NischayDesk User Auth & Profile State Management Engine (v5.1 Final Fix)
-   Fixed: Auto-Close App Browser Window & Silent Popup Handling
+   Fixed: Auto-Close App Browser Window & Strict Mobile Redirect Handling
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -49,9 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!auth) return;
 
-  const provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: 'select_account' });
-
   // 1. रीडायरेक्ट परिणाम कैप्चर करना
   auth.getRedirectResult()
     .then((result) => {
@@ -70,17 +67,22 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-  // 2. लॉगिन बटन क्लिक हैंडलर (Fallback सपोर्ट के साथ)
+  // 2. 🌟 लॉगिन बटन क्लिक हैंडलर (Strict Mobile Redirect Support) 🌟
   if (headerAuthBtn) {
-    headerAuthBtn.addEventListener('click', function () {
-      // मोबाइल ऐप और ब्राउज़र दोनों में काम करने वाला तरीका
+    headerAuthBtn.addEventListener('click', function (e) {
+      e.preventDefault(); // डिफ़ॉल्ट बिहेवियर रोकें
+      if (!auth) {
+        alert("⚠ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
+        return;
+      }
+      
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      // मोबाइल के लिए हमेशा Redirect का ही इस्तेमाल करें, Popup अक्सर अटक जाता है।
       auth.signInWithRedirect(provider).catch(err => {
-        // अगर रीडायरेक्ट किसी कारण से ब्लॉक हो, तो पॉप-अप ट्राई करें
-        auth.signInWithPopup(provider).catch(popupErr => {
-          if (popupErr.code !== 'auth/popup-closed-by-user' && popupErr.code !== 'auth/cancelled-popup-request') {
-            alert("लॉगिन त्रुटि: " + popupErr.message);
-          }
-        });
+          console.error("लॉगिन त्रुटि:", err);
+          alert("लॉगिन शुरू करने में समस्या हुई। कृपया पेज को रिफ्रेश करें।");
       });
     });
   }
