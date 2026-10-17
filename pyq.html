@@ -30,7 +30,7 @@
     .btn-view { flex: 1; background: #0284c7; color: white !important; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none; }
     .btn-down { background: var(--surface-elevated, #13224a); color: var(--text-secondary, #94a3b8) !important; border: 1px solid var(--border-strong, #1e3a8a); padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-    /* ☀️ Light Mode Fixes (Pyq Card, Filters & Inputs) */
+    /* ☀️ Light Mode Fixes */
     html.light-mode .filter-bar,
     html[data-theme="light"] .filter-bar,
     html.light-mode .pyq-card,
@@ -79,9 +79,18 @@
     .pdf-modal.active { display: flex; }
     .modal-box { width: 95%; max-width: 900px; height: 90%; background: var(--bg-surface, #fff); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; border: 1.5px solid var(--border-strong, #334155); }
     .modal-header { padding: 12px 16px; background: #0f172a; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-    .modal-body { flex: 1; }
+    .modal-close { background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; line-height: 1; }
+    .modal-body { flex: 1; background: #525659; }
     .modal-body iframe { width: 100%; height: 100%; border: none; }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        border: none !important;
+      }
+    }
   </style>
 </head>
 <body class="app-body">
@@ -188,7 +197,6 @@
 
     <!-- फिल्टर्स -->
     <div class="filter-bar">
-      <!-- Year Filter -->
       <select id="yearFilter">
         <option value="all">सभी वर्ष (2020-2026)</option>
         <option value="2020">2020</option>
@@ -200,7 +208,6 @@
         <option value="2026">2026</option>
       </select>
 
-      <!-- Subject Filter -->
       <select id="subjectFilter">
         <option value="all">सभी विषय</option>
         <option value="math">गणित (Math)</option>
@@ -211,18 +218,16 @@
         <option value="english">अंग्रेजी (English)</option>
       </select>
 
-      <!-- Shift Filter (New Feature) -->
       <select id="shiftFilter">
         <option value="all">सभी पाली (Shift 1 & 2)</option>
         <option value="1">प्रथम पाली (Shift 1)</option>
         <option value="2">द्वितीय पाली (Shift 2)</option>
       </select>
 
-      <!-- Search Input -->
       <input type="text" id="searchInput" placeholder="सब्जेक्ट या वर्ष खोजें...">
     </div>
 
-    <!-- पेपर्स की ग्रिड -->
+    <!-- पेपर्स ग्रिड -->
     <div class="pyq-grid" id="pyqGrid"></div>
   </div>
 
@@ -248,10 +253,9 @@
     const shiftFilter = document.getElementById('shiftFilter');
     const searchInput = document.getElementById('searchInput');
 
-    // Helper: Google Drive Direct Download URL Formatter
+    // Google Drive Direct Download URL Formatter
     function getDirectDownloadUrl(url) {
       if (!url) return '';
-      // Agar direct Drive file URL hai toh use download URL me badal do
       const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
       if (fileIdMatch && fileIdMatch[1]) {
         return `https://drive.usercontent.google.com/download?id=${fileIdMatch[1]}&export=download`;
@@ -276,7 +280,6 @@
         const matchesYear = (year === 'all' || item.year.toString() === year);
         const matchesSub = (sub === 'all' || item.subKey === sub);
         
-        // Shift Matching Logic (checks for '1' or 'Shift 1' / '2' or 'Shift 2')
         let matchesShift = true;
         if (shiftVal === '1') {
           matchesShift = item.shift.includes('1') || item.shift.includes('प्रथम');
@@ -304,7 +307,6 @@
           ? `onclick="openPdfModal('${item.subject} (${item.year} - ${item.shift})', '${item.pdfUrl}')"`
           : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
 
-        // Direct Download Fix
         const cleanDownloadUrl = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
         const downBtnAction = cleanDownloadUrl 
           ? `href="${cleanDownloadUrl}" target="_blank" download`
@@ -329,13 +331,25 @@
       });
     }
 
+    // Google Docs Viewer integration: हटाएगा Drive ऐप रीडायरेक्ट और देगा Zoom कंट्रोल्स
     function openPdfModal(title, url) {
       document.getElementById('modalDocTitle').innerText = title;
-      let safeUrl = url;
-      if (safeUrl.includes('drive.google.com/file/d/')) {
-        safeUrl = safeUrl.replace(/\/view.*$/, '/preview');
+
+      let fileId = '';
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        fileId = match[1];
       }
-      document.getElementById('pdfFrame').src = safeUrl;
+
+      let finalUrl = url;
+      if (fileId) {
+        const directFile = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+        finalUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(directFile)}&embedded=true`;
+      } else if (finalUrl.includes('drive.google.com/file/d/')) {
+        finalUrl = finalUrl.replace(/\/view.*$/, '/preview');
+      }
+
+      document.getElementById('pdfFrame').src = finalUrl;
       document.getElementById('pdfModal').classList.add('active');
     }
 
