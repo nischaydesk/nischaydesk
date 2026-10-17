@@ -188,6 +188,7 @@
 
     <!-- फिल्टर्स -->
     <div class="filter-bar">
+      <!-- Year Filter -->
       <select id="yearFilter">
         <option value="all">सभी वर्ष (2020-2026)</option>
         <option value="2020">2020</option>
@@ -199,6 +200,7 @@
         <option value="2026">2026</option>
       </select>
 
+      <!-- Subject Filter -->
       <select id="subjectFilter">
         <option value="all">सभी विषय</option>
         <option value="math">गणित (Math)</option>
@@ -209,6 +211,14 @@
         <option value="english">अंग्रेजी (English)</option>
       </select>
 
+      <!-- Shift Filter (New Feature) -->
+      <select id="shiftFilter">
+        <option value="all">सभी पाली (Shift 1 & 2)</option>
+        <option value="1">प्रथम पाली (Shift 1)</option>
+        <option value="2">द्वितीय पाली (Shift 2)</option>
+      </select>
+
+      <!-- Search Input -->
       <input type="text" id="searchInput" placeholder="सब्जेक्ट या वर्ष खोजें...">
     </div>
 
@@ -235,12 +245,25 @@
     const pyqGrid = document.getElementById('pyqGrid');
     const yearFilter = document.getElementById('yearFilter');
     const subjectFilter = document.getElementById('subjectFilter');
+    const shiftFilter = document.getElementById('shiftFilter');
     const searchInput = document.getElementById('searchInput');
+
+    // Helper: Google Drive Direct Download URL Formatter
+    function getDirectDownloadUrl(url) {
+      if (!url) return '';
+      // Agar direct Drive file URL hai toh use download URL me badal do
+      const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (fileIdMatch && fileIdMatch[1]) {
+        return `https://drive.usercontent.google.com/download?id=${fileIdMatch[1]}&export=download`;
+      }
+      return url;
+    }
 
     function renderPyq() {
       const year = yearFilter.value;
       const sub = subjectFilter.value;
-      const search = searchInput.value.toLowerCase();
+      const shiftVal = shiftFilter.value;
+      const search = searchInput.value.toLowerCase().trim();
 
       pyqGrid.innerHTML = '';
 
@@ -252,12 +275,23 @@
       const filtered = PYQ_DATA.filter(item => {
         const matchesYear = (year === 'all' || item.year.toString() === year);
         const matchesSub = (sub === 'all' || item.subKey === sub);
-        const matchesSearch = item.subject.toLowerCase().includes(search) || item.year.toString().includes(search);
-        return matchesYear && matchesSub && matchesSearch;
+        
+        // Shift Matching Logic (checks for '1' or 'Shift 1' / '2' or 'Shift 2')
+        let matchesShift = true;
+        if (shiftVal === '1') {
+          matchesShift = item.shift.includes('1') || item.shift.includes('प्रथम');
+        } else if (shiftVal === '2') {
+          matchesShift = item.shift.includes('2') || item.shift.includes('द्वितीय');
+        }
+
+        const matchesSearch = item.subject.toLowerCase().includes(search) || 
+                              item.year.toString().includes(search) || 
+                              item.shift.toLowerCase().includes(search);
+
+        return matchesYear && matchesSub && matchesShift && matchesSearch;
       });
 
       if (filtered.length === 0) {
-        mpGrid = document.getElementById('pyqGrid');
         pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-secondary, #64748b);">कोई प्रश्न पत्र नहीं मिला!</div>`;
         return;
       }
@@ -270,8 +304,10 @@
           ? `onclick="openPdfModal('${item.subject} (${item.year} - ${item.shift})', '${item.pdfUrl}')"`
           : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
 
-        const downBtnAction = hasDown 
-          ? `href="${item.downloadUrl}" target="_blank"`
+        // Direct Download Fix
+        const cleanDownloadUrl = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
+        const downBtnAction = cleanDownloadUrl 
+          ? `href="${cleanDownloadUrl}" target="_blank" download`
           : `onclick="alert('डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
         const card = document.createElement('div');
@@ -310,6 +346,7 @@
 
     yearFilter.addEventListener('change', renderPyq);
     subjectFilter.addEventListener('change', renderPyq);
+    shiftFilter.addEventListener('change', renderPyq);
     searchInput.addEventListener('input', renderPyq);
 
     document.addEventListener('DOMContentLoaded', renderPyq);
