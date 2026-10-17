@@ -7,7 +7,7 @@ const PYQ_DATA = [
   // ==========================================
   // वर्ष 2020
   // ==========================================
-  { id: "pyq-2020-math-s1", year: 2020, subject: "गणित (Mathematics)", subKey: "math", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
+  { id: "pyq-2020-math-s1", year: 2020, subject: "गणित (Mathematics)", subKey: "math", shift: "प्रथम पाली (Shift 1)", pdfUrl: "https://drive.google.com/file/d/16TeKAr6vYcl3pBIYfL_nGlbh6OHqIvjq/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/16TeKAr6vYcl3pBIYfL_nGlbh6OHqIvjq/view?usp=drivesdk" },
   { id: "pyq-2020-math-s2", year: 2020, subject: "गणित (Mathematics)", subKey: "math", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
   { id: "pyq-2020-sci-s1", year: 2020, subject: "विज्ञान (Science)", subKey: "science", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
   { id: "pyq-2020-sci-s2", year: 2020, subject: "विज्ञान (Science)", subKey: "science", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
