@@ -8,17 +8,17 @@ const PYQ_DATA = [
   // वर्ष 2020
   // ==========================================
   { id: "pyq-2020-math-s1", year: 2020, subject: "गणित (Mathematics)", subKey: "math", shift: "प्रथम पाली (Shift 1)", pdfUrl: "https://drive.google.com/file/d/16TeKAr6vYcl3pBIYfL_nGlbh6OHqIvjq/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/16TeKAr6vYcl3pBIYfL_nGlbh6OHqIvjq/view?usp=drivesdk" },
-  { id: "pyq-2020-math-s2", year: 2020, subject: "गणित (Mathematics)", subKey: "math", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-sci-s1", year: 2020, subject: "विज्ञान (Science)", subKey: "science", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-sci-s2", year: 2020, subject: "विज्ञान (Science)", subKey: "science", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-sst-s1", year: 2020, subject: "सामाजिक विज्ञान (Social Science)", subKey: "sst", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-sst-s2", year: 2020, subject: "सामाजिक विज्ञान (Social Science)", subKey: "sst", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-sans-s1", year: 2020, subject: "संस्कृत (Sanskrit)", subKey: "sanskrit", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-sans-s2", year: 2020, subject: "संस्कृत (Sanskrit)", subKey: "sanskrit", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-hindi-s1", year: 2020, subject: "हिंदी (Hindi)", subKey: "hindi", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-hindi-s2", year: 2020, subject: "हिंदी (Hindi)", subKey: "hindi", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
+  { id: "pyq-2020-math-s2", year: 2020, subject: "गणित (Mathematics)", subKey: "math", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "https://drive.google.com/file/d/14rwLf5qrMEq95bI3fL0NHDIgszkP4VTt/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/14rwLf5qrMEq95bI3fL0NHDIgszkP4VTt/view?usp=drivesdk" },
+  { id: "pyq-2020-sci-s1", year: 2020, subject: "विज्ञान (Science)", subKey: "science", shift: "प्रथम पाली (Shift 1)", pdfUrl: "https://drive.google.com/file/d/1X7lkKMiZGLRxdaVu_X4bArR95dSdSorp/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1X7lkKMiZGLRxdaVu_X4bArR95dSdSorp/view?usp=drivesdk" },
+  { id: "pyq-2020-sci-s2", year: 2020, subject: "विज्ञान (Science)", subKey: "science", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "https://drive.google.com/file/d/1VP9Vxbi9uWqRKn2Hs1dajDSa0NEcRzLI/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1VP9Vxbi9uWqRKn2Hs1dajDSa0NEcRzLI/view?usp=drivesdk" },
+  { id: "pyq-2020-sst-s1", year: 2020, subject: "सामाजिक विज्ञान (Social Science)", subKey: "sst", shift: "प्रथम पाली (Shift 1)", pdfUrl: "https://drive.google.com/file/d/1ruCafVmsbmcHc89nGfS66hvZkm7hJ4BT/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1ruCafVmsbmcHc89nGfS66hvZkm7hJ4BT/view?usp=drivesdk" },
+  { id: "pyq-2020-sst-s2", year: 2020, subject: "सामाजिक विज्ञान (Social Science)", subKey: "sst", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "https://drive.google.com/file/d/1aRb2ll7eod6ivihPlDNbIDe6bkzovAMg/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1aRb2ll7eod6ivihPlDNbIDe6bkzovAMg/view?usp=drivesdk" },
+  { id: "pyq-2020-sans-s1", year: 2020, subject: "संस्कृत (Sanskrit)", subKey: "sanskrit", shift: "प्रथम पाली (Shift 1)", pdfUrl: "https://drive.google.com/file/d/1UB9NLfTzucEmUoN-L_UqcJgdXwu3mF-Y/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1UB9NLfTzucEmUoN-L_UqcJgdXwu3mF-Y/view?usp=drivesdk" },
+  { id: "pyq-2020-sans-s2", year: 2020, subject: "संस्कृत (Sanskrit)", subKey: "sanskrit", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "https://drive.google.com/file/d/1m68CxfTDiwqBDDl-aw9WstXpXjEa3QTA/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1m68CxfTDiwqBDDl-aw9WstXpXjEa3QTA/view?usp=drivesdk" },
+  { id: "pyq-2020-hindi-s1", year: 2020, subject: "हिंदी (Hindi)", subKey: "hindi", shift: "प्रथम पाली (Shift 1)", pdfUrl: "https://drive.google.com/file/d/1s-uFPy0dDvA6AleWcrZnD-m6LMvZaTIk/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1s-uFPy0dDvA6AleWcrZnD-m6LMvZaTIk/view?usp=drivesdk" },
+  { id: "pyq-2020-hindi-s2", year: 2020, subject: "हिंदी (Hindi)", subKey: "hindi", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "https://drive.google.com/file/d/1PJ5-m-OzL6wt7j1qkytS02-2yQE1uTGw/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/1PJ5-m-OzL6wt7j1qkytS02-2yQE1uTGw/view?usp=drivesdk" },
   { id: "pyq-2020-eng-s1", year: 2020, subject: "अंग्रेजी (English)", subKey: "english", shift: "प्रथम पाली (Shift 1)", pdfUrl: "", downloadUrl: "" },
-  { id: "pyq-2020-eng-s2", year: 2020, subject: "अंग्रेजी (English)", subKey: "english", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "", downloadUrl: "" },
+  { id: "pyq-2020-eng-s2", year: 2020, subject: "अंग्रेजी (English)", subKey: "english", shift: "द्वितीय पाली (Shift 2)", pdfUrl: "https://drive.google.com/file/d/14XqaVFNgGv4_L8Hca40jdPjKKOVdoucA/view?usp=drivesdk/preview", downloadUrl: "https://drive.google.com/file/d/14XqaVFNgGv4_L8Hca40jdPjKKOVdoucA/view?usp=drivesdk" },
 
   // ==========================================
   // वर्ष 2021
