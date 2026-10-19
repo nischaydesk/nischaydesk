@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk User Auth & Profile State Management Engine (v5.1 Final Fix)
-   Fixed: Auto-Close App Browser Window & Strict Mobile Redirect Handling
+   NischayDesk User Auth & Profile State Management Engine (v5.2 Modal Edition)
+   Features: In-Page Welcome Login Modal, Popup Authentication & State Lock
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const sectionClass11 = document.getElementById('sectionClass11');
   const sectionClass12 = document.getElementById('sectionClass12');
 
+  // 🌟 NischayDesk Welcome Login Modal Elements 🌟
+  const welcomeLoginModal = document.getElementById('ndWelcomeLoginModal');
+  const modalGoogleLoginBtn = document.getElementById('btnContinueGoogleModal');
+
   const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
                ? window.NischayConfig.authInstance 
                : (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
@@ -49,42 +53,65 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!auth) return;
 
-  // 1. रीडायरेक्ट परिणाम कैप्चर करना
+  // 1. रीडायरेक्ट परिणाम कैप्चर करना (अगर किसी ब्राउज़र में पॉपअप ब्लॉक होकर फॉलबैक रीडायरेक्ट चले)
   auth.getRedirectResult()
     .then((result) => {
       if (result && result.user) {
         console.log("रीडायरेक्ट लॉगिन सफल:", result.user.displayName);
-        // अगर यह अलग विंडो में खुला है तो इसे बंद कर दें
         if (window.opener) {
           window.close();
         }
       }
     })
     .catch((err) => {
-      // यूजर द्वारा पॉप-अप बंद करने वाले अलर्ट को पूरी तरह दबा दें
       if (err && err.code && err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
         console.warn("Auth Notice:", err.message);
       }
     });
 
-  // 2. 🌟 लॉगिन बटन क्लिक हैंडलर (Strict Mobile Redirect Support) 🌟
+  // 2. 🌟 मॉडर्न वेलकम लॉगिन मॉडल ट्रिगर (सीधे रीडायरेक्ट के बजाय पहले कार्ड खुलेगा) 🌟
   if (headerAuthBtn) {
     headerAuthBtn.addEventListener('click', function (e) {
-      e.preventDefault(); // डिफ़ॉल्ट बिहेवियर रोकें
-      if (!auth) {
-        alert("⚠ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
-        return;
+      e.preventDefault();
+      if (welcomeLoginModal) {
+        welcomeLoginModal.style.display = 'flex';
+      } else {
+        triggerDirectGoogleLogin();
       }
-      
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-
-      // मोबाइल के लिए हमेशा Redirect का ही इस्तेमाल करें, Popup अक्सर अटक जाता है।
-      auth.signInWithRedirect(provider).catch(err => {
-          console.error("लॉगिन त्रुटि:", err);
-          alert("लॉगिन शुरू करने में समस्या हुई। कृपया पेज को रिफ्रेश करें।");
-      });
     });
+  }
+
+  // वेलकम कार्ड के अंदर जब छात्र "Continue with Google" दबाए
+  if (modalGoogleLoginBtn) {
+    modalGoogleLoginBtn.addEventListener('click', function () {
+      triggerDirectGoogleLogin();
+    });
+  }
+
+  // Google लॉगिन प्रोसेस (Screen Popup Preference)
+  function triggerDirectGoogleLogin() {
+    if (!auth) {
+      alert("⚠ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड बाद पुनः प्रयास करें!");
+      return;
+    }
+    
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+
+    // इन-पेज पॉपअप प्राथमिकता (ब्लैंक URL रीलोड से बचने के लिए)
+    auth.signInWithPopup(provider)
+      .then(() => {
+        if (welcomeLoginModal) welcomeLoginModal.style.display = 'none';
+      })
+      .catch((err) => {
+        // यदि मोबाइल ब्राउज़र ने पॉपअप ब्लॉक किया हो, तभी रीडायरेक्ट फॉलबैक करें
+        if (err.code === 'auth/popup-blocked') {
+          auth.signInWithRedirect(provider);
+        } else if (err.code !== 'auth/popup-closed-by-user') {
+          console.error("लॉगिन त्रुटि:", err);
+          alert("लॉगिन शुरू करने में समस्या हुई। कृपया पुनः प्रयास करें।");
+        }
+      });
   }
 
   window.openClassSwitchModal = function () {
@@ -149,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 3. ऑथ स्टेट बदलना (यूजर लॉग-इन होने पर)
   auth.onAuthStateChanged(async (user) => {
     if (user) {
+      if (welcomeLoginModal) welcomeLoginModal.style.display = 'none';
       if (headerAuthBtn) headerAuthBtn.style.display = 'none';
       if (userProfileWidget) userProfileWidget.style.display = 'flex';
 
