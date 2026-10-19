@@ -159,7 +159,7 @@
     .splash-brand-title {
       font-size: 2.2rem;
       font-weight: 900;
-      color: #0f172a; /* एकदम साफ़ डार्क टेक्स्ट */
+      color: #0f172a;
       margin-bottom: 4px;
       letter-spacing: -0.5px;
       opacity: 0;
@@ -846,11 +846,151 @@
       border-radius: 8px;
       transition: width 0.1s ease-out;
     }
+
+    /* 🌟 NEW: NISCHAYDESK GLASS WELCOME LOGIN MODAL 🌟 */
+    .nd-login-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 20, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 99999999;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+    .nd-login-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 380px;
+      padding: 30px 24px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(2, 132, 199, 0.2);
+      position: relative;
+      text-align: center;
+      animation: ndPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    html.light-mode .nd-login-card,
+    html[data-theme="light"] .nd-login-card {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+    }
+    @keyframes ndPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .nd-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: all 0.2s;
+    }
+    .nd-modal-close:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+    .nd-logo-bubble {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+    }
+    .nd-logo-bubble img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .nd-login-card h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .nd-login-card h3 span {
+      color: #38bdf8;
+    }
+    .nd-tagline {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+    .nd-features-box {
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .nd-features-box div {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nd-features-box div:last-child {
+      margin-bottom: 0;
+    }
+    .nd-btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #1f2937;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nd-btn-google:active {
+      transform: scale(0.97);
+    }
+    .nd-btn-google img {
+      width: 22px;
+      height: 22px;
+    }
+    .nd-terms-note {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 18px;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body class="app-body">
 
-  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY (Clean Light Mode • Only Once per Session) -->
+  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY -->
   <div id="nischaySplashOverlay">
     <div class="splash-content-box">
       <div class="splash-logo-wrapper">
@@ -986,7 +1126,6 @@
       </div>
     </nav>
 
-    <!-- मेन्यू के सबसे नीचे डेवलपर ब्रांडिंग (English) -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         By Prince Kumar (Developer) ⚡
@@ -1024,7 +1163,6 @@
           बिहार विद्यालय परीक्षा समिति (BSEB) के छात्रों के लिए निःशुल्क टॉपर नोट्स, 100-OMR परीक्षा सिमुलेटर और प्रैक्टिस टूल्स।
         </p>
 
-        <!-- 2 मुख्य एक्शन बटन -->
         <div class="hero-buttons-duo">
           <a href="bseb-simulator.html" class="hero-btn-primary">
             <span>🏛️ परीक्षा हॉल में जाएँ</span>
@@ -1045,9 +1183,7 @@
             <div class="poll-question-text" id="dailyPollQ">
               लोड हो रहा है...
             </div>
-            <div class="poll-options-grid" id="pollOptionsGrid">
-              <!-- विकल्प जावास्क्रिप्ट से गतिशील बनेंगे -->
-            </div>
+            <div class="poll-options-grid" id="pollOptionsGrid"></div>
           </div>
 
           <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
@@ -1097,7 +1233,6 @@
       </div>
 
       <div class="pro-icons-grid">
-        <!-- 🌟 NEW QUIZ BUTTON 🌟 -->
         <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ef4444; border: 1.5px solid #ef4444;">🎯</div>
           <span style="color:#ef4444; font-weight: 800;">डेली क्विज़</span>
@@ -1400,7 +1535,6 @@
         <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
         <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
-        <!-- Quick Class Selection Dropdown -->
         <div style="text-align: left; margin-bottom: 16px;">
           <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
           <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
@@ -1424,6 +1558,36 @@
 
       </div>
     </div>
+
+    <!-- 🌟 NEW: ULTRA-MODERN NISCHAYDESK WELCOME LOGIN MODAL 🌟 -->
+    <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
+      <div class="nd-login-card">
+        <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
+        
+        <div class="nd-logo-bubble">
+          <img src="logo.png" alt="NischayDesk Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
+        </div>
+
+        <h3>Welcome to <span>NischayDesk</span></h3>
+        <p class="nd-tagline">बिहार बोर्ड (BSEB) डिजिटल परीक्षा एवं टॉपर तैयारी पोर्टल 🚀</p>
+
+        <div class="nd-features-box">
+          <div><span>✨</span> 100% फ्री टॉपर हैंडराइटिंग नोट्स</div>
+          <div><span>⏱️</span> 3h 15m लाइव परीक्षा सिमुलेटर</div>
+          <div><span>🎯</span> OMR जनरेटर एवं ऑटो-रैंकिंग सिस्टम</div>
+        </div>
+
+        <button type="button" class="nd-btn-google" id="btnContinueGoogleModal" onclick="triggerGooglePopupFromModal()">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+          <span>Continue with Google</span>
+        </button>
+
+        <div class="nd-terms-note">
+          लॉगिन करके आप NischayDesk की सेवा शर्तों एवं प्राइवेसी पॉलिसी से सहमत होते हैं।
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- 4. OFFICIAL KHAN ACADEMY INSPIRATION FOOTER -->
@@ -1437,7 +1601,6 @@
         <a href="bseb-simulator.html">अभ्यास प्रारंभ करें →</a>
       </div>
 
-      <!-- टू-कॉलम लिंक्स -->
       <div class="footer-columns-grid">
         <div>
           <div class="footer-column-title">पोर्टल मेनू</div>
@@ -1466,7 +1629,6 @@
         </div>
       </div>
 
-      <!-- 👨‍💻 डेवलपर एवं प्राइवेसी पॉलिसी सेक्शन -->
       <div class="founder-pro-strip">
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
@@ -1512,7 +1674,7 @@
 
   <!-- 6. ALL JAVASCRIPT LOGIC -->
   <script>
-    /* 🌟 स्मार्ट स्प्लैश स्क्रीन (सिर्फ पहली बार खुलेगी, रिफ्रेश या पेज बदलने पर नहीं) */
+    /* 🌟 स्मार्ट स्प्लैश स्क्रीन */
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("nischaySplashOverlay");
       const alreadySeen = sessionStorage.getItem("nd_splash_seen");
@@ -1722,7 +1884,7 @@
 
       alert(`✓ आपकी कक्षा Class ${chosen} सफलतापूर्वक सेव कर दी गई है!`);
       closeProfileModal();
-      window.location.reload(); // पेज रीफ्रेश ताकि UI अपडेट हो जाए
+      window.location.reload();
     }
 
     function syncUserAuthState(user) {
@@ -1762,6 +1924,46 @@
       }
     }
 
+    /* 🌟 NEW: NISCHAYDESK WELCOME LOGIN MODAL CONTROLS 🌟 */
+    function openWelcomeLoginModal() {
+      const modal = document.getElementById('ndWelcomeLoginModal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeWelcomeLoginModal() {
+      const modal = document.getElementById('ndWelcomeLoginModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleOutsideModalClick(e) {
+      if (e.target.id === 'ndWelcomeLoginModal') {
+        closeWelcomeLoginModal();
+      }
+    }
+
+    function triggerGooglePopupFromModal() {
+      if (window.firebase && firebase.auth) {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        
+        // सीधे स्क्रीन पर इन-पेज पॉपअप खुलेगा (बिना किसी ब्लैंक firebaseapp.com रीडायरेक्ट के)
+        firebase.auth().signInWithPopup(provider)
+          .then((res) => {
+            closeWelcomeLoginModal();
+          })
+          .catch((err) => {
+            // अगर मोबाइल ब्राउज़र ने पॉपअप ब्लॉक किया, केवल तभी सुरक्षित फॉलबैक चलेगा
+            if (err.code === 'auth/popup-blocked') {
+              firebase.auth().signInWithRedirect(provider);
+            } else if (err.code !== 'auth/popup-closed-by-user') {
+              console.warn(err);
+            }
+          });
+      } else {
+        alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड प्रतीक्षा करें!");
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const initialClass = localStorage.getItem('nd_selected_class') || '10th';
       applyStudentClass(initialClass);
@@ -1769,21 +1971,12 @@
       renderDynamicQuestion(0);
       startQuestionRotation();
 
-      /* 🌟 SECURE LOGIN TRIGGER LINKED WITH bseb-engine.js 🌟 */
+      /* 🌟 अब हेडर बटन दबाने पर सीधे गूगल नहीं जाएगा, पहले वेलकम कार्ड खुलेगा 🌟 */
       const authBtn = document.getElementById('headerAuthBtn');
       if (authBtn) {
-        authBtn.onclick = () => {
-          if (typeof triggerGoogleLogin === "function") {
-            triggerGoogleLogin();
-          } else if (window.firebase && firebase.auth) {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            provider.setCustomParameters({ prompt: 'select_account' });
-            firebase.auth().signInWithPopup(provider).catch(() => {
-              firebase.auth().signInWithRedirect(provider);
-            });
-          } else {
-            alert("⚠️ ऑथेंटिकेशन सिस्टम लोड हो रहा है, कृपया 2 सेकंड प्रतीक्षा करें!");
-          }
+        authBtn.onclick = (e) => {
+          e.preventDefault();
+          openWelcomeLoginModal();
         };
       }
 
@@ -1827,7 +2020,7 @@
       if (loader) loader.style.display = 'none';
       const btn = document.getElementById('btnPerformLogout');
       if (btn) btn.disabled = false;
-      modal.style.display = 'none'; // मोडल को छिपाएँ
+      modal.style.display = 'none';
     }
 
     function handleSlowLogout() {
@@ -1946,7 +2139,7 @@
               h = Math.round((h * maxDimension) / w);
               w = maxDimension;
             } else if (h > maxDimension) {
-              w = Math.round((w * maxDimension) / h);
+              h = Math.round((h * maxDimension) / h);
               h = maxDimension;
             }
 
