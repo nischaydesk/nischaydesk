@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (v5.1 Smart URL-Filter Edition)
+   NischayDesk Complete Notes Controller (v5.2 Smart Viewer & Zoom Edition)
    Architected by: Prince Kumar (NischayDesk)
    Features: Strict Class Separation (10th/11th/12th), Dynamic Pills,
-             URL Auto-Subject Select, In-App HD Google Drive Previewer
+             URL Auto-Subject Select, In-App HD Zoomable PDF Viewer, Direct Download
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -57,26 +57,38 @@ document.addEventListener('DOMContentLoaded', function () {
     return (matchParam && matchParam[1]) ? matchParam[1] : null;
   }
 
+  // 🔍 ज़ूम इन, ज़ूम आउट और पिंच सपोर्ट वाला सुरक्षित व्यूअर
   function getSafePreviewUrl(rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (fileId) {
-      return `https://drive.google.com/file/d/${fileId}/preview`;
+      const directFile = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+      return `https://docs.google.com/viewer?url=${encodeURIComponent(directFile)}&embedded=true`;
+    }
+    if (rawUrl && rawUrl.includes('drive.google.com/file/d/')) {
+      return rawUrl.replace(/\/view.*$/, '/preview');
     }
     return rawUrl;
   }
 
+  // 📥 बिना जीमेल अकाउंट मांगे डायरेक्ट डाउनलोड करने का फंक्शन
   window.downloadPdfDirectly = function (rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (!fileId) {
       alert("डाउनलोड लिंक उपलब्ध नहीं है!");
       return;
     }
-    window.open(`https://drive.google.com/uc?export=download&id=${fileId}`, '_blank');
+    const directUrl = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+    const tempLink = document.createElement('a');
+    tempLink.href = directUrl;
+    tempLink.target = '_blank';
+    tempLink.setAttribute('download', '');
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
   };
 
   // 🎯 छात्र की सक्रिय कक्षा के अनुसार सिर्फ़ उसी क्लास का डेटा लोड करना
   function getActiveStudentClass() {
-    // अगर URL में क्लास दी हो (जैसे ?class=10th) तो उसे प्राथमिकता दें
     const urlParams = new URLSearchParams(window.location.search);
     const urlClass = urlParams.get('class');
     if (urlClass) {
@@ -120,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // 2. 🌟 URL से फ़िल्टर चेक करें (जैसे ?filter=10-math या ?subject=10-math)
+    // 2. URL से फ़िल्टर चेक करें
     const urlParams = new URLSearchParams(window.location.search);
     const requestedFilter = urlParams.get('filter') || urlParams.get('subject');
 
@@ -130,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
       currentFilterSubject = 'all';
     }
 
-    // 3. फ़िल्टर पिल्स (बटन) को एडजस्ट और एक्टिवेट करें
+    // 3. फ़िल्टर पिल्स (बटन) को एक्टिवेट करें
     adjustFilterPills(activeClass, currentFilterSubject);
 
     // 4. ग्रिड रेंडर करें
@@ -146,14 +158,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const filterVal = btn.getAttribute('data-filter');
       btn.classList.remove('active');
 
-      // "सभी विषय" का बटन
       if (filterVal === 'all') {
         btn.style.display = 'inline-block';
         if (selectedFilter === 'all') btn.classList.add('active');
         return;
       }
 
-      // केवल छात्र की कक्षा के विषय बटन दिखाना
       if (filterVal.startsWith(sClass + '-')) {
         btn.style.display = 'inline-block';
         if (filterVal === selectedFilter) {
@@ -165,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // अगर कोई बटन मैच हो गया, तो उसे स्क्रॉल करके सामने लाएं
     if (matchedButton) {
       matchedButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     } else if (selectedFilter === 'all') {
@@ -268,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     if (frameLoader) frameLoader.style.display = 'flex';
 
+    // 🚀 Google Docs Viewer के माध्यम से लोड होगा (ज़ूम और साफ़ कंट्रोल्स के साथ)
     studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
 
     studioPdfFrame.onload = function () {
