@@ -1025,7 +1025,7 @@
       line-height: 1.4;
     }
 
-    /* 🌟 NEW: CLASS CHANGE TOAST NOTIFICATION 🌟 */
+    /* 🌟 NEW: CLASS CHANGE TOAST NOTIFICATION HTML 🌟 */
     .nd-toast-container {
       position: fixed;
       bottom: 80px;
@@ -1152,6 +1152,12 @@
       <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
         <span class="icon">🤖</span> AI-Desk (स्मार्ट AI टूल)
       </a>
+      
+      <!-- 🌟 NEW: TO-DO LIST IN DRAWER 🌟 -->
+      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+        <span class="icon">✅</span> माय टू-डू लिस्ट (To-Do)
+      </a>
+
       <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
         <span class="icon">🎯</span> BSEB OMR एवं कॉपी जनरेटर
       </a>
@@ -1341,6 +1347,18 @@
         <a href="bseb-result.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#10b981;">📊</div>
           <span>रिजल्ट</span>
+        </a>
+
+        <!-- 🌟 NEW: IMAGE TO PDF CONVERTER 🌟 -->
+        <a href="javascript:void(0)" onclick="triggerFastPdfConverter()" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#a855f7; border: 1.5px solid #a855f7;">🖼️</div>
+          <span style="color:#a855f7; font-weight: 800;">इमेज To PDF</span>
+        </a>
+        
+        <!-- 🌟 NEW: MARKS CALCULATOR 🌟 -->
+        <a href="calculator.html" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#ec4899; border: 1.5px solid #ec4899;">🧮</div>
+          <span style="color:#ec4899; font-weight: 800;">मार्क्स कैलकुलेटर</span>
         </a>
 
         <a href="notes.html" class="pro-icon-link">
@@ -1608,20 +1626,20 @@
     <!-- छिपे हुए फ़ाइल इनपुट (PDF Engine) -->
     <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
 
-    <!-- ⚡ लाइव PDF जनरेशन प्रोग्रेस मोडल -->
+    <!-- ⚡ लाइव PDF जनरेशन प्रोग्रेस मोडल (प्रीमियम स्टूडियो लुक) -->
     <div id="heavyPdfModal">
-      <div class="heavy-pdf-box">
-        <div style="font-size: 2.4rem; margin-bottom: 8px;">⚡</div>
-        <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.2rem;">तगड़ा PDF इंजन सक्रिय है...</h3>
-        <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;" id="heavyPdfStatusText">फ़ोटो लोड हो रही हैं...</p>
+      <div class="heavy-pdf-box" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56,189,248,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(56,189,248,0.2);">
+        <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5)); animation: pulseGlow 2s infinite;">🖼️ ➔ 📄</div>
+        <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.3rem; font-weight: 900;">HD इमेज To PDF इंजन</h3>
+        <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;" id="heavyPdfStatusText">कृपया प्रतीक्षा करें, आपकी फोटो प्रोसेस हो रही है...</p>
         
-        <div class="pdf-track">
-          <div class="pdf-fill" id="heavyPdfFillBar"></div>
+        <div class="pdf-track" style="margin: 20px 0 12px 0; height: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
+          <div class="pdf-fill" id="heavyPdfFillBar" style="background: linear-gradient(90deg, #0284c7, #38bdf8, #a855f7); box-shadow: 0 0 10px rgba(56,189,248,0.5);"></div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: #cbd5e1;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; color: #94a3b8;">
           <span id="heavyPdfPageCounter">0 / 0 पेज</span>
-          <span id="heavyPdfPercent">0%</span>
+          <span id="heavyPdfPercent" style="color: #38bdf8;">0%</span>
         </div>
       </div>
     </div>
@@ -2191,7 +2209,7 @@
       }, 800);
     }
 
-    // 🚀 PDF ENGINE
+    // 🚀 PDF ENGINE (PREMIUM STUDIO VERSION)
     function triggerFastPdfConverter() {
       const input = document.getElementById('heavyPdfFileInput');
       if (input) input.click();
@@ -2261,10 +2279,10 @@
 
         setTimeout(() => {
           const timestamp = new Date().toISOString().slice(0,10);
-          pdf.save(`NischayDesk_Doc_${timestamp}.pdf`);
+          pdf.save(`NischayDesk_ImagesToPDF_${timestamp}.pdf`);
           modal.style.display = 'none';
           e.target.value = '';
-        }, 500);
+        }, 800);
 
       } catch (err) {
         alert("PDF बनाने में त्रुटि: " + err.message);
