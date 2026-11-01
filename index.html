@@ -4,20 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal</title>
-  
-  <!-- Google Search Console Verification -->
+<!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="uSCJGPNxrZ23LYmb3FsgLqdXYBZGGE1x8FDAyr-WSis" />
-  
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-WXM8RJ080H');
-  </script>
-  
-  <!-- Primary SEO Tags -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WXM8RJ080H');
+</script>
+  <!-- Primary SEO Tags (Updated for English Search) -->
   <link rel="canonical" href="https://nischaydesk.github.io/" />
   <meta name="title" content="NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal" />
   <meta name="description" content="NischayDesk is a free Smart EdTech & Student Portal for Bihar Board (BSEB). Get 100% free topper notes, 3h 15m exam simulator, OMR generator, and study materials. (निश्चय-डेस्क: बिहार बोर्ड छात्रों के लिए 100% मुफ़्त टॉपर नोट्स, OMR व कॉपी जनरेटर)।" />
@@ -41,7 +39,7 @@
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Core Theme & Layout Stylesheets -->
@@ -62,6 +60,7 @@
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
 
+  <!-- अगर सेशन में पहले से खुला हुआ है, तो स्क्रीन झपकने से पहले ही छुपा दें -->
   <script>
     if (sessionStorage.getItem("nd_splash_seen")) {
       document.documentElement.classList.add("skip-splash");
@@ -102,211 +101,955 @@
       padding-bottom: 74px;
     }
 
-    /* 🌟 GOOGLE TRANSLATE STYLES (PREMIUM LOOK) */
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    body { top: 0px !important; }
-    .goog-te-gadget { color: transparent !important; font-size: 0px !important; }
-    .goog-te-gadget img { display: none !important; }
-    
-    #google_translate_element select {
+    /* 🌟 सुपर-क्लीन लाइट मोड स्प्लैश स्क्रीन (Light Theme Splash) */
+    html.skip-splash #nischaySplashOverlay {
+      display: none !important;
+    }
+
+    #nischaySplashOverlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+      z-index: 9999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      overflow: hidden;
+    }
+
+    #nischaySplashOverlay.fade-away {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .splash-logo-wrapper {
+      width: 92px;
+      height: 92px;
+      margin-bottom: 18px;
+    }
+
+    .splash-animated-logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+      animation: splashZoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .splash-welcome-title {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #0284c7;
+      letter-spacing: 3.5px;
+      margin-bottom: 6px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.2s forwards;
+    }
+
+    .splash-brand-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.35s forwards;
+    }
+
+    .splash-brand-title span {
+      color: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .splash-tagline {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.5s forwards;
+    }
+
+    .splash-pulse-loader {
+      width: 44px;
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: splashFadeIn 0.4s 0.65s forwards;
+    }
+
+    .splash-pulse-loader::after {
+      content: "";
+      display: block;
+      width: 22px;
+      height: 100%;
+      background: #0284c7;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: -22px;
+      animation: splashLoadingSlide 1.1s infinite ease-in-out;
+    }
+
+    .splash-developer-badge {
+      font-size: 0.82rem;
+      color: #334155;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border-top: 1.5px solid #e2e8f0;
+      padding-top: 14px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.8s forwards;
+    }
+
+    .splash-developer-badge .dev-name {
+      color: #0284c7;
+    }
+
+    @keyframes splashZoomIn {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes splashFadeInUp {
+      0% { transform: translateY(12px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes splashFadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes splashLoadingSlide {
+      0% { left: -22px; }
+      50% { left: 44px; }
+      100% { left: -22px; }
+    }
+
+    /* 🌟 HERO SPOTLIGHT SECTION */
+    .hero-spotlight-khan {
+      background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
+      color: #ffffff;
+      padding: 28px 18px 36px;
+      border-radius: 0 0 26px 26px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    html.light-mode .hero-spotlight-khan,
+    html[data-theme="light"] .hero-spotlight-khan {
+      background: radial-gradient(circle at 90% 10%, #e0f2fe 0%, #ffffff 100%);
+      color: #0f172a;
+    }
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-chip-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .hero-main-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      letter-spacing: -0.4px;
+    }
+    .hero-main-title span {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc-p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+    .hero-buttons-duo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .hero-btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 13px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+      text-align: center;
+    }
+    .hero-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      text-decoration: none;
+      padding: 13px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    /* 🌟 बिना लॉगिन वाले छात्रों के लिए स्पेशल कक्षा चयन बार (Guest Class Bar) */
+    .guest-class-bar {
+      margin-bottom: 16px;
+      background: rgba(2, 132, 199, 0.12);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .guest-class-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .guest-badge-indicator {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+    .guest-class-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .guest-class-actions select {
       background: var(--card-bg);
       color: var(--text-main);
-      border: 1.5px solid var(--card-border);
-      padding: 6px 12px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 6px 10px;
       border-radius: 8px;
-      outline: none;
-      font-size: 0.75rem;
       font-weight: 800;
+      font-size: 0.8rem;
       cursor: pointer;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: border-color 0.2s;
+      outline: none;
     }
-    #google_translate_element select:hover {
+
+    /* 🌟 NATIONAL PLATFORM TRUST STRIP */
+    .trust-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: rgba(11, 26, 48, 0.6);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 16px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    html.light-mode .trust-stats-strip,
+    html[data-theme="light"] .trust-stats-strip {
+      background: #ffffff;
+    }
+    .trust-stat-box h4 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #38bdf8;
+      line-height: 1.1;
+    }
+    .trust-stat-box p {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* 🌟 DAILY DYNAMIC ROTATING OMR POLL */
+    .daily-poll-card {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09));
+      border: 1.5px solid rgba(56, 189, 248, 0.32);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 18px;
+      position: relative;
+    }
+    .poll-tag-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .poll-badge {
+      background: #0284c7;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .poll-counter-indicator {
+      font-size: 0.72rem;
+      color: #38bdf8;
+      font-weight: 800;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .poll-dynamic-box {
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .poll-dynamic-box.fade-out {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    .poll-question-text {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text-main);
+      line-height: 1.45;
+      min-height: 42px;
+    }
+    .poll-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .poll-opt-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .poll-opt-btn:hover {
       border-color: #38bdf8;
     }
-    .nav-actions {
+    .poll-opt-btn.correct {
+      background: rgba(16, 185, 129, 0.25) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+    }
+    .poll-opt-btn.wrong {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #f87171 !important;
+    }
+
+    /* 🌟 HORIZONTAL CATEGORY SCROLLER */
+    .pills-scroll-tray {
+      display: flex;
+      gap: 8px;
+      padding: 16px 18px 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .pills-scroll-tray::-webkit-scrollbar { display: none; }
+    .pill-anchor {
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .pill-anchor.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+
+    /* 🌟 4-COLUMN COMPACT APP ICONS GRID */
+    .portal-section-wrap {
+      padding: 20px 18px 4px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-head-pro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .section-head-pro h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .section-head-pro a {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    .pro-icons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 10px;
+      text-align: center;
+    }
+    .pro-icon-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .icon-squircle-bubble {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.15s ease;
+    }
+    .pro-icon-link:active .icon-squircle-bubble {
+      transform: scale(0.92);
+    }
+    .pro-icon-link span {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    /* 🌟 ULTRA-CLEAN STUDY MATERIAL ROW LIST */
+    .pro-rows-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pro-list-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      padding: 13px 15px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+    .pro-list-row:active {
+      background: rgba(56, 189, 248, 0.1);
+    }
+    .pro-row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pro-row-badge-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .pro-row-text h4 {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+    }
+    .pro-row-text p {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .pro-row-arrow {
+      color: #64748b;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    /* 🌟 FOOTER */
+    .khan-full-footer {
+      background-color: var(--brand-navy);
+      color: #ffffff;
+      padding: 38px 18px 24px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    html.light-mode .khan-full-footer,
+    html[data-theme="light"] .khan-full-footer {
+      background-color: #0b1a30;
+    }
+    .footer-inner-khan {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-mission-lead {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+    .footer-sub-lead {
+      font-size: 0.84rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 20px;
+    }
+    .footer-sub-lead a {
+      color: #38bdf8;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .footer-columns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .footer-column-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .footer-ul-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-ul-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .footer-ul-links a:hover {
+      color: #38bdf8;
+    }
+
+    .founder-pro-strip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .founder-info-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .founder-avatar-pic {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #38bdf8;
+    }
+    .founder-meta-text h5 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+    }
+    .founder-meta-text p {
+      font-size: 0.72rem;
+      color: #38bdf8;
+      font-weight: 600;
+      margin: 0;
+    }
+    .privacy-tag-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #38bdf8;
+      text-decoration: none;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    .footer-bottom-statement {
+      font-size: 0.74rem;
+      color: #64748b;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 18px;
+      line-height: 1.5;
+    }
+
+    /* 🌟 FIXED MOBILE BOTTOM DOCK */
+    .mobile-bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(7, 17, 32, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 10000;
+    }
+    html.light-mode .mobile-bottom-dock,
+    html[data-theme="light"] .mobile-bottom-dock {
+      background: rgba(255, 255, 255, 0.95);
+      border-top: 1px solid #e2e8f0;
+    }
+    .dock-link-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      text-decoration: none;
+      color: #64748b;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .dock-link-item.active {
+      color: #38bdf8;
+    }
+    .dock-icon-svg {
+      font-size: 1.25rem;
+    }
+
+    /* 🌟 SIDE DRAWER & BRANDING */
+    .side-drawer {
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer-nav-list {
+      flex: 1 0 auto;
+      padding-bottom: 20px;
+    }
+    
+    /* 🌟 NEW: प्रीमियम डेवलपर बैज (Glowing Gradient Effect) 🌟 */
+    .drawer-footer-custom {
+      margin-top: auto;
+      padding: 24px 16px 90px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .drawer-footer-custom::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      background: rgba(56, 189, 248, 0.2);
+      filter: blur(40px);
+      border-radius: 50%;
+    }
+    .developer-branding-tag {
+      font-size: 0.95rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineDev 3s linear infinite;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    @keyframes shineDev {
+      to { background-position: 200% center; }
+    }
+    .developer-sub-badge {
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* PDF MODAL STYLE */
+    #heavyPdfModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 999999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .heavy-pdf-box {
+      background: #1e293b;
+      border: 2px solid #0284c7;
+      border-radius: 16px;
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      color: #ffffff;
+    }
+    .pdf-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(2, 132, 199, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 16px 0 10px 0;
+      border: 1px solid #0284c7;
+    }
+    .pdf-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #22c55e);
+      border-radius: 8px;
+      transition: width 0.1s ease-out;
+    }
+
+    /* 🌟 NEW: NISCHAYDESK GLASS WELCOME LOGIN MODAL 🌟 */
+    .nd-login-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 20, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 99999999;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+    .nd-login-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 380px;
+      padding: 30px 24px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(2, 132, 199, 0.2);
+      position: relative;
+      text-align: center;
+      animation: ndPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    html.light-mode .nd-login-card,
+    html[data-theme="light"] .nd-login-card {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+    }
+    @keyframes ndPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .nd-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: all 0.2s;
+    }
+    .nd-modal-close:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+    .nd-logo-bubble {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+    }
+    .nd-logo-bubble img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .nd-login-card h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .nd-login-card h3 span {
+      color: #38bdf8;
+    }
+    .nd-tagline {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+    .nd-features-box {
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .nd-features-box div {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nd-features-box div:last-child {
+      margin-bottom: 0;
+    }
+    .nd-btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #1f2937;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nd-btn-google:active {
+      transform: scale(0.97);
+    }
+    .nd-btn-google img {
+      width: 22px;
+      height: 22px;
+    }
+    .nd-terms-note {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 18px;
+      line-height: 1.4;
+    }
+
+    /* 🌟 NEW: CLASS CHANGE TOAST NOTIFICATION 🌟 */
+    .nd-toast-container {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(16, 185, 129, 0.95);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 999999999;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
-    /* 🌟 SUPER-CLEAN SPLASH SCREEN */
-    html.skip-splash #nischaySplashOverlay { display: none !important; }
-    #nischaySplashOverlay {
-      position: fixed; inset: 0;
-      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
-      z-index: 9999999;
-      display: flex; justify-content: center; align-items: center;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
-      overflow: hidden;
+    .nd-toast-container.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
-    #nischaySplashOverlay.fade-away { opacity: 0; visibility: hidden; pointer-events: none; }
-    .splash-content-box { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 24px; }
-    .splash-logo-wrapper { width: 92px; height: 92px; margin-bottom: 18px; }
-    .splash-animated-logo { width: 100%; height: 100%; border-radius: 24px; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25); animation: splashZoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    .splash-welcome-title { font-size: 0.78rem; font-weight: 900; color: #0284c7; letter-spacing: 3.5px; margin-bottom: 6px; opacity: 0; animation: splashFadeInUp 0.5s 0.2s forwards; }
-    .splash-brand-title { font-size: 2.2rem; font-weight: 900; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.5px; opacity: 0; animation: splashFadeInUp 0.5s 0.35s forwards; }
-    .splash-brand-title span { background: linear-gradient(135deg, #0284c7, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .splash-tagline { font-size: 0.85rem; color: #64748b; font-weight: 700; margin-bottom: 24px; opacity: 0; animation: splashFadeInUp 0.5s 0.5s forwards; }
-    .splash-pulse-loader { width: 44px; height: 4px; background: #e2e8f0; border-radius: 4px; position: relative; overflow: hidden; margin-bottom: 28px; opacity: 0; animation: splashFadeIn 0.4s 0.65s forwards; }
-    .splash-pulse-loader::after { content: ""; display: block; width: 22px; height: 100%; background: #0284c7; border-radius: 4px; position: absolute; top: 0; left: -22px; animation: splashLoadingSlide 1.1s infinite ease-in-out; }
-    .splash-developer-badge { font-size: 0.82rem; color: #334155; font-weight: 800; letter-spacing: 0.5px; border-top: 1.5px solid #e2e8f0; padding-top: 14px; opacity: 0; animation: splashFadeInUp 0.5s 0.8s forwards; }
-    .splash-developer-badge .dev-name { color: #0284c7; }
-
-    @keyframes splashZoomIn { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes splashFadeInUp { 0% { transform: translateY(12px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-    @keyframes splashFadeIn { to { opacity: 1; } }
-    @keyframes splashLoadingSlide { 0% { left: -22px; } 50% { left: 44px; } 100% { left: -22px; } }
-
-    /* 🌟 HERO SPOTLIGHT SECTION */
-    .hero-spotlight-khan { background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%); color: #ffffff; padding: 28px 18px 36px; border-radius: 0 0 26px 26px; border-bottom: 1px solid var(--card-border); }
-    html.light-mode .hero-spotlight-khan, html[data-theme="light"] .hero-spotlight-khan { background: radial-gradient(circle at 90% 10%, #e0f2fe 0%, #ffffff 100%); color: #0f172a; }
-    .hero-container { max-width: 1200px; margin: 0 auto; }
-    .hero-chip-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 4px 12px; border-radius: 999px; font-size: 0.74rem; font-weight: 800; margin-bottom: 12px; }
-    .hero-main-title { font-size: 1.6rem; font-weight: 900; line-height: 1.25; margin-bottom: 8px; letter-spacing: -0.4px; }
-    .hero-main-title span { background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-desc-p { font-size: 0.86rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.55; }
-    .hero-buttons-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .hero-btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff; text-decoration: none; padding: 13px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); text-align: center; }
-    .hero-btn-secondary { background: rgba(255, 255, 255, 0.08); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); text-decoration: none; padding: 13px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; }
-
-    /* 🌟 GUEST CLASS BAR */
-    .guest-class-bar { margin-bottom: 16px; background: rgba(2, 132, 199, 0.12); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-    .guest-class-info { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
-    .guest-badge-indicator { background: #0284c7; color: #ffffff; padding: 3px 10px; border-radius: 8px; font-weight: 900; font-size: 0.82rem; }
-    .guest-class-actions { display: flex; align-items: center; gap: 6px; }
-    .guest-class-actions select { background: var(--card-bg); color: var(--text-main); border: 1px solid rgba(56, 189, 248, 0.4); padding: 6px 10px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; cursor: pointer; outline: none; }
-
-    /* 🌟 TRUST STATS STRIP */
-    .trust-stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: rgba(11, 26, 48, 0.6); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); padding: 14px 16px; text-align: center; max-width: 1200px; margin: 0 auto; }
-    html.light-mode .trust-stats-strip, html[data-theme="light"] .trust-stats-strip { background: #ffffff; }
-    .trust-stat-box h4 { font-size: 1.15rem; font-weight: 900; color: #38bdf8; line-height: 1.1; }
-    .trust-stat-box p { font-size: 0.68rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
-
-    /* 🌟 DAILY ROTATING OMR POLL */
-    .daily-poll-card { background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09)); border: 1.5px solid rgba(56, 189, 248, 0.32); border-radius: 16px; padding: 16px; margin-top: 18px; position: relative; }
-    .poll-tag-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .poll-badge { background: #0284c7; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; }
-    .poll-counter-indicator { font-size: 0.72rem; color: #38bdf8; font-weight: 800; background: rgba(56, 189, 248, 0.12); padding: 2px 8px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.25); }
-    .poll-dynamic-box { transition: opacity 0.35s ease, transform 0.35s ease; }
-    .poll-dynamic-box.fade-out { opacity: 0; transform: translateY(-6px); }
-    .poll-question-text { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); line-height: 1.45; min-height: 42px; }
-    .poll-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .poll-opt-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 9px 12px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: left; transition: all 0.2s; }
-    .poll-opt-btn:hover { border-color: #38bdf8; }
-    .poll-opt-btn.correct { background: rgba(16, 185, 129, 0.25) !important; border-color: #10b981 !important; color: #34d399 !important; }
-    .poll-opt-btn.wrong { background: rgba(239, 68, 68, 0.25) !important; border-color: #ef4444 !important; color: #f87171 !important; }
-
-    /* 🌟 HORIZONTAL PILLS */
-    .pills-scroll-tray { display: flex; gap: 8px; padding: 16px 18px 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1200px; margin: 0 auto; }
-    .pills-scroll-tray::-webkit-scrollbar { display: none; }
-    .pill-anchor { flex: 0 0 auto; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 7px 15px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-decoration: none; }
-    .pill-anchor.active { background: #0284c7; color: #ffffff; border-color: #0284c7; }
-
-    /* 🌟 ICONS GRID & ROWS */
-    .portal-section-wrap { padding: 20px 18px 4px; max-width: 1200px; margin: 0 auto; }
-    .section-head-pro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .section-head-pro h3 { font-size: 1.05rem; font-weight: 800; color: var(--text-main); }
-    .section-head-pro a { font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; }
-    .pro-icons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 10px; text-align: center; }
-    .pro-icon-link { display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 6px; }
-    .icon-squircle-bubble { width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: transform 0.15s ease; }
-    .pro-icon-link:active .icon-squircle-bubble { transform: scale(0.92); }
-    .pro-icon-link span { font-size: 0.72rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
-    .pro-rows-container { display: flex; flex-direction: column; gap: 8px; }
-    .pro-list-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 13px 15px; border-radius: 12px; border: 1px solid var(--card-border); text-decoration: none; transition: background 0.15s ease; }
-    .pro-list-row:active { background: rgba(56, 189, 248, 0.1); }
-    .pro-row-left { display: flex; align-items: center; gap: 12px; }
-    .pro-row-badge-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .pro-row-text h4 { font-size: 0.88rem; font-weight: 800; color: var(--text-main); margin: 0; }
-    .pro-row-text p { font-size: 0.74rem; color: var(--text-muted); margin: 0; }
-    .pro-row-arrow { color: #64748b; font-weight: 800; font-size: 1rem; }
-
-    /* 🌟 FOOTER */
-    .khan-full-footer { background-color: var(--brand-navy); color: #ffffff; padding: 38px 18px 24px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-    html.light-mode .khan-full-footer, html[data-theme="light"] .khan-full-footer { background-color: #0b1a30; }
-    .footer-inner-khan { max-width: 1200px; margin: 0 auto; }
-    .footer-mission-lead { font-size: 1.05rem; font-weight: 700; line-height: 1.6; color: #cbd5e1; margin-bottom: 14px; }
-    .footer-sub-lead { font-size: 0.84rem; color: #94a3b8; line-height: 1.6; margin-bottom: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 20px; }
-    .footer-sub-lead a { color: #38bdf8; font-weight: 700; text-decoration: underline; }
-    .footer-columns-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px; margin-bottom: 30px; }
-    .footer-column-title { font-size: 0.84rem; font-weight: 800; color: #ffffff; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .footer-ul-links { list-style: none; display: flex; flex-direction: column; gap: 9px; padding: 0; margin: 0; }
-    .footer-ul-links a { color: #94a3b8; text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: color 0.2s; }
-    .footer-ul-links a:hover { color: #38bdf8; }
-    .founder-pro-strip { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-    .founder-info-left { display: flex; align-items: center; gap: 12px; }
-    .founder-avatar-pic { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; }
-    .founder-meta-text h5 { font-size: 0.9rem; font-weight: 800; color: #ffffff; margin: 0; }
-    .founder-meta-text p { font-size: 0.72rem; color: #38bdf8; font-weight: 600; margin: 0; }
-    .privacy-tag-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 14px; border-radius: 8px; }
-    .footer-bottom-statement { font-size: 0.74rem; color: #64748b; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 18px; line-height: 1.5; }
-
-    /* 🌟 FIXED MOBILE BOTTOM DOCK */
-    .mobile-bottom-dock { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(7, 17, 32, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 10000; }
-    html.light-mode .mobile-bottom-dock, html[data-theme="light"] .mobile-bottom-dock { background: rgba(255, 255, 255, 0.95); border-top: 1px solid #e2e8f0; }
-    .dock-link-item { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #64748b; font-size: 0.68rem; font-weight: 700; }
-    .dock-link-item.active { color: #38bdf8; }
-    .dock-icon-svg { font-size: 1.25rem; }
-
-    /* 🌟 SIDE DRAWER (ENHANCED DEVELOPER BRANDING) */
-    .side-drawer { overflow-y: auto !important; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; }
-    .drawer-nav-list { flex: 1 0 auto; padding-bottom: 20px; }
-    .drawer-footer-custom {
-      margin-top: auto;
-      padding: 20px 16px 90px;
-      border-top: 1px solid rgba(56, 189, 248, 0.2);
-      text-align: center;
-      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.1) 100%);
-    }
-    .developer-branding-tag {
-      font-size: 0.85rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-      line-height: 1.5;
-      letter-spacing: 0.5px;
-      text-shadow: 0px 2px 10px rgba(56, 189, 248, 0.2);
-    }
-    .developer-sub-badge {
-      font-size: 0.72rem;
-      color: #94a3b8;
-      font-weight: 700;
-      margin-top: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 4px 10px;
-      border-radius: 999px;
-      display: inline-block;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* PDF MODAL STYLE */
-    #heavyPdfModal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 999999; justify-content: center; align-items: center; padding: 16px; }
-    .heavy-pdf-box { background: #1e293b; border: 2px solid #0284c7; border-radius: 16px; max-width: 420px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); color: #ffffff; }
-    .pdf-track { width: 100%; height: 10px; background: rgba(2, 132, 199, 0.2); border-radius: 8px; overflow: hidden; margin: 16px 0 10px 0; border: 1px solid #0284c7; }
-    .pdf-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0284c7, #22c55e); border-radius: 8px; transition: width 0.1s ease-out; }
-
-    /* 🌟 NISCHAYDESK GLASS WELCOME LOGIN MODAL */
-    .nd-login-backdrop { display: none; position: fixed; inset: 0; background: rgba(4, 9, 20, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 99999999; justify-content: center; align-items: center; padding: 18px; }
-    .nd-login-card { background: rgba(15, 23, 42, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 24px; width: 100%; max-width: 380px; padding: 30px 24px 24px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(2, 132, 199, 0.2); position: relative; text-align: center; animation: ndPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    html.light-mode .nd-login-card, html[data-theme="light"] .nd-login-card { background: #ffffff; border-color: #cbd5e1; box-shadow: 0 20px 50px rgba(0,0,0,0.18); }
-    @keyframes ndPop { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    .nd-modal-close { position: absolute; top: 14px; right: 16px; background: rgba(255, 255, 255, 0.08); border: none; width: 32px; height: 32px; border-radius: 50%; color: #94a3b8; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.2s; }
-    .nd-modal-close:hover { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-    .nd-logo-bubble { width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #0284c7, #38bdf8); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4); }
-    .nd-logo-bubble img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
-    .nd-login-card h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; color: var(--text-main); }
-    .nd-login-card h3 span { color: #38bdf8; }
-    .nd-tagline { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 20px; }
-    .nd-features-box { background: rgba(2, 132, 199, 0.08); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 12px 14px; text-align: left; margin-bottom: 24px; }
-    .nd-features-box div { font-size: 0.78rem; color: var(--text-main); font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-    .nd-features-box div:last-child { margin-bottom: 0; }
-    .nd-btn-google { width: 100%; background: #ffffff; color: #1f2937; border: none; padding: 13px 16px; border-radius: 12px; font-size: 0.92rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); transition: transform 0.15s, box-shadow 0.15s; }
-    .nd-btn-google:active { transform: scale(0.97); }
-    .nd-btn-google img { width: 22px; height: 22px; }
-    .nd-terms-note { font-size: 0.7rem; color: #64748b; margin-top: 18px; line-height: 1.4; }
   </style>
 </head>
 <body class="app-body">
@@ -318,7 +1061,7 @@
         <img src="logo.png" alt="NischayDesk Logo" class="splash-animated-logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
       </div>
       <h2 class="splash-welcome-title">WELCOME TO</h2>
-      <h1 class="splash-brand-title notranslate">Nischay<span>Desk</span></h1>
+      <h1 class="splash-brand-title">Nischay<span>Desk</span></h1>
       <p class="splash-tagline">Smart EdTech & Student Portal</p>
       <div class="splash-pulse-loader"></div>
       <div class="splash-developer-badge">
@@ -340,7 +1083,7 @@
         <a href="index.html" class="brand-entity">
           <div class="brand-badge-icon">N</div>
           <div class="brand-typography">
-            <span class="brand-name notranslate">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
             <span class="brand-tagline">Smart Student Portal</span>
           </div>
         </a>
@@ -360,12 +1103,8 @@
         <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
       </div>
 
-      <!-- 🌟 NEW: Translator inside Nav Actions -->
+      <!-- GOOGLE TRANSLATE REMOVED AS REQUESTED - GOOGLE LOGIN IS BACK TO NORMAL -->
       <div class="nav-actions">
-        
-        <!-- Google Translate Widget Container -->
-        <div id="google_translate_element"></div>
-
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
@@ -393,7 +1132,7 @@
     <div class="drawer-header">
       <div class="drawer-brand">
         <div class="brand-badge-icon sm">N</div>
-        <span class="notranslate">NischayDesk</span>
+        <span>NischayDesk</span>
       </div>
       <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
     </div>
@@ -452,12 +1191,12 @@
       </div>
     </nav>
 
-    <!-- 🌟 NEW: ENHANCED DEVELOPER BRANDING IN DRAWER -->
+    <!-- 🌟 NEW: BEAUTIFUL DEVELOPER BADGE 🌟 -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         Developed By Prince Kumar ⚡
       </div>
-      <div class="developer-sub-badge notranslate">
+      <div class="developer-sub-badge">
         NischayDesk Official Portal • 2026
       </div>
     </div>
@@ -470,7 +1209,7 @@
     <section class="hero-spotlight-khan">
       <div class="hero-container">
         
-        <!-- Welcome Card -->
+        <!-- Welcome Card (जब यूजर लॉग इन हो) -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 12px;">
           <div id="welcomeGreetingText" style="font-size: 1.35rem; font-weight: 800; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="color: #38bdf8;">छात्र</span> 👋
@@ -484,7 +1223,7 @@
           </div>
         </div>
 
-        <!-- Guest Class Bar -->
+        <!-- 🌟 बिना लॉगिन वाले छात्रों के लिए स्पेशल कक्षा पट्टी (जब यूजर लॉग इन न हो) 🌟 -->
         <div id="guestClassBar" class="guest-class-bar">
           <div class="guest-class-info">
             <span>📚 वर्तमान अध्ययन कक्षा:</span>
@@ -501,7 +1240,7 @@
         </div>
 
         <div class="hero-chip-tag">⚡ BSEB 2026 OFFICIAL SIMULATION & STUDENT HUB</div>
-        <h1 class="hero-main-title">सफलता का सटीक निश्चय, <span class="notranslate">NischayDesk</span> के साथ।</h1>
+        <h1 class="hero-main-title">सफलता का सटीक निश्चय, <span>NischayDesk</span> के साथ।</h1>
         <p class="hero-desc-p">
           बिहार विद्यालय परीक्षा समिति (BSEB) के छात्रों के लिए निःशुल्क टॉपर नोट्स, 100-OMR परीक्षा सिमुलेटर और प्रैक्टिस टूल्स।
         </p>
@@ -515,28 +1254,44 @@
           </a>
         </div>
 
-        <!-- OMR POLL -->
+        <!-- 🌟 इंटरैक्टिव "स्टाइलिश ऑटो-चेंजिंग OMR सवाल" -->
         <div class="daily-poll-card">
           <div class="poll-tag-row">
             <span class="poll-badge">🎯 लाइव बोर्ड सवाल (Auto-Changing)</span>
             <span class="poll-counter-indicator" id="pollCounter">प्रश्न: 1 / 5</span>
           </div>
+
           <div class="poll-dynamic-box" id="pollDynamicWrap">
-            <div class="poll-question-text" id="dailyPollQ">लोड हो रहा है...</div>
+            <div class="poll-question-text" id="dailyPollQ">
+              लोड हो रहा है...
+            </div>
             <div class="poll-options-grid" id="pollOptionsGrid"></div>
           </div>
+
           <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
         </div>
 
       </div>
     </section>
 
-    <!-- TRUST STATS STRIP -->
+    <!-- 🌟 TRUST STATS STRIP -->
     <div class="trust-stats-strip">
-      <div class="trust-stat-box"><h4>3h 15m</h4><p>रियल सिमुलेटर</p></div>
-      <div class="trust-stat-box"><h4>100 OMR</h4><p>प्रिंट व स्कैन</p></div>
-      <div class="trust-stat-box"><h4>100%</h4><p>फ्री स्टडी हब</p></div>
-      <div class="trust-stat-box"><h4>2026</h4><p>ऑफिशियल सेट्स</p></div>
+      <div class="trust-stat-box">
+        <h4>3h 15m</h4>
+        <p>रियल सिमुलेटर</p>
+      </div>
+      <div class="trust-stat-box">
+        <h4>100 OMR</h4>
+        <p>प्रिंट व स्कैन</p>
+      </div>
+      <div class="trust-stat-box">
+        <h4>100%</h4>
+        <p>फ्री स्टडी हब</p>
+      </div>
+      <div class="trust-stat-box">
+        <h4>2026</h4>
+        <p>ऑफिशियल सेट्स</p>
+      </div>
     </div>
 
     <!-- HORIZONTAL PILLS SCROLLER -->
@@ -552,41 +1307,49 @@
       <a href="bseb-result.html" class="pill-anchor">📊 रिजल्ट पोर्टल</a>
     </div>
 
-    <!-- ICONS GRID -->
+    <!-- 🌟 4-COLUMN COMPACT APP ICONS -->
     <section class="portal-section-wrap" id="quickTools">
       <div class="section-head-pro">
-        <h3 class="notranslate">छात्र स्मार्ट टूल्स (NischayDesk Tools)</h3>
+        <h3>छात्र स्मार्ट टूल्स (NischayDesk Tools)</h3>
         <a href="javascript:void(0)" onclick="openProfileModal()">क्लास बदलें ⚙️</a>
       </div>
+
       <div class="pro-icons-grid">
         <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ef4444; border: 1.5px solid #ef4444;">🎯</div>
           <span style="color:#ef4444; font-weight: 800;">डेली क्विज़</span>
         </a>
+
         <a href="ai-desk.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#f59e0b; border: 1.5px solid #f59e0b;">🤖</div>
           <span style="color:#f59e0b; font-weight: 800;">AI-Desk</span>
         </a>
+
         <a href="bseb-print.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">🎯</div>
           <span style="color:#38bdf8; font-weight: 800;">OMR व कॉपी</span>
         </a>
+
         <a href="bseb-simulator.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#0284c7;">🏛️</div>
           <span>एग्जाम हॉल</span>
         </a>
+
         <a href="bseb-result.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#10b981;">📊</div>
           <span>रिजल्ट</span>
         </a>
+
         <a href="notes.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#f59e0b;">📖</div>
           <span>स्टडी नोट्स</span>
         </a>
+
         <a href="model-paper.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#8b5cf6;">📑</div>
           <span>मॉडल पेपर</span>
         </a>
+
         <a href="pyq.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ea580c;">📚</div>
           <span>क्वेश्चन बैंक</span>
@@ -594,12 +1357,13 @@
       </div>
     </section>
 
-    <!-- CLASS 10TH SECTION -->
+    <!-- 🌟 CLASS 10TH MATRIC SECTION -->
     <section class="portal-section-wrap" id="sectionClass10" data-class="10th">
       <div class="section-head-pro">
         <h3>कक्षा 10वीं सम्पूर्ण अध्ययन हब</h3>
         <a href="notes.html">सब देखें →</a>
       </div>
+
       <div class="pro-rows-container">
         <a href="notes.html?filter=10-math" class="pro-list-row">
           <div class="pro-row-left">
@@ -611,6 +1375,7 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
         <a href="notes.html?filter=10-science-phy" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
@@ -621,6 +1386,7 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
         <a href="notes.html?filter=10-sst-all" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(245, 158, 11, 0.12); color:#f59e0b;">🌍</div>
@@ -631,15 +1397,38 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+        
+        <a href="notes.html?filter=10-sanskrit" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(139, 92, 246, 0.12); color:#8b5cf6;">🕉️</div>
+            <div class="pro-row-text">
+              <h4>संस्कृत (Sanskrit)</h4>
+              <p>पीयूषम्, व्याकरण, और पत्र लेखन</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
+            <div class="pro-row-text">
+              <h4>10वीं स्पीड क्विज़ व OMR टेस्ट</h4>
+              <p>अंतिम स्कोर: <span id="userLastScore">--</span> | सटीकता: <span id="userAccuracy">--%</span></p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
       </div>
     </section>
 
-    <!-- CLASS 11TH SECTION -->
+    <!-- 🌟 CLASS 11TH SCIENCE SECTION -->
     <section class="portal-section-wrap" id="sectionClass11" data-class="11th" style="display: none;">
       <div class="section-head-pro">
         <h3>कक्षा 11वीं साइंस हब (NCERT & फाउंडेशन)</h3>
         <a href="notes.html">सब देखें →</a>
       </div>
+
       <div class="pro-rows-container">
         <a href="notes.html?filter=11-physics" class="pro-list-row">
           <div class="pro-row-left">
@@ -651,6 +1440,7 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
         <a href="notes.html?filter=11-chemistry" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
@@ -661,15 +1451,27 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
+            <div class="pro-row-text">
+              <h4>11वीं स्पीड टेस्ट</h4>
+              <p>फाउंडेशन स्तर के प्रश्नों का टाइमर टेस्ट और विस्तृत व्याख्या</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
       </div>
     </section>
 
-    <!-- CLASS 12TH SECTION -->
+    <!-- 🌟 CLASS 12TH SCIENCE SECTION -->
     <section class="portal-section-wrap" id="sectionClass12" data-class="12th" style="display: none;">
       <div class="section-head-pro">
         <h3>कक्षा 12वीं साइंस हब (बोर्ड स्पेशल)</h3>
         <a href="notes.html">सब देखें →</a>
       </div>
+
       <div class="pro-rows-container">
         <a href="notes.html?filter=12-physics" class="pro-list-row">
           <div class="pro-row-left">
@@ -681,6 +1483,7 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
         <a href="notes.html?filter=12-math" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">📐</div>
@@ -691,14 +1494,56 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">🎯</div>
+            <div class="pro-row-text">
+              <h4>12th बोर्ड सिमुलेशन टेस्ट</h4>
+              <p>35 ऑब्जेक्टिव प्रश्नों का रियल बोर्ड टेस्ट पैटर्न विथ OMR</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
       </div>
     </section>
 
-    <!-- 🌟 NEW: NISCHAY ECOSYSTEM (Replaced Toppers) -->
+    <!-- 🌟 PYQ & MODEL PAPER SECTION -->
+    <section class="portal-section-wrap" id="sectionPyqModel">
+      <div class="section-head-pro">
+        <h3>क्वेश्चन बैंक एवं मॉडल पेपर</h3>
+      </div>
+
+      <div class="pro-rows-container">
+        <a href="pyq.html" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📖</div>
+            <div class="pro-row-text">
+              <h4>क्वेश्चन बैंक (2020 - 2026 हल सहित)</h4>
+              <p>दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="model-paper.html" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">📝</div>
+            <div class="pro-row-text">
+              <h4>BSEB ऑफिशियल मॉडल पेपर्स 2026</h4>
+              <p>बिहार बोर्ड द्वारा जारी किए गए नवीनतम आधिकारिक सेट्स</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 🌟 NEW: NISCHAY ECOSYSTEM (अन्य प्लेटफॉर्म) 🌟 -->
     <section class="portal-section-wrap">
       <div class="section-head-pro">
         <h3>🌐 हमारे अन्य प्लेटफॉर्म (Ecosystem)</h3>
-        <span style="font-size:0.75rem; color:#38bdf8; font-weight:800;" class="notranslate">● Nischay Network</span>
+        <span style="font-size:0.75rem; color:#38bdf8; font-weight:800;">● Nischay Network</span>
       </div>
 
       <div class="pro-rows-container">
@@ -706,7 +1551,7 @@
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📄</div>
             <div class="pro-row-text">
-              <h4 class="notranslate">Nischay Docs</h4>
+              <h4>Nischay Docs</h4>
               <p>सभी महत्वपूर्ण डॉक्यूमेंट्स और फॉर्म्स का सुरक्षित संग्रह</p>
             </div>
           </div>
@@ -717,7 +1562,7 @@
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">☁️</div>
             <div class="pro-row-text">
-              <h4 class="notranslate">Nischay Drop</h4>
+              <h4>Nischay Drop</h4>
               <p>छात्रों के लिए फास्ट और सिक्योर फाइल शेयरिंग प्लेटफॉर्म</p>
             </div>
           </div>
@@ -728,7 +1573,7 @@
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(245, 158, 11, 0.12); color:#f59e0b;">🛠️</div>
             <div class="pro-row-text">
-              <h4 class="notranslate">Nischay Forge</h4>
+              <h4>Nischay Forge</h4>
               <p>डेवलपर टूल्स, एडवांस्ड कोडिंग और टेक रिसोर्सेज</p>
             </div>
           </div>
@@ -737,16 +1582,40 @@
       </div>
     </section>
 
-    <!-- HIDDEN PDF INPUT -->
+    <!-- 🌟 NEW: DAILY TO-DO LIST (खाली स्पेस भरने के लिए) 🌟 -->
+    <section class="portal-section-wrap" style="margin-bottom: 24px;">
+      <div class="section-head-pro">
+        <h3>✅ डेली टू-डू लिस्ट (Task Manager)</h3>
+        <span style="font-size:0.75rem; color:#10b981; font-weight:800;">● नया टूल</span>
+      </div>
+      <div class="pro-rows-container">
+        <a href="todo.html" target="_blank" class="pro-list-row" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(2, 132, 199, 0.08)); border: 1.5px dashed rgba(56, 189, 248, 0.5);">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: #0284c7; color:#fff; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);">📝</div>
+            <div class="pro-row-text">
+              <h4 style="color: #38bdf8;">माय टू-डू लिस्ट (My To-Do)</h4>
+              <p>अपने आज के सारे टास्क लिखें, ट्रैक करें और प्रोडक्टिव बनें।</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow" style="color: #38bdf8; font-size: 0.85rem;">खोलें ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- छिपे हुए फ़ाइल इनपुट (PDF Engine) -->
     <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
 
-    <!-- ⚡ PDF GENERATOR MODAL -->
+    <!-- ⚡ लाइव PDF जनरेशन प्रोग्रेस मोडल -->
     <div id="heavyPdfModal">
       <div class="heavy-pdf-box">
         <div style="font-size: 2.4rem; margin-bottom: 8px;">⚡</div>
         <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.2rem;">तगड़ा PDF इंजन सक्रिय है...</h3>
         <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;" id="heavyPdfStatusText">फ़ोटो लोड हो रही हैं...</p>
-        <div class="pdf-track"><div class="pdf-fill" id="heavyPdfFillBar"></div></div>
+        
+        <div class="pdf-track">
+          <div class="pdf-fill" id="heavyPdfFillBar"></div>
+        </div>
+
         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; color: #cbd5e1;">
           <span id="heavyPdfPageCounter">0 / 0 पेज</span>
           <span id="heavyPdfPercent">0%</span>
@@ -754,16 +1623,20 @@
       </div>
     </div>
 
-    <!-- PROFILE MODAL -->
+    <!-- DEDICATED USER PROFILE MODAL -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
+        
         <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; z-index: 10000;">&times;</button>
+        
         <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
           <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
           <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
         </div>
+
         <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
         <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
+
         <div style="text-align: left; margin-bottom: 16px;">
           <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
           <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
@@ -771,54 +1644,71 @@
             <option value="11th">कक्षा 11वीं (साइंस)</option>
             <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
           </select>
+
           <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
             💾 कक्षा सेव करें (Save Class)
           </button>
         </div>
+
         <button type="button" id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
           🚪 लॉगआउट करें (Logout)
         </button>
+
         <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
           ⏳ सुरक्षित लॉगआउट हो रहा है...
         </div>
+
       </div>
     </div>
 
-    <!-- WELCOME LOGIN MODAL -->
+    <!-- 🌟 NEW: ULTRA-MODERN NISCHAYDESK WELCOME LOGIN MODAL 🌟 -->
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
+        
         <div class="nd-logo-bubble">
           <img src="logo.png" alt="NischayDesk Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
         </div>
-        <h3 class="notranslate">Welcome to <span>NischayDesk</span></h3>
+
+        <h3>Welcome to <span>NischayDesk</span></h3>
         <p class="nd-tagline">बिहार बोर्ड (BSEB) डिजिटल परीक्षा एवं टॉपर तैयारी पोर्टल 🚀</p>
+
         <div class="nd-features-box">
           <div><span>✨</span> 100% फ्री टॉपर हैंडराइटिंग नोट्स</div>
           <div><span>⏱️</span> 3h 15m लाइव परीक्षा सिमुलेटर</div>
           <div><span>🎯</span> OMR जनरेटर एवं ऑटो-रैंकिंग सिस्टम</div>
         </div>
+
         <button type="button" class="nd-btn-google" id="btnContinueGoogleModal" onclick="triggerGooglePopupFromModal()">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
           <span>Continue with Google</span>
         </button>
+
         <div class="nd-terms-note">
           लॉगिन करके आप NischayDesk की सेवा शर्तों एवं प्राइवेसी पॉलिसी से सहमत होते हैं।
         </div>
       </div>
     </div>
+
+    <!-- 🌟 NEW: CLASS CHANGE TOAST NOTIFICATION HTML 🌟 -->
+    <div id="ndClassToast" class="nd-toast-container">
+      <span style="font-size: 1.2rem;">✅</span>
+      <span id="ndToastMsg">आपकी कक्षा बदल दी गई है!</span>
+    </div>
+
   </main>
 
-  <!-- 4. FOOTER -->
+  <!-- 4. OFFICIAL KHAN ACADEMY INSPIRATION FOOTER -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
       <div class="footer-mission-lead">
         हमारा मिशन बिहार विद्यालय परीक्षा समिति (BSEB) के प्रत्येक विद्यार्थी को 100% निःशुल्क और विश्वस्तरीय डिजिटल परीक्षा का अनुभव प्रदान करना है।
       </div>
       <div class="footer-sub-lead">
-        <span class="notranslate">NischayDesk</span> छात्रों द्वारा छात्रों के लिए समर्पित एक स्वतंत्र शैक्षिक मंच है। 
+        NischayDesk छात्रों द्वारा छात्रों के लिए समर्पित एक स्वतंत्र शैक्षिक मंच है। 
         <a href="bseb-simulator.html">अभ्यास प्रारंभ करें →</a>
       </div>
+
       <div class="footer-columns-grid">
         <div>
           <div class="footer-column-title">पोर्टल मेनू</div>
@@ -833,6 +1723,7 @@
             <li><a href="privacy.html">गोपनीयता नीति</a></li>
           </ul>
         </div>
+
         <div>
           <div class="footer-column-title">अध्ययन विषय</div>
           <ul class="footer-ul-links">
@@ -845,22 +1736,25 @@
           </ul>
         </div>
       </div>
+
       <div class="founder-pro-strip">
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
           <div class="founder-meta-text">
             <h5>Prince Kumar</h5>
-            <p class="notranslate">Founder & Developer, NischayDesk</p>
+            <p>Founder & Developer, NischayDesk</p>
           </div>
         </div>
+
         <div>
           <a href="privacy.html" class="privacy-tag-btn">
             <span>🔒</span> प्राइवेसी पॉलिसी
           </a>
         </div>
       </div>
+
       <div class="footer-bottom-statement">
-        © 2026 <span class="notranslate">NischayDesk</span>. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● सिस्टम सक्रिय है</span><br>
+        © 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● सिस्टम सक्रिय है</span><br>
         Empowering Bihar Board Aspirants Everywhere.
       </div>
     </div>
@@ -886,25 +1780,13 @@
     </a>
   </nav>
 
-  <!-- 6. JAVASCRIPT LOGIC (INCLUDING GOOGLE TRANSLATE SCRIPT) -->
-  <script>
-    /* 🌟 गूगल ट्रांसलेट विजेट इनीशियलाइज़ेशन */
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'hi',
-        includedLanguages: 'en,hi',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
+  <!-- 6. ALL JAVASCRIPT LOGIC -->
   <script>
     /* 🌟 स्मार्ट स्प्लैश स्क्रीन */
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("nischaySplashOverlay");
       const alreadySeen = sessionStorage.getItem("nd_splash_seen");
+
       if (alreadySeen) {
         if (splash) splash.style.display = "none";
       } else {
@@ -912,19 +1794,46 @@
         if (splash) {
           setTimeout(() => {
             splash.classList.add("fade-away");
-            setTimeout(() => { splash.style.display = "none"; }, 400);
+            setTimeout(() => {
+              splash.style.display = "none";
+            }, 400);
           }, 1800);
         }
       }
     });
 
-    /* 🌟 डायनामिक ऑटो-चेंजिंग OMR क्विज़ इंजन */
+    /* ================= 🌟 डायनामिक ऑटो-चेंजिंग OMR क्विज़ इंजन ================= */
     const rotatingBoardQuestions = [
-      { question: "प्रकाश के परावर्तन के कितने नियम होते हैं?", options: ["1", "2", "3", "4"], correctIndex: 1, note: "प्रकाश के परावर्तन के 2 नियम होते हैं।" },
-      { question: "दाढ़ी बनाने में किस प्रकार के दर्पण का उपयोग किया जाता है?", options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "इनमें कोई नहीं"], correctIndex: 2, note: "अवतल दर्पण चेहरे का बड़ा व सीधा प्रतिबिंब बनाता है।" },
-      { question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?", options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी", "बेलनाकार"], correctIndex: 0, note: "मानव नेत्र में प्राकृतिक रूप से उत्तल लेंस होता है।" },
-      { question: "विद्युत धारा का SI मात्रक क्या होता है?", options: ["वोल्ट", "एम्पियर", "ओम", "वाट"], correctIndex: 1, note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।" },
-      { question: "अम्ल का pH मान कितना होता है?", options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"], correctIndex: 0, note: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।" }
+      {
+        question: "प्रकाश के परावर्तन के कितने नियम होते हैं?",
+        options: ["1", "2", "3", "4"],
+        correctIndex: 1,
+        note: "प्रकाश के परावर्तन के 2 नियम होते हैं।"
+      },
+      {
+        question: "दाढ़ी बनाने में किस प्रकार के दर्पण का उपयोग किया जाता है?",
+        options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "इनमें कोई नहीं"],
+        correctIndex: 2,
+        note: "अवतल दर्पण चेहरे का बड़ा व सीधा प्रतिबिंब बनाता है।"
+      },
+      {
+        question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?",
+        options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी", "बेलनाकार"],
+        correctIndex: 0,
+        note: "मानव नेत्र में प्राकृतिक रूप से उत्तल लेंस होता है।"
+      },
+      {
+        question: "विद्युत धारा का SI मात्रक क्या होता है?",
+        options: ["वोल्ट", "एम्पियर", "ओम", "वाट"],
+        correctIndex: 1,
+        note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।"
+      },
+      {
+        question: "अम्ल का pH मान कितना होता है?",
+        options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"],
+        correctIndex: 0,
+        note: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।"
+      }
     ];
 
     let currentQIndex = 0;
@@ -939,31 +1848,39 @@
       const feedbackEl = document.getElementById('pollFeedbackMsg');
 
       if (!wrapEl || !qTextEl || !gridEl) return;
+
       feedbackEl.style.display = 'none';
       countEl.textContent = `प्रश्न: ${index + 1} / ${rotatingBoardQuestions.length}`;
+
       wrapEl.classList.add('fade-out');
 
       setTimeout(() => {
         qTextEl.textContent = qData.question;
         gridEl.innerHTML = '';
+
         const optionLabels = ['A', 'B', 'C', 'D'];
         qData.options.forEach((optText, optIdx) => {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'poll-opt-btn';
           btn.textContent = `${optionLabels[optIdx]}. ${optText}`;
-          btn.onclick = function() { checkDynamicAnswer(this, optIdx, qData); };
+          btn.onclick = function() {
+            checkDynamicAnswer(this, optIdx, qData);
+          };
           gridEl.appendChild(btn);
         });
+
         wrapEl.classList.remove('fade-out');
       }, 300);
     }
 
     function checkDynamicAnswer(btn, selectedIdx, qData) {
       clearInterval(autoRotateTimer);
+
       const parent = btn.parentElement;
       const allBtns = parent.querySelectorAll('.poll-opt-btn');
       allBtns.forEach(b => b.disabled = true);
+
       const msg = document.getElementById('pollFeedbackMsg');
       msg.style.display = 'block';
 
@@ -977,19 +1894,26 @@
         msg.textContent = `❌ गलत उत्तर! सही उत्तर (${String.fromCharCode(65 + qData.correctIndex)}) है। (${qData.note})`;
         msg.style.color = "#f87171";
       }
-      setTimeout(() => { nextRotatingQuestion(); startQuestionRotation(); }, 6000);
+
+      setTimeout(() => {
+        nextRotatingQuestion();
+        startQuestionRotation();
+      }, 6000);
     }
 
     function nextRotatingQuestion() {
       currentQIndex = (currentQIndex + 1) % rotatingBoardQuestions.length;
       renderDynamicQuestion(currentQIndex);
     }
+
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
-      autoRotateTimer = setInterval(() => { nextRotatingQuestion(); }, 7000);
+      autoRotateTimer = setInterval(() => {
+        nextRotatingQuestion();
+      }, 7000);
     }
 
-    /* 🌟 DRAWER & UI LOGIC */
+    /* ================= 🌟 DRAWER & UI LOGIC ================= */
     const menuBtn = document.getElementById('mobileMenuBtn');
     const sideDrawerEl = document.getElementById('sideDrawer');
     const scrimEl = document.getElementById('drawerScrim');
@@ -1024,18 +1948,20 @@
       }
     }
 
-    /* 🌟 क्लास स्विचिंग लॉजिक */
+    /* ================= 🌟 क्लास स्विचिंग और परमानेंट सेविंग फ़ंक्शन ================= */
     function applyStudentClass(selectedClass) {
       let cleanClass = "10th";
       if (String(selectedClass).includes("11")) cleanClass = "11th";
       else if (String(selectedClass).includes("12")) cleanClass = "12th";
       else cleanClass = "10th";
 
+      // स्थानीय स्टोरेज में एकरूपता से पक्का सेव करें
       localStorage.setItem("nd_selected_class", cleanClass);
       localStorage.setItem("nischay_user_class", cleanClass);
       localStorage.setItem("nischay_student_class", cleanClass.replace(/[^0-9]/g, ''));
       localStorage.setItem("user_class", cleanClass);
 
+      // UI तत्वों को तुरंत अपडेट करें
       const b1 = document.getElementById('userSessionBadge');
       const b2 = document.getElementById('displayStudentClass');
       const classSelect = document.getElementById('quickClassSwitchSelect');
@@ -1048,6 +1974,7 @@
       if (guestBadge) guestBadge.textContent = `Class ${cleanClass}`;
       if (guestSelect) guestSelect.value = cleanClass;
 
+      // संबंधित क्लास सेक्शन को दिखाएँ और बाक़ी को छुपाएँ
       const sec10 = document.getElementById('sectionClass10');
       const sec11 = document.getElementById('sectionClass11');
       const sec12 = document.getElementById('sectionClass12');
@@ -1057,11 +1984,32 @@
       if (sec12) sec12.style.display = (cleanClass === "12th") ? "block" : "none";
     }
 
-    function changeClassFromGuestBar(val) { applyStudentClass(val); }
+    // 🌟 NEW: Toast Show & Reload Helper
+    function showClassChangeToastAndReload(className) {
+      const toast = document.getElementById('ndClassToast');
+      const msg = document.getElementById('ndToastMsg');
+      if (toast && msg) {
+        msg.textContent = `आपकी कक्षा ${className} सेट कर दी गई है!`;
+        toast.classList.add('show');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        window.location.reload();
+      }
+    }
 
+    // बिना लॉगिन वाले बार से क्लास तुरंत बदलने के लिए
+    function changeClassFromGuestBar(val) {
+      applyStudentClass(val);
+      showClassChangeToastAndReload(val);
+    }
+
+    // मोडल से क्लास सेव करने के लिए (बिना रीलोड के स्मूद अपडेट)
     function confirmSaveClassSelection() {
       const classSelect = document.getElementById('quickClassSwitchSelect');
       if (!classSelect) return;
+
       const chosen = classSelect.value;
       applyStudentClass(chosen);
 
@@ -1073,7 +2021,9 @@
           }, { merge: true });
         }
       }
+
       closeProfileModal();
+      showClassChangeToastAndReload(chosen);
     }
 
     function syncUserAuthState(user) {
@@ -1085,11 +2035,14 @@
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
 
+      // स्टोरेज में पहले से मौजूद क्लास पढ़ें
       const savedClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_user_class') || '10th';
       applyStudentClass(savedClass);
 
       if (user) {
+        // यूज़र लॉग इन है: गेस्ट बार छिपाएँ, प्रोफ़ाइल विजेट दिखाएँ
         if (guestBar) guestBar.style.display = 'none';
+
         const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
         const firstName = rawName.trim().split(' ')[0];
 
@@ -1109,6 +2062,7 @@
           }).catch(e => console.log(e));
         }
       } else {
+        // यूज़र लॉग इन नहीं है: प्रोफ़ाइल छुपाएँ, गेस्ट बार दिखाएँ
         if (authBtn) authBtn.style.display = 'inline-flex';
         if (profileWidget) profileWidget.style.display = 'none';
         if (welcomeCard) welcomeCard.style.display = 'none';
@@ -1116,30 +2070,39 @@
       }
     }
 
-    /* 🌟 MODAL CONTROLS */
+    /* 🌟 NEW: NISCHAYDESK WELCOME LOGIN MODAL CONTROLS 🌟 */
     function openWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
       if (modal) modal.style.display = 'flex';
     }
+
     function closeWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
       if (modal) modal.style.display = 'none';
     }
+
     function handleOutsideModalClick(e) {
-      if (e.target.id === 'ndWelcomeLoginModal') closeWelcomeLoginModal();
+      if (e.target.id === 'ndWelcomeLoginModal') {
+        closeWelcomeLoginModal();
+      }
     }
+
     function triggerGooglePopupFromModal() {
       if (window.firebase && firebase.auth) {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
         
-        firebase.auth().signInWithPopup(provider).then(() => {
-          closeWelcomeLoginModal();
-        }).catch((err) => {
-          if (err.code === 'auth/popup-blocked') {
-            firebase.auth().signInWithRedirect(provider);
-          }
-        });
+        firebase.auth().signInWithPopup(provider)
+          .then((res) => {
+            closeWelcomeLoginModal();
+          })
+          .catch((err) => {
+            if (err.code === 'auth/popup-blocked') {
+              firebase.auth().signInWithRedirect(provider);
+            } else if (err.code !== 'auth/popup-closed-by-user') {
+              console.warn(err);
+            }
+          });
       } else {
         alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड प्रतीक्षा करें!");
       }
@@ -1148,16 +2111,24 @@
     document.addEventListener('DOMContentLoaded', () => {
       const initialClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_user_class') || '10th';
       applyStudentClass(initialClass);
+
       renderDynamicQuestion(0);
       startQuestionRotation();
 
       const authBtn = document.getElementById('headerAuthBtn');
       if (authBtn) {
-        authBtn.onclick = (e) => { e.preventDefault(); openWelcomeLoginModal(); };
+        authBtn.onclick = (e) => {
+          e.preventDefault();
+          openWelcomeLoginModal();
+        };
       }
+
       if (window.firebase && firebase.auth) {
-        firebase.auth().onAuthStateChanged((user) => { syncUserAuthState(user); });
+        firebase.auth().onAuthStateChanged((user) => {
+          syncUserAuthState(user);
+        });
       } else {
+        // फ़ायरबेस न होने पर भी गेस्ट मोड सुनिश्चित करें
         syncUserAuthState(null);
       }
     });
@@ -1165,10 +2136,12 @@
     function openProfileModal() {
       const modal = document.getElementById('customProfileModal');
       if (!modal) return;
+
       const nameEl = document.getElementById('modalUserName');
       const emailEl = document.getElementById('modalUserEmail');
       const imgEl = document.getElementById('modalUserImg');
       const classSelect = document.getElementById('quickClassSwitchSelect');
+
       const savedClass = localStorage.getItem('nd_selected_class') || '10th';
       if (classSelect) classSelect.value = savedClass;
 
@@ -1177,6 +2150,7 @@
         if (user) {
           const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
           const firstName = rawName.trim().split(' ')[0];
+
           if (nameEl) nameEl.textContent = firstName;
           if (emailEl) emailEl.textContent = user.email || 'Google Verified';
           if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
@@ -1203,14 +2177,18 @@
 
       setTimeout(() => {
         if (window.firebase && firebase.auth) {
-          firebase.auth().signOut().finally(() => { closeProfileModal(); window.location.reload(); });
+          firebase.auth().signOut().finally(() => {
+            closeProfileModal();
+            window.location.reload();
+          });
         } else {
-          closeProfileModal(); window.location.reload();
+          closeProfileModal();
+          window.location.reload();
         }
       }, 800);
     }
 
-    /* 🚀 PDF ENGINE */
+    // 🚀 PDF ENGINE
     function triggerFastPdfConverter() {
       const input = document.getElementById('heavyPdfFileInput');
       if (input) input.click();
@@ -1231,13 +2209,20 @@
 
       try {
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4', compress: true });
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'pt',
+          format: 'a4',
+          compress: true
+        });
+
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
 
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           const curPage = i + 1;
+
           statusText.textContent = `पेज ${curPage} ऑप्टिमाइज़ व संपीड़ित हो रहा है...`;
           pageCounter.textContent = `${curPage} / ${files.length} पेज`;
           const pct = Math.round((curPage / files.length) * 100);
@@ -1245,10 +2230,12 @@
           percentEl.textContent = pct + '%';
 
           const compressedDataUrl = await compressAndLoadImage(file);
+
           if (i > 0) pdf.addPage();
 
           const imgProps = pdf.getImageProperties(compressedDataUrl);
           const imgRatio = imgProps.width / imgProps.height;
+
           let finalW = pageWidth - 20;
           let finalH = finalW / imgRatio;
 
@@ -1256,11 +2243,15 @@
             finalH = pageHeight - 20;
             finalW = finalH * imgRatio;
           }
+
           const posX = (pageWidth - finalW) / 2;
           const posY = (pageHeight - finalH) / 2;
+
           pdf.addImage(compressedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
+
           await new Promise(r => setTimeout(r, 15));
         }
+
         statusText.textContent = "✓ PDF तैयार! डाउनलोड प्रारंभ हो रहा है...";
         fillBar.style.width = '100%';
         percentEl.textContent = '100%';
@@ -1271,6 +2262,7 @@
           modal.style.display = 'none';
           e.target.value = '';
         }, 500);
+
       } catch (err) {
         alert("PDF बनाने में त्रुटि: " + err.message);
         modal.style.display = 'none';
@@ -1288,11 +2280,20 @@
             const maxDimension = 1600;
             let w = img.width;
             let h = img.height;
-            if (w > h && w > maxDimension) { h = Math.round((h * maxDimension) / w); w = maxDimension; }
-            else if (h > maxDimension) { h = Math.round((h * maxDimension) / h); h = maxDimension; }
-            canvas.width = w; canvas.height = h;
+
+            if (w > h && w > maxDimension) {
+              h = Math.round((h * maxDimension) / w);
+              w = maxDimension;
+            } else if (h > maxDimension) {
+              h = Math.round((h * maxDimension) / h);
+              h = maxDimension;
+            }
+
+            canvas.width = w;
+            canvas.height = h;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, w, h);
+
             resolve(canvas.toDataURL('image/jpeg', 0.72));
           };
           img.onerror = reject;
