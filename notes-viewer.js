@@ -1,8 +1,8 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (v5.2 Smart Viewer & Zoom Edition)
+   NischayDesk Complete Notes Controller (v6.0 Ultra Premium Viewer Edition)
    Architected by: Prince Kumar (NischayDesk)
-   Features: Strict Class Separation (10th/11th/12th), Dynamic Pills,
-             URL Auto-Subject Select, In-App HD Zoomable PDF Viewer, Direct Download
+   Features: Strict Class Separation, Dynamic Pills, Large PDF Bypass (Native Drive),
+             Ultra-Premium Loading Animation, In-App HD Zoomable PDF Viewer
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -23,15 +23,29 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentFilterSubject = 'all';
   let searchQuery = '';
 
+  // 🌟 ULTRA-PREMIUM LOADER (Glowing Logo & Smart Bar) 🌟
   let frameLoader = null;
   if (pdfFrameStage) {
     frameLoader = document.createElement('div');
     frameLoader.id = 'pdfInternalLoader';
-    frameLoader.style.cssText = 'position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(8,15,36,0.92); z-index:15; color:#38bdf8; font-family:inherit;';
+    frameLoader.style.cssText = 'position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(4,9,20,0.95); backdrop-filter:blur(10px); z-index:15; font-family:inherit;';
     frameLoader.innerHTML = `
-      <div style="width:40px; height:40px; border:3.5px solid rgba(56,189,248,0.2); border-top-color:#38bdf8; border-radius:50%; animation:spinDesk 0.75s linear infinite; margin-bottom:12px;"></div>
-      <span style="font-size:0.88rem; font-weight:700; color:#ffffff;">नोट्स लोड हो रहे हैं...</span>
-      <style>@keyframes spinDesk{to{transform:rotate(360deg)}}</style>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:20px;">
+        <div style="position:relative; width:70px; height:70px;">
+          <div style="position:absolute; inset:0; border-radius:20px; background:linear-gradient(135deg, #0284c7, #38bdf8); animation:pulseGlow 1.5s infinite alternate;"></div>
+          <div style="position:absolute; inset:3px; background:#0f172a; border-radius:17px; display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:900; color:#38bdf8; box-shadow:inset 0 0 10px rgba(0,0,0,0.5);">N</div>
+        </div>
+        <div style="text-align:center;">
+          <span style="font-size:1.1rem; font-weight:800; color:#ffffff; letter-spacing:0.5px; display:block; margin-bottom:8px;">HD स्मार्ट रीडर लोड हो रहा है...</span>
+          <div style="width:140px; height:5px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden; margin:0 auto;">
+            <div style="width:40%; height:100%; background:linear-gradient(90deg, #38bdf8, #8b5cf6); border-radius:10px; animation:loadBar 1s infinite ease-in-out alternate;"></div>
+          </div>
+        </div>
+      </div>
+      <style>
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 15px rgba(56,189,248,0.2); transform:scale(0.95); } 100% { box-shadow: 0 0 40px rgba(56,189,248,0.7); transform:scale(1.05); } }
+        @keyframes loadBar { 0% { transform:translateX(-100%); } 100% { transform:translateX(250%); } }
+      </style>
     `;
     pdfFrameStage.style.position = 'relative';
     pdfFrameStage.appendChild(frameLoader);
@@ -57,12 +71,13 @@ document.addEventListener('DOMContentLoaded', function () {
     return (matchParam && matchParam[1]) ? matchParam[1] : null;
   }
 
-  // 🔍 ज़ूम इन, ज़ूम आउट और पिंच सपोर्ट वाला सुरक्षित व्यूअर
+  // 🚀 FIXED: Large PDF Bypass Logic
   function getSafePreviewUrl(rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (fileId) {
-      const directFile = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
-      return `https://docs.google.com/viewer?url=${encodeURIComponent(directFile)}&embedded=true`;
+      // Docs Viewer हटा दिया गया है। अब यह Google Drive का असली (Native) प्रीव्यू इस्तेमाल करेगा
+      // इससे 1000+ पेज का PDF भी बिना किसी एरर के आराम से लोड हो जाएगा।
+      return `https://drive.google.com/file/d/${fileId}/preview`;
     }
     if (rawUrl && rawUrl.includes('drive.google.com/file/d/')) {
       return rawUrl.replace(/\/view.*$/, '/preview');
@@ -277,7 +292,10 @@ document.addEventListener('DOMContentLoaded', function () {
     
     if (frameLoader) frameLoader.style.display = 'flex';
 
-    // 🚀 Google Docs Viewer के माध्यम से लोड होगा (ज़ूम और साफ़ कंट्रोल्स के साथ)
+    // Remove strict sandbox to allow Drive's Native UI to load heavy PDFs
+    studioPdfFrame.removeAttribute('sandbox');
+
+    // 🚀 Google Drive Native Preview 
     studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
 
     studioPdfFrame.onload = function () {
