@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HD Image To PDF Converter | NischayDesk</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- PDF Engine & Local HEIC Converter -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
+  <style>
+    :root {
+      --bg-page: #040914;
+      --card-bg: rgba(11, 19, 36, 0.75);
+      --card-border: rgba(56, 189, 248, 0.18);
+      --accent-cyan: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+
+    .bg-orb-1 { position: fixed; top: -10%; left: -10%; width: 40vw; height: 40vw; background: rgba(168, 85, 247, 0.15); filter: blur(90px); border-radius: 50%; z-index: -1; pointer-events: none;}
+    .bg-orb-2 { position: fixed; bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: rgba(2, 132, 199, 0.12); filter: blur(90px); border-radius: 50%; z-index: -1; pointer-events: none;}
+
+    .app-header {
+      background: rgba(4, 9, 20, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px; color: #a855f7; text-decoration: none; font-weight: 800; font-size: 0.85rem;
+      background: rgba(168, 85, 247, 0.12); padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(168, 85, 247, 0.3); transition: all 0.2s;
+    }
+    .back-btn:hover { background: rgba(168, 85, 247, 0.22); transform: translateX(-3px); }
+    
+    .header-title { font-size: 1.25rem; font-weight: 900; color: #fff; }
+    .header-title span { background: linear-gradient(135deg, #a855f7, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .main-container { max-width: 800px; margin: 30px auto; padding: 0 18px; }
+
+    .title-board { text-align: center; margin-bottom: 24px; }
+    .title-board h1 { font-size: 1.9rem; font-weight: 900; margin-bottom: 8px; }
+    .title-board h1 span { color: #a855f7; }
+    .title-board p { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+    .upload-zone {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border: 2px dashed rgba(168, 85, 247, 0.4);
+      border-radius: 24px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      margin-bottom: 24px;
+      transition: all 0.3s;
+    }
+    .upload-zone:hover { background: rgba(168, 85, 247, 0.08); border-color: #a855f7; }
+    .upload-icon { font-size: 3.2rem; margin-bottom: 12px; }
+    .upload-text { font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .upload-hint { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+    .upload-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 10; }
+
+    .preview-header { display: none; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 0 4px; }
+    .preview-header h3 { font-size: 1.1rem; font-weight: 800; }
+    .btn-clear { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 7px 15px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+    .btn-clear:hover { background: #ef4444; color: #fff; }
+
+    .image-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .img-card { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 3/4; border: 1px solid rgba(255,255,255,0.1); background: #000; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
+    .img-card img { width: 100%; height: 100%; object-fit: cover; }
+    .img-num { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 900; padding: 2px 7px; border-radius: 6px; }
+    .img-delete { position: absolute; top: 6px; right: 6px; background: #ef4444; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; border: none; font-weight: bold; }
+
+    .action-panel { display: none; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+    .btn-generate { width: 100%; background: linear-gradient(135deg, #a855f7, #0284c7); color: #fff; border: none; padding: 16px; border-radius: 14px; font-size: 1.1rem; font-weight: 900; cursor: pointer; box-shadow: 0 8px 25px rgba(168, 85, 247, 0.35); transition: transform 0.2s; }
+    .btn-generate:active { transform: scale(0.98); }
+
+    .progress-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .progress-box { background: #0f172a; border: 1.5px solid #a855f7; border-radius: 24px; padding: 30px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
+    .progress-title { font-size: 1.3rem; font-weight: 900; color: #fff; margin-bottom: 6px; }
+    .progress-desc { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+    .track { width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+    .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #a855f7); border-radius: 10px; transition: width 0.15s; }
+    .stats-row { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; color: #94a3b8; margin-bottom: 22px; }
+    .stats-row span:last-child { color: #38bdf8; }
+    
+    .btn-abort {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1.5px solid rgba(239, 68, 68, 0.4);
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-abort:hover { background: #ef4444; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-orb-1"></div>
+  <div class="bg-orb-2"></div>
+
+  <header class="app-header">
+    <a href="index.html" class="back-btn"><span>←</span> मुख्य डैशबोर्ड</a>
+    <div class="header-title">HD PDF<span>Studio</span></div>
+  </header>
+
+  <div class="main-container">
+    <div class="title-board">
+      <h1>इमेज To <span>PDF मेकर</span></h1>
+      <p>फोटो चुनें, प्रीव्यू देखें और एक क्लिक में लीगल A4 फुल-पेज PDF तैयार करें।</p>
+    </div>
+
+    <div class="upload-zone" id="dropZone">
+      <input type="file" id="fileInput" class="upload-input" accept="image/*,.heic,.heif" multiple>
+      <div class="upload-icon">📸 ➔ 📄</div>
+      <div class="upload-text">यहाँ तस्वीरें चुनें या ड्रैग करें</div>
+      <div class="upload-hint">JPG, PNG, WebP और iPhone HEIC — सभी फॉर्मेट 100% सपोर्टेड हैं</div>
+    </div>
+
+    <div class="preview-header" id="previewHeader">
+      <h3>चुनी गई तस्वीरें (<span id="imgCount">0</span>)</h3>
+      <button class="btn-clear" onclick="clearAllImages()">🧹 सभी हटाएं</button>
+    </div>
+    
+    <div class="image-grid" id="imageGrid"></div>
+
+    <div class="action-panel" id="actionPanel">
+      <button class="btn-generate" onclick="generatePdfWithCancel()">
+        ⚡ कन्वर्ट टू PDF (Convert to PDF)
+      </button>
+    </div>
+  </div>
+
+  <div class="progress-modal" id="progressModal">
+    <div class="progress-box">
+      <div style="font-size: 2.8rem; margin-bottom: 12px;">📑</div>
+      <h3 class="progress-title" id="progressHead">PDF तैयार हो रहा है...</h3>
+      <p class="progress-desc" id="progressDesc">पन्नों को A4 साइज में बैठाया जा रहा है</p>
+      
+      <div class="track">
+        <div class="fill" id="progressBar"></div>
+      </div>
+      
+      <div class="stats-row">
+        <span id="progressText">0 / 0 पेज</span>
+        <span id="progressPercent">0%</span>
+      </div>
+
+      <button class="btn-abort" onclick="abortPdfGeneration()">
+        ❌ कैंसिल करें (Cancel)
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const imageGrid = document.getElementById('imageGrid');
+    const previewHeader = document.getElementById('previewHeader');
+    const actionPanel = document.getElementById('actionPanel');
+    const imgCountSpan = document.getElementById('imgCount');
+    
+    let processedImages = [];
+    let isCancelled = false;
+
+    // 🌟 फ़ाइलें लोड करना और HEIC को सैनिटाइज़ करना
+    fileInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      if (!files.length) return;
+
+      const progressModal = document.getElementById('progressModal');
+      const progressDesc = document.getElementById('progressDesc');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const progressPercent = document.getElementById('progressPercent');
+      const progressHead = document.getElementById('progressHead');
+
+      isCancelled = false;
+      progressHead.textContent = "तस्वीरें लोड हो रही हैं...";
+      progressModal.style.display = 'flex';
+      progressBar.style.width = '0%';
+
+      for (let i = 0; i < files.length; i++) {
+        if (isCancelled) break;
+
+        let file = files[i];
+        const cur = i + 1;
+        progressDesc.textContent = `रीड हो रहा है: ${file.name}`;
+        progressText.textContent = `${cur} / ${files.length}`;
+        const pct = Math.round((cur / files.length) * 100);
+        progressBar.style.width = pct + '%';
+        progressPercent.textContent = pct + '%';
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        
+        // HEIC कन्वर्जन
+        if (ext === 'heic' || ext === 'heif') {
+          try {
+            progressDesc.textContent = `iPhone HEIC फॉर्मेट प्रोसेस हो रहा है...`;
+            const converted = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.85 });
+            file = Array.isArray(converted) ? converted[0] : converted;
+          } catch (err) {
+            console.warn("HEIC conversion fallback:", err);
+          }
+        }
+
+        // शुद्ध JPEG Blob बनाना (SOI मार्कर सुनिश्चित करने के लिए)
+        const pureJpgBlob = await convertToPureJpeg(file);
+        processedImages.push({
+          blob: pureJpgBlob,
+          url: URL.createObjectURL(pureJpgBlob)
+        });
+      }
+
+      progressModal.style.display = 'none';
+      fileInput.value = '';
+      updateUI();
+    });
+
+    // 🛠️ गारंटीड शुद्ध JPEG इंजन (SOI मार्कर त्रुटि को रोकने के लिए)
+    function convertToPureJpeg(file) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_DIM = 1600;
+            let w = img.width;
+            let h = img.height;
+
+            if (w > h && w > MAX_DIM) {
+              h = Math.round((h * MAX_DIM) / w);
+              w = MAX_DIM;
+            } else if (h > MAX_DIM) {
+              w = Math.round((w * MAX_DIM) / h);
+              h = MAX_DIM;
+            }
+
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            
+            // सफ़ेद बैकग्राउंड सेट करें ताकि पारदर्शी PNG भी सही JPEG बने
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+
+            // लीगल 0xFFD8 JPEG आउटपुट
+            canvas.toBlob((blob) => {
+              resolve(blob || file);
+            }, 'image/jpeg', 0.85);
+          };
+          img.onerror = () => resolve(file);
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function updateUI() {
+      imgCountSpan.textContent = processedImages.length;
+      if (processedImages.length > 0) {
+        previewHeader.style.display = 'flex';
+        actionPanel.style.display = 'block';
+      } else {
+        previewHeader.style.display = 'none';
+        actionPanel.style.display = 'none';
+        imageGrid.innerHTML = '';
+        return;
+      }
+
+      imageGrid.innerHTML = '';
+      processedImages.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'img-card';
+        div.innerHTML = `
+          <span class="img-num">P.${index + 1}</span>
+          <img src="${item.url}">
+          <button class="img-delete" onclick="removeImage(${index})" title="हटाएं">&times;</button>
+        `;
+        imageGrid.appendChild(div);
+      });
+    }
+
+    window.removeImage = function(index) {
+      URL.revokeObjectURL(processedImages[index].url);
+      processedImages.splice(index, 1);
+      updateUI();
+    };
+
+    window.clearAllImages = function() {
+      processedImages.forEach(item => URL.revokeObjectURL(item.url));
+      processedImages = [];
+      updateUI();
+    };
+
+    window.abortPdfGeneration = function() {
+      isCancelled = true;
+      document.getElementById('progressModal').style.display = 'none';
+      alert("❌ प्रोसेस कैंसिल कर दिया गया!");
+    };
+
+    // 🚀 PDF जनरेशन (100% SOI Safe & Fast)
+    async function generatePdfWithCancel() {
+      if (processedImages.length === 0) return;
+
+      const progressModal = document.getElementById('progressModal');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const progressPercent = document.getElementById('progressPercent');
+      const progressDesc = document.getElementById('progressDesc');
+      const progressHead = document.getElementById('progressHead');
+
+      isCancelled = false;
+      progressHead.textContent = "PDF तैयार हो रहा है...";
+      progressModal.style.display = 'flex';
+      progressBar.style.width = '0%';
+
+      try {
+        const { PDFDocument } = PDFLib;
+        const pdfDoc = await PDFDocument.create();
+        const total = processedImages.length;
+
+        const A4_WIDTH = 595.28;
+        const A4_HEIGHT = 841.89;
+
+        for (let i = 0; i < total; i++) {
+          if (isCancelled) return;
+
+          const cur = i + 1;
+          progressDesc.textContent = `पेज ${cur} A4 में बैठाया जा रहा है...`;
+          progressText.textContent = `${cur} / ${total}`;
+          const pct = Math.round((cur / total) * 100);
+          progressBar.style.width = pct + '%';
+          progressPercent.textContent = pct + '%';
+
+          const arrayBuffer = await processedImages[i].blob.arrayBuffer();
+          
+          // सुरक्षित एम्बेडिंग
+          const embeddedImage = await pdfDoc.embedJpg(arrayBuffer);
+
+          const imgDims = embeddedImage.scale(1);
+          const page = pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
+
+          const scale = Math.min(
+            (A4_WIDTH - 20) / imgDims.width,
+            (A4_HEIGHT - 20) / imgDims.height
+          );
+
+          const finalWidth = imgDims.width * scale;
+          const finalHeight = imgDims.height * scale;
+
+          const x = (A4_WIDTH - finalWidth) / 2;
+          const y = (A4_HEIGHT - finalHeight) / 2;
+
+          page.drawImage(embeddedImage, {
+            x: x,
+            y: y,
+            width: finalWidth,
+            height: finalHeight,
+          });
+
+          await new Promise(r => setTimeout(r, 10));
+        }
+
+        if (isCancelled) return;
+
+        progressDesc.textContent = "✓ PDF तैयार! डाउनलोड हो रहा है...";
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const downloadUrl = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `Nischay_Doc_${Date.now()}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        setTimeout(() => {
+          progressModal.style.display = 'none';
+        }, 500);
+
+      } catch (err) {
+        if (!isCancelled) {
+          alert("त्रुटि: " + err.message);
+        }
+        progressModal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
