@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -19,6 +19,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
 <script>
@@ -28,8 +29,84 @@
 
   gtag('config', 'G-WXM8RJ080H');
 </script>
+
+  <!-- 🌟 ULTRA PREMIUM INLINE CSS FOR NOTES PAGE 🌟 -->
+  <style>
+    /* 🌟 ANIMATED BACKGROUND GLOW (FLOATING ORBS) */
+    .bg-orb-1 { position: fixed; top: -10%; left: -10%; width: 40vw; height: 40vw; background: rgba(2, 132, 199, 0.15); filter: blur(90px); border-radius: 50%; z-index: -1; animation: float 10s ease-in-out infinite alternate; pointer-events: none; }
+    .bg-orb-2 { position: fixed; bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: rgba(16, 185, 129, 0.1); filter: blur(90px); border-radius: 50%; z-index: -1; animation: float 12s ease-in-out infinite alternate-reverse; pointer-events: none; }
+    @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(30px, 30px); } }
+
+    /* 🌟 PREMIUM HEADER BANNER & SEARCH */
+    .notes-header-banner {
+      background: rgba(11, 19, 36, 0.65) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(56, 189, 248, 0.15) !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05) !important;
+      border-radius: 24px !important;
+      padding: 30px 20px !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .notes-header-banner::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; 
+      background: linear-gradient(90deg, #38bdf8, #8b5cf6, #10b981);
+    }
+    
+    .notes-search-field {
+      background: rgba(0,0,0,0.3) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+      color: #fff !important;
+    }
+    .notes-search-field:focus {
+      border-color: rgba(56, 189, 248, 0.5) !important;
+      background: rgba(0,0,0,0.5) !important;
+      box-shadow: 0 0 20px rgba(56,189,248,0.2), inset 0 0 10px rgba(0,0,0,0.3) !important;
+    }
+    
+    /* 🌟 FILTER PILLS 3D HOVER UPGRADE */
+    .filter-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      border: 1px solid rgba(255,255,255,0.05) !important;
+      background: rgba(255,255,255,0.03) !important;
+      color: #cbd5e1 !important;
+    }
+    .filter-btn:hover {
+      transform: translateY(-3px) !important;
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2) !important;
+      border-color: rgba(56, 189, 248, 0.4) !important;
+      color: #fff !important;
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.4) !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: 800 !important;
+    }
+
+    /* 🌟 NOTES CARDS HOVER EFFECT (For dynamic cards) */
+    .notes-grid-catalog > div, .note-card {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      background: rgba(15, 23, 42, 0.8) !important;
+      backdrop-filter: blur(8px) !important;
+      border: 1px solid rgba(255,255,255,0.05) !important;
+    }
+    .notes-grid-catalog > div:hover, .note-card:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4), 0 0 15px rgba(56,189,248,0.2) !important;
+      border-color: rgba(56, 189, 248, 0.3) !important;
+    }
+  </style>
 </head>
 <body class="app-body">
+
+  <!-- Background Orbs -->
+  <div class="bg-orb-1"></div>
+  <div class="bg-orb-2"></div>
 
   <!-- 1. TOP NAVBAR -->
   <header class="app-header">
@@ -150,7 +227,7 @@
 
     <!-- BREADCRUMB BAR -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
-      <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-accent); text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: var(--radius-pill);">
+      <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-accent); text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: var(--radius-pill); transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
         <span>🏠</span> मुख्य डैशबोर्ड
       </a>
       <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk HD Notes Studio</span>
@@ -158,18 +235,18 @@
 
     <!-- HERO SEARCH & FILTER BANNER -->
     <section class="notes-header-banner">
-      <div class="status-pill">
+      <div class="status-pill" style="margin-bottom: 16px;">
         <span class="pulsing-dot"></span> 10th मैट्रिक, 11th & 12th साइंस हस्तलिखित नोट्स
       </div>
       <h1 class="notes-headline">
-        स्मार्ट <span class="gradient-text">स्टडी नोट्स</span> हब
+        स्मार्ट <span class="gradient-text" style="background: linear-gradient(135deg, #38bdf8, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">स्टडी नोट्स</span> हब
       </h1>
-      <p class="notes-subheadline">
+      <p class="notes-subheadline" style="color: #cbd5e1;">
         चैप्टर-वाइज थ्योरी, न्यूमेरिकल, फॉर्मूला शीट और इन-ऐप हाई-डेफिनिशन PDF रीडर।
       </p>
 
       <!-- Search Field -->
-      <div class="search-bar-wrap">
+      <div class="search-bar-wrap" style="margin-top: 20px;">
         <span class="search-icon">🔍</span>
         <input 
           type="text" 
@@ -180,7 +257,7 @@
       </div>
 
       <!-- Filter Pills (10th, 11th, 12th) -->
-      <div class="filter-pill-container" id="filterPillContainer">
+      <div class="filter-pill-container" id="filterPillContainer" style="margin-top: 24px;">
         <button class="filter-btn active" data-filter="all">सभी विषय (All)</button>
 
         <!-- 10th Matric Filters -->
@@ -211,7 +288,7 @@
     </section>
 
     <!-- DYNAMIC NOTES CATALOG GRID -->
-    <section class="notes-display-section" style="margin-top: 24px;">
+    <section class="notes-display-section" style="margin-top: 30px;">
       <div class="notes-grid-catalog" id="notesCatalogGrid">
         <!-- जावास्क्रिप्ट द्वारा नोट्स कार्ड्स लोड होंगे -->
       </div>
@@ -241,7 +318,7 @@
           <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
         </select>
 
-        <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
+        <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; border: none; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(2,132,199,0.3); transition: transform 0.2s;">
           💾 कक्षा सेव करें (Save Class)
         </button>
       </div>
@@ -259,10 +336,10 @@
 
   <!-- IN-BUILT STUDIO MODAL PDF VIEWER -->
   <div class="pdf-modal-backdrop" id="pdfStudioModal">
-    <div class="pdf-modal-window">
+    <div class="pdf-modal-window" style="background: rgba(11, 19, 36, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56,189,248,0.2);">
       <div class="pdf-studio-header">
         <div class="pdf-doc-meta">
-          <span class="pdf-doc-badge" id="modalDocBadge">Class 10 / 11 / 12</span>
+          <span class="pdf-doc-badge" id="modalDocBadge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">Class 10 / 11 / 12</span>
           <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
         </div>
         <div class="pdf-studio-actions">
@@ -286,15 +363,15 @@
         </iframe>
       </div>
 
-      <div class="pdf-studio-footer">
-        <span>NischayDesk In-App HD Reader</span>
+      <div class="pdf-studio-footer" style="background: rgba(0,0,0,0.5);">
+        <span style="color: #38bdf8; font-weight: 700;">⚡ NischayDesk In-App HD Reader</span>
         <span class="reading-hint">ज़ूम करने के लिए पिंच करें या +/- दबाएं</span>
       </div>
     </div>
   </div>
 
   <!-- 4. FOOTER -->
-  <footer class="app-footer">
+  <footer class="app-footer" style="background: rgba(4,9,20,0.8); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.05);">
     <div class="footer-container">
       <div class="brand-col">
         <div class="footer-brand">
