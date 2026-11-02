@@ -668,7 +668,7 @@
       width: 100%;
       max-width: 380px;
       min-height: 80px;
-      max-height: 130px;
+      max-height: 160px;
       background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -976,7 +976,7 @@
       syncTheme();
     }
 
-    // 🎙️ MICROSOFT EDGE-TTS AUDIO ENGINE
+    // 🎙️ 1. ऑडियो प्लेयर और बेसिक टूल्स
     let isVoiceActive = true;
     let isSpeaking = false;
     let lastSpokenText = "";
@@ -1019,6 +1019,7 @@
       }
     }
 
+    // 💬 सामान्य चैट के लिए (2 इंजन: 1. Microsoft Edge-TTS 2. Fallback Default Web Speech)
     async function speakText(txt) {
       if (!isVoiceActive) return;
       stopSpeakingImmediately();
@@ -1049,7 +1050,7 @@
         pauseIcon.style.display = 'block';
       }
 
-      // 🚀 माइक्रोसॉफ्ट एज-टीटीएस सर्वर (Termux: localhost:3000)
+      // पहला प्रयास: Microsoft Edge-TTS (Swara)
       try {
         const response = await fetch('http://localhost:3000/api/tts', {
           method: 'POST',
@@ -1061,24 +1062,19 @@
           })
         });
 
-        if (!response.ok) throw new Error("Server not responding");
+        if (!response.ok) throw new Error("Edge-TTS Offline");
 
         const audioBlob = await response.blob();
         currentAudioUrl = URL.createObjectURL(audioBlob);
         globalAudioPlayer.src = currentAudioUrl;
 
-        globalAudioPlayer.onended = () => {
-          stopSpeakingImmediately();
-        };
-
-        globalAudioPlayer.onerror = () => {
-          fallbackWebSpeech(clean);
-        };
+        globalAudioPlayer.onended = () => stopSpeakingImmediately();
+        globalAudioPlayer.onerror = () => fallbackWebSpeech(clean);
 
         await globalAudioPlayer.play();
 
       } catch (err) {
-        console.warn("Edge-TTS सर्वर कनेक्ट नहीं हुआ, फॉलबैक वॉयस चल रही है:", err);
+        // दूसरा प्रयास: डिफ़ॉल्ट वेब स्पीच
         fallbackWebSpeech(clean);
       }
     }
@@ -1106,10 +1102,7 @@
         }
       };
 
-      utt.onend = utt.onerror = () => {
-        stopSpeakingImmediately();
-      };
-
+      utt.onend = utt.onerror = () => stopSpeakingImmediately();
       window.speechSynthesis.speak(utt);
     }
 
@@ -1518,7 +1511,11 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // 🌊 REAL-TIME LIVE VOICE CHAT ENGINE (USING MICROSOFT EDGE-TTS)
+    // 🌊 REAL-TIME LIVE VOICE CHAT ENGINE (ELEVENLABS -> MICROSOFT -> DEFAULT)
+    // आपकी नई दी हुई ElevenLabs Key:
+    const ELEVEN_KEY = "sk_db06af05bfb315577f97a9fba3d24b673ecdbc025b54bd55";
+    const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah (Natural Female Voice)
+
     let isLiveActive = false;
     let liveRecInstance = null;
 
@@ -1646,14 +1643,14 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `तुम NischayDesk AI की मीठी और बुद्धिमान साथी हो। ${namePromptPart} 
+                text: `तुम NischayDesk AI की मीठी, समझदार और स्पष्ट व्याख्या करने वाली AI साथी हो। ${namePromptPart} 
 यदि छात्र पूछे कि "फाउंडर कौन है", "किसने बनाया", "प्रिंस कुमार कौन हैं", या "10th में क्या किया", तो बताओ: "NischayDesk के फाउंडर प्रिंस कुमार हैं। वे तेलवा बाज़ार (जमुई, बिहार) के रहने वाले हैं और 10वीं में 463/500 अंक लाए थे।"
-सीधे और केवल 1 छोटे वाक्य (अधिकतम 12-15 शब्द) में स्वाभाविक जवाब दो। सवाल: ${query}`
+छात्र के सवाल का पूरा, विस्तृत, स्पष्ट और समझने योग्य उत्तर दो ताकि कोई भी कॉन्सेप्ट अधूरा न रहे। सवाल: ${query}`
               }]
             }],
             generationConfig: {
-              maxOutputTokens: 80,
-              temperature: 0.2
+              maxOutputTokens: 4096, // बड़ी टोकन लिमिट (पूरा विस्तृत उत्तर)
+              temperature: 0.3
             }
           })
         });
@@ -1662,7 +1659,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         if (data.candidates && data.candidates[0].content) {
           const reply = data.candidates[0].content.parts[0].text;
           liveAiSubText.innerText = reply;
-          await playLiveEdgeTTS(reply);
+          await playLiveChainVoice(reply);
         } else {
           liveAiSubText.innerText = "उत्तर नहीं मिला!";
           liveOrb.classList.remove('active');
@@ -1673,26 +1670,34 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       }
     }
 
-    // 🌊 MICROSOFT EDGE-TTS LIVE AUDIO PLAYER
-    async function playLiveEdgeTTS(text) {
+    // 🌊 3-TIER VOICE CHAIN (1. ELEVENLABS -> 2. MICROSOFT EDGE-TTS -> 3. DEFAULT)
+    async function playLiveChainVoice(text) {
       liveOrb.classList.add('active');
       let clean = text
         .replace(/[*#_`$<>~\[\]\\\/]/g, '')
         .replace(/\s+/g, ' ')
         .trim();
 
+      // [टियर 1]: ElevenLabs (सबसे पहले)
       try {
-        const response = await fetch('http://localhost:3000/api/tts', {
+        const targetUrl = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_22050_32`;
+        const response = await fetch(targetUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          headers: {
+            'xi-api-key': ELEVEN_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
             text: clean,
-            voice: "hi-IN-SwaraNeural",
-            rate: "+6%"
+            model_id: "eleven_multilingual_v2",
+            voice_settings: {
+              stability: 0.5,
+              similarity_boost: 0.8
+            }
           })
         });
 
-        if (!response.ok) throw new Error("Edge-TTS Error");
+        if (!response.ok) throw new Error("ElevenLabs Quota / Limit Error");
 
         const blob = await response.blob();
         if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
@@ -1704,18 +1709,56 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         };
 
         globalAudioPlayer.onerror = () => {
-          fallbackLiveSpeech(clean);
+          playLiveEdgeTTSFallback(clean);
+        };
+
+        await globalAudioPlayer.play();
+        return; // ElevenLabs सफलतापूर्वक बज गया
+
+      } catch (e1) {
+        console.warn("ElevenLabs नहीं चला, अब [टियर 2] Microsoft Edge-TTS चल रहा है:", e1);
+        await playLiveEdgeTTSFallback(clean);
+      }
+    }
+
+    // [टियर 2]: Microsoft Edge-TTS
+    async function playLiveEdgeTTSFallback(clean) {
+      try {
+        const response = await fetch('http://localhost:3000/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            text: clean,
+            voice: "hi-IN-SwaraNeural",
+            rate: "+6%"
+          })
+        });
+
+        if (!response.ok) throw new Error("Edge-TTS Offline");
+
+        const blob = await response.blob();
+        if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+        currentAudioUrl = URL.createObjectURL(blob);
+        globalAudioPlayer.src = currentAudioUrl;
+
+        globalAudioPlayer.onended = () => {
+          liveOrb.classList.remove('active');
+        };
+
+        globalAudioPlayer.onerror = () => {
+          playLiveDefaultFallback(clean);
         };
 
         await globalAudioPlayer.play();
 
-      } catch (e) {
-        console.warn("Edge-TTS कनेक्ट नहीं हुआ, फॉलबैक वॉयस:", e);
-        fallbackLiveSpeech(clean);
+      } catch (e2) {
+        console.warn("Microsoft Edge-TTS भी नहीं चला, अब [टियर 3] डिफ़ॉल्ट वॉयस चल रही है:", e2);
+        playLiveDefaultFallback(clean);
       }
     }
 
-    function fallbackLiveSpeech(clean) {
+    // [टियर 3]: डिफ़ॉल्ट सिस्टम वॉयस
+    function playLiveDefaultFallback(clean) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utt = new SpeechSynthesisUtterance(clean);
