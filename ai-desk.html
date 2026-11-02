@@ -81,7 +81,6 @@
       user-select: text;
     }
 
-    /* TOP NAVBAR */
     .topbar-pro {
       padding: 10px 14px;
       display: flex;
@@ -139,7 +138,6 @@
       gap: 4px;
     }
 
-    /* FLOATING AUDIO FAB */
     .floating-audio-fab {
       position: fixed;
       top: 64px;
@@ -172,7 +170,6 @@
       100% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
     }
 
-    /* CHAT VIEWPORT */
     .chat-scroll-area {
       flex: 1;
       overflow-y: auto;
@@ -463,7 +460,6 @@
     @keyframes waveDance { 0% { transform: scaleY(0.4); } 100% { transform: scaleY(1.3); } }
     @keyframes popIn { 0% { transform: translateY(10px) scale(0.9); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
 
-    /* FLOATING PILL DOCK */
     .dock-wrapper {
       position: fixed;
       bottom: 0;
@@ -668,7 +664,6 @@
       transform: scale(1.1);
     }
 
-    /* 2-WAY SUBTITLE CONTAINER (USER & AI) */
     .live-subtitles-card {
       width: 100%;
       max-width: 380px;
@@ -861,7 +856,7 @@
     </div>
   </div>
 
-  <!-- 🌊 FULLSCREEN LIVE VOICE OVERLAY (2-WAY SUBTITLES) -->
+  <!-- 🌊 FULLSCREEN LIVE VOICE OVERLAY -->
   <div class="live-voice-overlay" id="liveVoiceOverlay">
     <div class="live-voice-header">
       <div class="live-title">
@@ -876,7 +871,6 @@
       <div class="live-wave-layer live-wave-3"></div>
     </div>
 
-    <!-- 2-Way Subtitle Box -->
     <div class="live-subtitles-card" id="liveSubCard">
       <div class="sub-row sub-user" id="liveUserSub" style="display:none;">
         <span class="sub-label">आप:</span>
@@ -982,7 +976,7 @@
       syncTheme();
     }
 
-    // 🎙️ MICROSOFT EDGE-TTS ENGINE (TERMUX SERVER localhost:3000)
+    // 🎙️ ZERO-DELAY VOICE ENGINE
     let isVoiceActive = true;
     let isSpeaking = false;
     let lastSpokenText = "";
@@ -998,7 +992,7 @@
         URL.revokeObjectURL(currentAudioUrl);
         currentAudioUrl = null;
       }
-      if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
+      if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
       isSpeaking = false;
@@ -1055,41 +1049,53 @@
         pauseIcon.style.display = 'block';
       }
 
-      try {
-        // 🚀 Termux पर चल रहे Microsoft Edge-TTS सर्वर को कॉल करें
-        const response = await fetch('http://localhost:3000/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            text: clean,
-            voice: "hi-IN-SwaraNeural",
-            rate: "+6%"
-          })
-        });
+      // अगर साइट लोकल होस्ट पर खुली है, तभी Edge-TTS सर्वर पर जाए; GitHub Pages पर सीधे फ़ास्ट स्पीच से बोलेगा
+      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-        if (!response.ok) throw new Error("Edge-TTS Server Offline");
+      if (isLocalHost) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 800);
 
-        const audioBlob = await response.blob();
-        currentAudioUrl = URL.createObjectURL(audioBlob);
-        globalAudioPlayer.src = currentAudioUrl;
+          const response = await fetch('http://localhost:3000/api/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              text: clean,
+              voice: "hi-IN-SwaraNeural",
+              rate: "+6%"
+            }),
+            signal: controller.signal
+          });
 
-        globalAudioPlayer.onended = () => {
-          stopSpeakingImmediately();
-        };
+          clearTimeout(timeoutId);
 
-        globalAudioPlayer.onerror = () => {
-          fallbackWebSpeech(clean);
-        };
+          if (!response.ok) throw new Error("Offline");
 
-        await globalAudioPlayer.play();
+          const audioBlob = await response.blob();
+          currentAudioUrl = URL.createObjectURL(audioBlob);
+          globalAudioPlayer.src = currentAudioUrl;
 
-      } catch (err) {
-        console.warn("Termux Edge-TTS सर्वर चालू नहीं है, ऑटो-फॉलबैक प्रयोग हो रहा है:", err);
-        fallbackWebSpeech(clean);
+          globalAudioPlayer.onended = () => {
+            stopSpeakingImmediately();
+          };
+
+          globalAudioPlayer.onerror = () => {
+            fallbackWebSpeech(clean);
+          };
+
+          await globalAudioPlayer.play();
+          return;
+
+        } catch (err) {
+          // लोकल में एरर आने पर सीधे नीचे फॉलबैक चलेगा
+        }
       }
+
+      // GitHub Pages पर 0 मिलीसेकंड में सीधा और सुपर-फास्ट प्ले
+      fallbackWebSpeech(clean);
     }
 
-    // अगर कभी Termux सर्वर बंद हो, तो यह बैकअप के तौर पर इन-बिल्ट वॉइस से बोलेगा
     function fallbackWebSpeech(clean) {
       if (!('speechSynthesis' in window)) {
         stopSpeakingImmediately();
@@ -1099,6 +1105,10 @@
       const utt = new SpeechSynthesisUtterance(clean);
       utt.lang = 'hi-IN';
       utt.rate = 1.05;
+
+      const voices = window.speechSynthesis.getVoices();
+      const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
+      if (hindiVoice) utt.voice = hindiVoice;
 
       const fab = document.getElementById('audioFab');
       const playIcon = document.getElementById('fabPlayIcon');
@@ -1123,7 +1133,6 @@
     const MODEL_NAME = "gemini-3.5-flash-lite";
     let isBusy = false;
 
-    // 🎯 DYNAMIC SYSTEM PROMPT (FOUNDER INFO ON EXPLICIT ASK ONLY)
     function getDynamicSystemInstruction() {
       const uName = getUserName();
       const nameInstruction = uName 
@@ -1194,7 +1203,6 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       speakText(txt);
     }
 
-    // 📄 100% CLEAN PDF EXPORTER (WHITE PAPER + SHARP FORMULAS)
     function downloadResponsePdf(btn) {
       const contentElem = btn.closest('.ai-render-content').querySelector('.slot-text');
       const studentName = getUserName() || "विद्यार्थी";
@@ -1337,7 +1345,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       instantScroll();
 
       chatMemory.push({ role: "user", content: q });
-      if (chatMemory.length > 20) chatMemory = chatMemory.slice(-16);
+      if (chatMemory.length > 8) chatMemory = chatMemory.slice(-6);
 
       isBusy = true;
       const loadId = 'ai-resp-' + Date.now();
@@ -1451,13 +1459,14 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       }
     }
 
-    let recognition;
+    // 🎙️ INPUT BOX SPEECH RECOGNITION
+    let recognition = null;
     let isRec = false;
 
     function toggleVoiceInput() {
       const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!Speech) {
-        alert("कृपया Google Chrome का उपयोग करें।");
+        alert("माइक का उपयोग करने के लिए Google Chrome का प्रयोग करें।");
         return;
       }
 
@@ -1477,6 +1486,8 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
 
       recognition = new Speech();
       recognition.lang = 'hi-IN';
+      recognition.continuous = false;
+      recognition.interimResults = false;
 
       recognition.onstart = () => {
         isRec = true;
@@ -1491,13 +1502,24 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         input.focus();
       };
 
-      recognition.onerror = recognition.onend = () => {
+      recognition.onerror = (e) => {
+        console.warn("Speech error:", e.error);
         isRec = false;
         micBtn.classList.remove('recording');
         listenBar.classList.remove('active');
       };
 
-      recognition.start();
+      recognition.onend = () => {
+        isRec = false;
+        micBtn.classList.remove('recording');
+        listenBar.classList.remove('active');
+      };
+
+      try {
+        recognition.start();
+      } catch(err) {
+        console.error("Mic start failed:", err);
+      }
     }
 
     function confirmClearChat() {
@@ -1513,9 +1535,9 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (USING MICROSOFT EDGE-TTS)
+    // 🌊 REAL-TIME LIVE VOICE CHAT ENGINE (INSTANT & ERROR-FREE)
     let isLiveActive = false;
-    let liveRecognizer = null;
+    let liveRecInstance = null;
 
     const liveOverlay = document.getElementById('liveVoiceOverlay');
     const liveOrb = document.getElementById('liveOrb');
@@ -1531,71 +1553,90 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       const uName = getUserName();
       liveUserSub.style.display = 'none';
       liveAiSubText.innerText = uName 
-        ? `नमस्ते ${uName}! पढ़ाई से जुड़ा कोई भी सवाल पूछने के लिए नीचे बटन दबाएं...` 
-        : `नमस्ते! पढ़ाई से जुड़ा कोई भी सवाल पूछने के लिए नीचे बटन दबाएं...`;
+        ? `नमस्ते ${uName}! बोलिए, क्या पूछना चाहते हैं?` 
+        : `नमस्ते! बोलिए, क्या पूछना चाहते हैं?`;
+      resetLiveVisuals();
     }
 
     function closeLiveVoiceOverlay() {
       stopSpeakingImmediately();
-      if (liveRecognizer) liveRecognizer.stop();
+      if (liveRecInstance) {
+        try { liveRecInstance.abort(); } catch(e){}
+        liveRecInstance = null;
+      }
       isLiveActive = false;
-      liveOrbBtn.classList.remove('listening');
-      liveOrb.classList.remove('active');
+      resetLiveVisuals();
       liveOverlay.classList.remove('open');
     }
 
-    function initLiveSpeechEngine() {
-      const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!Speech) {
-        liveAiSubText.innerText = "Chrome ब्राउज़र का उपयोग करें।";
-        return null;
-      }
-      const rec = new Speech();
-      rec.lang = 'hi-IN';
-      rec.continuous = false;
-      rec.interimResults = false;
-
-      rec.onstart = () => {
-        isLiveActive = true;
-        liveOrbBtn.classList.add('listening');
-        liveBtnIcon.innerText = "🛑";
-        liveOrb.classList.add('active');
-        liveAiSubText.innerText = "सुन रहा हूँ... बोलिए!";
-      };
-
-      rec.onresult = async (e) => {
-        const text = e.results[0][0].transcript;
-        liveUserSub.style.display = 'flex';
-        liveUserSubText.innerText = text;
-        resetLiveVisuals();
-        liveAiSubText.innerText = "सोच रहा हूँ... 🧠";
-        liveOrb.classList.add('active');
-        await askLiveGemini(text);
-      };
-
-      rec.onerror = () => {
-        resetLiveVisuals();
-        liveAiSubText.innerText = "आवाज़ सुनाई नहीं दी, फिर से टैप करें!";
-      };
-
-      rec.onend = () => {
-        resetLiveVisuals();
-      };
-
-      return rec;
-    }
-
-    liveRecognizer = initLiveSpeechEngine();
-
     function handleLiveVoiceTap() {
       stopSpeakingImmediately();
-      if (!isLiveActive) {
-        try {
-          liveRecognizer.start();
-        } catch(e) {}
-      } else {
-        liveRecognizer.stop();
+
+      if (isLiveActive) {
+        if (liveRecInstance) {
+          try { liveRecInstance.stop(); } catch(e){}
+          liveRecInstance = null;
+        }
         resetLiveVisuals();
+        return;
+      }
+
+      const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Speech) {
+        liveAiSubText.innerText = "कृपया Google Chrome का उपयोग करें।";
+        return;
+      }
+
+      try {
+        if (liveRecInstance) {
+          liveRecInstance.abort();
+          liveRecInstance = null;
+        }
+
+        liveRecInstance = new Speech();
+        liveRecInstance.lang = 'hi-IN';
+        liveRecInstance.continuous = false;
+        liveRecInstance.interimResults = false;
+
+        liveRecInstance.onstart = () => {
+          isLiveActive = true;
+          liveOrbBtn.classList.add('listening');
+          liveBtnIcon.innerText = "🛑";
+          liveOrb.classList.add('active');
+          liveAiSubText.innerText = "सुन रहा हूँ... बोलिए!";
+        };
+
+        liveRecInstance.onresult = async (e) => {
+          const text = e.results[0][0].transcript;
+          liveUserSub.style.display = 'flex';
+          liveUserSubText.innerText = text;
+          resetLiveVisuals();
+          liveAiSubText.innerText = "सोच रहा हूँ... 🧠";
+          liveOrb.classList.add('active');
+          await askLiveGemini(text);
+        };
+
+        liveRecInstance.onerror = (e) => {
+          console.warn("Live voice error:", e.error);
+          resetLiveVisuals();
+          if (e.error === 'not-allowed') {
+            liveAiSubText.innerText = "माइक की अनुमति नहीं है! Chrome में अनुमति दें।";
+          } else if (e.error === 'no-speech') {
+            liveAiSubText.innerText = "कुछ सुनाई नहीं दिया, बटन दबाकर फिर बोलिए।";
+          } else {
+            liveAiSubText.innerText = "त्रुटि आई, कृपया दोबारा दबाएँ।";
+          }
+        };
+
+        liveRecInstance.onend = () => {
+          resetLiveVisuals();
+        };
+
+        liveRecInstance.start();
+
+      } catch(err) {
+        resetLiveVisuals();
+        liveAiSubText.innerText = "माइक शुरू नहीं हुआ, फिर से दबाएँ।";
       }
     }
 
@@ -1613,7 +1654,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         ? `छात्र का नाम "${uName}" है। छात्र को प्यार से "${uName}" कहकर संबोधित करो।` 
         : `छात्र का कोई नाम मत लो, सीधे और आदरपूर्वक उत्तर दो।`;
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${activeKey}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${activeKey}`;
 
       try {
         const res = await fetch(url, {
@@ -1622,11 +1663,15 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `तुम NischayDesk AI की बहुत ही समझदार और मीठी AI साथी हो। ${namePromptPart} 
-यदि छात्र स्पष्ट रूप से पूछे कि "फाउंडर कौन है", "किसने बनाया", "प्रिंस कुमार कौन हैं", "कहाँ के रहने वाले हैं", या "10th में क्या किया" तो गर्व से बताओ: "NischayDesk के फाउंडर प्रिंस कुमार हैं। वे तेलवा बाज़ार (जमुई, बिहार) के रहने वाले हैं और उन्होंने 10वीं बोर्ड में 463/500 अंक प्राप्त किए थे।" अन्यथा सामान्य पढ़ाई पर ही बात करो।
-बहुत लंबे जवाब मत दो। सिर्फ 1 या 2 छोटे वाक्यों में स्वाभाविक और दोस्ताना हिंदी में जवाब दो। सवाल: ${query}`
+                text: `तुम NischayDesk AI की मीठी और बुद्धिमान साथी हो। ${namePromptPart} 
+यदि छात्र पूछे कि "फाउंडर कौन है", "किसने बनाया", "प्रिंस कुमार कौन हैं", या "10th में क्या किया", तो बताओ: "NischayDesk के फाउंडर प्रिंस कुमार हैं। वे तेलवा बाज़ार (जमुई, बिहार) के रहने वाले हैं और 10वीं में 463/500 अंक लाए थे।"
+सीधे और केवल 1 छोटे वाक्य (अधिकतम 12-15 शब्द) में त्वरित जवाब दो। सवाल: ${query}`
               }]
-            }]
+            }],
+            generationConfig: {
+              maxOutputTokens: 80,
+              temperature: 0.2
+            }
           })
         });
 
@@ -1634,72 +1679,40 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         if (data.candidates && data.candidates[0].content) {
           const reply = data.candidates[0].content.parts[0].text;
           liveAiSubText.innerText = reply;
-          await playLiveEdgeTTS(reply);
+          playLiveVoice(reply);
         } else {
           liveAiSubText.innerText = "उत्तर नहीं मिला!";
           liveOrb.classList.remove('active');
         }
       } catch (err) {
-        liveAiSubText.innerText = "इंटरनेट में समस्या आई!";
+        liveAiSubText.innerText = "नेटवर्क त्रुटि!";
         liveOrb.classList.remove('active');
       }
     }
 
-    // 🌊 MICROSOFT EDGE-TTS LIVE AUDIO PLAYER
-    async function playLiveEdgeTTS(text) {
+    function playLiveVoice(text) {
       liveOrb.classList.add('active');
-      let clean = text
-        .replace(/[*#_`$<>~\[\]\\\/]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
+      const clean = text.replace(/[*#_`$<>~\[\]\\\/]/g, '').replace(/\s+/g, ' ').trim();
 
-      try {
-        const response = await fetch('http://localhost:3000/api/tts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            text: clean,
-            voice: "hi-IN-SwaraNeural",
-            rate: "+6%"
-          })
-        });
-
-        if (!response.ok) throw new Error("Edge-TTS Error");
-
-        const blob = await response.blob();
-        if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
-        currentAudioUrl = URL.createObjectURL(blob);
-        globalAudioPlayer.src = currentAudioUrl;
-
-        globalAudioPlayer.onended = () => {
-          liveOrb.classList.remove('active');
-        };
-
-        globalAudioPlayer.onerror = () => {
-          fallbackLiveSpeech(clean);
-        };
-
-        await globalAudioPlayer.play();
-
-      } catch (e) {
-        console.warn("Edge-TTS लोड नहीं हुआ, फॉलबैक वॉयस चालू की जा रही है:", e);
-        fallbackLiveSpeech(clean);
-      }
-    }
-
-    function fallbackLiveSpeech(clean) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utt = new SpeechSynthesisUtterance(clean);
-        utt.lang = 'hi-IN';
-        utt.rate = 1.05;
-        utt.onend = utt.onerror = () => {
-          liveOrb.classList.remove('active');
-        };
-        window.speechSynthesis.speak(utt);
-      } else {
+      if (!('speechSynthesis' in window)) {
         liveOrb.classList.remove('active');
+        return;
       }
+
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(clean);
+      utt.lang = 'hi-IN';
+      utt.rate = 1.05;
+
+      const voices = window.speechSynthesis.getVoices();
+      const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
+      if (hindiVoice) utt.voice = hindiVoice;
+
+      utt.onend = utt.onerror = () => {
+        liveOrb.classList.remove('active');
+      };
+
+      window.speechSynthesis.speak(utt);
     }
   </script>
 </body>
