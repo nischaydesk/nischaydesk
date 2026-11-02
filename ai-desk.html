@@ -982,46 +982,22 @@
       syncTheme();
     }
 
+    // 🎙️ MICROSOFT EDGE-TTS ENGINE (TERMUX SERVER localhost:3000)
     let isVoiceActive = true;
-    let naturalHindiVoice = null;
     let isSpeaking = false;
     let lastSpokenText = "";
-
-    function initVoices() {
-      if (!('speechSynthesis' in window)) return;
-      const voices = window.speechSynthesis.getVoices();
-      naturalHindiVoice = 
-        voices.find(v => v.lang === 'hi-IN' && (v.name.includes('Google') || v.name.includes('Neural') || v.name.includes('Natural'))) ||
-        voices.find(v => v.lang === 'hi-IN') ||
-        voices[0];
-    }
-    initVoices();
-    if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = initVoices;
-    }
-
-    function toggleAudioFab() {
-      if (!('speechSynthesis' in window)) return;
-      
-      const fab = document.getElementById('audioFab');
-      const playIcon = document.getElementById('fabPlayIcon');
-      const pauseIcon = document.getElementById('fabPauseIcon');
-
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-        isSpeaking = false;
-        fab.classList.remove('speaking');
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-      } else if (lastSpokenText) {
-        speakText(lastSpokenText);
-      } else {
-        isVoiceActive = !isVoiceActive;
-        fab.classList.toggle('muted', !isVoiceActive);
-      }
-    }
+    let globalAudioPlayer = new Audio();
+    let currentAudioUrl = null;
 
     function stopSpeakingImmediately() {
+      if (globalAudioPlayer) {
+        globalAudioPlayer.pause();
+        globalAudioPlayer.currentTime = 0;
+      }
+      if (currentAudioUrl) {
+        URL.revokeObjectURL(currentAudioUrl);
+        currentAudioUrl = null;
+      }
       if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
@@ -1034,9 +1010,24 @@
       }
     }
 
-    function speakText(txt) {
-      if (!isVoiceActive || !('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
+    function toggleAudioFab() {
+      const fab = document.getElementById('audioFab');
+      const playIcon = document.getElementById('fabPlayIcon');
+      const pauseIcon = document.getElementById('fabPauseIcon');
+
+      if (isSpeaking) {
+        stopSpeakingImmediately();
+      } else if (lastSpokenText) {
+        speakText(lastSpokenText);
+      } else {
+        isVoiceActive = !isVoiceActive;
+        fab.classList.toggle('muted', !isVoiceActive);
+      }
+    }
+
+    async function speakText(txt) {
+      if (!isVoiceActive) return;
+      stopSpeakingImmediately();
 
       lastSpokenText = txt;
       const clean = txt
@@ -1046,17 +1037,68 @@
         .replace(/\|.*?\|/g, ' ')
         .replace(/\\\[(.*?)\\\]/gs, ' ')
         .replace(/\\times/g, ' गुणा ')
-        .replace(/[#*`_~\[\]\\]/g, '')
-        .replace(/\n+/g, '। ')
+        .replace(/[*#_`$<>~\[\]\\\/]/g, '')
+        .replace(/\s+/g, ' ')
         .trim();
 
       if (!clean) return;
-      
+
+      const fab = document.getElementById('audioFab');
+      const playIcon = document.getElementById('fabPlayIcon');
+      const pauseIcon = document.getElementById('fabPauseIcon');
+
+      isSpeaking = true;
+      if (fab) {
+        fab.classList.add('speaking');
+        fab.classList.remove('muted');
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      }
+
+      try {
+        // 🚀 Termux पर चल रहे Microsoft Edge-TTS सर्वर को कॉल करें
+        const response = await fetch('http://localhost:3000/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            text: clean,
+            voice: "hi-IN-SwaraNeural",
+            rate: "+6%"
+          })
+        });
+
+        if (!response.ok) throw new Error("Edge-TTS Server Offline");
+
+        const audioBlob = await response.blob();
+        currentAudioUrl = URL.createObjectURL(audioBlob);
+        globalAudioPlayer.src = currentAudioUrl;
+
+        globalAudioPlayer.onended = () => {
+          stopSpeakingImmediately();
+        };
+
+        globalAudioPlayer.onerror = () => {
+          fallbackWebSpeech(clean);
+        };
+
+        await globalAudioPlayer.play();
+
+      } catch (err) {
+        console.warn("Termux Edge-TTS सर्वर चालू नहीं है, ऑटो-फॉलबैक प्रयोग हो रहा है:", err);
+        fallbackWebSpeech(clean);
+      }
+    }
+
+    // अगर कभी Termux सर्वर बंद हो, तो यह बैकअप के तौर पर इन-बिल्ट वॉइस से बोलेगा
+    function fallbackWebSpeech(clean) {
+      if (!('speechSynthesis' in window)) {
+        stopSpeakingImmediately();
+        return;
+      }
+      window.speechSynthesis.cancel();
       const utt = new SpeechSynthesisUtterance(clean);
-      if (naturalHindiVoice) utt.voice = naturalHindiVoice;
       utt.lang = 'hi-IN';
       utt.rate = 1.05;
-      utt.pitch = 1.0;
 
       const fab = document.getElementById('audioFab');
       const playIcon = document.getElementById('fabPlayIcon');
@@ -1064,17 +1106,15 @@
 
       utt.onstart = () => {
         isSpeaking = true;
-        fab.classList.add('speaking');
-        fab.classList.remove('muted');
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        if (fab) {
+          fab.classList.add('speaking');
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
+        }
       };
 
       utt.onend = utt.onerror = () => {
-        isSpeaking = false;
-        fab.classList.remove('speaking');
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
+        stopSpeakingImmediately();
       };
 
       window.speechSynthesis.speak(utt);
@@ -1462,7 +1502,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
 
     function confirmClearChat() {
       if (confirm("क्या आप पूरी चैट मिटाना चाहते हैं?")) {
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        stopSpeakingImmediately();
         document.getElementById('chatFeed').innerHTML = '';
         document.getElementById('welcomeBox').style.display = 'block';
         chatMemory = [];
@@ -1473,14 +1513,9 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (WITH FALLBACK)
-    // आपकी नई ElevenLabs API Key
-    const ELEVEN_KEY = "sk_cda8340640405253ca65310573ef1d6c24862aedd676e2b8";
-    const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah (100% Free Plan)
-
+    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (USING MICROSOFT EDGE-TTS)
     let isLiveActive = false;
     let liveRecognizer = null;
-    let liveAudioPlayer = new Audio();
 
     const liveOverlay = document.getElementById('liveVoiceOverlay');
     const liveOrb = document.getElementById('liveOrb');
@@ -1501,7 +1536,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
     }
 
     function closeLiveVoiceOverlay() {
-      if (liveAudioPlayer) liveAudioPlayer.pause();
+      stopSpeakingImmediately();
       if (liveRecognizer) liveRecognizer.stop();
       isLiveActive = false;
       liveOrbBtn.classList.remove('listening');
@@ -1553,9 +1588,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
     liveRecognizer = initLiveSpeechEngine();
 
     function handleLiveVoiceTap() {
-      if (liveAudioPlayer) {
-        liveAudioPlayer.pause();
-      }
+      stopSpeakingImmediately();
       if (!isLiveActive) {
         try {
           liveRecognizer.start();
@@ -1601,7 +1634,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         if (data.candidates && data.candidates[0].content) {
           const reply = data.candidates[0].content.parts[0].text;
           liveAiSubText.innerText = reply;
-          await playLiveElevenLabs(reply);
+          await playLiveEdgeTTS(reply);
         } else {
           liveAiSubText.innerText = "उत्तर नहीं मिला!";
           liveOrb.classList.remove('active');
@@ -1612,57 +1645,60 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       }
     }
 
-    async function playLiveElevenLabs(text) {
+    // 🌊 MICROSOFT EDGE-TTS LIVE AUDIO PLAYER
+    async function playLiveEdgeTTS(text) {
       liveOrb.classList.add('active');
-      let clean = text.replace(/[*#_`$<>~]/g, '').trim();
-      const targetUrl = `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_22050_32`;
+      let clean = text
+        .replace(/[*#_`$<>~\[\]\\\/]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
       try {
-        const response = await fetch(targetUrl, {
+        const response = await fetch('http://localhost:3000/api/tts', {
           method: 'POST',
-          headers: {
-            'xi-api-key': ELEVEN_KEY,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
             text: clean,
-            model_id: "eleven_multilingual_v2",
-            voice_settings: {
-              stability: 0.6,
-              similarity_boost: 0.85
-            }
+            voice: "hi-IN-SwaraNeural",
+            rate: "+6%"
           })
         });
 
-        if (!response.ok) {
-          throw new Error("ElevenLabs Quota/Network Error");
-        }
+        if (!response.ok) throw new Error("Edge-TTS Error");
 
         const blob = await response.blob();
-        const audioUrl = URL.createObjectURL(blob);
-        liveAudioPlayer.src = audioUrl;
+        if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+        currentAudioUrl = URL.createObjectURL(blob);
+        globalAudioPlayer.src = currentAudioUrl;
 
-        liveAudioPlayer.onended = () => {
+        globalAudioPlayer.onended = () => {
           liveOrb.classList.remove('active');
         };
 
-        await liveAudioPlayer.play();
+        globalAudioPlayer.onerror = () => {
+          fallbackLiveSpeech(clean);
+        };
+
+        await globalAudioPlayer.play();
 
       } catch (e) {
-        console.warn("ElevenLabs लोड नहीं हुआ, फॉलबैक वॉयस चालू की जा रही है:", e);
-        // अगर कभी ElevenLabs में दिक्कत आए तो यह ऑटोमैटिक बैकअप आवाज़ में तुरंत बोलेगा
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const utt = new SpeechSynthesisUtterance(clean);
-          utt.lang = 'hi-IN';
-          if (naturalHindiVoice) utt.voice = naturalHindiVoice;
-          utt.onend = utt.onerror = () => {
-            liveOrb.classList.remove('active');
-          };
-          window.speechSynthesis.speak(utt);
-        } else {
+        console.warn("Edge-TTS लोड नहीं हुआ, फॉलबैक वॉयस चालू की जा रही है:", e);
+        fallbackLiveSpeech(clean);
+      }
+    }
+
+    function fallbackLiveSpeech(clean) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(clean);
+        utt.lang = 'hi-IN';
+        utt.rate = 1.05;
+        utt.onend = utt.onerror = () => {
           liveOrb.classList.remove('active');
-        }
+        };
+        window.speechSynthesis.speak(utt);
+      } else {
+        liveOrb.classList.remove('active');
       }
     }
   </script>
