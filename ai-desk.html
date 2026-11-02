@@ -976,7 +976,7 @@
       syncTheme();
     }
 
-    // 🎙️ ZERO-DELAY VOICE ENGINE
+    // 🎙️ MICROSOFT EDGE-TTS AUDIO ENGINE
     let isVoiceActive = true;
     let isSpeaking = false;
     let lastSpokenText = "";
@@ -1049,51 +1049,38 @@
         pauseIcon.style.display = 'block';
       }
 
-      // अगर साइट लोकल होस्ट पर खुली है, तभी Edge-TTS सर्वर पर जाए; GitHub Pages पर सीधे फ़ास्ट स्पीच से बोलेगा
-      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      // 🚀 माइक्रोसॉफ्ट एज-टीटीएस सर्वर (Termux: localhost:3000)
+      try {
+        const response = await fetch('http://localhost:3000/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            text: clean,
+            voice: "hi-IN-SwaraNeural",
+            rate: "+6%"
+          })
+        });
 
-      if (isLocalHost) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 800);
+        if (!response.ok) throw new Error("Server not responding");
 
-          const response = await fetch('http://localhost:3000/api/tts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              text: clean,
-              voice: "hi-IN-SwaraNeural",
-              rate: "+6%"
-            }),
-            signal: controller.signal
-          });
+        const audioBlob = await response.blob();
+        currentAudioUrl = URL.createObjectURL(audioBlob);
+        globalAudioPlayer.src = currentAudioUrl;
 
-          clearTimeout(timeoutId);
+        globalAudioPlayer.onended = () => {
+          stopSpeakingImmediately();
+        };
 
-          if (!response.ok) throw new Error("Offline");
+        globalAudioPlayer.onerror = () => {
+          fallbackWebSpeech(clean);
+        };
 
-          const audioBlob = await response.blob();
-          currentAudioUrl = URL.createObjectURL(audioBlob);
-          globalAudioPlayer.src = currentAudioUrl;
+        await globalAudioPlayer.play();
 
-          globalAudioPlayer.onended = () => {
-            stopSpeakingImmediately();
-          };
-
-          globalAudioPlayer.onerror = () => {
-            fallbackWebSpeech(clean);
-          };
-
-          await globalAudioPlayer.play();
-          return;
-
-        } catch (err) {
-          // लोकल में एरर आने पर सीधे नीचे फॉलबैक चलेगा
-        }
+      } catch (err) {
+        console.warn("Edge-TTS सर्वर कनेक्ट नहीं हुआ, फॉलबैक वॉयस चल रही है:", err);
+        fallbackWebSpeech(clean);
       }
-
-      // GitHub Pages पर 0 मिलीसेकंड में सीधा और सुपर-फास्ट प्ले
-      fallbackWebSpeech(clean);
     }
 
     function fallbackWebSpeech(clean) {
@@ -1105,10 +1092,6 @@
       const utt = new SpeechSynthesisUtterance(clean);
       utt.lang = 'hi-IN';
       utt.rate = 1.05;
-
-      const voices = window.speechSynthesis.getVoices();
-      const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
-      if (hindiVoice) utt.voice = hindiVoice;
 
       const fab = document.getElementById('audioFab');
       const playIcon = document.getElementById('fabPlayIcon');
@@ -1535,7 +1518,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // 🌊 REAL-TIME LIVE VOICE CHAT ENGINE (INSTANT & ERROR-FREE)
+    // 🌊 REAL-TIME LIVE VOICE CHAT ENGINE (USING MICROSOFT EDGE-TTS)
     let isLiveActive = false;
     let liveRecInstance = null;
 
@@ -1620,7 +1603,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
           console.warn("Live voice error:", e.error);
           resetLiveVisuals();
           if (e.error === 'not-allowed') {
-            liveAiSubText.innerText = "माइक की अनुमति नहीं है! Chrome में अनुमति दें।";
+            liveAiSubText.innerText = "माइक की अनुमति नहीं है! Chrome सेटिंग्स में अनुमति दें।";
           } else if (e.error === 'no-speech') {
             liveAiSubText.innerText = "कुछ सुनाई नहीं दिया, बटन दबाकर फिर बोलिए।";
           } else {
@@ -1665,7 +1648,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
               parts: [{
                 text: `तुम NischayDesk AI की मीठी और बुद्धिमान साथी हो। ${namePromptPart} 
 यदि छात्र पूछे कि "फाउंडर कौन है", "किसने बनाया", "प्रिंस कुमार कौन हैं", या "10th में क्या किया", तो बताओ: "NischayDesk के फाउंडर प्रिंस कुमार हैं। वे तेलवा बाज़ार (जमुई, बिहार) के रहने वाले हैं और 10वीं में 463/500 अंक लाए थे।"
-सीधे और केवल 1 छोटे वाक्य (अधिकतम 12-15 शब्द) में त्वरित जवाब दो। सवाल: ${query}`
+सीधे और केवल 1 छोटे वाक्य (अधिकतम 12-15 शब्द) में स्वाभाविक जवाब दो। सवाल: ${query}`
               }]
             }],
             generationConfig: {
@@ -1679,40 +1662,72 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         if (data.candidates && data.candidates[0].content) {
           const reply = data.candidates[0].content.parts[0].text;
           liveAiSubText.innerText = reply;
-          playLiveVoice(reply);
+          await playLiveEdgeTTS(reply);
         } else {
           liveAiSubText.innerText = "उत्तर नहीं मिला!";
           liveOrb.classList.remove('active');
         }
       } catch (err) {
-        liveAiSubText.innerText = "नेटवर्क त्रुटि!";
+        liveAiSubText.innerText = "नेटवर्क में समस्या आई!";
         liveOrb.classList.remove('active');
       }
     }
 
-    function playLiveVoice(text) {
+    // 🌊 MICROSOFT EDGE-TTS LIVE AUDIO PLAYER
+    async function playLiveEdgeTTS(text) {
       liveOrb.classList.add('active');
-      const clean = text.replace(/[*#_`$<>~\[\]\\\/]/g, '').replace(/\s+/g, ' ').trim();
+      let clean = text
+        .replace(/[*#_`$<>~\[\]\\\/]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 
-      if (!('speechSynthesis' in window)) {
-        liveOrb.classList.remove('active');
-        return;
+      try {
+        const response = await fetch('http://localhost:3000/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            text: clean,
+            voice: "hi-IN-SwaraNeural",
+            rate: "+6%"
+          })
+        });
+
+        if (!response.ok) throw new Error("Edge-TTS Error");
+
+        const blob = await response.blob();
+        if (currentAudioUrl) URL.revokeObjectURL(currentAudioUrl);
+        currentAudioUrl = URL.createObjectURL(blob);
+        globalAudioPlayer.src = currentAudioUrl;
+
+        globalAudioPlayer.onended = () => {
+          liveOrb.classList.remove('active');
+        };
+
+        globalAudioPlayer.onerror = () => {
+          fallbackLiveSpeech(clean);
+        };
+
+        await globalAudioPlayer.play();
+
+      } catch (e) {
+        console.warn("Edge-TTS कनेक्ट नहीं हुआ, फॉलबैक वॉयस:", e);
+        fallbackLiveSpeech(clean);
       }
+    }
 
-      window.speechSynthesis.cancel();
-      const utt = new SpeechSynthesisUtterance(clean);
-      utt.lang = 'hi-IN';
-      utt.rate = 1.05;
-
-      const voices = window.speechSynthesis.getVoices();
-      const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
-      if (hindiVoice) utt.voice = hindiVoice;
-
-      utt.onend = utt.onerror = () => {
+    function fallbackLiveSpeech(clean) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(clean);
+        utt.lang = 'hi-IN';
+        utt.rate = 1.05;
+        utt.onend = utt.onerror = () => {
+          liveOrb.classList.remove('active');
+        };
+        window.speechSynthesis.speak(utt);
+      } else {
         liveOrb.classList.remove('active');
-      };
-
-      window.speechSynthesis.speak(utt);
+      }
     }
   </script>
 </body>
