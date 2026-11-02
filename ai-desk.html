@@ -20,15 +20,16 @@
 
   <!-- Fast Client-Side PDF Generator -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-WXM8RJ080H');
   </script>
+
   <style>
     :root {
       --bg: #090d16;
@@ -462,7 +463,7 @@
     @keyframes waveDance { 0% { transform: scaleY(0.4); } 100% { transform: scaleY(1.3); } }
     @keyframes popIn { 0% { transform: translateY(10px) scale(0.9); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
 
-    /* 🎯 100% PERFECTLY CONTAINED FLOATING PILL DOCK */
+    /* FLOATING PILL DOCK */
     .dock-wrapper {
       position: fixed;
       bottom: 0;
@@ -574,7 +575,7 @@
     .dot:nth-child(2) { animation-delay: -0.16s; }
     @keyframes bounce { 0%, 80%, 100% { transform: scale(0.3); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
 
-    /* 🌊 FULLSCREEN LIVE VOICE OVERLAY (FIXED ELEVATED DOCK) */
+    /* 🌊 FULLSCREEN LIVE VOICE OVERLAY */
     .live-voice-overlay {
       position: fixed;
       top: 0;
@@ -667,25 +668,45 @@
       transform: scale(1.1);
     }
 
-    .live-subtitles {
+    /* 💬 2-WAY SUBTITLE CONTAINER (USER & AI) */
+    .live-subtitles-card {
       width: 100%;
-      max-width: 360px;
-      min-height: 65px;
-      max-height: 105px;
-      background: rgba(15, 23, 42, 0.45);
+      max-width: 380px;
+      min-height: 80px;
+      max-height: 130px;
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 18px;
       padding: 12px 16px;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       font-size: 0.92rem;
       color: #cbd5e1;
       line-height: 1.5;
       overflow-y: auto;
+      text-align: left;
     }
 
-    /* 🎯 ELEVATED & FULLY VISIBLE TAP ORB BUTTON */
+    .sub-row {
+      display: flex;
+      flex-direction: column;
+      word-break: break-word;
+    }
+    .sub-label {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+    .sub-user .sub-label { color: #38bdf8; }
+    .sub-ai .sub-label { color: #818cf8; }
+    .sub-user .sub-content { color: #e2e8f0; }
+    .sub-ai .sub-content { color: #f8fafc; font-weight: 500; }
+
     .live-btn-dock {
       width: 100%;
       display: flex;
@@ -790,7 +811,7 @@
 
   </main>
 
-  <!-- 🎯 FLOATING PILL DOCK (ZERO OVERFLOW, PERFECT SCREEN FIT) -->
+  <!-- FLOATING PILL DOCK -->
   <div class="dock-wrapper">
     <div class="floating-listening-bar" id="floatingListeningBar">
       <div class="listen-waves">
@@ -840,7 +861,7 @@
     </div>
   </div>
 
-  <!-- 🌊 FULLSCREEN LIVE VOICE OVERLAY -->
+  <!-- 🌊 FULLSCREEN LIVE VOICE OVERLAY (2-WAY SUBTITLES) -->
   <div class="live-voice-overlay" id="liveVoiceOverlay">
     <div class="live-voice-header">
       <div class="live-title">
@@ -855,8 +876,16 @@
       <div class="live-wave-layer live-wave-3"></div>
     </div>
 
-    <div class="live-subtitles" id="liveSubtitles">
-      बटन दबाकर पढ़ाई से जुड़ा कुछ भी पूछिए...
+    <!-- 2-Way Subtitle Box -->
+    <div class="live-subtitles-card" id="liveSubCard">
+      <div class="sub-row sub-user" id="liveUserSub" style="display:none;">
+        <span class="sub-label">आप:</span>
+        <span class="sub-content" id="liveUserSubText"></span>
+      </div>
+      <div class="sub-row sub-ai" id="liveAiSub">
+        <span class="sub-label">Nischay AI:</span>
+        <span class="sub-content" id="liveAiSubText">बटन दबाकर पढ़ाई से जुड़ा कुछ भी पूछिए...</span>
+      </div>
     </div>
 
     <div class="live-btn-dock">
@@ -905,7 +934,6 @@
       setTimeout(() => span.innerText = "कॉपी", 1500);
     }
 
-    // 🎯 USER NAME PROFILE (100% BLANK BY DEFAULT - NEVER FORCED)
     function getUserName() {
       return localStorage.getItem('nischay_user_name') || "";
     }
@@ -1055,7 +1083,6 @@
     const MODEL_NAME = "gemini-3.5-flash-lite";
     let isBusy = false;
 
-    // 🎯 DYNAMIC SYSTEM PROMPT (NEVER GUESSES USER NAME)
     function getDynamicSystemInstruction() {
       const uName = getUserName();
       const nameInstruction = uName 
@@ -1071,7 +1098,7 @@ CRITICAL INSTRUCTIONS:
 2. DIRECT ANSWERING: Answer directly without unnecessary greetings.
 3. CREATOR CONFIDENTIALITY: Mention "Prince Kumar" ONLY IF the user explicitly asks "who created you?" or "developer kaun hai?". Otherwise, never mention it.
 4. MATHEMATICAL FORMULAS: Format standalone equations in clean display math blocks ($$...$$). Do not output isolated broken brackets inside tables.
-5. COMPACT TABLES & CHARTS: When asked for comparisons, differences (like speed vs velocity), values, or charts, ALWAYS output clean Markdown Tables:
+5. COMPACT TABLES & CHARTS: When asked for comparisons, differences, values, or charts, ALWAYS output clean Markdown Tables:
 | गुण | चाल (Speed) | वेग (Velocity) |
 |---|---|---|
 | परिभाषा | एकांक समय में तय दूरी | एकांक समय में विस्थापन |
@@ -1090,7 +1117,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
     function normalizeFormulas(raw) {
       if (!raw) return "";
       let clean = raw.replace(/(?:^|\n)\s*\[\s*([\s\S]*?)\s*\](?:\s*(?:\n|$))/g, function(match, inner) {
-        if (inner.includes('\\times') || inner.includes('^') || inner.includes('=') || inner.includes('-') || inner.includes('+')) {
+        if (inner.includes('\\times') || inner.includes('^') || inner.includes('=') || inner.includes('-') || inner.includes('+') || inner.includes('\\frac')) {
           return '\n\n$$' + inner.trim() + '$$\n\n';
         }
         return match;
@@ -1122,59 +1149,123 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       speakText(txt);
     }
 
+    // 📄 100% PERFECT HIGH-RESOLUTION CLEAN PDF EXPORTER (NO BLACK BOXES, NO CUTS)
     function downloadResponsePdf(btn) {
       const contentElem = btn.closest('.ai-render-content').querySelector('.slot-text');
-      const studentName = getUserName() || "Student";
+      const studentName = getUserName() || "विद्यार्थी";
       
-      const printWrapper = document.createElement('div');
-      printWrapper.style.padding = '25px';
-      printWrapper.style.color = '#0f172a';
-      printWrapper.style.background = '#ffffff';
-      printWrapper.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
-      printWrapper.style.fontSize = '12pt';
-      printWrapper.style.lineHeight = '1.6';
+      const printContainer = document.createElement('div');
+      printContainer.style.width = '750px';
+      printContainer.style.padding = '30px 35px';
+      printContainer.style.background = '#ffffff';
+      printContainer.style.color = '#0f172a';
+      printContainer.style.fontFamily = "'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif";
+      printContainer.style.fontSize = '11.5pt';
+      printContainer.style.lineHeight = '1.7';
 
-      printWrapper.innerHTML = `
-        <div style="border-bottom: 2px solid #0284c7; padding-bottom: 10px; margin-bottom: 18px; display: flex; justify-content: space-between;">
-          <h2 style="color: #0284c7; margin: 0; font-size: 18pt;">NischayDesk AI Study Notes</h2>
-          <span style="font-size: 10pt; color: #64748b;">छात्र: <b>${escapeHtml(studentName)}</b> | 2026</span>
+      // हेडर
+      const headerDiv = document.createElement('div');
+      headerDiv.style.borderBottom = '2.5px solid #0284c7';
+      headerDiv.style.paddingBottom = '12px';
+      headerDiv.style.marginBottom = '22px';
+      headerDiv.style.display = 'flex';
+      headerDiv.style.justifyContent = 'space-between';
+      headerDiv.style.alignItems = 'flex-end';
+      headerDiv.innerHTML = `
+        <div>
+          <h1 style="color: #0284c7; margin: 0; font-size: 20pt; font-weight: 800; letter-spacing: -0.5px;">NischayDesk AI Study Notes</h1>
+          <p style="margin: 3px 0 0; color: #64748b; font-size: 9.5pt;">बिहार बोर्ड स्पेशल नोट्स (सत्र 2026)</p>
         </div>
-        <div class="print-body">${contentElem.innerHTML}</div>
+        <div style="text-align: right; font-size: 9.5pt; color: #475569;">
+          छात्र: <b style="color: #0f172a;">${escapeHtml(studentName)}</b><br>
+          दिनांक: ${new Date().toLocaleDateString('hi-IN')}
+        </div>
       `;
+      printContainer.appendChild(headerDiv);
 
-      printWrapper.querySelectorAll('*').forEach(el => {
+      // बॉडी सामग्री
+      const bodyClone = contentElem.cloneNode(true);
+
+      // सभी ब्लैक बॉक्स, डार्क बैकग्राउंड और KaTeX के डार्क बॉक्स को शुद्ध व्हाइट-पेपर स्टाइल में बदलना
+      bodyClone.querySelectorAll('*').forEach(el => {
         el.style.color = '#0f172a';
-        if (el.tagName === 'TABLE') {
+        if (el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3') {
+          el.style.color = '#0284c7';
+          el.style.borderBottom = '1px solid #e2e8f0';
+          el.style.paddingBottom = '4px';
+          el.style.marginTop = '18px';
+          el.style.pageBreakAfter = 'avoid';
+        }
+        if (el.classList.contains('katex-display')) {
+          el.style.background = '#f8fafc';
           el.style.border = '1px solid #cbd5e1';
-          el.style.background = '#ffffff';
+          el.style.borderLeft = '4px solid #0284c7';
+          el.style.padding = '12px 16px';
+          el.style.borderRadius = '8px';
+          el.style.margin = '14px 0';
+          el.style.pageBreakInside = 'avoid';
+        }
+        if (el.classList.contains('katex')) {
+          el.style.color = '#0369a1';
+        }
+        if (el.tagName === 'TABLE') {
+          el.style.width = '100%';
+          el.style.borderCollapse = 'collapse';
+          el.style.margin = '16px 0';
+          el.style.border = '1px solid #cbd5e1';
+          el.style.pageBreakInside = 'avoid';
         }
         if (el.tagName === 'TH') {
           el.style.background = '#f1f5f9';
           el.style.color = '#0284c7';
+          el.style.border = '1px solid #cbd5e1';
+          el.style.padding = '8px 10px';
+          el.style.fontWeight = '700';
         }
-        if (el.tagName === 'CODE') {
+        if (el.tagName === 'TD') {
+          el.style.border = '1px solid #cbd5e1';
+          el.style.padding = '8px 10px';
+          el.style.background = '#ffffff';
+        }
+        if (el.classList.contains('code-block-wrapper')) {
+          el.style.background = '#f8fafc';
+          el.style.border = '1px solid #cbd5e1';
+          el.style.borderRadius = '8px';
+          el.style.margin = '14px 0';
+          el.style.pageBreakInside = 'avoid';
+        }
+        if (el.tagName === 'PRE') {
           el.style.background = '#f8fafc';
           el.style.color = '#0f172a';
+          el.style.padding = '12px';
+        }
+        if (el.classList.contains('code-block-header')) {
+          el.style.background = '#e2e8f0';
+          el.style.color = '#475569';
+          el.style.borderBottom = '1px solid #cbd5e1';
         }
       });
 
+      printContainer.appendChild(bodyClone);
+
       const opt = {
-        margin:       10,
+        margin:       [12, 12, 14, 12],
         filename:     `NischayDesk_Notes_${new Date().toISOString().slice(0,10)}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
       const originalBtnText = btn.innerHTML;
-      btn.innerHTML = "⏳ PDF बन रही है...";
+      btn.innerHTML = "⏳ PDF तैयार हो रही है...";
       btn.disabled = true;
 
-      html2pdf().set(opt).from(printWrapper).save().then(() => {
+      html2pdf().set(opt).from(printContainer).save().then(() => {
         btn.innerHTML = originalBtnText;
         btn.disabled = false;
       }).catch(err => {
-        alert("PDF बनाने में त्रुटि हुई: " + err.message);
+        alert("PDF बनाने में समस्या आई: " + err.message);
         btn.innerHTML = originalBtnText;
         btn.disabled = false;
       });
@@ -1380,7 +1471,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (ELEVENLABS + GEMINI)
+    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (2-WAY SUBTITLES)
     const ELEVEN_KEY = "sk_c32d8b74277a7bdb8f6db2668687da5e0f0e5acbe294f242";
     const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah (100% Free Plan)
 
@@ -1392,14 +1483,17 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
     const liveOrb = document.getElementById('liveOrb');
     const liveOrbBtn = document.getElementById('liveOrbBtn');
     const liveBtnIcon = document.getElementById('liveBtnIcon');
-    const liveSubtitles = document.getElementById('liveSubtitles');
+    const liveUserSub = document.getElementById('liveUserSub');
+    const liveUserSubText = document.getElementById('liveUserSubText');
+    const liveAiSubText = document.getElementById('liveAiSubText');
 
     function openLiveVoiceOverlay() {
       stopSpeakingImmediately();
       liveOverlay.classList.add('open');
       const uName = getUserName();
-      liveSubtitles.innerText = uName 
-        ? `नमस्ते ${uName}! पढ़ाई से जुड़ा कोई भी सवाल पूछने के लिए बटन दबाएं...` 
+      liveUserSub.style.display = 'none';
+      liveAiSubText.innerText = uName 
+        ? `नमस्ते ${uName}! पढ़ाई से जुड़ा कोई भी सवाल पूछने के लिए नीचे बटन दबाएं...` 
         : `नमस्ते! पढ़ाई से जुड़ा कोई भी सवाल पूछने के लिए नीचे बटन दबाएं...`;
     }
 
@@ -1415,7 +1509,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
     function initLiveSpeechEngine() {
       const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!Speech) {
-        liveSubtitles.innerText = "Chrome ब्राउज़र का उपयोग करें।";
+        liveAiSubText.innerText = "Chrome ब्राउज़र का उपयोग करें।";
         return null;
       }
       const rec = new Speech();
@@ -1428,21 +1522,23 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         liveOrbBtn.classList.add('listening');
         liveBtnIcon.innerText = "🛑";
         liveOrb.classList.add('active');
-        liveSubtitles.innerText = "सुन रहा हूँ... बोलिए!";
+        liveAiSubText.innerText = "सुन रहा हूँ... बोलिए!";
       };
 
       rec.onresult = async (e) => {
         const text = e.results[0][0].transcript;
-        liveSubtitles.innerHTML = `<b>आप:</b> ${escapeHtml(text)}`;
+        // 2-Way Subtitle: यूज़र की बात दिखाना
+        liveUserSub.style.display = 'flex';
+        liveUserSubText.innerText = text;
         resetLiveVisuals();
-        liveSubtitles.innerText = "सोच रहा हूँ... 🧠";
+        liveAiSubText.innerText = "सोच रहा हूँ... 🧠";
         liveOrb.classList.add('active');
         await askLiveGemini(text);
       };
 
       rec.onerror = () => {
         resetLiveVisuals();
-        liveSubtitles.innerText = "आवाज़ सुनाई नहीं दी, फिर से टैप करें!";
+        liveAiSubText.innerText = "आवाज़ सुनाई नहीं दी, फिर से टैप करें!";
       };
 
       rec.onend = () => {
@@ -1500,14 +1596,15 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         const data = await res.json();
         if (data.candidates && data.candidates[0].content) {
           const reply = data.candidates[0].content.parts[0].text;
-          liveSubtitles.innerHTML = `<b>AI:</b> ${escapeHtml(reply)}`;
+          // 2-Way Subtitle: AI का उत्तर दिखाना
+          liveAiSubText.innerText = reply;
           await playLiveElevenLabs(reply);
         } else {
-          liveSubtitles.innerText = "उत्तर नहीं मिला!";
+          liveAiSubText.innerText = "उत्तर नहीं मिला!";
           liveOrb.classList.remove('active');
         }
       } catch (err) {
-        liveSubtitles.innerText = "इंटरनेट में समस्या आई!";
+        liveAiSubText.innerText = "इंटरनेट में समस्या आई!";
         liveOrb.classList.remove('active');
       }
     }
@@ -1542,14 +1639,13 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
 
         liveAudioPlayer.onended = () => {
           liveOrb.classList.remove('active');
-          liveSubtitles.innerText = "बटन दबाकर दोबारा पूछें...";
         };
 
         await liveAudioPlayer.play();
 
       } catch (e) {
         liveOrb.classList.remove('active');
-        liveSubtitles.innerText = "ऑडियो लोड नहीं हो सका!";
+        liveAiSubText.innerText = "ऑडियो लोड नहीं हो सका!";
       }
     }
   </script>
