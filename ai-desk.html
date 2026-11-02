@@ -668,7 +668,7 @@
       transform: scale(1.1);
     }
 
-    /* 💬 2-WAY SUBTITLE CONTAINER (USER & AI) */
+    /* 2-WAY SUBTITLE CONTAINER (USER & AI) */
     .live-subtitles-card {
       width: 100%;
       max-width: 380px;
@@ -1083,6 +1083,7 @@
     const MODEL_NAME = "gemini-3.5-flash-lite";
     let isBusy = false;
 
+    // 🎯 DYNAMIC SYSTEM PROMPT (FOUNDER INFO ON EXPLICIT ASK ONLY)
     function getDynamicSystemInstruction() {
       const uName = getUserName();
       const nameInstruction = uName 
@@ -1094,9 +1095,13 @@ ${nameInstruction}
 The current academic session is 2026. Always remember that the year is 2026.
 
 CRITICAL INSTRUCTIONS:
-1. COMPLETE CODE GENERATION: When providing code, NEVER truncate or cut code in the middle. Always provide complete, fully functional, and end-to-end code blocks up to the last line.
-2. DIRECT ANSWERING: Answer directly without unnecessary greetings.
-3. CREATOR CONFIDENTIALITY: Mention "Prince Kumar" ONLY IF the user explicitly asks "who created you?" or "developer kaun hai?". Otherwise, never mention it.
+1. CREATOR & FOUNDER INFO (STRICTLY ON-DEMAND ONLY):
+   - By default, NEVER volunteer, mention, or talk about the creator, developer, or founder.
+   - ONLY IF the user explicitly asks questions like "Who created you?", "Developer kaun hai?", "NischayDesk ke founder kaun hai?", "Prince Kumar kaun hain?", "Kahan ke rehne wale hain?", "10th me kitna marks laya tha?":
+     State clearly, respectfully, and proudly:
+     "NischayDesk के फाउंडर और क्रिएटर प्रिंस कुमार (Prince Kumar) हैं। वे तेलवा बाज़ार (जमुई, बिहार) के रहने वाले हैं। उन्होंने अपनी बिहार बोर्ड 10वीं परीक्षा में 463/500 अंक प्राप्त कर शानदार सफलता हासिल की थी।"
+2. COMPLETE CODE GENERATION: When providing code, NEVER truncate or cut code in the middle. Always provide complete, fully functional, and end-to-end code blocks up to the last line.
+3. DIRECT ANSWERING: Answer directly without unnecessary greetings.
 4. MATHEMATICAL FORMULAS: Format standalone equations in clean display math blocks ($$...$$). Do not output isolated broken brackets inside tables.
 5. COMPACT TABLES & CHARTS: When asked for comparisons, differences, values, or charts, ALWAYS output clean Markdown Tables:
 | गुण | चाल (Speed) | वेग (Velocity) |
@@ -1149,7 +1154,7 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       speakText(txt);
     }
 
-    // 📄 100% PERFECT HIGH-RESOLUTION CLEAN PDF EXPORTER (NO BLACK BOXES, NO CUTS)
+    // 📄 100% CLEAN PDF EXPORTER (WHITE PAPER + SHARP FORMULAS)
     function downloadResponsePdf(btn) {
       const contentElem = btn.closest('.ai-render-content').querySelector('.slot-text');
       const studentName = getUserName() || "विद्यार्थी";
@@ -1163,7 +1168,6 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       printContainer.style.fontSize = '11.5pt';
       printContainer.style.lineHeight = '1.7';
 
-      // हेडर
       const headerDiv = document.createElement('div');
       headerDiv.style.borderBottom = '2.5px solid #0284c7';
       headerDiv.style.paddingBottom = '12px';
@@ -1183,10 +1187,8 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       `;
       printContainer.appendChild(headerDiv);
 
-      // बॉडी सामग्री
       const bodyClone = contentElem.cloneNode(true);
 
-      // सभी ब्लैक बॉक्स, डार्क बैकग्राउंड और KaTeX के डार्क बॉक्स को शुद्ध व्हाइट-पेपर स्टाइल में बदलना
       bodyClone.querySelectorAll('*').forEach(el => {
         el.style.color = '#0f172a';
         if (el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3') {
@@ -1471,8 +1473,9 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (2-WAY SUBTITLES)
-    const ELEVEN_KEY = "sk_c32d8b74277a7bdb8f6db2668687da5e0f0e5acbe294f242";
+    // 🌊 10. REAL-TIME FLUID LIVE VOICE CHAT ENGINE (WITH FALLBACK)
+    // आपकी नई ElevenLabs API Key
+    const ELEVEN_KEY = "sk_cda8340640405253ca65310573ef1d6c24862aedd676e2b8";
     const VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah (100% Free Plan)
 
     let isLiveActive = false;
@@ -1527,7 +1530,6 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
 
       rec.onresult = async (e) => {
         const text = e.results[0][0].transcript;
-        // 2-Way Subtitle: यूज़र की बात दिखाना
         liveUserSub.style.display = 'flex';
         liveUserSubText.innerText = text;
         resetLiveVisuals();
@@ -1587,7 +1589,9 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `तुम NischayDesk AI की बहुत ही समझदार और मीठी AI साथी हो। ${namePromptPart} बहुत लंबे जवाब मत दो। सिर्फ 1 या 2 छोटे वाक्यों में स्वाभाविक और दोस्ताना हिंदी में जवाब दो। सवाल: ${query}`
+                text: `तुम NischayDesk AI की बहुत ही समझदार और मीठी AI साथी हो। ${namePromptPart} 
+यदि छात्र स्पष्ट रूप से पूछे कि "फाउंडर कौन है", "किसने बनाया", "प्रिंस कुमार कौन हैं", "कहाँ के रहने वाले हैं", या "10th में क्या किया" तो गर्व से बताओ: "NischayDesk के फाउंडर प्रिंस कुमार हैं। वे तेलवा बाज़ार (जमुई, बिहार) के रहने वाले हैं और उन्होंने 10वीं बोर्ड में 463/500 अंक प्राप्त किए थे।" अन्यथा सामान्य पढ़ाई पर ही बात करो।
+बहुत लंबे जवाब मत दो। सिर्फ 1 या 2 छोटे वाक्यों में स्वाभाविक और दोस्ताना हिंदी में जवाब दो। सवाल: ${query}`
               }]
             }]
           })
@@ -1596,7 +1600,6 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         const data = await res.json();
         if (data.candidates && data.candidates[0].content) {
           const reply = data.candidates[0].content.parts[0].text;
-          // 2-Way Subtitle: AI का उत्तर दिखाना
           liveAiSubText.innerText = reply;
           await playLiveElevenLabs(reply);
         } else {
@@ -1631,7 +1634,9 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
           })
         });
 
-        if (!response.ok) throw new Error("ऑडियो नहीं बन सका");
+        if (!response.ok) {
+          throw new Error("ElevenLabs Quota/Network Error");
+        }
 
         const blob = await response.blob();
         const audioUrl = URL.createObjectURL(blob);
@@ -1644,8 +1649,20 @@ Keep table contents concise and clear so that all columns fit easily on a mobile
         await liveAudioPlayer.play();
 
       } catch (e) {
-        liveOrb.classList.remove('active');
-        liveAiSubText.innerText = "ऑडियो लोड नहीं हो सका!";
+        console.warn("ElevenLabs लोड नहीं हुआ, फॉलबैक वॉयस चालू की जा रही है:", e);
+        // अगर कभी ElevenLabs में दिक्कत आए तो यह ऑटोमैटिक बैकअप आवाज़ में तुरंत बोलेगा
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utt = new SpeechSynthesisUtterance(clean);
+          utt.lang = 'hi-IN';
+          if (naturalHindiVoice) utt.voice = naturalHindiVoice;
+          utt.onend = utt.onerror = () => {
+            liveOrb.classList.remove('active');
+          };
+          window.speechSynthesis.speak(utt);
+        } else {
+          liveOrb.classList.remove('active');
+        }
       }
     }
   </script>
