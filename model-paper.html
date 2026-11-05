@@ -16,173 +16,86 @@
 
   <style>
     .mp-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
-    .hero-banner { 
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%); 
-      color: #fff; 
-      padding: 24px; 
-      border-radius: 14px; 
-      margin-bottom: 20px; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      animation: fadeInDown 0.4s ease-out;
-    }
     
-    .filter-bar { 
+    #ndHeroBanner { 
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important; 
+      color: #ffffff !important; 
+      padding: 24px 20px; 
+      border-radius: 16px; 
+      margin-bottom: 22px; 
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.35) !important;
+      animation: fadeInDown 0.35s ease-out;
+    }
+    #ndHeroBanner h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 800; color: #ffffff !important; }
+    #ndHeroBanner p { margin: 0; opacity: 0.95; font-size: 0.95rem; line-height: 1.5; color: #ecfdf5 !important; }
+    
+    #ndFilterBar { 
       display: flex; 
       flex-wrap: wrap; 
-      gap: 10px; 
-      margin-bottom: 20px; 
-      background: var(--surface-card, #0c1633); 
-      padding: 14px; 
-      border-radius: 10px; 
-      border: 1.5px solid var(--border-strong, #1e3a8a);
-      animation: fadeIn 0.4s ease-out;
+      gap: 12px; 
+      margin-bottom: 24px; 
+      background: #ffffff !important; 
+      padding: 16px; 
+      border-radius: 14px; 
+      border: 2px solid #cbd5e1 !important;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08) !important;
+      animation: fadeIn 0.35s ease-out;
     }
-    .filter-bar select, .filter-bar input { 
-      padding: 10px 14px; 
-      border-radius: 8px; 
-      border: 1.5px solid var(--border-strong, #1e3a8a); 
-      font-size: 0.92rem; 
+    #ndFilterBar select, 
+    #ndFilterBar input { 
+      padding: 12px 14px; 
+      border-radius: 10px; 
+      border: 1.8px solid #94a3b8 !important; 
+      font-size: 0.95rem; 
+      font-weight: 600;
       outline: none; 
-      background: var(--surface-elevated, #13224a); 
-      color: var(--text-pure, #ffffff);
+      background: #f8fafc !important; 
+      color: #0f172a !important;
+      font-family: inherit;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .filter-bar select:focus, .filter-bar input:focus {
-      border-color: #10b981;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-    }
-    .filter-bar input { flex: 1; min-width: 200px; }
-    
-    .mp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
-    
-    .mp-card { 
-      background: var(--surface-card, #0c1633); 
-      border-radius: 12px; 
-      padding: 16px; 
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06); 
-      border: 1.5px solid var(--border-strong, #1e3a8a); 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-      animation: cardPopUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-    }
-    .mp-card:hover { 
-      transform: translateY(-4px); 
-      border-color: #10b981;
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
-    }
-
-    .badge-official { 
-      background: rgba(16, 185, 129, 0.15); 
-      color: #10b981; 
-      padding: 4px 8px; 
-      border-radius: 6px; 
-      font-weight: bold; 
-      font-size: 0.8rem; 
-      display: inline-block; 
-      border: 1px solid rgba(16, 185, 129, 0.3); 
-    }
-    .mp-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--text-pure, #ffffff); }
-    .mp-card p { font-size: 0.85rem; color: var(--text-secondary, #94a3b8); margin-bottom: 12px; }
-    
-    /* 🌟 तीन बटन्स का नया रिस्पॉन्सिव ग्रुप */
-    .btn-group { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
-    
-    .btn-action {
-      flex: 1;
-      min-width: 80px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      transition: all 0.2s ease;
-      border: none;
-    }
-    .btn-action:active { transform: scale(0.96); }
-
-    .btn-view-sol { 
-      background: #059669; 
-      color: #ffffff !important; 
-    }
-    .btn-view-sol:hover { background: #047857; }
-
-    .btn-preview { 
-      background: rgba(56, 189, 248, 0.15); 
-      color: #38bdf8 !important; 
-      border: 1px solid rgba(56, 189, 248, 0.35); 
-    }
-    .btn-preview:hover { background: rgba(56, 189, 248, 0.25); }
-
-    .btn-down { 
-      background: var(--surface-elevated, #13224a); 
-      color: var(--text-secondary, #94a3b8) !important; 
-      border: 1px solid var(--border-strong, #1e3a8a); 
-    }
-    .btn-down:hover { 
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981 !important;
-      border-color: #10b981;
-    }
-
-    /* ☀️ लाइट मोड सपोर्ट */
-    html.light-mode .filter-bar,
-    html[data-theme="light"] .filter-bar,
-    html.light-mode .mp-card,
-    html[data-theme="light"] .mp-card {
+    #ndFilterBar select:focus, 
+    #ndFilterBar input:focus {
+      border-color: #10b981 !important;
       background: #ffffff !important;
-      border: 1.5px solid #cbd5e1 !important;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
     }
-
-    html.light-mode .filter-bar select,
-    html[data-theme="light"] .filter-bar select,
-    html.light-mode .filter-bar input,
-    html[data-theme="light"] .filter-bar input {
-      background: #ffffff !important;
-      color: #0f172a !important;
-      border: 1.5px solid #cbd5e1 !important;
-    }
-
-    html.light-mode .filter-bar select option,
-    html[data-theme="light"] .filter-bar select option {
+    #ndFilterBar select option {
       background: #ffffff !important;
       color: #0f172a !important;
     }
+    #ndFilterBar input { flex: 1; min-width: 220px; }
+    
+    #mpGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
 
-    html.light-mode .mp-card h3,
-    html[data-theme="light"] .mp-card h3 {
-      color: #0f172a !important;
+    /* डार्क मोड सपोर्ट */
+    html.dark-mode #ndFilterBar,
+    body.dark-mode #ndFilterBar,
+    html[data-theme="dark"] #ndFilterBar {
+      background: #0c1633 !important;
+      border-color: #1e3a8a !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
     }
-
-    html.light-mode .mp-card p,
-    html[data-theme="light"] .mp-card p {
-      color: #475569 !important;
-    }
-
-    html.light-mode .btn-down,
-    html[data-theme="light"] .btn-down {
-      background: #f1f5f9 !important;
-      border-color: #cbd5e1 !important;
-      color: #334155 !important;
+    html.dark-mode #ndFilterBar select,
+    html.dark-mode #ndFilterBar input,
+    body.dark-mode #ndFilterBar select,
+    body.dark-mode #ndFilterBar input,
+    html[data-theme="dark"] #ndFilterBar select,
+    html[data-theme="dark"] #ndFilterBar input {
+      background: #13224a !important;
+      border-color: #1e3a8a !important;
+      color: #ffffff !important;
     }
     
-    /* 🎬 PDF Modal With Smooth Keyframe Animations */
+    /* 🎬 PDF Modal */
     .pdf-modal { 
       display: none; 
       position: fixed; 
       inset: 0; 
       width: 100%; 
       height: 100%; 
-      background: rgba(0, 0, 0, 0.85); 
-      backdrop-filter: blur(4px);
+      background: rgba(3, 7, 18, 0.88); 
+      backdrop-filter: blur(6px);
       z-index: 99999; 
       justify-content: center; 
       align-items: center; 
@@ -196,17 +109,17 @@
 
     .modal-box { 
       width: 95%; 
-      max-width: 960px; 
-      height: 90%; 
-      background: #0f172a; 
-      border-radius: 14px; 
+      max-width: 980px; 
+      height: 92%; 
+      background: #0b1329; 
+      border-radius: 16px; 
       display: flex; 
       flex-direction: column; 
       overflow: hidden; 
-      border: 1.5px solid var(--border-strong, #334155); 
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      transform: scale(0.92) translateY(20px);
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1.5px solid #10b981; 
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      transform: scale(0.93) translateY(24px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .pdf-modal.active .modal-box {
       transform: scale(1) translateY(0);
@@ -214,64 +127,117 @@
 
     .modal-header { 
       padding: 12px 18px; 
-      background: #091124; 
-      color: #fff; 
+      background: #064e3b; 
+      color: #ffffff; 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1.5px solid #059669;
     }
     .modal-header-actions { display: flex; align-items: center; gap: 10px; }
     .btn-fullscreen {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
+      transition: background 0.2s;
     }
+    .btn-fullscreen:hover { background: rgba(255, 255, 255, 0.22); }
     .modal-close { 
       background: none; 
       border: none; 
-      color: #94a3b8; 
-      font-size: 1.6rem; 
+      color: #a7f3d0; 
+      font-size: 1.7rem; 
       cursor: pointer; 
       line-height: 1;
+      padding: 0 4px;
       transition: color 0.2s;
     }
     .modal-close:hover { color: #ffffff; }
     
-    .modal-body { flex: 1; background: #525659; position: relative; }
+    .modal-body { flex: 1; background: #525659; position: relative; width: 100%; height: 100%; }
     .modal-body iframe { width: 100%; height: 100%; border: none; }
 
-    /* Loader inside Modal */
+    /* ⚡ नया आधुनिक पल्स-वेव लोडर एनीमेशन (बुक वाला नहीं) */
     .modal-loader {
       position: absolute;
       inset: 0;
-      background: #0c1633;
+      background: #091a18;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #10b981;
-      font-weight: 700;
-      gap: 12px;
+      gap: 18px;
       z-index: 10;
     }
-    .modal-loader-spinner {
-      width: 42px;
-      height: 42px;
-      border: 3.5px solid rgba(16, 185, 129, 0.2);
-      border-top-color: #10b981;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+    .pulse-wave-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 48px;
+    }
+    .pulse-bar {
+      width: 7px;
+      height: 16px;
+      background: #10b981;
+      border-radius: 6px;
+      animation: pulseWave 1.2s ease-in-out infinite;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    }
+    .pulse-bar:nth-child(2) { animation-delay: 0.15s; background: #34d399; }
+    .pulse-bar:nth-child(3) { animation-delay: 0.3s; background: #6ee7b7; }
+    .pulse-bar:nth-child(4) { animation-delay: 0.45s; background: #34d399; }
+    .pulse-bar:nth-child(5) { animation-delay: 0.6s; background: #10b981; }
+
+    .loader-text {
+      color: #ecfdf5;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      animation: pulseText 1.5s infinite ease-in-out;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulseWave {
+      0%, 100% { height: 14px; opacity: 0.4; }
+      50% { height: 44px; opacity: 1; }
+    }
+    @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes cardPopUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* 🌟 प्रोफ़ेशनल इन-ऐप टोस्ट */
+    .nd-toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1.5px solid #10b981;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+      padding: 14px 20px;
+      border-radius: 12px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 999999;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 90%;
+      pointer-events: none;
+    }
+    .nd-toast-container.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nd-toast-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .nd-toast-content { font-size: 0.9rem; font-weight: 600; line-height: 1.4; color: #f8fafc; }
 
     @media (max-width: 600px) {
       .modal-box {
@@ -280,8 +246,6 @@
         border-radius: 0 !important;
         border: none !important;
       }
-      .btn-action { min-width: calc(50% - 4px); }
-      .btn-action:last-child { flex: 1 1 100%; }
     }
   </style>
 </head>
@@ -382,13 +346,13 @@
   </aside>
 
   <div class="mp-container">
-    <div class="hero-banner">
-      <h1 style="margin:0 0 8px; font-size: 1.6rem; font-weight: 800;">📝 BSEB 10th ऑफिशियल मॉडल पेपर (2020–2026)</h1>
-      <p style="margin:0; opacity:0.9; font-size:0.95rem;">बिहार विद्यालय परीक्षा समिति द्वारा जारी किए गए आधिकारिक मॉडल सेट और उनका संपूर्ण हल।</p>
+    <div id="ndHeroBanner">
+      <h1>📝 BSEB 10th ऑफिशियल मॉडल पेपर (2020–2026)</h1>
+      <p>बिहार विद्यालय परीक्षा समिति द्वारा जारी किए गए आधिकारिक मॉडल सेट और उनका संपूर्ण हल।</p>
     </div>
 
     <!-- फिल्टर्स -->
-    <div class="filter-bar">
+    <div id="ndFilterBar">
       <select id="yearFilter">
         <option value="all">सभी वर्ष (2020-2026)</option>
         <option value="2020">2020</option>
@@ -414,10 +378,10 @@
     </div>
 
     <!-- मॉडल पेपर्स की ग्रिड -->
-    <div class="mp-grid" id="mpGrid"></div>
+    <div id="mpGrid"></div>
   </div>
 
-  <!-- PDF Modal -->
+  <!-- PDF Modal (इन-ऐप साफ़ और सुरक्षित फ़ुलस्क्रीन व्यूअर) -->
   <div class="pdf-modal" id="pdfModal">
     <div class="modal-box" id="modalBox">
       <div class="modal-header">
@@ -428,13 +392,26 @@
         </div>
       </div>
       <div class="modal-body" id="modalBodyStage">
+        <!-- ⚡ साइबर पल्स लोडर एनीमेशन -->
         <div class="modal-loader" id="modalLoader">
-          <div class="modal-loader-spinner"></div>
-          <span>मॉडल पेपर लोड हो रहा है...</span>
+          <div class="pulse-wave-wrapper">
+            <div class="pulse-bar"></div>
+            <div class="pulse-bar"></div>
+            <div class="pulse-bar"></div>
+            <div class="pulse-bar"></div>
+            <div class="pulse-bar"></div>
+          </div>
+          <span class="loader-text">मॉडल पेपर तैयार हो रहा है...</span>
         </div>
         <iframe id="pdfFrame" src=""></iframe>
       </div>
     </div>
+  </div>
+
+  <!-- 🌟 प्रोफ़ेशनल टोस्ट -->
+  <div class="nd-toast-container" id="ndToast">
+    <div class="nd-toast-icon">⏳</div>
+    <div class="nd-toast-content" id="ndToastMsg">मॉडल पेपर जल्द अपलोड किया जा रहा है!</div>
   </div>
 
   <script src="pyq-data.js"></script>
@@ -446,8 +423,21 @@
     const searchInput = document.getElementById('searchInput');
     const modalLoader = document.getElementById('modalLoader');
     const pdfFrame = document.getElementById('pdfFrame');
+    const ndToast = document.getElementById('ndToast');
+    const ndToastMsg = document.getElementById('ndToastMsg');
 
-    // Google Drive URL se File ID nikalna
+    let toastTimer = null;
+
+    function showToast(msg, icon = '⏳') {
+      if (toastTimer) clearTimeout(toastTimer);
+      ndToastMsg.innerText = msg;
+      document.querySelector('.nd-toast-icon').innerText = icon;
+      ndToast.classList.add('show');
+      toastTimer = setTimeout(() => {
+        ndToast.classList.remove('show');
+      }, 3200);
+    }
+
     function extractDriveId(url) {
       if (!url) return null;
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -456,7 +446,6 @@
       return (matchParam && matchParam[1]) ? matchParam[1] : null;
     }
 
-    // Direct Download URL Format (Bina Gmail/Login account pop-up ke)
     function getDirectDownloadUrl(url) {
       const fileId = extractDriveId(url);
       if (fileId) {
@@ -465,7 +454,7 @@
       return url;
     }
 
-    // Google Docs Zoomable Preview URL Format (With + / - / Pinch zoom support)
+    // Google Docs Viewer (ज़ूम सपोर्ट और बिना ऐप खोले सीधे लोड)
     function getZoomablePreviewUrl(url) {
       const fileId = extractDriveId(url);
       if (fileId) {
@@ -479,6 +468,10 @@
     }
 
     function renderModelPapers() {
+      const isLightMode = document.documentElement.classList.contains('light-mode') || 
+                          document.body.classList.contains('light-mode') ||
+                          document.documentElement.getAttribute('data-theme') === 'light';
+
       const year = yearFilter.value;
       const sub = subjectFilter.value;
       const search = searchInput.value.toLowerCase().trim();
@@ -486,7 +479,7 @@
       mpGrid.innerHTML = '';
 
       if (typeof MODEL_PAPER_DATA === 'undefined') {
-        mpGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:#ef4444;">pyq-data.js फ़ाइल लोड नहीं हुई!</div>`;
+        mpGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:#ef4444; font-weight:700;">pyq-data.js फ़ाइल लोड नहीं हुई!</div>`;
         return;
       }
 
@@ -500,51 +493,85 @@
       });
 
       if (filtered.length === 0) {
-        mpGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-secondary, #64748b);">कोई मॉडल पेपर नहीं मिला!</div>`;
+        mpGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#64748b; font-weight:600; font-size:1rem;">कोई मॉडल पेपर नहीं मिला!</div>`;
         return;
       }
 
-      filtered.forEach((item, index) => {
+      const cardBg = isLightMode ? '#ffffff' : '#0c1633';
+      const cardBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
+      const titleColor = isLightMode ? '#0f172a' : '#ffffff';
+      const descColor = isLightMode ? '#475569' : '#94a3b8';
+      const downBtnBg = isLightMode ? '#f1f5f9' : '#13224a';
+      const downBtnText = isLightMode ? '#1e293b' : '#94a3b8';
+      const downBtnBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
+
+      filtered.forEach((item) => {
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
-        // 1. हल देखें (In-App Modal me Animated reader)
+        const cleanDocTitle = `${item.subject} - BSEB ${item.year}`;
+
+        // 1. हल देखें (मोडल रीडर)
         const solBtnAction = hasPdf 
-          ? `onclick="openPdfModal('${item.subject} (${item.year}) - संपूर्ण हल', '${item.pdfUrl}')"`
-          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का हल जल्द अपलोड किया जा रहा है!')"`;
+          ? `onclick="openPdfModal('${cleanDocTitle} (हल)', '${item.pdfUrl}', false)"`
+          : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का हल जल्द अपलोड किया जा रहा है!')"`;
 
-        // 2. प्रीव्यू (Full Page Zoomable Previewer)
+        // 2. प्रीव्यू (सीधे अंदरूनी फ़ुलस्क्रीन मोडल में बिना Gmail माँगे)
         const previewBtnAction = hasPdf 
-          ? `onclick="openFullPreview('${item.pdfUrl}')"`
-          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का प्रीव्यू जल्द उपलब्ध होगा!')"`;
+          ? `onclick="openPdfModal('${cleanDocTitle} (फ़ुल प्रीव्यू)', '${item.pdfUrl}', true)"`
+          : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का प्रीव्यू जल्द उपलब्ध होगा!')"`;
 
-        // 3. डाउनलोड (Direct Download Link)
+        // 3. डाउनलोड (डायरेक्ट लिंक)
         const directDownLink = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
         const downBtnAction = directDownLink 
           ? `href="${directDownLink}" target="_blank" download`
-          : `onclick="alert('डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
+          : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
         const card = document.createElement('div');
-        card.className = 'mp-card';
-        card.style.animationDelay = `${index * 0.05}s`;
+        card.setAttribute('style', `
+          background: ${cardBg} !important;
+          border: 2px solid ${cardBorder} !important;
+          border-radius: 14px !important;
+          padding: 18px !important;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: space-between !important;
+          transition: transform 0.2s ease, border-color 0.2s ease !important;
+        `);
+
         card.innerHTML = `
           <div>
-            <span class="badge-official">Official BSEB ${item.year}</span>
-            <h3>${item.subject}</h3>
-            <p>${item.title}</p>
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px;">
+              <span style="background: rgba(16, 185, 129, 0.12); color: #059669; padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 0.8rem; border: 1px solid rgba(16, 185, 129, 0.3);">
+                Official BSEB ${item.year}
+              </span>
+            </div>
+            <h3 style="font-size: 1.16rem; margin: 0 0 6px 0; color: ${titleColor} !important; font-weight: 800; line-height: 1.4;">
+              ${item.subject}
+            </h3>
+            <p style="font-size: 0.86rem; color: ${descColor} !important; margin: 0 0 16px 0; line-height: 1.4;">
+              ${item.title || 'बिहार बोर्ड आधिकारिक मॉडल सेट'}
+            </p>
           </div>
-          <div class="btn-group">
-            <button class="btn-action btn-view-sol" ${solBtnAction}>📖 हल देखें</button>
-            <button class="btn-action btn-preview" ${previewBtnAction}>👁️ प्रीव्यू</button>
-            <a class="btn-action btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
+          <div style="display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap;">
+            <button ${solBtnAction} style="flex: 1; min-width: 78px; padding: 9px 8px; border-radius: 8px; font-size: 0.83rem; font-weight: 700; background: #059669; color: #ffffff !important; border: none; cursor: pointer; text-align: center;">
+              📖 हल देखें
+            </button>
+            <button ${previewBtnAction} style="flex: 1; min-width: 78px; padding: 9px 8px; border-radius: 8px; font-size: 0.83rem; font-weight: 700; background: rgba(16, 185, 129, 0.14); color: #059669 !important; border: 1.5px solid rgba(16, 185, 129, 0.4); cursor: pointer; text-align: center;">
+              👁️ प्रीव्यू
+            </button>
+            <a ${downBtnAction} style="flex: 1; min-width: 78px; padding: 9px 8px; border-radius: 8px; font-size: 0.83rem; font-weight: 700; background: ${downBtnBg} !important; color: ${downBtnText} !important; border: 1.5px solid ${downBtnBorder} !important; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              ⬇️ डाउनलोड
+            </a>
           </div>
         `;
         mpGrid.appendChild(card);
       });
     }
 
-    // Modal Viewer (एनीमेशन व ज़ूम कंट्रोल्स के साथ)
-    function openPdfModal(title, url) {
+    // Modal Viewer: autoFullscreen पैरामीटर अगर true हो तो तुरंत पूरी स्क्रीन कर देगा
+    function openPdfModal(title, url, startFullscreen = false) {
       document.getElementById('modalDocTitle').innerText = title;
       if (modalLoader) modalLoader.style.display = 'flex';
       
@@ -557,12 +584,10 @@
       const modal = document.getElementById('pdfModal');
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
-    }
 
-    // अलग नए टैब में पूरा प्रीव्यू देखने के लिए
-    function openFullPreview(url) {
-      const viewerUrl = getZoomablePreviewUrl(url);
-      window.open(viewerUrl, '_blank');
+      if (startFullscreen) {
+        setTimeout(toggleModalFullscreen, 100);
+      }
     }
 
     function closePdfModal() {
@@ -571,6 +596,9 @@
       pdfFrame.src = '';
       if (modalLoader) modalLoader.style.display = 'none';
       document.body.style.overflow = '';
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
     }
 
     function toggleModalFullscreen() {
@@ -594,6 +622,10 @@
     yearFilter.addEventListener('change', renderModelPapers);
     subjectFilter.addEventListener('change', renderModelPapers);
     searchInput.addEventListener('input', renderModelPapers);
+
+    const themeObserver = new MutationObserver(renderModelPapers);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     document.addEventListener('DOMContentLoaded', renderModelPapers);
   </script>
