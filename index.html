@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" data-theme="light">
+<html lang="hi" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -56,19 +56,12 @@
   <link rel="apple-touch-icon" href="logo.png">
 
   <script>
-    // 🌟 डिफ़ॉल्ट रूप से लाइट मोड सेट करना
-    const savedTheme = localStorage.getItem("nd_app_theme");
-    if (!savedTheme) {
-      localStorage.setItem("nd_app_theme", "light");
-      document.documentElement.setAttribute("data-theme", "light");
+    const savedTheme = localStorage.getItem("nd_app_theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
       document.documentElement.classList.add("light-mode");
     } else {
-      document.documentElement.setAttribute("data-theme", savedTheme);
-      if (savedTheme === "light") {
-        document.documentElement.classList.add("light-mode");
-      } else {
-        document.documentElement.classList.remove("light-mode");
-      }
+      document.documentElement.classList.remove("light-mode");
     }
 
     if (sessionStorage.getItem("nd_splash_seen")) {
@@ -77,11 +70,21 @@
   </script>
 
   <style>
-    *, *::before, *::after { box-sizing: border-box !important; }
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+    }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: rgba(3, 7, 18, 0.4); }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0284c7, #38bdf8); border-radius: 10px; }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(3, 7, 18, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #0284c7, #38bdf8);
+      border-radius: 10px;
+    }
 
     :root {
       --brand-navy: #071120;
@@ -120,159 +123,1022 @@
     }
 
     /* 🌟 स्प्लैश स्क्रीन */
-    html.skip-splash #nischaySplashOverlay { display: none !important; }
-    #nischaySplashOverlay {
-      position: fixed; inset: 0; background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
-      z-index: 99999999; display: flex; justify-content: center; align-items: center;
-      transition: opacity 0.4s ease, visibility 0.4s ease; overflow: hidden;
+    html.skip-splash #nischaySplashOverlay {
+      display: none !important;
     }
-    #nischaySplashOverlay.fade-away { opacity: 0; visibility: hidden; pointer-events: none; }
-    .splash-content-box { text-align: center; display: flex; flex-direction: column; align-items: center; padding: 24px; }
-    .splash-logo-wrapper { width: 92px; height: 92px; margin-bottom: 18px; }
-    .splash-animated-logo { width: 100%; height: 100%; border-radius: 24px; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25); animation: splashZoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    .splash-welcome-title { font-size: 0.78rem; font-weight: 900; color: #0284c7; letter-spacing: 3.5px; margin-bottom: 6px; opacity: 0; animation: splashFadeInUp 0.5s 0.2s forwards; }
-    .splash-brand-title { font-size: 2.2rem; font-weight: 900; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.5px; opacity: 0; animation: splashFadeInUp 0.5s 0.35s forwards; }
-    .splash-brand-title span { color: #0284c7; background: linear-gradient(135deg, #0284c7, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .splash-tagline { font-size: 0.85rem; color: #64748b; font-weight: 700; margin-bottom: 24px; opacity: 0; animation: splashFadeInUp 0.5s 0.5s forwards; }
-    .splash-pulse-loader { width: 44px; height: 4px; background: #e2e8f0; border-radius: 4px; position: relative; overflow: hidden; margin-bottom: 28px; opacity: 0; animation: splashFadeIn 0.4s 0.65s forwards; }
-    .splash-pulse-loader::after { content: ""; display: block; width: 22px; height: 100%; background: #0284c7; border-radius: 4px; position: absolute; top: 0; left: -22px; animation: splashLoadingSlide 1.1s infinite ease-in-out; }
-    
-    @keyframes splashZoomIn { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes splashFadeInUp { 0% { transform: translateY(12px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-    @keyframes splashFadeIn { to { opacity: 1; } }
-    @keyframes splashLoadingSlide { 0% { left: -22px; } 50% { left: 44px; } 100% { left: -22px; } }
 
-    /* 🌟 HERO SPOTLIGHT (1200px Max-Width Full Layout) */
+    #nischaySplashOverlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+      z-index: 99999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      overflow: hidden;
+    }
+
+    #nischaySplashOverlay.fade-away {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .splash-logo-wrapper {
+      width: 92px;
+      height: 92px;
+      margin-bottom: 18px;
+    }
+
+    .splash-animated-logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+      animation: splashZoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .splash-welcome-title {
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: #0284c7;
+      letter-spacing: 3.5px;
+      margin-bottom: 6px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.2s forwards;
+    }
+
+    .splash-brand-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.35s forwards;
+    }
+
+    .splash-brand-title span {
+      color: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .splash-tagline {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 700;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.5s forwards;
+    }
+
+    .splash-pulse-loader {
+      width: 44px;
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: splashFadeIn 0.4s 0.65s forwards;
+    }
+
+    .splash-pulse-loader::after {
+      content: "";
+      display: block;
+      width: 22px;
+      height: 100%;
+      background: #0284c7;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: -22px;
+      animation: splashLoadingSlide 1.1s infinite ease-in-out;
+    }
+
+    .splash-developer-badge {
+      font-size: 0.82rem;
+      color: #334155;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border-top: 1.5px solid #e2e8f0;
+      padding-top: 14px;
+      opacity: 0;
+      animation: splashFadeInUp 0.5s 0.8s forwards;
+    }
+
+    .splash-developer-badge .dev-name {
+      color: #0284c7;
+    }
+
+    @keyframes splashZoomIn {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes splashFadeInUp {
+      0% { transform: translateY(12px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes splashFadeIn { to { opacity: 1; } }
+    @keyframes splashLoadingSlide {
+      0% { left: -22px; }
+      50% { left: 44px; }
+      100% { left: -22px; }
+    }
+
+    /* 🌟 HERO SPOTLIGHT */
     .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
-      color: #ffffff; padding: 24px 16px 32px; border-radius: 0 0 24px 24px; border-bottom: 1px solid var(--card-border); width: 100% !important;
+      color: #ffffff;
+      padding: 24px 16px 32px;
+      border-radius: 0 0 24px 24px;
+      border-bottom: 1px solid var(--card-border);
+      width: 100% !important;
     }
-    html.light-mode .hero-spotlight-khan, html[data-theme="light"] .hero-spotlight-khan {
-      background: radial-gradient(circle at 90% 10%, #e0f2fe 0%, #ffffff 100%); color: #0f172a;
+    html.light-mode .hero-spotlight-khan,
+    html[data-theme="light"] .hero-spotlight-khan {
+      background: radial-gradient(circle at 90% 10%, #e0f2fe 0%, #ffffff 100%);
+      color: #0f172a;
     }
-    .hero-container { max-width: 1200px; margin: 0 auto; width: 100% !important; }
-    .hero-chip-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 4px 12px; border-radius: 999px; font-size: 0.74rem; font-weight: 800; margin-bottom: 12px; }
-    .hero-main-title { font-size: 1.6rem; font-weight: 900; line-height: 1.3; margin-bottom: 8px; letter-spacing: -0.4px; }
-    .hero-main-title span { background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero-desc-p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.55; }
-    
-    .hero-buttons-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .hero-btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff !important; text-decoration: none; padding: 12px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); text-align: center; }
-    .hero-btn-secondary { background: rgba(255, 255, 255, 0.08); color: #38bdf8 !important; border: 1px solid rgba(56, 189, 248, 0.35); text-decoration: none; padding: 12px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; }
+    .hero-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
+    }
+    .hero-chip-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .hero-main-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      letter-spacing: -0.4px;
+    }
+    .hero-main-title span {
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc-p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+    .hero-buttons-duo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .hero-btn-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 12px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+      text-align: center;
+    }
+    .hero-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      text-decoration: none;
+      padding: 12px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+    }
 
     /* 🌟 कस्टम गेस्ट क्लास बार */
     .guest-class-bar {
-      margin-bottom: 16px; background: rgba(2, 132, 199, 0.12); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; cursor: pointer;
+      margin-bottom: 16px;
+      background: rgba(2, 132, 199, 0.12);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      cursor: pointer;
     }
-    .guest-class-info { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
-    .guest-badge-indicator { background: #0284c7; color: #ffffff; padding: 3px 10px; border-radius: 8px; font-weight: 900; font-size: 0.82rem; }
-    .guest-class-change-pill { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 4px 10px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; }
+    .guest-class-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .guest-badge-indicator {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+    .guest-class-change-pill {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    /* 🌟 स्टैट्स स्ट्रिप */
+    .trust-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: rgba(11, 26, 48, 0.6);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 16px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
+    }
+    html.light-mode .trust-stats-strip,
+    html[data-theme="light"] .trust-stats-strip {
+      background: #ffffff;
+    }
+    .trust-stat-box h4 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #38bdf8;
+      line-height: 1.1;
+      margin: 0;
+    }
+    .trust-stat-box p {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-top: 3px;
+      margin-bottom: 0;
+    }
 
     /* 🌟 OMR क्विज़ कार्ड */
     .daily-poll-card {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09));
-      border: 1.5px solid rgba(56, 189, 248, 0.32); border-radius: 16px; padding: 16px; margin-top: 18px; position: relative;
+      border: 1.5px solid rgba(56, 189, 248, 0.32);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 18px;
+      position: relative;
     }
-    .poll-tag-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .poll-badge { background: #0284c7; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; }
-    .poll-counter-indicator { font-size: 0.72rem; color: #38bdf8; font-weight: 800; background: rgba(56, 189, 248, 0.12); padding: 2px 8px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.25); }
-    
-    .poll-dynamic-box { transition: opacity 0.35s ease, transform 0.35s ease; }
-    .poll-dynamic-box.fade-out { opacity: 0; transform: translateY(-6px); }
-    .poll-question-text { font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); line-height: 1.45; min-height: 42px; }
-    .poll-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .poll-opt-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 12px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: left; transition: all 0.2s; }
+    .poll-tag-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .poll-badge {
+      background: #0284c7;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .poll-counter-indicator {
+      font-size: 0.72rem;
+      color: #38bdf8;
+      font-weight: 800;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .poll-dynamic-box {
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .poll-dynamic-box.fade-out {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    .poll-question-text {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text-main);
+      line-height: 1.45;
+      min-height: 42px;
+    }
+    .poll-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .poll-opt-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
     .poll-opt-btn:hover { border-color: #38bdf8; }
-    .poll-opt-btn.correct { background: rgba(16, 185, 129, 0.25) !important; border-color: #10b981 !important; color: #34d399 !important; }
-    .poll-opt-btn.wrong { background: rgba(239, 68, 68, 0.25) !important; border-color: #ef4444 !important; color: #f87171 !important; }
+    .poll-opt-btn.correct {
+      background: rgba(16, 185, 129, 0.25) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+    }
+    .poll-opt-btn.wrong {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #f87171 !important;
+    }
 
     /* 🌟 पिल स्क्रोलर */
     .pills-scroll-tray {
-      display: flex; gap: 8px; padding: 16px 16px 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1200px; margin: 0 auto; width: 100% !important;
+      display: flex;
+      gap: 8px;
+      padding: 16px 16px 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
     }
     .pills-scroll-tray::-webkit-scrollbar { display: none; }
-    .pill-anchor { flex: 0 0 auto; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 7px 15px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-decoration: none; }
-    .pill-anchor.active { background: #0284c7; color: #ffffff; border-color: #0284c7; }
+    .pill-anchor {
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .pill-anchor.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
 
-    /* 🌟 ग्रिड सेक्शन (Max Width 1200px) */
-    .portal-section-wrap { padding: 18px 16px 4px; max-width: 1200px; margin: 0 auto; width: 100% !important; }
-    .section-head-pro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .section-head-pro h3 { font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin: 0; }
-    .section-head-pro a { font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; }
-    
-    .pro-icons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 10px; text-align: center; }
-    .pro-icon-link { display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 6px; }
-    .icon-squircle-bubble { width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: transform 0.15s ease; }
+    /* 🌟 सेक्शन एवं आइकन्स ग्रिड */
+    .portal-section-wrap {
+      padding: 18px 16px 4px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
+    }
+    .section-head-pro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .section-head-pro h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+    }
+    .section-head-pro a {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    .pro-icons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 10px;
+      text-align: center;
+    }
+    .pro-icon-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .icon-squircle-bubble {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.15s ease;
+    }
     .pro-icon-link:active .icon-squircle-bubble { transform: scale(0.92); }
-    .pro-icon-link span { font-size: 0.72rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+    .pro-icon-link span {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
 
-    .pro-rows-container { display: flex; flex-direction: column; gap: 10px; width: 100% !important; }
-    .pro-list-row { display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--card-border); text-decoration: none; transition: background 0.15s ease, transform 0.15s ease; width: 100% !important; }
-    .pro-list-row:active { transform: scale(0.99); background: rgba(56, 189, 248, 0.1); }
-    .pro-row-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-    .pro-row-badge-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
-    .pro-row-text h4 { font-size: 0.92rem; font-weight: 800; color: var(--text-main); margin: 0 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .pro-row-text p { font-size: 0.76rem; color: var(--text-muted); margin: 0; line-height: 1.35; }
+    /* 🌟 रो लिस्ट्स */
+    .pro-rows-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100% !important;
+    }
+    .pro-list-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--card-border);
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+      width: 100% !important;
+    }
+    .pro-list-row:active {
+      transform: scale(0.99);
+      background: rgba(56, 189, 248, 0.1);
+    }
+    .pro-row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+    .pro-row-badge-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .pro-row-text { min-width: 0; }
+    .pro-row-text h4 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pro-row-text p {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.35;
+    }
+    .pro-row-arrow {
+      color: #64748b;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding-left: 8px;
+    }
 
-    /* 🌟 फ़ुटर - फोटो साइज फिक्स */
-    .khan-full-footer { background-color: var(--brand-navy); color: #ffffff; padding: 38px 16px 24px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); width: 100% !important; }
-    html.light-mode .khan-full-footer, html[data-theme="light"] .khan-full-footer { background-color: #0b1a30; }
-    .footer-inner-khan { max-width: 1200px; margin: 0 auto; width: 100% !important; }
-    .footer-mission-lead { font-size: 1.05rem; font-weight: 700; line-height: 1.6; color: #cbd5e1; margin-bottom: 14px; }
-    
-    .founder-pro-strip { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-    .founder-info-left { display: flex; align-items: center; gap: 12px; }
-    /* 🎯 फोटो फिक्स */
-    .founder-avatar-pic { width: 46px !important; height: 46px !important; min-width: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; }
-    .founder-meta-text h5 { font-size: 0.9rem; font-weight: 800; color: #ffffff; margin: 0; }
-    .founder-meta-text p { font-size: 0.72rem; color: #38bdf8; font-weight: 600; margin: 0; }
-    
-    .privacy-tag-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 6px 14px; border-radius: 8px; }
-    .footer-bottom-statement { font-size: 0.74rem; color: #64748b; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 18px; line-height: 1.5; }
-
-    /* 🌟 बॉटम डॉक */
-    .mobile-bottom-dock { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(7, 17, 32, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 10000; }
-    html.light-mode .mobile-bottom-dock, html[data-theme="light"] .mobile-bottom-dock { background: rgba(255, 255, 255, 0.95); border-top: 1px solid #e2e8f0; }
-    .dock-link-item { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: #64748b; font-size: 0.68rem; font-weight: 700; }
-    .dock-link-item.active { color: #38bdf8; }
-
-    /* 🌟 कस्टम बॉटम-शीट क्लास सेलेक्टर */
-    .nd-sheet-backdrop { display: none; position: fixed; inset: 0; background: rgba(3, 7, 18, 0.78); backdrop-filter: blur(6px); z-index: 999999999; align-items: flex-end; justify-content: center; }
+    /* 📱 कस्टम बॉटम-शीट क्लास सेलेक्टर */
+    .nd-sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 999999999;
+      align-items: flex-end;
+      justify-content: center;
+    }
     .nd-sheet-backdrop.active { display: flex !important; }
-    .nd-sheet-content { width: 100%; max-width: 480px; background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 22px 22px 0 0; padding: 20px 18px 28px; box-shadow: 0 -10px 40px rgba(0,0,0,0.6); animation: ndSheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
-    html.light-mode .nd-sheet-content, html[data-theme="light"] .nd-sheet-content { background: #ffffff !important; border-color: #cbd5e1 !important; }
-    @keyframes ndSheetSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .nd-sheet-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 14px; }
-    html.light-mode .nd-sheet-header, html[data-theme="light"] .nd-sheet-header { border-bottom-color: #e2e8f0 !important; }
-    .nd-sheet-header h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
-    .nd-sheet-close-btn { background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1; }
-    .nd-sheet-options { display: flex; flex-direction: column; gap: 10px; }
-    .nd-sheet-opt-item { padding: 14px 16px; border-radius: 12px; background: #13224a; border: 1.5px solid #1e3a8a; color: #ffffff; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; }
-    html.light-mode .nd-sheet-opt-item, html[data-theme="light"] .nd-sheet-opt-item { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
-    
-    /* टिक मार्क फिक्स */
-    .nd-sheet-opt-item .check-mark { display: none; color: #38bdf8; font-weight: 900; font-size: 1.1rem; }
-    .nd-sheet-opt-item.selected { background: rgba(2, 132, 199, 0.2) !important; border-color: #0284c7 !important; color: #38bdf8 !important; }
-    .nd-sheet-opt-item.selected .check-mark { display: inline-block !important; }
+    .nd-sheet-content {
+      width: 100%;
+      max-width: 480px;
+      background: #0b1329;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 22px 22px 0 0;
+      padding: 20px 18px 28px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      animation: ndSheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html.light-mode .nd-sheet-content,
+    html[data-theme="light"] .nd-sheet-content {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    @keyframes ndSheetSlideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .nd-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 14px;
+    }
+    html.light-mode .nd-sheet-header,
+    html[data-theme="light"] .nd-sheet-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
+    .nd-sheet-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nd-sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nd-sheet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nd-sheet-opt-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html.light-mode .nd-sheet-opt-item,
+    html[data-theme="light"] .nd-sheet-opt-item {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .nd-sheet-opt-item .check-mark {
+      display: none;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+    .nd-sheet-opt-item.selected {
+      background: rgba(2, 132, 199, 0.2) !important;
+      border-color: #0284c7 !important;
+      color: #38bdf8 !important;
+    }
+    .nd-sheet-opt-item.selected .check-mark {
+      display: inline-block !important;
+    }
 
-    /* 🌟 ड्रॉअर */
-    .drawer-scrim { display: none; position: fixed; inset: 0; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(6px); z-index: 9999998 !important; opacity: 0; transition: opacity 0.3s ease; }
-    .drawer-scrim.active { display: block !important; opacity: 1 !important; }
-    .side-drawer { position: fixed !important; top: 0 !important; left: 0 !important; bottom: 0 !important; width: 290px !important; max-width: 85vw !important; height: 100vh !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; display: flex !important; flex-direction: column !important; background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.2) 0%, rgba(7, 17, 32, 0.98) 100%) !important; backdrop-filter: blur(18px) !important; border-right: 1.5px solid rgba(56, 189, 248, 0.35) !important; box-shadow: 15px 0 40px rgba(0, 0, 0, 0.7) !important; transform: translateX(-100%) !important; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important; z-index: 99999999 !important; visibility: hidden; }
-    html.light-mode .side-drawer, html[data-theme="light"] .side-drawer { background: #ffffff !important; border-right-color: #cbd5e1 !important; }
-    .side-drawer.active { transform: translateX(0) !important; visibility: visible !important; }
+    /* 🌟 साइड ड्रॉअर फिक्स */
+    .drawer-scrim {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 9999998 !important;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-scrim.active {
+      display: block !important;
+      opacity: 1 !important;
+    }
+
+    .side-drawer {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      bottom: 0 !important;
+      width: 290px !important;
+      max-width: 85vw !important;
+      height: 100vh !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      display: flex !important;
+      flex-direction: column !important;
+      background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.2) 0%, rgba(7, 17, 32, 0.98) 100%) !important;
+      backdrop-filter: blur(18px) !important;
+      border-right: 1.5px solid rgba(56, 189, 248, 0.35) !important;
+      box-shadow: 15px 0 40px rgba(0, 0, 0, 0.7) !important;
+      transform: translateX(-100%) !important;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      z-index: 99999999 !important;
+      visibility: hidden;
+    }
+    html.light-mode .side-drawer,
+    html[data-theme="light"] .side-drawer {
+      background: #ffffff !important;
+      border-right-color: #cbd5e1 !important;
+    }
+    .side-drawer.active {
+      transform: translateX(0) !important;
+      visibility: visible !important;
+    }
+    .drawer-header {
+      padding: 18px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    html.light-mode .drawer-header,
+    html[data-theme="light"] .drawer-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
+    .drawer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    html.light-mode .drawer-brand,
+    html[data-theme="light"] .drawer-brand {
+      color: #0f172a !important;
+    }
+    .drawer-close-btn {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    html.light-mode .drawer-close-btn,
+    html[data-theme="light"] .drawer-close-btn {
+      background: #f1f5f9 !important;
+      color: #475569 !important;
+    }
+    .drawer-nav-list {
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1 0 auto;
+    }
+    .drawer-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+    html.light-mode .drawer-nav-item,
+    html[data-theme="light"] .drawer-nav-item {
+      color: #334155 !important;
+    }
+    .drawer-nav-item:hover,
+    .drawer-nav-item:active {
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      transform: translateX(4px);
+    }
+    .drawer-nav-item.active {
+      background: #0284c7 !important;
+      color: #fff !important;
+    }
+
+    /* 🌟 डेवलपर बैज (फिक्स मार्जिन व पैडिंग) */
+    .drawer-footer-custom {
+      margin-top: auto;
+      padding: 20px 16px 40px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    html.light-mode .drawer-footer-custom,
+    html[data-theme="light"] .drawer-footer-custom {
+      border-top-color: #e2e8f0 !important;
+      background: #f8fafc !important;
+    }
+    .developer-branding-tag {
+      font-size: 0.95rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineDev 3s linear infinite;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    @keyframes shineDev { to { background-position: 200% center; } }
+    .developer-sub-badge {
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    html.light-mode .developer-sub-badge,
+    html[data-theme="light"] .developer-sub-badge {
+      color: #0f172a !important;
+      background: #e2e8f0 !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    /* 🌟 PDF इंजन मोडल */
+    #heavyPdfModal {
+      display: none !important;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 999999999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    #heavyPdfModal.active {
+      display: flex !important;
+    }
+    .heavy-pdf-box {
+      background: #0f172a;
+      border: 1.5px solid #0284c7;
+      border-radius: 18px;
+      max-width: 400px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      color: #ffffff;
+    }
 
     /* 🌟 फ्लोटिंग टोस्ट */
-    .nd-toast-container { position: fixed; bottom: 74px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(15, 23, 42, 0.96); border: 1.5px solid #0284c7; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); padding: 13px 20px; border-radius: 999px; color: #ffffff; display: flex; align-items: center; gap: 10px; z-index: 9999999999; opacity: 0; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); max-width: 90%; pointer-events: none; }
-    .nd-toast-container.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+    .nd-toast-container {
+      position: fixed;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1.5px solid #0284c7;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      padding: 13px 20px;
+      border-radius: 999px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 9999999999;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 90%;
+      pointer-events: none;
+    }
+    .nd-toast-container.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
     .nd-toast-icon { font-size: 1.25rem; flex-shrink: 0; }
     .nd-toast-msg { font-size: 0.88rem; font-weight: 700; color: #f8fafc; }
 
-    /* 🌟 PDF इंजन मोडल (छिपा रहेगा) */
-    #heavyPdfModal { display: none !important; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(8px); z-index: 999999999; justify-content: center; align-items: center; padding: 16px; }
-    #heavyPdfModal.active { display: flex !important; }
-    .heavy-pdf-box { background: #0f172a; border: 1.5px solid #0284c7; border-radius: 18px; max-width: 400px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); color: #ffffff; }
+    /* 🌟 WELCOME LOGIN MODAL */
+    .nd-login-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 20, 0.82);
+      backdrop-filter: blur(12px);
+      z-index: 999999999;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+    .nd-login-backdrop.active {
+      display: flex !important;
+    }
+    .nd-login-card {
+      background: rgba(15, 23, 42, 0.96);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 380px;
+      padding: 30px 24px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      position: relative;
+      text-align: center;
+      animation: ndPop 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    html.light-mode .nd-login-card,
+    html[data-theme="light"] .nd-login-card {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    @keyframes ndPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .nd-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .nd-logo-bubble {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+    }
+    .nd-logo-bubble img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .nd-login-card h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .nd-login-card h3 span { color: #38bdf8; }
+    .nd-tagline {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+    .nd-features-box {
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .nd-features-box div {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nd-features-box div:last-child { margin-bottom: 0; }
+    .nd-btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #1f2937;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .nd-btn-google:active { transform: scale(0.97); }
+    .nd-btn-google img { width: 22px; height: 22px; }
+    .nd-terms-note {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 18px;
+      line-height: 1.4;
+    }
 
+    /* डार्क / लाइट मोड स्विच टॉगल बटन */
+    .theme-switch-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #334155;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #0284c7;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
   </style>
 </head>
 <body class="app-body">
@@ -287,6 +1153,9 @@
       <h1 class="splash-brand-title">Nischay<span>Desk</span></h1>
       <p class="splash-tagline">Smart EdTech & Student Portal</p>
       <div class="splash-pulse-loader"></div>
+      <div class="splash-developer-badge">
+        By <span class="dev-name">Prince Kumar</span> (Developer) ⚡
+      </div>
     </div>
   </div>
 
@@ -309,8 +1178,30 @@
         </a>
       </div>
 
+      <div class="nav-links-desktop">
+        <a href="index.html" class="nav-item active">डैशबोर्ड</a>
+        <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
+        <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
+        <a href="bseb-print.html" class="nav-item" style="color: #38bdf8; font-weight: 800;">🎯 OMR एवं कॉपी जनरेटर</a>
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="nav-item" style="color: #fca5a5; font-weight: 800;">🎯 डेली क्विज़</a>
+        <a href="ai-desk.html" class="nav-item" style="color: #f59e0b; font-weight: 800;">🤖 AI-Desk</a>
+        <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
+        <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
+        <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट</a>
+        <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
+        <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
+        <a href="todo.html" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू लिस्ट</a>
+        <a href="pdf.html" target="_blank" class="nav-item" style="color: #a855f7; font-weight: 800;">🖼️ इमेज To PDF</a>
+      </div>
+
       <div class="nav-actions">
         <button class="btn-auth-primary" id="headerAuthBtn">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
           <span id="authBtnLabel">Google लॉगिन</span>
         </button>
 
@@ -328,8 +1219,8 @@
   <!-- 2. साइड ड्रॉअर -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
-    <div class="drawer-header" style="padding: 16px;">
-      <div class="drawer-brand" style="display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:800; color:var(--text-main);">
+    <div class="drawer-header">
+      <div class="drawer-brand">
         <div class="brand-badge-icon sm">N</div>
         <span>NischayDesk</span>
       </div>
@@ -341,45 +1232,74 @@
       <p class="drawer-user-prompt" style="margin: 0; color: #38bdf8; font-weight: 800; font-size: 0.85rem;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
 
-    <nav class="drawer-nav-list" style="padding: 12px; display:flex; flex-direction:column; gap:6px;">
-      <a href="index.html" class="drawer-nav-item active" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; background:#0284c7; color:#fff;">
+    <nav class="drawer-nav-list">
+      <a href="index.html" class="drawer-nav-item active">
         <span class="icon">📊</span> मुख्य डैशबोर्ड
       </a>
-      <a href="https://nischaydesk.github.io/nischay-quiz/" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: #ef4444;">
+      <a href="https://nischaydesk.github.io/nischay-quiz/" class="drawer-nav-item" style="color: #fca5a5; font-weight: 800;">
         <span class="icon">🎯</span> Nischay Quiz (डेली टेस्ट)
       </a>
-      <a href="ai-desk.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: #f59e0b; background: rgba(245, 158, 11, 0.1);">
+      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
         <span class="icon">🤖</span> AI-Desk (स्मार्ट AI टूल)
       </a>
-      <a href="todo.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: #10b981; background: rgba(16, 185, 129, 0.1);">
-        <span class="icon">✅</span> माय टू-डू लिस्ट
+      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+        <span class="icon">✅</span> माय टू-डू लिस्ट (To-Do)
       </a>
-      <a href="pdf.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: #a855f7; background: rgba(168, 85, 247, 0.1);">
+      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;">
         <span class="icon">🖼️</span> इमेज To PDF मेकर
       </a>
-      <a href="bseb-print.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: #38bdf8;">
-        <span class="icon">🎯</span> BSEB OMR एवं कॉपी
+      <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
+        <span class="icon">🎯</span> BSEB OMR एवं कॉपी जनरेटर
       </a>
-      <a href="syllabus.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: var(--text-main);">
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
+        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
+      </a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;">
+        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
+      </a>
+      <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e; font-weight: 700;">
+        <span class="icon">💬</span> WhatsApp चैनल जुड़ें
+      </a>
+      <a href="javascript:void(0)" onclick="shareNischayDeskWebsite()" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
+        <span class="icon">🚀</span> दोस्तों को शेयर करें
+      </a>
+      <a href="syllabus.html" class="drawer-nav-item">
         <span class="icon">📋</span> बोर्ड एवं NCERT सिलेबस
       </a>
-      <a href="notes.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: var(--text-main);">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी
+      <a href="notes.html" class="drawer-nav-item">
+        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th, 11th, 12th)
       </a>
-      <a href="pyq.html" class="drawer-nav-item" style="padding: 12px; text-decoration:none; display:flex; align-items:center; gap:10px; border-radius:10px; font-weight:700; color: var(--text-main);">
-        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
+      <a href="test.html" class="drawer-nav-item">
+        <span class="icon">📝</span> चैप्टर-वाइज टेस्ट सीरीज
+      </a>
+      <a href="pyq.html" class="drawer-nav-item">
+        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ 2020-2026)
+      </a>
+      <a href="model-paper.html" class="drawer-nav-item">
+        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
       </a>
 
-      <!-- डार्क मोड टॉगल -->
-      <div style="margin-top: 14px; padding: 14px; background: rgba(128,128,128,0.1); border-radius: 12px; display:flex; align-items:center; justify-content:space-between;">
-        <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
-        <label style="position:relative; width:44px; height:24px; cursor:pointer;">
-          <input type="checkbox" id="themeSwitch" style="opacity:0; width:0; height:0;">
-          <span style="position:absolute; inset:0; background:#334155; border-radius:24px; transition:.3s;" id="themeSliderSpan"></span>
-          <span style="position:absolute; height:18px; width:18px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s;" id="themeKnobSpan"></span>
-        </label>
+      <!-- 🌟 एक्टिव डार्क/लाइट मोड स्विच -->
+      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+        <div class="theme-switch-wrapper">
+          <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
+          <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
     </nav>
+
+    <!-- 🌟 साफ़ और सुरक्षित डेवलपर फुटर (दबेगा नहीं) -->
+    <div class="drawer-footer-custom">
+      <div class="developer-branding-tag">
+        Developed By Prince Kumar ⚡
+      </div>
+      <div class="developer-sub-badge">
+        NischayDesk Official Portal • 2026
+      </div>
+    </div>
   </aside>
 
   <!-- 3. मुख्य डैशबोर्ड -->
@@ -449,6 +1369,26 @@
       </div>
     </section>
 
+    <!-- 🌟 ट्रस्ट स्टैट्स स्ट्रिप -->
+    <div class="trust-stats-strip">
+      <div class="trust-stat-box">
+        <h4>3h 15m</h4>
+        <p>रियल सिमुलेटर</p>
+      </div>
+      <div class="trust-stat-box">
+        <h4>100 OMR</h4>
+        <p>प्रिंट व स्कैन</p>
+      </div>
+      <div class="trust-stat-box">
+        <h4>100%</h4>
+        <p>फ्री स्टडी हब</p>
+      </div>
+      <div class="trust-stat-box">
+        <h4>2026</h4>
+        <p>ऑफिशियल सेट्स</p>
+      </div>
+    </div>
+
     <!-- HORIZONTAL PILLS SCROLLER -->
     <div class="pills-scroll-tray">
       <a href="#quickTools" class="pill-anchor active">🔥 स्मार्ट टूल्स</a>
@@ -456,14 +1396,19 @@
       <a href="ai-desk.html" class="pill-anchor" style="border-color: #f59e0b; color: #f59e0b;">🤖 AI-Desk</a>
       <a href="bseb-print.html" class="pill-anchor" style="border-color: #38bdf8; color: #38bdf8;">🎯 OMR व कॉपी टूल</a>
       <a href="notes.html" class="pill-anchor">📖 टॉपर्स नोट्स</a>
+      <a href="model-paper.html" class="pill-anchor">📑 मॉडल पेपर</a>
       <a href="pyq.html" class="pill-anchor">📚 क्वेश्चन बैंक</a>
-      <a href="todo.html" class="pill-anchor" style="border-color: #10b981; color: #10b981;">✅ टू-डू लिस्ट</a>
+      <a href="syllabus.html" class="pill-anchor">📋 आधिकारिक सिलेबस</a>
+      <a href="bseb-result.html" class="pill-anchor">📊 रिजल्ट पोर्टल</a>
+      <a href="todo.html" target="_blank" class="pill-anchor" style="border-color: #10b981; color: #10b981;">✅ टू-डू लिस्ट</a>
+      <a href="pdf.html" target="_blank" class="pill-anchor" style="border-color: #a855f7; color: #a855f7;">🖼️ इमेज To PDF</a>
     </div>
 
     <!-- 🌟 स्मार्ट टूल्स ग्रिड -->
     <section class="portal-section-wrap" id="quickTools">
       <div class="section-head-pro">
         <h3>छात्र स्मार्ट टूल्स (NischayDesk Tools)</h3>
+        <a href="javascript:void(0)" onclick="openCustomClassSheet()">क्लास बदलें ⚙️</a>
       </div>
       <div class="pro-icons-grid">
         <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-icon-link">
@@ -486,9 +1431,14 @@
           <span>एग्जाम हॉल</span>
         </a>
 
+        <a href="bseb-result.html" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#10b981;">📊</div>
+          <span>रिजल्ट</span>
+        </a>
+
         <a href="calculator.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ec4899; border: 1.5px solid #ec4899;">🧮</div>
-          <span style="color:#ec4899; font-weight: 800;">कैलकुलेटर</span>
+          <span style="color:#ec4899; font-weight: 800;">मार्क्स कैलकुलेटर</span>
         </a>
 
         <a href="notes.html" class="pro-icon-link">
@@ -496,12 +1446,22 @@
           <span>स्टडी नोट्स</span>
         </a>
 
+        <a href="model-paper.html" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#8b5cf6;">📑</div>
+          <span>मॉडल पेपर</span>
+        </a>
+
         <a href="pyq.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ea580c;">📚</div>
           <span>क्वेश्चन बैंक</span>
         </a>
 
-        <a href="todo.html" class="pro-icon-link">
+        <a href="pdf.html" target="_blank" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#a855f7; border: 1.5px solid #a855f7;">🖼️</div>
+          <span style="color:#a855f7; font-weight: 800;">इमेज To PDF</span>
+        </a>
+
+        <a href="todo.html" target="_blank" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#10b981; border: 1.5px solid #10b981;">✅</div>
           <span style="color:#10b981; font-weight: 800;">टू-डू लिस्ट</span>
         </a>
@@ -526,12 +1486,46 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
         <a href="notes.html?filter=10-science-phy" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
             <div class="pro-row-text">
               <h4>विज्ञान (Physics, Chemistry, Biology)</h4>
               <p>प्रकाश, अम्ल-क्षार, रासायनिक अभिक्रियाएँ और जैव प्रक्रम</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="notes.html?filter=10-sst-all" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(245, 158, 11, 0.12); color:#f59e0b;">🌍</div>
+            <div class="pro-row-text">
+              <h4>सामाजिक विज्ञान (SST)</h4>
+              <p>इतिहास, भूगोल, राजनीति विज्ञान और अर्थशास्त्र</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+        
+        <a href="notes.html?filter=10-sanskrit" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(139, 92, 246, 0.12); color:#8b5cf6;">🕉️</div>
+            <div class="pro-row-text">
+              <h4>संस्कृत (Sanskrit)</h4>
+              <p>पीयूषम्, व्याकरण, और पत्र लेखन</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
+            <div class="pro-row-text">
+              <h4>10वीं स्पीड क्विज़ व OMR टेस्ट</h4>
+              <p>अंतिम स्कोर: <span id="userLastScore">--</span> | सटीकता: <span id="userAccuracy">--%</span></p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
@@ -557,12 +1551,35 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
+        <a href="notes.html?filter=11-chemistry" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
+            <div class="pro-row-text">
+              <h4>रसायन विज्ञान (Chemistry)</h4>
+              <p>परमाणु संरचना, मोल संकल्पना, ऊष्मागतिकी</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
         <a href="notes.html?filter=11-math" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(56, 189, 248, 0.12); color:#38bdf8;">📐</div>
             <div class="pro-row-text">
               <h4>गणित (Mathematics)</h4>
               <p>समुच्चय (Sets), संबंध एवं फलन, त्रिकोणमितीय फलन</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
+            <div class="pro-row-text">
+              <h4>11वीं स्पीड टेस्ट</h4>
+              <p>फाउंडेशन स्तर के प्रश्नों का टाइमर टेस्ट और विस्तृत व्याख्या</p>
             </div>
           </div>
           <span class="pro-row-arrow">›</span>
@@ -588,12 +1605,146 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
+
+        <a href="notes.html?filter=12-math" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">📐</div>
+            <div class="pro-row-text">
+              <h4>12th गणित एवं जीव विज्ञान</h4>
+              <p>समाकलन, आनुवंशिकी, सम्पूर्ण टॉपर हैंडनोट्स</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">🎯</div>
+            <div class="pro-row-text">
+              <h4>12th बोर्ड सिमुलेशन टेस्ट</h4>
+              <p>35 ऑब्जेक्टिव प्रश्नों का रियल बोर्ड टेस्ट पैटर्न विथ OMR</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 🌟 PYQ & MODEL PAPER SECTION -->
+    <section class="portal-section-wrap" id="sectionPyqModel">
+      <div class="section-head-pro">
+        <h3>क्वेश्चन बैंक एवं मॉडल पेपर</h3>
+      </div>
+
+      <div class="pro-rows-container">
+        <a href="pyq.html" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📖</div>
+            <div class="pro-row-text">
+              <h4>क्वेश्चन बैंक (2020 - 2026 हल सहित)</h4>
+              <p>दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="model-paper.html" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">📝</div>
+            <div class="pro-row-text">
+              <h4>BSEB ऑफिशियल मॉडल पेपर्स 2026</h4>
+              <p>बिहार बोर्ड द्वारा जारी किए गए नवीनतम आधिकारिक सेट्स</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 🌟 NISCHAY ECOSYSTEM -->
+    <section class="portal-section-wrap">
+      <div class="section-head-pro">
+        <h3>🌐 हमारे अन्य प्लेटफॉर्म (Ecosystem)</h3>
+        <span style="font-size:0.75rem; color:#38bdf8; font-weight:800;">● Nischay Network</span>
+      </div>
+
+      <div class="pro-rows-container">
+        <a href="https://nischaydesk.github.io/docs/" target="_blank" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📄</div>
+            <div class="pro-row-text">
+              <h4>Nischay Docs</h4>
+              <p>सभी महत्वपूर्ण डॉक्यूमेंट्स और फॉर्म्स का सुरक्षित संग्रह</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="https://nischaydesk.github.io/nischaydrop/" target="_blank" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">☁️</div>
+            <div class="pro-row-text">
+              <h4>Nischay Drop</h4>
+              <p>छात्रों के लिए फास्ट और सिक्योर फाइल शेयरिंग प्लेटफॉर्म</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
+        <a href="https://nischaydesk.github.io/nischay-forge/" target="_blank" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(245, 158, 11, 0.12); color:#f59e0b;">🛠️</div>
+            <div class="pro-row-text">
+              <h4>Nischay Forge</h4>
+              <p>डेवलपर टूल्स, एडवांस्ड कोडिंग और टेक रिसोर्सेज</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 🌟 डेली टास्क मैनेजर -->
+    <section class="portal-section-wrap" style="margin-bottom: 24px;">
+      <div class="section-head-pro">
+        <h3>✅ डेली टू-डू लिस्ट (Task Manager)</h3>
+        <span style="font-size:0.75rem; color:#10b981; font-weight:800;">● नया टूल</span>
+      </div>
+      <div class="pro-rows-container">
+        <a href="todo.html" target="_blank" class="pro-list-row" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(2, 132, 199, 0.08)); border: 1.5px dashed rgba(56, 189, 248, 0.5);">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: #0284c7; color:#fff; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);">📝</div>
+            <div class="pro-row-text">
+              <h4 style="color: #38bdf8;">माय टू-डू लिस्ट (My To-Do)</h4>
+              <p>अपने आज के सारे टास्क लिखें, ट्रैक करें और प्रोडक्टिव बनें।</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow" style="color: #38bdf8; font-size: 0.85rem;">खोलें ↗</span>
+        </a>
       </div>
     </section>
 
     <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
-    
-    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल -->
+
+    <!-- ⚡ PDF जनरेटर मोडल -->
+    <div id="heavyPdfModal">
+      <div class="heavy-pdf-box">
+        <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5));">🖼️ ➔ 📄</div>
+        <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.3rem; font-weight: 900;">HD इमेज To PDF इंजन</h3>
+        <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;" id="heavyPdfStatusText">कृपया प्रतीक्षा करें, आपकी फोटो प्रोसेस हो रही है...</p>
+        
+        <div class="pdf-track" style="margin: 20px 0 12px 0; height: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+          <div class="pdf-fill" id="heavyPdfFillBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0284c7, #38bdf8, #a855f7); border-radius: 8px; transition: width 0.1s ease-out;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; color: #94a3b8;">
+          <span id="heavyPdfPageCounter">0 / 0 पेज</span>
+          <span id="heavyPdfPercent" style="color: #38bdf8;">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (✓ मार्क सिर्फ सिलेक्टेड पर दिखेगा) -->
     <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
       <div class="nd-sheet-content">
         <div class="nd-sheet-header">
@@ -617,7 +1768,7 @@
       </div>
     </div>
 
-    <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध, लॉगआउट बटन भी यहीं होगा) -->
+    <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध) -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 99999999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
         
@@ -643,6 +1794,10 @@
           🚪 लॉगआउट करें (Logout)
         </button>
 
+        <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
+          ⏳ सुरक्षित लॉगआउट हो रहा है...
+        </div>
+
       </div>
     </div>
 
@@ -650,15 +1805,28 @@
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
+        
         <div class="nd-logo-bubble">
-          <img src="logo.png" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
+          <img src="logo.png" alt="NischayDesk Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
         </div>
+
         <h3>Welcome to <span>NischayDesk</span></h3>
         <p class="nd-tagline">बिहार बोर्ड (BSEB) डिजिटल परीक्षा एवं टॉपर तैयारी पोर्टल 🚀</p>
+
+        <div class="nd-features-box">
+          <div><span>✨</span> 100% फ्री टॉपर हैंडराइटिंग नोट्स</div>
+          <div><span>⏱️</span> 3h 15m लाइव परीक्षा सिमुलेटर</div>
+          <div><span>🎯</span> OMR जनरेटर एवं ऑटो-रैंकिंग सिस्टम</div>
+        </div>
+
         <button type="button" class="nd-btn-google" id="btnContinueGoogleModal" onclick="triggerGooglePopupFromModal()">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
           <span>Continue with Google</span>
         </button>
+
+        <div class="nd-terms-note">
+          लॉगिन करके आप NischayDesk की सेवा शर्तों एवं प्राइवेसी पॉलिसी से सहमत होते हैं।
+        </div>
       </div>
     </div>
 
@@ -670,13 +1838,45 @@
 
   </main>
 
-  <!-- 4. फ़ुटर (लेआउट और फोटो फिक्स) -->
+  <!-- 4. फ़ुटर -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
       <div class="footer-mission-lead">
         हमारा मिशन बिहार विद्यालय परीक्षा समिति (BSEB) के प्रत्येक विद्यार्थी को 100% निःशुल्क और विश्वस्तरीय डिजिटल परीक्षा का अनुभव प्रदान करना है।
       </div>
-      
+      <div class="footer-sub-lead">
+        NischayDesk छात्रों द्वारा छात्रों के लिए समर्पित एक स्वतंत्र शैक्षिक मंच है। 
+        <a href="bseb-simulator.html">अभ्यास प्रारंभ करें →</a>
+      </div>
+
+      <div class="footer-columns-grid">
+        <div>
+          <div class="footer-column-title">पोर्टल मेनू</div>
+          <ul class="footer-ul-links">
+            <li><a href="index.html">होम पेज</a></li>
+            <li><a href="ai-desk.html">AI-Desk (स्मार्ट AI टूल)</a></li>
+            <li><a href="bseb-print.html">BSEB OMR एवं कॉपी जनरेटर</a></li>
+            <li><a href="bseb-simulator.html">3h 15m बोर्ड परीक्षा</a></li>
+            <li><a href="bseb-result.html">परिणाम व मार्कशीट</a></li>
+            <li><a href="model-paper.html">मॉडल पेपर 2026</a></li>
+            <li><a href="pyq.html">क्वेश्चन बैंक (PYQ)</a></li>
+            <li><a href="privacy.html">गोपनीयता नीति</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-column-title">अध्ययन विषय</div>
+          <ul class="footer-ul-links">
+            <li><a href="notes.html?filter=10-math">गणित (NCERT आधारित)</a></li>
+            <li><a href="notes.html?filter=10-science-phy">भौतिकी एवं रसायन विज्ञान</a></li>
+            <li><a href="notes.html?filter=10-science-bio">जीव विज्ञान (Biology)</a></li>
+            <li><a href="notes.html?filter=10-sst-all">सामाजिक विज्ञान (NCERT)</a></li>
+            <li><a href="notes.html?filter=10-sanskrit">संस्कृत एवं हिन्दी व्याकरण</a></li>
+            <li><a href="syllabus.html">आधिकारिक BSEB सिलेबस</a></li>
+          </ul>
+        </div>
+      </div>
+
       <div class="founder-pro-strip">
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
@@ -722,32 +1922,30 @@
 
   <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
-    /* 🌟 डार्क / लाइट मोड स्विच लॉजिक */
-    const themeSwitch = document.getElementById("themeSwitch");
-    if (themeSwitch) {
-      themeSwitch.checked = (document.documentElement.getAttribute("data-theme") === "light");
-      themeSwitch.onchange = function() {
-        if (this.checked) {
-          document.documentElement.setAttribute("data-theme", "light");
-          document.documentElement.classList.add("light-mode");
-          localStorage.setItem("nd_app_theme", "light");
-          document.getElementById("themeSliderSpan").style.backgroundColor = "#0284c7";
-          document.getElementById("themeKnobSpan").style.transform = "translateX(22px)";
-        } else {
-          document.documentElement.setAttribute("data-theme", "dark");
-          document.documentElement.classList.remove("light-mode");
-          localStorage.setItem("nd_app_theme", "dark");
-          document.getElementById("themeSliderSpan").style.backgroundColor = "#334155";
-          document.getElementById("themeKnobSpan").style.transform = "translateX(0)";
-        }
-      };
+    /* 🌟 डार्क / लाइट मोड स्विच लॉजिक (100% वर्किंग) */
+    function initThemeSystem() {
+      const themeSwitch = document.getElementById("themeSwitch");
+      const currentTheme = localStorage.getItem("nd_app_theme") || "dark";
       
-      if(themeSwitch.checked) {
-         document.getElementById("themeSliderSpan").style.backgroundColor = "#0284c7";
-         document.getElementById("themeKnobSpan").style.transform = "translateX(22px)";
+      if (themeSwitch) {
+        themeSwitch.checked = (currentTheme === "light");
+        themeSwitch.onchange = function() {
+          if (this.checked) {
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.classList.add("light-mode");
+            localStorage.setItem("nd_app_theme", "light");
+            showToast("लाइट मोड सक्रिय हुआ! ☀️", "☀️");
+          } else {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.classList.remove("light-mode");
+            localStorage.setItem("nd_app_theme", "dark");
+            showToast("डार्क मोड सक्रिय हुआ! 🌙", "🌙");
+          }
+        };
       }
     }
 
+    /* 🌟 कस्टम फ्लोटिंग टोस्ट */
     let toastTimer = null;
     function showToast(msg, icon = '✅') {
       const toast = document.getElementById('ndToast');
@@ -764,7 +1962,32 @@
         toast.classList.remove('show');
       }, 3000);
     }
-    window.alert = function(msg) { showToast(msg, 'ℹ️'); };
+
+    window.alert = function(msg) {
+      showToast(msg, 'ℹ️');
+    };
+
+    /* 🌟 स्प्लैश स्क्रीन टाइमर */
+    document.addEventListener("DOMContentLoaded", () => {
+      initThemeSystem();
+
+      const splash = document.getElementById("nischaySplashOverlay");
+      const alreadySeen = sessionStorage.getItem("nd_splash_seen");
+
+      if (alreadySeen) {
+        if (splash) splash.style.display = "none";
+      } else {
+        sessionStorage.setItem("nd_splash_seen", "true");
+        if (splash) {
+          setTimeout(() => {
+            splash.classList.add("fade-away");
+            setTimeout(() => {
+              splash.style.display = "none";
+            }, 400);
+          }, 1800);
+        }
+      }
+    });
 
     /* ================= 🌟 कक्षा अनुसार 10-10 सवाल (Class-Wise 10 Questions Bank) ================= */
     const classQuestionsBank = {
@@ -846,12 +2069,14 @@
           };
           gridEl.appendChild(btn);
         });
+
         wrapEl.classList.remove('fade-out');
       }, 250);
     }
 
     function checkDynamicAnswer(btn, selectedIdx, qData) {
       clearInterval(autoRotateTimer);
+
       const parent = btn.parentElement;
       const allBtns = parent.querySelectorAll('.poll-opt-btn');
       allBtns.forEach(b => b.disabled = true);
@@ -882,7 +2107,6 @@
       renderDynamicQuestion(currentQIndex);
     }
 
-    /* 🌟 4 सेकंड में फास्ट रोटेशन (4000ms) */
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
       autoRotateTimer = setInterval(() => {
@@ -916,7 +2140,21 @@
       };
     }
 
-    /* 🌟 कस्टम क्लास बॉटम-शीट */
+    function shareNischayDeskWebsite() {
+      const shareData = {
+        title: 'NischayDesk - बिहार बोर्ड टॉपर स्टडी पोर्टल',
+        text: '🔥 बिहार बोर्ड मैट्रिक एवं इंटर के सभी टॉपर नोट्स, 100-OMR शीट व आंसर कॉपी जनरेटर बिल्कुल फ्री! अभी देखें:',
+        url: 'https://nischaydesk.github.io/'
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareData.text + '\n' + shareData.url);
+        window.open(waUrl, '_blank');
+      }
+    }
+
+    /* 🌟 कस्टम क्लास बॉटम-शीट (टिक मार्क फिक्स) */
     function openCustomClassSheet() {
       const backdrop = document.getElementById('ndClassSheetBackdrop');
       if (backdrop) {
@@ -940,6 +2178,7 @@
       }
     }
 
+    // 🎯 फिक्स: केवल चयनित क्लास पर ✓ दिखेगा और वही नीला होगा
     function highlightSelectedClassInSheet() {
       ['10th', '11th', '12th'].forEach(c => {
         const el = document.getElementById(`optClass${c}`);
@@ -1160,8 +2399,117 @@
         }
       }, 700);
     }
+
+    /* 🌟 इमेज To PDF इंजन */
+    function triggerFastPdfConverter() {
+      const input = document.getElementById('heavyPdfFileInput');
+      if (input) input.click();
+    }
+
+    document.getElementById('heavyPdfFileInput').addEventListener('change', async function(e) {
+      const files = Array.from(e.target.files);
+      if (!files || files.length === 0) return;
+
+      const modal = document.getElementById('heavyPdfModal');
+      const statusText = document.getElementById('heavyPdfStatusText');
+      const fillBar = document.getElementById('heavyPdfFillBar');
+      const pageCounter = document.getElementById('heavyPdfPageCounter');
+      const percentEl = document.getElementById('heavyPdfPercent');
+
+      if (modal) modal.classList.add('active');
+      if (fillBar) fillBar.style.width = '0%';
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4', compress: true });
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const curPage = i + 1;
+
+          statusText.textContent = `पेज ${curPage} प्रोसेस हो रहा है...`;
+          pageCounter.textContent = `${curPage} / ${files.length} पेज`;
+          const pct = Math.round((curPage / files.length) * 100);
+          fillBar.style.width = pct + '%';
+          percentEl.textContent = pct + '%';
+
+          const compressedDataUrl = await compressAndLoadImage(file);
+          if (i > 0) pdf.addPage();
+
+          const imgProps = pdf.getImageProperties(compressedDataUrl);
+          const imgRatio = imgProps.width / imgProps.height;
+
+          let finalW = pageWidth - 20;
+          let finalH = finalW / imgRatio;
+
+          if (finalH > (pageHeight - 20)) {
+            finalH = pageHeight - 20;
+            finalW = finalH * imgRatio;
+          }
+
+          const posX = (pageWidth - finalW) / 2;
+          const posY = (pageHeight - finalH) / 2;
+
+          pdf.addImage(compressedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
+          await new Promise(r => setTimeout(r, 15));
+        }
+
+        statusText.textContent = "✓ PDF तैयार! डाउनलोड हो रहा है...";
+        fillBar.style.width = '100%';
+        percentEl.textContent = '100%';
+
+        setTimeout(() => {
+          const timestamp = new Date().toISOString().slice(0,10);
+          pdf.save(`NischayDesk_ImagesToPDF_${timestamp}.pdf`);
+          if (modal) modal.classList.remove('active');
+          e.target.value = '';
+          showToast("PDF सफलतापूर्वक डाउनलोड हो गई!", "📥");
+        }, 800);
+
+      } catch (err) {
+        showToast("PDF बनाने में समस्या आई", "❌");
+        if (modal) modal.classList.remove('active');
+        e.target.value = '';
+      }
+    });
+
+    function compressAndLoadImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxDimension = 1600;
+            let w = img.width;
+            let h = img.height;
+
+            if (w > h && w > maxDimension) {
+              h = Math.round((h * maxDimension) / w);
+              w = maxDimension;
+            } else if (h > maxDimension) {
+              h = Math.round((h * maxDimension) / h);
+              h = maxDimension;
+            }
+
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.72));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
   </script>
 
+  <!-- External Script Dependencies -->
   <script src="bseb-engine.js"></script>
 </body>
 </html>
