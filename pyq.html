@@ -30,7 +30,7 @@
     #ndHeroBanner h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 800; color: #ffffff !important; }
     #ndHeroBanner p { margin: 0; opacity: 0.95; font-size: 0.95rem; color: #f0f9ff !important; line-height: 1.5; }
 
-    /* फ़िल्टर बार - ज़बरदस्त कंट्रास्ट */
+    /* फ़िल्टर बार */
     #ndFilterBar {
       display: flex;
       flex-wrap: wrap;
@@ -200,6 +200,36 @@
     }
     @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
+    /* 🌟 प्रोफ़ेशनल इन-ऐप टोस्ट नोटिफिकेशन */
+    .nd-toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1.5px solid #0284c7;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+      padding: 14px 20px;
+      border-radius: 12px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 999999;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 90%;
+      pointer-events: none;
+    }
+    .nd-toast-container.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nd-toast-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .nd-toast-content { font-size: 0.9rem; font-weight: 600; line-height: 1.4; color: #f8fafc; }
+
     @media (max-width: 600px) {
       .modal-box { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: none !important; }
     }
@@ -367,6 +397,12 @@
     </div>
   </div>
 
+  <!-- 🌟 प्रोफ़ेशनल टोस्ट एलिमेंट -->
+  <div class="nd-toast-container" id="ndToast">
+    <div class="nd-toast-icon">⏳</div>
+    <div class="nd-toast-content" id="ndToastMsg">यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!</div>
+  </div>
+
   <script src="pyq-data.js"></script>
   <script src="main.js"></script>
   <script>
@@ -377,6 +413,21 @@
     const searchInput = document.getElementById('searchInput');
     const modalLoader = document.getElementById('modalLoader');
     const pdfFrame = document.getElementById('pdfFrame');
+    const ndToast = document.getElementById('ndToast');
+    const ndToastMsg = document.getElementById('ndToastMsg');
+
+    let toastTimer = null;
+
+    // प्रोफ़ेशनल टोस्ट दिखाने का फ़ंक्शन (डिफ़ॉल्ट alert की जगह)
+    function showToast(msg, icon = '⏳') {
+      if (toastTimer) clearTimeout(toastTimer);
+      ndToastMsg.innerText = msg;
+      document.querySelector('.nd-toast-icon').innerText = icon;
+      ndToast.classList.add('show');
+      toastTimer = setTimeout(() => {
+        ndToast.classList.remove('show');
+      }, 3200);
+    }
 
     function extractDriveId(url) {
       if (!url) return null;
@@ -446,7 +497,6 @@
         return;
       }
 
-      // थीम के हिसाब से सटीक रंग
       const cardBg = isLightMode ? '#ffffff' : '#0c1633';
       const cardBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
       const titleColor = isLightMode ? '#0f172a' : '#ffffff';
@@ -458,17 +508,21 @@
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
-        const readBtnAction = hasPdf 
-          ? `onclick="openPdfModal('${item.subject} (${item.year} - ${item.shift})', '${item.pdfUrl}')"`
-          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
+        // डबल ब्रैकेट फिक्स: साफ़ शीर्षक
+        const safeDocTitle = `${item.subject} - वर्ष ${item.year} (${item.shift})`;
 
+        // पढ़ें एक्शन (प्रोफ़ेशनल टोस्ट के साथ)
+        const readBtnAction = hasPdf 
+          ? `onclick="openPdfModal('${safeDocTitle}', '${item.pdfUrl}')"`
+          : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
+
+        // डाउनलोड एक्शन (प्रोफ़ेशनल टोस्ट के साथ)
         const cleanDownloadUrl = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
         const downBtnAction = cleanDownloadUrl 
           ? `href="${cleanDownloadUrl}" target="_blank" download`
-          : `onclick="alert('डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
+          : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
         const card = document.createElement('div');
-        // इनलाइन स्टाइल से CSS टकराव को 100% रोका गया है
         card.setAttribute('style', `
           background: ${cardBg} !important;
           border: 2px solid ${cardBorder} !important;
@@ -554,7 +608,6 @@
     shiftFilter.addEventListener('change', renderPyq);
     searchInput.addEventListener('input', renderPyq);
 
-    // थीम टॉगल होने पर कार्ड्स का रंग तुरंत री-रेंडर करने के लिए
     const themeObserver = new MutationObserver(renderPyq);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
