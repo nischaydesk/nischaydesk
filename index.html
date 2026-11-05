@@ -4,42 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal</title>
-<!-- Google Search Console Verification -->
+  
+  <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="uSCJGPNxrZ23LYmb3FsgLqdXYBZGGE1x8FDAyr-WSis" />
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WXM8RJ080H');
+  </script>
 
-  gtag('config', 'G-WXM8RJ080H');
-</script>
-  <!-- Primary SEO Tags (Updated for English Search) -->
+  <!-- Primary SEO Tags -->
   <link rel="canonical" href="https://nischaydesk.github.io/" />
   <meta name="title" content="NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal" />
-  <meta name="description" content="NischayDesk is a free Smart EdTech & Student Portal for Bihar Board (BSEB). Get 100% free topper notes, 3h 15m exam simulator, OMR generator, and study materials. (निश्चय-डेस्क: बिहार बोर्ड छात्रों के लिए 100% मुफ़्त टॉपर नोट्स, OMR व कॉपी जनरेटर)।" />
-  <meta name="keywords" content="NischayDesk, Nischay Desk, NischayDesk App, BSEB 10th Notes, BSEB 12th Notes, Bihar Board Exam Simulator, BSEB OMR, Prince Kumar, निश्चय डेस्क, निश्चय-डेस्क" />
+  <meta name="description" content="NischayDesk is a free Smart EdTech & Student Portal for Bihar Board (BSEB). Get 100% free topper notes, 3h 15m exam simulator, OMR generator, and study materials." />
+  <meta name="keywords" content="NischayDesk, Nischay Desk, NischayDesk App, BSEB 10th Notes, BSEB 12th Notes, Bihar Board Exam Simulator, BSEB OMR, Prince Kumar, निश्चय डेस्क" />
   <meta name="author" content="Prince Kumar" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Open Graph / Facebook / WhatsApp Share Tags -->
+  <!-- Open Graph / Social Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://nischaydesk.github.io/" />
   <meta property="og:title" content="NischayDesk | Smart BSEB Student Portal" />
   <meta property="og:description" content="Free BSEB Topper Notes, 3h 15m Live Exam Simulator, OMR Generator & Student Tools." />
   <meta property="og:image" content="https://nischaydesk.github.io/logo.png" />
 
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://nischaydesk.github.io/" />
-  <meta name="twitter:title" content="NischayDesk | निश्चय-डेस्क" />
-  <meta name="twitter:description" content="BSEB Topper Study Portal & Exam Simulator." />
-  <meta name="twitter:image" content="https://nischaydesk.github.io/logo.png" />
-
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Core Theme & Layout Stylesheets -->
@@ -60,7 +55,6 @@
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
 
-  <!-- अगर सेशन में पहले से खुला हुआ है, तो स्क्रीन झपकने से पहले ही छुपा दें -->
   <script>
     if (sessionStorage.getItem("nd_splash_seen")) {
       document.documentElement.classList.add("skip-splash");
@@ -68,7 +62,23 @@
   </script>
 
   <style>
-    /* 🌟 THEME VARIABLES */
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+    }
+
+    /* 🌟 अल्ट्रा-प्रीमियम कस्टम स्क्रॉलबार */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(3, 7, 18, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #0284c7, #38bdf8);
+      border-radius: 10px;
+    }
+
     :root {
       --brand-navy: #071120;
       --brand-surface: #0b1a30;
@@ -76,32 +86,35 @@
       --accent-cyan: #38bdf8;
       --accent-green: #10b981;
       --bg-page: #040914;
-      --card-bg: rgba(11, 26, 48, 0.75);
-      --card-border: rgba(56, 189, 248, 0.16);
+      --card-bg: rgba(11, 26, 48, 0.85);
+      --card-border: rgba(56, 189, 248, 0.22);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
 
-    html.light-mode, html[data-theme="light"] {
+    html.light-mode, html[data-theme="light"], body.light-mode {
       --brand-navy: #ffffff;
       --brand-surface: #f8fafc;
       --brand-blue: #0284c7;
       --accent-cyan: #0284c7;
       --accent-green: #059669;
       --bg-page: #f1f5f9;
-      --card-bg: #ffffff;
-      --card-border: #e2e8f0;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
+      --card-bg: #ffffff !important;
+      --card-border: #cbd5e1 !important;
+      --text-main: #0f172a !important;
+      --text-muted: #475569 !important;
     }
 
     body {
       background-color: var(--bg-page);
       color: var(--text-main);
       padding-bottom: 74px;
+      overflow-x: hidden !important;
+      width: 100% !important;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
     }
 
-    /* 🌟 सुपर-क्लीन लाइट मोड स्प्लैश स्क्रीन (Light Theme Splash) */
+    /* 🌟 स्प्लैश स्क्रीन */
     html.skip-splash #nischaySplashOverlay {
       display: none !important;
     }
@@ -110,7 +123,7 @@
       position: fixed;
       inset: 0;
       background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
-      z-index: 9999999;
+      z-index: 99999999;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -230,22 +243,21 @@
       0% { transform: translateY(12px); opacity: 0; }
       100% { transform: translateY(0); opacity: 1; }
     }
-    @keyframes splashFadeIn {
-      to { opacity: 1; }
-    }
+    @keyframes splashFadeIn { to { opacity: 1; } }
     @keyframes splashLoadingSlide {
       0% { left: -22px; }
       50% { left: 44px; }
       100% { left: -22px; }
     }
 
-    /* 🌟 HERO SPOTLIGHT SECTION */
+    /* 🌟 HERO SPOTLIGHT */
     .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
       color: #ffffff;
-      padding: 28px 18px 36px;
-      border-radius: 0 0 26px 26px;
+      padding: 24px 16px 32px;
+      border-radius: 0 0 24px 24px;
       border-bottom: 1px solid var(--card-border);
+      width: 100% !important;
     }
     html.light-mode .hero-spotlight-khan,
     html[data-theme="light"] .hero-spotlight-khan {
@@ -253,8 +265,9 @@
       color: #0f172a;
     }
     .hero-container {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
+      width: 100% !important;
     }
     .hero-chip-tag {
       display: inline-flex;
@@ -272,7 +285,7 @@
     .hero-main-title {
       font-size: 1.6rem;
       font-weight: 900;
-      line-height: 1.25;
+      line-height: 1.3;
       margin-bottom: 8px;
       letter-spacing: -0.4px;
     }
@@ -282,7 +295,7 @@
       -webkit-text-fill-color: transparent;
     }
     .hero-desc-p {
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
       margin-bottom: 20px;
       line-height: 1.55;
@@ -294,9 +307,9 @@
     }
     .hero-btn-primary {
       background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-      color: #ffffff;
+      color: #ffffff !important;
       text-decoration: none;
-      padding: 13px 10px;
+      padding: 12px 10px;
       border-radius: 12px;
       font-weight: 800;
       font-size: 0.86rem;
@@ -309,10 +322,10 @@
     }
     .hero-btn-secondary {
       background: rgba(255, 255, 255, 0.08);
-      color: #38bdf8;
+      color: #38bdf8 !important;
       border: 1px solid rgba(56, 189, 248, 0.35);
       text-decoration: none;
-      padding: 13px 10px;
+      padding: 12px 10px;
       border-radius: 12px;
       font-weight: 800;
       font-size: 0.86rem;
@@ -323,7 +336,7 @@
       text-align: center;
     }
 
-    /* 🌟 बिना लॉगिन वाले छात्रों के लिए स्पेशल कक्षा चयन बार (Guest Class Bar) */
+    /* 🌟 कस्टम गेस्ट क्लास बार */
     .guest-class-bar {
       margin-bottom: 16px;
       background: rgba(2, 132, 199, 0.12);
@@ -335,6 +348,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
+      cursor: pointer;
     }
     .guest-class-info {
       display: flex;
@@ -352,24 +366,17 @@
       font-weight: 900;
       font-size: 0.82rem;
     }
-    .guest-class-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .guest-class-actions select {
-      background: var(--card-bg);
-      color: var(--text-main);
+    .guest-class-change-pill {
+      background: rgba(56, 189, 248, 0.15);
       border: 1px solid rgba(56, 189, 248, 0.4);
-      padding: 6px 10px;
+      color: #38bdf8;
+      padding: 4px 10px;
       border-radius: 8px;
+      font-size: 0.76rem;
       font-weight: 800;
-      font-size: 0.8rem;
-      cursor: pointer;
-      outline: none;
     }
 
-    /* 🌟 NATIONAL PLATFORM TRUST STRIP */
+    /* 🌟 स्टैट्स स्ट्रिप */
     .trust-stats-strip {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -379,8 +386,9 @@
       border-bottom: 1px solid var(--card-border);
       padding: 14px 16px;
       text-align: center;
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
+      width: 100% !important;
     }
     html.light-mode .trust-stats-strip,
     html[data-theme="light"] .trust-stats-strip {
@@ -391,15 +399,17 @@
       font-weight: 900;
       color: #38bdf8;
       line-height: 1.1;
+      margin: 0;
     }
     .trust-stat-box p {
       font-size: 0.68rem;
       color: var(--text-muted);
       font-weight: 700;
-      margin-top: 2px;
+      margin-top: 3px;
+      margin-bottom: 0;
     }
 
-    /* 🌟 DAILY DYNAMIC ROTATING OMR POLL */
+    /* 🌟 OMR क्विज़ कार्ड */
     .daily-poll-card {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09));
       border: 1.5px solid rgba(56, 189, 248, 0.32);
@@ -458,7 +468,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      padding: 9px 12px;
+      padding: 10px 12px;
       border-radius: 8px;
       font-weight: 700;
       font-size: 0.8rem;
@@ -466,9 +476,7 @@
       text-align: left;
       transition: all 0.2s;
     }
-    .poll-opt-btn:hover {
-      border-color: #38bdf8;
-    }
+    .poll-opt-btn:hover { border-color: #38bdf8; }
     .poll-opt-btn.correct {
       background: rgba(16, 185, 129, 0.25) !important;
       border-color: #10b981 !important;
@@ -480,16 +488,17 @@
       color: #f87171 !important;
     }
 
-    /* 🌟 HORIZONTAL CATEGORY SCROLLER */
+    /* 🌟 पिल स्क्रोलर */
     .pills-scroll-tray {
       display: flex;
       gap: 8px;
-      padding: 16px 18px 6px;
+      padding: 16px 16px 6px;
       overflow-x: auto;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
+      width: 100% !important;
     }
     .pills-scroll-tray::-webkit-scrollbar { display: none; }
     .pill-anchor {
@@ -509,11 +518,12 @@
       border-color: #0284c7;
     }
 
-    /* 🌟 4-COLUMN COMPACT APP ICONS GRID */
+    /* 🌟 सेक्शन एवं आइकन्स ग्रिड */
     .portal-section-wrap {
-      padding: 20px 18px 4px;
-      max-width: 1200px;
+      padding: 18px 16px 4px;
+      max-width: 1100px;
       margin: 0 auto;
+      width: 100% !important;
     }
     .section-head-pro {
       display: flex;
@@ -525,6 +535,7 @@
       font-size: 1.05rem;
       font-weight: 800;
       color: var(--text-main);
+      margin: 0;
     }
     .section-head-pro a {
       font-size: 0.78rem;
@@ -558,9 +569,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       transition: transform 0.15s ease;
     }
-    .pro-icon-link:active .icon-squircle-bubble {
-      transform: scale(0.92);
-    }
+    .pro-icon-link:active .icon-squircle-bubble { transform: scale(0.92); }
     .pro-icon-link span {
       font-size: 0.72rem;
       font-weight: 700;
@@ -568,72 +577,206 @@
       line-height: 1.2;
     }
 
-    /* 🌟 ULTRA-CLEAN STUDY MATERIAL ROW LIST */
+    /* 🌟 रो लिस्ट्स */
     .pro-rows-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      width: 100% !important;
     }
     .pro-list-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--card-bg);
-      padding: 13px 15px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--card-border);
       text-decoration: none;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, transform 0.15s ease;
+      width: 100% !important;
     }
     .pro-list-row:active {
+      transform: scale(0.99);
       background: rgba(56, 189, 248, 0.1);
     }
     .pro-row-left {
       display: flex;
       align-items: center;
       gap: 12px;
+      min-width: 0;
+      flex: 1;
     }
     .pro-row-badge-icon {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .pro-row-text {
+      min-width: 0;
     }
     .pro-row-text h4 {
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: var(--text-main);
-      margin: 0;
+      margin: 0 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .pro-row-text p {
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
       margin: 0;
+      line-height: 1.35;
     }
     .pro-row-arrow {
       color: #64748b;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      padding-left: 8px;
     }
 
-    /* 🌟 FOOTER */
+    /* 📱 कस्टम बॉटम-शीट क्लास सेलेक्टर (डिफ़ॉल्ट पॉप-अप का स्थायी हल) */
+    .nd-sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 9999999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .nd-sheet-backdrop.active { display: flex; }
+    .nd-sheet-content {
+      width: 100%;
+      max-width: 480px;
+      background: #0b1329;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 22px 22px 0 0;
+      padding: 20px 18px 28px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      animation: ndSheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html.light-mode .nd-sheet-content,
+    html[data-theme="light"] .nd-sheet-content {
+      background: #ffffff;
+      border-color: #cbd5e1;
+    }
+    @keyframes ndSheetSlideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .nd-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 14px;
+    }
+    html.light-mode .nd-sheet-header,
+    html[data-theme="light"] .nd-sheet-header {
+      border-bottom-color: #e2e8f0;
+    }
+    .nd-sheet-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nd-sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nd-sheet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nd-sheet-opt-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html.light-mode .nd-sheet-opt-item,
+    html[data-theme="light"] .nd-sheet-opt-item {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+    .nd-sheet-opt-item.selected {
+      background: rgba(2, 132, 199, 0.2);
+      border-color: #0284c7;
+      color: #38bdf8;
+    }
+
+    /* 🌟 प्रोफ़ेशनल फ्लोटिंग ग्लास टोस्ट (डिफ़ॉल्ट alert की जगह) */
+    .nd-toast-container {
+      position: fixed;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1.5px solid #0284c7;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      padding: 13px 20px;
+      border-radius: 999px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 999999999;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 90%;
+      pointer-events: none;
+    }
+    .nd-toast-container.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nd-toast-icon { font-size: 1.25rem; flex-shrink: 0; }
+    .nd-toast-msg { font-size: 0.88rem; font-weight: 700; color: #f8fafc; }
+
+    /* फ़ुटर */
     .khan-full-footer {
       background-color: var(--brand-navy);
       color: #ffffff;
-      padding: 38px 18px 24px;
+      padding: 38px 16px 24px;
       margin-top: 40px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100% !important;
     }
     html.light-mode .khan-full-footer,
     html[data-theme="light"] .khan-full-footer {
       background-color: #0b1a30;
     }
     .footer-inner-khan {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
+      width: 100% !important;
     }
     .footer-mission-lead {
       font-size: 1.05rem;
@@ -655,7 +798,6 @@
       font-weight: 700;
       text-decoration: underline;
     }
-
     .footer-columns-grid {
       display: grid;
       grid-template-columns: 1fr 1.3fr;
@@ -683,10 +825,6 @@
       text-decoration: none;
       font-size: 0.8rem;
       font-weight: 500;
-      transition: color 0.2s;
-    }
-    .footer-ul-links a:hover {
-      color: #38bdf8;
     }
 
     .founder-pro-strip {
@@ -738,7 +876,6 @@
       padding: 6px 14px;
       border-radius: 8px;
     }
-
     .footer-bottom-statement {
       font-size: 0.74rem;
       color: #64748b;
@@ -748,7 +885,7 @@
       line-height: 1.5;
     }
 
-    /* 🌟 FIXED MOBILE BOTTOM DOCK */
+    /* बॉटम डॉक */
     .mobile-bottom-dock {
       position: fixed;
       bottom: 0;
@@ -778,26 +915,10 @@
       font-size: 0.68rem;
       font-weight: 700;
     }
-    .dock-link-item.active {
-      color: #38bdf8;
-    }
-    .dock-icon-svg {
-      font-size: 1.25rem;
-    }
+    .dock-link-item.active { color: #38bdf8; }
+    .dock-icon-svg { font-size: 1.25rem; }
 
-    /* 🌟 SIDE DRAWER & BRANDING */
-    .side-drawer {
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch;
-      display: flex;
-      flex-direction: column;
-    }
-    .drawer-nav-list {
-      flex: 1 0 auto;
-      padding-bottom: 20px;
-    }
-    
-    /* 🌟 NEW: प्रीमियम डेवलपर बैज (Glowing Gradient Effect) 🌟 */
+    /* डेवलपर बैज */
     .drawer-footer-custom {
       margin-top: auto;
       padding: 24px 16px 90px;
@@ -806,18 +927,6 @@
       background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
       position: relative;
       overflow: hidden;
-    }
-    .drawer-footer-custom::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 100px;
-      background: rgba(56, 189, 248, 0.2);
-      filter: blur(40px);
-      border-radius: 50%;
     }
     .developer-branding-tag {
       font-size: 0.95rem;
@@ -830,9 +939,7 @@
       display: inline-block;
       margin-bottom: 6px;
     }
-    @keyframes shineDev {
-      to { background-position: 200% center; }
-    }
+    @keyframes shineDev { to { background-position: 200% center; } }
     .developer-sub-badge {
       font-size: 0.72rem;
       color: #e2e8f0;
@@ -842,219 +949,12 @@
       border-radius: 999px;
       display: inline-block;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    /* PDF MODAL STYLE */
-    #heavyPdfModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 999999;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-    .heavy-pdf-box {
-      background: #1e293b;
-      border: 2px solid #0284c7;
-      border-radius: 16px;
-      max-width: 420px;
-      width: 100%;
-      padding: 24px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      color: #ffffff;
-    }
-    .pdf-track {
-      width: 100%;
-      height: 10px;
-      background: rgba(2, 132, 199, 0.2);
-      border-radius: 8px;
-      overflow: hidden;
-      margin: 16px 0 10px 0;
-      border: 1px solid #0284c7;
-    }
-    .pdf-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #0284c7, #22c55e);
-      border-radius: 8px;
-      transition: width 0.1s ease-out;
-    }
-
-    /* 🌟 NEW: NISCHAYDESK GLASS WELCOME LOGIN MODAL 🌟 */
-    .nd-login-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 9, 20, 0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 99999999;
-      justify-content: center;
-      align-items: center;
-      padding: 18px;
-    }
-    .nd-login-card {
-      background: rgba(15, 23, 42, 0.95);
-      border: 1.5px solid rgba(56, 189, 248, 0.35);
-      border-radius: 24px;
-      width: 100%;
-      max-width: 380px;
-      padding: 30px 24px 24px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(2, 132, 199, 0.2);
-      position: relative;
-      text-align: center;
-      animation: ndPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    html.light-mode .nd-login-card,
-    html[data-theme="light"] .nd-login-card {
-      background: #ffffff;
-      border-color: #cbd5e1;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.18);
-    }
-    @keyframes ndPop {
-      0% { transform: scale(0.85); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .nd-modal-close {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      background: rgba(255, 255, 255, 0.08);
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: #94a3b8;
-      font-size: 1.3rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      transition: all 0.2s;
-    }
-    .nd-modal-close:hover {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-    }
-    .nd-logo-bubble {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
-    }
-    .nd-logo-bubble img {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      object-fit: cover;
-    }
-    .nd-login-card h3 {
-      font-size: 1.4rem;
-      font-weight: 900;
-      margin-bottom: 6px;
-      color: var(--text-main);
-    }
-    .nd-login-card h3 span {
-      color: #38bdf8;
-    }
-    .nd-tagline {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-      margin-bottom: 20px;
-    }
-    .nd-features-box {
-      background: rgba(2, 132, 199, 0.08);
-      border: 1px dashed rgba(56, 189, 248, 0.3);
-      border-radius: 14px;
-      padding: 12px 14px;
-      text-align: left;
-      margin-bottom: 24px;
-    }
-    .nd-features-box div {
-      font-size: 0.78rem;
-      color: var(--text-main);
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .nd-features-box div:last-child {
-      margin-bottom: 0;
-    }
-    .nd-btn-google {
-      width: 100%;
-      background: #ffffff;
-      color: #1f2937;
-      border: none;
-      padding: 13px 16px;
-      border-radius: 12px;
-      font-size: 0.92rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .nd-btn-google:active {
-      transform: scale(0.97);
-    }
-    .nd-btn-google img {
-      width: 22px;
-      height: 22px;
-    }
-    .nd-terms-note {
-      font-size: 0.7rem;
-      color: #64748b;
-      margin-top: 18px;
-      line-height: 1.4;
-    }
-
-    /* 🌟 NEW: CLASS CHANGE TOAST NOTIFICATION HTML 🌟 */
-    .nd-toast-container {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: rgba(16, 185, 129, 0.95);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      z-index: 999999999;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .nd-toast-container.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
     }
   </style>
 </head>
 <body class="app-body">
 
-  <!-- 🌟 0. WELCOME SPLASH SCREEN OVERLAY -->
+  <!-- 🌟 0. स्प्लैश स्क्रीन -->
   <div id="nischaySplashOverlay">
     <div class="splash-content-box">
       <div class="splash-logo-wrapper">
@@ -1070,7 +970,7 @@
     </div>
   </div>
 
-  <!-- 1. TOP NAVBAR -->
+  <!-- 1. टॉप नेवबार -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -1103,9 +1003,8 @@
         <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
         <a href="todo.html" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू लिस्ट</a>
         <a href="pdf.html" target="_blank" class="nav-item" style="color: #a855f7; font-weight: 800;">🖼️ इमेज To PDF</a>
-</div>
+      </div>
 
-      <!-- GOOGLE TRANSLATE REMOVED AS REQUESTED - GOOGLE LOGIN IS BACK TO NORMAL -->
       <div class="nav-actions">
         <button class="btn-auth-primary" id="headerAuthBtn">
           <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
@@ -1128,7 +1027,7 @@
     </nav>
   </header>
 
-  <!-- 2. SIDE DRAWER -->
+  <!-- 2. साइड ड्रॉअर -->
   <div class="drawer-scrim" id="drawerScrim"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -1153,15 +1052,13 @@
       <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
         <span class="icon">🤖</span> AI-Desk (स्मार्ट AI टूल)
       </a>
-      
-      <!-- 🌟 NEW: TO-DO LIST IN DRAWER 🌟 -->
       <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
         <span class="icon">✅</span> माय टू-डू लिस्ट (To-Do)
       </a>
       <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;">
-  <span class="icon">🖼️</span> इमेज To PDF मेकर
-</a>
- <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
+        <span class="icon">🖼️</span> इमेज To PDF मेकर
+      </a>
+      <a href="bseb-print.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
         <span class="icon">🎯</span> BSEB OMR एवं कॉपी जनरेटर
       </a>
       <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
@@ -1201,7 +1098,6 @@
       </div>
     </nav>
 
-    <!-- 🌟 NEW: BEAUTIFUL DEVELOPER BADGE 🌟 -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         Developed By Prince Kumar ⚡
@@ -1212,14 +1108,14 @@
     </div>
   </aside>
 
-  <!-- 3. MAIN DASHBOARD CONTENT -->
+  <!-- 3. मुख्य डैशबोर्ड -->
   <main class="dashboard-viewport">
     
     <!-- HERO SPOTLIGHT -->
     <section class="hero-spotlight-khan">
       <div class="hero-container">
         
-        <!-- Welcome Card (जब यूजर लॉग इन हो) -->
+        <!-- Welcome Card (यूजर लॉग इन होने पर) -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 12px;">
           <div id="welcomeGreetingText" style="font-size: 1.35rem; font-weight: 800; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="color: #38bdf8;">छात्र</span> 👋
@@ -1227,25 +1123,20 @@
           <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 0.78rem;">
             <span style="color: var(--text-muted);">निर्धारित कक्षा:</span>
             <span style="color: #38bdf8; font-weight: 800;" id="displayStudentClass">Class 10th</span>
-            <button type="button" onclick="openProfileModal()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 1px 7px; font-size: 0.7rem; font-weight: 700; cursor: pointer;">
+            <button type="button" onclick="openCustomClassSheet()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; cursor: pointer;">
               बदलें ⚙️
             </button>
           </div>
         </div>
 
-        <!-- 🌟 बिना लॉगिन वाले छात्रों के लिए स्पेशल कक्षा पट्टी (जब यूजर लॉग इन न हो) 🌟 -->
-        <div id="guestClassBar" class="guest-class-bar">
+        <!-- 🌟 बिना लॉगिन वाले छात्रों के लिए कस्टम क्लास बार -->
+        <div id="guestClassBar" class="guest-class-bar" onclick="openCustomClassSheet()">
           <div class="guest-class-info">
             <span>📚 वर्तमान अध्ययन कक्षा:</span>
             <span class="guest-badge-indicator" id="guestClassBadge">Class 10th</span>
           </div>
-          <div class="guest-class-actions">
-            <label for="guestClassSelect" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">बदलें:</label>
-            <select id="guestClassSelect" onchange="changeClassFromGuestBar(this.value)">
-              <option value="10th">Class 10th (मैट्रिक)</option>
-              <option value="11th">Class 11th (साइंस)</option>
-              <option value="12th">Class 12th (इंटर साइंस)</option>
-            </select>
+          <div class="guest-class-change-pill">
+            कक्षा बदलें ▾
           </div>
         </div>
 
@@ -1264,7 +1155,7 @@
           </a>
         </div>
 
-        <!-- 🌟 इंटरैक्टिव "स्टाइलिश ऑटो-चेंजिंग OMR सवाल" -->
+        <!-- 🌟 इंटरैक्टिव OMR सवाल -->
         <div class="daily-poll-card">
           <div class="poll-tag-row">
             <span class="poll-badge">🎯 लाइव बोर्ड सवाल (Auto-Changing)</span>
@@ -1284,7 +1175,7 @@
       </div>
     </section>
 
-    <!-- 🌟 TRUST STATS STRIP -->
+    <!-- 🌟 ट्रस्ट स्टैट्स स्ट्रिप -->
     <div class="trust-stats-strip">
       <div class="trust-stat-box">
         <h4>3h 15m</h4>
@@ -1316,17 +1207,16 @@
       <a href="syllabus.html" class="pill-anchor">📋 आधिकारिक सिलेबस</a>
       <a href="bseb-result.html" class="pill-anchor">📊 रिजल्ट पोर्टल</a>
       <a href="todo.html" target="_blank" class="pill-anchor" style="border-color: #10b981; color: #10b981;">✅ टू-डू लिस्ट</a>
-       <a href="pdf.html" target="_blank" class="pill-anchor" style="border-color: #a855f7; color: #a855f7;">🖼️ इमेज To PDF</a>
-
+      <a href="pdf.html" target="_blank" class="pill-anchor" style="border-color: #a855f7; color: #a855f7;">🖼️ इमेज To PDF</a>
     </div>
 
-    <!-- 🌟 4-COLUMN COMPACT APP ICONS -->
+    <!-- 🌟 स्मार्ट टूल्स ग्रिड -->
     <section class="portal-section-wrap" id="quickTools">
       <div class="section-head-pro">
         <h3>छात्र स्मार्ट टूल्स (NischayDesk Tools)</h3>
-        <a href="javascript:void(0)" onclick="openProfileModal()">क्लास बदलें ⚙️</a>
+        <a href="javascript:void(0)" onclick="openCustomClassSheet()">क्लास बदलें ⚙️</a>
       </div>
-       <div class="pro-icons-grid">
+      <div class="pro-icons-grid">
         <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ef4444; border: 1.5px solid #ef4444;">🎯</div>
           <span style="color:#ef4444; font-weight: 800;">डेली क्विज़</span>
@@ -1351,7 +1241,7 @@
           <div class="icon-squircle-bubble" style="color:#10b981;">📊</div>
           <span>रिजल्ट</span>
         </a>
- <!-- 🌟 NEW: MARKS CALCULATOR 🌟 -->
+
         <a href="calculator.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#ec4899; border: 1.5px solid #ec4899;">🧮</div>
           <span style="color:#ec4899; font-weight: 800;">मार्क्स कैलकुलेटर</span>
@@ -1371,16 +1261,17 @@
           <div class="icon-squircle-bubble" style="color:#ea580c;">📚</div>
           <span>क्वेश्चन बैंक</span>
         </a>
+
         <a href="pdf.html" target="_blank" class="pro-icon-link">
-  <div class="icon-squircle-bubble" style="color:#a855f7; border: 1.5px solid #a855f7;">🖼️</div>
-  <span style="color:#a855f7; font-weight: 800;">इमेज To PDF</span>
-</a>
-<!-- 🌟 NEW: TO-DO LIST TOOL CARD -->
+          <div class="icon-squircle-bubble" style="color:#a855f7; border: 1.5px solid #a855f7;">🖼️</div>
+          <span style="color:#a855f7; font-weight: 800;">इमेज To PDF</span>
+        </a>
+
         <a href="todo.html" target="_blank" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#10b981; border: 1.5px solid #10b981;">✅</div>
           <span style="color:#10b981; font-weight: 800;">टू-डू लिस्ट</span>
         </a>
- </div>
+      </div>
     </section>
 
     <!-- 🌟 CLASS 10TH MATRIC SECTION -->
@@ -1565,7 +1456,7 @@
       </div>
     </section>
 
-    <!-- 🌟 NEW: NISCHAY ECOSYSTEM (अन्य प्लेटफॉर्म) 🌟 -->
+    <!-- 🌟 NISCHAY ECOSYSTEM -->
     <section class="portal-section-wrap">
       <div class="section-head-pro">
         <h3>🌐 हमारे अन्य प्लेटफॉर्म (Ecosystem)</h3>
@@ -1608,7 +1499,7 @@
       </div>
     </section>
 
-    <!-- 🌟 NEW: DAILY TO-DO LIST (खाली स्पेस भरने के लिए) 🌟 -->
+    <!-- 🌟 डेली टास्क मैनेजर -->
     <section class="portal-section-wrap" style="margin-bottom: 24px;">
       <div class="section-head-pro">
         <h3>✅ डेली टू-डू लिस्ट (Task Manager)</h3>
@@ -1628,13 +1519,12 @@
       </div>
     </section>
 
-    <!-- छिपे हुए फ़ाइल इनपुट (PDF Engine) -->
     <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
 
-    <!-- ⚡ लाइव PDF जनरेशन प्रोग्रेस मोडल (प्रीमियम स्टूडियो लुक) -->
+    <!-- ⚡ PDF जनरेटर मोडल -->
     <div id="heavyPdfModal">
       <div class="heavy-pdf-box" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56,189,248,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(56,189,248,0.2);">
-        <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5)); animation: pulseGlow 2s infinite;">🖼️ ➔ 📄</div>
+        <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5));">🖼️ ➔ 📄</div>
         <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.3rem; font-weight: 900;">HD इमेज To PDF इंजन</h3>
         <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;" id="heavyPdfStatusText">कृपया प्रतीक्षा करें, आपकी फोटो प्रोसेस हो रही है...</p>
         
@@ -1649,30 +1539,49 @@
       </div>
     </div>
 
-    <!-- DEDICATED USER PROFILE MODAL -->
-    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
-      <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (रेडियो बटन की जगह) -->
+    <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
+      <div class="nd-sheet-content">
+        <div class="nd-sheet-header">
+          <h3>अपनी कक्षा चुनें (Select Class)</h3>
+          <button type="button" class="nd-sheet-close-btn" onclick="closeCustomClassSheet()">&times;</button>
+        </div>
+        <div class="nd-sheet-options">
+          <div class="nd-sheet-opt-item" id="optClass10th" onclick="selectClassAndSave('10th')">
+            <span>Class 10th (मैट्रिक बोर्ड)</span>
+            <span class="check-mark">✓</span>
+          </div>
+          <div class="nd-sheet-opt-item" id="optClass11th" onclick="selectClassAndSave('11th')">
+            <span>Class 11th (साइंस फाउंडेशन)</span>
+            <span class="check-mark">✓</span>
+          </div>
+          <div class="nd-sheet-opt-item" id="optClass12th" onclick="selectClassAndSave('12th')">
+            <span>Class 12th (इंटर साइंस बोर्ड)</span>
+            <span class="check-mark">✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🌟 प्रोफ़ाइल मोडल -->
+    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+      <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
         
-        <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; z-index: 10000;">&times;</button>
+        <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
         
         <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
           <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
           <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
         </div>
 
-        <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
-        <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
+        <h3 id="modalUserName" style="margin: 0 0 4px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
+        <p id="modalUserEmail" style="margin: 0 0 16px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
         <div style="text-align: left; margin-bottom: 16px;">
-          <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
-          <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
-            <option value="10th">कक्षा 10वीं (मैट्रिक)</option>
-            <option value="11th">कक्षा 11वीं (साइंस)</option>
-            <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
-          </select>
-
-          <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
-            💾 कक्षा सेव करें (Save Class)
+          <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 8px;">अध्ययन कक्षा बदलें:</label>
+          <button type="button" onclick="closeProfileModal(); openCustomClassSheet();" style="width: 100%; background: #13224a; border: 1.5px solid #1e3a8a; color: #38bdf8; padding: 11px 14px; border-radius: 10px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+            <span id="profileCurrentClassText">Class 10th</span>
+            <span>बदलें ▾</span>
           </button>
         </div>
 
@@ -1687,7 +1596,7 @@
       </div>
     </div>
 
-    <!-- 🌟 NEW: ULTRA-MODERN NISCHAYDESK WELCOME LOGIN MODAL 🌟 -->
+    <!-- 🌟 लॉगिन मोडल -->
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
@@ -1716,15 +1625,15 @@
       </div>
     </div>
 
-    <!-- 🌟 NEW: CLASS CHANGE TOAST NOTIFICATION HTML 🌟 -->
-    <div id="ndClassToast" class="nd-toast-container">
-      <span style="font-size: 1.2rem;">✅</span>
-      <span id="ndToastMsg">आपकी कक्षा बदल दी गई है!</span>
+    <!-- 🌟 कस्टम टोस्ट नोटिफिकेशन (डिफ़ॉल्ट alert की जगह) -->
+    <div id="ndToast" class="nd-toast-container">
+      <span class="nd-toast-icon" id="ndToastIcon">✅</span>
+      <span class="nd-toast-msg" id="ndToastMsg">सफलतापूर्वक पूर्ण हुआ!</span>
     </div>
 
   </main>
 
-  <!-- 4. OFFICIAL KHAN ACADEMY INSPIRATION FOOTER -->
+  <!-- 4. फ़ुटर -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
       <div class="footer-mission-lead">
@@ -1786,7 +1695,7 @@
     </div>
   </footer>
 
-  <!-- 5. MOBILE BOTTOM DOCK -->
+  <!-- 5. मोबाइल बॉटम डॉक -->
   <nav class="mobile-bottom-dock">
     <a href="index.html" class="dock-link-item active">
       <span class="dock-icon-svg">🏠</span>
@@ -1806,9 +1715,32 @@
     </a>
   </nav>
 
-  <!-- 6. ALL JAVASCRIPT LOGIC -->
+  <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
-    /* 🌟 स्मार्ट स्प्लैश स्क्रीन */
+    /* 🌟 प्रोफ़ेशनल कस्टम टोस्ट (डिफ़ॉल्ट alert को पूरी तरह ओवरराइड करता है) */
+    let toastTimer = null;
+    function showToast(msg, icon = '✅') {
+      const toast = document.getElementById('ndToast');
+      const toastMsg = document.getElementById('ndToastMsg');
+      const toastIcon = document.getElementById('ndToastIcon');
+      if (!toast || !toastMsg) return;
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastMsg.textContent = msg;
+      if (toastIcon) toastIcon.textContent = icon;
+
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // ब्राउज़र के विंडो alert को ऐप के कस्टम टोस्ट से बदलें
+    window.alert = function(msg) {
+      showToast(msg, 'ℹ️');
+    };
+
+    /* 🌟 स्प्लैश स्क्रीन टाइमर */
     document.addEventListener("DOMContentLoaded", () => {
       const splash = document.getElementById("nischaySplashOverlay");
       const alreadySeen = sessionStorage.getItem("nd_splash_seen");
@@ -1828,7 +1760,7 @@
       }
     });
 
-    /* ================= 🌟 डायनामिक ऑटो-चेंजिंग OMR क्विज़ इंजन ================= */
+    /* 🌟 ऑटो-रोटेटिंग OMR क्विज़ इंजन */
     const rotatingBoardQuestions = [
       {
         question: "प्रकाश के परावर्तन के कितने नियम होते हैं?",
@@ -1924,7 +1856,7 @@
       setTimeout(() => {
         nextRotatingQuestion();
         startQuestionRotation();
-      }, 6000);
+      }, 5000);
     }
 
     function nextRotatingQuestion() {
@@ -1939,7 +1871,7 @@
       }, 7000);
     }
 
-    /* ================= 🌟 DRAWER & UI LOGIC ================= */
+    /* 🌟 ड्रॉअर हैंडलिंग */
     const menuBtn = document.getElementById('mobileMenuBtn');
     const sideDrawerEl = document.getElementById('sideDrawer');
     const scrimEl = document.getElementById('drawerScrim');
@@ -1974,33 +1906,79 @@
       }
     }
 
-    /* ================= 🌟 क्लास स्विचिंग और परमानेंट सेविंग फ़ंक्शन ================= */
+    /* 🌟 कस्टम बॉटम-शीट क्लास सेलेक्टर (डिफ़ॉल्ट सेलेक्ट मेनू का रिप्लेसमेंट) */
+    function openCustomClassSheet() {
+      const backdrop = document.getElementById('ndClassSheetBackdrop');
+      if (backdrop) {
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        highlightSelectedClassInSheet();
+      }
+    }
+
+    function closeCustomClassSheet() {
+      const backdrop = document.getElementById('ndClassSheetBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function handleClassSheetBackdrop(e) {
+      if (e.target.id === 'ndClassSheetBackdrop') {
+        closeCustomClassSheet();
+      }
+    }
+
+    function highlightSelectedClassInSheet() {
+      const current = localStorage.getItem("nd_selected_class") || "10th";
+      ['10th', '11th', '12th'].forEach(c => {
+        const el = document.getElementById(`optClass${c}`);
+        if (el) {
+          if (c === current) el.classList.add('selected');
+          else el.classList.remove('selected');
+        }
+      });
+    }
+
+    function selectClassAndSave(chosenClass) {
+      closeCustomClassSheet();
+      applyStudentClass(chosenClass);
+
+      if (window.firebase && firebase.auth) {
+        const user = firebase.auth().currentUser;
+        if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
+          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).set({
+            selectedClass: chosenClass
+          }, { merge: true });
+        }
+      }
+
+      showToast(`आपकी कक्षा Class ${chosenClass} सेट कर दी गई है!`, '🎯');
+    }
+
+    /* 🌟 क्लास स्विचिंग और यूआई अपडेट */
     function applyStudentClass(selectedClass) {
       let cleanClass = "10th";
       if (String(selectedClass).includes("11")) cleanClass = "11th";
       else if (String(selectedClass).includes("12")) cleanClass = "12th";
       else cleanClass = "10th";
 
-      // स्थानीय स्टोरेज में एकरूपता से पक्का सेव करें
       localStorage.setItem("nd_selected_class", cleanClass);
       localStorage.setItem("nischay_user_class", cleanClass);
       localStorage.setItem("nischay_student_class", cleanClass.replace(/[^0-9]/g, ''));
       localStorage.setItem("user_class", cleanClass);
 
-      // UI तत्वों को तुरंत अपडेट करें
       const b1 = document.getElementById('userSessionBadge');
       const b2 = document.getElementById('displayStudentClass');
-      const classSelect = document.getElementById('quickClassSwitchSelect');
       const guestBadge = document.getElementById('guestClassBadge');
-      const guestSelect = document.getElementById('guestClassSelect');
+      const profText = document.getElementById('profileCurrentClassText');
 
       if (b1) b1.textContent = `${cleanClass} ▾`;
       if (b2) b2.textContent = `Class ${cleanClass}`;
-      if (classSelect) classSelect.value = cleanClass;
       if (guestBadge) guestBadge.textContent = `Class ${cleanClass}`;
-      if (guestSelect) guestSelect.value = cleanClass;
+      if (profText) profText.textContent = `Class ${cleanClass}`;
 
-      // संबंधित क्लास सेक्शन को दिखाएँ और बाक़ी को छुपाएँ
       const sec10 = document.getElementById('sectionClass10');
       const sec11 = document.getElementById('sectionClass11');
       const sec12 = document.getElementById('sectionClass12');
@@ -2008,48 +1986,6 @@
       if (sec10) sec10.style.display = (cleanClass === "10th") ? "block" : "none";
       if (sec11) sec11.style.display = (cleanClass === "11th") ? "block" : "none";
       if (sec12) sec12.style.display = (cleanClass === "12th") ? "block" : "none";
-    }
-
-    // 🌟 NEW: Toast Show & Reload Helper
-    function showClassChangeToastAndReload(className) {
-      const toast = document.getElementById('ndClassToast');
-      const msg = document.getElementById('ndToastMsg');
-      if (toast && msg) {
-        msg.textContent = `आपकी कक्षा ${className} सेट कर दी गई है!`;
-        toast.classList.add('show');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      } else {
-        window.location.reload();
-      }
-    }
-
-    // बिना लॉगिन वाले बार से क्लास तुरंत बदलने के लिए
-    function changeClassFromGuestBar(val) {
-      applyStudentClass(val);
-      showClassChangeToastAndReload(val);
-    }
-
-    // मोडल से क्लास सेव करने के लिए (बिना रीलोड के स्मूद अपडेट)
-    function confirmSaveClassSelection() {
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-      if (!classSelect) return;
-
-      const chosen = classSelect.value;
-      applyStudentClass(chosen);
-
-      if (window.firebase && firebase.auth) {
-        const user = firebase.auth().currentUser;
-        if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
-          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).set({
-            selectedClass: chosen
-          }, { merge: true });
-        }
-      }
-
-      closeProfileModal();
-      showClassChangeToastAndReload(chosen);
     }
 
     function syncUserAuthState(user) {
@@ -2061,12 +1997,10 @@
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
 
-      // स्टोरेज में पहले से मौजूद क्लास पढ़ें
-      const savedClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_user_class') || '10th';
+      const savedClass = localStorage.getItem('nd_selected_class') || '10th';
       applyStudentClass(savedClass);
 
       if (user) {
-        // यूज़र लॉग इन है: गेस्ट बार छिपाएँ, प्रोफ़ाइल विजेट दिखाएँ
         if (guestBar) guestBar.style.display = 'none';
 
         const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
@@ -2088,7 +2022,6 @@
           }).catch(e => console.log(e));
         }
       } else {
-        // यूज़र लॉग इन नहीं है: प्रोफ़ाइल छुपाएँ, गेस्ट बार दिखाएँ
         if (authBtn) authBtn.style.display = 'inline-flex';
         if (profileWidget) profileWidget.style.display = 'none';
         if (welcomeCard) welcomeCard.style.display = 'none';
@@ -2096,7 +2029,7 @@
       }
     }
 
-    /* 🌟 NEW: NISCHAYDESK WELCOME LOGIN MODAL CONTROLS 🌟 */
+    /* 🌟 लॉगिन मोडल */
     function openWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
       if (modal) modal.style.display = 'flex';
@@ -2119,23 +2052,24 @@
         provider.setCustomParameters({ prompt: 'select_account' });
         
         firebase.auth().signInWithPopup(provider)
-          .then((res) => {
+          .then(() => {
             closeWelcomeLoginModal();
+            showToast("लॉगिन सफल हुआ!", "🚀");
           })
           .catch((err) => {
             if (err.code === 'auth/popup-blocked') {
               firebase.auth().signInWithRedirect(provider);
             } else if (err.code !== 'auth/popup-closed-by-user') {
-              console.warn(err);
+              showToast("लॉगिन नहीं हो सका, पुनः प्रयास करें", "❌");
             }
           });
       } else {
-        alert("⚠️ सर्वर कनेक्शन लोड हो रहा है, कृपया 2 सेकंड प्रतीक्षा करें!");
+        showToast("सर्वर कनेक्शन लोड हो रहा है...", "⏳");
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const initialClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_user_class') || '10th';
+      const initialClass = localStorage.getItem('nd_selected_class') || '10th';
       applyStudentClass(initialClass);
 
       renderDynamicQuestion(0);
@@ -2154,7 +2088,6 @@
           syncUserAuthState(user);
         });
       } else {
-        // फ़ायरबेस न होने पर भी गेस्ट मोड सुनिश्चित करें
         syncUserAuthState(null);
       }
     });
@@ -2166,10 +2099,6 @@
       const nameEl = document.getElementById('modalUserName');
       const emailEl = document.getElementById('modalUserEmail');
       const imgEl = document.getElementById('modalUserImg');
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-
-      const savedClass = localStorage.getItem('nd_selected_class') || '10th';
-      if (classSelect) classSelect.value = savedClass;
 
       if (window.firebase && firebase.auth) {
         const user = firebase.auth().currentUser;
@@ -2188,11 +2117,11 @@
     function closeProfileModal() {
       const modal = document.getElementById('customProfileModal');
       if (!modal) return;
+      modal.style.display = 'none';
       const loader = document.getElementById('logoutLoadingState');
       if (loader) loader.style.display = 'none';
       const btn = document.getElementById('btnPerformLogout');
       if (btn) btn.disabled = false;
-      modal.style.display = 'none';
     }
 
     function handleSlowLogout() {
@@ -2205,21 +2134,17 @@
         if (window.firebase && firebase.auth) {
           firebase.auth().signOut().finally(() => {
             closeProfileModal();
-            window.location.reload();
+            showToast("लॉगआउट पूर्ण हुआ", "👋");
+            setTimeout(() => window.location.reload(), 600);
           });
         } else {
           closeProfileModal();
           window.location.reload();
         }
-      }, 800);
+      }, 700);
     }
 
-    // 🚀 PDF ENGINE (PREMIUM STUDIO VERSION)
-    function triggerFastPdfConverter() {
-      const input = document.getElementById('heavyPdfFileInput');
-      if (input) input.click();
-    }
-
+    /* 🌟 PDF इंजन */
     document.getElementById('heavyPdfFileInput').addEventListener('change', async function(e) {
       const files = Array.from(e.target.files);
       if (!files || files.length === 0) return;
@@ -2249,7 +2174,7 @@
           const file = files[i];
           const curPage = i + 1;
 
-          statusText.textContent = `पेज ${curPage} ऑप्टिमाइज़ व संपीड़ित हो रहा है...`;
+          statusText.textContent = `पेज ${curPage} प्रोसेस हो रहा है...`;
           pageCounter.textContent = `${curPage} / ${files.length} पेज`;
           const pct = Math.round((curPage / files.length) * 100);
           fillBar.style.width = pct + '%';
@@ -2274,11 +2199,10 @@
           const posY = (pageHeight - finalH) / 2;
 
           pdf.addImage(compressedDataUrl, 'JPEG', posX, posY, finalW, finalH, undefined, 'FAST');
-
           await new Promise(r => setTimeout(r, 15));
         }
 
-        statusText.textContent = "✓ PDF तैयार! डाउनलोड प्रारंभ हो रहा है...";
+        statusText.textContent = "✓ PDF तैयार! डाउनलोड हो रहा है...";
         fillBar.style.width = '100%';
         percentEl.textContent = '100%';
 
@@ -2287,10 +2211,11 @@
           pdf.save(`NischayDesk_ImagesToPDF_${timestamp}.pdf`);
           modal.style.display = 'none';
           e.target.value = '';
+          showToast("PDF सफलतापूर्वक डाउनलोड हो गई!", "📥");
         }, 800);
 
       } catch (err) {
-        alert("PDF बनाने में त्रुटि: " + err.message);
+        showToast("PDF बनाने में समस्या आई", "❌");
         modal.style.display = 'none';
         e.target.value = '';
       }
