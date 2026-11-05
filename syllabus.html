@@ -21,15 +21,31 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
-    .syllabus-viewport { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+    }
+
+    body {
+      overflow-x: hidden !important;
+      width: 100% !important;
+    }
+
+    .syllabus-viewport {
+      width: 100% !important;
+      max-width: 1100px;
+      margin: 16px auto;
+      padding: 0 14px;
+      overflow: hidden;
+    }
 
     /* 🌟 प्रीमियम पर्पल-इंडिगो हीरो बैनर */
     #sylHeroBanner {
+      width: 100% !important;
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
       color: #ffffff !important;
-      padding: 24px 20px;
+      padding: 22px 18px;
       border-radius: 16px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4) !important;
       position: relative;
       overflow: hidden;
@@ -40,21 +56,22 @@
       position: absolute;
       top: -30px;
       right: -30px;
-      width: 130px;
-      height: 130px;
+      width: 120px;
+      height: 120px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       pointer-events: none;
     }
-    #sylHeroBanner h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 800; color: #ffffff !important; }
-    #sylHeroBanner p { margin: 0; opacity: 0.95; font-size: 0.95rem; line-height: 1.5; color: #f5f3ff !important; }
+    #sylHeroBanner h1 { margin: 0 0 8px; font-size: 1.55rem; font-weight: 800; color: #ffffff !important; }
+    #sylHeroBanner p { margin: 0; opacity: 0.95; font-size: 0.92rem; line-height: 1.5; color: #f5f3ff !important; }
 
-    /* 🔍 फ़िल्टर बॉक्स */
+    /* 🔍 फ़िल्टर बॉक्स - स्क्रीन से कभी बाहर नहीं जाएगा */
     #sylFilterBox {
+      width: 100% !important;
       display: grid;
       grid-template-columns: 1fr;
       gap: 14px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       background: #ffffff !important;
       padding: 16px;
       border-radius: 14px;
@@ -62,35 +79,54 @@
       box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08) !important;
       animation: fadeIn 0.35s ease-out;
     }
-    @media (min-width: 600px) {
+    @media (min-width: 650px) {
       #sylFilterBox { grid-template-columns: 1fr 1fr; }
     }
-    .syl-filter-item { display: flex; flex-direction: column; gap: 6px; }
+    .syl-filter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100% !important;
+      position: relative;
+    }
     .syl-filter-item label {
       font-size: 0.85rem;
       font-weight: 700;
       color: #4f46e5;
     }
-    .syl-filter-item select {
-      padding: 12px 14px;
+
+    /* 📱 कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर (पुराना रेडियो मेन्यू हमेशा के लिए बंद) */
+    .custom-select-trigger {
+      width: 100% !important;
+      padding: 13px 16px;
       border-radius: 10px;
       border: 1.8px solid #94a3b8 !important;
       font-size: 0.95rem;
-      font-weight: 600;
-      outline: none;
+      font-weight: 700;
       background: #f8fafc !important;
       color: #0f172a !important;
-      font-family: inherit;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: all 0.2s ease;
     }
-    .syl-filter-item select:focus {
-      border-color: #6366f1 !important;
-      background: #ffffff !important;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    .custom-select-trigger:active {
+      transform: scale(0.99);
     }
-    .syl-filter-item select option {
-      background: #ffffff !important;
-      color: #0f172a !important;
+    .custom-select-trigger .trigger-arrow {
+      font-size: 0.75rem;
+      color: #6366f1;
+      transition: transform 0.2s;
+    }
+
+    /* 🗂️ चैप्टर्स ग्रिड */
+    #syllabusChaptersContainer {
+      width: 100% !important;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     /* डार्क मोड सपोर्ट */
@@ -106,25 +142,92 @@
     html[data-theme="dark"] .syl-filter-item label {
       color: #818cf8 !important;
     }
-    html.dark-mode .syl-filter-item select,
-    body.dark-mode .syl-filter-item select,
-    html[data-theme="dark"] .syl-filter-item select {
+    html.dark-mode .custom-select-trigger,
+    body.dark-mode .custom-select-trigger,
+    html[data-theme="dark"] .custom-select-trigger {
       background: #13224a !important;
       border-color: #1e3a8a !important;
       color: #ffffff !important;
     }
-    html.dark-mode .syl-filter-item select option,
-    body.dark-mode .syl-filter-item select option,
-    html[data-theme="dark"] .syl-filter-item select option {
-      background: #0c1633 !important;
-      color: #ffffff !important;
-    }
 
-    /* 🗂️ चैप्टर्स ग्रिड */
-    #syllabusChaptersContainer {
+    /* 📱 कस्टम बॉटम-शीट मेन्यू (प्रीमियम मोबाइल UI) */
+    .sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 999999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .sheet-backdrop.active {
+      display: flex;
+    }
+    .sheet-content {
+      width: 100%;
+      max-width: 520px;
+      background: #0b1329;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 20px 20px 0 0;
+      padding: 18px;
+      max-height: 80vh;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+      animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 12px;
+    }
+    .sheet-header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .sheet-list {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 10px;
+    }
+    .sheet-item {
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    .sheet-item.selected {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: #6366f1;
+      color: #a5b4fc;
     }
 
     /* 🎬 इन-ऐप PDF मोडल */
@@ -190,14 +293,12 @@
       cursor: pointer;
       line-height: 1;
       padding: 0 4px;
-      transition: color 0.2s;
     }
-    .modal-close:hover { color: #ffffff; }
 
     .modal-body { flex: 1; background: #525659; position: relative; width: 100%; height: 100%; }
     .modal-body iframe { width: 100%; height: 100%; border: none; }
 
-    /* 🪐 ऑर्बिटिंग एटम लोडर (बुक और पल्स दोनों से एकदम अलग एनीमेशन) */
+    /* 🪐 ऑर्बिटिंग एटम + रियल-टाइम प्रोग्रेस बार */
     .modal-loader {
       position: absolute;
       inset: 0;
@@ -206,8 +307,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       z-index: 10;
+      padding: 20px;
     }
     .orbit-spinner {
       position: relative;
@@ -249,17 +351,37 @@
       100% { transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); }
     }
 
-    .loader-text {
-      color: #e0e7ff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      animation: pulseText 1.5s infinite ease-in-out;
+    /* 📊 रियल-टाइम 0-100% प्रोग्रेस बार */
+    .progress-box {
+      width: 100%;
+      max-width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
     }
-
-    @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #38bdf8);
+      border-radius: 10px;
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    .progress-text {
+      color: #e0e7ff;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
 
     /* 🌟 प्रोफ़ेशनल टोस्ट */
     .nd-toast-container {
@@ -277,7 +399,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      z-index: 999999;
+      z-index: 9999999;
       opacity: 0;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       max-width: 90%;
@@ -430,20 +552,22 @@
         <p>कक्षा 10वीं मैट्रिक, 11वीं एवं 12वीं साइंस के सभी विषयों का आधिकारिक सिलेबस सीधे इन-ऐप देखें और सुरक्षित डाउनलोड करें।</p>
       </div>
 
-      <!-- FILTER BOX -->
+      <!-- FILTER BOX (कस्टम सेलेक्ट ट्रिगर्स) -->
       <div id="sylFilterBox">
         <div class="syl-filter-item">
-          <label for="sylClassFilter">1. कक्षा चुनें (Class):</label>
-          <select id="sylClassFilter">
-            <option value="10" selected>कक्षा 10वीं (मैट्रिक)</option>
-            <option value="11">कक्षा 11वीं (साइंस)</option>
-            <option value="12">कक्षा 12वीं (साइंस)</option>
-          </select>
+          <label>1. कक्षा चुनें (Class):</label>
+          <div class="custom-select-trigger" id="classTriggerBtn" onclick="openBottomSheet('class')">
+            <span id="classTriggerText">कक्षा 10वीं (मैट्रिक)</span>
+            <span class="trigger-arrow">▼</span>
+          </div>
         </div>
 
         <div class="syl-filter-item">
-          <label for="sylSubjectFilter">2. विषय चुनें (Subject):</label>
-          <select id="sylSubjectFilter"></select>
+          <label>2. विषय चुनें (Subject):</label>
+          <div class="custom-select-trigger" id="subjectTriggerBtn" onclick="openBottomSheet('subject')">
+            <span id="subjectTriggerText">विषय लोड हो रहा है...</span>
+            <span class="trigger-arrow">▼</span>
+          </div>
         </div>
       </div>
 
@@ -457,7 +581,18 @@
 
   </main>
 
-  <!-- IN-APP PDF VIEWER MODAL -->
+  <!-- 📱 कस्टम बॉटम-शीट मोडल (रेडियो बटन की जगह) -->
+  <div class="sheet-backdrop" id="customSheetBackdrop" onclick="closeBottomSheet(event)">
+    <div class="sheet-content" id="customSheetContent">
+      <div class="sheet-header">
+        <h3 id="sheetTitle">विकल्प चुनें</h3>
+        <button class="sheet-close-btn" onclick="closeBottomSheetForce()">&times;</button>
+      </div>
+      <div class="sheet-list" id="sheetOptionsList"></div>
+    </div>
+  </div>
+
+  <!-- IN-APP PDF VIEWER MODAL (प्रोग्रेस बार के साथ) -->
   <div class="pdf-modal" id="pdfModal">
     <div class="modal-box" id="modalBox">
       <div class="modal-header">
@@ -468,14 +603,19 @@
         </div>
       </div>
       <div class="modal-body" id="modalBodyStage">
-        <!-- 🪐 ऑर्बिटिंग एटम लोडर -->
+        <!-- 🪐 ऑर्बिटिंग एटम + रियल-टाइम प्रोग्रेस बार -->
         <div class="modal-loader" id="modalLoader">
           <div class="orbit-spinner">
             <div class="orbit-ring"></div>
             <div class="orbit-ring"></div>
             <div class="orbit-ring"></div>
           </div>
-          <span class="loader-text">सिलेबस लोड हो रहा है...</span>
+          <div class="progress-box">
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="progress-text" id="progressNumber">0%</span>
+          </div>
         </div>
         <iframe id="pdfIframe" src=""></iframe>
       </div>
@@ -565,11 +705,24 @@
   <script src="auth.js"></script>
   <script src="main.js"></script>
   <script>
+    let activeClass = '10';
+    let activeSubjectKey = '';
+    let currentSheetType = '';
+
+    const classNames = {
+      '10': 'कक्षा 10वीं (मैट्रिक)',
+      '11': 'कक्षा 11वीं (साइंस)',
+      '12': 'कक्षा 12वीं (साइंस)'
+    };
+
     const modalLoader = document.getElementById('modalLoader');
     const pdfIframe = document.getElementById('pdfIframe');
     const ndToast = document.getElementById('ndToast');
     const ndToastMsg = document.getElementById('ndToastMsg');
+    const progressFill = document.getElementById('progressFill');
+    const progressNumber = document.getElementById('progressNumber');
     let toastTimer = null;
+    let progressInterval = null;
 
     function showToast(msg, icon = '⏳') {
       if (toastTimer) clearTimeout(toastTimer);
@@ -610,10 +763,6 @@
     }
 
     function startSyllabusApp() {
-      const classFilter = document.getElementById('sylClassFilter');
-      const subjectFilter = document.getElementById('sylSubjectFilter');
-      const chaptersContainer = document.getElementById('syllabusChaptersContainer');
-
       if (!window.NischaySyllabusHubData) {
         setTimeout(startSyllabusApp, 200);
         return;
@@ -621,120 +770,201 @@
 
       const rawClass = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_student_class') || '10th';
       const cleanNum = String(rawClass).replace(/[^0-9]/g, '') || '10';
-      if (classFilter && (cleanNum === '10' || cleanNum === '11' || cleanNum === '12')) {
-        classFilter.value = cleanNum;
+      if (cleanNum === '10' || cleanNum === '11' || cleanNum === '12') {
+        activeClass = cleanNum;
       }
 
-      function populateSubjects() {
-        const selectedClass = classFilter.value;
-        const subjects = window.NischaySyllabusHubData[selectedClass]?.subjects || {};
-        
-        subjectFilter.innerHTML = '';
+      updateClassUI();
+      populateSubjects();
+    }
+
+    function updateClassUI() {
+      document.getElementById('classTriggerText').innerText = classNames[activeClass] || 'कक्षा 10वीं (मैट्रिक)';
+    }
+
+    function populateSubjects() {
+      const subjects = window.NischaySyllabusHubData[activeClass]?.subjects || {};
+      const keys = Object.keys(subjects);
+
+      if (keys.length === 0) {
+        activeSubjectKey = '';
+        document.getElementById('subjectTriggerText').innerText = "कोई विषय उपलब्ध नहीं";
+        renderChapters();
+        return;
+      }
+
+      if (!keys.includes(activeSubjectKey)) {
+        activeSubjectKey = keys[0];
+      }
+
+      document.getElementById('subjectTriggerText').innerText = subjects[activeSubjectKey].title;
+      renderChapters();
+    }
+
+    /* 📱 कस्टम बॉटम शीट फंक्शन */
+    function openBottomSheet(type) {
+      currentSheetType = type;
+      const sheet = document.getElementById('customSheetBackdrop');
+      const list = document.getElementById('sheetOptionsList');
+      const title = document.getElementById('sheetTitle');
+
+      list.innerHTML = '';
+
+      if (type === 'class') {
+        title.innerText = 'कक्षा चुनें (Select Class)';
+        ['10', '11', '12'].forEach(cKey => {
+          const item = document.createElement('div');
+          item.className = `sheet-item ${activeClass === cKey ? 'selected' : ''}`;
+          item.innerHTML = `<span>${classNames[cKey]}</span> ${activeClass === cKey ? '✓' : ''}`;
+          item.onclick = () => {
+            activeClass = cKey;
+            updateClassUI();
+            closeBottomSheetForce();
+            populateSubjects();
+          };
+          list.appendChild(item);
+        });
+      } else if (type === 'subject') {
+        title.innerText = 'विषय चुनें (Select Subject)';
+        const subjects = window.NischaySyllabusHubData[activeClass]?.subjects || {};
         const keys = Object.keys(subjects);
 
-        if (keys.length === 0) {
-          const opt = document.createElement('option');
-          opt.value = "";
-          opt.textContent = "कोई विषय उपलब्ध नहीं";
-          subjectFilter.appendChild(opt);
-          renderChapters();
-          return;
-        }
-
-        keys.forEach(key => {
-          const opt = document.createElement('option');
-          opt.value = key;
-          opt.textContent = subjects[key].title;
-          subjectFilter.appendChild(opt);
-        });
-
-        renderChapters();
-      }
-
-      function renderChapters() {
-        const isLightMode = document.documentElement.classList.contains('light-mode') || 
-                            document.body.classList.contains('light-mode') ||
-                            document.documentElement.getAttribute('data-theme') === 'light';
-
-        const selectedClass = classFilter.value;
-        const selectedSubject = subjectFilter.value;
-        const subjectObj = window.NischaySyllabusHubData[selectedClass]?.subjects[selectedSubject];
-
-        chaptersContainer.innerHTML = '';
-        if (!subjectObj || !subjectObj.chapters || subjectObj.chapters.length === 0) {
-          chaptersContainer.innerHTML = `
-            <div style="text-align:center; padding:40px; background:${isLightMode ? '#ffffff' : '#0c1633'}; border:2px solid ${isLightMode ? '#cbd5e1' : '#1e3a8a'}; border-radius:14px; color:${isLightMode ? '#475569' : '#94a3b8'}; font-weight:700;">
-              <div style="font-size:2.2rem; margin-bottom:8px;">⏳</div>
-              <p style="margin:0;">इस विषय का आधिकारिक सिलेबस जल्द अपडेट किया जा रहा है!</p>
-            </div>
-          `;
-          return;
-        }
-
-        const cardBg = isLightMode ? '#ffffff' : '#0c1633';
-        const cardBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
-        const titleColor = isLightMode ? '#0f172a' : '#ffffff';
-        const downBtnBg = isLightMode ? '#f1f5f9' : '#13224a';
-        const downBtnText = isLightMode ? '#1e293b' : '#94a3b8';
-        const downBtnBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
-
-        subjectObj.chapters.forEach(ch => {
-          const hasPdf = ch.pdf && ch.pdf.trim() !== '' && ch.pdf !== '#' && !ch.pdf.includes('xxxx');
-          
-          const viewAction = hasPdf 
-            ? `onclick="openPdfViewer('${ch.pdf}', '${ch.name}')"`
-            : `onclick="showToast('अध्याय ${ch.no} (${ch.name}) का सिलेबस जल्द आ रहा है!')"`;
-
-          const cleanDownUrl = hasPdf ? getDirectDownloadUrl(ch.pdf) : '';
-          const downAction = cleanDownUrl 
-            ? `href="${cleanDownUrl}" target="_blank" download`
-            : `onclick="showToast('अध्याय ${ch.no} का डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
-
-          const card = document.createElement('div');
-          card.setAttribute('style', `
-            background: ${cardBg} !important;
-            border: 2px solid ${cardBorder} !important;
-            border-radius: 14px !important;
-            padding: 16px 18px !important;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            gap: 14px !important;
-            flex-wrap: wrap !important;
-            transition: transform 0.2s ease, border-color 0.2s ease !important;
-          `);
-
-          card.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px; min-width: 220px; flex: 1;">
-              <span style="background: rgba(99, 102, 241, 0.14); color: #4f46e5; border: 1px solid rgba(99, 102, 241, 0.3); font-size: 0.8rem; font-weight: 800; padding: 5px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;">
-                अध्याय ${ch.no}
-              </span>
-              <span style="font-size: 1.05rem; font-weight: 800; color: ${titleColor} !important; line-height: 1.4;">
-                ${ch.name}
-              </span>
-            </div>
-            <div style="display: flex; gap: 8px; flex-shrink: 0;">
-              <button ${viewAction} style="background: #4f46e5; color: #ffffff !important; border: none; padding: 9px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">
-                📖 देखें
-              </button>
-              <a ${downAction} style="background: ${downBtnBg} !important; color: ${downBtnText} !important; border: 1.5px solid ${downBtnBorder} !important; padding: 9px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
-                ⬇️ डाउनलोड
-              </a>
-            </div>
-          `;
-          chaptersContainer.appendChild(card);
+        keys.forEach(sKey => {
+          const item = document.createElement('div');
+          item.className = `sheet-item ${activeSubjectKey === sKey ? 'selected' : ''}`;
+          item.innerHTML = `<span>${subjects[sKey].title}</span> ${activeSubjectKey === sKey ? '✓' : ''}`;
+          item.onclick = () => {
+            activeSubjectKey = sKey;
+            document.getElementById('subjectTriggerText').innerText = subjects[sKey].title;
+            closeBottomSheetForce();
+            renderChapters();
+          };
+          list.appendChild(item);
         });
       }
 
-      classFilter.addEventListener('change', populateSubjects);
-      subjectFilter.addEventListener('change', renderChapters);
+      sheet.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-      const themeObserver = new MutationObserver(renderChapters);
-      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
-      themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    function closeBottomSheet(e) {
+      if (e.target.id === 'customSheetBackdrop') {
+        closeBottomSheetForce();
+      }
+    }
 
-      populateSubjects();
+    function closeBottomSheetForce() {
+      const sheet = document.getElementById('customSheetBackdrop');
+      sheet.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderChapters() {
+      const isLightMode = document.documentElement.classList.contains('light-mode') || 
+                          document.body.classList.contains('light-mode') ||
+                          document.documentElement.getAttribute('data-theme') === 'light';
+
+      const chaptersContainer = document.getElementById('syllabusChaptersContainer');
+      const subjectObj = window.NischaySyllabusHubData[activeClass]?.subjects[activeSubjectKey];
+
+      chaptersContainer.innerHTML = '';
+      if (!subjectObj || !subjectObj.chapters || subjectObj.chapters.length === 0) {
+        chaptersContainer.innerHTML = `
+          <div style="text-align:center; padding:40px; background:${isLightMode ? '#ffffff' : '#0c1633'}; border:2px solid ${isLightMode ? '#cbd5e1' : '#1e3a8a'}; border-radius:14px; color:${isLightMode ? '#475569' : '#94a3b8'}; font-weight:700;">
+            <div style="font-size:2.2rem; margin-bottom:8px;">⏳</div>
+            <p style="margin:0;">इस विषय का आधिकारिक सिलेबस जल्द अपडेट किया जा रहा है!</p>
+          </div>
+        `;
+        return;
+      }
+
+      const cardBg = isLightMode ? '#ffffff' : '#0c1633';
+      const cardBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
+      const titleColor = isLightMode ? '#0f172a' : '#ffffff';
+      const downBtnBg = isLightMode ? '#f1f5f9' : '#13224a';
+      const downBtnText = isLightMode ? '#1e293b' : '#94a3b8';
+      const downBtnBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
+
+      subjectObj.chapters.forEach(ch => {
+        const hasPdf = ch.pdf && ch.pdf.trim() !== '' && ch.pdf !== '#' && !ch.pdf.includes('xxxx');
+        
+        const viewAction = hasPdf 
+          ? `onclick="openPdfViewer('${ch.pdf}', '${ch.name}')"`
+          : `onclick="showToast('अध्याय ${ch.no} : ${ch.name} का सिलेबस जल्द आ रहा है!')"`;
+
+        const cleanDownUrl = hasPdf ? getDirectDownloadUrl(ch.pdf) : '';
+        const downAction = cleanDownUrl 
+          ? `href="${cleanDownUrl}" target="_blank" download`
+          : `onclick="showToast('अध्याय ${ch.no} का डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
+
+        const card = document.createElement('div');
+        card.setAttribute('style', `
+          width: 100% !important;
+          max-width: 100% !important;
+          background: ${cardBg} !important;
+          border: 2px solid ${cardBorder} !important;
+          border-radius: 14px !important;
+          padding: 16px 18px !important;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          gap: 14px !important;
+          flex-wrap: wrap !important;
+          transition: transform 0.2s ease, border-color 0.2s ease !important;
+        `);
+
+        card.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 200px; flex: 1;">
+            <span style="background: rgba(99, 102, 241, 0.14); color: #4f46e5; border: 1px solid rgba(99, 102, 241, 0.3); font-size: 0.8rem; font-weight: 800; padding: 5px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;">
+              अध्याय ${ch.no}
+            </span>
+            <span style="font-size: 1.05rem; font-weight: 800; color: ${titleColor} !important; line-height: 1.4;">
+              ${ch.name}
+            </span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-shrink: 0;">
+            <button ${viewAction} style="background: #4f46e5; color: #ffffff !important; border: none; padding: 9px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">
+              📖 देखें
+            </button>
+            <a ${downAction} style="background: ${downBtnBg} !important; color: ${downBtnText} !important; border: 1.5px solid ${downBtnBorder} !important; padding: 9px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+              ⬇️ डाउनलोड
+            </a>
+          </div>
+        `;
+        chaptersContainer.appendChild(card);
+      });
+    }
+
+    /* 📊 रियल-टाइम 0-100% प्रोग्रेस बार सिमुलेटर */
+    function runProgressBar(callback) {
+      if (progressInterval) clearInterval(progressInterval);
+      let progress = 0;
+      progressFill.style.width = '0%';
+      progressNumber.innerText = '0%';
+
+      progressInterval = setInterval(() => {
+        // स्वाभाविक लोडिंग की तरह रैंडम स्पीड से प्रोग्रेस बढ़ाना
+        let increment = Math.floor(Math.random() * 12) + 5;
+        progress += increment;
+
+        if (progress >= 95) {
+          progress = 95; // लोड पूरा होने तक 95% पर रखेगा
+          clearInterval(progressInterval);
+        }
+
+        progressFill.style.width = `${progress}%`;
+        progressNumber.innerText = `${progress}%`;
+      }, 100);
+    }
+
+    function completeProgressBar() {
+      if (progressInterval) clearInterval(progressInterval);
+      progressFill.style.width = '100%';
+      progressNumber.innerText = '100%';
+      setTimeout(() => {
+        if (modalLoader) modalLoader.style.display = 'none';
+      }, 250);
     }
 
     function openPdfViewer(url, title) {
@@ -745,10 +975,12 @@
       document.getElementById('pdfModalTitle').textContent = title;
       if (modalLoader) modalLoader.style.display = 'flex';
 
+      runProgressBar();
+
       pdfIframe.src = getZoomablePreviewUrl(url);
 
       pdfIframe.onload = function() {
-        if (modalLoader) modalLoader.style.display = 'none';
+        completeProgressBar();
       };
 
       const modal = document.getElementById('pdfModal');
@@ -757,11 +989,14 @@
     }
 
     function closePdfModal() {
-      const modal = document.getElementById('pdfModal');
-      modal.classList.remove('active');
+      if (progressInterval) clearInterval(progressInterval);
+      document.getElementById('pdfModal').classList.remove('active');
       pdfIframe.src = '';
       if (modalLoader) modalLoader.style.display = 'none';
       document.body.style.overflow = '';
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
     }
 
     function toggleModalFullscreen() {
