@@ -10,6 +10,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet">
 
+  <script src="config.js"></script>
+  <script src="syllabus-data-11.js"></script>
+
+  <script>
+    // 11th ko turant localStorage me lock karein
+    localStorage.setItem("nd_selected_class", "11th");
+    localStorage.setItem("nischay_user_class", "11th");
+    localStorage.setItem("nischay_student_class", "11");
+    localStorage.setItem("user_class", "11th");
+
+    const savedTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+  </script>
+
   <style>
     *, *::before, *::after {
       box-sizing: border-box !important;
@@ -444,7 +463,7 @@
       flex-direction: column;
       box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
       overflow-y: auto;
-      padding-bottom: 110px;
+      padding-bottom: 120px;
     }
     .side-nav.active { transform: translateX(0); }
     .side-nav-header {
@@ -453,6 +472,7 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1.5px solid var(--card-border);
+      flex-shrink: 0;
     }
     .close-btn {
       background: none;
@@ -513,7 +533,6 @@
       cursor: pointer;
     }
 
-    /* Switch */
     .switch {
       position: relative;
       display: inline-block;
@@ -549,6 +568,7 @@
       border-top: 1.5px solid var(--card-border);
       background: rgba(2, 132, 199, 0.05);
       margin-top: 10px;
+      flex-shrink: 0;
     }
     .dev-badge {
       font-size: 0.92rem;
@@ -798,12 +818,18 @@
       <a href="class11.html" class="side-link active">
         <span>🧪</span> <span data-i18n="menuHome">11th मुख्य डैशबोर्ड</span>
       </a>
-      <a href="notes.html?filter=11-physics" class="side-link">
-        <span>📚</span> <span data-i18n="menuNotes">11th सम्पूर्ण नोट्स</span>
+      <!-- 11th Syllabus Direct Link -->
+      <a href="syllabus.html?class=11" class="side-link">
+        <span>📋</span> <span data-i18n="menuSyllabus">11th आधिकारिक सिलेबस</span>
+      </a>
+      <!-- 11th Notes Target -->
+      <a href="#subjects" onclick="closeDrawer()" class="side-link">
+        <span>📚</span> <span data-i18n="menuNotes">11th विषय नोट्स (NCERT)</span>
       </a>
       <a href="pyq.html?class=11" class="side-link">
         <span>📄</span> <span data-i18n="menuPapers">एनुअल & मासिक पेपर्स</span>
       </a>
+      <!-- Tools with return state to 11th -->
       <a href="todo.html" target="_blank" class="side-link" style="color: #10b981; font-weight: 800;">
         <span>✅</span> <span data-i18n="menuTodo">माय टू-डू लिस्ट</span>
       </a>
@@ -875,7 +901,7 @@
     </div>
   </section>
 
-  <!-- 4. Class 11th Core Subjects -->
+  <!-- 4. Class 11th Core Subjects (NCERT Syllabus & PDF Reader Linked) -->
   <section class="content-sec" id="subjects">
     <div class="sec-head">
       <h3 data-i18n="subjectHeading">कक्षा 11वीं मुख्य विषय (PCM/PCB)</h3>
@@ -884,7 +910,7 @@
 
     <div class="list-cards">
       <!-- Physics -->
-      <a href="notes.html?filter=11-physics" class="item-card">
+      <a href="syllabus.html?class=11&subject=physics" class="item-card">
         <div class="item-left">
           <div class="item-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">⚡</div>
           <div class="item-text">
@@ -896,7 +922,7 @@
       </a>
 
       <!-- Chemistry -->
-      <a href="notes.html?filter=11-chemistry" class="item-card">
+      <a href="syllabus.html?class=11&subject=chemistry" class="item-card">
         <div class="item-left">
           <div class="item-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
           <div class="item-text">
@@ -908,7 +934,7 @@
       </a>
 
       <!-- Math -->
-      <a href="notes.html?filter=11-math" class="item-card">
+      <a href="syllabus.html?class=11&subject=math" class="item-card">
         <div class="item-left">
           <div class="item-icon" style="background: rgba(56, 189, 248, 0.12); color:#38bdf8;">📐</div>
           <div class="item-text">
@@ -920,7 +946,7 @@
       </a>
 
       <!-- Biology -->
-      <a href="notes.html?filter=11-biology" class="item-card">
+      <a href="syllabus.html?class=11&subject=biology" class="item-card">
         <div class="item-left">
           <div class="item-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">🧬</div>
           <div class="item-text">
@@ -951,7 +977,7 @@
         <span class="item-arrow">›</span>
       </a>
 
-      <a href="notes.html?filter=11-bridge" class="item-card" style="border: 1.5px dashed #10b981;">
+      <a href="syllabus.html?class=11" class="item-card" style="border: 1.5px dashed #10b981;">
         <div class="item-left">
           <div class="item-icon" style="background: rgba(16, 185, 129, 0.15); color:#10b981;">🚀</div>
           <div class="item-text">
@@ -988,7 +1014,7 @@
     </div>
   </div>
 
-  <!-- 7. Footer -->
+  <!-- 7. Footer (Links Restored) -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-columns-grid">
@@ -996,7 +1022,7 @@
           <div class="footer-column-title" data-i18n="footerCol1Title">पोर्टल मेनू</div>
           <ul class="footer-ul-links">
             <li><a href="class11.html">➔ 11th मुख्य डैशबोर्ड</a></li>
-            <li><a href="notes.html?filter=11-physics">➔ 11th सम्पूर्ण नोट्स</a></li>
+            <li><a href="syllabus.html?class=11">➔ 11th आधिकारिक सिलेबस</a></li>
             <li><a href="pyq.html?class=11">➔ एनुअल व मासिक पेपर्स</a></li>
             <li><a href="todo.html" target="_blank">➔ माय टू-डू लिस्ट</a></li>
             <li><a href="pdf.html" target="_blank">➔ इमेज To PDF मेकर</a></li>
@@ -1008,10 +1034,10 @@
         <div>
           <div class="footer-column-title" data-i18n="footerCol2Title">11th मुख्य विषय</div>
           <ul class="footer-ul-links">
-            <li><a href="notes.html?filter=11-physics">➔ भौतिक विज्ञान (Physics)</a></li>
-            <li><a href="notes.html?filter=11-chemistry">➔ रसायन विज्ञान (Chemistry)</a></li>
-            <li><a href="notes.html?filter=11-math">➔ गणित (Mathematics)</a></li>
-            <li><a href="notes.html?filter=11-biology">➔ जीव विज्ञान (Biology)</a></li>
+            <li><a href="syllabus.html?class=11&subject=physics">➔ भौतिक विज्ञान (Physics)</a></li>
+            <li><a href="syllabus.html?class=11&subject=chemistry">➔ रसायन विज्ञान (Chemistry)</a></li>
+            <li><a href="syllabus.html?class=11&subject=math">➔ गणित (Mathematics)</a></li>
+            <li><a href="syllabus.html?class=11&subject=biology">➔ जीव विज्ञान (Biology)</a></li>
             <li><a href="index.html" style="color: #38bdf8;">➔ कक्षा 10वीं मैट्रिक पोर्टल ↗</a></li>
             <li><a href="class12.html" style="color: #38bdf8;">➔ कक्षा 12वीं इंटर साइंस ↗</a></li>
           </ul>
@@ -1044,9 +1070,9 @@
       <span class="icon">🧪</span>
       <span data-i18n="dockHome">11th होम</span>
     </a>
-    <a href="notes.html?filter=11-physics" class="dock-btn">
-      <span class="icon">📖</span>
-      <span data-i18n="dockNotes">11th नोट्स</span>
+    <a href="syllabus.html?class=11" class="dock-btn">
+      <span class="icon">📋</span>
+      <span data-i18n="dockSyllabus">11th सिलेबस</span>
     </a>
     <a href="pyq.html?class=11" class="dock-btn">
       <span class="icon">📄</span>
@@ -1067,7 +1093,8 @@
         portalBadge: "11TH SCIENCE PORTAL",
         switchClassBtn: "कक्षा 11th ▾",
         menuHome: "11th मुख्य डैशबोर्ड",
-        menuNotes: "11th सम्पूर्ण नोट्स",
+        menuSyllabus: "11th आधिकारिक सिलेबस",
+        menuNotes: "11th विषय नोट्स (NCERT)",
         menuPapers: "एनुअल & मासिक पेपर्स",
         menuTodo: "माय टू-डू लिस्ट",
         menuPdf: "इमेज To PDF मेकर",
@@ -1105,7 +1132,7 @@
         founderTag: "Founder & Developer, NischayDesk (463/500 Bihar Board Topper)",
         footerCopy: "© 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 11वीं साइंस स्पेशल पोर्टल<br>Crafted with ❤️ by Prince Kumar for Bihar Board Students.",
         dockHome: "11th होम",
-        dockNotes: "11th नोट्स",
+        dockSyllabus: "11th सिलेबस",
         dockPapers: "पेपर्स",
         dockClass: "क्लास बदलें"
       },
@@ -1114,7 +1141,8 @@
         portalBadge: "11TH SCIENCE PORTAL",
         switchClassBtn: "Class 11th ▾",
         menuHome: "11th Main Dashboard",
-        menuNotes: "11th Complete Notes",
+        menuSyllabus: "11th Official Syllabus",
+        menuNotes: "11th Subject Notes (NCERT)",
         menuPapers: "Annual & Monthly Papers",
         menuTodo: "My To-Do List",
         menuPdf: "Image To PDF Maker",
@@ -1152,7 +1180,7 @@
         founderTag: "Founder & Developer, NischayDesk (463/500 Bihar Board Topper)",
         footerCopy: "© 2026 NischayDesk. All Rights Reserved. • Class 11th Science Portal<br>Crafted with ❤️ by Prince Kumar for Bihar Board Students.",
         dockHome: "11th Home",
-        dockNotes: "11th Notes",
+        dockSyllabus: "11th Syllabus",
         dockPapers: "Papers",
         dockClass: "Switch Class"
       }
