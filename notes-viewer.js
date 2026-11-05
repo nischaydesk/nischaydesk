@@ -1,7 +1,7 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (v6.0 Ultra Premium Viewer Edition)
+   NischayDesk Complete Notes Controller (v6.0 - 100% Class 10th Dedicated)
    Architected by: Prince Kumar (NischayDesk)
-   Features: Strict Class Separation, Dynamic Pills, Large PDF Bypass (Native Drive),
+   Features: Dedicated Class 10th Matric, Large PDF Bypass (Native Drive),
              Ultra-Premium Loading Animation, In-App HD Zoomable PDF Viewer
    ========================================================================== */
 
@@ -51,17 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
     pdfFrameStage.appendChild(frameLoader);
   }
 
-  const auth = (window.NischayConfig && window.NischayConfig.authInstance) 
-               ? window.NischayConfig.authInstance 
-               : (typeof firebase !== 'undefined' && firebase.auth ? firebase.auth() : null);
-
-  if (auth) {
-    auth.onAuthStateChanged(function (user) {
-      initNotes(user);
-    });
-  } else {
-    initNotes(null);
-  }
+  // डेटा इनिशियलाइजेशन (सिर्फ Class 10th)
+  initClass10Notes();
 
   function extractDriveId(url) {
     if (!url) return null;
@@ -71,12 +62,10 @@ document.addEventListener('DOMContentLoaded', function () {
     return (matchParam && matchParam[1]) ? matchParam[1] : null;
   }
 
-  // 🚀 FIXED: Large PDF Bypass Logic
+  // 🚀 Native Google Drive Preview URL
   function getSafePreviewUrl(rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (fileId) {
-      // Docs Viewer हटा दिया गया है। अब यह Google Drive का असली (Native) प्रीव्यू इस्तेमाल करेगा
-      // इससे 1000+ पेज का PDF भी बिना किसी एरर के आराम से लोड हो जाएगा।
       return `https://drive.google.com/file/d/${fileId}/preview`;
     }
     if (rawUrl && rawUrl.includes('drive.google.com/file/d/')) {
@@ -85,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return rawUrl;
   }
 
-  // 📥 बिना जीमेल अकाउंट मांगे डायरेक्ट डाउनलोड करने का फंक्शन
+  // 📥 डायरेक्ट डाउनलोड लिंक
   window.downloadPdfDirectly = function (rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (!fileId) {
@@ -102,52 +91,34 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.removeChild(tempLink);
   };
 
-  // 🎯 छात्र की सक्रिय कक्षा के अनुसार सिर्फ़ उसी क्लास का डेटा लोड करना
-  function getActiveStudentClass() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlClass = urlParams.get('class');
-    if (urlClass) {
-      const numOnly = String(urlClass).replace(/[^0-9]/g, '');
-      if (numOnly === '11' || numOnly === '12' || numOnly === '10') return numOnly;
-    }
-
-    const rawClass = localStorage.getItem('nd_selected_class') || 
-                     localStorage.getItem('nischay_student_class') || 
-                     localStorage.getItem('nischay_user_class') || '10th';
-    const numOnly = String(rawClass).replace(/[^0-9]/g, '');
-    return (numOnly === '11' || numOnly === '12') ? numOnly : '10';
-  }
-
-  function initNotes(currentUser) {
+  function initClass10Notes() {
     if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) {
-      setTimeout(() => initNotes(currentUser), 200);
+      setTimeout(initClass10Notes, 200);
       return;
     }
 
-    const activeClass = getActiveStudentClass();
-
-    // 1. मास्टर लिस्ट में सिर्फ़ सक्रिय क्लास के चैप्टर्स डालें
+    // 1. मास्टर लिस्ट में सिर्फ 10th के चैप्टर्स लोड करना
     allChaptersMaster = [];
     window.NischaySyllabus.subjects.forEach(function (subject) {
-      if (!subject.id.startsWith(activeClass + '-')) return;
+      if (!subject.id.startsWith('10-')) return;
 
       if (subject.chapters && Array.isArray(subject.chapters)) {
         subject.chapters.forEach(function (ch) {
           allChaptersMaster.push({
             subjectId: subject.id,
-            classTitle: subject.classTitle || `Class ${activeClass}th`,
+            classTitle: "Class 10th",
             subjectTitle: subject.subjectTitle || "विषय",
             no: ch.no,
             name: ch.name,
             pdfUrl: ch.pdfUrl || '',
             pages: ch.pages || 'हैंडनोट्स',
-            desc: ch.desc || 'बोर्ड परीक्षा के लिए महत्वपूर्ण हस्तलिखित नोट्स।'
+            desc: ch.desc || 'बिहार बोर्ड मैट्रिक परीक्षा हेतु महत्वपूर्ण हस्तलिखित नोट्स।'
           });
         });
       }
     });
 
-    // 2. URL से फ़िल्टर चेक करें
+    // 2. URL से फ़िल्टर चेक करना (?filter=10-math)
     const urlParams = new URLSearchParams(window.location.search);
     const requestedFilter = urlParams.get('filter') || urlParams.get('subject');
 
@@ -157,14 +128,14 @@ document.addEventListener('DOMContentLoaded', function () {
       currentFilterSubject = 'all';
     }
 
-    // 3. फ़िल्टर पिल्स (बटन) को एक्टिवेट करें
-    adjustFilterPills(activeClass, currentFilterSubject);
+    // 3. फ़िल्टर पिल्स को सेट करना
+    adjustClass10FilterPills(currentFilterSubject);
 
-    // 4. ग्रिड रेंडर करें
+    // 4. ग्रिड रेंडर करना
     renderNotesGrid();
   }
 
-  function adjustFilterPills(sClass, selectedFilter) {
+  function adjustClass10FilterPills(selectedFilter) {
     if (!filterPillContainer) return;
     const filterButtons = filterPillContainer.querySelectorAll('.filter-btn');
     let matchedButton = null;
@@ -173,20 +144,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const filterVal = btn.getAttribute('data-filter');
       btn.classList.remove('active');
 
-      if (filterVal === 'all') {
-        btn.style.display = 'inline-block';
-        if (selectedFilter === 'all') btn.classList.add('active');
-        return;
-      }
-
-      if (filterVal.startsWith(sClass + '-')) {
-        btn.style.display = 'inline-block';
-        if (filterVal === selectedFilter) {
-          btn.classList.add('active');
-          matchedButton = btn;
-        }
-      } else {
-        btn.style.display = 'none';
+      if (filterVal === selectedFilter) {
+        btn.classList.add('active');
+        matchedButton = btn;
       }
     });
 
@@ -224,8 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
       notesCatalogGrid.innerHTML = `
         <div class="loading-state-box" style="text-align:center; padding:40px 16px; width:100%; grid-column:1/-1;">
           <div style="font-size: 2.8rem; margin-bottom: 10px;">📚</div>
-          <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 6px; color: var(--text-pure);">कोई नोट्स नहीं मिले</h3>
-          <p class="card-desc" style="color: var(--text-secondary); font-size: 0.88rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
+          <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 6px; color: var(--text-pure, #ffffff);">कोई नोट्स नहीं मिले</h3>
+          <p class="card-desc" style="color: var(--text-secondary, #94a3b8); font-size: 0.88rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
         </div>
       `;
       return;
@@ -256,20 +216,20 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
 
             <div style="display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px;">
-              <div style="background: rgba(56, 189, 248, 0.14); color: var(--brand-accent); min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; border: 1px solid var(--border-subtle);">
+              <div style="background: rgba(56, 189, 248, 0.14); color: var(--brand-accent, #38bdf8); min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; border: 1px solid var(--border-subtle, rgba(56, 189, 248, 0.2));">
                 ${note.no}
               </div>
-              <h3 style="font-size: 1rem; margin: 0; font-weight: 800; line-height: 1.4; color: var(--text-pure);">
+              <h3 style="font-size: 1rem; margin: 0; font-weight: 800; line-height: 1.4; color: var(--text-pure, #ffffff);">
                 ${note.name}
               </h3>
             </div>
 
-            <p class="note-desc" style="padding-left: 42px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+            <p class="note-desc" style="padding-left: 42px; font-size: 0.82rem; color: var(--text-secondary, #94a3b8); line-height: 1.5; margin-bottom: 14px;">
               ${note.desc}
             </p>
           </div>
 
-          <div class="note-btn-group" style="padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+          <div class="note-btn-group" style="padding-top: 12px; border-top: 1px solid var(--border-subtle, rgba(255,255,255,0.08));">
             <button class="btn-read-note" ${readAction}>
               📖 <span>नोट्स पढ़ें</span>
             </button>
@@ -292,10 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     if (frameLoader) frameLoader.style.display = 'flex';
 
-    // Remove strict sandbox to allow Drive's Native UI to load heavy PDFs
     studioPdfFrame.removeAttribute('sandbox');
-
-    // 🚀 Google Drive Native Preview 
     studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
 
     studioPdfFrame.onload = function () {
