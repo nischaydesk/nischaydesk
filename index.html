@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal</title>
   
+  <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="uSCJGPNxrZ23LYmb3FsgLqdXYBZGGE1x8FDAyr-WSis" />
   
   <!-- Google tag (gtag.js) -->
@@ -16,12 +17,20 @@
     gtag('config', 'G-WXM8RJ080H');
   </script>
 
-  <!-- SEO Tags -->
+  <!-- Primary SEO Tags -->
   <link rel="canonical" href="https://nischaydesk.github.io/" />
   <meta name="title" content="NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal" />
-  <meta name="description" content="NischayDesk is a free Smart EdTech & Student Portal for Bihar Board (BSEB). Get 100% free topper notes, exam simulator, and study materials." />
-  <meta name="keywords" content="NischayDesk, Nischay Desk, NischayDesk App, BSEB 10th Notes, Bihar Board Exam Simulator, Prince Kumar, निश्चय डेस्क" />
+  <meta name="description" content="NischayDesk is a free Smart EdTech & Student Portal for Bihar Board (BSEB). Get 100% free topper notes, 3h 15m exam simulator, OMR generator, and study materials." />
+  <meta name="keywords" content="NischayDesk, Nischay Desk, NischayDesk App, BSEB 10th Notes, BSEB 12th Notes, Bihar Board Exam Simulator, BSEB OMR, Prince Kumar, निश्चय डेस्क" />
   <meta name="author" content="Prince Kumar" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph / Social Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nischaydesk.github.io/" />
+  <meta property="og:title" content="NischayDesk | Smart BSEB Student Portal" />
+  <meta property="og:description" content="Free BSEB Topper Notes, 3h 15m Live Exam Simulator, OMR Generator & Student Tools." />
+  <meta property="og:image" content="https://nischaydesk.github.io/logo.png" />
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,12 +42,18 @@
   <link rel="stylesheet" href="navbar.css" />
   <link rel="stylesheet" href="dashboard.css" />
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase Modular Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Fast HD PDF Generator Library (jsPDF) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- External App Configs -->
   <script src="config.js"></script>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <script>
     // 🌟 डिफ़ॉल्ट रूप से लाइट मोड सेट करना
@@ -127,7 +142,7 @@
     @keyframes splashFadeIn { to { opacity: 1; } }
     @keyframes splashLoadingSlide { 0% { left: -22px; } 50% { left: 44px; } 100% { left: -22px; } }
 
-    /* 🌟 HERO SPOTLIGHT */
+    /* 🌟 HERO SPOTLIGHT (1200px Max-Width Full Layout) */
     .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
       color: #ffffff; padding: 24px 16px 32px; border-radius: 0 0 24px 24px; border-bottom: 1px solid var(--card-border); width: 100% !important;
@@ -135,15 +150,15 @@
     html.light-mode .hero-spotlight-khan, html[data-theme="light"] .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #e0f2fe 0%, #ffffff 100%); color: #0f172a;
     }
-    .hero-container { max-width: 1100px; margin: 0 auto; width: 100% !important; }
+    .hero-container { max-width: 1200px; margin: 0 auto; width: 100% !important; }
     .hero-chip-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 4px 12px; border-radius: 999px; font-size: 0.74rem; font-weight: 800; margin-bottom: 12px; }
     .hero-main-title { font-size: 1.6rem; font-weight: 900; line-height: 1.3; margin-bottom: 8px; letter-spacing: -0.4px; }
     .hero-main-title span { background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero-desc-p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.55; }
     
     .hero-buttons-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .hero-btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff !important; text-decoration: none; padding: 12px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); }
-    .hero-btn-secondary { background: rgba(255, 255, 255, 0.08); color: #38bdf8 !important; border: 1px solid rgba(56, 189, 248, 0.35); text-decoration: none; padding: 12px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .hero-btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #ffffff !important; text-decoration: none; padding: 12px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); text-align: center; }
+    .hero-btn-secondary { background: rgba(255, 255, 255, 0.08); color: #38bdf8 !important; border: 1px solid rgba(56, 189, 248, 0.35); text-decoration: none; padding: 12px 10px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; }
 
     /* 🌟 कस्टम गेस्ट क्लास बार */
     .guest-class-bar {
@@ -173,14 +188,14 @@
 
     /* 🌟 पिल स्क्रोलर */
     .pills-scroll-tray {
-      display: flex; gap: 8px; padding: 16px 16px 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1100px; margin: 0 auto; width: 100% !important;
+      display: flex; gap: 8px; padding: 16px 16px 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1200px; margin: 0 auto; width: 100% !important;
     }
     .pills-scroll-tray::-webkit-scrollbar { display: none; }
     .pill-anchor { flex: 0 0 auto; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); padding: 7px 15px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-decoration: none; }
     .pill-anchor.active { background: #0284c7; color: #ffffff; border-color: #0284c7; }
 
-    /* 🌟 ग्रिड सेक्शन */
-    .portal-section-wrap { padding: 18px 16px 4px; max-width: 1100px; margin: 0 auto; width: 100% !important; }
+    /* 🌟 ग्रिड सेक्शन (Max Width 1200px) */
+    .portal-section-wrap { padding: 18px 16px 4px; max-width: 1200px; margin: 0 auto; width: 100% !important; }
     .section-head-pro { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .section-head-pro h3 { font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin: 0; }
     .section-head-pro a { font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-decoration: none; }
@@ -202,7 +217,7 @@
     /* 🌟 फ़ुटर - फोटो साइज फिक्स */
     .khan-full-footer { background-color: var(--brand-navy); color: #ffffff; padding: 38px 16px 24px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); width: 100% !important; }
     html.light-mode .khan-full-footer, html[data-theme="light"] .khan-full-footer { background-color: #0b1a30; }
-    .footer-inner-khan { max-width: 1100px; margin: 0 auto; width: 100% !important; }
+    .footer-inner-khan { max-width: 1200px; margin: 0 auto; width: 100% !important; }
     .footer-mission-lead { font-size: 1.05rem; font-weight: 700; line-height: 1.6; color: #cbd5e1; margin-bottom: 14px; }
     
     .founder-pro-strip { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
@@ -925,7 +940,6 @@
       }
     }
 
-    // 🎯 फिक्स: केवल चयनित क्लास पर ✓ दिखेगा
     function highlightSelectedClassInSheet() {
       ['10th', '11th', '12th'].forEach(c => {
         const el = document.getElementById(`optClass${c}`);
