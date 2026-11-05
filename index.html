@@ -56,6 +56,14 @@
   <link rel="apple-touch-icon" href="logo.png">
 
   <script>
+    const savedTheme = localStorage.getItem("nd_app_theme") || "dark";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+
     if (sessionStorage.getItem("nd_splash_seen")) {
       document.documentElement.classList.add("skip-splash");
     }
@@ -111,6 +119,7 @@
       overflow-x: hidden !important;
       width: 100% !important;
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* 🌟 स्प्लैश स्क्रीन */
@@ -616,9 +625,7 @@
       font-size: 1.25rem;
       flex-shrink: 0;
     }
-    .pro-row-text {
-      min-width: 0;
-    }
+    .pro-row-text { min-width: 0; }
     .pro-row-text h4 {
       font-size: 0.92rem;
       font-weight: 800;
@@ -648,11 +655,11 @@
       inset: 0;
       background: rgba(3, 7, 18, 0.78);
       backdrop-filter: blur(6px);
-      z-index: 9999999;
+      z-index: 999999999;
       align-items: flex-end;
       justify-content: center;
     }
-    .nd-sheet-backdrop.active { display: flex; }
+    .nd-sheet-backdrop.active { display: flex !important; }
     .nd-sheet-content {
       width: 100%;
       max-width: 480px;
@@ -665,8 +672,8 @@
     }
     html.light-mode .nd-sheet-content,
     html[data-theme="light"] .nd-sheet-content {
-      background: #ffffff;
-      border-color: #cbd5e1;
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
     }
     @keyframes ndSheetSlideUp {
       from { transform: translateY(100%); }
@@ -682,7 +689,7 @@
     }
     html.light-mode .nd-sheet-header,
     html[data-theme="light"] .nd-sheet-header {
-      border-bottom-color: #e2e8f0;
+      border-bottom-color: #e2e8f0 !important;
     }
     .nd-sheet-header h3 {
       margin: 0;
@@ -719,17 +726,26 @@
     }
     html.light-mode .nd-sheet-opt-item,
     html[data-theme="light"] .nd-sheet-opt-item {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-      color: #0f172a;
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .nd-sheet-opt-item .check-mark {
+      display: none;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 1.1rem;
     }
     .nd-sheet-opt-item.selected {
-      background: rgba(2, 132, 199, 0.2);
-      border-color: #0284c7;
-      color: #38bdf8;
+      background: rgba(2, 132, 199, 0.2) !important;
+      border-color: #0284c7 !important;
+      color: #38bdf8 !important;
+    }
+    .nd-sheet-opt-item.selected .check-mark {
+      display: inline-block !important;
     }
 
-    /* 🌟 साइड ड्रॉअर फिक्स (100% वर्किंग और प्रीमियम लुक) */
+    /* 🌟 साइड ड्रॉअर फिक्स */
     .drawer-scrim {
       display: none;
       position: fixed;
@@ -766,6 +782,11 @@
       z-index: 99999999 !important;
       visibility: hidden;
     }
+    html.light-mode .side-drawer,
+    html[data-theme="light"] .side-drawer {
+      background: #ffffff !important;
+      border-right-color: #cbd5e1 !important;
+    }
     .side-drawer.active {
       transform: translateX(0) !important;
       visibility: visible !important;
@@ -777,6 +798,10 @@
       align-items: center;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+    html.light-mode .drawer-header,
+    html[data-theme="light"] .drawer-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
     .drawer-brand {
       display: flex;
       align-items: center;
@@ -784,6 +809,10 @@
       font-size: 1.15rem;
       font-weight: 800;
       color: #fff;
+    }
+    html.light-mode .drawer-brand,
+    html[data-theme="light"] .drawer-brand {
+      color: #0f172a !important;
     }
     .drawer-close-btn {
       background: rgba(255,255,255,0.08);
@@ -797,6 +826,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    html.light-mode .drawer-close-btn,
+    html[data-theme="light"] .drawer-close-btn {
+      background: #f1f5f9 !important;
+      color: #475569 !important;
     }
     .drawer-nav-list {
       padding: 14px 12px;
@@ -817,6 +851,10 @@
       font-weight: 700;
       transition: all 0.2s ease;
     }
+    html.light-mode .drawer-nav-item,
+    html[data-theme="light"] .drawer-nav-item {
+      color: #334155 !important;
+    }
     .drawer-nav-item:hover,
     .drawer-nav-item:active {
       background: rgba(56, 189, 248, 0.12);
@@ -824,11 +862,55 @@
       transform: translateX(4px);
     }
     .drawer-nav-item.active {
-      background: #0284c7;
-      color: #fff;
+      background: #0284c7 !important;
+      color: #fff !important;
     }
 
-    /* 🌟 PDF इंजन मोडल (छिपा रहेगा) */
+    /* 🌟 डेवलपर बैज (फिक्स मार्जिन व पैडिंग) */
+    .drawer-footer-custom {
+      margin-top: auto;
+      padding: 20px 16px 40px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    html.light-mode .drawer-footer-custom,
+    html[data-theme="light"] .drawer-footer-custom {
+      border-top-color: #e2e8f0 !important;
+      background: #f8fafc !important;
+    }
+    .developer-branding-tag {
+      font-size: 0.95rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineDev 3s linear infinite;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    @keyframes shineDev { to { background-position: 200% center; } }
+    .developer-sub-badge {
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    html.light-mode .developer-sub-badge,
+    html[data-theme="light"] .developer-sub-badge {
+      color: #0f172a !important;
+      background: #e2e8f0 !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    /* 🌟 PDF इंजन मोडल */
     #heavyPdfModal {
       display: none !important;
       position: fixed;
@@ -914,8 +996,8 @@
     }
     html.light-mode .nd-login-card,
     html[data-theme="light"] .nd-login-card {
-      background: #ffffff;
-      border-color: #cbd5e1;
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
     }
     @keyframes ndPop {
       0% { transform: scale(0.85); opacity: 0; }
@@ -1011,195 +1093,51 @@
       line-height: 1.4;
     }
 
-    /* फ़ुटर */
-    .khan-full-footer {
-      background-color: var(--brand-navy);
-      color: #ffffff;
-      padding: 38px 16px 24px;
-      margin-top: 40px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      width: 100% !important;
-    }
-    html.light-mode .khan-full-footer,
-    html[data-theme="light"] .khan-full-footer {
-      background-color: #0b1a30;
-    }
-    .footer-inner-khan {
-      max-width: 1100px;
-      margin: 0 auto;
-      width: 100% !important;
-    }
-    .footer-mission-lead {
-      font-size: 1.05rem;
-      font-weight: 700;
-      line-height: 1.6;
-      color: #cbd5e1;
-      margin-bottom: 14px;
-    }
-    .footer-sub-lead {
-      font-size: 0.84rem;
-      color: #94a3b8;
-      line-height: 1.6;
-      margin-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 20px;
-    }
-    .footer-sub-lead a {
-      color: #38bdf8;
-      font-weight: 700;
-      text-decoration: underline;
-    }
-    .footer-columns-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-    .footer-column-title {
-      font-size: 0.84rem;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .footer-ul-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      padding: 0;
-      margin: 0;
-    }
-    .footer-ul-links a {
-      color: #94a3b8;
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    .founder-pro-strip {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 14px;
+    /* डार्क / लाइट मोड स्विच टॉगल बटन */
+    .theme-switch-wrapper {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
+      width: 100%;
     }
-    .founder-info-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
     }
-    .founder-avatar-pic {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #38bdf8;
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
-    .founder-meta-text h5 {
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: #ffffff;
-      margin: 0;
-    }
-    .founder-meta-text p {
-      font-size: 0.72rem;
-      color: #38bdf8;
-      font-weight: 600;
-      margin: 0;
-    }
-    .privacy-tag-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #38bdf8;
-      text-decoration: none;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 6px 14px;
-      border-radius: 8px;
-    }
-    .footer-bottom-statement {
-      font-size: 0.74rem;
-      color: #64748b;
-      text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 18px;
-      line-height: 1.5;
-    }
-
-    /* बॉटम डॉक */
-    .mobile-bottom-dock {
-      position: fixed;
-      bottom: 0;
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
       left: 0;
       right: 0;
-      height: 60px;
-      background: rgba(7, 17, 32, 0.95);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 10000;
+      bottom: 0;
+      background-color: #334155;
+      transition: .3s;
+      border-radius: 24px;
     }
-    html.light-mode .mobile-bottom-dock,
-    html[data-theme="light"] .mobile-bottom-dock {
-      background: rgba(255, 255, 255, 0.95);
-      border-top: 1px solid #e2e8f0;
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
     }
-    .dock-link-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      text-decoration: none;
-      color: #64748b;
-      font-size: 0.68rem;
-      font-weight: 700;
+    input:checked + .slider {
+      background-color: #0284c7;
     }
-    .dock-link-item.active { color: #38bdf8; }
-    .dock-icon-svg { font-size: 1.25rem; }
-
-    /* डेवलपर बैज */
-    .drawer-footer-custom {
-      margin-top: auto;
-      padding: 24px 16px 90px;
-      border-top: 1px solid rgba(56, 189, 248, 0.2);
-      text-align: center;
-      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .developer-branding-tag {
-      font-size: 0.95rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shineDev 3s linear infinite;
-      display: inline-block;
-      margin-bottom: 6px;
-    }
-    @keyframes shineDev { to { background-position: 200% center; } }
-    .developer-sub-badge {
-      font-size: 0.72rem;
-      color: #e2e8f0;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 6px 14px;
-      border-radius: 999px;
-      display: inline-block;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    input:checked + .slider:before {
+      transform: translateX(22px);
     }
   </style>
 </head>
@@ -1278,7 +1216,7 @@
     </nav>
   </header>
 
-  <!-- 2. साइड ड्रॉअर (100% फिक्स और एनिमेटेड) -->
+  <!-- 2. साइड ड्रॉअर -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -1290,7 +1228,7 @@
     </div>
 
     <!-- जब यूज़र लॉग इन हो सिर्फ़ तभी ड्रॉअर प्रोफ़ाइल दिखेगी -->
-    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="display: none; padding: 12px 14px; margin: 10px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; cursor: pointer;">
+    <div class="drawer-user-card" id="drawerUserCard" onclick="closeDrawerUnified(); openProfileModal();" style="display: none; padding: 12px 14px; margin: 10px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; cursor: pointer;">
       <p class="drawer-user-prompt" style="margin: 0; color: #38bdf8; font-weight: 800; font-size: 0.85rem;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
 
@@ -1341,15 +1279,19 @@
         <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
       </a>
 
-      <div class="drawer-theme-row" style="padding: 12px 14px; margin-top: 10px;">
-        <span class="theme-label" style="font-size: 0.85rem; font-weight: 700;">🌙 डार्क / लाइट मोड</span>
-        <label class="switch">
-          <input type="checkbox" id="themeSwitch">
-          <span class="slider round"></span>
-        </label>
+      <!-- 🌟 एक्टिव डार्क/लाइट मोड स्विच -->
+      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+        <div class="theme-switch-wrapper">
+          <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
+          <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
     </nav>
 
+    <!-- 🌟 साफ़ और सुरक्षित डेवलपर फुटर (दबेगा नहीं) -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         Developed By Prince Kumar ⚡
@@ -1802,7 +1744,7 @@
       </div>
     </div>
 
-    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल -->
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (✓ मार्क सिर्फ सिलेक्टेड पर दिखेगा) -->
     <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
       <div class="nd-sheet-content">
         <div class="nd-sheet-header">
@@ -1827,7 +1769,7 @@
     </div>
 
     <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध) -->
-    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 9999999; align-items: center; justify-content: center; padding: 16px;">
+    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 99999999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
         
         <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
@@ -1980,6 +1922,29 @@
 
   <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
+    /* 🌟 डार्क / लाइट मोड स्विच लॉजिक (100% वर्किंग) */
+    function initThemeSystem() {
+      const themeSwitch = document.getElementById("themeSwitch");
+      const currentTheme = localStorage.getItem("nd_app_theme") || "dark";
+      
+      if (themeSwitch) {
+        themeSwitch.checked = (currentTheme === "light");
+        themeSwitch.onchange = function() {
+          if (this.checked) {
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.classList.add("light-mode");
+            localStorage.setItem("nd_app_theme", "light");
+            showToast("लाइट मोड सक्रिय हुआ! ☀️", "☀️");
+          } else {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.classList.remove("light-mode");
+            localStorage.setItem("nd_app_theme", "dark");
+            showToast("डार्क मोड सक्रिय हुआ! 🌙", "🌙");
+          }
+        };
+      }
+    }
+
     /* 🌟 कस्टम फ्लोटिंग टोस्ट */
     let toastTimer = null;
     function showToast(msg, icon = '✅') {
@@ -2004,6 +1969,8 @@
 
     /* 🌟 स्प्लैश स्क्रीन टाइमर */
     document.addEventListener("DOMContentLoaded", () => {
+      initThemeSystem();
+
       const splash = document.getElementById("nischaySplashOverlay");
       const alreadySeen = sessionStorage.getItem("nd_splash_seen");
 
@@ -2140,7 +2107,6 @@
       renderDynamicQuestion(currentQIndex);
     }
 
-    /* 🌟 4 सेकंड में फास्ट रोटेशन (4000ms) */
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
       autoRotateTimer = setInterval(() => {
@@ -2188,7 +2154,7 @@
       }
     }
 
-    /* 🌟 कस्टम क्लास बॉटम-शीट */
+    /* 🌟 कस्टम क्लास बॉटम-शीट (टिक मार्क फिक्स) */
     function openCustomClassSheet() {
       const backdrop = document.getElementById('ndClassSheetBackdrop');
       if (backdrop) {
@@ -2212,12 +2178,16 @@
       }
     }
 
+    // 🎯 फिक्स: केवल चयनित क्लास पर ✓ दिखेगा और वही नीला होगा
     function highlightSelectedClassInSheet() {
       ['10th', '11th', '12th'].forEach(c => {
         const el = document.getElementById(`optClass${c}`);
         if (el) {
-          if (c === activeClass) el.classList.add('selected');
-          else el.classList.remove('selected');
+          if (c === activeClass) {
+            el.classList.add('selected');
+          } else {
+            el.classList.remove('selected');
+          }
         }
       });
     }
@@ -2262,7 +2232,6 @@
       if (guestBadge) guestBadge.textContent = `Class ${cleanClass}`;
       if (profText) profText.textContent = `Class ${cleanClass}`;
 
-      // सिर्फ़ चुनी गई कक्षा का सेक्शन दिखाएँ
       const sec10 = document.getElementById('sectionClass10');
       const sec11 = document.getElementById('sectionClass11');
       const sec12 = document.getElementById('sectionClass12');
@@ -2271,12 +2240,11 @@
       if (sec11) sec11.style.display = (cleanClass === "11th") ? "block" : "none";
       if (sec12) sec12.style.display = (cleanClass === "12th") ? "block" : "none";
 
-      // उस कक्षा के 10 सवाल तुरंत लोड करें
       renderDynamicQuestion(0);
       startQuestionRotation();
     }
 
-    /* 🌟 लॉगिन स्थिति सिंक (बिना लॉगिन के लॉगआउट बटन नहीं दिखेगा) */
+    /* 🌟 लॉगिन स्थिति सिंक (बिना लॉगिन के लॉगआउट व प्रोफाइल बटन नहीं दिखेगा) */
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -2530,7 +2498,6 @@
             canvas.height = h;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, w, h);
-
             resolve(canvas.toDataURL('image/jpeg', 0.72));
           };
           img.onerror = reject;
