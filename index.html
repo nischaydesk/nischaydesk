@@ -56,7 +56,6 @@
   <link rel="apple-touch-icon" href="logo.png">
 
   <script>
-    // 🌟 डिफ़ॉल्ट रूप से लाइट मोड सेट करना
     const savedTheme = localStorage.getItem("nd_app_theme");
     if (!savedTheme) {
       localStorage.setItem("nd_app_theme", "light");
@@ -122,11 +121,12 @@
     body {
       background-color: var(--bg-page);
       color: var(--text-main);
-      padding-bottom: 74px;
+      padding-bottom: 70px;
       overflow-x: hidden !important;
       width: 100% !important;
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
       transition: background-color 0.25s ease, color 0.25s ease;
+      margin: 0;
     }
 
     /* 🌟 स्प्लैश स्क्रीन */
@@ -752,7 +752,7 @@
       display: inline-block !important;
     }
 
-    /* 🌟 साइड ड्रॉअर */
+    /* 🌟 साइड ड्रॉअर फिक्स */
     .drawer-scrim {
       display: none;
       position: fixed;
@@ -1147,7 +1147,9 @@
       transform: translateX(22px);
     }
 
-    /* 🌟 100% पक्का फ़ूटर स्टाइल (ओवरलैप और फोटो साइज़ फिक्स) */
+    /* ==========================================================================
+       🌟 100% पक्का फ़ूटर स्टाइल (फोटो साइज व ओवरलैप फिक्स)
+       ========================================================================== */
     .khan-full-footer {
       background-color: #0b1a30 !important;
       color: #ffffff !important;
@@ -1158,95 +1160,66 @@
       position: relative !important;
       z-index: 10 !important;
     }
-    html.light-mode .khan-full-footer,
-    html[data-theme="light"] .khan-full-footer {
-      background-color: #0b1a30 !important;
-    }
     .footer-inner-khan {
       max-width: 1200px !important;
       margin: 0 auto !important;
       width: 100% !important;
     }
-    .footer-mission-lead {
-      font-size: 1.05rem !important;
-      font-weight: 700 !important;
-      line-height: 1.6 !important;
-      color: #cbd5e1 !important;
-      margin-bottom: 14px !important;
-    }
-    .footer-sub-lead {
-      font-size: 0.84rem !important;
-      color: #94a3b8 !important;
-      line-height: 1.6 !important;
-      margin-bottom: 24px !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-      padding-bottom: 20px !important;
-    }
-    .footer-sub-lead a {
-      color: #38bdf8 !important;
-      font-weight: 700 !important;
-      text-decoration: underline !important;
-    }
     .footer-columns-grid {
       display: grid !important;
-      grid-template-columns: 1fr 1.3fr !important;
-      gap: 16px !important;
-      margin-bottom: 30px !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 20px !important;
+      margin-bottom: 26px !important;
     }
     .footer-column-title {
-      font-size: 0.84rem !important;
+      font-size: 0.95rem !important;
       font-weight: 800 !important;
       color: #ffffff !important;
-      margin-bottom: 12px !important;
-      text-transform: uppercase !important;
+      margin-bottom: 14px !important;
       letter-spacing: 0.5px !important;
     }
     .footer-ul-links {
       list-style: none !important;
       display: flex !important;
       flex-direction: column !important;
-      gap: 9px !important;
+      gap: 10px !important;
       padding: 0 !important;
       margin: 0 !important;
     }
-    .footer-ul-links li {
-      margin: 0 !important;
-      padding: 0 !important;
-    }
+    .footer-ul-links li { margin: 0 !important; padding: 0 !important; }
     .footer-ul-links a {
       color: #94a3b8 !important;
       text-decoration: none !important;
-      font-size: 0.82rem !important;
-      font-weight: 500 !important;
+      font-size: 0.85rem !important;
+      font-weight: 600 !important;
       transition: color 0.2s !important;
-      display: inline-block !important;
     }
-    .footer-ul-links a:hover {
-      color: #38bdf8 !important;
-    }
+    .footer-ul-links a:hover { color: #38bdf8 !important; }
 
+    /* 🎯 फ़ाउंडर कार्ड (फोटो साइज बिल्कुल फिक्स 48px) */
     .founder-pro-strip {
-      background: rgba(255, 255, 255, 0.04) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 14px !important;
-      padding: 14px !important;
+      background: rgba(15, 23, 42, 0.85) !important;
+      border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
+      border-radius: 16px !important;
+      padding: 16px !important;
       display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      flex-wrap: wrap !important;
-      gap: 12px !important;
-      margin-bottom: 20px !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      margin-bottom: 24px !important;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
     }
     .founder-info-left {
       display: flex !important;
       align-items: center !important;
-      gap: 12px !important;
+      gap: 14px !important;
     }
     .founder-avatar-pic {
-      width: 46px !important;
-      height: 46px !important;
-      max-width: 46px !important;
-      max-height: 46px !important;
+      width: 48px !important;
+      height: 48px !important;
+      min-width: 48px !important;
+      min-height: 48px !important;
+      max-width: 48px !important;
+      max-height: 48px !important;
       border-radius: 50% !important;
       object-fit: cover !important;
       border: 2px solid #38bdf8 !important;
@@ -1254,14 +1227,14 @@
       flex-shrink: 0 !important;
     }
     .founder-meta-text h5 {
-      font-size: 0.9rem !important;
+      font-size: 1rem !important;
       font-weight: 800 !important;
       color: #ffffff !important;
-      margin: 0 !important;
+      margin: 0 0 2px 0 !important;
     }
     .founder-meta-text p {
-      font-size: 0.72rem !important;
-      color: #38bdf8 !important;
+      font-size: 0.78rem !important;
+      color: #94a3b8 !important;
       font-weight: 600 !important;
       margin: 0 !important;
     }
@@ -1269,22 +1242,84 @@
       display: inline-flex !important;
       align-items: center !important;
       gap: 6px !important;
-      font-size: 0.78rem !important;
+      font-size: 0.82rem !important;
       font-weight: 700 !important;
       color: #38bdf8 !important;
       text-decoration: none !important;
       background: rgba(56, 189, 248, 0.12) !important;
       border: 1px solid rgba(56, 189, 248, 0.3) !important;
-      padding: 6px 14px !important;
-      border-radius: 8px !important;
+      padding: 8px 16px !important;
+      border-radius: 10px !important;
+      width: fit-content !important;
     }
     .footer-bottom-statement {
-      font-size: 0.74rem !important;
+      font-size: 0.75rem !important;
       color: #64748b !important;
       text-align: center !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
-      padding-top: 18px !important;
-      line-height: 1.5 !important;
+      line-height: 1.6 !important;
+      margin-top: 10px !important;
+    }
+
+    /* ==========================================================================
+       📱 नीचे का फ़िक्स ऐप नेविगेशन डॉक (App Style Bottom Dock)
+       ========================================================================== */
+    .mobile-bottom-dock {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: 60px !important;
+      background: #ffffff !important;
+      border-top: 1.5px solid #e2e8f0 !important;
+      display: flex !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      z-index: 9999999 !important;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    html.dark-mode .mobile-bottom-dock,
+    html[data-theme="dark"] .mobile-bottom-dock {
+      background: #071120 !important;
+      border-top-color: rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4) !important;
+    }
+    .dock-link-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-decoration: none !important;
+      color: #64748b !important;
+      flex: 1 !important;
+      height: 100% !important;
+      gap: 3px !important;
+      border: none !important;
+      outline: none !important;
+    }
+    .dock-link-item.active {
+      color: #0284c7 !important;
+    }
+    .dock-link-item .dock-icon-svg {
+      font-size: 1.45rem !important;
+      line-height: 1 !important;
+      display: block !important;
+    }
+    .dock-link-item .dock-label-text {
+      font-size: 0.74rem !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+      text-decoration: none !important;
+      display: block !important;
+    }
+    .mobile-bottom-dock a, 
+    .mobile-bottom-dock a:hover, 
+    .mobile-bottom-dock a:focus, 
+    .mobile-bottom-dock a:visited {
+      text-decoration: none !important;
+      border-bottom: none !important;
     }
   </style>
 </head>
@@ -1374,6 +1409,7 @@
       <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()">&times;</button>
     </div>
 
+    <!-- जब यूज़र लॉग इन हो सिर्फ़ तभी ड्रॉअर प्रोफ़ाइल दिखेगी -->
     <div class="drawer-user-card" id="drawerUserCard" onclick="closeDrawerUnified(); openProfileModal();" style="display: none; padding: 12px 14px; margin: 10px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; cursor: pointer;">
       <p class="drawer-user-prompt" style="margin: 0; color: #38bdf8; font-weight: 800; font-size: 0.85rem;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
@@ -1890,7 +1926,7 @@
       </div>
     </div>
 
-    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (✓ मार्क सिर्फ सिलेक्टेड पर दिखेगा) -->
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल -->
     <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
       <div class="nd-sheet-content">
         <div class="nd-sheet-header">
@@ -1914,7 +1950,7 @@
       </div>
     </div>
 
-    <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध) -->
+    <!-- 🌟 प्रोफ़ाइल मोडल -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 99999999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
 
@@ -1947,7 +1983,7 @@
       </div>
     </div>
 
-    <!-- 🌟 वेलकम लॉगिन मोडल (Google लॉगिन पर क्लिक करने पर ही खुलेगा) -->
+    <!-- 🌟 वेलकम लॉगिन मोडल -->
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
@@ -2023,6 +2059,7 @@
         </div>
       </div>
 
+      <!-- फ़ाउंडर कार्ड (फोटो साइज बिल्कुल फिक्स 46px) -->
       <div class="founder-pro-strip">
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
@@ -2046,29 +2083,28 @@
     </div>
   </footer>
 
-  <!-- 5. मोबाइल बॉटम डॉक -->
+  <!-- 5. 📱 मोबाइल बॉटम ऐप डॉक (100% ऐप स्टाइल - नो अंडरलाइन) -->
   <nav class="mobile-bottom-dock">
     <a href="index.html" class="dock-link-item active">
       <span class="dock-icon-svg">🏠</span>
-      <span>होम</span>
+      <span class="dock-label-text">होम</span>
     </a>
     <a href="bseb-simulator.html" class="dock-link-item">
       <span class="dock-icon-svg">🏛️</span>
-      <span>एग्जाम</span>
+      <span class="dock-label-text">एग्जाम</span>
     </a>
     <a href="notes.html" class="dock-link-item">
       <span class="dock-icon-svg">📖</span>
-      <span>नोट्स</span>
+      <span class="dock-label-text">नोट्स</span>
     </a>
     <a href="bseb-result.html" class="dock-link-item">
       <span class="dock-icon-svg">📊</span>
-      <span>रिजल्ट</span>
+      <span class="dock-label-text">रिजल्ट</span>
     </a>
   </nav>
 
   <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
-    /* 🌟 डार्क / लाइट मोड स्विच लॉजिक */
     function initThemeSystem() {
       const themeSwitch = document.getElementById("themeSwitch");
       const currentTheme = localStorage.getItem("nd_app_theme") || "light";
@@ -2091,7 +2127,6 @@
       }
     }
 
-    /* 🌟 कस्टम फ्लोटिंग टोस्ट */
     let toastTimer = null;
     function showToast(msg, icon = '✅') {
       const toast = document.getElementById('ndToast');
@@ -2113,7 +2148,6 @@
       showToast(msg, 'ℹ️');
     };
 
-    /* 🌟 स्प्लैश स्क्रीन टाइमर */
     document.addEventListener("DOMContentLoaded", () => {
       initThemeSystem();
 
@@ -2135,7 +2169,6 @@
       }
     });
 
-    /* ================= 🌟 कक्षा अनुसार 10-10 सवाल (Class-Wise 10 Questions Bank) ================= */
     const classQuestionsBank = {
       "10th": [
         { question: "प्रकाश के परावर्तन के कितने नियम होते हैं?", options: ["1", "2", "3", "4"], correctIndex: 1, note: "परावर्तन के 2 नियम हैं।" },
@@ -2253,7 +2286,6 @@
       renderDynamicQuestion(currentQIndex);
     }
 
-    /* 🌟 4 सेकंड में फास्ट रोटेशन */
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
       autoRotateTimer = setInterval(() => {
@@ -2261,7 +2293,6 @@
       }, 4000);
     }
 
-    /* 🌟 साइड ड्रॉअर नियंत्रण */
     function openDrawerUnified() {
       const sideDrawerEl = document.getElementById('sideDrawer');
       const scrimEl = document.getElementById('drawerScrim');
@@ -2301,7 +2332,6 @@
       }
     }
 
-    /* 🌟 कस्टम क्लास बॉटम-शीट */
     function openCustomClassSheet() {
       const backdrop = document.getElementById('ndClassSheetBackdrop');
       if (backdrop) {
@@ -2325,7 +2355,6 @@
       }
     }
 
-    // केवल चयनित क्लास पर ✓ दिखेगा
     function highlightSelectedClassInSheet() {
       ['10th', '11th', '12th'].forEach(c => {
         const el = document.getElementById(`optClass${c}`);
@@ -2355,7 +2384,6 @@
       showToast(`कक्षा Class ${chosenClass} सेट कर दी गई है!`, '🎯');
     }
 
-    /* 🌟 क्लास स्विचिंग और यूआई सिंक */
     function applyStudentClass(selectedClass) {
       let cleanClass = "10th";
       if (String(selectedClass).includes("11")) cleanClass = "11th";
@@ -2391,7 +2419,6 @@
       startQuestionRotation();
     }
 
-    /* 🌟 लॉगिन स्थिति सिंक */
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -2435,7 +2462,6 @@
       }
     }
 
-    /* 🌟 लॉगिन मोडल */
     function openWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
       if (modal) modal.classList.add('active');
@@ -2547,7 +2573,6 @@
       }, 700);
     }
 
-    /* 🌟 इमेज To PDF इंजन */
     function triggerFastPdfConverter() {
       const input = document.getElementById('heavyPdfFileInput');
       if (input) input.click();
