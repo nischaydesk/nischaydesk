@@ -729,37 +729,113 @@
       color: #38bdf8;
     }
 
-    /* 🌟 साइड ड्रॉअर का प्रीमियम एनिमेटेड लुक */
+    /* 🌟 साइड ड्रॉअर फिक्स (100% वर्किंग और प्रीमियम लुक) */
+    .drawer-scrim {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 9999998 !important;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-scrim.active {
+      display: block !important;
+      opacity: 1 !important;
+    }
+
     .side-drawer {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      bottom: 0 !important;
+      width: 290px !important;
+      max-width: 85vw !important;
+      height: 100vh !important;
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
-      display: flex;
-      flex-direction: column;
-      background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.15) 0%, rgba(7, 17, 32, 0.98) 100%) !important;
-      backdrop-filter: blur(14px);
-      border-right: 1.5px solid rgba(56, 189, 248, 0.25) !important;
-      box-shadow: 10px 0 35px rgba(0, 0, 0, 0.6) !important;
-      transform: translateX(-100%);
+      display: flex !important;
+      flex-direction: column !important;
+      background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.2) 0%, rgba(7, 17, 32, 0.98) 100%) !important;
+      backdrop-filter: blur(18px) !important;
+      border-right: 1.5px solid rgba(56, 189, 248, 0.35) !important;
+      box-shadow: 15px 0 40px rgba(0, 0, 0, 0.7) !important;
+      transform: translateX(-100%) !important;
       transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      z-index: 99999999 !important;
+      visibility: hidden;
     }
     .side-drawer.active {
       transform: translateX(0) !important;
+      visibility: visible !important;
+    }
+    .drawer-header {
+      padding: 18px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .drawer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .drawer-close-btn {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .drawer-nav-list {
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1 0 auto;
     }
     .drawer-nav-item {
-      transition: transform 0.15s ease, background-color 0.2s ease !important;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
     }
+    .drawer-nav-item:hover,
     .drawer-nav-item:active {
-      transform: scale(0.97);
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      transform: translateX(4px);
+    }
+    .drawer-nav-item.active {
+      background: #0284c7;
+      color: #fff;
     }
 
-    /* 🌟 PDF इंजन मोडल (डिफ़ॉल्ट रूप से हमेशा छिपा रहेगा) */
+    /* 🌟 PDF इंजन मोडल (छिपा रहेगा) */
     #heavyPdfModal {
       display: none !important;
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.88);
       backdrop-filter: blur(8px);
-      z-index: 99999999;
+      z-index: 999999999;
       justify-content: center;
       align-items: center;
       padding: 16px;
@@ -779,7 +855,7 @@
       color: #ffffff;
     }
 
-    /* 🌟 प्रोफ़ेशनल फ्लोटिंग ग्लास टोस्ट */
+    /* 🌟 फ्लोटिंग टोस्ट */
     .nd-toast-container {
       position: fixed;
       bottom: 74px;
@@ -795,7 +871,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 999999999;
+      z-index: 9999999999;
       opacity: 0;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       max-width: 90%;
@@ -816,7 +892,7 @@
       inset: 0;
       background: rgba(4, 9, 20, 0.82);
       backdrop-filter: blur(12px);
-      z-index: 99999999;
+      z-index: 999999999;
       justify-content: center;
       align-items: center;
       padding: 18px;
@@ -1202,20 +1278,20 @@
     </nav>
   </header>
 
-  <!-- 2. साइड ड्रॉअर -->
-  <div class="drawer-scrim" id="drawerScrim"></div>
+  <!-- 2. साइड ड्रॉअर (100% फिक्स और एनिमेटेड) -->
+  <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
       <div class="drawer-brand">
         <div class="brand-badge-icon sm">N</div>
         <span>NischayDesk</span>
       </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+      <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()">&times;</button>
     </div>
 
     <!-- जब यूज़र लॉग इन हो सिर्फ़ तभी ड्रॉअर प्रोफ़ाइल दिखेगी -->
-    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="display: none;">
-      <p class="drawer-user-prompt">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="display: none; padding: 12px 14px; margin: 10px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; cursor: pointer;">
+      <p class="drawer-user-prompt" style="margin: 0; color: #38bdf8; font-weight: 800; font-size: 0.85rem;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
 
     <nav class="drawer-nav-list">
@@ -1265,8 +1341,8 @@
         <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
       </a>
 
-      <div class="drawer-theme-row">
-        <span class="theme-label">🌙 डार्क / लाइट मोड</span>
+      <div class="drawer-theme-row" style="padding: 12px 14px; margin-top: 10px;">
+        <span class="theme-label" style="font-size: 0.85rem; font-weight: 700;">🌙 डार्क / लाइट मोड</span>
         <label class="switch">
           <input type="checkbox" id="themeSwitch">
           <span class="slider round"></span>
@@ -1708,7 +1784,7 @@
 
     <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
 
-    <!-- ⚡ PDF जनरेटर मोडल (डिफ़ॉल्ट रूप से हमेशा छिपा रहेगा) -->
+    <!-- ⚡ PDF जनरेटर मोडल -->
     <div id="heavyPdfModal">
       <div class="heavy-pdf-box">
         <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5));">🖼️ ➔ 📄</div>
@@ -1751,7 +1827,7 @@
     </div>
 
     <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध) -->
-    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 9999999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
         
         <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
@@ -2073,25 +2149,30 @@
     }
 
     /* 🌟 साइड ड्रॉअर नियंत्रण */
-    const menuBtn = document.getElementById('mobileMenuBtn');
-    const sideDrawerEl = document.getElementById('sideDrawer');
-    const scrimEl = document.getElementById('drawerScrim');
-    const closeDrawerBtn = document.getElementById('drawerCloseBtn');
-
-    if (menuBtn) {
-      menuBtn.onclick = function() {
-        if (sideDrawerEl) sideDrawerEl.classList.add('active');
-        if (scrimEl) scrimEl.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      };
+    function openDrawerUnified() {
+      const sideDrawerEl = document.getElementById('sideDrawer');
+      const scrimEl = document.getElementById('drawerScrim');
+      if (sideDrawerEl) sideDrawerEl.classList.add('active');
+      if (scrimEl) scrimEl.classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
+
     function closeDrawerUnified() {
+      const sideDrawerEl = document.getElementById('sideDrawer');
+      const scrimEl = document.getElementById('drawerScrim');
       if (sideDrawerEl) sideDrawerEl.classList.remove('active');
       if (scrimEl) scrimEl.classList.remove('active');
       document.body.style.overflow = '';
     }
-    if (closeDrawerBtn) closeDrawerBtn.onclick = closeDrawerUnified;
-    if (scrimEl) scrimEl.onclick = closeDrawerUnified;
+
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    if (menuBtn) {
+      menuBtn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDrawerUnified();
+      };
+    }
 
     function shareNischayDeskWebsite() {
       const shareData = {
@@ -2195,7 +2276,7 @@
       startQuestionRotation();
     }
 
-    /* 🌟 लॉगिन स्थिति सिंक (जब तक लॉगिन न हो, लॉगआउट बटन नहीं दिखेगा) */
+    /* 🌟 लॉगिन स्थिति सिंक (बिना लॉगिन के लॉगआउट बटन नहीं दिखेगा) */
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -2210,7 +2291,6 @@
       applyStudentClass(savedClass);
 
       if (user) {
-        // यूज़र लॉग इन है: प्रोफ़ाइल और लॉगआउट बटन एक्टिव
         if (guestBar) guestBar.style.display = 'none';
         if (authBtn) authBtn.style.display = 'none';
         if (profileWidget) profileWidget.style.display = 'flex';
@@ -2232,7 +2312,6 @@
           }).catch(e => console.log(e));
         }
       } else {
-        // यूज़र लॉग इन नहीं है: प्रोफ़ाइल व लॉगआउट पूर्णतः बंद
         if (authBtn) authBtn.style.display = 'inline-flex';
         if (profileWidget) profileWidget.style.display = 'none';
         if (welcomeCard) welcomeCard.style.display = 'none';
@@ -2241,7 +2320,7 @@
       }
     }
 
-    /* 🌟 लॉगिन मोडल (सिर्फ़ Google लॉगिन बटन दबाने पर खुलेगा) */
+    /* 🌟 लॉगिन मोडल */
     function openWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
       if (modal) modal.classList.add('active');
@@ -2451,6 +2530,7 @@
             canvas.height = h;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, w, h);
+
             resolve(canvas.toDataURL('image/jpeg', 0.72));
           };
           img.onerror = reject;
@@ -2464,6 +2544,5 @@
 
   <!-- External Script Dependencies -->
   <script src="bseb-engine.js"></script>
-  <script src="main.js"></script>
 </body>
 </html>
