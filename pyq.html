@@ -15,73 +15,291 @@
   <link rel="stylesheet" href="dashboard.css">
 
   <style>
+    :root {
+      --brand-primary: #0284c7;
+      --brand-accent: #38bdf8;
+      --card-bg: #0c1633;
+      --card-border: #1e3a8a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --input-bg: #13224a;
+      --shadow-color: rgba(0, 0, 0, 0.25);
+    }
+
+    /* ☀️ लाइट मोड के लिए बेहतरीन आधुनिक पैलेट */
+    html.light-mode,
+    html[data-theme="light"] {
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --input-bg: #f8fafc;
+      --shadow-color: rgba(15, 23, 42, 0.08);
+    }
+
     .pyq-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
-    .hero-banner { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: #fff; padding: 24px; border-radius: 14px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: var(--surface-card, #0c1633); padding: 14px; border-radius: 10px; border: 1.5px solid var(--border-strong, #1e3a8a); }
-    .filter-bar select, .filter-bar input { padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border-strong, #1e3a8a); font-size: 0.92rem; outline: none; background: var(--surface-elevated, #13224a); color: var(--text-pure, #ffffff); }
+
+    /* 🌟 प्रीमियम हीरो बैनर */
+    .hero-banner { 
+      background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%); 
+      color: #fff; 
+      padding: 26px 22px; 
+      border-radius: 16px; 
+      margin-bottom: 22px; 
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.3);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInDown 0.4s ease-out;
+    }
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 140px;
+      height: 140px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-banner h1 { margin: 0 0 8px; font-size: 1.65rem; font-weight: 800; letter-spacing: -0.3px; }
+    .hero-banner p { margin: 0; opacity: 0.92; font-size: 0.95rem; line-height: 1.5; }
+
+    /* 🔍 फ़िल्टर बार */
+    .filter-bar { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 12px; 
+      margin-bottom: 24px; 
+      background: var(--card-bg); 
+      padding: 16px; 
+      border-radius: 14px; 
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 4px 16px var(--shadow-color);
+      transition: all 0.3s ease;
+      animation: fadeIn 0.4s ease-out;
+    }
+    .filter-bar select, 
+    .filter-bar input { 
+      padding: 11px 14px; 
+      border-radius: 10px; 
+      border: 1.5px solid var(--card-border); 
+      font-size: 0.92rem; 
+      outline: none; 
+      background: var(--input-bg); 
+      color: var(--text-main);
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .filter-bar select:focus, 
+    .filter-bar input:focus {
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    .filter-bar select option {
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
     .filter-bar input { flex: 1; min-width: 200px; }
-    .pyq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-    .pyq-card { background: var(--surface-card, #0c1633); border-radius: 12px; padding: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.06); border: 1.5px solid var(--border-strong, #1e3a8a); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
-    .pyq-card:hover { transform: translateY(-3px); border-color: var(--brand-accent); }
-    .badge-year { background: rgba(56, 189, 248, 0.15); color: #0284c7; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; display: inline-block; }
-    .badge-shift { background: rgba(255, 255, 255, 0.08); color: var(--text-secondary, #94a3b8); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; display: inline-block; margin-left: 6px; border: 1px solid var(--border-subtle, rgba(56, 189, 248, 0.18)); }
-    .pyq-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--text-pure, #ffffff); }
-    .btn-group { display: flex; gap: 8px; margin-top: 14px; }
-    .btn-view { flex: 1; background: #0284c7; color: white !important; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none; }
-    .btn-down { background: var(--surface-elevated, #13224a); color: var(--text-secondary, #94a3b8) !important; border: 1px solid var(--border-strong, #1e3a8a); padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-    /* ☀️ Light Mode Fixes */
-    html.light-mode .filter-bar,
-    html[data-theme="light"] .filter-bar,
-    html.light-mode .pyq-card,
-    html[data-theme="light"] .pyq-card {
-      background: #ffffff !important;
-      border: 1.5px solid #cbd5e1 !important;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
-    }
-
-    html.light-mode .filter-bar select,
-    html[data-theme="light"] .filter-bar select,
-    html.light-mode .filter-bar input,
-    html[data-theme="light"] .filter-bar input {
-      background: #ffffff !important;
-      color: #0f172a !important;
-      border: 1.5px solid #cbd5e1 !important;
-    }
-
-    html.light-mode .filter-bar select option,
-    html[data-theme="light"] .filter-bar select option {
-      background: #ffffff !important;
-      color: #0f172a !important;
-    }
-
-    html.light-mode .pyq-card h3,
-    html[data-theme="light"] .pyq-card h3 {
-      color: #0f172a !important;
-    }
-
-    html.light-mode .badge-shift,
-    html[data-theme="light"] .badge-shift {
-      background: #f1f5f9 !important;
-      color: #475569 !important;
-      border-color: #cbd5e1 !important;
-    }
-
-    html.light-mode .btn-down,
-    html[data-theme="light"] .btn-down {
-      background: #f1f5f9 !important;
-      border-color: #cbd5e1 !important;
-      color: #334155 !important;
-    }
+    /* 🗂️ ग्रिड और कार्ड्स */
+    .pyq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
     
-    /* PDF Modal */
-    .pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
-    .pdf-modal.active { display: flex; }
-    .modal-box { width: 95%; max-width: 900px; height: 90%; background: var(--bg-surface, #fff); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; border: 1.5px solid var(--border-strong, #334155); }
-    .modal-header { padding: 12px 16px; background: #0f172a; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    .modal-close { background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; line-height: 1; }
-    .modal-body { flex: 1; background: #525659; }
+    .pyq-card { 
+      background: var(--card-bg); 
+      border-radius: 14px; 
+      padding: 18px; 
+      box-shadow: 0 4px 14px var(--shadow-color); 
+      border: 1.5px solid var(--card-border); 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+      animation: cardPopUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+    .pyq-card:hover { 
+      transform: translateY(-4px); 
+      border-color: var(--brand-accent);
+      box-shadow: 0 12px 24px -6px rgba(2, 132, 199, 0.2);
+    }
+
+    /* 🏷️ बैज */
+    .badge-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .badge-year { 
+      background: rgba(2, 132, 199, 0.12); 
+      color: var(--brand-primary); 
+      padding: 4px 10px; 
+      border-radius: 6px; 
+      font-weight: 800; 
+      font-size: 0.8rem; 
+      border: 1px solid rgba(2, 132, 199, 0.25);
+    }
+    .badge-shift { 
+      background: rgba(148, 163, 184, 0.12); 
+      color: var(--text-muted); 
+      padding: 4px 10px; 
+      border-radius: 6px; 
+      font-size: 0.8rem; 
+      font-weight: 600;
+      border: 1px solid rgba(148, 163, 184, 0.25); 
+    }
+
+    .pyq-card h3 { 
+      font-size: 1.15rem; 
+      margin: 10px 0 14px; 
+      color: var(--text-main); 
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* 🔘 एक्शन बटन्स (3-बटन आधुनिक लेआउट) */
+    .btn-group { display: flex; gap: 6px; margin-top: auto; flex-wrap: wrap; }
+    
+    .btn-action {
+      flex: 1;
+      min-width: 78px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-action:active { transform: scale(0.96); }
+
+    .btn-view-sol { 
+      background: #0284c7; 
+      color: #ffffff !important; 
+    }
+    .btn-view-sol:hover { background: #0369a1; }
+
+    .btn-preview { 
+      background: rgba(56, 189, 248, 0.15); 
+      color: #0284c7 !important; 
+      border: 1px solid rgba(56, 189, 248, 0.35); 
+    }
+    html.dark-mode .btn-preview,
+    html:not(.light-mode) .btn-preview {
+      color: #38bdf8 !important;
+    }
+    .btn-preview:hover { background: rgba(56, 189, 248, 0.25); }
+
+    .btn-down { 
+      background: var(--input-bg); 
+      color: var(--text-muted) !important; 
+      border: 1px solid var(--card-border); 
+    }
+    .btn-down:hover { 
+      background: rgba(2, 132, 199, 0.1);
+      color: var(--brand-primary) !important;
+      border-color: var(--brand-primary);
+    }
+
+    /* 🎬 PDF मोडल और एनीमेशन */
+    .pdf-modal { 
+      display: none; 
+      position: fixed; 
+      inset: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0, 0, 0, 0.85); 
+      backdrop-filter: blur(5px);
+      z-index: 99999; 
+      justify-content: center; 
+      align-items: center; 
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .pdf-modal.active { 
+      display: flex; 
+      opacity: 1;
+    }
+
+    .modal-box { 
+      width: 95%; 
+      max-width: 960px; 
+      height: 90%; 
+      background: #0f172a; 
+      border-radius: 14px; 
+      display: flex; 
+      flex-direction: column; 
+      overflow: hidden; 
+      border: 1.5px solid #334155; 
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pdf-modal.active .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header { 
+      padding: 12px 18px; 
+      background: #091124; 
+      color: #fff; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .modal-header-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-fullscreen {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .modal-close { 
+      background: none; 
+      border: none; 
+      color: #94a3b8; 
+      font-size: 1.6rem; 
+      cursor: pointer; 
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: #ffffff; }
+    
+    .modal-body { flex: 1; background: #525659; position: relative; }
     .modal-body iframe { width: 100%; height: 100%; border: none; }
+
+    /* इन-मोडल लोडर */
+    .modal-loader {
+      position: absolute;
+      inset: 0;
+      background: #0c1633;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-accent);
+      font-weight: 700;
+      gap: 12px;
+      z-index: 10;
+    }
+    .modal-loader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3.5px solid rgba(56, 189, 248, 0.2);
+      border-top-color: var(--brand-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cardPopUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 600px) {
       .modal-box {
@@ -90,6 +308,8 @@
         border-radius: 0 !important;
         border: none !important;
       }
+      .btn-action { min-width: calc(50% - 4px); }
+      .btn-action:last-child { flex: 1 1 100%; }
     }
   </style>
 </head>
@@ -191,8 +411,8 @@
 
   <div class="pyq-container">
     <div class="hero-banner">
-      <h1 style="margin:0 0 8px; font-size: 1.6rem; font-weight: 800;">📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020–2026)</h1>
-      <p style="margin:0; opacity:0.9; font-size:0.95rem;">2020 से 2026 तक के वास्तविक परीक्षा प्रश्न पत्र। दोनों पालियों (Shift 1 & 2) के संपूर्ण हल।</p>
+      <h1>📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020–2026)</h1>
+      <p>2020 से 2026 तक के वास्तविक परीक्षा प्रश्न पत्र। दोनों पालियों (Shift 1 & 2) के संपूर्ण हल।</p>
     </div>
 
     <!-- फिल्टर्स -->
@@ -233,12 +453,19 @@
 
   <!-- PDF देखने का मोडल -->
   <div class="pdf-modal" id="pdfModal">
-    <div class="modal-box">
+    <div class="modal-box" id="modalBox">
       <div class="modal-header">
-        <span id="modalDocTitle" style="font-weight:bold;">PDF Reader</span>
-        <button class="modal-close" onclick="closePdfModal()">&times;</button>
+        <span id="modalDocTitle" style="font-weight:bold; font-size: 0.95rem;">PDF Reader</span>
+        <div class="modal-header-actions">
+          <button class="btn-fullscreen" onclick="toggleModalFullscreen()">⛶ फ़ुलस्क्रीन</button>
+          <button class="modal-close" onclick="closePdfModal()">&times;</button>
+        </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modalBodyStage">
+        <div class="modal-loader" id="modalLoader">
+          <div class="modal-loader-spinner"></div>
+          <span>प्रश्न पत्र लोड हो रहा है...</span>
+        </div>
         <iframe id="pdfFrame" src=""></iframe>
       </div>
     </div>
@@ -252,13 +479,36 @@
     const subjectFilter = document.getElementById('subjectFilter');
     const shiftFilter = document.getElementById('shiftFilter');
     const searchInput = document.getElementById('searchInput');
+    const modalLoader = document.getElementById('modalLoader');
+    const pdfFrame = document.getElementById('pdfFrame');
 
-    // Google Drive Direct Download URL Formatter
+    // Google Drive URL se File ID nikalna
+    function extractDriveId(url) {
+      if (!url) return null;
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) return match[1];
+      const matchParam = url.match(/id=([a-zA-Z0-9_-]+)/);
+      return (matchParam && matchParam[1]) ? matchParam[1] : null;
+    }
+
+    // Direct Download URL Formatter (Bina Account Pop-up ke)
     function getDirectDownloadUrl(url) {
-      if (!url) return '';
-      const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-      if (fileIdMatch && fileIdMatch[1]) {
-        return `https://drive.usercontent.google.com/download?id=${fileIdMatch[1]}&export=download`;
+      const fileId = extractDriveId(url);
+      if (fileId) {
+        return `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+      }
+      return url;
+    }
+
+    // Google Docs Zoomable Preview URL Formatter
+    function getZoomablePreviewUrl(url) {
+      const fileId = extractDriveId(url);
+      if (fileId) {
+        const directFile = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+        return `https://docs.google.com/viewer?url=${encodeURIComponent(directFile)}&embedded=true`;
+      }
+      if (url && url.includes('drive.google.com/file/d/')) {
+        return url.replace(/\/view.*$/, '/preview');
       }
       return url;
     }
@@ -295,18 +545,25 @@
       });
 
       if (filtered.length === 0) {
-        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-secondary, #64748b);">कोई प्रश्न पत्र नहीं मिला!</div>`;
+        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-muted, #64748b);">कोई प्रश्न पत्र नहीं मिला!</div>`;
         return;
       }
 
-      filtered.forEach(item => {
+      filtered.forEach((item, index) => {
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
+        // 1. पढ़ें (In-App Reader Modal)
         const readBtnAction = hasPdf 
           ? `onclick="openPdfModal('${item.subject} (${item.year} - ${item.shift})', '${item.pdfUrl}')"`
           : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
 
+        // 2. प्रीव्यू (Full Page Preview in New Tab)
+        const previewBtnAction = hasPdf 
+          ? `onclick="openFullPreview('${item.pdfUrl}')"`
+          : `onclick="alert('प्रीव्यू जल्द उपलब्ध होगा!')"`;
+
+        // 3. डाउनलोड (Direct Download Link)
         const cleanDownloadUrl = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
         const downBtnAction = cleanDownloadUrl 
           ? `href="${cleanDownloadUrl}" target="_blank" download`
@@ -314,49 +571,72 @@
 
         const card = document.createElement('div');
         card.className = 'pyq-card';
+        card.style.animationDelay = `${index * 0.04}s`;
         card.innerHTML = `
           <div>
-            <div>
+            <div class="badge-wrap">
               <span class="badge-year">वर्ष ${item.year}</span>
               <span class="badge-shift">${item.shift}</span>
             </div>
             <h3>${item.subject}</h3>
           </div>
           <div class="btn-group">
-            <button class="btn-view" ${readBtnAction}>📖 पढ़ें</button>
-            <a class="btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
+            <button class="btn-action btn-view-sol" ${readBtnAction}>📖 पढ़ें</button>
+            <button class="btn-action btn-preview" ${previewBtnAction}>👁️ प्रीव्यू</button>
+            <a class="btn-action btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
           </div>
         `;
         pyqGrid.appendChild(card);
       });
     }
 
-    // Google Docs Viewer integration: हटाएगा Drive ऐप रीडायरेक्ट और देगा Zoom कंट्रोल्स
+    // Modal Viewer (Loader & Smooth open)
     function openPdfModal(title, url) {
       document.getElementById('modalDocTitle').innerText = title;
+      if (modalLoader) modalLoader.style.display = 'flex';
 
-      let fileId = '';
-      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        fileId = match[1];
-      }
+      pdfFrame.src = getZoomablePreviewUrl(url);
 
-      let finalUrl = url;
-      if (fileId) {
-        const directFile = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
-        finalUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(directFile)}&embedded=true`;
-      } else if (finalUrl.includes('drive.google.com/file/d/')) {
-        finalUrl = finalUrl.replace(/\/view.*$/, '/preview');
-      }
+      pdfFrame.onload = function() {
+        if (modalLoader) modalLoader.style.display = 'none';
+      };
 
-      document.getElementById('pdfFrame').src = finalUrl;
-      document.getElementById('pdfModal').classList.add('active');
+      const modal = document.getElementById('pdfModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // अलग नए टैब में पूरा प्रीव्यू खोलने के लिए
+    function openFullPreview(url) {
+      const viewerUrl = getZoomablePreviewUrl(url);
+      window.open(viewerUrl, '_blank');
     }
 
     function closePdfModal() {
-      document.getElementById('pdfModal').classList.remove('active');
-      document.getElementById('pdfFrame').src = '';
+      const modal = document.getElementById('pdfModal');
+      modal.classList.remove('active');
+      pdfFrame.src = '';
+      if (modalLoader) modalLoader.style.display = 'none';
+      document.body.style.overflow = '';
     }
+
+    function toggleModalFullscreen() {
+      const modalBox = document.getElementById('modalBox');
+      if (!document.fullscreenElement) {
+        if (modalBox.requestFullscreen) modalBox.requestFullscreen();
+        else if (modalBox.webkitRequestFullscreen) modalBox.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.getElementById('pdfModal').addEventListener('click', function(e) {
+      if (e.target === this) closePdfModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closePdfModal();
+    });
 
     yearFilter.addEventListener('change', renderPyq);
     subjectFilter.addEventListener('change', renderPyq);
