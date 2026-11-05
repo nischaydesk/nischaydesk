@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="hi" data-theme="dark">
+<html lang="hi" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>NischayDesk | निश्चय-डेस्क - Smart EdTech & Student Portal</title>
-  
+
   <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="uSCJGPNxrZ23LYmb3FsgLqdXYBZGGE1x8FDAyr-WSis" />
-  
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
   <script>
@@ -56,12 +56,19 @@
   <link rel="apple-touch-icon" href="logo.png">
 
   <script>
-    const savedTheme = localStorage.getItem("nd_app_theme") || "dark";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    if (savedTheme === "light") {
+    // 🌟 डिफ़ॉल्ट रूप से लाइट मोड सेट करना
+    const savedTheme = localStorage.getItem("nd_app_theme");
+    if (!savedTheme) {
+      localStorage.setItem("nd_app_theme", "light");
+      document.documentElement.setAttribute("data-theme", "light");
       document.documentElement.classList.add("light-mode");
     } else {
-      document.documentElement.classList.remove("light-mode");
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      if (savedTheme === "light") {
+        document.documentElement.classList.add("light-mode");
+      } else {
+        document.documentElement.classList.remove("light-mode");
+      }
     }
 
     if (sessionStorage.getItem("nd_splash_seen")) {
@@ -745,7 +752,7 @@
       display: inline-block !important;
     }
 
-    /* 🌟 साइड ड्रॉअर फिक्स */
+    /* 🌟 साइड ड्रॉअर */
     .drawer-scrim {
       display: none;
       position: fixed;
@@ -866,7 +873,7 @@
       color: #fff !important;
     }
 
-    /* 🌟 डेवलपर बैज (फिक्स मार्जिन व पैडिंग) */
+    /* 🌟 डेवलपर बैज */
     .drawer-footer-custom {
       margin-top: auto;
       padding: 20px 16px 40px;
@@ -1139,6 +1146,146 @@
     input:checked + .slider:before {
       transform: translateX(22px);
     }
+
+    /* 🌟 100% पक्का फ़ूटर स्टाइल (ओवरलैप और फोटो साइज़ फिक्स) */
+    .khan-full-footer {
+      background-color: #0b1a30 !important;
+      color: #ffffff !important;
+      padding: 38px 18px 30px !important;
+      margin-top: 40px !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      width: 100% !important;
+      position: relative !important;
+      z-index: 10 !important;
+    }
+    html.light-mode .khan-full-footer,
+    html[data-theme="light"] .khan-full-footer {
+      background-color: #0b1a30 !important;
+    }
+    .footer-inner-khan {
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+      width: 100% !important;
+    }
+    .footer-mission-lead {
+      font-size: 1.05rem !important;
+      font-weight: 700 !important;
+      line-height: 1.6 !important;
+      color: #cbd5e1 !important;
+      margin-bottom: 14px !important;
+    }
+    .footer-sub-lead {
+      font-size: 0.84rem !important;
+      color: #94a3b8 !important;
+      line-height: 1.6 !important;
+      margin-bottom: 24px !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      padding-bottom: 20px !important;
+    }
+    .footer-sub-lead a {
+      color: #38bdf8 !important;
+      font-weight: 700 !important;
+      text-decoration: underline !important;
+    }
+    .footer-columns-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1.3fr !important;
+      gap: 16px !important;
+      margin-bottom: 30px !important;
+    }
+    .footer-column-title {
+      font-size: 0.84rem !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      margin-bottom: 12px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+    }
+    .footer-ul-links {
+      list-style: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 9px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .footer-ul-links li {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .footer-ul-links a {
+      color: #94a3b8 !important;
+      text-decoration: none !important;
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      transition: color 0.2s !important;
+      display: inline-block !important;
+    }
+    .footer-ul-links a:hover {
+      color: #38bdf8 !important;
+    }
+
+    .founder-pro-strip {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 14px !important;
+      padding: 14px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-wrap: wrap !important;
+      gap: 12px !important;
+      margin-bottom: 20px !important;
+    }
+    .founder-info-left {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    .founder-avatar-pic {
+      width: 46px !important;
+      height: 46px !important;
+      max-width: 46px !important;
+      max-height: 46px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      border: 2px solid #38bdf8 !important;
+      display: block !important;
+      flex-shrink: 0 !important;
+    }
+    .founder-meta-text h5 {
+      font-size: 0.9rem !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      margin: 0 !important;
+    }
+    .founder-meta-text p {
+      font-size: 0.72rem !important;
+      color: #38bdf8 !important;
+      font-weight: 600 !important;
+      margin: 0 !important;
+    }
+    .privacy-tag-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      color: #38bdf8 !important;
+      text-decoration: none !important;
+      background: rgba(56, 189, 248, 0.12) !important;
+      border: 1px solid rgba(56, 189, 248, 0.3) !important;
+      padding: 6px 14px !important;
+      border-radius: 8px !important;
+    }
+    .footer-bottom-statement {
+      font-size: 0.74rem !important;
+      color: #64748b !important;
+      text-align: center !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+      padding-top: 18px !important;
+      line-height: 1.5 !important;
+    }
   </style>
 </head>
 <body class="app-body">
@@ -1227,7 +1374,6 @@
       <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()">&times;</button>
     </div>
 
-    <!-- जब यूज़र लॉग इन हो सिर्फ़ तभी ड्रॉअर प्रोफ़ाइल दिखेगी -->
     <div class="drawer-user-card" id="drawerUserCard" onclick="closeDrawerUnified(); openProfileModal();" style="display: none; padding: 12px 14px; margin: 10px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; cursor: pointer;">
       <p class="drawer-user-prompt" style="margin: 0; color: #38bdf8; font-weight: 800; font-size: 0.85rem;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
@@ -1291,7 +1437,7 @@
       </div>
     </nav>
 
-    <!-- 🌟 साफ़ और सुरक्षित डेवलपर फुटर (दबेगा नहीं) -->
+    <!-- 🌟 साफ़ और सुरक्षित डेवलपर फुटर -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         Developed By Prince Kumar ⚡
@@ -1304,11 +1450,11 @@
 
   <!-- 3. मुख्य डैशबोर्ड -->
   <main class="dashboard-viewport">
-    
+
     <!-- HERO SPOTLIGHT -->
     <section class="hero-spotlight-khan">
       <div class="hero-container">
-        
+
         <!-- Welcome Card (यूजर लॉग इन होने पर) -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 12px;">
           <div id="welcomeGreetingText" style="font-size: 1.35rem; font-weight: 800; line-height: 1.2;">
@@ -1508,7 +1654,7 @@
           </div>
           <span class="pro-row-arrow">›</span>
         </a>
-        
+
         <a href="notes.html?filter=10-sanskrit" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(139, 92, 246, 0.12); color:#8b5cf6;">🕉️</div>
@@ -1732,7 +1878,7 @@
         <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5));">🖼️ ➔ 📄</div>
         <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.3rem; font-weight: 900;">HD इमेज To PDF इंजन</h3>
         <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;" id="heavyPdfStatusText">कृपया प्रतीक्षा करें, आपकी फोटो प्रोसेस हो रही है...</p>
-        
+
         <div class="pdf-track" style="margin: 20px 0 12px 0; height: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
           <div class="pdf-fill" id="heavyPdfFillBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0284c7, #38bdf8, #a855f7); border-radius: 8px; transition: width 0.1s ease-out;"></div>
         </div>
@@ -1771,9 +1917,9 @@
     <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध) -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 99999999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
-        
+
         <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
-        
+
         <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
           <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
           <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
@@ -1805,7 +1951,7 @@
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
-        
+
         <div class="nd-logo-bubble">
           <img src="logo.png" alt="NischayDesk Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
         </div>
@@ -1838,7 +1984,7 @@
 
   </main>
 
-  <!-- 4. फ़ुटर -->
+  <!-- 4. फ़ुटर (पूर्णतः ठीक और संरेखित) -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
       <div class="footer-mission-lead">
@@ -1922,11 +2068,11 @@
 
   <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
-    /* 🌟 डार्क / लाइट मोड स्विच लॉजिक (100% वर्किंग) */
+    /* 🌟 डार्क / लाइट मोड स्विच लॉजिक */
     function initThemeSystem() {
       const themeSwitch = document.getElementById("themeSwitch");
-      const currentTheme = localStorage.getItem("nd_app_theme") || "dark";
-      
+      const currentTheme = localStorage.getItem("nd_app_theme") || "light";
+
       if (themeSwitch) {
         themeSwitch.checked = (currentTheme === "light");
         themeSwitch.onchange = function() {
@@ -2107,6 +2253,7 @@
       renderDynamicQuestion(currentQIndex);
     }
 
+    /* 🌟 4 सेकंड में फास्ट रोटेशन */
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
       autoRotateTimer = setInterval(() => {
@@ -2154,7 +2301,7 @@
       }
     }
 
-    /* 🌟 कस्टम क्लास बॉटम-शीट (टिक मार्क फिक्स) */
+    /* 🌟 कस्टम क्लास बॉटम-शीट */
     function openCustomClassSheet() {
       const backdrop = document.getElementById('ndClassSheetBackdrop');
       if (backdrop) {
@@ -2178,7 +2325,7 @@
       }
     }
 
-    // 🎯 फिक्स: केवल चयनित क्लास पर ✓ दिखेगा और वही नीला होगा
+    // केवल चयनित क्लास पर ✓ दिखेगा
     function highlightSelectedClassInSheet() {
       ['10th', '11th', '12th'].forEach(c => {
         const el = document.getElementById(`optClass${c}`);
@@ -2244,7 +2391,7 @@
       startQuestionRotation();
     }
 
-    /* 🌟 लॉगिन स्थिति सिंक (बिना लॉगिन के लॉगआउट व प्रोफाइल बटन नहीं दिखेगा) */
+    /* 🌟 लॉगिन स्थिति सिंक */
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -2309,7 +2456,7 @@
       if (window.firebase && firebase.auth) {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
-        
+
         firebase.auth().signInWithPopup(provider)
           .then(() => {
             closeWelcomeLoginModal();
