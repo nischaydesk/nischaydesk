@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Official Syllabus Repository & Interactive Controller (v5.1 Complete)
-   Classes: 10th Matric, 11th Science & 12th Science
+   NischayDesk Official Syllabus Repository & Interactive Controller (v5.1 Clean)
+   Class: 10th Matric Only
    Curated by: Prince Kumar (NischayDesk)
    Features: Complete Chapters Directory, In-App Safe Viewer, Smart URL Deep-Linking
    ========================================================================== */
@@ -146,204 +146,31 @@ window.NischaySyllabusHubData = {
         ]
       }
     }
-  },
-
-  // ========================================================================
-  // CLASS 11TH SCIENCE SYLLABUS DIRECTORY
-  // ========================================================================
-  "11": {
-    name: "कक्षा 11वीं (साइंस)",
-    subjects: {
-      "physics": {
-        title: "भौतिक विज्ञान (Physics)",
-        chapters: [
-          { no: 1, name: "मात्रक और मापन (Units & Measurements)", pdf: "" },
-          { no: 2, name: "सरल रेखा में गति (Motion in a Straight Line)", pdf: "" },
-          { no: 3, name: "समतल में गति (Motion in a Plane)", pdf: "" },
-          { no: 4, name: "गति के नियम (Laws of Motion)", pdf: "" },
-          { no: 5, name: "कार्य, ऊर्जा और शक्ति (Work, Energy & Power)", pdf: "" },
-          { no: 6, name: "कणों के निकाय तथा घूर्णी गति (Rotational Motion)", pdf: "" },
-          { no: 7, name: "गुरुत्वाकर्षण (Gravitation)", pdf: "" },
-          { no: 8, name: "ठोसों के यांत्रिक गुण (Mechanical Properties of Solids)", pdf: "" },
-          { no: 9, name: "तरलों के यांत्रिकी गुण (Fluid Mechanics)", pdf: "" },
-          { no: 10, name: "द्रव्य के तापीय गुण (Thermal Properties)", pdf: "" },
-          { no: 11, name: "ऊष्मागतिकी (Thermodynamics)", pdf: "" },
-          { no: 12, name: "अणुगति सिद्धांत (Kinetic Theory)", pdf: "" },
-          { no: 13, name: "दोलन (Oscillations)", pdf: "" },
-          { no: 14, name: "तरंगें (Waves)", pdf: "" }
-        ]
-      },
-      "chemistry": {
-        title: "रसायन विज्ञान (Chemistry)",
-        chapters: [
-          { no: 1, name: "रसायन विज्ञान की कुछ मूल अवधारणाएँ", pdf: "" },
-          { no: 2, name: "परमाणु की संरचना (Structure of Atom)", pdf: "" },
-          { no: 3, name: "तत्वों का वर्गीकरण एवं आवर्तिता", pdf: "" },
-          { no: 4, name: "रासायनिक आबंधन तथा आण्विक संरचना", pdf: "" },
-          { no: 5, name: "रासायनिक ऊष्मागतिकी (Thermodynamics)", pdf: "" },
-          { no: 6, name: "साम्यावस्था (Equilibrium)", pdf: "" },
-          { no: 7, name: "रेडॉक्स अभिक्रियाएँ (Redox Reactions)", pdf: "" },
-          { no: 8, name: "कार्बनिक रसायन: मूलभूत सिद्धांत एवं तकनीकें", pdf: "" },
-          { no: 9, name: "हाइड्रोकार्बन (Hydrocarbons)", pdf: "" }
-        ]
-      },
-      "math": {
-        title: "गणित (Mathematics)",
-        chapters: [
-          { no: 1, name: "समुच्चय (Sets)", pdf: "" },
-          { no: 2, name: "संबंध एवं फलन (Relations & Functions)", pdf: "" },
-          { no: 3, name: "त्रिकोणमितीय फलन (Trigonometric Functions)", pdf: "" },
-          { no: 4, name: "सम्मिश्र संख्याएँ और द्विघातीय समीकरण", pdf: "" },
-          { no: 5, name: "रैखिक असमिकाएँ (Linear Inequalities)", pdf: "" },
-          { no: 6, name: "क्रमचय और संचय (Permutations & Combinations)", pdf: "" },
-          { no: 7, name: "द्विपद प्रमेय (Binomial Theorem)", pdf: "" },
-          { no: 8, name: "अनुक्रम तथा श्रेणी (Sequences & Series)", pdf: "" },
-          { no: 9, name: "सरल रेखाएँ (Straight Lines)", pdf: "" },
-          { no: 10, name: "शंकु परिच्छेद (Conic Sections)", pdf: "" },
-          { no: 11, name: "त्रिविमीय ज्यामिति का परिचय (3D Geometry)", pdf: "" },
-          { no: 12, name: "सीमा और अवकलज (Limits & Derivatives)", pdf: "" },
-          { no: 13, name: "सांख्यिकी (Statistics)", pdf: "" },
-          { no: 14, name: "प्रायिकता (Probability)", pdf: "" }
-        ]
-      },
-      "biology": {
-        title: "जीव विज्ञान (Biology)",
-        chapters: [
-          { no: 1, name: "जीव जगत (The Living World)", pdf: "" },
-          { no: 2, name: "जीव जगत का वर्गीकरण (Classification)", pdf: "" },
-          { no: 3, name: "वनस्पति जगत (Plant Kingdom)", pdf: "" },
-          { no: 4, name: "प्राणी जगत (Animal Kingdom)", pdf: "" },
-          { no: 5, name: "पुष्पी पादपों की आकारिकी व शारीर", pdf: "" },
-          { no: 6, name: "कोशिका: जीवन की इकाई", pdf: "" },
-          { no: 7, name: "जैव अणु (Biomolecules)", pdf: "" },
-          { no: 8, name: "कोशिका चक्र और विभाजन", pdf: "" },
-          { no: 9, name: "पादप कार्यिकी (Plant Physiology)", pdf: "" },
-          { no: 10, name: "मानव शरीर क्रिया विज्ञान (Human Physiology)", pdf: "" }
-        ]
-      }
-    }
-  },
-
-  // ========================================================================
-  // CLASS 12TH SCIENCE SYLLABUS DIRECTORY
-  // ========================================================================
-  "12": {
-    name: "कक्षा 12वीं (बोर्ड स्पेशल)",
-    subjects: {
-      "physics": {
-        title: "भौतिक विज्ञान (Physics)",
-        chapters: [
-          { no: 1, name: "वैद्युत आवेश तथा क्षेत्र (Electric Charges & Fields)", pdf: "" },
-          { no: 2, name: "स्थिरवैद्युत विभव तथा धारिता", pdf: "" },
-          { no: 3, name: "विद्युत धारा (Current Electricity)", pdf: "" },
-          { no: 4, name: "गतिमान आवेश और चुंबकत्व", pdf: "" },
-          { no: 5, name: "चुंबकत्व एवं द्रव्य (Magnetism & Matter)", pdf: "" },
-          { no: 6, name: "वैद्युतचुंबकीय प्रेरण (EMI)", pdf: "" },
-          { no: 7, name: "प्रत्यावर्ती धारा (Alternating Current)", pdf: "" },
-          { no: 8, name: "वैद्युतचुंबकीय तरंगें (EM Waves)", pdf: "" },
-          { no: 9, name: "किरण प्रकाशिकी एवं प्रकाशिक यंत्र (Ray Optics)", pdf: "" },
-          { no: 10, name: "तरंग प्रकाशिकी (Wave Optics)", pdf: "" },
-          { no: 11, name: "विकिरण तथा द्रव्य की द्वैत प्रकृति", pdf: "" },
-          { no: 12, name: "परमाणु (Atoms)", pdf: "" },
-          { no: 13, name: "नाभिक (Nuclei)", pdf: "" },
-          { no: 14, name: "अर्धचालक इलेक्ट्रॉनिकी (Semiconductors)", pdf: "" }
-        ]
-      },
-      "chemistry": {
-        title: "रसायन विज्ञान (Chemistry)",
-        chapters: [
-          { no: 1, name: "विलयन (Solutions)", pdf: "" },
-          { no: 2, name: "वैद्युतरसायन (Electrochemistry)", pdf: "" },
-          { no: 3, name: "रासायनिक बलगतिकी (Chemical Kinetics)", pdf: "" },
-          { no: 4, name: "d-एवं f-ब्लॉक के तत्व", pdf: "" },
-          { no: 5, name: "उपसहसंयोजन यौगिक (Coordination Compounds)", pdf: "" },
-          { no: 6, name: "हैलोऐल्केन तथा हैलोऐरीन", pdf: "" },
-          { no: 7, name: "ऐल्कोहॉल, फ़ीनॉल एवं ईथर", pdf: "" },
-          { no: 8, name: "ऐल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल", pdf: "" },
-          { no: 9, name: "ऐमीन (Amines)", pdf: "" },
-          { no: 10, name: "जैव-अणु (Biomolecules)", pdf: "" }
-        ]
-      },
-      "math": {
-        title: "गणित (Mathematics)",
-        chapters: [
-          { no: 1, name: "संबंध एवं फलन (Relations & Functions)", pdf: "" },
-          { no: 2, name: "प्रतिलोम त्रिकोणमितीय फलन (Inverse Trig)", pdf: "" },
-          { no: 3, name: "आव्यूह (Matrices)", pdf: "" },
-          { no: 4, name: "सारणिक (Determinants)", pdf: "" },
-          { no: 5, name: "सांतत्य तथा अवकलनीयता (Continuity & Diff)", pdf: "" },
-          { no: 6, name: "अवकलज के अनुप्रयोग (Application of Derivatives)", pdf: "" },
-          { no: 7, name: "समाकलन (Integrals)", pdf: "" },
-          { no: 8, name: "समाकलनों के अनुप्रयोग (Application of Integrals)", pdf: "" },
-          { no: 9, name: "अवकल समीकरण (Differential Equations)", pdf: "" },
-          { no: 10, name: "सदिश बीजगणित (Vector Algebra)", pdf: "" },
-          { no: 11, name: "त्रिविमीय ज्यामिति (3D Geometry)", pdf: "" },
-          { no: 12, name: "रैखिक प्रोग्रामन (Linear Programming)", pdf: "" },
-          { no: 13, name: "प्रायिकता (Probability)", pdf: "" }
-        ]
-      },
-      "biology": {
-        title: "जीव विज्ञान (Biology)",
-        chapters: [
-          { no: 1, name: "पुष्पी पादपों में लैंगिक जनन", pdf: "" },
-          { no: 2, name: "मानव जनन (Human Reproduction)", pdf: "" },
-          { no: 3, name: "जनन स्वास्थ्य (Reproductive Health)", pdf: "" },
-          { no: 4, name: "वंशागति तथा विविधता के सिद्धांत", pdf: "" },
-          { no: 5, name: "वंशागति के आणविक आधार (Molecular Genetics)", pdf: "" },
-          { no: 6, name: "विकास (Evolution)", pdf: "" },
-          { no: 7, name: "मानव स्वास्थ्य तथा रोग", pdf: "" },
-          { no: 8, name: "मानव कल्याण में सूक्ष्मजीव", pdf: "" },
-          { no: 9, name: "जैव प्रौद्योगिकी - सिद्धांत व प्रक्रम", pdf: "" },
-          { no: 10, name: "जैव प्रौद्योगिकी एवं इसके उपयोग", pdf: "" },
-          { no: 11, name: "पारिस्थितिकी एवं पर्यावरण (Ecology)", pdf: "" }
-        ]
-      }
-    }
   }
 };
 
 // ============================================================================
-// DUAL COMPATIBILITY DOM CONTROLLER FOR SYLLABUS.HTML WITH URL PARAMETERS
+// DEDICATED DOM CONTROLLER FOR 10TH MATRIC SYLLABUS
 // ============================================================================
 document.addEventListener('DOMContentLoaded', function () {
   const classSelect = document.getElementById('sylClassFilter') || document.getElementById('syllabusClassSelect');
   const subjectSelect = document.getElementById('sylSubjectFilter') || document.getElementById('syllabusSubjectSelect');
   const chaptersContainer = document.getElementById('syllabusChaptersContainer') || document.getElementById('syllabusChaptersList');
 
-  if (!classSelect || !subjectSelect || !chaptersContainer) return;
+  if (!subjectSelect || !chaptersContainer) return;
 
-  // 1. URL से क्लास और सब्जेक्ट पैरामीटर्स पढ़ें
+  // अगर पेज पर क्लास का ड्रॉपडाउन मौजूद है, तो उसे सिर्फ 10 पर लॉक रखें
+  if (classSelect) {
+    classSelect.value = "10";
+    classSelect.style.display = "none"; // 10th के पेज पर क्लास चुनने वाले ड्रॉपडाउन की जरूरत नहीं
+  }
+
+  // URL से सब्जेक्ट पैरामीटर पढ़ें (जैसे ?subject=math)
   const urlParams = new URLSearchParams(window.location.search);
-  const urlClass = urlParams.get('class');
   const urlSubject = urlParams.get('subject');
 
-  let activeClass = '10';
-
-  if (urlClass) {
-    const cleanNum = String(urlClass).replace(/[^0-9]/g, '');
-    if (['10', '11', '12'].includes(cleanNum)) activeClass = cleanNum;
-  } else {
-    const savedProfile = localStorage.getItem('nischay_user_profile');
-    if (savedProfile) {
-      try {
-        const parsed = JSON.parse(savedProfile);
-        if (parsed.class) activeClass = String(parsed.class).replace(/[^0-9]/g, '');
-      } catch (e) {}
-    } else {
-      const stored = localStorage.getItem('nischay_student_class') || localStorage.getItem('nd_selected_class') || '10';
-      activeClass = String(stored).replace(/[^0-9]/g, '');
-    }
-  }
-
-  if (!['10', '11', '12'].includes(activeClass)) activeClass = '10';
-
-  if (window.NischaySyllabusHubData && window.NischaySyllabusHubData[activeClass]) {
-    classSelect.value = activeClass;
-  }
-
   function populateSubjects(targetSubjectToSelect) {
-    const selectedClass = classSelect.value;
-    const classData = window.NischaySyllabusHubData[selectedClass];
+    const classData = window.NischaySyllabusHubData["10"];
 
     subjectSelect.innerHTML = '';
     if (!classData || !classData.subjects) {
@@ -359,7 +186,6 @@ document.addEventListener('DOMContentLoaded', function () {
       subjectSelect.appendChild(opt);
     });
 
-    // अगर URL से कोई खास सब्जेक्ट आया हो तो उसे सेलेक्ट करें
     if (targetSubjectToSelect && classData.subjects[targetSubjectToSelect]) {
       subjectSelect.value = targetSubjectToSelect;
     }
@@ -368,9 +194,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function loadChapters() {
-    const selectedClass = classSelect.value;
     const selectedSubject = subjectSelect.value;
-    const classData = window.NischaySyllabusHubData[selectedClass];
+    const classData = window.NischaySyllabusHubData["10"];
 
     if (classData && classData.subjects && classData.subjects[selectedSubject]) {
       renderChapters(classData.subjects[selectedSubject].chapters);
@@ -413,9 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  classSelect.addEventListener('change', () => populateSubjects(null));
   subjectSelect.addEventListener('change', loadChapters);
 
-  // पहली बार लोड होते ही URL का सब्जेक्ट पास करें
   populateSubjects(urlSubject);
 });
