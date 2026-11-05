@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>बिहार बोर्ड 10th ऑफिशियल मॉडल पेपर (2020-2026) | NischayDesk</title>
 
   <!-- Typography -->
@@ -47,23 +47,20 @@
       border-radius: 10px; 
       border: 1.8px solid #94a3b8 !important; 
       font-size: 0.95rem; 
-      font-weight: 600;
+      font-weight: 600; 
       outline: none; 
       background: #f8fafc !important; 
-      color: #0f172a !important;
-      font-family: inherit;
+      color: #0f172a !important; 
+      font-family: inherit; 
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     #ndFilterBar select:focus, 
-    #ndFilterBar input:focus {
-      border-color: #10b981 !important;
-      background: #ffffff !important;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+    #ndFilterBar input:focus { 
+      border-color: #10b981 !important; 
+      background: #ffffff !important; 
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important; 
     }
-    #ndFilterBar select option {
-      background: #ffffff !important;
-      color: #0f172a !important;
-    }
+    #ndFilterBar select option { background: #ffffff !important; color: #0f172a !important; }
     #ndFilterBar input { flex: 1; min-width: 220px; }
     
     #mpGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
@@ -94,8 +91,8 @@
       inset: 0; 
       width: 100%; 
       height: 100%; 
-      background: rgba(3, 7, 18, 0.88); 
-      backdrop-filter: blur(6px);
+      background: rgba(3, 7, 18, 0.92); 
+      backdrop-filter: blur(8px);
       z-index: 99999; 
       justify-content: center; 
       align-items: center; 
@@ -108,17 +105,17 @@
     }
 
     .modal-box { 
-      width: 95%; 
-      max-width: 980px; 
-      height: 92%; 
-      background: #0b1329; 
+      width: 96%; 
+      max-width: 1050px; 
+      height: 94%; 
+      background: #060e20; 
       border-radius: 16px; 
       display: flex; 
       flex-direction: column; 
       overflow: hidden; 
       border: 1.5px solid #10b981; 
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-      transform: scale(0.93) translateY(24px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      transform: scale(0.95) translateY(20px);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .pdf-modal.active .modal-box {
@@ -126,27 +123,57 @@
     }
 
     .modal-header { 
-      padding: 12px 18px; 
+      padding: 10px 16px; 
       background: #064e3b; 
       color: #ffffff; 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
       border-bottom: 1.5px solid #059669;
+      gap: 10px;
     }
-    .modal-header-actions { display: flex; align-items: center; gap: 10px; }
+    .modal-header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+    
+    .zoom-toolbar {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px 6px;
+      border-radius: 8px;
+      gap: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .zoom-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: #ffffff;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .zoom-btn:active { background: #10b981; }
+    .zoom-indicator {
+      font-size: 0.75rem;
+      color: #a7f3d0;
+      font-weight: 700;
+      min-width: 38px;
+      text-align: center;
+      font-family: monospace;
+    }
+
     .btn-fullscreen {
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: #ffffff;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    .btn-fullscreen:hover { background: rgba(255, 255, 255, 0.22); }
     .modal-close { 
       background: none; 
       border: none; 
@@ -155,59 +182,98 @@
       cursor: pointer; 
       line-height: 1;
       padding: 0 4px;
-      transition: color 0.2s;
     }
     .modal-close:hover { color: #ffffff; }
     
-    .modal-body { flex: 1; background: #525659; position: relative; width: 100%; height: 100%; }
-    .modal-body iframe { width: 100%; height: 100%; border: none; }
+    /* 🔍 Pinch & Zoomable Stage Container */
+    .modal-body { 
+      flex: 1; 
+      background: #1e293b; 
+      position: relative; 
+      width: 100%; 
+      height: 100%; 
+      overflow: hidden; 
+      touch-action: none; /* कस्टम पिंच को आसान बनाता है */
+    }
 
-    /* ⚡ साइबर पल्स लोडर एनीमेशन */
+    #zoomViewport {
+      width: 100%;
+      height: 100%;
+      transform-origin: 0 0;
+      will-change: transform;
+      transition: transform 0.05s linear;
+    }
+
+    #pdfFrame { 
+      width: 100%; 
+      height: 100%; 
+      border: none; 
+      background: #ffffff;
+    }
+
+    /* ⚡ तगड़ा साइबर नियॉन ऑर्ब लोडर एनीमेशन */
     .modal-loader {
       position: absolute;
       inset: 0;
-      background: #091a18;
+      background: #050b14;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      z-index: 10;
+      gap: 18px;
+      z-index: 20;
     }
-    .pulse-wave-wrapper {
+
+    .neon-pulse-stage {
+      position: relative;
+      width: 76px;
+      height: 76px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      height: 48px;
+      justify-content: center;
     }
-    .pulse-bar {
-      width: 7px;
-      height: 16px;
-      background: #10b981;
-      border-radius: 6px;
-      animation: pulseWave 1.2s ease-in-out infinite;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    .neon-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2.5px solid transparent;
+      border-top-color: #10b981;
+      border-right-color: #059669;
+      animation: spinRing 1.1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
     }
-    .pulse-bar:nth-child(2) { animation-delay: 0.15s; background: #34d399; }
-    .pulse-bar:nth-child(3) { animation-delay: 0.3s; background: #6ee7b7; }
-    .pulse-bar:nth-child(4) { animation-delay: 0.45s; background: #34d399; }
-    .pulse-bar:nth-child(5) { animation-delay: 0.6s; background: #10b981; }
+    .neon-ring-inner {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      border-bottom-color: #34d399;
+      border-left-color: #6ee7b7;
+      animation: spinRingReverse 0.85s linear infinite;
+    }
+    .neon-core {
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle, #34d399 20%, #059669 90%);
+      border-radius: 50%;
+      box-shadow: 0 0 16px #10b981, 0 0 30px #059669;
+      animation: glowPulse 1.2s ease-in-out infinite alternate;
+    }
 
     .loader-text {
       color: #ecfdf5;
       font-size: 0.95rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      animation: pulseText 1.5s infinite ease-in-out;
+      letter-spacing: 0.6px;
     }
 
-    /* 📊 रियल टाइम प्रोग्रेस बार */
+    /* 📊 0 से 100% प्रोग्रेस बार */
     .loader-progress-box {
-      width: 220px;
+      width: 230px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
     .progress-track {
       width: 100%;
@@ -215,33 +281,38 @@
       background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       overflow: hidden;
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.3);
     }
     .progress-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #10b981, #34d399);
+      background: linear-gradient(90deg, #059669, #10b981, #34d399);
       border-radius: 10px;
-      transition: width 0.18s ease-out;
-      box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.9);
     }
     .progress-percent {
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 800;
       color: #34d399;
       letter-spacing: 0.5px;
       font-family: monospace;
     }
 
-    @keyframes pulseWave {
-      0%, 100% { height: 14px; opacity: 0.4; }
-      50% { height: 44px; opacity: 1; }
+    @keyframes spinRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spinRingReverse {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    @keyframes glowPulse {
+      0% { transform: scale(0.85); opacity: 0.7; }
+      100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 25px #34d399; }
+    }
 
-    /* 🌟 इन-ऐप टोस्ट */
+    /* 🌟 प्रोफ़ेशनल टोस्ट */
     .nd-toast-container {
       position: fixed;
       bottom: 24px;
@@ -278,6 +349,7 @@
         border-radius: 0 !important;
         border: none !important;
       }
+      .zoom-indicator { display: none; }
     }
   </style>
 </head>
@@ -332,36 +404,16 @@
     </div>
 
     <nav class="drawer-nav-list">
-      <a href="index.html" class="drawer-nav-item">
-        <span class="icon">📊</span> मुख्य डैशबोर्ड
-      </a>
-      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
-        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
-      </a>
-      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;">
-        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
-      </a>
-      <a href="syllabus.html" class="drawer-nav-item">
-        <span class="icon">📋</span> बोर्ड सिलेबस हब
-      </a>
-      <a href="notes.html" class="drawer-nav-item">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी
-      </a>
-      <a href="test.html" class="drawer-nav-item">
-        <span class="icon">📝</span> चैप्टर टेस्ट सीरीज
-      </a>
-      <a href="pyq.html" class="drawer-nav-item">
-        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
-      </a>
-      <a href="model-paper.html" class="drawer-nav-item active">
-        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
-      </a>
-      <a href="ai-desk.html" class="drawer-nav-item">
-        <span class="icon">🤖</span> AI डाउट स्टूडियो
-      </a>
-      <a href="index.html#quickTools" class="drawer-nav-item">
-        <span class="icon">🛠️</span> स्मार्ट टूल्स
-      </a>
+      <a href="index.html" class="drawer-nav-item"><span class="icon">📊</span> मुख्य डैशबोर्ड</a>
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;"><span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल</a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;"><span class="icon">🔍</span> परिणाम देखें</a>
+      <a href="syllabus.html" class="drawer-nav-item"><span class="icon">📋</span> बोर्ड सिलेबस हब</a>
+      <a href="notes.html" class="drawer-nav-item"><span class="icon">📚</span> नोट्स लाइब्रेरी</a>
+      <a href="test.html" class="drawer-nav-item"><span class="icon">📝</span> चैप्टर टेस्ट सीरीज</a>
+      <a href="pyq.html" class="drawer-nav-item"><span class="icon">📖</span> क्वेश्चन बैंक (PYQ)</a>
+      <a href="model-paper.html" class="drawer-nav-item active"><span class="icon">📝</span> ऑफिशियल मॉडल पेपर</a>
+      <a href="ai-desk.html" class="drawer-nav-item"><span class="icon">🤖</span> AI डाउट स्टूडियो</a>
+      <a href="index.html#quickTools" class="drawer-nav-item"><span class="icon">🛠️</span> स्मार्ट टूल्स</a>
 
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
@@ -413,25 +465,33 @@
     <div id="mpGrid"></div>
   </div>
 
-  <!-- PDF Modal -->
+  <!-- PDF Modal (इन-ऐप पिंच-टू-ज़ूम इनेबल्ड व्यूअर) -->
   <div class="pdf-modal" id="pdfModal">
     <div class="modal-box" id="modalBox">
       <div class="modal-header">
-        <span id="modalDocTitle" style="font-weight:bold; font-size: 0.95rem;">PDF Reader</span>
+        <span id="modalDocTitle" style="font-weight:bold; font-size: 0.95rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width: 40%;">PDF Reader</span>
+        
         <div class="modal-header-actions">
+          <!-- ज़ूम कंट्रोल्स -->
+          <div class="zoom-toolbar">
+            <button class="zoom-btn" onclick="zoomIn()" title="ज़ूम इन">+</button>
+            <span class="zoom-indicator" id="zoomLevelText">100%</span>
+            <button class="zoom-btn" onclick="zoomOut()" title="ज़ूम आउट">−</button>
+            <button class="zoom-btn" onclick="resetZoom()" title="रीसेट">↺</button>
+          </div>
+
           <button class="btn-fullscreen" onclick="toggleModalFullscreen()">⛶ फ़ुलस्क्रीन</button>
           <button class="modal-close" onclick="closePdfModal()">&times;</button>
         </div>
       </div>
+
       <div class="modal-body" id="modalBodyStage">
-        <!-- ⚡ साइबर पल्स लोडर एनीमेशन + रियल-टाइम प्रोग्रेस बार -->
+        <!-- ⚡ साइबर नियॉन ऑर्ब लोडर + रियल-टाइम प्रोग्रेस -->
         <div class="modal-loader" id="modalLoader">
-          <div class="pulse-wave-wrapper">
-            <div class="pulse-bar"></div>
-            <div class="pulse-bar"></div>
-            <div class="pulse-bar"></div>
-            <div class="pulse-bar"></div>
-            <div class="pulse-bar"></div>
+          <div class="neon-pulse-stage">
+            <div class="neon-ring"></div>
+            <div class="neon-ring-inner"></div>
+            <div class="neon-core"></div>
           </div>
           <span class="loader-text" id="loaderText">मॉडल पेपर तैयार हो रहा है...</span>
           
@@ -443,7 +503,10 @@
           </div>
         </div>
 
-        <iframe id="pdfFrame" src=""></iframe>
+        <!-- ज़ूम करने वाला व्यू-पोर्ट कंटेनर -->
+        <div id="zoomViewport">
+          <iframe id="pdfFrame" src="" allow="autoplay"></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -468,9 +531,116 @@
     const ndToast = document.getElementById('ndToast');
     const ndToastMsg = document.getElementById('ndToastMsg');
 
+    const modalBodyStage = document.getElementById('modalBodyStage');
+    const zoomViewport = document.getElementById('zoomViewport');
+    const zoomLevelText = document.getElementById('zoomLevelText');
+
     let toastTimer = null;
     let progressInterval = null;
 
+    // ==========================================
+    // 🔍 पिंच-टू-ज़ूम & टच जेस्चर इंजन
+    // ==========================================
+    let currentScale = 1;
+    let posX = 0;
+    let posY = 0;
+    let startDist = 0;
+    let initialScale = 1;
+    let startPanX = 0;
+    let startPanY = 0;
+    let isPanning = false;
+
+    function applyTransform() {
+      if (currentScale < 1) currentScale = 1;
+      if (currentScale > 3.5) currentScale = 3.5;
+      
+      if (currentScale === 1) {
+        posX = 0;
+        posY = 0;
+      }
+      zoomViewport.style.transform = `translate(${posX}px, ${posY}px) scale(${currentScale})`;
+      zoomLevelText.innerText = `${Math.round(currentScale * 100)}%`;
+    }
+
+    function zoomIn() {
+      currentScale += 0.25;
+      applyTransform();
+    }
+
+    function zoomOut() {
+      currentScale -= 0.25;
+      applyTransform();
+    }
+
+    function resetZoom() {
+      currentScale = 1;
+      posX = 0;
+      posY = 0;
+      applyTransform();
+    }
+
+    // मोबाइल पिंच-टू-ज़ूम और दो उंगली जेस्चर
+    modalBodyStage.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 2) {
+        // दो उंगलियों की दूरी
+        startDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialScale = currentScale;
+      } else if (e.touches.length === 1 && currentScale > 1) {
+        // ज़ूम होने पर ड्रैग/पैन
+        isPanning = true;
+        startPanX = e.touches[0].clientX - posX;
+        startPanY = e.touches[0].clientY - posY;
+      }
+    }, { passive: false });
+
+    modalBodyStage.addEventListener('touchmove', function(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        if (startDist > 0) {
+          const factor = dist / startDist;
+          currentScale = initialScale * factor;
+          applyTransform();
+        }
+      } else if (e.touches.length === 1 && isPanning) {
+        e.preventDefault();
+        posX = e.touches[0].clientX - startPanX;
+        posY = e.touches[0].clientY - startPanY;
+        applyTransform();
+      }
+    }, { passive: false });
+
+    modalBodyStage.addEventListener('touchend', function(e) {
+      if (e.touches.length < 2) startDist = 0;
+      if (e.touches.length === 0) isPanning = false;
+    });
+
+    // डबल-टैप से सीधा 2x ज़ूम या रीसेट
+    let lastTap = 0;
+    modalBodyStage.addEventListener('touchend', function(e) {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 300 && tapLength > 0 && e.touches.length === 0) {
+        e.preventDefault();
+        if (currentScale > 1.2) {
+          resetZoom();
+        } else {
+          currentScale = 2;
+          applyTransform();
+        }
+      }
+      lastTap = currentTime;
+    });
+
+    // ==========================================
+    // टोस्ट और URL फ़ॉर्मेटिंग
+    // ==========================================
     function showToast(msg, icon = '⏳') {
       if (toastTimer) clearTimeout(toastTimer);
       ndToastMsg.innerText = msg;
@@ -497,16 +667,19 @@
       return url;
     }
 
-    // Google Drive Preview URL को सही फ़ॉर्मेट में कनवर्ट करना
-    function getPreviewUrl(url) {
+    function getDirectPdfUrl(url) {
       if (!url) return '';
       const fileId = extractDriveId(url);
       if (fileId) {
+        // डायरेक्ट ड्राइव प्रीव्यू
         return `https://drive.google.com/file/d/${fileId}/preview`;
       }
       return url;
     }
 
+    // ==========================================
+    // कार्ड्स रेंडरिंग (हल सिर्फ solutionUrl से)
+    // ==========================================
     function renderModelPapers() {
       const isLightMode = document.documentElement.classList.contains('light-mode') || 
                           document.body.classList.contains('light-mode') ||
@@ -546,21 +719,20 @@
       const downBtnBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
 
       filtered.forEach((item) => {
-        // चेक करें कि कौन-कौन से लिंक्स मौजूद हैं
         const hasSol = item.solutionUrl && item.solutionUrl.trim() !== '' && !item.solutionUrl.includes('xxxx');
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
         const cleanDocTitle = `${item.subject} - BSEB ${item.year}`;
 
-        // 1. हल देखें: अब सिर्फ solutionUrl से डेटा उठाएगा
+        // 1. हल देखें: यह केवल solutionUrl से उठेगा
         const solBtnAction = hasSol 
-          ? `onclick="openPdfModal('${cleanDocTitle} (संपूर्ण हल)', '${item.solutionUrl}', false)"`
+          ? `onclick="openPdfModal('${cleanDocTitle} (हल सहित)', '${item.solutionUrl}')"`
           : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का हल जल्द अपलोड किया जा रहा है!')"`;
 
-        // 2. प्रीव्यू: सिर्फ प्रश्न पत्र के pdfUrl से डेटा उठाएगा
+        // 2. प्रीव्यू: यह केवल pdfUrl (प्रश्न पत्र) से उठेगा
         const previewBtnAction = hasPdf 
-          ? `onclick="openPdfModal('${cleanDocTitle} (मॉडल पेपर प्रश्न पत्र)', '${item.pdfUrl}', false)"`
+          ? `onclick="openPdfModal('${cleanDocTitle} (मॉडल प्रश्न पत्र)', '${item.pdfUrl}')"`
           : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का प्रीव्यू जल्द उपलब्ध होगा!')"`;
 
         // 3. डाउनलोड
@@ -612,25 +784,25 @@
       });
     }
 
-    // Modal Viewer और 0 से 100% प्रोग्रेस बार लॉजिक
-    function openPdfModal(title, url, startFullscreen = false) {
+    // ==========================================
+    // मोडल और 0 से 100% प्रोग्रेस लोडर
+    // ==========================================
+    function openPdfModal(title, url) {
       document.getElementById('modalDocTitle').innerText = title;
+      resetZoom();
       
-      if (modalLoader) {
-        modalLoader.style.display = 'flex';
-      }
+      if (modalLoader) modalLoader.style.display = 'flex';
 
-      // प्रोग्रेस बार रीसेट (0%)
       let currentProgress = 0;
       progressFill.style.width = '0%';
       progressPercent.innerText = '0%';
 
       if (progressInterval) clearInterval(progressInterval);
 
-      // 0% से 95% तक स्मूथ सिमुलेशन
+      // 0 से 95% तक स्मूथ लोडिंग सिमुलेशन
       progressInterval = setInterval(() => {
         if (currentProgress < 75) {
-          currentProgress += Math.floor(Math.random() * 8) + 4;
+          currentProgress += Math.floor(Math.random() * 8) + 5;
         } else if (currentProgress < 95) {
           currentProgress += Math.floor(Math.random() * 3) + 1;
         }
@@ -638,11 +810,10 @@
 
         progressFill.style.width = `${currentProgress}%`;
         progressPercent.innerText = `${currentProgress}%`;
-      }, 100);
+      }, 90);
 
-      pdfFrame.src = getPreviewUrl(url);
+      pdfFrame.src = getDirectPdfUrl(url);
 
-      // जब iframe लोड पूरा हो जाए -> 100% करें और लोडर छुपाएं
       pdfFrame.onload = function() {
         clearInterval(progressInterval);
         progressFill.style.width = '100%';
@@ -650,22 +821,19 @@
 
         setTimeout(() => {
           if (modalLoader) modalLoader.style.display = 'none';
-        }, 250);
+        }, 220);
       };
 
       const modal = document.getElementById('pdfModal');
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
-
-      if (startFullscreen) {
-        setTimeout(toggleModalFullscreen, 100);
-      }
     }
 
     function closePdfModal() {
       const modal = document.getElementById('pdfModal');
       modal.classList.remove('active');
       pdfFrame.src = '';
+      resetZoom();
       if (progressInterval) clearInterval(progressInterval);
       if (modalLoader) modalLoader.style.display = 'none';
       document.body.style.overflow = '';
