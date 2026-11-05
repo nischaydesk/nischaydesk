@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>स्टडी नोट्स लाइब्रेरी | NischayDesk - Smart EdTech Platform</title>
+  <title>कक्षा 10वीं स्टडी नोट्स लाइब्रेरी | NischayDesk - Smart EdTech Platform</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,15 +19,16 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-WXM8RJ080H');
-</script>
+    gtag('config', 'G-WXM8RJ080H');
+  </script>
 
   <!-- 🌟 ULTRA PREMIUM INLINE CSS FOR NOTES PAGE (LIGHT/DARK MODE FIXED) 🌟 -->
   <style>
@@ -53,7 +54,6 @@
       background: linear-gradient(90deg, #38bdf8, #8b5cf6, #10b981);
     }
 
-    /* हेडर के अंदर के टेक्स्ट को थीम के अनुसार सेट करना */
     .notes-headline { color: var(--text-main) !important; }
     .notes-subheadline { color: var(--text-muted) !important; }
 
@@ -171,7 +171,7 @@
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
             <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge" id="userSessionBadge">Class 10th ▾</span>
+            <span class="user-session-badge" id="userSessionBadge">Class 10th</span>
           </div>
         </div>
       </div>
@@ -190,7 +190,7 @@
     </div>
 
     <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
-      <p class="drawer-user-prompt">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+      <p class="drawer-user-prompt">⚡ प्रोफ़ाइल विवरण ▾</p>
     </div>
 
     <nav class="drawer-nav-list">
@@ -207,7 +207,7 @@
         <span class="icon">📋</span> बोर्ड सिलेबस हब
       </a>
       <a href="notes.html" class="drawer-nav-item active">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th, 11th, 12th)
+        <span class="icon">📚</span> 10th नोट्स लाइब्रेरी
       </a>
       <a href="test.html" class="drawer-nav-item">
         <span class="icon">📝</span> चैप्टर टेस्ट सीरीज
@@ -247,19 +247,19 @@
       <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-accent); text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: var(--radius-pill);">
         <span>🏠</span> मुख्य डैशबोर्ड
       </a>
-      <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk HD Notes Studio</span>
+      <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk Class 10th Notes Studio</span>
     </div>
 
     <!-- HERO SEARCH & FILTER BANNER -->
     <section class="notes-header-banner">
       <div class="status-pill">
-        <span class="pulsing-dot"></span> 10th मैट्रिक, 11th & 12th साइंस हस्तलिखित नोट्स
+        <span class="pulsing-dot"></span> 10th मैट्रिक बोर्ड टॉपर हस्तलिखित नोट्स
       </div>
       <h1 class="notes-headline">
-        स्मार्ट <span class="gradient-text">स्टडी नोट्स</span> हब
+        कक्षा 10वीं <span class="gradient-text">स्टडी नोट्स</span> हब
       </h1>
       <p class="notes-subheadline">
-        चैप्टर-वाइज थ्योरी, न्यूमेरिकल, फॉर्मूला शीट और इन-ऐप हाई-डेफिनिशन PDF रीडर।
+        मैट्रिक परीक्षा के लिए चैप्टर-वाइज थ्योरी, न्यूमेरिकल, फॉर्मूला शीट और इन-ऐप हाई-डेफिनिशन PDF रीडर।
       </p>
 
       <!-- Search Field -->
@@ -269,15 +269,13 @@
           type="text" 
           id="notesSearchInput" 
           class="notes-search-field" 
-          placeholder="अध्याय या टॉपिक खोजें (उदा: प्रकाश, त्रिकोणमिति, गति के नियम, विलयन...)" 
+          placeholder="अध्याय या टॉपिक खोजें (उदा: प्रकाश, त्रिकोणमिति, रासायनिक अभिक्रियाएँ, यूरोप में राष्ट्रवाद...)" 
         />
       </div>
 
-      <!-- Filter Pills (10th, 11th, 12th) -->
+      <!-- Filter Pills (10th Matric Only) -->
       <div class="filter-pill-container" id="filterPillContainer">
-        <button class="filter-btn active" data-filter="all">सभी विषय (All)</button>
-
-        <!-- 10th Matric Filters -->
+        <button class="filter-btn active" data-filter="all">सभी 10th विषय (All)</button>
         <button class="filter-btn" data-filter="10-math">📐 10th गणित</button>
         <button class="filter-btn" data-filter="10-science-phy">⚡ 10th भौतिकी</button>
         <button class="filter-btn" data-filter="10-science-chem">🧪 10th रसायन</button>
@@ -289,18 +287,6 @@
         <button class="filter-btn" data-filter="10-economics">📈 10th अर्थशास्त्र</button>
         <button class="filter-btn" data-filter="10-disaster">🚨 10th आपदा प्रबंधन</button>
         <button class="filter-btn" data-filter="10-sanskrit">📜 10th संस्कृत</button>
-
-        <!-- 11th Science Filters -->
-        <button class="filter-btn" data-filter="11-physics">⚡ 11th भौतिक विज्ञान</button>
-        <button class="filter-btn" data-filter="11-chemistry">🧪 11th रसायन विज्ञान</button>
-        <button class="filter-btn" data-filter="11-biology">🧬 11th जीव विज्ञान</button>
-        <button class="filter-btn" data-filter="11-math">📐 11th गणित</button>
-
-        <!-- 12th Science Filters -->
-        <button class="filter-btn" data-filter="12-physics">⚡ 12th भौतिक विज्ञान</button>
-        <button class="filter-btn" data-filter="12-chemistry">🧪 12th रसायन विज्ञान</button>
-        <button class="filter-btn" data-filter="12-biology">🧬 12th जीव विज्ञान</button>
-        <button class="filter-btn" data-filter="12-math">📐 12th गणित</button>
       </div>
     </section>
 
@@ -313,7 +299,7 @@
 
   </main>
 
-  <!-- DEDICATED USER PROFILE & CLASS SELECTION MODAL -->
+  <!-- DEDICATED USER PROFILE MODAL -->
   <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
     <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
       
@@ -327,17 +313,8 @@
       <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
       <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
-      <div style="text-align: left; margin-bottom: 16px;">
-        <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
-        <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
-          <option value="10th">कक्षा 10वीं (मैट्रिक)</option>
-          <option value="11th">कक्षा 11वीं (साइंस)</option>
-          <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
-        </select>
-
-        <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
-          💾 कक्षा सेव करें (Save Class)
-        </button>
+      <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 16px;">
+        <span style="font-size: 0.85rem; font-weight: 800; color: #38bdf8;">अध्ययन कक्षा: 10th (मैट्रिक बोर्ड)</span>
       </div>
 
       <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
@@ -356,7 +333,7 @@
     <div class="pdf-modal-window">
       <div class="pdf-studio-header">
         <div class="pdf-doc-meta">
-          <span class="pdf-doc-badge" id="modalDocBadge">Class 10 / 11 / 12</span>
+          <span class="pdf-doc-badge" id="modalDocBadge">Class 10th Matric</span>
           <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
         </div>
         <div class="pdf-studio-actions">
@@ -375,13 +352,12 @@
           src="" 
           id="studioPdfFrame" 
           frameborder="0" 
-          allowfullscreen 
-          sandbox="allow-scripts allow-same-origin allow-forms">
+          allowfullscreen>
         </iframe>
       </div>
 
       <div class="pdf-studio-footer">
-        <span>NischayDesk In-App HD Reader</span>
+        <span>NischayDesk Class 10th HD Reader</span>
         <span class="reading-hint">ज़ूम करने के लिए पिंच करें या +/- दबाएं</span>
       </div>
     </div>
@@ -396,7 +372,7 @@
           <span class="brand-title">Nischay<span style="color: var(--brand-accent);">Desk</span></span>
         </div>
         <p class="footer-summary">
-          बिहार बोर्ड मैट्रिक एवं इंटर साइंस के विद्यार्थियों के लिए समर्पित 100% फ्री स्टडी हब।
+          बिहार बोर्ड मैट्रिक (Class 10th) के विद्यार्थियों के लिए समर्पित 100% फ्री स्टडी हब।
         </p>
       </div>
 
@@ -427,7 +403,7 @@
   <script src="notes-viewer.js"></script>
   <script src="main.js"></script>
 
-  <!-- Modal & Class Sync Controls -->
+  <!-- Modal Controls -->
   <script>
     function openProfileModal() {
       const modal = document.getElementById('customProfileModal');
@@ -436,10 +412,6 @@
       const nameEl = document.getElementById('modalUserName');
       const emailEl = document.getElementById('modalUserEmail');
       const imgEl = document.getElementById('modalUserImg');
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-
-      const savedClass = localStorage.getItem('nd_selected_class') || '10th';
-      if (classSelect) classSelect.value = savedClass;
 
       if (window.firebase && firebase.auth) {
         const user = firebase.auth().currentUser;
@@ -462,29 +434,6 @@
       if (loader) loader.style.display = 'none';
       const btn = document.getElementById('btnPerformLogout');
       if (btn) btn.disabled = false;
-    }
-
-    function confirmSaveClassSelection() {
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-      if (!classSelect) return;
-
-      const chosen = classSelect.value;
-      localStorage.setItem("nd_selected_class", chosen);
-      localStorage.setItem("nischay_student_class", chosen.replace(/[^0-9]/g, ''));
-      localStorage.setItem("user_class", chosen);
-
-      if (window.firebase && firebase.auth) {
-        const user = firebase.auth().currentUser;
-        if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
-          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).set({
-            selectedClass: chosen
-          }, { merge: true });
-        }
-      }
-
-      alert(`✓ आपकी कक्षा Class ${chosen} सेव हो गई है!`);
-      closeProfileModal();
-      location.reload();
     }
 
     function handleSlowLogout() {
