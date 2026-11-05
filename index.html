@@ -66,7 +66,6 @@
       box-sizing: border-box !important;
     }
 
-    /* 🌟 अल्ट्रा-प्रीमियम कस्टम स्क्रॉलबार */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -642,7 +641,7 @@
       padding-left: 8px;
     }
 
-    /* 📱 कस्टम बॉटम-शीट क्लास सेलेक्टर (डिफ़ॉल्ट पॉप-अप का स्थायी हल) */
+    /* 📱 कस्टम बॉटम-शीट क्लास सेलेक्टर */
     .nd-sheet-backdrop {
       display: none;
       position: fixed;
@@ -730,7 +729,57 @@
       color: #38bdf8;
     }
 
-    /* 🌟 प्रोफ़ेशनल फ्लोटिंग ग्लास टोस्ट (डिफ़ॉल्ट alert की जगह) */
+    /* 🌟 साइड ड्रॉअर का प्रीमियम एनिमेटेड लुक */
+    .side-drawer {
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.15) 0%, rgba(7, 17, 32, 0.98) 100%) !important;
+      backdrop-filter: blur(14px);
+      border-right: 1.5px solid rgba(56, 189, 248, 0.25) !important;
+      box-shadow: 10px 0 35px rgba(0, 0, 0, 0.6) !important;
+      transform: translateX(-100%);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .side-drawer.active {
+      transform: translateX(0) !important;
+    }
+    .drawer-nav-item {
+      transition: transform 0.15s ease, background-color 0.2s ease !important;
+    }
+    .drawer-nav-item:active {
+      transform: scale(0.97);
+    }
+
+    /* 🌟 PDF इंजन मोडल (डिफ़ॉल्ट रूप से हमेशा छिपा रहेगा) */
+    #heavyPdfModal {
+      display: none !important;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 99999999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    #heavyPdfModal.active {
+      display: flex !important;
+    }
+    .heavy-pdf-box {
+      background: #0f172a;
+      border: 1.5px solid #0284c7;
+      border-radius: 18px;
+      max-width: 400px;
+      width: 100%;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      color: #ffffff;
+    }
+
+    /* 🌟 प्रोफ़ेशनल फ्लोटिंग ग्लास टोस्ट */
     .nd-toast-container {
       position: fixed;
       bottom: 74px;
@@ -759,6 +808,132 @@
     }
     .nd-toast-icon { font-size: 1.25rem; flex-shrink: 0; }
     .nd-toast-msg { font-size: 0.88rem; font-weight: 700; color: #f8fafc; }
+
+    /* 🌟 WELCOME LOGIN MODAL */
+    .nd-login-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 20, 0.82);
+      backdrop-filter: blur(12px);
+      z-index: 99999999;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+    .nd-login-backdrop.active {
+      display: flex !important;
+    }
+    .nd-login-card {
+      background: rgba(15, 23, 42, 0.96);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 380px;
+      padding: 30px 24px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      position: relative;
+      text-align: center;
+      animation: ndPop 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    html.light-mode .nd-login-card,
+    html[data-theme="light"] .nd-login-card {
+      background: #ffffff;
+      border-color: #cbd5e1;
+    }
+    @keyframes ndPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .nd-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .nd-logo-bubble {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+    }
+    .nd-logo-bubble img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .nd-login-card h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .nd-login-card h3 span { color: #38bdf8; }
+    .nd-tagline {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+    .nd-features-box {
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .nd-features-box div {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nd-features-box div:last-child { margin-bottom: 0; }
+    .nd-btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #1f2937;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .nd-btn-google:active { transform: scale(0.97); }
+    .nd-btn-google img { width: 22px; height: 22px; }
+    .nd-terms-note {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 18px;
+      line-height: 1.4;
+    }
 
     /* फ़ुटर */
     .khan-full-footer {
@@ -1038,7 +1213,8 @@
       <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
     </div>
 
-    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
+    <!-- जब यूज़र लॉग इन हो सिर्फ़ तभी ड्रॉअर प्रोफ़ाइल दिखेगी -->
+    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()" style="display: none;">
       <p class="drawer-user-prompt">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
 
@@ -1129,7 +1305,7 @@
           </div>
         </div>
 
-        <!-- 🌟 बिना लॉगिन वाले छात्रों के लिए कस्टम क्लास बार -->
+        <!-- बिना लॉगिन वाले छात्रों के लिए कस्टम क्लास बार -->
         <div id="guestClassBar" class="guest-class-bar" onclick="openCustomClassSheet()">
           <div class="guest-class-info">
             <span>📚 वर्तमान अध्ययन कक्षा:</span>
@@ -1155,11 +1331,11 @@
           </a>
         </div>
 
-        <!-- 🌟 इंटरैक्टिव OMR सवाल -->
+        <!-- 🌟 इंटरैक्टिव OMR सवाल (4 सेकंड में ऑटो-चेंजिंग) -->
         <div class="daily-poll-card">
           <div class="poll-tag-row">
-            <span class="poll-badge">🎯 लाइव बोर्ड सवाल (Auto-Changing)</span>
-            <span class="poll-counter-indicator" id="pollCounter">प्रश्न: 1 / 5</span>
+            <span class="poll-badge" id="pollClassBadgeLabel">🎯 10th लाइव बोर्ड सवाल (4s Fast)</span>
+            <span class="poll-counter-indicator" id="pollCounter">प्रश्न: 1 / 10</span>
           </div>
 
           <div class="poll-dynamic-box" id="pollDynamicWrap">
@@ -1369,6 +1545,17 @@
           <span class="pro-row-arrow">›</span>
         </a>
 
+        <a href="notes.html?filter=11-math" class="pro-list-row">
+          <div class="pro-row-left">
+            <div class="pro-row-badge-icon" style="background: rgba(56, 189, 248, 0.12); color:#38bdf8;">📐</div>
+            <div class="pro-row-text">
+              <h4>गणित (Mathematics)</h4>
+              <p>समुच्चय (Sets), संबंध एवं फलन, त्रिकोणमितीय फलन</p>
+            </div>
+          </div>
+          <span class="pro-row-arrow">›</span>
+        </a>
+
         <a href="https://nischaydesk.github.io/nischay-quiz/" class="pro-list-row">
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">⏱️</div>
@@ -1521,15 +1708,15 @@
 
     <input type="file" id="heavyPdfFileInput" accept="image/*" multiple style="display: none;" />
 
-    <!-- ⚡ PDF जनरेटर मोडल -->
+    <!-- ⚡ PDF जनरेटर मोडल (डिफ़ॉल्ट रूप से हमेशा छिपा रहेगा) -->
     <div id="heavyPdfModal">
-      <div class="heavy-pdf-box" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56,189,248,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(56,189,248,0.2);">
+      <div class="heavy-pdf-box">
         <div style="font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5));">🖼️ ➔ 📄</div>
         <h3 style="color: #38bdf8; margin: 0 0 6px 0; font-size: 1.3rem; font-weight: 900;">HD इमेज To PDF इंजन</h3>
         <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;" id="heavyPdfStatusText">कृपया प्रतीक्षा करें, आपकी फोटो प्रोसेस हो रही है...</p>
         
-        <div class="pdf-track" style="margin: 20px 0 12px 0; height: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
-          <div class="pdf-fill" id="heavyPdfFillBar" style="background: linear-gradient(90deg, #0284c7, #38bdf8, #a855f7); box-shadow: 0 0 10px rgba(56,189,248,0.5);"></div>
+        <div class="pdf-track" style="margin: 20px 0 12px 0; height: 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+          <div class="pdf-fill" id="heavyPdfFillBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #0284c7, #38bdf8, #a855f7); border-radius: 8px; transition: width 0.1s ease-out;"></div>
         </div>
 
         <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; color: #94a3b8;">
@@ -1539,7 +1726,7 @@
       </div>
     </div>
 
-    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (रेडियो बटन की जगह) -->
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल -->
     <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
       <div class="nd-sheet-content">
         <div class="nd-sheet-header">
@@ -1563,7 +1750,7 @@
       </div>
     </div>
 
-    <!-- 🌟 प्रोफ़ाइल मोडल -->
+    <!-- 🌟 प्रोफ़ाइल मोडल (केवल लॉगिन पर उपलब्ध) -->
     <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
       <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
         
@@ -1596,7 +1783,7 @@
       </div>
     </div>
 
-    <!-- 🌟 लॉगिन मोडल -->
+    <!-- 🌟 वेलकम लॉगिन मोडल (Google लॉगिन पर क्लिक करने पर ही खुलेगा) -->
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
@@ -1625,7 +1812,7 @@
       </div>
     </div>
 
-    <!-- 🌟 कस्टम टोस्ट नोटिफिकेशन (डिफ़ॉल्ट alert की जगह) -->
+    <!-- 🌟 कस्टम फ्लोटिंग टोस्ट -->
     <div id="ndToast" class="nd-toast-container">
       <span class="nd-toast-icon" id="ndToastIcon">✅</span>
       <span class="nd-toast-msg" id="ndToastMsg">सफलतापूर्वक पूर्ण हुआ!</span>
@@ -1717,7 +1904,7 @@
 
   <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
-    /* 🌟 प्रोफ़ेशनल कस्टम टोस्ट (डिफ़ॉल्ट alert को पूरी तरह ओवरराइड करता है) */
+    /* 🌟 कस्टम फ्लोटिंग टोस्ट */
     let toastTimer = null;
     function showToast(msg, icon = '✅') {
       const toast = document.getElementById('ndToast');
@@ -1735,7 +1922,6 @@
       }, 3000);
     }
 
-    // ब्राउज़र के विंडो alert को ऐप के कस्टम टोस्ट से बदलें
     window.alert = function(msg) {
       showToast(msg, 'ℹ️');
     };
@@ -1760,55 +1946,68 @@
       }
     });
 
-    /* 🌟 ऑटो-रोटेटिंग OMR क्विज़ इंजन */
-    const rotatingBoardQuestions = [
-      {
-        question: "प्रकाश के परावर्तन के कितने नियम होते हैं?",
-        options: ["1", "2", "3", "4"],
-        correctIndex: 1,
-        note: "प्रकाश के परावर्तन के 2 नियम होते हैं।"
-      },
-      {
-        question: "दाढ़ी बनाने में किस प्रकार के दर्पण का उपयोग किया जाता है?",
-        options: ["समतल दर्पण", "उत्तल दर्पण", "अवतल दर्पण", "इनमें कोई नहीं"],
-        correctIndex: 2,
-        note: "अवतल दर्पण चेहरे का बड़ा व सीधा प्रतिबिंब बनाता है।"
-      },
-      {
-        question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?",
-        options: ["उत्तल लेंस", "अवतल लेंस", "द्विफोकसी", "बेलनाकार"],
-        correctIndex: 0,
-        note: "मानव नेत्र में प्राकृतिक रूप से उत्तल लेंस होता है।"
-      },
-      {
-        question: "विद्युत धारा का SI मात्रक क्या होता है?",
-        options: ["वोल्ट", "एम्पियर", "ओम", "वाट"],
-        correctIndex: 1,
-        note: "विद्युत धारा का SI मात्रक एम्पियर (A) होता है।"
-      },
-      {
-        question: "अम्ल का pH मान कितना होता है?",
-        options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"],
-        correctIndex: 0,
-        note: "अम्लीय विलयन का pH मान हमेशा 7 से कम होता है।"
-      }
-    ];
+    /* ================= 🌟 कक्षा अनुसार 10-10 सवाल (Class-Wise 10 Questions Bank) ================= */
+    const classQuestionsBank = {
+      "10th": [
+        { question: "प्रकाश के परावर्तन के कितने नियम होते हैं?", options: ["1", "2", "3", "4"], correctIndex: 1, note: "परावर्तन के 2 नियम हैं।" },
+        { question: "दाढ़ी बनाने में किस दर्पण का उपयोग होता है?", options: ["समतल", "उत्तल", "अवतल", "कोई नहीं"], correctIndex: 2, note: "अवतल दर्पण सीधा व बड़ा चित्र बनाता है।" },
+        { question: "मानव नेत्र में किस प्रकार का लेंस पाया जाता है?", options: ["उत्तल", "अवतल", "बेलनाकार", "द्विफोकसी"], correctIndex: 0, note: "नेत्र में उत्तल लेंस होता है।" },
+        { question: "विद्युत धारा का SI मात्रक क्या होता है?", options: ["वोल्ट", "एम्पियर", "ओम", "वाट"], correctIndex: 1, note: "SI मात्रक एम्पियर (A) है।" },
+        { question: "अम्ल का pH मान कितना होता है?", options: ["7 से कम", "7 के बराबर", "7 से अधिक", "14"], correctIndex: 0, note: "अम्ल 7 से कम होता है।" },
+        { question: "शुद्ध जल का pH मान कितना होता है?", options: ["6", "7", "8", "9"], correctIndex: 1, note: "शुद्ध जल उदासीन (pH 7) होता है।" },
+        { question: "लोहे को जंग से बचाने के लिए क्या लेपित करते हैं?", options: ["तांबा", "जस्ता (Zinc)", "चांदी", "पारा"], correctIndex: 1, note: "गैल्वनीकरण में जिंक चढ़ाते हैं।" },
+        { question: "पौधों में जाइलम किसके लिए उत्तरदायी है?", options: ["जल का वहन", "भोजन का वहन", "अमीनो अम्ल", "ऑक्सीजन"], correctIndex: 0, note: "जाइलम जल का संवहन करता है।" },
+        { question: "द्विघात समीकरण ax² + bx + c = 0 का विविक्तकर (D) है:", options: ["b² - 4ac", "b² + 4ac", "4ac - b²", "2a + b"], correctIndex: 0, note: "D = b² - 4ac होता है।" },
+        { question: "पाइथागोरस प्रमेय किस त्रिभुज से संबंधित है?", options: ["समबाहु", "समकोण", "अधिककोण", "समद्विबाहु"], correctIndex: 1, note: "कर्ण² = लम्ब² + आधार² समकोण त्रिभुज में होता है।" }
+      ],
+      "11th": [
+        { question: "कार्य (Work) का SI मात्रक क्या है?", options: ["जूल (J)", "न्यूटन", "पास्कल", "वाट"], correctIndex: 0, note: "कार्य का मात्रक जूल होता है।" },
+        { question: "गुरुत्वीय त्वरण 'g' का औसत मान पृथ्वी पर कितना है?", options: ["9.8 m/s²", "8.9 m/s²", "10.8 m/s²", "7.8 m/s²"], correctIndex: 0, note: "पृथ्वी पर g = 9.8 m/s² है।" },
+        { question: "यदि समुच्चय A = {1, 2} हो, तो उपसमुच्चयों की संख्या होगी:", options: ["2", "4", "8", "16"], correctIndex: 1, note: "उपसमुच्चयों की संख्या 2ⁿ = 2² = 4 होती है।" },
+        { question: "आधुनिक आवर्त सारणी में कुल कितने समूह (Groups) हैं?", options: ["7", "8", "18", "16"], correctIndex: 2, note: "आधुनिक आवर्त सारणी में 18 समूह होते हैं।" },
+        { question: "प्रकाश वर्ष (Light Year) किसका मात्रक है?", options: ["समय", "दूरी", "प्रकाश तीव्रता", "द्रव्यमान"], correctIndex: 1, note: "प्रकाश वर्ष खगोलीय दूरी का मात्रक है।" },
+        { question: "मोल संकल्पना में 1 मोल में कितने कण होते हैं?", options: ["6.022 × 10²³", "6.022 × 10²²", "3.011 × 10²³", "9.1 × 10⁻³¹"], correctIndex: 0, note: "यह आवोगाद्रो नियतांक (Nₐ) है।" },
+        { question: "कोशिका का 'पावर हाउस' (Powerhouse) किसे कहते हैं?", options: ["राइबोसोम", "माइटोकॉन्ड्रिया", "गॉल्जीकाय", "लाइसोसोम"], correctIndex: 1, note: "माइटोकॉन्ड्रिया ATP उत्पन्न करता है।" },
+        { question: "sin²θ + cos²θ का मान कितना होता है?", options: ["0", "1", "2", "-1"], correctIndex: 1, note: "सर्वसमिका sin²θ + cos²θ = 1 है।" },
+        { question: "श्यानता (Viscosity) का SI मात्रक क्या है?", options: ["प्वाइज़ली (Poiseuille)", "पास्कल", "हर्ट्ज़", "न्यूटन"], correctIndex: 0, note: "तरल घर्षण का मात्रक प्वाइज़ली है।" },
+        { question: "ऊष्मागतिकी का प्रथम नियम किस संरक्षण पर आधारित है?", options: ["द्रव्यमान", "संवेग", "ऊर्जा", "आवेश"], correctIndex: 2, note: "यह ऊर्जा संरक्षण का नियम है।" }
+      ],
+      "12th": [
+        { question: "विद्युत आवेश का SI मात्रक क्या होता है?", options: ["कूलम्ब (C)", "फैराड", "एम्पियर", "वोल्ट"], correctIndex: 0, note: "आवेश का SI मात्रक कूलम्ब है।" },
+        { question: "लेंस का नियम (Lenz's Law) किसके संरक्षण पर आधारित है?", options: ["आवेश", "द्रव्यमान", "ऊर्जा", "संवेग"], correctIndex: 2, note: "लेंस नियम ऊर्जा संरक्षण पर आधारित है।" },
+        { question: "d/dx (sin x) का अवकलन (Derivative) क्या है?", options: ["cos x", "-cos x", "sec x", "tan x"], correctIndex: 0, note: "sin x का अवकलन cos x होता है।" },
+        { question: "शुद्ध अर्धचालक में ताप बढ़ाने पर उसकी चालकता:", options: ["बढ़ती है", "घटती है", "अपरिवर्तित रहती है", "शून्य होती है"], correctIndex: 0, note: "ताप बढ़ने से अर्धचालक की चालकता बढ़ती है।" },
+        { question: "DNA के डबल हेलिक्स मॉडल की खोज किसने की थी?", options: ["वाटसन एवं क्रिक", "मेंडल", "डार्विन", "लामार्क"], correctIndex: 0, note: "1953 में वाटसन और क्रिक ने खोजा था।" },
+        { question: "चुंबकीय फ्लक्स (Magnetic Flux) का SI मात्रक क्या है?", options: ["वेबर (Wb)", "टेस्ला", "गॉस", "हेनरी"], correctIndex: 0, note: "फ्लक्स का मात्रक वेबर (Wb) है।" },
+        { question: "∫ eˣ dx का समाकलन (Integration) क्या होगा?", options: ["eˣ + C", "-eˣ + C", "e²ˣ + C", "x + C"], correctIndex: 0, note: "eˣ का समाकलन eˣ ही होता है।" },
+        { question: "प्रथम कोटि की अभिक्रिया का अर्धायु काल (t₁/₂) निर्भर करता है:", options: ["प्रारंभिक सांद्रता पर", "प्रारंभिक सांद्रता से स्वतंत्र", "दाब पर", "उत्पाद पर"], correctIndex: 1, note: "t₁/₂ = 0.693/k सांद्रता से स्वतंत्र होता है।" },
+        { question: "पी-प्रकार (p-type) अर्धचालक में मुख्य आवेश वाहक होते हैं:", options: ["इलेक्ट्रॉन", "कोटर (Holes)", "प्रोटॉन", "न्यूट्रॉन"], correctIndex: 1, note: "p-type में होल्स मुख्य वाहक होते हैं।" },
+        { question: "प्रकाश विद्युत प्रभाव (Photoelectric Effect) की व्याख्या किसने की?", options: ["आइंस्टीन", "न्यूटन", "मैक्सवेल", "बोर"], correctIndex: 0, note: "आइंस्टीन को इस पर 1921 का नोबेल मिला था।" }
+      ]
+    };
 
     let currentQIndex = 0;
     let autoRotateTimer = null;
+    let activeClass = "10th";
 
     function renderDynamicQuestion(index) {
-      const qData = rotatingBoardQuestions[index];
+      const qList = classQuestionsBank[activeClass] || classQuestionsBank["10th"];
+      if (index >= qList.length) index = 0;
+      currentQIndex = index;
+
+      const qData = qList[currentQIndex];
       const wrapEl = document.getElementById('pollDynamicWrap');
       const qTextEl = document.getElementById('dailyPollQ');
       const gridEl = document.getElementById('pollOptionsGrid');
       const countEl = document.getElementById('pollCounter');
       const feedbackEl = document.getElementById('pollFeedbackMsg');
+      const badgeLabel = document.getElementById('pollClassBadgeLabel');
 
       if (!wrapEl || !qTextEl || !gridEl) return;
 
+      if (badgeLabel) badgeLabel.textContent = `🎯 ${activeClass} लाइव बोर्ड सवाल (4s Fast)`;
       feedbackEl.style.display = 'none';
-      countEl.textContent = `प्रश्न: ${index + 1} / ${rotatingBoardQuestions.length}`;
+      countEl.textContent = `प्रश्न: ${currentQIndex + 1} / ${qList.length}`;
 
       wrapEl.classList.add('fade-out');
 
@@ -1829,7 +2028,7 @@
         });
 
         wrapEl.classList.remove('fade-out');
-      }, 300);
+      }, 250);
     }
 
     function checkDynamicAnswer(btn, selectedIdx, qData) {
@@ -1856,22 +2055,24 @@
       setTimeout(() => {
         nextRotatingQuestion();
         startQuestionRotation();
-      }, 5000);
+      }, 3500);
     }
 
     function nextRotatingQuestion() {
-      currentQIndex = (currentQIndex + 1) % rotatingBoardQuestions.length;
+      const qList = classQuestionsBank[activeClass] || classQuestionsBank["10th"];
+      currentQIndex = (currentQIndex + 1) % qList.length;
       renderDynamicQuestion(currentQIndex);
     }
 
+    /* 🌟 4 सेकंड में फास्ट रोटेशन (4000ms) */
     function startQuestionRotation() {
       clearInterval(autoRotateTimer);
       autoRotateTimer = setInterval(() => {
         nextRotatingQuestion();
-      }, 7000);
+      }, 4000);
     }
 
-    /* 🌟 ड्रॉअर हैंडलिंग */
+    /* 🌟 साइड ड्रॉअर नियंत्रण */
     const menuBtn = document.getElementById('mobileMenuBtn');
     const sideDrawerEl = document.getElementById('sideDrawer');
     const scrimEl = document.getElementById('drawerScrim');
@@ -1906,7 +2107,7 @@
       }
     }
 
-    /* 🌟 कस्टम बॉटम-शीट क्लास सेलेक्टर (डिफ़ॉल्ट सेलेक्ट मेनू का रिप्लेसमेंट) */
+    /* 🌟 कस्टम क्लास बॉटम-शीट */
     function openCustomClassSheet() {
       const backdrop = document.getElementById('ndClassSheetBackdrop');
       if (backdrop) {
@@ -1931,11 +2132,10 @@
     }
 
     function highlightSelectedClassInSheet() {
-      const current = localStorage.getItem("nd_selected_class") || "10th";
       ['10th', '11th', '12th'].forEach(c => {
         const el = document.getElementById(`optClass${c}`);
         if (el) {
-          if (c === current) el.classList.add('selected');
+          if (c === activeClass) el.classList.add('selected');
           else el.classList.remove('selected');
         }
       });
@@ -1954,15 +2154,17 @@
         }
       }
 
-      showToast(`आपकी कक्षा Class ${chosenClass} सेट कर दी गई है!`, '🎯');
+      showToast(`कक्षा Class ${chosenClass} सेट कर दी गई है!`, '🎯');
     }
 
-    /* 🌟 क्लास स्विचिंग और यूआई अपडेट */
+    /* 🌟 क्लास स्विचिंग और यूआई सिंक */
     function applyStudentClass(selectedClass) {
       let cleanClass = "10th";
       if (String(selectedClass).includes("11")) cleanClass = "11th";
       else if (String(selectedClass).includes("12")) cleanClass = "12th";
       else cleanClass = "10th";
+
+      activeClass = cleanClass;
 
       localStorage.setItem("nd_selected_class", cleanClass);
       localStorage.setItem("nischay_user_class", cleanClass);
@@ -1979,6 +2181,7 @@
       if (guestBadge) guestBadge.textContent = `Class ${cleanClass}`;
       if (profText) profText.textContent = `Class ${cleanClass}`;
 
+      // सिर्फ़ चुनी गई कक्षा का सेक्शन दिखाएँ
       const sec10 = document.getElementById('sectionClass10');
       const sec11 = document.getElementById('sectionClass11');
       const sec12 = document.getElementById('sectionClass12');
@@ -1986,13 +2189,19 @@
       if (sec10) sec10.style.display = (cleanClass === "10th") ? "block" : "none";
       if (sec11) sec11.style.display = (cleanClass === "11th") ? "block" : "none";
       if (sec12) sec12.style.display = (cleanClass === "12th") ? "block" : "none";
+
+      // उस कक्षा के 10 सवाल तुरंत लोड करें
+      renderDynamicQuestion(0);
+      startQuestionRotation();
     }
 
+    /* 🌟 लॉगिन स्थिति सिंक (जब तक लॉगिन न हो, लॉगआउट बटन नहीं दिखेगा) */
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
       const welcomeCard = document.getElementById('personalizedWelcomeCard');
       const guestBar = document.getElementById('guestClassBar');
+      const drawerUserCard = document.getElementById('drawerUserCard');
       const userDisplay = document.getElementById('userDisplayName');
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
@@ -2001,7 +2210,12 @@
       applyStudentClass(savedClass);
 
       if (user) {
+        // यूज़र लॉग इन है: प्रोफ़ाइल और लॉगआउट बटन एक्टिव
         if (guestBar) guestBar.style.display = 'none';
+        if (authBtn) authBtn.style.display = 'none';
+        if (profileWidget) profileWidget.style.display = 'flex';
+        if (welcomeCard) welcomeCard.style.display = 'block';
+        if (drawerUserCard) drawerUserCard.style.display = 'block';
 
         const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
         const firstName = rawName.trim().split(' ')[0];
@@ -2009,10 +2223,6 @@
         if (userDisplay) userDisplay.textContent = firstName;
         if (welcomeDisplay) welcomeDisplay.textContent = firstName;
         if (userImg) userImg.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
-
-        if (authBtn) authBtn.style.display = 'none';
-        if (profileWidget) profileWidget.style.display = 'flex';
-        if (welcomeCard) welcomeCard.style.display = 'block';
 
         if (window.NischayConfig && window.NischayConfig.dbInstance) {
           window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).get().then(doc => {
@@ -2022,22 +2232,24 @@
           }).catch(e => console.log(e));
         }
       } else {
+        // यूज़र लॉग इन नहीं है: प्रोफ़ाइल व लॉगआउट पूर्णतः बंद
         if (authBtn) authBtn.style.display = 'inline-flex';
         if (profileWidget) profileWidget.style.display = 'none';
         if (welcomeCard) welcomeCard.style.display = 'none';
+        if (drawerUserCard) drawerUserCard.style.display = 'none';
         if (guestBar) guestBar.style.display = 'flex';
       }
     }
 
-    /* 🌟 लॉगिन मोडल */
+    /* 🌟 लॉगिन मोडल (सिर्फ़ Google लॉगिन बटन दबाने पर खुलेगा) */
     function openWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
-      if (modal) modal.style.display = 'flex';
+      if (modal) modal.classList.add('active');
     }
 
     function closeWelcomeLoginModal() {
       const modal = document.getElementById('ndWelcomeLoginModal');
-      if (modal) modal.style.display = 'none';
+      if (modal) modal.classList.remove('active');
     }
 
     function handleOutsideModalClick(e) {
@@ -2054,26 +2266,23 @@
         firebase.auth().signInWithPopup(provider)
           .then(() => {
             closeWelcomeLoginModal();
-            showToast("लॉगिन सफल हुआ!", "🚀");
+            showToast("Google लॉगिन सफल हुआ!", "🚀");
           })
           .catch((err) => {
             if (err.code === 'auth/popup-blocked') {
               firebase.auth().signInWithRedirect(provider);
             } else if (err.code !== 'auth/popup-closed-by-user') {
-              showToast("लॉगिन नहीं हो सका, पुनः प्रयास करें", "❌");
+              showToast("लॉगिन विफल रहा, पुनः प्रयास करें", "❌");
             }
           });
       } else {
-        showToast("सर्वर कनेक्शन लोड हो रहा है...", "⏳");
+        showToast("फ़ायरबेस लोड हो रहा है, 2 सेकंड रुकें...", "⏳");
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       const initialClass = localStorage.getItem('nd_selected_class') || '10th';
       applyStudentClass(initialClass);
-
-      renderDynamicQuestion(0);
-      startQuestionRotation();
 
       const authBtn = document.getElementById('headerAuthBtn');
       if (authBtn) {
@@ -2144,7 +2353,12 @@
       }, 700);
     }
 
-    /* 🌟 PDF इंजन */
+    /* 🌟 इमेज To PDF इंजन */
+    function triggerFastPdfConverter() {
+      const input = document.getElementById('heavyPdfFileInput');
+      if (input) input.click();
+    }
+
     document.getElementById('heavyPdfFileInput').addEventListener('change', async function(e) {
       const files = Array.from(e.target.files);
       if (!files || files.length === 0) return;
@@ -2155,18 +2369,12 @@
       const pageCounter = document.getElementById('heavyPdfPageCounter');
       const percentEl = document.getElementById('heavyPdfPercent');
 
-      modal.style.display = 'flex';
-      fillBar.style.width = '0%';
+      if (modal) modal.classList.add('active');
+      if (fillBar) fillBar.style.width = '0%';
 
       try {
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'pt',
-          format: 'a4',
-          compress: true
-        });
-
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4', compress: true });
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
 
@@ -2181,7 +2389,6 @@
           percentEl.textContent = pct + '%';
 
           const compressedDataUrl = await compressAndLoadImage(file);
-
           if (i > 0) pdf.addPage();
 
           const imgProps = pdf.getImageProperties(compressedDataUrl);
@@ -2209,14 +2416,14 @@
         setTimeout(() => {
           const timestamp = new Date().toISOString().slice(0,10);
           pdf.save(`NischayDesk_ImagesToPDF_${timestamp}.pdf`);
-          modal.style.display = 'none';
+          if (modal) modal.classList.remove('active');
           e.target.value = '';
           showToast("PDF सफलतापूर्वक डाउनलोड हो गई!", "📥");
         }, 800);
 
       } catch (err) {
         showToast("PDF बनाने में समस्या आई", "❌");
-        modal.style.display = 'none';
+        if (modal) modal.classList.remove('active');
         e.target.value = '';
       }
     });
@@ -2244,7 +2451,6 @@
             canvas.height = h;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, w, h);
-
             resolve(canvas.toDataURL('image/jpeg', 0.72));
           };
           img.onerror = reject;
