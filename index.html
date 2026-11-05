@@ -357,19 +357,15 @@
       font-weight: 900;
       font-size: 0.82rem;
     }
-    .class-switch-links {
-      display: flex;
-      gap: 8px;
-    }
-    .switch-link-pill {
+    .class-switch-btn {
       background: rgba(56, 189, 248, 0.15);
       border: 1px solid rgba(56, 189, 248, 0.4);
       color: #38bdf8;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 8px;
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       font-weight: 800;
-      text-decoration: none;
+      cursor: pointer;
     }
 
     /* 🌟 स्टैट्स स्ट्रिप */
@@ -533,12 +529,6 @@
       color: var(--text-main);
       margin: 0;
     }
-    .section-head-pro a {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #38bdf8;
-      text-decoration: none;
-    }
     .pro-icons-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -636,7 +626,95 @@
       padding-left: 8px;
     }
 
-    /* 🌟 साइड ड्रॉअर */
+    /* 📱 कस्टम बॉटम-शीट क्लास सेलेक्टर */
+    .nd-sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 999999999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .nd-sheet-backdrop.active { display: flex !important; }
+    .nd-sheet-content {
+      width: 100%;
+      max-width: 480px;
+      background: #0b1329;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 22px 22px 0 0;
+      padding: 20px 18px 28px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      animation: ndSheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html.light-mode .nd-sheet-content,
+    html[data-theme="light"] .nd-sheet-content {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    @keyframes ndSheetSlideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .nd-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 14px;
+    }
+    html.light-mode .nd-sheet-header,
+    html[data-theme="light"] .nd-sheet-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
+    .nd-sheet-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nd-sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nd-sheet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nd-sheet-opt-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html.light-mode .nd-sheet-opt-item,
+    html[data-theme="light"] .nd-sheet-opt-item {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .nd-sheet-opt-item.selected {
+      background: rgba(2, 132, 199, 0.2) !important;
+      border-color: #0284c7 !important;
+      color: #38bdf8 !important;
+    }
+
+    /* 🌟 साइड ड्रॉअर - SCROLL & SPACING FIX */
     .drawer-scrim {
       display: none;
       position: fixed;
@@ -672,6 +750,7 @@
       transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
       z-index: 99999999 !important;
       visibility: hidden;
+      padding-bottom: 110px !important; /* Bottom dock overlap fix */
     }
     html.light-mode .side-drawer,
     html[data-theme="light"] .side-drawer {
@@ -688,6 +767,7 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
     }
     html.light-mode .drawer-header,
     html[data-theme="light"] .drawer-header {
@@ -727,14 +807,14 @@
       padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      flex: 1 0 auto;
+      gap: 6px;
+      flex-shrink: 0;
     }
     .drawer-nav-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 14px;
+      padding: 11px 14px;
       border-radius: 10px;
       color: #cbd5e1;
       text-decoration: none;
@@ -746,12 +826,6 @@
     html[data-theme="light"] .drawer-nav-item {
       color: #334155 !important;
     }
-    .drawer-nav-item:hover,
-    .drawer-nav-item:active {
-      background: rgba(56, 189, 248, 0.12);
-      color: #38bdf8;
-      transform: translateX(4px);
-    }
     .drawer-nav-item.active {
       background: #0284c7 !important;
       color: #fff !important;
@@ -759,13 +833,12 @@
 
     /* 🌟 डेवलपर बैज */
     .drawer-footer-custom {
-      margin-top: auto;
-      padding: 20px 16px 40px;
+      margin-top: 15px;
+      padding: 18px 16px 20px;
       border-top: 1px solid rgba(56, 189, 248, 0.2);
       text-align: center;
       background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
-      position: relative;
-      overflow: hidden;
+      flex-shrink: 0;
     }
     html.light-mode .drawer-footer-custom,
     html[data-theme="light"] .drawer-footer-custom {
@@ -776,14 +849,10 @@
       font-size: 0.95rem;
       font-weight: 900;
       background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
-      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: shineDev 3s linear infinite;
-      display: inline-block;
       margin-bottom: 6px;
     }
-    @keyframes shineDev { to { background-position: 200% center; } }
     .developer-sub-badge {
       font-size: 0.72rem;
       color: #e2e8f0;
@@ -801,7 +870,7 @@
       border-color: #cbd5e1 !important;
     }
 
-    /* 🌟 फ़ूटर स्टाइल */
+    /* 🌟 फ़ूटर स्टाइल - 2 COLUMNS RESTORED */
     .khan-full-footer {
       background-color: #0b1a30 !important;
       color: #ffffff !important;
@@ -868,14 +937,9 @@
     .founder-avatar-pic {
       width: 48px !important;
       height: 48px !important;
-      min-width: 48px !important;
-      min-height: 48px !important;
-      max-width: 48px !important;
-      max-height: 48px !important;
       border-radius: 50% !important;
       object-fit: cover !important;
       border: 2px solid #38bdf8 !important;
-      display: block !important;
       flex-shrink: 0 !important;
     }
     .founder-meta-text h5 {
@@ -946,8 +1010,6 @@
       flex: 1 !important;
       height: 100% !important;
       gap: 3px !important;
-      border: none !important;
-      outline: none !important;
     }
     .dock-link-item.active {
       color: #0284c7 !important;
@@ -955,14 +1017,10 @@
     .dock-link-item .dock-icon-svg {
       font-size: 1.45rem !important;
       line-height: 1 !important;
-      display: block !important;
     }
     .dock-link-item .dock-label-text {
       font-size: 0.74rem !important;
       font-weight: 700 !important;
-      line-height: 1 !important;
-      text-decoration: none !important;
-      display: block !important;
     }
 
     /* स्विच स्टाइल */
@@ -1068,7 +1126,7 @@
     </nav>
   </header>
 
-  <!-- 2. साइड ड्रॉअर -->
+  <!-- 2. साइड ड्रॉअर (Overflow & Spacing Fixed) -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -1105,10 +1163,10 @@
         <span class="icon">🔍</span> परिणाम देखें (Result Portal)
       </a>
 
-      <!-- अन्य कक्षा लिंक -->
-      <div style="margin: 12px 0 6px; padding: 10px; background: rgba(56, 189, 248, 0.08); border-radius: 10px; border: 1px dashed rgba(56, 189, 248, 0.3);">
-        <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 6px;">अन्य कक्षा पोर्टल्स:</span>
-        <a href="class11.html" style="color: var(--text-main); font-size: 0.82rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+      <!-- क्लास स्विचिंग ब्लॉक -->
+      <div style="margin: 12px 0 6px; padding: 12px; background: rgba(56, 189, 248, 0.08); border-radius: 12px; border: 1px dashed rgba(56, 189, 248, 0.35);">
+        <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 8px;">अन्य कक्षा पोर्टल्स:</span>
+        <a href="class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px;">
           <span>🧪</span> कक्षा 11वीं (साइंस) खोलें ↗
         </a>
       </div>
@@ -1163,9 +1221,9 @@
             <span>📚 वर्तमान अध्ययन हब:</span>
             <span class="guest-badge-indicator">Class 10th (मैट्रिक बोर्ड)</span>
           </div>
-          <div class="class-switch-links">
-            <a href="class11.html" class="switch-link-pill">11th साइंस ↗</a>
-          </div>
+          <button type="button" class="class-switch-btn" onclick="openCustomClassSheet()">
+            कक्षा बदलें ▾
+          </button>
         </div>
 
         <div class="hero-chip-tag">⚡ BSEB 2026 OFFICIAL MATRIC HUB</div>
@@ -1365,15 +1423,106 @@
       </div>
     </section>
 
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल -->
+    <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
+      <div class="nd-sheet-content">
+        <div class="nd-sheet-header">
+          <h3>कक्षा चुनें (Select Class)</h3>
+          <button type="button" class="nd-sheet-close-btn" onclick="closeCustomClassSheet()">&times;</button>
+        </div>
+        <div class="nd-sheet-options">
+          <div class="nd-sheet-opt-item selected" onclick="selectClassAndRedirect('10th')">
+            <span>Class 10th (मैट्रिक बोर्ड)</span>
+            <span style="color:#38bdf8; font-weight:900;">✓</span>
+          </div>
+          <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('11th')">
+            <span>Class 11th (साइंस हब)</span>
+            <span style="color:#94a3b8; font-weight:900;">›</span>
+          </div>
+          <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('12th')">
+            <span>Class 12th (इंटर साइंस बोर्ड)</span>
+            <span style="color:#94a3b8; font-weight:900;">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🌟 प्रोफ़ाइल मोडल -->
+    <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(6px); z-index: 99999999; align-items: center; justify-content: center; padding: 16px;">
+      <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
+
+        <button type="button" onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
+
+        <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
+          <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
+          <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
+        </div>
+
+        <h3 id="modalUserName" style="margin: 0 0 4px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
+        <p id="modalUserEmail" style="margin: 0 0 16px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
+
+        <div style="text-align: left; margin-bottom: 16px;">
+          <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 8px;">अध्ययन कक्षा बदलें:</label>
+          <button type="button" onclick="closeProfileModal(); openCustomClassSheet();" style="width: 100%; background: #13224a; border: 1.5px solid #1e3a8a; color: #38bdf8; padding: 11px 14px; border-radius: 10px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+            <span>Class 10th (मैट्रिक)</span>
+            <span>बदलें ▾</span>
+          </button>
+        </div>
+
+        <button type="button" id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          🚪 लॉगआउट करें (Logout)
+        </button>
+
+        <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
+          ⏳ सुरक्षित लॉगआउट हो रहा है...
+        </div>
+
+      </div>
+    </div>
+
   </main>
 
-  <!-- 4. फ़ुटर -->
+  <!-- 4. फ़ुटर (Full 2 Columns Restored) -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
-      <div style="font-size:0.95rem; font-weight:800; color:#fff; margin-bottom:12px;">
+      <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 8px;">
         NischayDesk — कक्षा 10वीं बिहार बोर्ड मैट्रिक विशेष अध्ययन मंच
       </div>
+      <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.5; margin-bottom: 24px;">
+        हमारा उद्देश्य बिहार विद्यालय परीक्षा समिति (BSEB) के प्रत्येक विद्यार्थी को 100% निःशुल्क, उच्च गुणवत्ता वाले नोट्स और परीक्षा सिमुलेटर उपलब्ध कराना है।
+      </p>
 
+      <!-- दोनों कॉलम लिंक्स[span_6](start_span)[span_6](end_span) -->
+      <div class="footer-columns-grid">
+        <div>
+          <div class="footer-column-title">पोर्टल मेनू</div>
+          <ul class="footer-ul-links">
+            <li><a href="index.html">➔ 10th मुख्य डैशबोर्ड</a></li>
+            <li><a href="notes.html">➔ हस्तलिखित टॉपर्स नोट्स</a></li>
+            <li><a href="syllabus.html">➔ आधिकारिक सिलेबस & ब्लूप्रिंट</a></li>
+            <li><a href="pyq.html">➔ मैट्रिक क्वेश्चन बैंक (2020–2026)</a></li>
+            <li><a href="model-paper.html">➔ ऑफिशियल मॉडल पेपर्स</a></li>
+            <li><a href="bseb-simulator.html">➔ 3h 15m लाइव परीक्षा हॉल</a></li>
+            <li><a href="bseb-result.html">➔ परिणाम व मार्कशीट पोर्टल</a></li>
+            <li><a href="bseb-print.html">➔ OMR शीट व आंसर कॉपी</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-column-title">10th मुख्य विषय</div>
+          <ul class="footer-ul-links">
+            <li><a href="notes.html?filter=10-math">➔ गणित (Mathematics)</a></li>
+            <li><a href="notes.html?filter=10-science-phy">➔ भौतिकी (Physics)</a></li>
+            <li><a href="notes.html?filter=10-science-chem">➔ रसायन विज्ञान (Chemistry)</a></li>
+            <li><a href="notes.html?filter=10-science-bio">➔ जीव विज्ञान (Biology)</a></li>
+            <li><a href="notes.html?filter=10-sst-all">➔ सम्पूर्ण सामाजिक विज्ञान (SST)</a></li>
+            <li><a href="notes.html?filter=10-sanskrit">➔ संस्कृत (पीयूषम् एवं व्याकरण)</a></li>
+            <li><a href="class11.html" style="color: #38bdf8;">➔ कक्षा 11वीं साइंस हब ↗</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- फ़ाउंडर कार्ड[span_7](start_span)[span_7](end_span) -->
       <div class="founder-pro-strip">
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
@@ -1382,11 +1531,17 @@
             <p>Founder & Developer, NischayDesk (463/500 Bihar Board Topper)</p>
           </div>
         </div>
+
+        <div>
+          <a href="privacy.html" class="privacy-tag-btn">
+            <span>🔒</span> प्राइवेसी पॉलिसी एवं सेवा शर्तें
+          </a>
+        </div>
       </div>
 
       <div class="footer-bottom-statement">
-        © 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 10वीं मैट्रिक पोर्टल<br>
-        Empowering Bihar Board Aspirants Everywhere.
+        © 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 10वीं मैट्रिक विशेष पोर्टल<br>
+        Crafted with ❤️ by Prince Kumar for Bihar Board Students.
       </div>
     </div>
   </footer>
@@ -1407,11 +1562,11 @@
     </a>
     <a href="bseb-simulator.html" class="dock-link-item">
       <span class="dock-icon-svg">🏛️</span>
-      <span class="dock-label-text">एग्जाम</span>
+      <span class="dock-label-text">एग्जाम हॉल</span>
     </a>
   </nav>
 
-  <!-- 6. जावास्क्रिप्ट लॉजिक (सिर्फ़ 10वीं के लिए) -->
+  <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
     function initThemeSystem() {
       const themeSwitch = document.getElementById("themeSwitch");
@@ -1543,6 +1698,83 @@
     }
 
     document.getElementById('mobileMenuBtn').onclick = openDrawerUnified;
+
+    function openCustomClassSheet() {
+      const backdrop = document.getElementById('ndClassSheetBackdrop');
+      if (backdrop) {
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeCustomClassSheet() {
+      const backdrop = document.getElementById('ndClassSheetBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function handleClassSheetBackdrop(e) {
+      if (e.target.id === 'ndClassSheetBackdrop') {
+        closeCustomClassSheet();
+      }
+    }
+
+    function selectClassAndRedirect(chosenClass) {
+      closeCustomClassSheet();
+      localStorage.setItem("nd_selected_class", chosenClass);
+      localStorage.setItem("nischay_user_class", chosenClass);
+      localStorage.setItem("nischay_student_class", chosenClass.replace(/[^0-9]/g, ''));
+      localStorage.setItem("user_class", chosenClass);
+
+      if (chosenClass === "11th") {
+        window.location.href = "class11.html";
+      } else if (chosenClass === "12th") {
+        window.location.href = "class12.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+
+    function openProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (!modal) return;
+
+      const nameEl = document.getElementById('modalUserName');
+      const emailEl = document.getElementById('modalUserEmail');
+      const imgEl = document.getElementById('modalUserImg');
+
+      if (window.firebase && firebase.auth) {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
+          const firstName = rawName.trim().split(' ')[0];
+
+          if (nameEl) nameEl.textContent = firstName;
+          if (emailEl) emailEl.textContent = user.email || 'Google Verified';
+          if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
+        }
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleSlowLogout() {
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().finally(() => {
+          closeProfileModal();
+          window.location.reload();
+        });
+      } else {
+        closeProfileModal();
+        window.location.reload();
+      }
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
       initThemeSystem();
