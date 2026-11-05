@@ -16,21 +16,123 @@
 
   <style>
     .mp-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
-    .hero-banner { background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: #fff; padding: 24px; border-radius: 14px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; background: var(--surface-card, #0c1633); padding: 14px; border-radius: 10px; border: 1.5px solid var(--border-strong, #1e3a8a); }
-    .filter-bar select, .filter-bar input { padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border-strong, #1e3a8a); font-size: 0.92rem; outline: none; background: var(--surface-elevated, #13224a); color: var(--text-pure, #ffffff); }
+    .hero-banner { 
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%); 
+      color: #fff; 
+      padding: 24px; 
+      border-radius: 14px; 
+      margin-bottom: 20px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      animation: fadeInDown 0.4s ease-out;
+    }
+    
+    .filter-bar { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 10px; 
+      margin-bottom: 20px; 
+      background: var(--surface-card, #0c1633); 
+      padding: 14px; 
+      border-radius: 10px; 
+      border: 1.5px solid var(--border-strong, #1e3a8a);
+      animation: fadeIn 0.4s ease-out;
+    }
+    .filter-bar select, .filter-bar input { 
+      padding: 10px 14px; 
+      border-radius: 8px; 
+      border: 1.5px solid var(--border-strong, #1e3a8a); 
+      font-size: 0.92rem; 
+      outline: none; 
+      background: var(--surface-elevated, #13224a); 
+      color: var(--text-pure, #ffffff);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .filter-bar select:focus, .filter-bar input:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
     .filter-bar input { flex: 1; min-width: 200px; }
-    .mp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-    .mp-card { background: var(--surface-card, #0c1633); border-radius: 12px; padding: 16px; box-shadow: 0 3px 10px rgba(0,0,0,0.06); border: 1.5px solid var(--border-strong, #1e3a8a); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s; }
-    .mp-card:hover { transform: translateY(-3px); border-color: var(--brand-accent); }
-    .badge-official { background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; display: inline-block; border: 1px solid rgba(16, 185, 129, 0.3); }
+    
+    .mp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+    
+    .mp-card { 
+      background: var(--surface-card, #0c1633); 
+      border-radius: 12px; 
+      padding: 16px; 
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06); 
+      border: 1.5px solid var(--border-strong, #1e3a8a); 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+      animation: cardPopUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    }
+    .mp-card:hover { 
+      transform: translateY(-4px); 
+      border-color: #10b981;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+    }
+
+    .badge-official { 
+      background: rgba(16, 185, 129, 0.15); 
+      color: #10b981; 
+      padding: 4px 8px; 
+      border-radius: 6px; 
+      font-weight: bold; 
+      font-size: 0.8rem; 
+      display: inline-block; 
+      border: 1px solid rgba(16, 185, 129, 0.3); 
+    }
     .mp-card h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--text-pure, #ffffff); }
     .mp-card p { font-size: 0.85rem; color: var(--text-secondary, #94a3b8); margin-bottom: 12px; }
-    .btn-group { display: flex; gap: 8px; margin-top: 14px; }
-    .btn-view { flex: 1; background: #059669; color: white !important; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none; }
-    .btn-down { background: var(--surface-elevated, #13224a); color: var(--text-secondary, #94a3b8) !important; border: 1px solid var(--border-strong, #1e3a8a); padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    
+    /* 🌟 तीन बटन्स का नया रिस्पॉन्सिव ग्रुप */
+    .btn-group { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+    
+    .btn-action {
+      flex: 1;
+      min-width: 80px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-action:active { transform: scale(0.96); }
 
-    /* ☀️ लाइट मोड में परफेक्ट सफ़ेद बैकग्राउंड और साफ़ डार्क टेक्स्ट */
+    .btn-view-sol { 
+      background: #059669; 
+      color: #ffffff !important; 
+    }
+    .btn-view-sol:hover { background: #047857; }
+
+    .btn-preview { 
+      background: rgba(56, 189, 248, 0.15); 
+      color: #38bdf8 !important; 
+      border: 1px solid rgba(56, 189, 248, 0.35); 
+    }
+    .btn-preview:hover { background: rgba(56, 189, 248, 0.25); }
+
+    .btn-down { 
+      background: var(--surface-elevated, #13224a); 
+      color: var(--text-secondary, #94a3b8) !important; 
+      border: 1px solid var(--border-strong, #1e3a8a); 
+    }
+    .btn-down:hover { 
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981 !important;
+      border-color: #10b981;
+    }
+
+    /* ☀️ लाइट मोड सपोर्ट */
     html.light-mode .filter-bar,
     html[data-theme="light"] .filter-bar,
     html.light-mode .mp-card,
@@ -72,14 +174,115 @@
       color: #334155 !important;
     }
     
-    /* PDF Modal */
-    .pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
-    .pdf-modal.active { display: flex; }
-    .modal-box { width: 95%; max-width: 900px; height: 90%; background: var(--bg-surface, #fff); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; border: 1.5px solid var(--border-strong, #334155); }
-    .modal-header { padding: 12px 16px; background: #0f172a; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-    .modal-body { flex: 1; }
+    /* 🎬 PDF Modal With Smooth Keyframe Animations */
+    .pdf-modal { 
+      display: none; 
+      position: fixed; 
+      inset: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0, 0, 0, 0.85); 
+      backdrop-filter: blur(4px);
+      z-index: 99999; 
+      justify-content: center; 
+      align-items: center; 
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .pdf-modal.active { 
+      display: flex; 
+      opacity: 1;
+    }
+
+    .modal-box { 
+      width: 95%; 
+      max-width: 960px; 
+      height: 90%; 
+      background: #0f172a; 
+      border-radius: 14px; 
+      display: flex; 
+      flex-direction: column; 
+      overflow: hidden; 
+      border: 1.5px solid var(--border-strong, #334155); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pdf-modal.active .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header { 
+      padding: 12px 18px; 
+      background: #091124; 
+      color: #fff; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .modal-header-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-fullscreen {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .modal-close { 
+      background: none; 
+      border: none; 
+      color: #94a3b8; 
+      font-size: 1.6rem; 
+      cursor: pointer; 
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: #ffffff; }
+    
+    .modal-body { flex: 1; background: #525659; position: relative; }
     .modal-body iframe { width: 100%; height: 100%; border: none; }
+
+    /* Loader inside Modal */
+    .modal-loader {
+      position: absolute;
+      inset: 0;
+      background: #0c1633;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #10b981;
+      font-weight: 700;
+      gap: 12px;
+      z-index: 10;
+    }
+    .modal-loader-spinner {
+      width: 42px;
+      height: 42px;
+      border: 3.5px solid rgba(16, 185, 129, 0.2);
+      border-top-color: #10b981;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cardPopUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        border: none !important;
+      }
+      .btn-action { min-width: calc(50% - 4px); }
+      .btn-action:last-child { flex: 1 1 100%; }
+    }
   </style>
 </head>
 <body class="app-body">
@@ -216,12 +419,19 @@
 
   <!-- PDF Modal -->
   <div class="pdf-modal" id="pdfModal">
-    <div class="modal-box">
+    <div class="modal-box" id="modalBox">
       <div class="modal-header">
-        <span id="modalDocTitle" style="font-weight:bold;">PDF Reader</span>
-        <button class="modal-close" onclick="closePdfModal()">&times;</button>
+        <span id="modalDocTitle" style="font-weight:bold; font-size: 0.95rem;">PDF Reader</span>
+        <div class="modal-header-actions">
+          <button class="btn-fullscreen" onclick="toggleModalFullscreen()">⛶ फ़ुलस्क्रीन</button>
+          <button class="modal-close" onclick="closePdfModal()">&times;</button>
+        </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="modalBodyStage">
+        <div class="modal-loader" id="modalLoader">
+          <div class="modal-loader-spinner"></div>
+          <span>मॉडल पेपर लोड हो रहा है...</span>
+        </div>
         <iframe id="pdfFrame" src=""></iframe>
       </div>
     </div>
@@ -234,11 +444,44 @@
     const yearFilter = document.getElementById('yearFilter');
     const subjectFilter = document.getElementById('subjectFilter');
     const searchInput = document.getElementById('searchInput');
+    const modalLoader = document.getElementById('modalLoader');
+    const pdfFrame = document.getElementById('pdfFrame');
+
+    // Google Drive URL se File ID nikalna
+    function extractDriveId(url) {
+      if (!url) return null;
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) return match[1];
+      const matchParam = url.match(/id=([a-zA-Z0-9_-]+)/);
+      return (matchParam && matchParam[1]) ? matchParam[1] : null;
+    }
+
+    // Direct Download URL Format (Bina Gmail/Login account pop-up ke)
+    function getDirectDownloadUrl(url) {
+      const fileId = extractDriveId(url);
+      if (fileId) {
+        return `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+      }
+      return url;
+    }
+
+    // Google Docs Zoomable Preview URL Format (With + / - / Pinch zoom support)
+    function getZoomablePreviewUrl(url) {
+      const fileId = extractDriveId(url);
+      if (fileId) {
+        const directFile = `https://drive.usercontent.google.com/download?id=${fileId}&export=download`;
+        return `https://docs.google.com/viewer?url=${encodeURIComponent(directFile)}&embedded=true`;
+      }
+      if (url && url.includes('drive.google.com/file/d/')) {
+        return url.replace(/\/view.*$/, '/preview');
+      }
+      return url;
+    }
 
     function renderModelPapers() {
       const year = yearFilter.value;
       const sub = subjectFilter.value;
-      const search = searchInput.value.toLowerCase();
+      const search = searchInput.value.toLowerCase().trim();
 
       mpGrid.innerHTML = '';
 
@@ -250,7 +493,9 @@
       const filtered = MODEL_PAPER_DATA.filter(item => {
         const matchesYear = (year === 'all' || item.year.toString() === year);
         const matchesSub = (sub === 'all' || item.subKey === sub);
-        const matchesSearch = item.subject.toLowerCase().includes(search) || item.title.toLowerCase().includes(search) || item.year.toString().includes(search);
+        const matchesSearch = item.subject.toLowerCase().includes(search) || 
+                              item.title.toLowerCase().includes(search) || 
+                              item.year.toString().includes(search);
         return matchesYear && matchesSub && matchesSearch;
       });
 
@@ -259,20 +504,29 @@
         return;
       }
 
-      filtered.forEach(item => {
+      filtered.forEach((item, index) => {
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
-        const readBtnAction = hasPdf 
-          ? `onclick="openPdfModal('${item.subject} (${item.year})', '${item.pdfUrl}')"`
-          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह मॉडल पेपर जल्द अपलोड किया जा रहा है!')"`;
+        // 1. हल देखें (In-App Modal me Animated reader)
+        const solBtnAction = hasPdf 
+          ? `onclick="openPdfModal('${item.subject} (${item.year}) - संपूर्ण हल', '${item.pdfUrl}')"`
+          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का हल जल्द अपलोड किया जा रहा है!')"`;
 
-        const downBtnAction = hasDown 
-          ? `href="${item.downloadUrl}" target="_blank"`
+        // 2. प्रीव्यू (Full Page Zoomable Previewer)
+        const previewBtnAction = hasPdf 
+          ? `onclick="openFullPreview('${item.pdfUrl}')"`
+          : `onclick="alert('वर्ष ${item.year} (${item.subject}) का प्रीव्यू जल्द उपलब्ध होगा!')"`;
+
+        // 3. डाउनलोड (Direct Download Link)
+        const directDownLink = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
+        const downBtnAction = directDownLink 
+          ? `href="${directDownLink}" target="_blank" download`
           : `onclick="alert('डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
         const card = document.createElement('div');
         card.className = 'mp-card';
+        card.style.animationDelay = `${index * 0.05}s`;
         card.innerHTML = `
           <div>
             <span class="badge-official">Official BSEB ${item.year}</span>
@@ -280,28 +534,62 @@
             <p>${item.title}</p>
           </div>
           <div class="btn-group">
-            <button class="btn-view" ${readBtnAction}>📖 हल देखें</button>
-            <a class="btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
+            <button class="btn-action btn-view-sol" ${solBtnAction}>📖 हल देखें</button>
+            <button class="btn-action btn-preview" ${previewBtnAction}>👁️ प्रीव्यू</button>
+            <a class="btn-action btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
           </div>
         `;
         mpGrid.appendChild(card);
       });
     }
 
+    // Modal Viewer (एनीमेशन व ज़ूम कंट्रोल्स के साथ)
     function openPdfModal(title, url) {
       document.getElementById('modalDocTitle').innerText = title;
-      let safeUrl = url;
-      if (safeUrl.includes('drive.google.com/file/d/')) {
-        safeUrl = safeUrl.replace(/\/view.*$/, '/preview');
-      }
-      document.getElementById('pdfFrame').src = safeUrl;
-      document.getElementById('pdfModal').classList.add('active');
+      if (modalLoader) modalLoader.style.display = 'flex';
+      
+      pdfFrame.src = getZoomablePreviewUrl(url);
+
+      pdfFrame.onload = function() {
+        if (modalLoader) modalLoader.style.display = 'none';
+      };
+
+      const modal = document.getElementById('pdfModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // अलग नए टैब में पूरा प्रीव्यू देखने के लिए
+    function openFullPreview(url) {
+      const viewerUrl = getZoomablePreviewUrl(url);
+      window.open(viewerUrl, '_blank');
     }
 
     function closePdfModal() {
-      document.getElementById('pdfModal').classList.remove('active');
-      document.getElementById('pdfFrame').src = '';
+      const modal = document.getElementById('pdfModal');
+      modal.classList.remove('active');
+      pdfFrame.src = '';
+      if (modalLoader) modalLoader.style.display = 'none';
+      document.body.style.overflow = '';
     }
+
+    function toggleModalFullscreen() {
+      const modalBox = document.getElementById('modalBox');
+      if (!document.fullscreenElement) {
+        if (modalBox.requestFullscreen) modalBox.requestFullscreen();
+        else if (modalBox.webkitRequestFullscreen) modalBox.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    document.getElementById('pdfModal').addEventListener('click', function(e) {
+      if (e.target === this) closePdfModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closePdfModal();
+    });
 
     yearFilter.addEventListener('change', renderModelPapers);
     subjectFilter.addEventListener('change', renderModelPapers);
