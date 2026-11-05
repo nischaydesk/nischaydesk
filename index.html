@@ -752,7 +752,7 @@
       display: inline-block !important;
     }
 
-    /* 🌟 साइड ड्रॉअर फिक्स */
+    /* 🌟 साइड ड्रॉअर */
     .drawer-scrim {
       display: none;
       position: fixed;
@@ -773,8 +773,8 @@
       top: 0 !important;
       left: 0 !important;
       bottom: 0 !important;
-      width: 290px !important;
-      max-width: 85vw !important;
+      width: 300px !important;
+      max-width: 88vw !important;
       height: 100vh !important;
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
@@ -799,7 +799,7 @@
       visibility: visible !important;
     }
     .drawer-header {
-      padding: 18px 16px;
+      padding: 16px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -840,17 +840,17 @@
       color: #475569 !important;
     }
     .drawer-nav-list {
-      padding: 14px 12px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       flex: 1 0 auto;
     }
     .drawer-nav-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 11px 14px;
+      padding: 10px 14px;
       border-radius: 10px;
       color: #cbd5e1;
       text-decoration: none;
@@ -871,6 +871,96 @@
     .drawer-nav-item.active {
       background: #0284c7 !important;
       color: #fff !important;
+    }
+
+    /* 🎓 खान एकेडमी स्टाइल अकॉर्डियन ड्रॉपडाउन मेनू */
+    .drawer-accordion-group {
+      margin: 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .drawer-section-heading {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #38bdf8;
+      letter-spacing: 1px;
+      padding: 8px 12px 4px;
+      text-transform: uppercase;
+    }
+    .accordion-block {
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: rgba(15, 23, 42, 0.5);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    html.light-mode .accordion-block,
+    html[data-theme="light"] .accordion-block {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+    }
+    .accordion-block.open {
+      border-color: #0284c7;
+      background: rgba(2, 132, 199, 0.08);
+    }
+    .accordion-header {
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-main);
+      user-select: none;
+    }
+    .accordion-header .left-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .accordion-header .chevron {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      transition: transform 0.25s ease;
+    }
+    .accordion-block.open .chevron {
+      transform: rotate(180deg);
+      color: #38bdf8;
+    }
+    .accordion-body {
+      display: none;
+      flex-direction: column;
+      background: rgba(4, 9, 20, 0.5);
+      border-top: 1px solid rgba(56, 189, 248, 0.15);
+      padding: 6px 8px 8px;
+      gap: 3px;
+    }
+    html.light-mode .accordion-body,
+    html[data-theme="light"] .accordion-body {
+      background: #ffffff !important;
+      border-top-color: #e2e8f0 !important;
+    }
+    .accordion-block.open .accordion-body {
+      display: flex;
+    }
+    .sub-link {
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .sub-link:hover, .sub-link:active {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      padding-left: 16px;
     }
 
     /* 🌟 डेवलपर बैज */
@@ -1147,9 +1237,7 @@
       transform: translateX(22px);
     }
 
-    /* ==========================================================================
-       🌟 100% पक्का फ़ूटर स्टाइल (फोटो साइज व ओवरलैप फिक्स)
-       ========================================================================== */
+    /* 🌟 फ़ूटर स्टाइल */
     .khan-full-footer {
       background-color: #0b1a30 !important;
       color: #ffffff !important;
@@ -1196,7 +1284,7 @@
     }
     .footer-ul-links a:hover { color: #38bdf8 !important; }
 
-    /* 🎯 फ़ाउंडर कार्ड (फोटो साइज बिल्कुल फिक्स 48px) */
+    /* 🎯 फ़ाउंडर कार्ड */
     .founder-pro-strip {
       background: rgba(15, 23, 42, 0.85) !important;
       border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
@@ -1260,9 +1348,7 @@
       margin-top: 10px !important;
     }
 
-    /* ==========================================================================
-       📱 नीचे का फ़िक्स ऐप नेविगेशन डॉक (App Style Bottom Dock)
-       ========================================================================== */
+    /* 📱 बॉटम डॉक */
     .mobile-bottom-dock {
       position: fixed !important;
       bottom: 0 !important;
@@ -1398,7 +1484,7 @@
     </nav>
   </header>
 
-  <!-- 2. साइड ड्रॉअर -->
+  <!-- 2. साइड ड्रॉअर (खान एकेडमी अकॉर्डियन स्टाइल) -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -1409,7 +1495,7 @@
       <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()">&times;</button>
     </div>
 
-    <!-- जब यूज़र लॉग इन हो सिर्फ़ तभी ड्रॉअर प्रोफ़ाइल दिखेगी -->
+    <!-- प्रोफाइल कार्ड -->
     <div class="drawer-user-card" id="drawerUserCard" onclick="closeDrawerUnified(); openProfileModal();" style="display: none; padding: 12px 14px; margin: 10px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; cursor: pointer;">
       <p class="drawer-user-prompt" style="margin: 0; color: #38bdf8; font-weight: 800; font-size: 0.85rem;">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
     </div>
@@ -1439,29 +1525,78 @@
       <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;">
         <span class="icon">🔍</span> परिणाम देखें (Result Portal)
       </a>
+
+      <!-- 🌟 खान एकेडमी स्टाइल अकॉर्डियन ब्लॉक्स (क्लास-वाइज़ अध्ययन सामग्री) -->
+      <div class="drawer-accordion-group">
+        <div class="drawer-section-heading">📚 अध्ययन हब (कक्षा अनुसार)</div>
+
+        <!-- 1. CLASS 10TH ACCORDION -->
+        <div class="accordion-block" id="accBlock10">
+          <div class="accordion-header" onclick="toggleDrawerAccordion('accBlock10', '10th')">
+            <div class="left-title">
+              <span>🎓</span>
+              <span>कक्षा 10वीं (BSEB Matric)</span>
+            </div>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <a href="syllabus.html?class=10" class="sub-link">📋 10th सिलेबस & ब्लूप्रिंट</a>
+            <a href="notes.html?filter=10-all" class="sub-link">📚 10th ऑल सब्जेक्ट नोट्स</a>
+            <a href="pyq.html?class=10" class="sub-link">📖 क्वेश्चन बैंक (2020-2026 PYQ)</a>
+            <a href="model-paper.html?class=10" class="sub-link">📝 ऑफिशियल मॉडल पेपर 2026</a>
+            <a href="test.html?class=10" class="sub-link">⏱️ 10th चैप्टर-वाइज टेस्ट</a>
+            <a href="bseb-simulator.html" class="sub-link" style="color:#38bdf8;">🏛️ 3h 15m लाइव परीक्षा हॉल</a>
+          </div>
+        </div>
+
+        <!-- 2. CLASS 11TH ACCORDION -->
+        <div class="accordion-block" id="accBlock11">
+          <div class="accordion-header" onclick="toggleDrawerAccordion('accBlock11', '11th')">
+            <div class="left-title">
+              <span>🧪</span>
+              <span>कक्षा 11वीं (Science Hub)</span>
+            </div>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <a href="syllabus.html?class=11" class="sub-link">📋 11th NCERT सिलेबस व पैटर्न</a>
+            <a href="notes.html?filter=11-physics" class="sub-link">⚡ 11th भौतिकी (Physics) नोट्स</a>
+            <a href="notes.html?filter=11-chemistry" class="sub-link">🧪 11th रसायन (Chemistry) नोट्स</a>
+            <a href="notes.html?filter=11-math" class="sub-link">📐 11th गणित (Maths) व फॉर्मूला शीट</a>
+            <a href="pyq.html?class=11" class="sub-link">📖 11th एनुअल & मासिक पेपर्स</a>
+            <a href="test.html?class=11" class="sub-link">📝 11th फाउंडेशन स्पीड टेस्ट</a>
+            <a href="notes.html?filter=11-bridge" class="sub-link" style="color:#10b981;">🚀 12th ब्रिज कोर्स (Basic Concepts)</a>
+          </div>
+        </div>
+
+        <!-- 3. CLASS 12TH ACCORDION -->
+        <div class="accordion-block" id="accBlock12">
+          <div class="accordion-header" onclick="toggleDrawerAccordion('accBlock12', '12th')">
+            <div class="left-title">
+              <span>🏛️</span>
+              <span>कक्षा 12वीं (Inter Board)</span>
+            </div>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="accordion-body">
+            <a href="syllabus.html?class=12" class="sub-link">📋 12th बोर्ड सिलेबस व वेटेज</a>
+            <a href="notes.html?filter=12-physics" class="sub-link">⚡ 12th फिजिक्स VVI नोट्स</a>
+            <a href="notes.html?filter=12-math" class="sub-link">📐 12th कैलकुलस & मैथ्स फॉर्मूले</a>
+            <a href="pyq.html?class=12" class="sub-link">📖 12th बोर्ड क्वेश्चन बैंक</a>
+            <a href="model-paper.html?class=12" class="sub-link">📝 12th ऑफिशियल मॉडल सेट</a>
+            <a href="test.html?class=12" class="sub-link">🎯 35-ऑब्जेक्टिव लाइव टेस्ट</a>
+          </div>
+        </div>
+      </div>
+
       <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e; font-weight: 700;">
         <span class="icon">💬</span> WhatsApp चैनल जुड़ें
       </a>
       <a href="javascript:void(0)" onclick="shareNischayDeskWebsite()" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
         <span class="icon">🚀</span> दोस्तों को शेयर करें
       </a>
-      <a href="syllabus.html" class="drawer-nav-item">
-        <span class="icon">📋</span> बोर्ड एवं NCERT सिलेबस
-      </a>
-      <a href="notes.html" class="drawer-nav-item">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी (10th, 11th, 12th)
-      </a>
-      <a href="test.html" class="drawer-nav-item">
-        <span class="icon">📝</span> चैप्टर-वाइज टेस्ट सीरीज
-      </a>
-      <a href="pyq.html" class="drawer-nav-item">
-        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ 2020-2026)
-      </a>
-      <a href="model-paper.html" class="drawer-nav-item">
-        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
-      </a>
 
-      <!-- 🌟 एक्टिव डार्क/लाइट मोड स्विच -->
+      <!-- डार्क/लाइट मोड स्विच -->
       <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
         <div class="theme-switch-wrapper">
           <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
@@ -1473,7 +1608,7 @@
       </div>
     </nav>
 
-    <!-- 🌟 साफ़ और सुरक्षित डेवलपर फुटर -->
+    <!-- डेवलपर फुटर -->
     <div class="drawer-footer-custom">
       <div class="developer-branding-tag">
         Developed By Prince Kumar ⚡
@@ -1491,7 +1626,7 @@
     <section class="hero-spotlight-khan">
       <div class="hero-container">
 
-        <!-- Welcome Card (यूजर लॉग इन होने पर) -->
+        <!-- Welcome Card -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 12px;">
           <div id="welcomeGreetingText" style="font-size: 1.35rem; font-weight: 800; line-height: 1.2;">
             नमस्ते, <span id="welcomeUserName" style="color: #38bdf8;">छात्र</span> 👋
@@ -1531,7 +1666,7 @@
           </a>
         </div>
 
-        <!-- 🌟 इंटरैक्टिव OMR सवाल (4 सेकंड में ऑटो-चेंजिंग) -->
+        <!-- इंटरैक्टिव OMR सवाल -->
         <div class="daily-poll-card">
           <div class="poll-tag-row">
             <span class="poll-badge" id="pollClassBadgeLabel">🎯 10th लाइव बोर्ड सवाल (4s Fast)</span>
@@ -1539,9 +1674,7 @@
           </div>
 
           <div class="poll-dynamic-box" id="pollDynamicWrap">
-            <div class="poll-question-text" id="dailyPollQ">
-              लोड हो रहा है...
-            </div>
+            <div class="poll-question-text" id="dailyPollQ">लोड हो रहा है...</div>
             <div class="poll-options-grid" id="pollOptionsGrid"></div>
           </div>
 
@@ -1551,7 +1684,7 @@
       </div>
     </section>
 
-    <!-- 🌟 ट्रस्ट स्टैट्स स्ट्रिप -->
+    <!-- ट्रस्ट स्टैट्स स्ट्रिप -->
     <div class="trust-stats-strip">
       <div class="trust-stat-box">
         <h4>3h 15m</h4>
@@ -1586,7 +1719,7 @@
       <a href="pdf.html" target="_blank" class="pill-anchor" style="border-color: #a855f7; color: #a855f7;">🖼️ इमेज To PDF</a>
     </div>
 
-    <!-- 🌟 स्मार्ट टूल्स ग्रिड -->
+    <!-- स्मार्ट टूल्स ग्रिड -->
     <section class="portal-section-wrap" id="quickTools">
       <div class="section-head-pro">
         <h3>छात्र स्मार्ट टूल्स (NischayDesk Tools)</h3>
@@ -2020,7 +2153,7 @@
 
   </main>
 
-  <!-- 4. फ़ुटर (पूर्णतः ठीक और संरेखित) -->
+  <!-- 4. फ़ुटर -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
       <div class="footer-mission-lead">
@@ -2059,7 +2192,7 @@
         </div>
       </div>
 
-      <!-- फ़ाउंडर कार्ड (फोटो साइज बिल्कुल फिक्स 46px) -->
+      <!-- फ़ाउंडर कार्ड -->
       <div class="founder-pro-strip">
         <div class="founder-info-left">
           <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
@@ -2083,7 +2216,7 @@
     </div>
   </footer>
 
-  <!-- 5. 📱 मोबाइल बॉटम ऐप डॉक (100% ऐप स्टाइल - नो अंडरलाइन) -->
+  <!-- 5. मोबाइल बॉटम ऐप डॉक -->
   <nav class="mobile-bottom-dock">
     <a href="index.html" class="dock-link-item active">
       <span class="dock-icon-svg">🏠</span>
@@ -2299,6 +2432,7 @@
       if (sideDrawerEl) sideDrawerEl.classList.add('active');
       if (scrimEl) scrimEl.classList.add('active');
       document.body.style.overflow = 'hidden';
+      syncDrawerAccordionWithCurrentClass();
     }
 
     function closeDrawerUnified() {
@@ -2307,6 +2441,33 @@
       if (sideDrawerEl) sideDrawerEl.classList.remove('active');
       if (scrimEl) scrimEl.classList.remove('active');
       document.body.style.overflow = '';
+    }
+
+    // 🎓 खान एकेडमी स्टाइल अकॉर्डियन टॉगल इंजन
+    function toggleDrawerAccordion(blockId, targetClass) {
+      const block = document.getElementById(blockId);
+      const isAlreadyOpen = block.classList.contains('open');
+
+      document.querySelectorAll('.accordion-block').forEach(b => b.classList.remove('open'));
+
+      if (!isAlreadyOpen) {
+        block.classList.add('open');
+        selectClassAndSave(targetClass);
+      }
+    }
+
+    function syncDrawerAccordionWithCurrentClass() {
+      document.querySelectorAll('.accordion-block').forEach(b => b.classList.remove('open'));
+      if (activeClass === '10th') {
+        const b = document.getElementById('accBlock10');
+        if (b) b.classList.add('open');
+      } else if (activeClass === '11th') {
+        const b = document.getElementById('accBlock11');
+        if (b) b.classList.add('open');
+      } else if (activeClass === '12th') {
+        const b = document.getElementById('accBlock12');
+        if (b) b.classList.add('open');
+      }
     }
 
     const menuBtn = document.getElementById('mobileMenuBtn');
@@ -2415,6 +2576,7 @@
       if (sec11) sec11.style.display = (cleanClass === "11th") ? "block" : "none";
       if (sec12) sec12.style.display = (cleanClass === "12th") ? "block" : "none";
 
+      syncDrawerAccordionWithCurrentClass();
       renderDynamicQuestion(0);
       startQuestionRotation();
     }
