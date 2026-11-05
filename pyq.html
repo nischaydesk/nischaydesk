@@ -15,188 +15,80 @@
   <link rel="stylesheet" href="dashboard.css">
 
   <style>
-    /* ==========================================================================
-       1. आधुनिक कलर टोकन्स (डार्क मोड डिफॉल्ट)
-       ========================================================================== */
-    :root {
-      --nd-page-bg: #070d1e;
-      --nd-card-bg: #0c1633;
-      --nd-card-border: #1e3a8a;
-      --nd-text-title: #ffffff;
-      --nd-text-muted: #94a3b8;
-      --nd-input-bg: #13224a;
-      --nd-input-border: #1e3a8a;
-      --nd-primary: #0284c7;
-      --nd-primary-hover: #0369a1;
-      --nd-down-bg: #13224a;
-      --nd-down-border: #1e3a8a;
-      --nd-down-text: #94a3b8;
-      --nd-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-    }
-
-    /* ==========================================================================
-       2. ☀️ लाइट मोड - एकदम क्लीन और हाई-कंट्रास्ट (सभी ओवरराइड के साथ)
-       ========================================================================== */
-    html.light-mode,
-    html[data-theme="light"],
-    body.light-mode {
-      --nd-page-bg: #f1f5f9;
-      --nd-card-bg: #ffffff !important;
-      --nd-card-border: #cbd5e1 !important;
-      --nd-text-title: #0f172a !important;
-      --nd-text-muted: #475569 !important;
-      --nd-input-bg: #ffffff !important;
-      --nd-input-border: #cbd5e1 !important;
-      --nd-primary: #0284c7 !important;
-      --nd-primary-hover: #0369a1 !important;
-      --nd-down-bg: #f8fafc !important;
-      --nd-down-border: #cbd5e1 !important;
-      --nd-down-text: #334155 !important;
-      --nd-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
-    }
-
+    /* पूरे पेज का कंटेनर */
     .pyq-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
 
-    /* हीरो बैनर */
-    .hero-banner { 
-      background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%) !important; 
-      color: #ffffff !important; 
-      padding: 24px 20px; 
-      border-radius: 16px; 
-      margin-bottom: 20px; 
-      box-shadow: 0 10px 24px -6px rgba(2, 132, 199, 0.35);
-      position: relative;
-      overflow: hidden;
-      animation: fadeInDown 0.35s ease-out;
+    /* बैनर */
+    #ndHeroBanner {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+      color: #ffffff !important;
+      padding: 24px 20px;
+      border-radius: 16px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.4) !important;
     }
-    .hero-banner h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 800; color: #ffffff !important; }
-    .hero-banner p { margin: 0; opacity: 0.94; font-size: 0.95rem; line-height: 1.5; color: #ffffff !important; }
+    #ndHeroBanner h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 800; color: #ffffff !important; }
+    #ndHeroBanner p { margin: 0; opacity: 0.95; font-size: 0.95rem; color: #f0f9ff !important; line-height: 1.5; }
 
-    /* फ़िल्टर बार */
-    .filter-bar { 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 12px; 
-      margin-bottom: 22px; 
-      background: var(--nd-card-bg) !important; 
-      padding: 16px; 
-      border-radius: 14px; 
-      border: 1.5px solid var(--nd-card-border) !important;
-      box-shadow: var(--nd-shadow) !important;
-      animation: fadeIn 0.35s ease-out;
+    /* फ़िल्टर बार - ज़बरदस्त कंट्रास्ट */
+    #ndFilterBar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      background: #ffffff !important;
+      padding: 16px;
+      border-radius: 14px;
+      border: 2px solid #cbd5e1 !important;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08) !important;
     }
-    .filter-bar select, 
-    .filter-bar input { 
-      padding: 11px 14px; 
-      border-radius: 10px; 
-      border: 1.5px solid var(--nd-input-border) !important; 
-      font-size: 0.92rem; 
-      outline: none; 
-      background: var(--nd-input-bg) !important; 
-      color: var(--nd-text-title) !important;
-      font-family: inherit;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .filter-bar select:focus, 
-    .filter-bar input:focus {
-      border-color: #38bdf8 !important;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
-    }
-    .filter-bar select option {
-      background: var(--nd-card-bg) !important;
-      color: var(--nd-text-title) !important;
-    }
-    .filter-bar input { flex: 1; min-width: 200px; }
-
-    /* ग्रिड और कार्ड्स */
-    .pyq-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
-    
-    .pyq-card { 
-      background: var(--nd-card-bg) !important; 
-      border-radius: 14px; 
-      padding: 18px; 
-      box-shadow: var(--nd-shadow) !important; 
-      border: 1.5px solid var(--nd-card-border) !important; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
-      animation: cardPopUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-    }
-    .pyq-card:hover { 
-      transform: translateY(-4px); 
-      border-color: #38bdf8 !important;
-      box-shadow: 0 10px 22px rgba(2, 132, 199, 0.2) !important;
-    }
-
-    .badge-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .badge-year { 
-      background: rgba(2, 132, 199, 0.12) !important; 
-      color: #0284c7 !important; 
-      padding: 4px 10px; 
-      border-radius: 6px; 
-      font-weight: 800; 
-      font-size: 0.8rem; 
-      border: 1px solid rgba(2, 132, 199, 0.3) !important;
-    }
-    .badge-shift { 
-      background: rgba(148, 163, 184, 0.14) !important; 
-      color: var(--nd-text-muted) !important; 
-      padding: 4px 10px; 
-      border-radius: 6px; 
-      font-size: 0.8rem; 
+    #ndFilterBar select,
+    #ndFilterBar input {
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1.8px solid #94a3b8 !important;
+      font-size: 0.95rem;
       font-weight: 600;
-      border: 1px solid var(--nd-card-border) !important; 
+      outline: none;
+      background: #f8fafc !important;
+      color: #0f172a !important;
+      font-family: inherit;
     }
-
-    .pyq-card h3 { 
-      font-size: 1.15rem; 
-      margin: 4px 0 16px; 
-      color: var(--nd-text-title) !important; 
-      font-weight: 800;
-      line-height: 1.4;
-    }
-
-    /* 🔘 सिर्फ 2 एक्शन बटन (50-50% लेआउट) */
-    .btn-group { display: flex; gap: 10px; margin-top: auto; }
-    
-    .btn-action {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
-      border: none;
-    }
-    .btn-action:active { transform: scale(0.97); }
-
-    .btn-view-sol { 
-      background: var(--nd-primary) !important; 
-      color: #ffffff !important; 
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-    }
-    .btn-view-sol:hover { background: var(--nd-primary-hover) !important; }
-
-    .btn-down { 
-      background: var(--nd-down-bg) !important; 
-      color: var(--nd-down-text) !important; 
-      border: 1.5px solid var(--nd-down-border) !important; 
-    }
-    .btn-down:hover { 
-      background: rgba(2, 132, 199, 0.12) !important;
-      color: #0284c7 !important;
+    #ndFilterBar select:focus,
+    #ndFilterBar input:focus {
       border-color: #0284c7 !important;
+      background: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
+    }
+    #ndFilterBar select option {
+      background: #ffffff !important;
+      color: #0f172a !important;
+    }
+    #ndFilterBar input { flex: 1; min-width: 220px; }
+
+    /* ग्रिड */
+    #pyqGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+
+    /* डार्क मोड सपोर्ट */
+    html.dark-mode #ndFilterBar,
+    body.dark-mode #ndFilterBar,
+    html[data-theme="dark"] #ndFilterBar {
+      background: #0c1633 !important;
+      border-color: #1e3a8a !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+    }
+    html.dark-mode #ndFilterBar select,
+    html.dark-mode #ndFilterBar input,
+    body.dark-mode #ndFilterBar select,
+    body.dark-mode #ndFilterBar input,
+    html[data-theme="dark"] #ndFilterBar select,
+    html[data-theme="dark"] #ndFilterBar input {
+      background: #13224a !important;
+      border-color: #1e3a8a !important;
+      color: #ffffff !important;
     }
 
-    /* 🎬 PDF मोडल (प्रीमियम एनीमेशन) */
+    /* मोडल स्टाइल */
     .pdf-modal { 
       display: none; 
       position: fixed; 
@@ -211,10 +103,7 @@
       opacity: 0;
       transition: opacity 0.25s ease;
     }
-    .pdf-modal.active { 
-      display: flex; 
-      opacity: 1;
-    }
+    .pdf-modal.active { display: flex; opacity: 1; }
 
     .modal-box { 
       width: 95%; 
@@ -230,9 +119,7 @@
       transform: scale(0.93) translateY(24px);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .pdf-modal.active .modal-box {
-      transform: scale(1) translateY(0);
-    }
+    .pdf-modal.active .modal-box { transform: scale(1) translateY(0); }
 
     .modal-header { 
       padding: 12px 18px; 
@@ -254,9 +141,7 @@
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
     }
-    .btn-fullscreen:hover { background: rgba(56, 189, 248, 0.2); }
 
     .modal-close { 
       background: none; 
@@ -265,15 +150,12 @@
       font-size: 1.7rem; 
       cursor: pointer; 
       line-height: 1;
-      padding: 0 4px;
-      transition: color 0.2s;
     }
-    .modal-close:hover { color: #ffffff; }
     
     .modal-body { flex: 1; background: #525659; position: relative; width: 100%; height: 100%; }
     .modal-body iframe { width: 100%; height: 100%; border: none; }
 
-    /* 📖 शानदार 3D बुक फ्लिपिंग लोडर एनीमेशन */
+    /* 3D बुक फ्लिप लोडर एनीमेशन */
     .modal-loader {
       position: absolute;
       inset: 0;
@@ -285,11 +167,7 @@
       gap: 16px;
       z-index: 10;
     }
-    .book-loader {
-      width: 48px;
-      height: 38px;
-      position: relative;
-    }
+    .book-loader { width: 48px; height: 38px; position: relative; }
     .book-loader .page {
       position: absolute;
       width: 24px;
@@ -313,14 +191,7 @@
       background: #075985;
       border-radius: 4px 0 0 4px;
     }
-
-    .loader-text {
-      color: #f8fafc;
-      font-size: 0.92rem;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      animation: pulseText 1.5s infinite ease-in-out;
-    }
+    .loader-text { color: #f8fafc; font-size: 0.92rem; font-weight: 700; animation: pulseText 1.5s infinite ease-in-out; }
 
     @keyframes flipBook {
       0% { transform: rotateY(0deg); opacity: 1; }
@@ -328,17 +199,9 @@
       100% { transform: rotateY(-180deg); opacity: 0; }
     }
     @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes cardPopUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 600px) {
-      .modal-box {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 0 !important;
-        border: none !important;
-      }
+      .modal-box { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: none !important; }
     }
   </style>
 </head>
@@ -439,13 +302,13 @@
   </aside>
 
   <div class="pyq-container">
-    <div class="hero-banner">
+    <div id="ndHeroBanner">
       <h1>📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020–2026)</h1>
       <p>2020 से 2026 तक के वास्तविक परीक्षा प्रश्न पत्र। दोनों पालियों (Shift 1 & 2) के संपूर्ण हल।</p>
     </div>
 
-    <!-- फिल्टर्स -->
-    <div class="filter-bar">
+    <!-- फिल्टर्स बार -->
+    <div id="ndFilterBar">
       <select id="yearFilter">
         <option value="all">सभी वर्ष (2020-2026)</option>
         <option value="2020">2020</option>
@@ -477,7 +340,7 @@
     </div>
 
     <!-- पेपर्स ग्रिड -->
-    <div class="pyq-grid" id="pyqGrid"></div>
+    <div id="pyqGrid"></div>
   </div>
 
   <!-- PDF देखने का मोडल -->
@@ -491,14 +354,13 @@
         </div>
       </div>
       <div class="modal-body" id="modalBodyStage">
-        <!-- 3D बुक फ्लिप लोडर -->
         <div class="modal-loader" id="modalLoader">
           <div class="book-loader">
             <div class="page"></div>
             <div class="page"></div>
             <div class="page"></div>
           </div>
-          <span class="loader-text">प्रश्न पत्र तैयार हो रहा है...</span>
+          <span class="loader-text">प्रश्न पत्र लोड हो रहा है...</span>
         </div>
         <iframe id="pdfFrame" src=""></iframe>
       </div>
@@ -516,7 +378,6 @@
     const modalLoader = document.getElementById('modalLoader');
     const pdfFrame = document.getElementById('pdfFrame');
 
-    // Google Drive URL se File ID nikalna
     function extractDriveId(url) {
       if (!url) return null;
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -525,7 +386,6 @@
       return (matchParam && matchParam[1]) ? matchParam[1] : null;
     }
 
-    // Direct Download URL Formatter (Bina Gmail pop-up ke direct download)
     function getDirectDownloadUrl(url) {
       const fileId = extractDriveId(url);
       if (fileId) {
@@ -534,7 +394,6 @@
       return url;
     }
 
-    // HD Zoomable Google Docs Viewer URL Formatter (With +, - and Pinch Zoom)
     function getZoomablePreviewUrl(url) {
       const fileId = extractDriveId(url);
       if (fileId) {
@@ -548,6 +407,10 @@
     }
 
     function renderPyq() {
+      const isLightMode = document.documentElement.classList.contains('light-mode') || 
+                          document.body.classList.contains('light-mode') ||
+                          document.documentElement.getAttribute('data-theme') === 'light';
+
       const year = yearFilter.value;
       const sub = subjectFilter.value;
       const shiftVal = shiftFilter.value;
@@ -556,7 +419,7 @@
       pyqGrid.innerHTML = '';
 
       if (typeof PYQ_DATA === 'undefined') {
-        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:#ef4444;">pyq-data.js फ़ाइल लोड नहीं हुई!</div>`;
+        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:#ef4444; font-weight:700;">pyq-data.js फ़ाइल लोड नहीं हुई!</div>`;
         return;
       }
 
@@ -579,46 +442,72 @@
       });
 
       if (filtered.length === 0) {
-        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--nd-text-muted);">कोई प्रश्न पत्र नहीं मिला!</div>`;
+        pyqGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:#64748b; font-weight:600; font-size:1rem;">कोई प्रश्न पत्र नहीं मिला!</div>`;
         return;
       }
 
-      filtered.forEach((item, index) => {
+      // थीम के हिसाब से सटीक रंग
+      const cardBg = isLightMode ? '#ffffff' : '#0c1633';
+      const cardBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
+      const titleColor = isLightMode ? '#0f172a' : '#ffffff';
+      const downBtnBg = isLightMode ? '#f1f5f9' : '#13224a';
+      const downBtnText = isLightMode ? '#1e293b' : '#94a3b8';
+      const downBtnBorder = isLightMode ? '#cbd5e1' : '#1e3a8a';
+
+      filtered.forEach((item) => {
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
-        // 1. पढ़ें (Modal reader)
         const readBtnAction = hasPdf 
           ? `onclick="openPdfModal('${item.subject} (${item.year} - ${item.shift})', '${item.pdfUrl}')"`
           : `onclick="alert('वर्ष ${item.year} (${item.subject}) का यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
 
-        // 2. डाउनलोड (Direct download)
         const cleanDownloadUrl = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
         const downBtnAction = cleanDownloadUrl 
           ? `href="${cleanDownloadUrl}" target="_blank" download`
           : `onclick="alert('डाउनलोड लिंक जल्द उपलब्ध होगा!')"`;
 
         const card = document.createElement('div');
-        card.className = 'pyq-card';
-        card.style.animationDelay = `${index * 0.04}s`;
+        // इनलाइन स्टाइल से CSS टकराव को 100% रोका गया है
+        card.setAttribute('style', `
+          background: ${cardBg} !important;
+          border: 2px solid ${cardBorder} !important;
+          border-radius: 14px !important;
+          padding: 18px !important;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: space-between !important;
+          transition: transform 0.2s ease, border-color 0.2s ease !important;
+        `);
+
         card.innerHTML = `
           <div>
-            <div class="badge-wrap">
-              <span class="badge-year">वर्ष ${item.year}</span>
-              <span class="badge-shift">${item.shift}</span>
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+              <span style="background: rgba(2, 132, 199, 0.12); color: #0284c7; padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 0.8rem; border: 1px solid rgba(2, 132, 199, 0.3);">
+                वर्ष ${item.year}
+              </span>
+              <span style="background: ${isLightMode ? '#e2e8f0' : 'rgba(148, 163, 184, 0.14)'}; color: ${isLightMode ? '#334155' : '#94a3b8'}; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid ${cardBorder};">
+                ${item.shift}
+              </span>
             </div>
-            <h3>${item.subject}</h3>
+            <h3 style="font-size: 1.18rem; margin: 0 0 16px 0; color: ${titleColor} !important; font-weight: 800; line-height: 1.4;">
+              ${item.subject}
+            </h3>
           </div>
-          <div class="btn-group">
-            <button class="btn-action btn-view-sol" ${readBtnAction}>📖 पढ़ें</button>
-            <a class="btn-action btn-down" ${downBtnAction}>⬇️ डाउनलोड</a>
+          <div style="display: flex; gap: 10px; margin-top: auto;">
+            <button ${readBtnAction} style="flex: 1; padding: 11px 14px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; background: #0284c7; color: #ffffff !important; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);">
+              📖 पढ़ें
+            </button>
+            <a ${downBtnAction} style="flex: 1; padding: 11px 14px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; background: ${downBtnBg} !important; color: ${downBtnText} !important; border: 1.5px solid ${downBtnBorder} !important; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              ⬇️ डाउनलोड
+            </a>
           </div>
         `;
         pyqGrid.appendChild(card);
       });
     }
 
-    // Modal Viewer
     function openPdfModal(title, url) {
       document.getElementById('modalDocTitle').innerText = title;
       if (modalLoader) modalLoader.style.display = 'flex';
@@ -664,6 +553,11 @@
     subjectFilter.addEventListener('change', renderPyq);
     shiftFilter.addEventListener('change', renderPyq);
     searchInput.addEventListener('input', renderPyq);
+
+    // थीम टॉगल होने पर कार्ड्स का रंग तुरंत री-रेंडर करने के लिए
+    const themeObserver = new MutationObserver(renderPyq);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     document.addEventListener('DOMContentLoaded', renderPyq);
   </script>
