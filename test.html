@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>मॉक टेस्ट सीरीज पोर्टल | NischayDesk - Smart Exam Engine</title>
+  <title>कक्षा 10वीं चैप्टर टेस्ट पोर्टल | NischayDesk - Smart Exam Engine</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,15 +20,173 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-WXM8RJ080H');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WXM8RJ080H');
+  </script>
+
+  <script>
+    const savedTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+  </script>
+
+  <style>
+    /* 🌟 कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर (डिफ़ॉल्ट सेलेक्ट बंद) */
+    .custom-select-trigger {
+      width: 100% !important;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1.8px solid var(--card-border, #cbd5e1);
+      font-size: 0.95rem;
+      font-weight: 700;
+      background: var(--card-bg, #ffffff);
+      color: var(--text-main, #0f172a);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .custom-select-trigger:active {
+      transform: scale(0.98);
+      border-color: #0284c7;
+    }
+    .custom-select-trigger .trigger-arrow {
+      font-size: 0.8rem;
+      color: #0284c7;
+      transition: transform 0.2s;
+    }
+
+    .class-locked-pill {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(2, 132, 199, 0.35);
+      background: rgba(2, 132, 199, 0.08);
+      color: #0284c7;
+      font-weight: 800;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 📱 बीच में खुलने वाला सेंटर-मोडल (Center Modal Selector) */
+    .center-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 99999999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .center-modal-backdrop.active {
+      display: flex !important;
+    }
+    .center-modal-box {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg, #ffffff);
+      border: 1.5px solid var(--card-border, #cbd5e1);
+      border-radius: 20px;
+      padding: 20px 18px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html[data-theme="dark"] .center-modal-box {
+      background: #0b1329 !important;
+      border-color: #1e3a8a !important;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .center-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border, #e2e8f0);
+      margin-bottom: 12px;
+    }
+    html[data-theme="dark"] .center-modal-header {
+      border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .center-modal-header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main, #0f172a);
+    }
+    html[data-theme="dark"] .center-modal-header h3 {
+      color: #ffffff !important;
+    }
+    .center-modal-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .center-modal-list {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 4px;
+    }
+    .center-modal-item {
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: rgba(128, 128, 128, 0.05);
+      border: 1.5px solid var(--card-border, #e2e8f0);
+      color: var(--text-main, #0f172a);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html[data-theme="dark"] .center-modal-item {
+      background: #13224a !important;
+      border-color: #1e3a8a !important;
+      color: #ffffff !important;
+    }
+    .center-modal-item:hover, .center-modal-item:active {
+      border-color: #0284c7;
+      background: rgba(2, 132, 199, 0.1);
+    }
+    .center-modal-item.selected {
+      background: rgba(2, 132, 199, 0.18) !important;
+      border-color: #0284c7 !important;
+      color: #0284c7 !important;
+      font-weight: 800;
+    }
+    html[data-theme="dark"] .center-modal-item.selected {
+      color: #38bdf8 !important;
+    }
+  </style>
 </head>
 <body class="app-body">
 
@@ -46,7 +204,7 @@
           <div class="brand-badge-icon">N</div>
           <div class="brand-typography">
             <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
-            <span class="brand-tagline">Smart Student Portal</span>
+            <span class="brand-tagline">10th Matric Hub</span>
           </div>
         </a>
       </div>
@@ -55,8 +213,8 @@
         <a href="index.html" class="nav-item">डैशबोर्ड</a>
         <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
         <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
-        <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
-        <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
+        <a href="syllabus.html" class="nav-item">📋 10th सिलेबस</a>
+        <a href="notes.html" class="nav-item">📚 10th नोट्स</a>
         <a href="test.html" class="nav-item active">📝 चैप्टर टेस्ट</a>
         <a href="pyq.html" class="nav-item">📖 क्वेश्चन बैंक</a>
         <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
@@ -78,7 +236,7 @@
           <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
           <div class="user-info-text">
             <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge" id="userSessionBadge">Class 10th ▾</span>
+            <span class="user-session-badge" id="userSessionBadge">Class 10th</span>
           </div>
         </div>
       </div>
@@ -91,13 +249,13 @@
     <div class="drawer-header">
       <div class="drawer-brand">
         <div class="brand-badge-icon sm">N</div>
-        <span>NischayDesk</span>
+        <span>10th Matric Hub</span>
       </div>
       <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
     </div>
 
     <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
-      <p class="drawer-user-prompt">⚡ प्रोफ़ाइल एवं क्लास बदलें ▾</p>
+      <p class="drawer-user-prompt">⚡ छात्र प्रोफ़ाइल विवरण ▾</p>
     </div>
 
     <nav class="drawer-nav-list">
@@ -111,13 +269,13 @@
         <span class="icon">🔍</span> परिणाम देखें (Result Portal)
       </a>
       <a href="syllabus.html" class="drawer-nav-item">
-        <span class="icon">📋</span> बोर्ड सिलेबस हब
+        <span class="icon">📋</span> 10th बोर्ड सिलेबस
       </a>
       <a href="notes.html" class="drawer-nav-item">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी
+        <span class="icon">📚</span> 10th टॉपर्स नोट्स
       </a>
       <a href="test.html" class="drawer-nav-item active">
-        <span class="icon">📝</span> लाइव टाइमर टेस्ट सीरीज
+        <span class="icon">📝</span> 10th चैप्टर टेस्ट पोर्टल
       </a>
       <a href="pyq.html" class="drawer-nav-item">
         <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
@@ -125,11 +283,14 @@
       <a href="model-paper.html" class="drawer-nav-item">
         <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
       </a>
+      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800;">
+        <span class="icon">✅</span> माय टू-डू लिस्ट
+      </a>
+      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800;">
+        <span class="icon">🖼️</span> इमेज To PDF मेकर
+      </a>
       <a href="ai-desk.html" class="drawer-nav-item">
         <span class="icon">🤖</span> AI डाउट स्टूडियो
-      </a>
-      <a href="index.html#quickTools" class="drawer-nav-item">
-        <span class="icon">🛠️</span> स्मार्ट टूल्स
       </a>
       <div class="drawer-theme-row">
         <span class="theme-label">🌙 डार्क / लाइट मोड</span>
@@ -141,7 +302,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk Production</span>
+      <span class="platform-meta">NischayDesk Matric Edition</span>
     </div>
   </aside>
 
@@ -153,54 +314,56 @@
       <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-accent); text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: var(--radius-pill);">
         <span>🏠</span> मुख्य डैशबोर्ड
       </a>
-      <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk Test Simulator</span>
+      <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk Class 10th Test Engine</span>
     </div>
 
-    <!-- SCREEN 1: LOBBY & DYNAMIC CHAPTER SELECTION -->
+    <!-- SCREEN 1: LOBBY & CUSTOM CENTER SELECTOR -->
     <section class="test-view-panel active" id="testLobbyScreen">
       <div class="lobby-card">
         <div class="status-pill">
-          <span class="pulsing-dot"></span> बिहार बोर्ड & NTA सिमुलेटर
+          <span class="pulsing-dot"></span> बिहार बोर्ड मैट्रिक परीक्षा 2026 स्पेशल
         </div>
-        <h1 class="lobby-title">अध्याय-वार <span class="gradient-text">ऑनलाइन टेस्ट</span> पोर्टल</h1>
+        <h1 class="lobby-title">कक्षा 10वीं <span class="gradient-text">ऑनलाइन चैप्टर टेस्ट</span></h1>
         <p class="lobby-subtitle">
-          कक्षा, विषय और अपना मनपसंद अध्याय चुनें। समय प्रबंधन, निगेटिव मार्किंग और तुरंत विस्तृत व्याख्या के साथ परीक्षा दें।
+          विषय और अपना पसंदीदा अध्याय चुनें। बोर्ड परीक्षा टाइमर, वस्तुनिष्ठ प्रश्न और तुरंत विस्तृत व्याख्या के साथ अभ्यास करें।
         </p>
 
-        <!-- Selection Controls Grid -->
+        <!-- Selection Controls Grid (कस्टम बटन्स) -->
         <div class="test-selection-grid">
           
-          <!-- 1. Class Select -->
+          <!-- 1. Locked Class Indicator -->
           <div class="select-field-box">
-            <label for="testClassSelect">1. कक्षा चुनें (Class):</label>
-            <select id="testClassSelect" class="exam-dropdown">
-              <option value="10" selected>Class 10th (मैट्रिक)</option>
-              <option value="11">Class 11th (साइंस)</option>
-              <option value="12">Class 12th (साइंस)</option>
-            </select>
+            <label>1. कक्षा (Class):</label>
+            <div class="class-locked-pill">
+              <span>🎓 कक्षा 10वीं (मैट्रिक बोर्ड)</span>
+            </div>
           </div>
 
-          <!-- 2. Subject Select -->
+          <!-- 2. Subject Select Trigger (बीच में खुलेगा) -->
           <div class="select-field-box">
-            <label for="testSubjectSelect">2. विषय चुनें (Subject):</label>
-            <select id="testSubjectSelect" class="exam-dropdown"></select>
+            <label>2. विषय चुनें (Subject):</label>
+            <div class="custom-select-trigger" id="subjectTriggerBtn" onclick="openCenterModal('subject')">
+              <span id="subjectTriggerText">📐 गणित (Mathematics)</span>
+              <span class="trigger-arrow">▼</span>
+            </div>
           </div>
 
-          <!-- 3. Dynamic Chapter Filter -->
+          <!-- 3. Chapter Filter Trigger (बीच में खुलेगा) -->
           <div class="select-field-box">
-            <label for="testChapterSelect">3. अध्याय चुनें (Chapter):</label>
-            <select id="testChapterSelect" class="exam-dropdown">
-              <option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>
-            </select>
+            <label>3. अध्याय चुनें (Chapter):</label>
+            <div class="custom-select-trigger" id="chapterTriggerBtn" onclick="openCenterModal('chapter')">
+              <span id="chapterTriggerText">संपूर्ण विषय (फुल सिलेबस टेस्ट)</span>
+              <span class="trigger-arrow">▼</span>
+            </div>
           </div>
 
-          <!-- 4. Exam Pattern -->
+          <!-- 4. Exam Pattern Trigger (बीच में खुलेगा) -->
           <div class="select-field-box">
-            <label for="testPatternSelect">4. परीक्षा का समय व प्रकार:</label>
-            <select id="testPatternSelect" class="exam-dropdown">
-              <option value="speed" selected>क्विक स्पीड टेस्ट (15 मिनट)</option>
-              <option value="board">बोर्ड फुल टेस्ट (30 मिनट / 30 प्रश्न)</option>
-            </select>
+            <label>4. परीक्षा का समय व प्रकार:</label>
+            <div class="custom-select-trigger" id="patternTriggerBtn" onclick="openCenterModal('pattern')">
+              <span id="patternTriggerText">क्विक स्पीड टेस्ट (15 मिनट / 15 प्रश्न)</span>
+              <span class="trigger-arrow">▼</span>
+            </div>
           </div>
 
         </div>
@@ -210,14 +373,14 @@
           <h3>📌 परीक्षा के सामान्य नियम:</h3>
           <ul>
             <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
-            <li>नेगेटिव मार्किंग: प्रत्येक गलत उत्तर पर <strong>-1 अंक</strong> काटा जाएगा।</li>
+            <li>नेगेटिव मार्किंग: अभ्यास को मजबूत बनाने के लिए प्रत्येक गलत उत्तर पर <strong>-1 अंक</strong> कटेगा।</li>
             <li>टाइमर पूरा होते ही आपका टेस्ट स्वतः सबमिट हो जाएगा।</li>
-            <li>टेस्ट सबमिट करने के तुरंत बाद आपको स्कोरकार्ड और हर प्रश्न का विस्तृत हल मिलेगा।</li>
+            <li>टेस्ट समाप्त होते ही आपका स्कोरकार्ड, सटीकता और प्रत्येक प्रश्न का सही हल प्रदर्शित होगा।</li>
           </ul>
         </div>
 
         <button class="btn-start-exam" id="startExamBtn" style="margin: 0 auto; display: block;">
-          ⚡ टेस्ट शुरू करें (Start Exam)
+          ⚡ टेस्ट शुरू करें (Start 10th Test)
         </button>
       </div>
     </section>
@@ -226,7 +389,7 @@
     <section class="test-view-panel" id="testRunningScreen">
       <div class="exam-status-bar">
         <div class="exam-active-subject">
-          <span class="subject-badge" id="liveExamBadge">Class 10th</span>
+          <span class="subject-badge" id="liveExamBadge">10th Matric</span>
           <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 30</span>
         </div>
 
@@ -277,8 +440,8 @@
         
         <div class="result-header-badge">
           <span class="trophy-icon">🏆</span>
-          <h2>टेस्ट परिणाम स्कोरकार्ड</h2>
-          <p id="resultSubMeta">स्कोर रिपोर्ट</p>
+          <h2>10th बोर्ड टेस्ट परिणाम</h2>
+          <p id="resultSubMeta">स्कोरकार्ड रिपोर्ट</p>
         </div>
 
         <div class="result-tiles-grid">
@@ -315,7 +478,18 @@
 
   </main>
 
-  <!-- DEDICATED USER PROFILE & CLASS SELECTION MODAL -->
+  <!-- 🌟 बीच में खुलने वाला सेंटर-मोडल (Center Modal Selector) -->
+  <div class="center-modal-backdrop" id="centerSelectorModal" onclick="handleCenterModalBackdrop(event)">
+    <div class="center-modal-box">
+      <div class="center-modal-header">
+        <h3 id="centerModalTitle">विकल्प चुनें</h3>
+        <button type="button" class="center-modal-close" onclick="closeCenterModal()">&times;</button>
+      </div>
+      <div class="center-modal-list" id="centerModalList"></div>
+    </div>
+  </div>
+
+  <!-- USER PROFILE MODAL -->
   <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
     <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
       
@@ -329,17 +503,8 @@
       <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
       <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
 
-      <div style="text-align: left; margin-bottom: 16px;">
-        <label style="font-size: 0.78rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 6px;">अपनी कक्षा चुनें (Select Class):</label>
-        <select id="quickClassSwitchSelect" style="width: 100%; background: #060d21; border: 1.5px solid #1e3a8a; color: #fff; padding: 9px; border-radius: 8px; font-weight: bold;">
-          <option value="10th">कक्षा 10वीं (मैट्रिक)</option>
-          <option value="11th">कक्षा 11वीं (साइंस)</option>
-          <option value="12th">कक्षा 12वीं (इंटर साइंस)</option>
-        </select>
-
-        <button type="button" onclick="confirmSaveClassSelection()" style="width: 100%; background: #0284c7; color: #fff; border: 1px solid #38bdf8; padding: 9px; border-radius: 8px; font-weight: 800; margin-top: 10px; cursor: pointer;">
-          💾 कक्षा सेव करें (Save Class)
-        </button>
+      <div style="background: rgba(2, 132, 199, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 16px;">
+        <span style="font-size: 0.85rem; font-weight: 800; color: #38bdf8;">अध्ययन कक्षा: 10th (मैट्रिक बोर्ड)</span>
       </div>
 
       <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
@@ -356,34 +521,32 @@
   <!-- 4. FOOTER -->
   <footer class="app-footer">
     <div class="footer-container">
-      
       <div class="brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
           <span class="brand-title">Nischay<span style="color: var(--brand-accent);">Desk</span></span>
         </div>
         <p class="footer-summary">
-          बिहार बोर्ड मैट्रिक व इंटर परीक्षा की तैयारी के लिए समर्पित डिजिटल सिमुलेटर।
+          बिहार विद्यालय परीक्षा समिति (BSEB) मैट्रिक वार्षिक परीक्षा के लिए समर्पित स्मार्ट डिजिटल टेस्ट पोर्टल।
         </p>
       </div>
 
       <div>
-        <h4 class="footer-heading">नेविगेशन</h4>
+        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
         <ul class="footer-nav">
           <li><a href="index.html">➔ मुख्य डैशबोर्ड</a></li>
-          <li><a href="bseb-simulator.html">➔ 3h 15m बोर्ड परीक्षा</a></li>
+          <li><a href="bseb-simulator.html">➔ 3h 15m बोर्ड परीक्षा हॉल</a></li>
           <li><a href="bseb-result.html">➔ रिजल्ट पोर्टल</a></li>
-          <li><a href="syllabus.html">➔ बोर्ड सिलेबस हब</a></li>
-          <li><a href="notes.html">➔ नोट्स हब</a></li>
-          <li><a href="pyq.html">➔ क्वेश्चन बैंक</a></li>
+          <li><a href="syllabus.html">➔ 10th सिलेबस हब</a></li>
+          <li><a href="notes.html">➔ 10th टॉपर्स नोट्स</a></li>
+          <li><a href="pyq.html">➔ क्वेश्चन बैंक (PYQ)</a></li>
         </ul>
       </div>
-
     </div>
 
     <div class="footer-bottom-bar">
       <div class="server-status-tag">
-        &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● एग्जाम इंजन लाइव है</span>
+        &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● 10th टेस्ट इंजन सक्रिय है</span>
       </div>
     </div>
   </footer>
@@ -395,151 +558,182 @@
   <script src="quiz-engine.js"></script>
   <script src="main.js"></script>
 
-  <!-- Modal & Dynamic Dropdown Script -->
+  <!-- 🌟 कस्टम सेंटर-मोडल सेलेक्टर जावास्क्रिप्ट कंट्रोलर -->
   <script>
+    const class10Subjects = [
+      { id: "math", syllabusId: "10-math", name: "📐 गणित (Mathematics)" },
+      { id: "phy", syllabusId: "10-science-phy", name: "⚡ भौतिकी (Physics)" },
+      { id: "chem", syllabusId: "10-science-chem", name: "🧪 रसायन विज्ञान (Chemistry)" },
+      { id: "bio", syllabusId: "10-science-bio", name: "🧬 जीव विज्ञान (Biology)" },
+      { id: "hist", syllabusId: "10-history", name: "🏛️ इतिहास (History)" },
+      { id: "geo", syllabusId: "10-geography", name: "🗺️ भूगोल (Geography)" },
+      { id: "civ", syllabusId: "10-civics", name: "⚖️ राजनीति शास्त्र (Civics)" },
+      { id: "eco", syllabusId: "10-economics", name: "📈 अर्थशास्त्र (Economics)" },
+      { id: "dis", syllabusId: "10-disaster", name: "🚨 आपदा प्रबंधन (Disaster Mgmt)" },
+      { id: "sans", syllabusId: "10-sanskrit", name: "📜 संस्कृत (Sanskrit)" }
+    ];
+
+    const examPatterns = [
+      { id: "speed", name: "क्विक स्पीड टेस्ट (15 मिनट / 15 प्रश्न)" },
+      { id: "board", name: "बोर्ड फुल टेस्ट (30 मिनट / 30 प्रश्न)" }
+    ];
+
+    // चयनित स्थिति (Selected States)
+    let selectedSubject = class10Subjects[0];
+    let selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+    let selectedPattern = examPatterns[0];
+
+    // बैकग्राउंड में छिपे इनपुट्स (quiz-engine.js के साथ अनुकूलता के लिए)
+    let hiddenSubjectInput = null;
+    let hiddenChapterInput = null;
+    let hiddenPatternInput = null;
+
+    function initHiddenInputs() {
+      hiddenSubjectInput = document.createElement("input");
+      hiddenSubjectInput.type = "hidden";
+      hiddenSubjectInput.id = "testSubjectSelect";
+      document.body.appendChild(hiddenSubjectInput);
+
+      hiddenChapterInput = document.createElement("input");
+      hiddenChapterInput.type = "hidden";
+      hiddenChapterInput.id = "testChapterSelect";
+      document.body.appendChild(hiddenChapterInput);
+
+      hiddenPatternInput = document.createElement("input");
+      hiddenPatternInput.type = "hidden";
+      hiddenPatternInput.id = "testPatternSelect";
+      document.body.appendChild(hiddenPatternInput);
+
+      syncHiddenValues();
+    }
+
+    function syncHiddenValues() {
+      if (hiddenSubjectInput) hiddenSubjectInput.value = selectedSubject.id;
+      if (hiddenChapterInput) hiddenChapterInput.value = selectedChapter.id;
+      if (hiddenPatternInput) hiddenPatternInput.value = selectedPattern.id;
+
+      document.getElementById("subjectTriggerText").textContent = selectedSubject.name;
+      document.getElementById("chapterTriggerText").textContent = selectedChapter.name;
+      document.getElementById("patternTriggerText").textContent = selectedPattern.name;
+    }
+
+    function getChaptersForSubject(sylId) {
+      if (!window.NischaySyllabus || !window.NischaySyllabus.subjects) return [];
+      const sub = window.NischaySyllabus.subjects.find(s => s.id === sylId);
+      if (sub && sub.chapters) {
+        return sub.chapters.map(ch => ({
+          id: `ch${ch.no}`,
+          name: `अध्याय ${ch.no}: ${ch.name}`
+        }));
+      }
+      return [];
+    }
+
+    function openCenterModal(type) {
+      const modal = document.getElementById("centerSelectorModal");
+      const title = document.getElementById("centerModalTitle");
+      const list = document.getElementById("centerModalList");
+
+      list.innerHTML = "";
+
+      if (type === "subject") {
+        title.textContent = "विषय चुनें (Select Subject)";
+        class10Subjects.forEach(sub => {
+          const item = document.createElement("div");
+          item.className = `center-modal-item ${selectedSubject.id === sub.id ? 'selected' : ''}`;
+          item.innerHTML = `<span>${sub.name}</span> ${selectedSubject.id === sub.id ? '<span>✓</span>' : ''}`;
+          item.onclick = () => {
+            selectedSubject = sub;
+            selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+            syncHiddenValues();
+            closeCenterModal();
+          };
+          list.appendChild(item);
+        });
+      } else if (type === "chapter") {
+        title.textContent = "अध्याय चुनें (Select Chapter)";
+        
+        // ऑल चैप्टर विकल्प
+        const allItem = document.createElement("div");
+        allItem.className = `center-modal-item ${selectedChapter.id === 'all' ? 'selected' : ''}`;
+        allItem.innerHTML = `<span>संपूर्ण विषय (फुल सिलेबस टेस्ट)</span> ${selectedChapter.id === 'all' ? '<span>✓</span>' : ''}`;
+        allItem.onclick = () => {
+          selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+          syncHiddenValues();
+          closeCenterModal();
+        };
+        list.appendChild(allItem);
+
+        const chs = getChaptersForSubject(selectedSubject.syllabusId);
+        chs.forEach(ch => {
+          const item = document.createElement("div");
+          item.className = `center-modal-item ${selectedChapter.id === ch.id ? 'selected' : ''}`;
+          item.innerHTML = `<span>${ch.name}</span> ${selectedChapter.id === ch.id ? '<span>✓</span>' : ''}`;
+          item.onclick = () => {
+            selectedChapter = ch;
+            syncHiddenValues();
+            closeCenterModal();
+          };
+          list.appendChild(item);
+        });
+      } else if (type === "pattern") {
+        title.textContent = "परीक्षा का समय व प्रकार";
+        examPatterns.forEach(pat => {
+          const item = document.createElement("div");
+          item.className = `center-modal-item ${selectedPattern.id === pat.id ? 'selected' : ''}`;
+          item.innerHTML = `<span>${pat.name}</span> ${selectedPattern.id === pat.id ? '<span>✓</span>' : ''}`;
+          item.onclick = () => {
+            selectedPattern = pat;
+            syncHiddenValues();
+            closeCenterModal();
+          };
+          list.appendChild(item);
+        });
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeCenterModal() {
+      const modal = document.getElementById("centerSelectorModal");
+      if (modal) modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function handleCenterModalBackdrop(e) {
+      if (e.target.id === "centerSelectorModal") {
+        closeCenterModal();
+      }
+    }
+
+    // प्रोफ़ाइल मोडल फंक्शन्स
     function openProfileModal() {
       const modal = document.getElementById('customProfileModal');
       if (!modal) return;
-
-      const nameEl = document.getElementById('modalUserName');
-      const emailEl = document.getElementById('modalUserEmail');
-      const imgEl = document.getElementById('modalUserImg');
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-
-      const savedClass = localStorage.getItem('nd_selected_class') || '10th';
-      if (classSelect) classSelect.value = savedClass;
-
-      if (window.firebase && firebase.auth) {
-        const user = firebase.auth().currentUser;
-        if (user) {
-          const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
-          const firstName = rawName.trim().split(' ')[0];
-
-          if (nameEl) nameEl.textContent = firstName;
-          if (emailEl) emailEl.textContent = user.email || 'Google Verified';
-          if (imgEl) imgEl.src = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
-        }
-      }
       modal.style.display = 'flex';
     }
 
     function closeProfileModal() {
       const modal = document.getElementById('customProfileModal');
       if (modal) modal.style.display = 'none';
-      const loader = document.getElementById('logoutLoadingState');
-      if (loader) loader.style.display = 'none';
-      const btn = document.getElementById('btnPerformLogout');
-      if (btn) btn.disabled = false;
-    }
-
-    function confirmSaveClassSelection() {
-      const classSelect = document.getElementById('quickClassSwitchSelect');
-      if (!classSelect) return;
-
-      const chosen = classSelect.value;
-      localStorage.setItem("nd_selected_class", chosen);
-      localStorage.setItem("nischay_student_class", chosen.replace(/[^0-9]/g, ''));
-      localStorage.setItem("user_class", chosen);
-
-      if (window.firebase && firebase.auth) {
-        const user = firebase.auth().currentUser;
-        if (user && window.NischayConfig && window.NischayConfig.dbInstance) {
-          window.NischayConfig.dbInstance.collection("bseb_exams_2026").doc(user.uid).set({
-            selectedClass: chosen
-          }, { merge: true });
-        }
-      }
-
-      alert(`✓ आपकी कक्षा Class ${chosen} सेव हो गई है!`);
-      closeProfileModal();
-      location.reload();
     }
 
     function handleSlowLogout() {
-      const btn = document.getElementById('btnPerformLogout');
-      const loader = document.getElementById('logoutLoadingState');
-      if (btn) btn.disabled = true;
-      if (loader) loader.style.display = 'block';
-
-      setTimeout(() => {
-        if (window.firebase && firebase.auth) {
-          firebase.auth().signOut().finally(() => {
-            closeProfileModal();
-            window.location.reload();
-          });
-        } else {
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().finally(() => {
           closeProfileModal();
           window.location.reload();
-        }
-      }, 800);
+        });
+      } else {
+        closeProfileModal();
+        window.location.reload();
+      }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const classSelect = document.getElementById('testClassSelect');
-      const subjectSelect = document.getElementById('testSubjectSelect');
-      const chapterSelect = document.getElementById('testChapterSelect');
-
-      if (!classSelect || !subjectSelect || !chapterSelect) return;
-
-      const rawCls = localStorage.getItem('nd_selected_class') || localStorage.getItem('nischay_student_class') || '10th';
-      const savedCls = String(rawCls).replace(/[^0-9]/g, '') || '10';
-      if (['10', '11', '12'].includes(savedCls)) {
-        classSelect.value = savedCls;
-      }
-
-      const classSubjectsMap = {
-        "10": [
-          { id: "physics", syllabusId: "10-science-phy", name: "भौतिकी (Physics)" },
-          { id: "chemistry", syllabusId: "10-science-chem", name: "रसायन विज्ञान (Chemistry)" },
-          { id: "biology", syllabusId: "10-science-bio", name: "जीव विज्ञान (Biology)" },
-          { id: "math", syllabusId: "10-math", name: "गणित (Mathematics)" },
-          { id: "sst", syllabusId: "10-sst", name: "सामाजिक विज्ञान (SST)" },
-          { id: "sanskrit", syllabusId: "10-sanskrit", name: "संस्कृत (Sanskrit)" }
-        ],
-        "11": [
-          { id: "physics", syllabusId: "11-physics", name: "भौतिक विज्ञान (Physics)" },
-          { id: "chemistry", syllabusId: "11-chemistry", name: "रसायन विज्ञान (Chemistry)" },
-          { id: "math", syllabusId: "11-math", name: "गणित (Mathematics)" },
-          { id: "biology", syllabusId: "11-biology", name: "जीव विज्ञान (Biology)" }
-        ],
-        "12": [
-          { id: "physics", syllabusId: "12-physics", name: "भौतिक विज्ञान (Physics)" },
-          { id: "chemistry", syllabusId: "12-chemistry", name: "रसायन विज्ञान (Chemistry)" },
-          { id: "math", syllabusId: "12-math", name: "गणित (Mathematics)" },
-          { id: "biology", syllabusId: "12-biology", name: "जीव विज्ञान (Biology)" }
-        ]
-      };
-
-      function updateSubjects() {
-        const cls = classSelect.value;
-        const subjects = classSubjectsMap[cls] || [];
-        subjectSelect.innerHTML = subjects.map(s => `<option value="${s.id}" data-sylid="${s.syllabusId}">${s.name}</option>`).join('');
-        updateChapters();
-      }
-
-      function updateChapters() {
-        chapterSelect.innerHTML = '<option value="all">संपूर्ण विषय (फुल सिलेबस टेस्ट)</option>';
-        const selectedOpt = subjectSelect.options[subjectSelect.selectedIndex];
-        if (!selectedOpt || !window.NischaySyllabus || !window.NischaySyllabus.subjects) return;
-
-        const sylId = selectedOpt.getAttribute('data-sylid');
-        const subData = window.NischaySyllabus.subjects.find(s => s.id === sylId);
-
-        if (subData && subData.chapters) {
-          subData.chapters.forEach(ch => {
-            const opt = document.createElement('option');
-            opt.value = `ch${ch.no}`;
-            opt.textContent = `अध्याय ${ch.no}: ${ch.name}`;
-            chapterSelect.appendChild(opt);
-          });
-        }
-      }
-
-      classSelect.addEventListener('change', updateSubjects);
-      subjectSelect.addEventListener('change', updateChapters);
-
-      updateSubjects();
+    document.addEventListener("DOMContentLoaded", () => {
+      initHiddenInputs();
     });
   </script>
 </body>
-    </html>
+</html>
