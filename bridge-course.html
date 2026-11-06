@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>12th फाउंडेशन ब्रिज कोर्स | NischayDesk</title>
+  <title>12th Foundation Bridge Master Guide | NischayDesk</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
   <script>
     const savedTheme = localStorage.getItem("nd_app_theme") || "light";
@@ -26,189 +26,483 @@
       margin: 0;
       padding: 0;
     }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(3, 7, 18, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #10b981, #06b6d4);
+      border-radius: 10px;
+    }
+
     :root {
-      --bg-page: #f1f5f9;
+      --bg-page: #f8fafc;
       --card-bg: #ffffff;
-      --card-border: #cbd5e1;
+      --card-border: #e2e8f0;
       --text-main: #0f172a;
       --text-muted: #475569;
       --primary: #0284c7;
       --accent: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-orange: #f59e0b;
+      --accent-rose: #f43f5e;
+      --nav-bg: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.85);
     }
+
     html[data-theme="dark"] {
-      --bg-page: #040914;
-      --card-bg: #0b1a30;
-      --card-border: rgba(56, 189, 248, 0.22);
+      --bg-page: #030712;
+      --card-bg: #0b1528;
+      --card-border: rgba(56, 189, 248, 0.18);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --primary: #38bdf8;
       --accent: #34d399;
+      --accent-purple: #a78bfa;
+      --accent-orange: #fbbf24;
+      --accent-rose: #fb7185;
+      --nav-bg: #071120;
+      --glass-bg: rgba(11, 21, 40, 0.85);
     }
+
     body {
       background-color: var(--bg-page);
       color: var(--text-main);
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
-      padding-bottom: 74px;
-      line-height: 1.5;
+      padding-bottom: 84px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* Header */
+    /* Top Navigation */
     .app-header {
       position: sticky;
       top: 0;
-      background: var(--card-bg);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
       border-bottom: 1.5px solid var(--card-border);
-      padding: 12px 16px;
-      z-index: 100;
+      padding: 10px 16px;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      color: var(--primary);
+      color: var(--text-main);
       font-weight: 800;
-      font-size: 0.9rem;
-      background: rgba(2, 132, 199, 0.1);
-      padding: 6px 12px;
+      font-size: 0.84rem;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      padding: 6px 14px;
       border-radius: 999px;
+      transition: all 0.2s;
+    }
+    .back-btn:active { transform: scale(0.95); }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lang-pill-btn {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
     }
 
-    /* Container */
     .container {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 16px;
     }
 
     /* Hero Banner */
-    .hero-box {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(2, 132, 199, 0.15));
-      border: 1.5px solid var(--accent);
-      border-radius: 18px;
-      padding: 20px 16px;
-      margin-bottom: 20px;
-      text-align: center;
+    .hero-banner {
+      position: relative;
+      background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.2) 0%, rgba(2, 132, 199, 0.15) 90%), var(--card-bg);
+      border: 2px solid rgba(16, 185, 129, 0.4);
+      border-radius: 24px;
+      padding: 26px 20px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
     }
-    .hero-badge {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 900;
-      padding: 4px 12px;
+    .hero-banner::after {
+      content: "🚀";
+      position: absolute;
+      right: -10px;
+      bottom: -15px;
+      font-size: 7.5rem;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      padding: 4px 14px;
       border-radius: 999px;
-      margin-bottom: 8px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
     .hero-title {
-      font-size: 1.35rem;
+      font-size: 1.65rem;
       font-weight: 900;
-      margin-bottom: 6px;
+      line-height: 1.3;
+      margin-bottom: 8px;
     }
-    .hero-desc {
+    .hero-title span {
+      background: linear-gradient(135deg, #10b981, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    /* Quick Reality Card */
+    .reality-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1.5px dashed var(--accent-orange);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 26px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .reality-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+    .reality-text h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+      margin-bottom: 4px;
+    }
+    .reality-text p {
       font-size: 0.82rem;
       color: var(--text-muted);
     }
 
-    /* Subject Tabs */
+    /* Section Headings */
+    .section-title-wrap {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Timeline Stepper (Step-by-step) */
+    .timeline-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .timeline-wrap::before {
+      content: "";
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 23px;
+      width: 3px;
+      background: linear-gradient(180deg, #10b981, #0284c7, #8b5cf6, #f43f5e);
+      border-radius: 2px;
+      z-index: 0;
+    }
+    .step-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px 18px 18px 60px;
+      z-index: 1;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+    }
+    .step-badge {
+      position: absolute;
+      left: 10px;
+      top: 16px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 3px solid #10b981;
+      color: #10b981;
+      font-weight: 900;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 4px var(--bg-page);
+    }
+    .step-card:nth-child(2) .step-badge { border-color: #0284c7; color: #0284c7; }
+    .step-card:nth-child(3) .step-badge { border-color: #8b5cf6; color: #8b5cf6; }
+    .step-card:nth-child(4) .step-badge { border-color: #f59e0b; color: #f59e0b; }
+    .step-card:nth-child(5) .step-badge { border-color: #f43f5e; color: #f43f5e; }
+
+    .step-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+    .step-time-pill {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(2, 132, 199, 0.1);
+      color: var(--primary);
+    }
+    .step-content p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .action-checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .action-checklist li {
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .action-checklist li span.bullet {
+      color: var(--accent);
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    /* Subject Bridge Deep Dive Tabs */
     .tabs-bar {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       scrollbar-width: none;
     }
     .tabs-bar::-webkit-scrollbar { display: none; }
     .tab-btn {
       flex: 0 0 auto;
-      padding: 8px 16px;
-      border-radius: 12px;
+      padding: 10px 18px;
+      border-radius: 14px;
       border: 1.5px solid var(--card-border);
       background: var(--card-bg);
       color: var(--text-main);
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 800;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.2s;
     }
     .tab-btn.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border-color: #10b981;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
     }
 
-    /* Bridge Cards */
-    .bridge-sec { display: none; }
-    .bridge-sec.active { display: block; }
-    .topic-card {
+    .subject-pane { display: none; }
+    .subject-pane.active { display: block; }
+
+    /* Topic Blueprint Cards */
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media (min-width: 640px) {
+      .blueprint-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .bp-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .topic-head {
+    .bp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .bp-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .bp-tag.urgent { background: rgba(244, 63, 94, 0.12); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .bp-tag.must { background: rgba(16, 185, 129, 0.12); color: var(--accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .bp-title {
+      font-size: 0.96rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .bp-desc {
+      font-size: 0.81rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .bp-footer {
+      border-top: 1px dashed var(--card-border);
+      padding-top: 10px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--primary);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 8px;
-      margin-bottom: 10px;
     }
-    .topic-head h3 {
-      font-size: 0.98rem;
-      font-weight: 900;
-      color: var(--primary);
-    }
-    .badge-why {
-      font-size: 0.72rem;
-      background: rgba(245, 158, 11, 0.15);
-      color: #d97706;
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-weight: 800;
-    }
-    .formula-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.86rem;
-      margin-top: 8px;
-    }
-    .formula-table th, .formula-table td {
-      border: 1px solid var(--card-border);
-      padding: 9px 12px;
-      text-align: left;
-    }
-    .formula-table th {
-      background: rgba(128, 128, 128, 0.08);
-      font-weight: 800;
-    }
-    .formula-code {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 800;
-      color: #e11d48;
-    }
-    html[data-theme="dark"] .formula-code { color: #fb7185; }
 
-    .key-points-list {
-      margin-top: 8px;
-      padding-left: 20px;
-      font-size: 0.86rem;
+    /* Red Flags / Mistakes Box */
+    .red-flag-box {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.08), rgba(245, 158, 11, 0.05));
+      border: 1.5px solid rgba(244, 63, 94, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .red-flag-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--accent-rose);
+      margin-bottom: 14px;
+    }
+    .mistake-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mistake-item {
+      display: flex;
+      gap: 10px;
+      font-size: 0.83rem;
+    }
+    .mistake-item span.cross {
+      color: var(--accent-rose);
+      font-weight: 900;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .mistake-item strong { color: var(--text-main); }
+
+    /* Interactive Ready Checklist */
+    .checklist-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--card-border);
+      cursor: pointer;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #10b981;
+      cursor: pointer;
+    }
+    .check-item span.label-text {
+      font-size: 0.85rem;
+      font-weight: 700;
       color: var(--text-main);
     }
-    .key-points-list li { margin-bottom: 8px; line-height: 1.6; }
-    .math-highlight {
-      display: inline-block;
-      background: rgba(2, 132, 199, 0.1);
-      padding: 1px 6px;
-      border-radius: 6px;
-      font-weight: 800;
-      color: var(--primary);
+
+    /* Founder Note */
+    .founder-memo {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.1), rgba(16, 185, 129, 0.08));
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .founder-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .founder-content h5 {
+      font-size: 0.95rem;
+      font-weight: 900;
+      margin-bottom: 2px;
+    }
+    .founder-content p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
     }
 
     /* Bottom Dock */
@@ -223,17 +517,20 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      z-index: 999;
+      z-index: 9999;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
     }
     .dock-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-decoration: none;
       color: var(--text-muted);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
       gap: 3px;
+      flex: 1;
     }
     .dock-btn.active { color: var(--accent); }
     .dock-btn span.icon { font-size: 1.3rem; }
@@ -241,212 +538,791 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- 1. Top Navbar -->
   <header class="app-header">
-    <a href="class11.html" class="back-btn">← 11th डैशबोर्ड</a>
-    <span style="font-size: 0.85rem; font-weight: 800;">NischayDesk Bridge Hub</span>
+    <a href="class11.html" class="back-btn">
+      <span>←</span> <span data-key="backBtn">11th डैशबोर्ड</span>
+    </a>
+    <div class="header-actions">
+      <button class="lang-pill-btn" onclick="toggleLanguage()" id="langBtn">English</button>
+    </div>
   </header>
 
   <div class="container">
-    <!-- Hero Banner -->
-    <div class="hero-box">
-      <span class="hero-badge">🚀 11th ➔ 12th TRANSITION</span>
-      <h1 class="hero-title">12th फाउंडेशन ब्रिज कोर्स</h1>
-      <p class="hero-desc">11वीं के वो सबसे महत्वपूर्ण सूत्र और बुनियादी नियम जो 12वीं में 95%+ अंक लाने के लिए 100% अनिवार्य हैं।</p>
+
+    <!-- 2. Hero Guide Banner -->
+    <div class="hero-banner">
+      <div class="hero-tag" data-key="heroTag">⚡ 11th ➔ 12th TRANSITION MASTER ROADMAP</div>
+      <h1 class="hero-title" data-key="heroTitle">11th से 12th में कैसे कूदें? <span>टॉपर ब्रिज गाइड</span></h1>
+      <p class="hero-subtitle" data-key="heroDesc">
+        अगर 11वीं में पढ़ाई छूट गई या कमजोर रह गई, तो घबराना नहीं है! 12वीं में 95%+ लाने के लिए 11वीं की पूरी किताबें दोबारा नहीं पढ़नी हैं। सिर्फ ये चुनिंदा नींव वाले चैप्टर्स और स्टेप-बाय-स्टेप फॉर्मूला अपनाना है।
+      </p>
+    </div>
+
+    <!-- 3. Reality Check Box -->
+    <div class="reality-box">
+      <div class="reality-icon">💡</div>
+      <div class="reality-text">
+        <h4 data-key="realityHead">कड़वा सच: 12वीं में छात्र क्यों फेल या परेशान होते हैं?</h4>
+        <p data-key="realityDesc">
+          12वीं का सिलेबस 11वीं से आसान है, लेकिन 12वीं के पहले ही महीने में 'अवकलन (Calculus)', 'इलेक्ट्रोस्टेटिक्स' और 'ऑर्गेनिक केमिस्ट्री' आते हैं। अगर 11वीं के केवल 5-6 बुनियादी चैप्टर्स क्लियर नहीं हैं, तो 12वीं सिर के ऊपर से निकलने लगती है।
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. STEP-BY-STEP ACTION BLUEPRINT -->
+    <div class="section-title-wrap">
+      <h2 class="section-title">
+        <span>🗺️</span> <span data-key="roadmapTitle">5-चरणों में 12वीं की तैयारी (Step-by-Step Flow)</span>
+      </h2>
+    </div>
+
+    <div class="timeline-wrap">
+      <!-- Step 1 -->
+      <div class="step-card">
+        <div class="step-badge">1</div>
+        <div class="step-title-row">
+          <div class="step-title" data-key="step1Title">स्टेप 1: 'कैलकुलस और वेक्टर्स' का डर खत्म करो</div>
+          <span class="step-time-pill" data-key="step1Time">समय: 3 से 4 दिन</span>
+        </div>
+        <div class="step-content">
+          <p data-key="step1Desc">
+            फिजिक्स और मैथ्स दोनों में 12वीं के 50% से अधिक अंक अवकलन, समाकलन और सदिशों पर टिके हैं। फॉर्मूला याद करने से पहले उनका मतलब समझो।
+          </p>
+          <ul class="action-checklist">
+            <li><span class="bullet">✔</span> <span data-key="step1p1">मैथ्स: सीमा एवं अवकलज (Limits & Derivatives) का बेसिक कांसेप्ट पूरा करो।</span></li>
+            <li><span class="bullet">✔</span> <span data-key="step1p2">फिजिक्स: सदिशों का घटक वियोजन (Horizontal & Vertical components निकालना) सीखो।</span></li>
+            <li><span class="bullet">✔</span> <span data-key="step1p3">ग्राफ पढ़ना: ढाल (Slope = dy/dx) और क्षेत्रफल (Area = ∫y dx) का भौतिक अर्थ समझो।</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-card">
+        <div class="step-badge">2</div>
+        <div class="step-title-row">
+          <div class="step-title" data-key="step2Title">स्टेप 2: केमिस्ट्री की 'त्रिमूर्ति' तैयार करो</div>
+          <span class="step-time-pill" data-key="step2Time">समय: 4 से 5 दिन</span>
+        </div>
+        <div class="step-content">
+          <p data-key="step2Desc">
+            12वीं केमिस्ट्री में न्यूमेरिकल्स और ऑर्गेनिक के रिएक्शन मैकेनिज्म सीधे 11वीं के तीन बुनियादी स्तंभों पर खड़े हैं:
+          </p>
+          <ul class="action-checklist">
+            <li><span class="bullet">✔</span> <span data-key="step2p1">मोल संकल्पना: मोलरता, मोललता और मोल अंश निकालना पानी की तरह साफ होना चाहिए।</span></li>
+            <li><span class="bullet">✔</span> <span data-key="step2p2">रेडॉक्स अभिक्रियाएं: ऑक्सीकरण संख्या निकालना और ऑक्सीकारक/अपचायक पहचानना।</span></li>
+            <li><span class="bullet">✔</span> <span data-key="step2p3">GOC (सामान्य कार्बनिक रसायन): +I, -I प्रभाव, अनुनाद और IUPAC नामकरण 100% क्लियर करो।</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-card">
+        <div class="step-badge">3</div>
+        <div class="step-title-row">
+          <div class="step-title" data-key="step3Title">स्टेप 3: बायोलॉजी/मैथ्स का कोर फाउंडेशन मजबूत करो</div>
+          <span class="step-time-pill" data-key="step3Time">समय: 3 दिन</span>
+        </div>
+        <div class="step-content">
+          <p data-key="step3Desc">
+            अपने स्ट्रीम के अनुसार केवल उन चैप्टर्स को उठाओ जो 12वीं में सीधे विस्तार पाते हैं:
+          </p>
+          <ul class="action-checklist">
+            <li><span class="bullet">✔</span> <span data-key="step3p1">बायोलॉजी वाले: 'कोशिका विभाजन (Cell Division)' और 'DNA संरचना' को अच्छे से समझ लो।</span></li>
+            <li><span class="bullet">✔</span> <span data-key="step3p2">मैथ्स वाले: 'संबंध एवं फलन' और त्रिकोणमिति के सभी रूपांतरण नियम दिमाग में बैठा लो।</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-card">
+        <div class="step-badge">4</div>
+        <div class="step-title-row">
+          <div class="step-title" data-key="step4Title">स्टेप 4: एनसीईआरटी (NCERT) और पिछले 5 साल के पेपर्स का मिलान</div>
+          <span class="step-time-pill" data-key="step4Time">समय: 2 दिन</span>
+        </div>
+        <div class="step-content">
+          <p data-key="step4Desc">
+            12वीं शुरू करने से पहले 12वीं बोर्ड का ब्लूप्रिंट देखो ताकि यह समझ आए कि 11वीं के कौन-से सवाल सीधे ऑब्जेक्टिव में पूछे जाते हैं।
+          </p>
+          <ul class="action-checklist">
+            <li><span class="bullet">✔</span> <span data-key="step4p1">12वीं बोर्ड में मात्रक और विमाओं (Units & Dimensions) से हर साल 4-5 ऑब्जेक्टिव आते हैं।</span></li>
+            <li><span class="bullet">✔</span> <span data-key="step4p2">11वीं के केवल 1-पेज शॉर्ट नोट्स बनाओ, भारी-भरकम कॉपियाँ नहीं।</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-card">
+        <div class="step-badge">5</div>
+        <div class="step-title-row">
+          <div class="step-title" data-key="step5Title">स्टेप 5: 12वीं के पहले 3 चैप्टर्स पर पहला प्रहार</div>
+          <span class="step-time-pill" data-key="step5Time">तैयारी पूरी!</span>
+        </div>
+        <div class="step-content">
+          <p data-key="step5Desc">
+            जब ऊपर के 4 स्टेप्स पूरे हो जाएँ, तो बिना रुके 12वीं के पहले-पहले चैप्टर्स (Electrostatics, Solutions, Relations & Functions / Reproduction) की रीडिंग शुरू कर दो!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. SUBJECT-WISE SURVIVAL BLUEPRINT -->
+    <div class="section-title-wrap">
+      <h2 class="section-title">
+        <span>🎯</span> <span data-key="subGuideTitle">विषयवार सर्वाइवल गाइड (क्या पढ़ना है, क्या छोड़ना है)</span>
+      </h2>
     </div>
 
     <!-- Tabs -->
     <div class="tabs-bar">
-      <button class="tab-btn active" onclick="switchTab('math')">📐 गणित (Math)</button>
-      <button class="tab-btn" onclick="switchTab('phy')">⚡ भौतिकी (Physics)</button>
-      <button class="tab-btn" onclick="switchTab('chem')">🧪 रसायन (Chemistry)</button>
-      <button class="tab-btn" onclick="switchTab('bio')">🧬 जीव विज्ञान (Biology)</button>
+      <button class="tab-btn active" onclick="switchSubject('phy')">⚡ भौतिकी (Physics)</button>
+      <button class="tab-btn" onclick="switchSubject('chem')">🧪 रसायन (Chemistry)</button>
+      <button class="tab-btn" onclick="switchSubject('math')">📐 गणित (Math)</button>
+      <button class="tab-btn" onclick="switchSubject('bio')">🧬 जीव विज्ञान (Biology)</button>
     </div>
 
-    <!-- 1. MATH SECTION -->
-    <div class="bridge-sec active" id="sec-math">
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>1. बेसिक अवकलन सूत्र (Calculus Foundation)</h3>
-          <span class="badge-why">12th में 44 मार्क्स का कैलकुलस</span>
+    <!-- Physics Tab -->
+    <div class="subject-pane active" id="pane-phy">
+      <div class="blueprint-grid">
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>⚡</span>
+            </div>
+            <h3 class="bp-title" data-key="phyT1">सदिश (Vectors) एवं घटक वियोजन</h3>
+            <p class="bp-desc" data-key="phyD1">
+              अगर आपको बिंदु आवेश के कारण विद्युत क्षेत्र की दिशा या दो बलों का परिणामी निकालना नहीं आता, तो 12वीं का पहला चैप्टर 'वैद्युत आवेश तथा क्षेत्र' कभी समझ नहीं आएगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="phyF1">➔ 12th उपयोग: इलेक्ट्रोस्टेटिक्स, चुंबकत्व</div>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">12वीं के 'सांतत्य तथा अवकलनीयता' और 'समाकलन' के लिए ये सूत्र सीधे याद होने चाहिए:</p>
-        <table class="formula-table">
-          <tr><th>फलन f(x)</th><th>अवकलज d/dx</th></tr>
-          <tr><td>xⁿ</td><td class="formula-code">n · xⁿ⁻¹</td></tr>
-          <tr><td>sin x</td><td class="formula-code">cos x</td></tr>
-          <tr><td>cos x</td><td class="formula-code">-sin x</td></tr>
-          <tr><td>tan x</td><td class="formula-code">sec² x</td></tr>
-          <tr><td>cot x</td><td class="formula-code">-cosec² x</td></tr>
-          <tr><td>sec x</td><td class="formula-code">sec x · tan x</td></tr>
-          <tr><td>eˣ</td><td class="formula-code">eˣ</td></tr>
-          <tr><td>logₑ x</td><td class="formula-code">1 / x</td></tr>
-          <tr><td>गुणन नियम (u · v)'</td><td class="formula-code">u · v' + v · u'</td></tr>
-          <tr><td>भागफल नियम (u / v)'</td><td class="formula-code">(v · u' - u · v') / v²</td></tr>
-        </table>
-      </div>
 
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>2. त्रिकोणमिति सर्वसमिकाएं (Trig Identities)</h3>
-          <span class="badge-why">प्रतिलोम त्रिकोणमिति (ITF) का आधार</span>
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>📐</span>
+            </div>
+            <h3 class="bp-title" data-key="phyT2">कलन का भौतिकी में उपयोग</h3>
+            <p class="bp-desc" data-key="phyD2">
+              $v = dx/dt$ और $a = dv/dt$ से आगे बढ़कर विद्युत फ्लक्स ($\Phi = \int E \cdot dA$) और फैराडे का नियम ($e = -d\Phi/dt$) समझने के लिए बेसिक इंटीग्रेशन आना ही चाहिए।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="phyF2">➔ 12th उपयोग: गॉस का नियम, EMI व AC</div>
         </div>
-        <ul class="key-points-list">
-          <li><strong>2θ वाले प्रमुख सूत्र:</strong><br>
-            • sin 2θ = <span class="math-highlight">2 sin θ cos θ = (2 tan θ) / (1 + tan² θ)</span><br>
-            • cos 2θ = <span class="math-highlight">cos² θ - sin² θ = 2 cos² θ - 1 = 1 - 2 sin² θ</span><br>
-            • tan 2θ = <span class="math-highlight">(2 tan θ) / (1 - tan² θ)</span>
-          </li>
-          <li><strong>कैलकुलस के लिए 1 ± cos 2θ के जादुई सूत्र:</strong><br>
-            • 1 - cos 2θ = <span class="math-highlight">2 sin² θ</span><br>
-            • 1 + cos 2θ = <span class="math-highlight">2 cos² θ</span>
-          </li>
-          <li><strong>3θ वाले सूत्र:</strong><br>
-            • sin 3θ = <span class="math-highlight">3 sin θ - 4 sin³ θ</span><br>
-            • cos 3θ = <span class="math-highlight">4 cos³ θ - 3 cos θ</span>
-          </li>
-        </ul>
-      </div>
 
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>3. संबंध एवं फलन (Relations & Functions)</h3>
-          <span class="badge-why">12th Chapter 1</span>
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">स्कोरिंग टॉपिक</span>
+              <span>📏</span>
+            </div>
+            <h3 class="bp-title" data-key="phyT3">मात्रक एवं विमीय विश्लेषण</h3>
+            <p class="bp-desc" data-key="phyD3">
+              12वीं के बोर्ड पेपर में $\epsilon_0$ (विद्युतशीलता) और $\mu_0$ (चुंबकशीलता) की विमाएं हर साल पूछी जाती हैं, जो 11वीं के विमीय सूत्र नियम से तुरंत निकलती हैं।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="phyF3">➔ 12th उपयोग: 4-5 ऑब्जेक्टिव प्रश्न पक्के</div>
         </div>
-        <ul class="key-points-list">
-          <li><strong>स्वतुल्य (Reflexive):</strong> प्रत्येक a ∈ A के लिए (a, a) ∈ R हो।</li>
-          <li><strong>सममित (Symmetric):</strong> यदि (a, b) ∈ R तो (b, a) ∈ R होना चाहिए।</li>
-          <li><strong>संक्रामक (Transitive):</strong> यदि (a, b) ∈ R तथा (b, c) ∈ R तो (a, c) ∈ R हो।</li>
-          <li><strong>तुल्यता संबंध (Equivalence Relation):</strong> जो संबंध एक साथ स्वतुल्य, सममित और संक्रामक तीनों हो।</li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 2. PHYSICS SECTION -->
-    <div class="bridge-sec" id="sec-phy">
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>1. सदिश बीजगणित (Vectors)</h3>
-          <span class="badge-why">12th Electrostatics & Magnetism</span>
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">कांसेप्ट बूस्टर</span>
+              <span>🔋</span>
+            </div>
+            <h3 class="bp-title" data-key="phyT4">कार्य, ऊर्जा और विभव संबंध</h3>
+            <p class="bp-desc" data-key="phyD4">
+              संरक्षी बल और स्थितिज ऊर्जा का संबंध ($F = -dU/dr$) ही 12वीं में विद्युत क्षेत्र और विभव प्रवणता ($E = -dV/dr$) बन जाता है।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="phyF4">➔ 12th उपयोग: स्थिरवैद्युत विभव एवं धारिता</div>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">कूलाम का नियम, विद्युत क्षेत्र और चुंबकीय बल में दिशा निकालने हेतु अनिवार्य:</p>
-        <ul class="key-points-list">
-          <li><strong>परिणामी सदिश (R):</strong> R = √(A² + B² + 2AB cos θ)</li>
-          <li><strong>अदिश गुणनफल (Dot Product):</strong> A · B = AB cos θ (यदि A ⊥ B तो A · B = 0)</li>
-          <li><strong>सदिश गुणनफल (Cross Product):</strong> A × B = AB sin θ n̂ (यदि A || B तो A × B = 0)</li>
-          <li><strong>घटक वियोजन (Resolving Components):</strong><br>
-            • क्षैतिज घटक (Horizontal) = A cos θ<br>
-            • ऊर्ध्वाधर घटक (Vertical) = A sin θ
-          </li>
-        </ul>
-      </div>
-
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>2. कार्य, ऊर्जा तथा विभव संबंध</h3>
-          <span class="badge-why">विद्युत विभव और धारिता</span>
-        </div>
-        <ul class="key-points-list">
-          <li><strong>कार्य (Work):</strong> W = F · s = F s cos θ</li>
-          <li><strong>बल तथा स्थितिज ऊर्जा में संबंध:</strong> F = -dU/dr (यही 12वीं में विद्युत क्षेत्र E = -dV/dr बनता है)</li>
-          <li><strong>ऊर्जा संरक्षण:</strong> कुल यांत्रिक ऊर्जा E = K + U सदैव संरक्षित रहती है।</li>
-        </ul>
       </div>
     </div>
 
-    <!-- 3. CHEMISTRY SECTION -->
-    <div class="bridge-sec" id="sec-chem">
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>1. मोल संकल्पना व सांद्रता (Mole Concept)</h3>
-          <span class="badge-why">12th Chapter: Solutions (विलयन)</span>
+    <!-- Chemistry Tab -->
+    <div class="subject-pane" id="pane-chem">
+      <div class="blueprint-grid">
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>🧪</span>
+            </div>
+            <h3 class="bp-title" data-key="chemT1">मोल संकल्पना और सांद्रता पद</h3>
+            <p class="bp-desc" data-key="chemD1">
+              12वीं फिजिकल केमिस्ट्री का पहला चैप्टर 'विलयन (Solutions)' पूरी तरह मोलरता, मोललता, मोल अंश और हेनरी नियम पर टिका है। इसे छोड़ना आत्महत्या जैसा है!
+            </p>
+          </div>
+          <div class="bp-footer" data-key="chemF1">➔ 12th उपयोग: विलयन, विद्युतरसायन न्यूमेरिकल्स</div>
         </div>
-        <ul class="key-points-list">
-          <li><strong>मोल (n):</strong> भार (ग्राम में) / मोलर द्रव्यमान = कणों की संख्या / 6.022 × 10²³</li>
-          <li><strong>मोलरता (M):</strong> (विलेय के मोल) / (विलयन का आयतन लीटर में) [ताप पर निर्भर]</li>
-          <li><strong>मोललता (m):</strong> (विलेय के मोल) / (विलायक का भार किग्रा में) [ताप से स्वतंत्र]</li>
-          <li><strong>मोल अंश / प्रभाज (Xₐ):</strong> Xₐ = nₐ / (nₐ + nᵦ), सदैव Xₐ + Xᵦ = 1</li>
-        </ul>
-      </div>
 
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>2. कार्बनिक रसायन बेसिक्स (GOC Foundation)</h3>
-          <span class="badge-why">12th Organic Chemistry (35 अंक)</span>
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>🧬</span>
+            </div>
+            <h3 class="bp-title" data-key="chemT2">GOC (सामान्य कार्बनिक रसायन)</h3>
+            <p class="bp-desc" data-key="chemD2">
+              12वीं में 35 नंबर की ऑर्गेनिक केमिस्ट्री है (हैलोएल्केन, एल्कोहॉल, एल्डिहाइड, एमीन)। अगर 11वीं का प्रेरणिक प्रभाव (+I/-I), अनुनाद और कार्बोकैटायन नहीं आता, तो रटना पड़ेगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="chemF2">➔ 12th उपयोग: संपूर्ण ऑर्गेनिक केमिस्ट्री</div>
         </div>
-        <ul class="key-points-list">
-          <li><strong>प्रेरणिक प्रभाव (Inductive Effect):</strong><br>
-            • +I (इलेक्ट्रॉन दाता): -CH₃, -C₂H₅ (कार्बोकैटायन को स्थिर करते हैं)<br>
-            • -I (इलेक्ट्रॉन खींचने वाले): -NO₂, -CN, -COOH, -Cl
-          </li>
-          <li><strong>कार्बोकैटायन स्थायित्व का क्रम:</strong> 3° > 2° > 1° > CH₃⁺</li>
-          <li><strong>संकरण और आबंध:</strong><br>
-            • एकल आबंध: sp³ (109.5°)<br>
-            • द्वि-आबंध (C=C): sp² (120°)<br>
-            • त्रि-आबंध (C≡C): sp (180°)
-          </li>
-        </ul>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">स्कोरिंग टॉपिक</span>
+              <span>⚡</span>
+            </div>
+            <h3 class="bp-title" data-key="chemT3">रेडॉक्स और ऑक्सीकरण संख्या</h3>
+            <p class="bp-desc" data-key="chemD3">
+              12वीं के 'विद्युतरसायन (Electrochemistry)' में नेर्नस्ट समीकरण और सेल विभव निकालने के लिए इलेक्ट्रॉनों का लेन-देन और ऑक्सीकरण अंक आना अनिवार्य है।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="chemF3">➔ 12th उपयोग: डेनियल सेल, फैराडे नियम</div>
+        </div>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">कांसेप्ट बूस्टर</span>
+              <span>⚛️</span>
+            </div>
+            <h3 class="bp-title" data-key="chemT4">रासायनिक आबंधन और संकरण</h3>
+            <p class="bp-desc" data-key="chemD4">
+              sp, sp², sp³ संकरण, द्विध्रुव आघूर्ण और VSEPR सिद्धांत सीख लो। इनऑर्गेनिक में d व f-ब्लॉक और उपसहसंयोजन यौगिकों में यही काम आएगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="chemF4">➔ 12th उपयोग: कोऑर्डिनेशन कंपाउंड्स</div>
+        </div>
       </div>
     </div>
 
-    <!-- 4. BIOLOGY SECTION -->
-    <div class="bridge-sec" id="sec-bio">
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>1. कोशिका विभाजन (Cell Division)</h3>
-          <span class="badge-why">12th Genetics & Reproduction</span>
+    <!-- Math Tab -->
+    <div class="subject-pane" id="pane-math">
+      <div class="blueprint-grid">
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>📐</span>
+            </div>
+            <h3 class="bp-title" data-key="mathT1">सीमा और अवकलज (Calculus Root)</h3>
+            <p class="bp-desc" data-key="mathD1">
+              12वीं में कैलकुलस अकेले 44 नंबर का आता है! 11वीं का गुणन नियम (Product rule), भागफल नियम (Quotient rule) और मानक अवकलज अगर अभी तैयार नहीं किए, तो 12वीं में रोना पड़ेगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="mathF1">➔ 12th उपयोग: सांतत्य, अवकलन, समाकलन</div>
         </div>
-        <ul class="key-points-list">
-          <li><strong>समसूत्री विभाजन (Mitosis):</strong> कायिक कोशिकाओं में वृद्धि हेतु होता है (गुणसूत्र संख्या 2n → 2n समान रहती है)।</li>
-          <li><strong>अर्धसूत्री विभाजन (Meiosis):</strong> युग्मक (शुक्राणु व अंडाणु) निर्माण के समय होता है (गुणसूत्र 2n → n आधे हो जाते हैं)।</li>
-          <li><strong>जीन विनिमय (Crossing Over):</strong> प्रोफेज-I की पैकैटीन उप-अवस्था में होता है, जो संतानों में नई विभिन्नताएं लाता है।</li>
-        </ul>
-      </div>
 
-      <div class="topic-card">
-        <div class="topic-head">
-          <h3>2. डीएनए एवं आनुवंशिकी आधार (Biomolecules)</h3>
-          <span class="badge-why">12th वंशागति का आण्विक आधार</span>
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>🔄</span>
+            </div>
+            <h3 class="bp-title" data-key="mathT2">त्रिकोणमितीय सर्वसमिकाएं</h3>
+            <p class="bp-desc" data-key="mathD2">
+              12वीं के 'प्रतिलोम त्रिकोणमितीय फलन (ITF)' और समाकलन में हर एक सवाल में $\sin 2x, \cos 2x, \tan 2x$ और $1 \pm \cos 2x$ के रूपांतरण लगते हैं।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="mathF2">➔ 12th उपयोग: ITF, प्रतिस्थापन द्वारा समाकलन</div>
         </div>
-        <ul class="key-points-list">
-          <li><strong>न्यूक्लियोटाइड संरचना:</strong> नाइट्रोजनी क्षार + डीऑक्सीराइबोज शर्करा + फॉस्फेट समूह।</li>
-          <li><strong>चारगाफ नियम (Chargaff's Rule):</strong> A = T (2 हाइड्रोजन बंध) तथा G ≡ C (3 हाइड्रोजन बंध)।</li>
-          <li><strong>सेंट्रल डोग्मा:</strong> DNA → (अनुलेखन) → mRNA → (अनुवादन) → प्रोटीन।</li>
-        </ul>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">कांसेप्ट बूस्टर</span>
+              <span>🔗</span>
+            </div>
+            <h3 class="bp-title" data-key="mathT3">संबंध एवं फलन (Relations & Functions)</h3>
+            <p class="bp-desc" data-key="mathD3">
+              12वीं का चैप्टर 1 यही है! अगर स्वतुल्य (Reflexive), सममित (Symmetric) और संक्रामक (Transitive) संबंध का बेसिक पता है, तो 12वीं का पहला चैप्टर 2 दिन में खत्म हो जाएगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="mathF3">➔ 12th उपयोग: तुल्यता संबंध, एकैकी-आच्छादक</div>
+        </div>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">स्कोरिंग टॉपिक</span>
+              <span>🎲</span>
+            </div>
+            <h3 class="bp-title" data-key="mathT4">प्रायिकता और क्रमचय-संचय बेसिक्स</h3>
+            <p class="bp-desc" data-key="mathD4">
+              12वीं में 'सप्रतिबंध प्रायिकता' और 'बेज प्रमेय (Bayes Theorem)' समझने के लिए 11वीं की घटनाओं (अपवर्जी, स्वतंत्र) की समझ जरूरी है।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="mathF4">➔ 12th उपयोग: 10 मार्क्स की 12th प्रायिकता</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Biology Tab -->
+    <div class="subject-pane" id="pane-bio">
+      <div class="blueprint-grid">
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>🔬</span>
+            </div>
+            <h3 class="bp-title" data-key="bioT1">कोशिका विभाजन (Cell Division)</h3>
+            <p class="bp-desc" data-key="bioD1">
+              समसूत्री और अर्धसूत्री विभाजन (Meiosis) का अंतर, और युग्मक निर्माण (Gametogenesis) के दौरान गुणसूत्रों का आधा होना 12वीं के 'जनन' और 'आनुवंशिकी' की आत्मा है।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="bioF1">➔ 12th उपयोग: मानव जनन, पुष्पी पादपों में जनन</div>
+        </div>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag urgent" data-key="tagUrgent">अत्यंत आवश्यक (100% MUST)</span>
+              <span>🧬</span>
+            </div>
+            <h3 class="bp-title" data-key="bioT2">जैव अणु (DNA, RNA, प्रोटीन)</h3>
+            <p class="bp-desc" data-key="bioD2">
+              न्यूक्लियोटाइड, प्यूरीन, पिरिमिडीन और चारगाफ नियम को अभी समझ लो। 12वीं का सबसे कठिन और बड़ा अध्याय 'वंशागति का आण्विक आधार' मक्खन की तरह समझ आएगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="bioF2">➔ 12th उपयोग: मॉलिक्यूलर बायोलॉजी, बायोटेक</div>
+        </div>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">कांसेप्ट बूस्टर</span>
+              <span>🌸</span>
+            </div>
+            <h3 class="bp-title" data-key="bioT3">पुष्प की आकारिकी (Flower Morphology)</h3>
+            <p class="bp-desc" data-key="bioD3">
+              पुमंग, जायांग, बीजांडन्यास और परागण के प्रकार 11वीं में पढ़े होंगे तो 12वीं का दूसरा चैप्टर बिना कोचिंग के खुद से समझ आ जाएगा।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="bioF3">➔ 12th उपयोग: पुष्पी पादपों में लैंगिक जनन</div>
+        </div>
+
+        <div class="bp-card">
+          <div>
+            <div class="bp-header">
+              <span class="bp-tag must" data-key="tagScore">स्कोरिंग टॉपिक</span>
+              <span>🦠</span>
+            </div>
+            <h3 class="bp-title" data-key="bioT4">मानव प्रतिरक्षा और कोशिकांग</h3>
+            <p class="bp-desc" data-key="bioD4">
+              B-सेल, T-सेल, एंटीबॉडी और जीवाणु/विषाणु की संरचना 12वीं के 'मानव स्वास्थ्य एवं रोग' और 'मानव कल्याण में सूक्ष्मजीव' का सीधा आधार हैं।
+            </p>
+          </div>
+          <div class="bp-footer" data-key="bioF4">➔ 12th उपयोग: स्वास्थ्य, रोग और बायोटेक्नोलॉजी</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. RED ALERT: BIGGEST MISTAKES TO AVOID -->
+    <div class="red-flag-box">
+      <div class="red-flag-head">
+        <span>⚠️</span> <span data-key="mistakeHead">11th से 12th में जाते वक्त ये 4 गलतियां कभी मत करना!</span>
+      </div>
+      <ul class="mistake-list">
+        <li class="mistake-item">
+          <span class="cross">✕</span>
+          <div>
+            <strong data-key="m1Title">गलती 1: 11वीं का पूरा सिलेबस दोबारा पढ़ने बैठना।</strong>
+            <p data-key="m1Desc">यह सबसे बड़ी मूर्खता है। 11वीं के केवल ऊपर बताए गए 5-6 जरूरी चैप्टर्स ही ब्रिज हैं, बाकी 11वीं की किताबें अलमारी में बंद कर दो।</p>
+          </div>
+        </li>
+        <li class="mistake-item">
+          <span class="cross">✕</span>
+          <div>
+            <strong data-key="m2Title">गलती 2: यह सोचना कि 12वीं की पढ़ाई अप्रैल या जुलाई से शुरू करेंगे।</strong>
+            <p data-key="m2Desc">बिहार बोर्ड के टॉपर्स फरवरी-मार्च में ही 12वीं के शुरुआती चैप्टर्स और बेसिक ब्रिज कोर्स खत्म कर चुके होते हैं।</p>
+          </div>
+        </li>
+        <li class="mistake-item">
+          <span class="cross">✕</span>
+          <div>
+            <strong data-key="m3Title">गलती 3: सिर्फ थ्योरी पढ़ना और न्यूमेरिकल्स छोड़ देना।</strong>
+            <p data-key="m3Desc">फिजिक्स और केमिस्ट्री में फॉर्मूला देखकर डरना बंद करो, हर कांसेप्ट पर कम से कम 5 छोटे-छोटे सवाल खुद कलम चलाकर लगाओ।</p>
+          </div>
+        </li>
+        <li class="mistake-item">
+          <span class="cross">✕</span>
+          <div>
+            <strong data-key="m4Title">गलती 4: बिना अपने हाथ से नोट्स बनाए दूसरों की पीडीएफ पर निर्भर रहना।</strong>
+            <p data-key="m4Desc">जो चीजें आप खुद 1 पन्ने पर अपनी भाषा में लिखोगे, वही परीक्षा की रात याद रहेंगी।</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 7. INTERACTIVE READINESS CHECKLIST -->
+    <div class="checklist-card">
+      <div class="section-title-wrap" style="margin-bottom: 12px;">
+        <h3 style="font-size: 1.05rem; font-weight: 900; color: var(--text-main);" data-key="checkTitle">
+          📋 12th रेडीनेस सेल्फ-चेक (खुद चेक करो तुम कितने तैयार हो)
+        </h3>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;" data-key="checkDesc">
+        नीचे दिए गए बॉक्स पर टिक लगाओ। अगर 6 से अधिक टिक लग गए, तो समझो तुम 12वीं में तहलका मचाने के लिए पूरी तरह तैयार हो!
+      </p>
+
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c1">मुझे किसी सदिश का क्षैतिज ($A\cos\theta$) और ऊर्ध्वाधर घटक ($A\sin\theta$) निकालना आता है।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c2">मुझे $x^n, \sin x, \cos x$ का बेसिक अवकलन (Differentiation) करना आता है।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c3">मुझे विलयन की मोलरता (M) और मोल अंश (Mole Fraction) के सूत्र याद हैं।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c4">मुझे किसी भी यौगिक में तत्व की ऑक्सीकरण संख्या निकालना आता है।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c5">मुझे ऑर्गेनिक में कार्बोकैटायन का स्थायित्व ($3^\circ > 2^\circ > 1^\circ$) समझ आता है।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c6">मुझे त्रिकोणमिति के $\sin 2\theta$ और $\cos 2\theta$ के रूपांतरण सूत्र याद हैं।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c7">मुझे समसूत्री और अर्धसूत्री कोशिका विभाजन का बुनियादी अंतर पता है।</span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" onchange="updateProgress()">
+        <span class="label-text" data-key="c8">मैंने 12वीं का नया सिलेबस और बिहार बोर्ड का एग्जाम पैटर्न देख लिया है।</span>
+      </label>
+
+      <div style="margin-top: 16px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.82rem; font-weight: 800; color: var(--accent);" id="progressText">तैयारी स्कोर: 0 / 8 टिक</span>
+        <span style="font-size: 0.82rem; font-weight: 900; color: var(--accent);" id="progressStatus">शुरुआत करो 🚀</span>
+      </div>
+    </div>
+
+    <!-- 8. Developer Memo -->
+    <div class="founder-memo">
+      <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=10b981&color=fff'">
+      <div class="founder-content">
+        <h5>Prince Kumar <span style="font-size:0.7rem; color:var(--accent); font-weight:800;">(Developer & 463/500 Topper)</span></h5>
+        <p data-key="memoText">
+          "11th में अगर कुछ कमी रह भी गई हो तो खुद को कोसना बंद करो। 12वीं में हर बच्चा जीरो से शुरू करता है। बस इन 5-6 बुनियादी चैप्टर्स को 10 दिन देकर क्लियर कर लो, 12वीं की क्लास में सबसे आगे तुम्हारी ही आवाज गूंजेगी!"
+        </p>
       </div>
     </div>
 
   </div>
 
-  <!-- Bottom Dock -->
+  <!-- 9. Mobile Bottom Dock -->
   <nav class="bottom-dock">
     <a href="class11.html" class="dock-btn">
       <span class="icon">🧪</span>
-      <span>11th होम</span>
+      <span data-key="dockHome">11th होम</span>
     </a>
     <a href="class11notes.html" class="dock-btn">
       <span class="icon">📖</span>
-      <span>नोट्स</span>
+      <span data-key="dockNotes">नोट्स</span>
     </a>
     <a href="bridge-course.html" class="dock-btn active">
       <span class="icon">🚀</span>
-      <span>ब्रिज कोर्स</span>
+      <span data-key="dockBridge">ब्रिज कोर्स</span>
     </a>
     <a href="class11test.html" class="dock-btn">
       <span class="icon">📝</span>
-      <span>टेस्ट</span>
+      <span data-key="dockTest">टेस्ट</span>
     </a>
   </nav>
 
+  <!-- 10. Interactive Script Engine & Language Toggle -->
   <script>
-    function switchTab(sub) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.bridge-sec').forEach(sec => sec.classList.remove('active'));
+    const I18N = {
+      hi: {
+        backBtn: "11th डैशबोर्ड",
+        heroTag: "⚡ 11th ➔ 12th TRANSITION MASTER ROADMAP",
+        heroTitle: "11th से 12th में कैसे कूदें? <span>टॉपर ब्रिज गाइड</span>",
+        heroDesc: "अगर 11वीं में पढ़ाई छूट गई या कमजोर रह गई, तो घबराना नहीं है! 12वीं में 95%+ लाने के लिए 11वीं की पूरी किताबें दोबारा नहीं पढ़नी हैं। सिर्फ ये चुनिंदा नींव वाले चैप्टर्स और स्टेप-बाय-स्टेप फॉर्मूला अपनाना है।",
+        realityHead: "कड़वा सच: 12वीं में छात्र क्यों फेल या परेशान होते हैं?",
+        realityDesc: "12वीं का सिलेबस 11वीं से आसान है, लेकिन 12वीं के पहले ही महीने में 'अवकलन (Calculus)', 'इलेक्ट्रोस्टेटिक्स' और 'ऑर्गेनिक केमिस्ट्री' आते हैं। अगर 11वीं के केवल 5-6 बुनियादी चैप्टर्स क्लियर नहीं हैं, तो 12वीं सिर के ऊपर से निकलने लगती है।",
+        roadmapTitle: "5-चरणों में 12वीं की तैयारी (Step-by-Step Flow)",
+        step1Title: "स्टेप 1: 'कैलकुलस और वेक्टर्स' का डर खत्म करो",
+        step1Time: "समय: 3 से 4 दिन",
+        step1Desc: "फिजिक्स और मैथ्स दोनों में 12वीं के 50% से अधिक अंक अवकलन, समाकलन और सदिशों पर टिके हैं। फॉर्मूला याद करने से पहले उनका मतलब समझो।",
+        step1p1: "मैथ्स: सीमा एवं अवकलज (Limits & Derivatives) का बेसिक कांसेप्ट पूरा करो।",
+        step1p2: "फिजिक्स: सदिशों का घटक वियोजन (Horizontal & Vertical components निकालना) सीखो।",
+        step1p3: "ग्राफ पढ़ना: ढाल (Slope = dy/dx) और क्षेत्रफल (Area = ∫y dx) का भौतिक अर्थ समझो।",
+        step2Title: "स्टेप 2: केमिस्ट्री की 'त्रिमूर्ति' तैयार करो",
+        step2Time: "समय: 4 से 5 दिन",
+        step2Desc: "12वीं केमिस्ट्री में न्यूमेरिकल्स और ऑर्गेनिक के रिएक्शन मैकेनिज्म सीधे 11वीं के तीन बुनियादी स्तंभों पर खड़े हैं:",
+        step2p1: "मोल संकल्पना: मोलरता, मोललता और मोल अंश निकालना पानी की तरह साफ होना चाहिए।",
+        step2p2: "रेडॉक्स अभिक्रियाएं: ऑक्सीकरण संख्या निकालना और ऑक्सीकारक/अपचायक पहचानना।",
+        step2p3: "GOC (सामान्य कार्बनिक रसायन): +I, -I प्रभाव, अनुनाद और IUPAC नामकरण 100% क्लियर करो।",
+        step3Title: "स्टेप 3: बायोलॉजी/मैथ्स का कोर फाउंडेशन मजबूत करो",
+        step3Time: "समय: 3 दिन",
+        step3Desc: "अपने स्ट्रीम के अनुसार केवल उन चैप्टर्स को उठाओ जो 12वीं में सीधे विस्तार पाते हैं:",
+        step3p1: "बायोलॉजी वाले: 'कोशिका विभाजन (Cell Division)' और 'DNA संरचना' को अच्छे से समझ लो।",
+        step3p2: "मैथ्स वाले: 'संबंध एवं फलन' और त्रिकोणमिति के सभी रूपांतरण नियम दिमाग में बैठा लो।",
+        step4Title: "स्टेप 4: एनसीईआरटी (NCERT) और पिछले 5 साल के पेपर्स का मिलान",
+        step4Time: "समय: 2 दिन",
+        step4Desc: "12वीं शुरू करने से पहले 12वीं बोर्ड का ब्लूप्रिंट देखो ताकि यह समझ आए कि 11वीं के कौन-से सवाल सीधे ऑब्जेक्टिव में पूछे जाते हैं।",
+        step4p1: "12वीं बोर्ड में मात्रक और विमाओं (Units & Dimensions) से हर साल 4-5 ऑब्जेक्टिव आते हैं।",
+        step4p2: "11वीं के केवल 1-पेज शॉर्ट नोट्स बनाओ, भारी-भरकम कॉपियाँ नहीं।",
+        step5Title: "स्टेप 5: 12वीं के पहले 3 चैप्टर्स पर पहला प्रहार",
+        step5Time: "तैयारी पूरी!",
+        step5Desc: "जब ऊपर के 4 स्टेप्स पूरे हो जाएँ, तो बिना रुके 12वीं के पहले-पहले चैप्टर्स (Electrostatics, Solutions, Relations & Functions / Reproduction) की रीडिंग शुरू कर दो!",
+        subGuideTitle: "विषयवार सर्वाइवल गाइड (क्या पढ़ना है, क्या छोड़ना है)",
+        tagUrgent: "अत्यंत आवश्यक (100% MUST)",
+        tagScore: "स्कोरिंग टॉपिक",
+        phyT1: "सदिश (Vectors) एवं घटक वियोजन",
+        phyD1: "अगर आपको बिंदु आवेश के कारण विद्युत क्षेत्र की दिशा या दो बलों का परिणामी निकालना नहीं आता, तो 12वीं का पहला चैप्टर 'वैद्युत आवेश तथा क्षेत्र' कभी समझ नहीं आएगा।",
+        phyF1: "➔ 12th उपयोग: इलेक्ट्रोस्टेटिक्स, चुंबकत्व",
+        phyT2: "कलन का भौतिकी में उपयोग",
+        phyD2: "v = dx/dt और a = dv/dt से आगे बढ़कर विद्युत फ्लक्स और फैराडे का नियम समझने के लिए बेसिक इंटीग्रेशन आना ही चाहिए।",
+        phyF2: "➔ 12th उपयोग: गॉस का नियम, EMI व AC",
+        phyT3: "मात्रक एवं विमीय विश्लेषण",
+        phyD3: "12वीं के बोर्ड पेपर में विद्युतशीलता और चुंबकशीलता की विमाएं हर साल पूछी जाती हैं, जो 11वीं के विमीय सूत्र नियम से तुरंत निकलती हैं।",
+        phyF3: "➔ 12th उपयोग: 4-5 ऑब्जेक्टिव प्रश्न पक्के",
+        phyT4: "कार्य, ऊर्जा और विभव संबंध",
+        phyD4: "संरक्षी बल और स्थितिज ऊर्जा का संबंध ही 12वीं में विद्युत क्षेत्र और विभव प्रवणता बन जाता है।",
+        phyF4: "➔ 12th उपयोग: स्थिरवैद्युत विभव एवं धारिता",
+        chemT1: "मोल संकल्पना और सांद्रता पद",
+        chemD1: "12वीं फिजिकल केमिस्ट्री का पहला चैप्टर 'विलयन (Solutions)' पूरी तरह मोलरता, मोललता, मोल अंश और हेनरी नियम पर टिका है। इसे छोड़ना आत्महत्या जैसा है!",
+        chemF1: "➔ 12th उपयोग: विलयन, विद्युतरसायन न्यूमेरिकल्स",
+        chemT2: "GOC (सामान्य कार्बनिक रसायन)",
+        chemD2: "12वीं में 35 नंबर की ऑर्गेनिक केमिस्ट्री है (हैलोएल्केन, एल्कोहॉल, एल्डिहाइड, एमीन)। अगर 11वीं का प्रेरणिक प्रभाव (+I/-I), अनुनाद और कार्बोकैटायन नहीं आता, तो रटना पड़ेगा।",
+        chemF2: "➔ 12th उपयोग: संपूर्ण ऑर्गेनिक केमिस्ट्री",
+        chemT3: "रेडॉक्स और ऑक्सीकरण संख्या",
+        chemD3: "12वीं के 'विद्युतरसायन (Electrochemistry)' में नेर्नस्ट समीकरण और सेल विभव निकालने के लिए इलेक्ट्रॉनों का लेन-देन और ऑक्सीकरण अंक आना अनिवार्य है।",
+        chemF3: "➔ 12th उपयोग: डेनियल सेल, फैराडे नियम",
+        chemT4: "रासायनिक आबंधन और संकरण",
+        chemD4: "sp, sp², sp³ संकरण, द्विध्रुव आघूर्ण और VSEPR सिद्धांत सीख लो। इनऑर्गेनिक में d व f-ब्लॉक और उपसहसंयोजन यौगिकों में यही काम आएगा।",
+        chemF4: "➔ 12th उपयोग: कोऑर्डिनेशन कंपाउंड्स",
+        mathT1: "सीमा और अवकलज (Calculus Root)",
+        mathD1: "12वीं में कैलकुलस अकेले 44 नंबर का आता है! 11वीं का गुणन नियम, भागफल नियम और मानक अवकलज अगर अभी तैयार नहीं किए, तो 12वीं में भारी नुकसान होगा।",
+        mathF1: "➔ 12th उपयोग: सांतत्य, अवकलन, समाकलन",
+        mathT2: "त्रिकोणमितीय सर्वसमिकाएं",
+        mathD2: "12वीं के 'प्रतिलोम त्रिकोणमितीय फलन (ITF)' और समाकलन में हर एक सवाल में sin 2x, cos 2x, tan 2x के रूपांतरण लगते हैं।",
+        mathF2: "➔ 12th उपयोग: ITF, प्रतिस्थापन द्वारा समाकलन",
+        mathT3: "संबंध एवं फलन (Relations & Functions)",
+        mathD3: "12वीं का चैप्टर 1 यही है! अगर स्वतुल्य, सममित और संक्रामक संबंध का बेसिक पता है, तो 12वीं का पहला चैप्टर 2 दिन में खत्म हो जाएगा।",
+        mathF3: "➔ 12th उपयोग: तुल्यता संबंध, एकैकी-आच्छादक",
+        mathT4: "प्रायिकता और क्रमचय-संचय बेसिक्स",
+        mathD4: "12वीं में 'सप्रतिबंध प्रायिकता' और 'बेज प्रमेय' समझने के लिए 11वीं की घटनाओं (अपवर्जी, स्वतंत्र) की समझ जरूरी है।",
+        mathF4: "➔ 12th उपयोग: 10 मार्क्स की 12th प्रायिकता",
+        bioT1: "कोशिका विभाजन (Cell Division)",
+        bioD1: "समसूत्री और अर्धसूत्री विभाजन (Meiosis) का अंतर, और युग्मक निर्माण के दौरान गुणसूत्रों का आधा होना 12वीं के 'जनन' और 'आनुवंशिकी' की आत्मा है।",
+        bioF1: "➔ 12th उपयोग: मानव जनन, पुष्पी पादपों में जनन",
+        bioT2: "जैव अणु (DNA, RNA, प्रोटीन)",
+        bioD2: "न्यूक्लियोटाइड, प्यूरीन, पिरिमिडीन और चारगाफ नियम को अभी समझ लो। 12वीं का सबसे बड़ा अध्याय 'वंशागति का आण्विक आधार' मक्खन की तरह समझ आएगा।",
+        bioF2: "➔ 12th उपयोग: मॉलिक्यूलर बायोलॉजी, बायोटेक",
+        bioT3: "पुष्प की आकारिकी (Flower Morphology)",
+        bioD3: "पुमंग, जायांग, बीजांडन्यास और परागण के प्रकार 11वीं में पढ़े होंगे तो 12वीं का दूसरा चैप्टर बिना कोचिंग के खुद से समझ आ जाएगा।",
+        bioF3: "➔ 12th उपयोग: पुष्पी पादपों में लैंगिक जनन",
+        bioT4: "मानव प्रतिरक्षा और कोशिकांग",
+        bioD4: "B-सेल, T-सेल, एंटीबॉडी और जीवाणु/विषाणु की संरचना 12वीं के 'मानव स्वास्थ्य एवं रोग' और 'मानव कल्याण में सूक्ष्मजीव' का सीधा आधार हैं।",
+        bioF4: "➔ 12th उपयोग: स्वास्थ्य, रोग और बायोटेक्नोलॉजी",
+        mistakeHead: "11th से 12th में जाते वक्त ये 4 गलतियां कभी मत करना!",
+        m1Title: "गलती 1: 11वीं का पूरा सिलेबस दोबारा पढ़ने बैठना।",
+        m1Desc: "यह सबसे बड़ी मूर्खता है। 11वीं के केवल ऊपर बताए गए 5-6 जरूरी चैप्टर्स ही ब्रिज हैं, बाकी 11वीं की किताबें अलमारी में बंद कर दो।",
+        m2Title: "गलती 2: यह सोचना कि 12वीं की पढ़ाई अप्रैल या जुलाई से शुरू करेंगे।",
+        m2Desc: "बिहार बोर्ड के टॉपर्स फरवरी-मार्च में ही 12वीं के शुरुआती चैप्टर्स और बेसिक ब्रिज कोर्स खत्म कर चुके होते हैं।",
+        m3Title: "गलती 3: सिर्फ थ्योरी पढ़ना और न्यूमेरिकल्स छोड़ देना।",
+        m3Desc: "फिजिक्स और केमिस्ट्री में फॉर्मूला देखकर डरना बंद करो, हर कांसेप्ट पर कम से कम 5 छोटे-छोटे सवाल खुद कलम चलाकर लगाओ।",
+        m4Title: "गलती 4: बिना अपने हाथ से नोट्स बनाए दूसरों की पीडीएफ पर निर्भर रहना।",
+        m4Desc: "जो चीजें आप खुद 1 पन्ने पर अपनी भाषा में लिखोगे, वही परीक्षा की रात याद रहेंगी।",
+        checkTitle: "📋 12th रेडीनेस सेल्फ-चेक (खुद चेक करो तुम कितने तैयार हो)",
+        checkDesc: "नीचे दिए गए बॉक्स पर टिक लगाओ। अगर 6 से अधिक टिक लग गए, तो समझो तुम 12वीं में तहलका मचाने के लिए पूरी तरह तैयार हो!",
+        c1: "मुझे किसी सदिश का क्षैतिज और ऊर्ध्वाधर घटक निकालना आता है।",
+        c2: "मुझे बेसिक अवकलन (Differentiation) करना आता है।",
+        c3: "मुझे विलयन की मोलरता और मोल अंश के सूत्र समझ आते हैं।",
+        c4: "मुझे किसी भी यौगिक में तत्व की ऑक्सीकरण संख्या निकालना आता है।",
+        c5: "मुझे ऑर्गेनिक में कार्बोकैटायन का स्थायित्व समझ आता है।",
+        c6: "मुझे त्रिकोणमिति के रूपांतरण सूत्र याद हैं।",
+        c7: "मुझे समसूत्री और अर्धसूत्री कोशिका विभाजन का बुनियादी अंतर पता है।",
+        c8: "मैंने 12वीं का नया सिलेबस और बिहार बोर्ड का एग्जाम पैटर्न देख लिया है।",
+        memoText: "\"11th में अगर कुछ कमी रह भी गई हो तो खुद को कोसना बंद करो। 12वीं में हर बच्चा जीरो से शुरू करता है। बस इन 5-6 बुनियादी चैप्टर्स को 10 दिन देकर क्लियर कर लो, 12वीं की क्लास में सबसे आगे तुम्हारी ही आवाज गूंजेगी!\"",
+        dockHome: "11th होम",
+        dockNotes: "नोट्स",
+        dockBridge: "ब्रिज कोर्स",
+        dockTest: "टेस्ट"
+      },
+      en: {
+        backBtn: "11th Dashboard",
+        heroTag: "⚡ 11th ➔ 12th TRANSITION MASTER ROADMAP",
+        heroTitle: "How to Jump from 11th to 12th? <span>Topper Bridge Guide</span>",
+        heroDesc: "Missed 11th concepts? Don't panic! You don't need to re-read whole 11th books. Just master these crucial foundation chapters and follow our step-by-step roadmap to score 95%+ in 12th.",
+        realityHead: "Brutal Truth: Why Students Struggle in Class 12th?",
+        realityDesc: "Class 12th is actually more structured than 11th. But in the very first month, you face Calculus, Electrostatics, and Organic Chemistry. Without these 5 core foundation topics from 11th, 12th feels overwhelming.",
+        roadmapTitle: "5-Step Roadmap to Conquer Class 12th",
+        step1Title: "Step 1: Eliminate Fear of Calculus & Vectors",
+        step1Time: "Duration: 3-4 Days",
+        step1Desc: "Over 50% of Physics and Math marks rely on Derivatives, Integrals, and Vectors. Understand their physical meaning before memorizing.",
+        step1p1: "Math: Complete basic concepts of Limits & Derivatives.",
+        step1p2: "Physics: Master resolving vectors into horizontal and vertical components.",
+        step1p3: "Graphs: Understand slope (dy/dx) and area under curve (∫y dx).",
+        step2Title: "Step 2: Prepare Chemistry's Core Trinity",
+        step2Time: "Duration: 4-5 Days",
+        step2Desc: "Class 12th physical numerals and organic reaction mechanisms stand entirely on 3 pillars:",
+        step2p1: "Mole Concept: Molarity, Molality, and Mole Fraction calculation must be crystal clear.",
+        step2p2: "Redox: Calculating oxidation numbers and identifying oxidizing agents.",
+        step2p3: "GOC (General Organic Chemistry): +I, -I effects, Resonance, and IUPAC nomenclature.",
+        step3Title: "Step 3: Strengthen Stream Foundation (Bio/Math)",
+        step3Time: "Duration: 3 Days",
+        step3Desc: "Pick only chapters that directly expand into Class 12th curriculum:",
+        step3p1: "Biology: Master Cell Division (Meiosis) and DNA/RNA double helix structure.",
+        step3p2: "Math: Clear Relations & Functions and Trigonometric transformations.",
+        step4Title: "Step 4: Cross-Check NCERT & Past 5 Years PYQs",
+        step4Time: "Duration: 2 Days",
+        step4Desc: "Review Class 12th blueprint to see which 11th questions appear directly in objective sections.",
+        step4p1: "Units & Dimensions questions directly fetch 4-5 objective marks in 12th Board.",
+        step4p2: "Draft 1-Page cheat sheets for quick reference, not bulky notebooks.",
+        step5Title: "Step 5: Launch Attack on First 3 Chapters of 12th",
+        step5Time: "Bridge Complete!",
+        step5Desc: "Once steps 1-4 are checked, start reading chapter 1 of Physics (Electrostatics), Chemistry (Solutions), and Math/Bio without hesitation!",
+        subGuideTitle: "Subject-Wise Survival Guide (What to Read vs Skip)",
+        tagUrgent: "CRITICAL (100% MUST)",
+        tagScore: "SCORING TOPIC",
+        phyT1: "Vectors & Resolution of Components",
+        phyD1: "Without understanding direction of electric fields and net force calculation, Chapter 1 'Electric Charges & Fields' will be impossible.",
+        phyF1: "➔ 12th Use: Electrostatics & Magnetism",
+        phyT2: "Calculus Applications in Physics",
+        phyD2: "From basic kinematics to electric flux and Faraday's law, elementary integration and differentiation are mandatory.",
+        phyF2: "➔ 12th Use: Gauss Law, EMI & AC Circuits",
+        phyT3: "Units & Dimensional Analysis",
+        phyD3: "Dimensions of permittivity and permeability appear annually in BSEB 12th Board objectives.",
+        phyF3: "➔ 12th Use: 4-5 Direct Objective Marks",
+        phyT4: "Work, Energy & Potential Energy Relations",
+        phyD4: "Conservative force relation F = -dU/dr directly evolves into Electric Field E = -dV/dr in Class 12th.",
+        phyF4: "➔ 12th Use: Electrostatic Potential & Capacitance",
+        chemT1: "Mole Concept & Concentration Units",
+        chemD1: "Chapter 1 of 12th Chemistry 'Solutions' is 100% dependent on Molarity, Molality, and Henry's law.",
+        chemF1: "➔ 12th Use: Solutions & Electrochemistry Numericals",
+        chemT2: "GOC (General Organic Chemistry)",
+        chemD2: "Class 12th has 35 marks of Organic Chemistry. Inductive effect (+I/-I) and Carbocation stability are non-negotiable.",
+        chemF2: "➔ 12th Use: Entire 12th Organic Syllabus",
+        chemT3: "Redox & Oxidation Numbers",
+        chemD3: "Essential for balancing equations and computing Nernst equation cell potentials in 12th Electrochemistry.",
+        chemF3: "➔ 12th Use: Galvanic Cells & Faraday Laws",
+        chemT4: "Chemical Bonding & Hybridization",
+        chemD4: "sp, sp², sp³ orbital geometry and VSEPR theory form the basis of Coordination Compounds in Class 12th.",
+        chemF4: "➔ 12th Use: Coordination Chemistry",
+        mathT1: "Limits & Derivatives (Calculus Root)",
+        mathD1: "Calculus alone carries 44 marks in Class 12th! Product rule, quotient rule, and elementary derivatives are vital.",
+        mathF1: "➔ 12th Use: Continuity, Differentiation, Integrals",
+        mathT2: "Trigonometric Transformations",
+        mathD2: "Inverse Trigonometric Functions (ITF) and Integration substitutions rely heavily on double angle identities.",
+        mathF2: "➔ 12th Use: ITF & Calculus Integration",
+        mathT3: "Relations & Functions",
+        mathD3: "Class 12th begins right here! Reflexive, symmetric, and transitive relations form the base of Chapter 1.",
+        mathF3: "➔ 12th Use: Equivalence Relations & Invertibility",
+        mathT4: "Probability & Permutation Basics",
+        mathD4: "Conditional probability and Bayes' Theorem require a solid grasp of independent and mutually exclusive events.",
+        mathF4: "➔ 12th Use: 10 Marks 12th Probability Unit",
+        bioT1: "Cell Division (Meiosis & Mitosis)",
+        bioD1: "Understanding chromosome reduction during meiosis is the bedrock of Class 12th Genetics and Reproduction.",
+        bioF1: "➔ 12th Use: Human Reproduction & Genetics",
+        bioT2: "Biomolecules (DNA, RNA Structure)",
+        bioD2: "Nucleotides, purines, pyrimidines, and Chargaff's rules make Chapter 6 'Molecular Basis of Inheritance' simple.",
+        bioF2: "➔ 12th Use: Molecular Biology & Biotechnology",
+        bioT3: "Flower Morphology",
+        bioD3: "Androecium, Gynoecium, Placentation, and Pollination mechanisms directly link to Class 12th Chapter 2.",
+        bioF3: "➔ 12th Use: Sexual Reproduction in Plants",
+        bioT4: "Immune System & Cell Organelles",
+        bioD4: "B-cells, T-cells, antibodies, and micro-organism structures are fundamental for Human Health & Disease.",
+        bioF4: "➔ 12th Use: Health, Disease & Microbes",
+        mistakeHead: "Avoid These 4 Critical Transition Mistakes!",
+        m1Title: "Mistake 1: Trying to re-read all 11th textbooks.",
+        m1Desc: "A fatal error. Only study the 5-6 core bridge chapters outlined above; pack away the rest.",
+        m2Title: "Mistake 2: Delaying Class 12th prep until July.",
+        m2Desc: "State board toppers complete foundational bridge topics by February-March.",
+        m3Title: "Mistake 3: Only studying theory while avoiding numerals.",
+        m3Desc: "Work out at least 5 numerical problems with your own hand for each core concept.",
+        m4Title: "Mistake 4: Relying on others' digital notes without self-drafting.",
+        m4Desc: "Only 1-page summaries written in your own handwriting stick during board exam nights.",
+        checkTitle: "📋 12th Readiness Self-Audit",
+        checkDesc: "Check each item below. If you score 6 or more, you are fully armed to ace Class 12th!",
+        c1: "I can resolve vectors into horizontal (A cos θ) and vertical (A sin θ) components.",
+        c2: "I can compute elementary derivatives of xⁿ, sin x, and cos x.",
+        c3: "I understand Molarity (M) and Mole Fraction formulas.",
+        c4: "I know how to compute oxidation numbers in compounds.",
+        c5: "I grasp carbocation stability (3° > 2° > 1°) in organic reactions.",
+        c6: "I remember basic double-angle trigonometric identities.",
+        c7: "I can distinguish between Mitosis and Meiosis cell divisions.",
+        c8: "I have examined the official Class 12th syllabus and BSEB exam blueprint.",
+        memoText: "\"Stop blaming yourself for any 11th backlogs. Every topper begins Class 12th afresh. Dedicate 10 days to these core bridge steps, and you will dominate your 12th classroom!\"",
+        dockHome: "11th Home",
+        dockNotes: "Notes",
+        dockBridge: "Bridge Guide",
+        dockTest: "Tests"
+      }
+    };
 
-      event.target.classList.add('active');
-      const activeSec = document.getElementById('sec-' + sub);
-      if (activeSec) activeSec.classList.add('active');
+    let currentLang = localStorage.getItem("nd_bridge_lang") || "hi";
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem("nd_bridge_lang", lang);
+      document.querySelectorAll("[data-key]").forEach(el => {
+        const key = el.getAttribute("data-key");
+        if (I18N[lang] && I18N[lang][key]) {
+          el.innerHTML = I18N[lang][key];
+        }
+      });
+      const btn = document.getElementById("langBtn");
+      if (btn) btn.innerText = (lang === "hi") ? "English" : "हिन्दी";
     }
+
+    function toggleLanguage() {
+      const target = (currentLang === "hi") ? "en" : "hi";
+      applyLang(target);
+    }
+
+    function switchSubject(sub) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.subject-pane').forEach(p => p.classList.remove('active'));
+
+      event.currentTarget.classList.add('active');
+      const targetPane = document.getElementById('pane-' + sub);
+      if (targetPane) targetPane.classList.add('active');
+    }
+
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('.checklist-card input[type="checkbox"]');
+      let checkedCount = 0;
+      checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });
+
+      const textEl = document.getElementById("progressText");
+      const statusEl = document.getElementById("progressStatus");
+
+      textEl.innerText = (currentLang === "hi") ? `तैयारी स्कोर: ${checkedCount} / ${checkboxes.length} टिक` : `Score: ${checkedCount} / ${checkboxes.length} Checked`;
+
+      if (checkedCount <= 2) {
+        statusEl.innerText = (currentLang === "hi") ? "शुरुआत करो 🚀" : "Just Starting 🚀";
+        statusEl.style.color = "var(--accent-orange)";
+      } else if (checkedCount <= 5) {
+        statusEl.innerText = (currentLang === "hi") ? "अच्छी गति है! ⚡" : "Gaining Speed! ⚡";
+        statusEl.style.color = "var(--primary)";
+      } else {
+        statusEl.innerText = (currentLang === "hi") ? "12th टॉपर रेडी! 🏆" : "12th Topper Ready! 🏆";
+        statusEl.style.color = "var(--accent)";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applyLang(currentLang);
+    });
   </script>
 </body>
 </html>
