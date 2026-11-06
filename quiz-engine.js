@@ -1,8 +1,11 @@
 /* ==========================================================================
-   NischayDesk Real-Time Test Simulation Engine (v6.1 Ultimate Pro)
+   NischayDesk Real-Time Test Simulation Engine (v6.2 Pro)
    Architected by: Prince Kumar (NischayDesk)
-   Features: 50-Q Chapter Wise (30m), 1-Hour Full Syllabus, 
-             Zero-Error In-Memory Top 50 Leaderboard
+   Features: 
+     - 20-Q Chapter Test (15-20 min)
+     - 50-Q Full Syllabus (50-60 min)
+     - 100-Q Grand Mock Test (90-100 min)
+     - Zero-Error In-Memory Top 50 Leaderboard
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -39,59 +42,55 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentQIndex = 0;
   let userResponses = {};
   let timerInterval = null;
-  let timeRemaining = 1800; // डिफ़ॉल्ट 30 मिनट
-  let totalTestDuration = 1800;
+  let timeRemaining = 900; // 15 मिनट
+  let totalTestDuration = 900;
 
-  // 1. 11th और 12th अलर्ट
+  // 1. क्लास चेक व अलर्ट
   if (testClassSelect) {
     testClassSelect.addEventListener('change', function () {
       const selectedClass = this.value.trim();
       if (selectedClass === '11' || selectedClass === '12') {
-        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का टेस्ट मॉड्यूल अभी तैयार हो रहा है!\nबहुत जल्द लाइव होगा। तब तक आप 10वीं का संपूर्ण अभ्यास कर सकते हैं।`);
+        alert(`📢 सूचना:\n\nकक्षा ${selectedClass}वीं का ऑनलाइन टेस्ट मॉड्यूल अभी तैयार हो रहा है!\nतब तक आप 10वीं का संपूर्ण अभ्यास कर सकते हैं।`);
         this.value = '10';
         if (typeof updateSubjects === 'function') updateSubjects();
       }
     });
   }
 
-  // केवल चुने हुए विषय की ही JSON फाइल उठाना
+  // विषय की JSON फाइल चुनना
   function getTargetJsonFile() {
-    const cls = testClassSelect ? testClassSelect.value.trim() : "10";
-    if (cls !== "10") return "CLASS_NOT_READY";
-
     let checkStr = "";
-    if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
-      const opt = testSubjectSelect.options[testSubjectSelect.selectedIndex];
-      checkStr = `${opt.value || ""} ${opt.text || ""} ${opt.getAttribute('data-sylid') || ""}`.toLowerCase();
+    if (window.NischayTestConfig && window.NischayTestConfig.syllabusId) {
+      checkStr = window.NischayTestConfig.syllabusId.toLowerCase();
+    } else if (testSubjectSelect) {
+      const val = testSubjectSelect.value || "";
+      const text = testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "";
+      checkStr = `${val} ${text}`.toLowerCase();
     }
 
     if (checkStr.includes('math') || checkStr.includes('गणित')) return '10-math.json';
     if (checkStr.includes('chem') || checkStr.includes('रसायन')) return '10-chemistry.json';
     if (checkStr.includes('bio') || checkStr.includes('जीव')) return '10-biology.json';
     if (checkStr.includes('sans') || checkStr.includes('संस्कृत')) return '10-sanskrit.json';
-    if (checkStr.includes('sst') || checkStr.includes('सामाजिक') || checkStr.includes('इतिहास') || checkStr.includes('भूगोल') || checkStr.includes('नागरिक') || checkStr.includes('अर्थशास्त्र')) return '10-sst.json';
+    if (checkStr.includes('sst') || checkStr.includes('सामाजिक') || checkStr.includes('इतिहास') || checkStr.includes('भूगोल') || checkStr.includes('नागरिक') || checkStr.includes('अर्थशास्त्र') || checkStr.includes('disaster')) return '10-sst.json';
     return '10-physics.json';
   }
 
-  // फुल सिलेबस चेक
+  // फुल सिलेबस स्थिति चेक
   function isFullSyllabusSelected() {
-    if (!testChapterSelect) return true;
+    if (window.NischayTestConfig && window.NischayTestConfig.chapterId) {
+      return window.NischayTestConfig.chapterId === 'all';
+    }
+    if (!testChapterSelect) return false;
     const val = (testChapterSelect.value || "").trim().toLowerCase();
     const text = testChapterSelect.selectedIndex >= 0 ? (testChapterSelect.options[testChapterSelect.selectedIndex].text || "").trim().toLowerCase() : "";
     
-    if (val === 'all' || val === '' || val === '0' || text.includes('संपूर्ण') || text.includes('फुल') || text.includes('सभी')) {
-      return true;
-    }
-    return false;
+    return (val === 'all' || val === '' || text.includes('संपूर्ण') || text.includes('फुल') || text.includes('सभी'));
   }
 
-  // प्रश्न लोड करना
+  // प्रश्न लोड व रैंडमाइज करना
   async function loadSelectedQuestions() {
     const jsonFile = getTargetJsonFile();
-    if (jsonFile === "CLASS_NOT_READY") {
-      alert("कक्षा 11वीं-12वीं का टेस्ट अभी तैयार हो रहा है!");
-      return false;
-    }
 
     const pathsToTry = [
       `data/${jsonFile}`,
@@ -112,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-      alert(`⚠️ प्रश्न बैंक डेटा लोड नहीं हो सका!\nकृपया इंटरनेट कनेक्शन जांचें।`);
+      alert(`⚠️ प्रश्न बैंक लोड नहीं हो सका!\nकृपया इंटरनेट कनेक्शन जांचें।`);
       return false;
     }
 
@@ -129,10 +128,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (isFull) {
       currentQuestions = [...allQs];
     } else {
-      const val = testChapterSelect.value;
-      const text = testChapterSelect.options[testChapterSelect.selectedIndex].text;
-      const match = (val + " " + text).match(/\d+/);
-      const targetCh = match ? parseInt(match[0]) : 1;
+      let targetCh = 1;
+      if (window.NischayTestConfig && window.NischayTestConfig.chapterId) {
+        const m = String(window.NischayTestConfig.chapterId).match(/\d+/);
+        if (m) targetCh = parseInt(m[0]);
+      } else if (testChapterSelect) {
+        const val = testChapterSelect.value || "";
+        const text = testChapterSelect.selectedIndex >= 0 ? testChapterSelect.options[testChapterSelect.selectedIndex].text : "";
+        const m = (val + " " + text).match(/\d+/);
+        if (m) targetCh = parseInt(m[0]);
+      }
 
       currentQuestions = allQs.filter(q => q.chapter === targetCh);
       if (currentQuestions.length === 0) {
@@ -143,23 +148,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // प्रश्नों को रैंडमाइज़ करना
     currentQuestions.sort(() => Math.random() - 0.5);
 
-    // चैप्टर-वाइज में अधिकतम 50 प्रश्न
-    if (!isFull && currentQuestions.length > 50) {
-      currentQuestions = currentQuestions.slice(0, 50);
+    // 🎯 प्रश्न संख्या व समय का मानक:
+    // 1. चैप्टर वाइज: 20 प्रश्न
+    // 2. फुल सिलेबस: 50 प्रश्न (या 100 प्रश्न यदि उपलब्ध हों)
+    let maxLimit = 20;
+    if (window.NischayTestConfig && window.NischayTestConfig.totalQuestions) {
+      maxLimit = window.NischayTestConfig.totalQuestions;
+    } else if (isFull) {
+      maxLimit = 50;
+    }
+
+    if (currentQuestions.length > maxLimit) {
+      currentQuestions = currentQuestions.slice(0, maxLimit);
     }
 
     return true;
   }
 
-  // 2. स्टार्ट बटन और टाइमर
+  // 2. टेस्ट प्रारंभ व टाइमर सेट करना
   if (startExamBtn) {
     startExamBtn.addEventListener('click', async function () {
-      const cls = testClassSelect ? testClassSelect.value.trim() : "10";
-      if (cls === '11' || cls === '12') {
-        alert(`📢 सूचना:\n\nकक्षा ${cls}वीं का टेस्ट अभी उपलब्ध नहीं है!`);
-        return;
-      }
-
       startExamBtn.disabled = true;
       startExamBtn.innerText = "लोड हो रहा है...";
 
@@ -173,17 +181,41 @@ document.addEventListener('DOMContentLoaded', function () {
       userResponses = {};
       currentQIndex = 0;
 
+      const totalQs = currentQuestions.length;
       const isFull = isFullSyllabusSelected();
-      // फुल सिलेबस: 60 मिनट (3600s), चैप्टर वाइज: 30 मिनट (1800s)
-      timeRemaining = isFull ? (60 * 60) : (30 * 60);
+
+      // ⏱️ टाइमर का वैज्ञानिक व परीक्षा आधारित निर्धारण:
+      // - 100 प्रश्न = 90 मिनट (5400 सेकंड)
+      // - 50 प्रश्न = 60 मिनट (3600 सेकंड)
+      // - 20 प्रश्न = 15 मिनट (900 सेकंड)
+      if (window.NischayTestConfig && window.NischayTestConfig.durationMinutes) {
+        timeRemaining = window.NischayTestConfig.durationMinutes * 60;
+      } else if (totalQs >= 80) {
+        timeRemaining = 90 * 60; // 90 मिनट
+      } else if (isFull || totalQs >= 40) {
+        timeRemaining = 60 * 60; // 1 घंटा (60 मिनट)
+      } else {
+        timeRemaining = 15 * 60; // 15 मिनट (20 प्रश्नों के लिए)
+      }
+
       totalTestDuration = timeRemaining;
 
       if (testLobbyScreen) testLobbyScreen.classList.remove('active');
       if (testResultScreen) testResultScreen.classList.remove('active');
       if (testRunningScreen) testRunningScreen.classList.add('active');
 
-      const subTxt = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text : "विषय";
-      if (liveExamBadge) liveExamBadge.innerText = `Class ${cls}th • ${subTxt.split(' ')[0]} • ${isFull ? 'फुल सिलेबस (60m)' : 'चैप्टर टेस्ट (30m)'}`;
+      let subTxt = "10th विषय";
+      const trigEl = document.getElementById("subjectTriggerText");
+      if (trigEl) {
+        subTxt = trigEl.textContent.split(' ')[1] || trigEl.textContent;
+      } else if (testSubjectSelect && testSubjectSelect.selectedIndex >= 0) {
+        subTxt = testSubjectSelect.options[testSubjectSelect.selectedIndex].text;
+      }
+
+      const totalMins = Math.round(totalTestDuration / 60);
+      if (liveExamBadge) {
+        liveExamBadge.innerText = `Class 10th • ${subTxt} • ${totalQs} प्रश्न (${totalMins}m)`;
+      }
 
       startTimer();
       renderPalette();
@@ -192,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 3. सवाल व विकल्प रेंडरिंग
+  // 3. सवाल और विकल्प दिखाना
   function renderQuestion(index) {
     if (index < 0 || index >= currentQuestions.length) return;
     currentQIndex = index;
@@ -289,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 5. टाइमर इंजन
+  // 5. टाइमर
   function startTimer() {
     clearInterval(timerInterval);
     updateTimerDisplay();
@@ -317,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // 6. रिजल्ट और लीडरबोर्ड सिंक
+  // 6. रिजल्ट व समाधान
   function finishAndSubmitExam() {
     clearInterval(timerInterval);
     let correctCount = 0, wrongCount = 0;
@@ -355,9 +387,9 @@ document.addEventListener('DOMContentLoaded', function () {
         solBox.innerHTML = `
           <div class="sol-q-title">Q.${idx + 1}: ${q.q}</div>
           <div class="sol-ans-row ${isCorrect ? 'correct' : 'wrong'}">
-            ${userAns !== undefined ? `आपका उत्तर: (${letters[userAns]})${q.options[userAns]}` : 'आपने यह प्रश्न छोड़ दिया था'}
+            ${userAns !== undefined ? `आपका उत्तर: (${letters[userAns]}) ${q.options[userAns]}` : 'आपने यह प्रश्न छोड़ दिया था'}
           </div>
-          <div style="font-size:0.84rem; color:var(--success); font-weight:700; margin-bottom:4px;">
+          <div style="font-size:0.84rem; color:var(--success, #22c55e); font-weight:700; margin-bottom:4px;">
             सटीक उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
           </div>
           <div class="sol-explanation"><strong>व्याख्या:</strong> ${q.exp}</div>
@@ -374,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // 🏆 सुरक्षित टॉप 50 लीडरबोर्ड (No-Crash Bulletproof)
+  // 🏆 टॉप 50 लाइव लीडरबोर्ड
   async function syncAndDisplayLeaderboard(score, maxMarks, accuracy, timeTakenSec) {
     let boardContainer = document.getElementById('leaderboardTop50Box');
     
@@ -394,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     `;
 
-    const subName = testSubjectSelect && testSubjectSelect.selectedIndex >= 0 ? testSubjectSelect.options[testSubjectSelect.selectedIndex].text.split(' ')[0] : "विषय";
+    const subName = document.getElementById("subjectTriggerText") ? document.getElementById("subjectTriggerText").textContent.split(' ')[1] : "विषय";
     const testId = `${getTargetJsonFile()}_${isFullSyllabusSelected() ? 'full' : 'ch'}`;
 
     try {
@@ -405,13 +437,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // ऑथेंटिकेशन चेक
       let currentUser = null;
       if (window.firebase && firebase.auth) {
         currentUser = firebase.auth().currentUser;
       }
 
-      // स्कोर Firestore में जोड़ना
       if (currentUser) {
         const studentName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : "छात्र");
         await db.collection("chapter_test_scores").add({
@@ -428,7 +458,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }).catch(e => console.warn("Score save:", e));
       }
 
-      // केवल testId से सीधे 100 रिकॉर्ड्स लाना (बिना इंडेक्स एरर के)
       const snap = await db.collection("chapter_test_scores")
         .where("testId", "==", testId)
         .limit(100)
@@ -437,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (snap.empty) {
         boardContainer.innerHTML = `
           <h3 style="color:#38bdf8; font-size:1.15rem; text-align:center; margin-bottom:6px;">🏆 टॉप 50 मेधावी छात्र (${subName})</h3>
-          <p style="text-align:center; color:#94a3b8; font-size:0.85rem; padding: 14px;">आप इस टेस्ट के पहले प्रतिभागी हैं! बहुत शानदार प्रदर्शन। 🎯</p>
+          <p style="text-align:center; color:#94a3b8; font-size:0.85rem; padding: 14px;">आप इस टेस्ट के पहले प्रतिभागी हैं! शानदार प्रदर्शन। 🎯</p>
         `;
         return;
       }
@@ -447,11 +476,9 @@ document.addEventListener('DOMContentLoaded', function () {
         students.push(doc.data());
       });
 
-      // ब्राउज़र में सॉर्टिंग: सबसे ज्यादा स्कोर ऊपर, बराबर होने पर कम समय वाला ऊपर
+      // ब्राउज़र में सॉर्टिंग (स्कोर अधिक, समय कम)
       students.sort((a, b) => {
-        if (b.score !== a.score) {
-          return b.score - a.score;
-        }
+        if (b.score !== a.score) return b.score - a.score;
         return (a.timeTakenSec || 0) - (b.timeTakenSec || 0);
       });
 
@@ -502,10 +529,9 @@ document.addEventListener('DOMContentLoaded', function () {
       boardContainer.innerHTML = rankHtml;
 
     } catch (err) {
-      console.error("Leaderboard Error:", err);
       boardContainer.innerHTML = `
         <h3 style="color:#38bdf8; font-size:1.1rem; text-align:center;">🏆 टॉप 50 मेधावी छात्र</h3>
-        <p style="text-align:center; color:#f87171; font-size:0.8rem; padding: 10px;">लोड करने में समस्या: ${err.message}</p>
+        <p style="text-align:center; color:#f87171; font-size:0.8rem; padding: 10px;">लोड करने में समस्या आई।</p>
       `;
     }
   }
