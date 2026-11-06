@@ -16,11 +16,6 @@
   <link rel="stylesheet" href="dashboard.css" />
   <link rel="stylesheet" href="test-engine.css" />
 
-  <!-- Firebase Modular Compat SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
   <script>
@@ -229,11 +224,47 @@
     .dock-link-item.active { color: #0284c7 !important; }
     .dock-icon-svg { font-size: 1.35rem !important; line-height: 1 !important; }
     .dock-label-text { font-size: 0.72rem !important; font-weight: 700 !important; }
+
+    /* हैमबर्गर आइकॉन स्टाइल */
+    .mobile-menu-trigger {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      width: 38px;
+      height: 38px;
+      background: var(--card-bg, #ffffff);
+      border: 1.5px solid var(--card-border, #cbd5e1);
+      border-radius: 9px;
+      cursor: pointer;
+    }
+    .mobile-menu-trigger .bar {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--text-main, #0f172a);
+      border-radius: 2px;
+    }
+    html[data-theme="dark"] .mobile-menu-trigger .bar {
+      background: #ffffff;
+    }
+    .nav-dash-pill {
+      background: rgba(2, 132, 199, 0.12);
+      border: 1.5px solid #0284c7;
+      color: #0284c7;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body class="app-body">
 
-  <!-- 1. TOP NAVBAR -->
+  <!-- 1. TOP NAVBAR (Google Login Hata Diya Gaya) -->
   <header class="app-header">
     <nav class="nav-container">
       <div class="nav-brand-group">
@@ -254,33 +285,21 @@
 
       <div class="nav-links-desktop">
         <a href="class11.html" class="nav-item">11th डैशबोर्ड</a>
-        <a href="class11notes.html" class="nav-item">📚 11th नोट्स</a>
-        <a href="class11syllabus.html" class="nav-item">📋 11th सिलेबस</a>
-        <a href="class11pyq.html" class="nav-item">📄 एनुअल पेपर्स</a>
+        <a href="class11notes.html" class="nav-item">📚 नोट्स</a>
         <a href="class11test.html" class="nav-item active">📝 ऑनलाइन टेस्ट</a>
-        <a href="todo.html?class=11th" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू लिस्ट</a>
+        <a href="bridge-course.html" class="nav-item" style="color:#10b981; font-weight:800;">🚀 ब्रिज गाइड</a>
+        <a href="class11pyq.html" class="nav-item">📄 पेपर्स</a>
+        <a href="class11syllabus.html" class="nav-item">📋 सिलेबस</a>
+        <a href="calculator.html" class="nav-item" style="color:#ec4899; font-weight:800;">🧮 कैलकुलेटर</a>
+        <a href="todo.html?class=11th" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू</a>
         <a href="pdf.html?class=11th" target="_blank" class="nav-item" style="color: #a855f7; font-weight: 800;">🖼️ इमेज To PDF</a>
         <a href="ai-desk.html?class=11th" class="nav-item">🤖 AI स्टूडियो</a>
       </div>
 
       <div class="nav-actions">
-        <button class="btn-auth-primary" id="headerAuthBtn">
-          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
-            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
-            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
-            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
-          </svg>
-          <span id="authBtnLabel">Google लॉगिन</span>
-        </button>
-
-        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
-          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
-          <div class="user-info-text">
-            <span class="user-display-name" id="userDisplayName">छात्र</span>
-            <span class="user-session-badge" id="userSessionBadge">Class 11th</span>
-          </div>
-        </div>
+        <a href="class11.html" class="nav-dash-pill">
+          🧪 11th डैशबोर्ड
+        </a>
       </div>
     </nav>
   </header>
@@ -293,11 +312,7 @@
         <div class="brand-badge-icon sm">N</div>
         <span>11th Science Hub</span>
       </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
-    </div>
-
-    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
-      <p class="drawer-user-prompt">⚡ छात्र प्रोफ़ाइल विवरण ▾</p>
+      <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close Drawer">&times;</button>
     </div>
 
     <nav class="drawer-nav-list">
@@ -307,14 +322,20 @@
       <a href="class11notes.html" class="drawer-nav-item">
         <span class="icon">📚</span> 11th सम्पूर्ण नोट्स
       </a>
+      <a href="class11test.html" class="drawer-nav-item active">
+        <span class="icon">📝</span> 11th ऑनलाइन टेस्ट पोर्टल
+      </a>
+      <a href="bridge-course.html" class="drawer-nav-item" style="color: #10b981; font-weight: 800;">
+        <span class="icon">🚀</span> 12th फाउंडेशन ब्रिज गाइड
+      </a>
+      <a href="class11pyq.html" class="drawer-nav-item">
+        <span class="icon">📄</span> एनुअल & त्रैमासिक पेपर्स
+      </a>
       <a href="class11syllabus.html" class="drawer-nav-item">
         <span class="icon">📋</span> 11th बोर्ड सिलेबस
       </a>
-      <a href="class11pyq.html" class="drawer-nav-item">
-        <span class="icon">📄</span> एनुअल & मासिक पेपर्स
-      </a>
-      <a href="class11test.html" class="drawer-nav-item active">
-        <span class="icon">📝</span> 11th ऑनलाइन टेस्ट पोर्टल
+      <a href="calculator.html" class="drawer-nav-item" style="color: #ec4899; font-weight: 800;">
+        <span class="icon">🧮</span> कैलकुलेटर
       </a>
       <a href="todo.html?class=11th" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800;">
         <span class="icon">✅</span> माय टू-डू लिस्ट
@@ -322,14 +343,15 @@
       <a href="pdf.html?class=11th" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800;">
         <span class="icon">🖼️</span> इमेज To PDF मेकर
       </a>
-      <a href="ai-desk.html?class=11th" class="drawer-nav-item">
+      <a href="ai-desk.html?class=11th" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800;">
         <span class="icon">🤖</span> AI डाउट स्टूडियो
       </a>
-      <a href="index.html" class="drawer-nav-item" style="color: #38bdf8;">
+      <a href="index.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
         <span class="icon">🔄</span> कक्षा 10वीं पोर्टल पर जाएँ
       </a>
+      
       <div class="drawer-theme-row">
-        <span class="theme-label">🌙 डार्क / लाइट मोड</span>
+        <span class="theme-label">🌙 डार्क मोड:</span>
         <label class="switch">
           <input type="checkbox" id="themeSwitch">
           <span class="slider round"></span>
@@ -338,7 +360,7 @@
     </nav>
 
     <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk Class 11th Edition</span>
+      <span class="platform-meta">Developed By Prince Kumar ⚡</span>
     </div>
   </aside>
 
@@ -526,35 +548,6 @@
     </div>
   </div>
 
-  <!-- USER PROFILE MODAL -->
-  <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
-    <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
-      
-      <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">&times;</button>
-      
-      <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
-        <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
-        <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
-      </div>
-
-      <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
-      <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
-
-      <div style="background: rgba(2, 132, 199, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 16px;">
-        <span style="font-size: 0.85rem; font-weight: 800; color: #38bdf8;">अध्ययन कक्षा: 11th (साइंस)</span>
-      </div>
-
-      <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-        🚪 लॉगआउट करें (Logout)
-      </button>
-
-      <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
-        ⏳ सुरक्षित लॉगआउट हो रहा है...
-      </div>
-
-    </div>
-  </div>
-
   <!-- 4. FOOTER -->
   <footer class="app-footer">
     <div class="footer-container">
@@ -573,6 +566,7 @@
         <ul class="footer-nav">
           <li><a href="class11.html">➔ 11th मुख्य डैशबोर्ड</a></li>
           <li><a href="class11notes.html">➔ 11th सम्पूर्ण नोट्स</a></li>
+          <li><a href="bridge-course.html">➔ 12th फाउंडेशन ब्रिज गाइड</a></li>
           <li><a href="class11syllabus.html">➔ 11th बोर्ड सिलेबस</a></li>
           <li><a href="class11pyq.html">➔ एनुअल व मासिक पेपर्स</a></li>
           <li><a href="index.html">➔ 10th मैट्रिक पोर्टल</a></li>
@@ -607,8 +601,25 @@
     </a>
   </nav>
 
-  <!-- 6. CLASS 11TH ENGINE SCRIPT (JSON MAPPING & CONTROLLER) -->
+  <!-- 6. CLASS 11TH ENGINE SCRIPT (DRAWER + JSON MAPPING + CONTROLLER) -->
   <script>
+    // 🌟 Side Drawer Controls (मेन्यू ठीक किया गया)
+    function openDrawer() {
+      const drawer = document.getElementById("sideDrawer");
+      const scrim = document.getElementById("drawerScrim");
+      if (drawer) drawer.classList.add("active");
+      if (scrim) scrim.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById("sideDrawer");
+      const scrim = document.getElementById("drawerScrim");
+      if (drawer) drawer.classList.remove("active");
+      if (scrim) scrim.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
     // 🎯 11वीं साइंस की JSON फ़ाइलों की सटीक मैपिंग
     const class11Subjects = [
       { id: "physics", syllabusId: "11-physics", jsonFile: "11-physics.json", name: "⚡ भौतिक विज्ञान (Physics)" },
@@ -759,7 +770,7 @@
       }
 
       if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-        alert(`📢 सूचना:\n\n'${fileName}' फ़ाइल अभी डेटाबेस में जोड़ी जा रही है!\nआप बहुत जल्द इसके संपूर्ण प्रश्नों का अभ्यास कर सकेंगे।`);
+        alert(`📢 सूचना:\n\n'${fileName}' फ़ाइल अभी डेटाबेस में लोड नहीं हो पाई है!\nकृपया इंटरनेट कनेक्शन जांचें या थोड़ी देर बाद प्रयास करें।`);
         return false;
       }
 
@@ -987,27 +998,35 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    function openProfileModal() {
-      const modal = document.getElementById('customProfileModal');
-      if (modal) modal.style.display = 'flex';
-    }
-    function closeProfileModal() {
-      const modal = document.getElementById('customProfileModal');
-      if (modal) modal.style.display = 'none';
-    }
-    function handleSlowLogout() {
-      if (window.firebase && firebase.auth) {
-        firebase.auth().signOut().finally(() => {
-          closeProfileModal();
-          window.location.reload();
-        });
-      } else {
-        closeProfileModal();
-        window.location.reload();
-      }
-    }
-
+    // 🌟 DOM Ready Listener (इवेंट लिसनर जोड़कर मेन्यू को सक्रिय किया गया)
     document.addEventListener("DOMContentLoaded", () => {
+      // 1. मेन्यू ओपन/क्लोज ट्रिगर
+      const menuBtn = document.getElementById("mobileMenuBtn");
+      const closeBtn = document.getElementById("drawerCloseBtn");
+      const scrim = document.getElementById("drawerScrim");
+
+      if (menuBtn) menuBtn.addEventListener("click", openDrawer);
+      if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+      if (scrim) scrim.addEventListener("click", closeDrawer);
+
+      // 2. डार्क/लाइट मोड स्विच
+      const themeSwitch = document.getElementById("themeSwitch");
+      if (themeSwitch) {
+        const currentTheme = localStorage.getItem("nd_app_theme") || "light";
+        themeSwitch.checked = (currentTheme === "dark");
+        themeSwitch.addEventListener("change", function() {
+          const newTheme = this.checked ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", newTheme);
+          localStorage.setItem("nd_app_theme", newTheme);
+          if (newTheme === "light") {
+            document.documentElement.classList.add("light-mode");
+          } else {
+            document.documentElement.classList.remove("light-mode");
+          }
+        });
+      }
+
+      // 3. डिफ़ॉल्ट सब्जेक्ट और चैप्टर सिंक
       const initialChs = getChaptersForSubject(selectedSubject.syllabusId);
       if (initialChs.length > 0) {
         selectedChapter = initialChs[0];
