@@ -17,6 +17,7 @@
     localStorage.setItem("nischay_user_class", "11th");
     localStorage.setItem("nischay_student_class", "11");
     localStorage.setItem("user_class", "11th");
+    sessionStorage.setItem("nd_last_portal", "class11pyq.html");
 
     const savedTheme = localStorage.getItem("nd_app_theme") || "light";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -79,7 +80,7 @@
       transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* 🌟 Header (टकराव ख़त्म) */
+    /* 🌟 Header */
     .app-header {
       position: sticky;
       top: 0;
@@ -247,7 +248,7 @@
       box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3);
     }
 
-    /* 🌟 Colorful Professional Cards */
+    /* 🌟 Professional Cards */
     .pyq-grid-wrap {
       max-width: 1100px;
       margin: 20px auto 0;
@@ -284,7 +285,6 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
 
-    /* सब्जेक्ट ग्रेडिएंट बार */
     .pyq-card::before {
       content: "";
       position: absolute;
@@ -374,7 +374,7 @@
       cursor: pointer;
     }
 
-    /* 🌟 FULL SCREEN PROFESSIONAL PDF VIEWER (रियल टाइम प्रोग्रेस 0-100) */
+    /* 🌟 FULL SCREEN ZERO-LOGIN PDF STUDIO */
     .pro-viewer-backdrop {
       display: none;
       position: fixed;
@@ -436,7 +436,7 @@
       text-decoration: none;
     }
 
-    /* रियल टाइम लोडर स्क्रीन (0-100%) */
+    /* रियल टाइम 0-100% प्रोग्रेस बार */
     .viewer-progress-container {
       position: absolute;
       inset: 54px 0 0 0;
@@ -496,7 +496,7 @@
       border: none;
     }
 
-    /* Side Drawer */
+    /* 🌟 Side Drawer */
     .drawer-overlay {
       display: none;
       position: fixed;
@@ -545,6 +545,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+      flex: 1;
     }
     .side-link {
       display: flex;
@@ -560,6 +561,166 @@
     .side-link.active {
       background: #0284c7;
       color: #ffffff;
+    }
+
+    .side-control-card {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: rgba(2, 132, 199, 0.08);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .lang-btn-switch {
+      background: var(--card-bg);
+      border: 1.5px solid #0284c7;
+      color: #0284c7;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #64748b;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #0284c7; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .drawer-dev {
+      padding: 16px;
+      text-align: center;
+      border-top: 1.5px solid var(--card-border);
+      background: rgba(2, 132, 199, 0.05);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .dev-badge {
+      font-size: 0.92rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #38bdf8, #a855f7, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    /* 🌟 Bottom Sheet Modal (Class Changer) */
+    .nd-sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 999999999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .nd-sheet-backdrop.active { display: flex !important; }
+    .nd-sheet-content {
+      width: 100%;
+      max-width: 480px;
+      background: #0b1329;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 22px 22px 0 0;
+      padding: 20px 18px 28px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html[data-theme="light"] .nd-sheet-content {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .nd-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 14px;
+    }
+    html[data-theme="light"] .nd-sheet-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
+    .nd-sheet-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nd-sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nd-sheet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nd-sheet-opt-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html[data-theme="light"] .nd-sheet-opt-item {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .nd-sheet-opt-item.selected {
+      background: rgba(2, 132, 199, 0.2) !important;
+      border-color: #0284c7 !important;
+      color: #38bdf8 !important;
     }
 
     /* Mobile Bottom Dock */
@@ -595,7 +756,7 @@
 </head>
 <body>
 
-  <!-- Top Navbar (अब दोनों कभी नहीं लड़ेंगे) -->
+  <!-- Top Navbar -->
   <header class="app-header">
     <div class="nav-inner">
       <div class="nav-left">
@@ -637,17 +798,20 @@
       <a href="class11notes.html" class="side-link">
         <span>📚</span> 11th सम्पूर्ण नोट्स
       </a>
-      <a href="class11test.html" class="side-link">
+      <a href="class11test.html" class="side-link" style="color: #38bdf8; font-weight: 800;">
         <span>📝</span> 11th ऑनलाइन टेस्ट पोर्टल
       </a>
       <a href="bridge-course.html" class="side-link" style="color: #10b981; font-weight: 800;">
         <span>🚀</span> 12th फाउंडेशन ब्रिज गाइड
       </a>
-      <a href="class11pyq.html" class="side-link active">
+      <a href="class11pyq.html?class=11" class="side-link active">
         <span>📄</span> एनुअल & त्रैमासिक पेपर्स
       </a>
       <a href="class11syllabus.html?class=11" class="side-link">
-        <span>📋</span> 11th बोर्ड सिलेबस
+        <span>📋</span> 11th आधिकारिक सिलेबस
+      </a>
+      <a href="calculator.html" class="side-link" style="color: #ec4899; font-weight: 800;">
+        <span>🧮</span> कैलकुलेटर
       </a>
       <a href="todo.html?class=11th" target="_blank" class="side-link" style="color: #10b981;">
         <span>✅</span> माय टू-डू लिस्ट
@@ -658,9 +822,32 @@
       <a href="ai-desk.html?class=11th" class="side-link" style="color: #f59e0b;">
         <span>🤖</span> AI डाउट सॉल्वर
       </a>
-      <a href="index.html" class="side-link" style="color: #38bdf8;">
-        <span>🔄</span> कक्षा 10वीं पर जाएँ
+      <a href="bseb-print.html?class=11th" class="side-link" style="color: #0284c7; font-weight: 800;">
+        <span>🎯</span> OMR शीट जनरेटर
       </a>
+      <a href="javascript:void(0)" onclick="closeDrawer(); openClassSheet();" class="side-link" style="color: #38bdf8;">
+        <span>🔄</span> कक्षा बदलें (10th / 12th)
+      </a>
+
+      <!-- Controls -->
+      <div class="side-control-card">
+        <div class="control-row">
+          <span>🌐 भाषा (Language):</span>
+          <button class="lang-btn-switch" id="langSwitchBtn" onclick="toggleLanguage()">English</button>
+        </div>
+        <div class="control-row">
+          <span>🌙 डार्क मोड:</span>
+          <label class="switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-dev">
+      <div class="dev-badge">Developed By Prince Kumar ⚡</div>
+      <p style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NischayDesk Production • 2026</p>
     </div>
   </aside>
 
@@ -688,12 +875,12 @@
     <div class="pyq-grid" id="class11PyqGrid"></div>
   </main>
 
-  <!-- FULL SCREEN REAL-TIME PROGRESS PDF VIEWER -->
+  <!-- 🌟 FULL SCREEN ZERO-LOGIN PDF VIEWER -->
   <div class="pro-viewer-backdrop" id="proViewerBackdrop">
     <div class="viewer-navbar">
       <div class="viewer-title-box">
         <span>📄</span>
-        <h3 id="viewerDocTitle">लोड हो रहा है...</h3>
+        <h3 id="viewerDocTitle">दस्तावेज लोड हो रहा है...</h3>
       </div>
       <div class="viewer-actions">
         <a href="#" id="viewerDlBtn" target="_blank" class="btn-viewer-dl" download>📥 सेव करें</a>
@@ -715,6 +902,30 @@
     </div>
   </div>
 
+  <!-- Bottom Sheet Modal (Class Changer) -->
+  <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
+    <div class="nd-sheet-content">
+      <div class="nd-sheet-header">
+        <h3>कक्षा चुनें (Select Class)</h3>
+        <button type="button" class="nd-sheet-close-btn" onclick="closeClassSheet()">&times;</button>
+      </div>
+      <div class="nd-sheet-options">
+        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('10th')">
+          <span>Class 10th (मैट्रिक बोर्ड)</span>
+          <span style="font-weight:900;">›</span>
+        </div>
+        <div class="nd-sheet-opt-item selected" onclick="selectClassAndRedirect('11th')">
+          <span>Class 11th (साइंस हब)</span>
+          <span style="color:#38bdf8; font-weight:900;">✓</span>
+        </div>
+        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('12th')">
+          <span>Class 12th (इंटर साइंस बोर्ड)</span>
+          <span style="font-weight:900;">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Mobile Bottom Dock -->
   <nav class="bottom-dock">
     <a href="class11.html" class="dock-btn">
@@ -725,13 +936,13 @@
       <span class="icon">📚</span>
       <span>नोट्स</span>
     </a>
+    <a href="class11test.html" class="dock-btn">
+      <span class="icon">📝</span>
+      <span>टेस्ट</span>
+    </a>
     <a href="class11pyq.html" class="dock-btn active">
       <span class="icon">📄</span>
       <span>पेपर्स</span>
-    </a>
-    <a href="bridge-course.html" class="dock-btn">
-      <span class="icon">🚀</span>
-      <span>ब्रिज कोर्स</span>
     </a>
   </nav>
 
@@ -850,7 +1061,7 @@
       }
 
       filtered.forEach(item => {
-        const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '';
+        const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const dlLink = hasPdf ? getDirectDownloadLink(item.pdfUrl) : '';
 
         const card = document.createElement('div');
@@ -877,6 +1088,7 @@
       });
     }
 
+    // 🌟 डायरेक्ट डाउनलोड लिंक कन्वर्टर
     function getDirectDownloadLink(url) {
       if (!url) return '';
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -886,7 +1098,7 @@
       return url;
     }
 
-    /* 🌟 0 से 100% रियल टाइम प्रोग्रेस लोडर */
+    // 🌟 नो-लॉगिन फुल स्क्रीन प्रीव्यूअर
     function launchProViewer(title, url) {
       const backdrop = document.getElementById('proViewerBackdrop');
       const frame = document.getElementById('viewerPdfFrame');
@@ -907,16 +1119,17 @@
       let count = 0;
       progressVal.textContent = '0%';
       progressBarFill.style.width = '0%';
-      progressLabel.textContent = 'दस्तावेज एन्क्रिप्ट एवं लोड हो रहा है...';
+      progressLabel.textContent = 'दस्तावेज तैयार किया जा रहा है...';
 
+      // गूगल लॉगिन बायपास करने के लिए शुद्ध एम्बेड प्रीव्यू लिंक
       let previewUrl = url;
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
-        previewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+        previewUrl = `https://drive.google.com/file/d/${match[1]}/preview?usp=sharing`;
       }
 
       const timer = setInterval(() => {
-        count += Math.floor(Math.random() * 15) + 10;
+        count += Math.floor(Math.random() * 16) + 12;
         if (count >= 100) {
           count = 100;
           clearInterval(timer);
@@ -944,7 +1157,7 @@
       document.body.style.overflow = '';
     }
 
-    // Filter Controls
+    // फ़िल्टर नियंत्रण
     document.querySelectorAll('.pill-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
@@ -954,7 +1167,7 @@
       });
     });
 
-    // Drawer Controls
+    // साइड ड्रॉअर
     function openDrawer() {
       document.getElementById("sideNav").classList.add("active");
       document.getElementById("drawerOverlay").classList.add("active");
@@ -966,7 +1179,68 @@
       document.body.style.overflow = "";
     }
 
-    document.addEventListener('DOMContentLoaded', renderPapers);
+    // थीम नियंत्रण
+    function toggleTheme(checkbox) {
+      if (checkbox.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("nd_app_theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("nd_app_theme", "light");
+      }
+    }
+
+    // भाषा टॉगल
+    function toggleLanguage() {
+      const cur = localStorage.getItem("nd_app_lang") || "hi";
+      const next = (cur === "hi") ? "en" : "hi";
+      localStorage.setItem("nd_app_lang", next);
+      const btn = document.getElementById("langSwitchBtn");
+      if (btn) btn.innerText = (next === "hi") ? "English" : "हिन्दी";
+    }
+
+    // कक्षा बदलने वाली शीट
+    function openClassSheet() {
+      document.getElementById('ndClassSheetBackdrop').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeClassSheet() {
+      document.getElementById('ndClassSheetBackdrop').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function handleClassSheetBackdrop(e) {
+      if (e.target.id === 'ndClassSheetBackdrop') closeClassSheet();
+    }
+    function selectClassAndRedirect(chosenClass) {
+      closeClassSheet();
+      localStorage.setItem("nd_selected_class", chosenClass);
+      localStorage.setItem("nischay_user_class", chosenClass);
+      localStorage.setItem("nischay_student_class", chosenClass.replace(/[^0-9]/g, ''));
+      localStorage.setItem("user_class", chosenClass);
+
+      if (chosenClass === "10th") {
+        sessionStorage.setItem("nd_last_portal", "index.html");
+        window.location.href = "index.html";
+      } else if (chosenClass === "12th") {
+        sessionStorage.setItem("nd_last_portal", "class12.html");
+        window.location.href = "class12.html";
+      } else {
+        sessionStorage.setItem("nd_last_portal", "class11.html");
+        window.location.href = "class11.html";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const curTheme = localStorage.getItem("nd_app_theme") || "light";
+      const themeToggle = document.getElementById("themeToggle");
+      if (themeToggle) themeToggle.checked = (curTheme === "dark");
+
+      const curLang = localStorage.getItem("nd_app_lang") || "hi";
+      const langBtn = document.getElementById("langSwitchBtn");
+      if (langBtn) langBtn.innerText = (curLang === "hi") ? "English" : "हिन्दी";
+
+      renderPapers();
+    });
   </script>
 </body>
 </html>
