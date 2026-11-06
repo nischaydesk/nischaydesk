@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>12th फाउंडेशन ब्रिज कोर्स | NischayDesk</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    const savedTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+      margin: 0;
+      padding: 0;
+    }
+    :root {
+      --bg-page: #f1f5f9;
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --primary: #0284c7;
+      --accent: #10b981;
+    }
+    html[data-theme="dark"] {
+      --bg-page: #040914;
+      --card-bg: #0b1a30;
+      --card-border: rgba(56, 189, 248, 0.22);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --accent: #34d399;
+    }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      padding-bottom: 74px;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      background: var(--card-bg);
+      border-bottom: 1.5px solid var(--card-border);
+      padding: 12px 16px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.9rem;
+      background: rgba(2, 132, 199, 0.1);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Hero Banner */
+    .hero-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(2, 132, 199, 0.15));
+      border: 1.5px solid var(--accent);
+      border-radius: 18px;
+      padding: 20px 16px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    .hero-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Subject Tabs */
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 18px;
+      scrollbar-width: none;
+    }
+    .tabs-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 8px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Bridge Cards */
+    .bridge-sec { display: none; }
+    .bridge-sec.active { display: block; }
+    .topic-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .topic-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .topic-head h3 {
+      font-size: 0.98rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+    .badge-why {
+      font-size: 0.72rem;
+      background: rgba(245, 158, 11, 0.15);
+      color: #d97706;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+    .formula-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin-top: 8px;
+    }
+    .formula-table th, .formula-table td {
+      border: 1px solid var(--card-border);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .formula-table th {
+      background: rgba(128, 128, 128, 0.08);
+      font-weight: 800;
+    }
+    .formula-code {
+      font-family: monospace;
+      font-weight: 700;
+      color: #e11d48;
+    }
+    html[data-theme="dark"] .formula-code { color: #fb7185; }
+    .key-points-list {
+      margin-top: 8px;
+      padding-left: 20px;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+    .key-points-list li { margin-bottom: 5px; }
+
+    /* Bottom Dock */
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--card-bg);
+      border-top: 1.5px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 999;
+    }
+    .dock-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      gap: 3px;
+    }
+    .dock-btn.active { color: var(--accent); }
+    .dock-btn span.icon { font-size: 1.3rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <a href="class11.html" class="back-btn">← 11th डैशबोर्ड</a>
+    <span style="font-size: 0.85rem; font-weight: 800;">NischayDesk Bridge Hub</span>
+  </header>
+
+  <div class="container">
+    <!-- Hero Banner -->
+    <div class="hero-box">
+      <span class="hero-badge">🚀 11th ➔ 12th TRANSITION</span>
+      <h1 class="hero-title">12th फाउंडेशन ब्रिज कोर्स</h1>
+      <p class="hero-desc">11वीं के वो सबसे महत्वपूर्ण सूत्र और बुनियादी नियम जो 12वीं में 95%+ अंक लाने के लिए 100% अनिवार्य हैं।</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('math')">📐 गणित (Math)</button>
+      <button class="tab-btn" onclick="switchTab('phy')">⚡ भौतिकी (Physics)</button>
+      <button class="tab-btn" onclick="switchTab('chem')">🧪 रसायन (Chemistry)</button>
+      <button class="tab-btn" onclick="switchTab('bio')">🧬 जीव विज्ञान (Biology)</button>
+    </div>
+
+    <!-- 1. MATH SECTION -->
+    <div class="bridge-sec active" id="sec-math">
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>1. बेसिक अवकलन सूत्र (Calculus Foundation)</h3>
+          <span class="badge-why">12th में 44 मार्क्स का कैलकुलस</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">12वीं के 'सांतत्य तथा अवकलनीयता' और 'समाकलन' के लिए ये फॉर्मूले रटे होने चाहिए:</p>
+        <table class="formula-table">
+          <tr><th>फलन $f(x)$</th><th>अवकलज $f'(x) = \frac{d}{dx}$</th></tr>
+          <tr><td>$x^n$</td><td class="formula-code">$n x^{n-1}$</td></tr>
+          <tr><td>$\sin x$</td><td class="formula-code">$\cos x$</td></tr>
+          <tr><td>$\cos x$</td><td class="formula-code">$-\sin x$</td></tr>
+          <tr><td>$\tan x$</td><td class="formula-code">$\sec^2 x$</td></tr>
+          <tr><td>$e^x$</td><td class="formula-code">$e^x$</td></tr>
+          <tr><td>$\log_e x$</td><td class="formula-code">$1 / x$</td></tr>
+          <tr><td>गुणन नियम $(uv)'$</td><td class="formula-code">$u v' + v u'$</td></tr>
+          <tr><td>भागफल नियम $(u/v)'$</td><td class="formula-code">$(v u' - u v') / v^2$</td></tr>
+        </table>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>2. त्रिकोणमिति सर्वसमिकाएं (Trig Identities)</h3>
+          <span class="badge-why">प्रतिलोम त्रिकोणमिति (ITF) का आधार</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>$2\theta$ फॉर्मूले:</strong> $\sin 2\theta = 2\sin\theta\cos\theta = \frac{2\tan\theta}{1+\tan^2\theta}$</li>
+          <li><strong>$\cos 2\theta$:</strong> $\cos^2\theta - \sin^2\theta = 2\cos^2\theta - 1 = 1 - 2\sin^2\theta$</li>
+          <li><strong>$1 \pm \cos 2\theta$:</strong> $1 - \cos 2\theta = 2\sin^2\theta$ तथा $1 + \cos 2\theta = 2\cos^2\theta$ (कैलकुलस का ब्रह्मास्त्र)</li>
+          <li><strong>$\tan 2\theta$:</strong> $\frac{2\tan\theta}{1-\tan^2\theta}$</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. PHYSICS SECTION -->
+    <div class="bridge-sec" id="sec-phy">
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>1. सदिश बीजगणित (Vectors)</h3>
+          <span class="badge-why">12th Electrostatics & Magnetism</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">कूलाम का नियम, विद्युत क्षेत्र और चुंबकीय बल पूरी तरह सदिशों पर आधारित हैं:</p>
+        <ul class="key-points-list">
+          <li><strong>परिणामी सदिश (R):</strong> $R = \sqrt{A^2 + B^2 + 2AB\cos\theta}$</li>
+          <li><strong>अदिश गुणन (Dot Product):</strong> $\vec{A} \cdot \vec{B} = AB\cos\theta$ (यदि $\vec{A} \perp \vec{B}$ तो $\vec{A} \cdot \vec{B} = 0$)</li>
+          <li><strong>सदिश गुणन (Cross Product):</strong> $\vec{A} \times \vec{B} = AB\sin\theta\,\hat{n}$</li>
+          <li><strong>घटक वियोजन:</strong> क्षैतिज घटक $= A\cos\theta$, ऊर्ध्वाधर घटक $= A\sin\theta$</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>2. कार्य, ऊर्जा तथा विभव (Work-Energy)</h3>
+          <span class="badge-why">विद्युत विभव और धारिता</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>कार्य:</strong> $W = \vec{F} \cdot \vec{s} = F s \cos\theta$</li>
+          <li><strong>स्थितिज ऊर्जा और बल में संबंध:</strong> $F = -\frac{dU}{dr}$ (12वीं में $E = -\frac{dV}{dr}$ बनता है)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. CHEMISTRY SECTION -->
+    <div class="bridge-sec" id="sec-chem">
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>1. मोल संकल्पना व सांद्रता (Mole Concept)</h3>
+          <span class="badge-why">12th Chapter: Solutions (विलयन)</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>मोल ($n$):</strong> $\text{मोल} = \frac{\text{भार (g)}}{\text{अणुभार}} = \frac{\text{कणों की संख्या}}{6.022 \times 10^{23}}$</li>
+          <li><strong>मोलरता (M):</strong> $\frac{\text{विलेय के मोल}}{\text{विलयन का आयतन (L में)}}$ (ताप पर निर्भर करती है)</li>
+          <li><strong>मोललता ($m$):</strong> $\frac{\text{विलेय के मोल}}{\text{विलायक का भार (kg में)}}$ (ताप से स्वतंत्र)</li>
+          <li><strong>मोल प्रभाज ($X_A$):</strong> $X_A = \frac{n_A}{n_A + n_B}$, सदैव $X_A + X_B = 1$</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>2. कार्बनिक रसायन बेसिक्स (GOC Foundation)</h3>
+          <span class="badge-why">12th Organic (35 Marks)</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>प्रेरणिक प्रभाव (Inductive Effect):</strong> $+I$ (इलेक्ट्रॉन दाता, जैसे $-\text{CH}_3$), $-I$ (इलेक्ट्रॉन खींचने वाले, जैसे $-\text{NO}_2, -\text{Cl}$)</li>
+          <li><strong>कार्बोकैटायन स्थायित्व:</strong> $3^\circ > 2^\circ > 1^\circ > \text{CH}_3^+$</li>
+          <li><strong>संकरण (Hybridization):</strong> एकल बंध $\rightarrow sp^3$, द्विबंध $\rightarrow sp^2$, त्रिबंध $\rightarrow sp$</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. BIOLOGY SECTION -->
+    <div class="bridge-sec" id="sec-bio">
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>1. कोशिका विभाजन (Cell Division)</h3>
+          <span class="badge-why">12th Genetics & Reproduction</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>समसूत्री विभाजन (Mitosis):</strong> कायिक कोशिकाओं में वृद्धि व मरम्मत हेतु (गुणसूत्र संख्या $2n \rightarrow 2n$ समान रहती है)।</li>
+          <li><strong>अर्धसूत्री विभाजन (Meiosis):</strong> युग्मक निर्माण के समय ($2n \rightarrow n$ आधी हो जाती है)।</li>
+          <li><strong>क्रॉसिंग ओवर (Crossing Over):</strong> प्रोफेज-I की पैकैटीन अवस्था में होता है, जिससे आनुवंशिक विविधता आती है।</li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>2. डीएनए एवं आनुवंशिकी आधार (Biomolecules)</h3>
+          <span class="badge-why">12th वंशागति का आण्विक आधार</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>न्यूक्लियोटाइड:</strong> नाइट्रोजनी क्षार + पेंटोज शर्करा + फॉस्फेट ग्रुप</li>
+          <li><strong>क्षारक युग्मन (Chargaff Rule):</strong> Adenine (A) = Thymine (T) [2 हाइड्रोजन बंध], Guanine (G) $\equiv$ Cytosine (C) [3 हाइड्रोजन बंध]।</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Dock -->
+  <nav class="bottom-dock">
+    <a href="class11.html" class="dock-btn">
+      <span class="icon">🧪</span>
+      <span>11th होम</span>
+    </a>
+    <a href="class11notes.html" class="dock-btn">
+      <span class="icon">📖</span>
+      <span>नोट्स</span>
+    </a>
+    <a href="bridge-course.html" class="dock-btn active">
+      <span class="icon">🚀</span>
+      <span>ब्रिज कोर्स</span>
+    </a>
+    <a href="class11test.html" class="dock-btn">
+      <span class="icon">📝</span>
+      <span>टेस्ट</span>
+    </a>
+  </nav>
+
+  <script>
+    function switchTab(sub) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.bridge-sec').forEach(sec => sec.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById('sec-' + sub).classList.add('active');
+    }
+  </script>
+</body>
+</html>
