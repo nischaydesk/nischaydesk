@@ -41,7 +41,7 @@
   </script>
 
   <style>
-    /* 🌟 कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर (डिफ़ॉल्ट सेलेक्ट बंद) */
+    /* 🌟 कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर */
     .custom-select-trigger {
       width: 100% !important;
       padding: 13px 16px;
@@ -83,7 +83,7 @@
       gap: 8px;
     }
 
-    /* 📱 बीच में खुलने वाला सेंटर-मोडल (Center Modal Selector) */
+    /* 📱 स्क्रीन के बीच में खुलने वाला सेंटर-मोडल */
     .center-modal-backdrop {
       display: none;
       position: fixed;
@@ -328,7 +328,7 @@
           विषय और अपना पसंदीदा अध्याय चुनें। बोर्ड परीक्षा टाइमर, वस्तुनिष्ठ प्रश्न और तुरंत विस्तृत व्याख्या के साथ अभ्यास करें।
         </p>
 
-        <!-- Selection Controls Grid (कस्टम बटन्स) -->
+        <!-- Selection Controls Grid (कस्टम बीच में खुलने वाले सेलेक्टर्स) -->
         <div class="test-selection-grid">
           
           <!-- 1. Locked Class Indicator -->
@@ -339,7 +339,7 @@
             </div>
           </div>
 
-          <!-- 2. Subject Select Trigger (बीच में खुलेगा) -->
+          <!-- 2. Subject Select Trigger -->
           <div class="select-field-box">
             <label>2. विषय चुनें (Subject):</label>
             <div class="custom-select-trigger" id="subjectTriggerBtn" onclick="openCenterModal('subject')">
@@ -348,20 +348,20 @@
             </div>
           </div>
 
-          <!-- 3. Chapter Filter Trigger (बीच में खुलेगा) -->
+          <!-- 3. Chapter Filter Trigger -->
           <div class="select-field-box">
             <label>3. अध्याय चुनें (Chapter):</label>
             <div class="custom-select-trigger" id="chapterTriggerBtn" onclick="openCenterModal('chapter')">
-              <span id="chapterTriggerText">संपूर्ण विषय (फुल सिलेबस टेस्ट)</span>
+              <span id="chapterTriggerText">अध्याय 1: वास्तविक संख्याएं</span>
               <span class="trigger-arrow">▼</span>
             </div>
           </div>
 
-          <!-- 4. Exam Pattern Trigger (बीच में खुलेगा) -->
+          <!-- 4. Exam Pattern Trigger (15 मिनट/20 प्रश्न VS 1 घंटा/50 प्रश्न) -->
           <div class="select-field-box">
             <label>4. परीक्षा का समय व प्रकार:</label>
             <div class="custom-select-trigger" id="patternTriggerBtn" onclick="openCenterModal('pattern')">
-              <span id="patternTriggerText">क्विक स्पीड टेस्ट (15 मिनट / 15 प्रश्न)</span>
+              <span id="patternTriggerText">चैप्टर-वाइज टेस्ट (15 मिनट / 20 प्रश्न)</span>
               <span class="trigger-arrow">▼</span>
             </div>
           </div>
@@ -372,10 +372,11 @@
         <div class="instructions-box">
           <h3>📌 परीक्षा के सामान्य नियम:</h3>
           <ul>
+            <li><strong>चैप्टर-वाइज टेस्ट:</strong> 15 मिनट का समय और 20 वस्तुनिष्ठ प्रश्न।</li>
+            <li><strong>फुल सिलेबस टेस्ट:</strong> 1 घंटा (60 मिनट) का समय और 50 बोर्ड-स्तरीय प्रश्न।</li>
             <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
-            <li>नेगेटिव मार्किंग: अभ्यास को मजबूत बनाने के लिए प्रत्येक गलत उत्तर पर <strong>-1 अंक</strong> कटेगा।</li>
-            <li>टाइमर पूरा होते ही आपका टेस्ट स्वतः सबमिट हो जाएगा।</li>
-            <li>टेस्ट समाप्त होते ही आपका स्कोरकार्ड, सटीकता और प्रत्येक प्रश्न का सही हल प्रदर्शित होगा।</li>
+            <li>नेगेटिव मार्किंग: गलत उत्तर देने पर <strong>-1 अंक</strong> कटेगा।</li>
+            <li>टाइमर समाप्त होते ही टेस्ट स्वतः सबमिट हो जाएगा और पूरा स्कोरकार्ड व व्याख्या दिखेगी।</li>
           </ul>
         </div>
 
@@ -390,7 +391,7 @@
       <div class="exam-status-bar">
         <div class="exam-active-subject">
           <span class="subject-badge" id="liveExamBadge">10th Matric</span>
-          <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 30</span>
+          <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 20</span>
         </div>
 
         <div class="exam-timer-box" id="examTimerBox">
@@ -447,7 +448,7 @@
         <div class="result-tiles-grid">
           <div class="res-tile score-tile">
             <span class="tile-label">कुल प्राप्तांक</span>
-            <span class="tile-val" id="resTotalMarks">0 / 120</span>
+            <span class="tile-val" id="resTotalMarks">0 / 80</span>
           </div>
           <div class="res-tile accuracy-tile">
             <span class="tile-label">सटीकता (Accuracy)</span>
@@ -521,6 +522,7 @@
   <!-- 4. FOOTER -->
   <footer class="app-footer">
     <div class="footer-container">
+      
       <div class="brand-col">
         <div class="footer-brand">
           <div class="brand-badge-icon sm">N</div>
@@ -542,6 +544,7 @@
           <li><a href="pyq.html">➔ क्वेश्चन बैंक (PYQ)</a></li>
         </ul>
       </div>
+
     </div>
 
     <div class="footer-bottom-bar">
@@ -558,7 +561,7 @@
   <script src="quiz-engine.js"></script>
   <script src="main.js"></script>
 
-  <!-- 🌟 कस्टम सेंटर-मोडल सेलेक्टर जावास्क्रिप्ट कंट्रोलर -->
+  <!-- 🌟 कस्टम सेंटर-मोडल और 15m / 1h टाइमर लॉजिक -->
   <script>
     const class10Subjects = [
       { id: "math", syllabusId: "10-math", name: "📐 गणित (Mathematics)" },
@@ -574,16 +577,16 @@
     ];
 
     const examPatterns = [
-      { id: "speed", name: "क्विक स्पीड टेस्ट (15 मिनट / 15 प्रश्न)" },
-      { id: "board", name: "बोर्ड फुल टेस्ट (30 मिनट / 30 प्रश्न)" }
+      { id: "chapter", name: "चैप्टर-वाइज टेस्ट (15 मिनट / 20 प्रश्न)", timeMinutes: 15, questionCount: 20 },
+      { id: "full", name: "फुल सिलेबस टेस्ट (1 घंटा / 50 प्रश्न)", timeMinutes: 60, questionCount: 50 }
     ];
 
-    // चयनित स्थिति (Selected States)
+    // चयनित स्थिति
     let selectedSubject = class10Subjects[0];
-    let selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+    let selectedChapter = { id: "ch1", name: "अध्याय 1: वास्तविक संख्याएं" };
     let selectedPattern = examPatterns[0];
 
-    // बैकग्राउंड में छिपे इनपुट्स (quiz-engine.js के साथ अनुकूलता के लिए)
+    // quiz-engine.js के लिए हिडन इनपुट्स
     let hiddenSubjectInput = null;
     let hiddenChapterInput = null;
     let hiddenPatternInput = null;
@@ -604,6 +607,12 @@
       hiddenPatternInput.id = "testPatternSelect";
       document.body.appendChild(hiddenPatternInput);
 
+      // डिफ़ॉल्ट रूप से पहले विषय का पहला अध्याय सेट करना
+      const initialChapters = getChaptersForSubject(selectedSubject.syllabusId);
+      if (initialChapters.length > 0) {
+        selectedChapter = initialChapters[0];
+      }
+
       syncHiddenValues();
     }
 
@@ -615,6 +624,31 @@
       document.getElementById("subjectTriggerText").textContent = selectedSubject.name;
       document.getElementById("chapterTriggerText").textContent = selectedChapter.name;
       document.getElementById("patternTriggerText").textContent = selectedPattern.name;
+
+      // इंजन के लिए ग्लोबल टेस्ट कॉन्फ़िगरेशन
+      window.NischayTestConfig = {
+        class: "10",
+        subjectId: selectedSubject.id,
+        syllabusId: selectedSubject.syllabusId,
+        chapterId: selectedChapter.id,
+        durationMinutes: selectedPattern.timeMinutes,
+        totalQuestions: selectedPattern.questionCount
+      };
+
+      const liveCounter = document.getElementById("liveQuestionCounter");
+      if (liveCounter) {
+        liveCounter.textContent = `प्रश्न 1 / ${selectedPattern.questionCount}`;
+      }
+
+      const timerDigits = document.getElementById("timerDigits");
+      if (timerDigits) {
+        timerDigits.textContent = selectedPattern.timeMinutes === 60 ? "60:00" : "15:00";
+      }
+
+      const resTotalMarks = document.getElementById("resTotalMarks");
+      if (resTotalMarks) {
+        resTotalMarks.textContent = `0 / ${selectedPattern.questionCount * 4}`;
+      }
     }
 
     function getChaptersForSubject(sylId) {
@@ -644,7 +678,13 @@
           item.innerHTML = `<span>${sub.name}</span> ${selectedSubject.id === sub.id ? '<span>✓</span>' : ''}`;
           item.onclick = () => {
             selectedSubject = sub;
-            selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+            const chs = getChaptersForSubject(sub.syllabusId);
+            selectedChapter = chs.length > 0 ? chs[0] : { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+            if (selectedChapter.id === "all") {
+              selectedPattern = examPatterns[1]; // 1 घंटा फुल टेस्ट
+            } else {
+              selectedPattern = examPatterns[0]; // 15 मिनट चैप्टर टेस्ट
+            }
             syncHiddenValues();
             closeCenterModal();
           };
@@ -653,17 +693,19 @@
       } else if (type === "chapter") {
         title.textContent = "अध्याय चुनें (Select Chapter)";
         
-        // ऑल चैप्टर विकल्प
+        // 1. फुल सिलेबस विकल्प (1 घंटा / 50 प्रश्न)
         const allItem = document.createElement("div");
         allItem.className = `center-modal-item ${selectedChapter.id === 'all' ? 'selected' : ''}`;
-        allItem.innerHTML = `<span>संपूर्ण विषय (फुल सिलेबस टेस्ट)</span> ${selectedChapter.id === 'all' ? '<span>✓</span>' : ''}`;
+        allItem.innerHTML = `<span>🌟 संपूर्ण विषय (फुल सिलेबस टेस्ट)</span> ${selectedChapter.id === 'all' ? '<span>✓</span>' : ''}`;
         allItem.onclick = () => {
           selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+          selectedPattern = examPatterns[1]; // फुल टेस्ट (60 मिनट)
           syncHiddenValues();
           closeCenterModal();
         };
         list.appendChild(allItem);
 
+        // 2. व्यक्तिगत अध्याय विकल्प (15 मिनट / 20 प्रश्न)
         const chs = getChaptersForSubject(selectedSubject.syllabusId);
         chs.forEach(ch => {
           const item = document.createElement("div");
@@ -671,6 +713,7 @@
           item.innerHTML = `<span>${ch.name}</span> ${selectedChapter.id === ch.id ? '<span>✓</span>' : ''}`;
           item.onclick = () => {
             selectedChapter = ch;
+            selectedPattern = examPatterns[0]; // चैप्टर टेस्ट (15 मिनट)
             syncHiddenValues();
             closeCenterModal();
           };
