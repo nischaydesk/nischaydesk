@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>12th फाउंडेशन ब्रिज कोर्स | NischayDesk</title>
 
-  <!-- Typography -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -176,12 +176,12 @@
     .formula-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       margin-top: 8px;
     }
     .formula-table th, .formula-table td {
       border: 1px solid var(--card-border);
-      padding: 8px 10px;
+      padding: 9px 12px;
       text-align: left;
     }
     .formula-table th {
@@ -189,18 +189,27 @@
       font-weight: 800;
     }
     .formula-code {
-      font-family: monospace;
-      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
       color: #e11d48;
     }
     html[data-theme="dark"] .formula-code { color: #fb7185; }
+
     .key-points-list {
       margin-top: 8px;
       padding-left: 20px;
-      font-size: 0.83rem;
-      color: var(--text-muted);
+      font-size: 0.86rem;
+      color: var(--text-main);
     }
-    .key-points-list li { margin-bottom: 5px; }
+    .key-points-list li { margin-bottom: 8px; line-height: 1.6; }
+    .math-highlight {
+      display: inline-block;
+      background: rgba(2, 132, 199, 0.1);
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-weight: 800;
+      color: var(--primary);
+    }
 
     /* Bottom Dock */
     .bottom-dock {
@@ -261,17 +270,19 @@
           <h3>1. बेसिक अवकलन सूत्र (Calculus Foundation)</h3>
           <span class="badge-why">12th में 44 मार्क्स का कैलकुलस</span>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">12वीं के 'सांतत्य तथा अवकलनीयता' और 'समाकलन' के लिए ये फॉर्मूले रटे होने चाहिए:</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">12वीं के 'सांतत्य तथा अवकलनीयता' और 'समाकलन' के लिए ये सूत्र सीधे याद होने चाहिए:</p>
         <table class="formula-table">
-          <tr><th>फलन $f(x)$</th><th>अवकलज $f'(x) = \frac{d}{dx}$</th></tr>
-          <tr><td>$x^n$</td><td class="formula-code">$n x^{n-1}$</td></tr>
-          <tr><td>$\sin x$</td><td class="formula-code">$\cos x$</td></tr>
-          <tr><td>$\cos x$</td><td class="formula-code">$-\sin x$</td></tr>
-          <tr><td>$\tan x$</td><td class="formula-code">$\sec^2 x$</td></tr>
-          <tr><td>$e^x$</td><td class="formula-code">$e^x$</td></tr>
-          <tr><td>$\log_e x$</td><td class="formula-code">$1 / x$</td></tr>
-          <tr><td>गुणन नियम $(uv)'$</td><td class="formula-code">$u v' + v u'$</td></tr>
-          <tr><td>भागफल नियम $(u/v)'$</td><td class="formula-code">$(v u' - u v') / v^2$</td></tr>
+          <tr><th>फलन f(x)</th><th>अवकलज d/dx</th></tr>
+          <tr><td>xⁿ</td><td class="formula-code">n · xⁿ⁻¹</td></tr>
+          <tr><td>sin x</td><td class="formula-code">cos x</td></tr>
+          <tr><td>cos x</td><td class="formula-code">-sin x</td></tr>
+          <tr><td>tan x</td><td class="formula-code">sec² x</td></tr>
+          <tr><td>cot x</td><td class="formula-code">-cosec² x</td></tr>
+          <tr><td>sec x</td><td class="formula-code">sec x · tan x</td></tr>
+          <tr><td>eˣ</td><td class="formula-code">eˣ</td></tr>
+          <tr><td>logₑ x</td><td class="formula-code">1 / x</td></tr>
+          <tr><td>गुणन नियम (u · v)'</td><td class="formula-code">u · v' + v · u'</td></tr>
+          <tr><td>भागफल नियम (u / v)'</td><td class="formula-code">(v · u' - u · v') / v²</td></tr>
         </table>
       </div>
 
@@ -281,10 +292,32 @@
           <span class="badge-why">प्रतिलोम त्रिकोणमिति (ITF) का आधार</span>
         </div>
         <ul class="key-points-list">
-          <li><strong>$2\theta$ फॉर्मूले:</strong> $\sin 2\theta = 2\sin\theta\cos\theta = \frac{2\tan\theta}{1+\tan^2\theta}$</li>
-          <li><strong>$\cos 2\theta$:</strong> $\cos^2\theta - \sin^2\theta = 2\cos^2\theta - 1 = 1 - 2\sin^2\theta$</li>
-          <li><strong>$1 \pm \cos 2\theta$:</strong> $1 - \cos 2\theta = 2\sin^2\theta$ तथा $1 + \cos 2\theta = 2\cos^2\theta$ (कैलकुलस का ब्रह्मास्त्र)</li>
-          <li><strong>$\tan 2\theta$:</strong> $\frac{2\tan\theta}{1-\tan^2\theta}$</li>
+          <li><strong>2θ वाले प्रमुख सूत्र:</strong><br>
+            • sin 2θ = <span class="math-highlight">2 sin θ cos θ = (2 tan θ) / (1 + tan² θ)</span><br>
+            • cos 2θ = <span class="math-highlight">cos² θ - sin² θ = 2 cos² θ - 1 = 1 - 2 sin² θ</span><br>
+            • tan 2θ = <span class="math-highlight">(2 tan θ) / (1 - tan² θ)</span>
+          </li>
+          <li><strong>कैलकुलस के लिए 1 ± cos 2θ के जादुई सूत्र:</strong><br>
+            • 1 - cos 2θ = <span class="math-highlight">2 sin² θ</span><br>
+            • 1 + cos 2θ = <span class="math-highlight">2 cos² θ</span>
+          </li>
+          <li><strong>3θ वाले सूत्र:</strong><br>
+            • sin 3θ = <span class="math-highlight">3 sin θ - 4 sin³ θ</span><br>
+            • cos 3θ = <span class="math-highlight">4 cos³ θ - 3 cos θ</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-head">
+          <h3>3. संबंध एवं फलन (Relations & Functions)</h3>
+          <span class="badge-why">12th Chapter 1</span>
+        </div>
+        <ul class="key-points-list">
+          <li><strong>स्वतुल्य (Reflexive):</strong> प्रत्येक a ∈ A के लिए (a, a) ∈ R हो।</li>
+          <li><strong>सममित (Symmetric):</strong> यदि (a, b) ∈ R तो (b, a) ∈ R होना चाहिए।</li>
+          <li><strong>संक्रामक (Transitive):</strong> यदि (a, b) ∈ R तथा (b, c) ∈ R तो (a, c) ∈ R हो।</li>
+          <li><strong>तुल्यता संबंध (Equivalence Relation):</strong> जो संबंध एक साथ स्वतुल्य, सममित और संक्रामक तीनों हो।</li>
         </ul>
       </div>
     </div>
@@ -296,23 +329,27 @@
           <h3>1. सदिश बीजगणित (Vectors)</h3>
           <span class="badge-why">12th Electrostatics & Magnetism</span>
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">कूलाम का नियम, विद्युत क्षेत्र और चुंबकीय बल पूरी तरह सदिशों पर आधारित हैं:</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">कूलाम का नियम, विद्युत क्षेत्र और चुंबकीय बल में दिशा निकालने हेतु अनिवार्य:</p>
         <ul class="key-points-list">
-          <li><strong>परिणामी सदिश (R):</strong> $R = \sqrt{A^2 + B^2 + 2AB\cos\theta}$</li>
-          <li><strong>अदिश गुणन (Dot Product):</strong> $\vec{A} \cdot \vec{B} = AB\cos\theta$ (यदि $\vec{A} \perp \vec{B}$ तो $\vec{A} \cdot \vec{B} = 0$)</li>
-          <li><strong>सदिश गुणन (Cross Product):</strong> $\vec{A} \times \vec{B} = AB\sin\theta\,\hat{n}$</li>
-          <li><strong>घटक वियोजन:</strong> क्षैतिज घटक $= A\cos\theta$, ऊर्ध्वाधर घटक $= A\sin\theta$</li>
+          <li><strong>परिणामी सदिश (R):</strong> R = √(A² + B² + 2AB cos θ)</li>
+          <li><strong>अदिश गुणनफल (Dot Product):</strong> A · B = AB cos θ (यदि A ⊥ B तो A · B = 0)</li>
+          <li><strong>सदिश गुणनफल (Cross Product):</strong> A × B = AB sin θ n̂ (यदि A || B तो A × B = 0)</li>
+          <li><strong>घटक वियोजन (Resolving Components):</strong><br>
+            • क्षैतिज घटक (Horizontal) = A cos θ<br>
+            • ऊर्ध्वाधर घटक (Vertical) = A sin θ
+          </li>
         </ul>
       </div>
 
       <div class="topic-card">
         <div class="topic-head">
-          <h3>2. कार्य, ऊर्जा तथा विभव (Work-Energy)</h3>
+          <h3>2. कार्य, ऊर्जा तथा विभव संबंध</h3>
           <span class="badge-why">विद्युत विभव और धारिता</span>
         </div>
         <ul class="key-points-list">
-          <li><strong>कार्य:</strong> $W = \vec{F} \cdot \vec{s} = F s \cos\theta$</li>
-          <li><strong>स्थितिज ऊर्जा और बल में संबंध:</strong> $F = -\frac{dU}{dr}$ (12वीं में $E = -\frac{dV}{dr}$ बनता है)</li>
+          <li><strong>कार्य (Work):</strong> W = F · s = F s cos θ</li>
+          <li><strong>बल तथा स्थितिज ऊर्जा में संबंध:</strong> F = -dU/dr (यही 12वीं में विद्युत क्षेत्र E = -dV/dr बनता है)</li>
+          <li><strong>ऊर्जा संरक्षण:</strong> कुल यांत्रिक ऊर्जा E = K + U सदैव संरक्षित रहती है।</li>
         </ul>
       </div>
     </div>
@@ -325,22 +362,29 @@
           <span class="badge-why">12th Chapter: Solutions (विलयन)</span>
         </div>
         <ul class="key-points-list">
-          <li><strong>मोल ($n$):</strong> $\text{मोल} = \frac{\text{भार (g)}}{\text{अणुभार}} = \frac{\text{कणों की संख्या}}{6.022 \times 10^{23}}$</li>
-          <li><strong>मोलरता (M):</strong> $\frac{\text{विलेय के मोल}}{\text{विलयन का आयतन (L में)}}$ (ताप पर निर्भर करती है)</li>
-          <li><strong>मोललता ($m$):</strong> $\frac{\text{विलेय के मोल}}{\text{विलायक का भार (kg में)}}$ (ताप से स्वतंत्र)</li>
-          <li><strong>मोल प्रभाज ($X_A$):</strong> $X_A = \frac{n_A}{n_A + n_B}$, सदैव $X_A + X_B = 1$</li>
+          <li><strong>मोल (n):</strong> भार (ग्राम में) / मोलर द्रव्यमान = कणों की संख्या / 6.022 × 10²³</li>
+          <li><strong>मोलरता (M):</strong> (विलेय के मोल) / (विलयन का आयतन लीटर में) [ताप पर निर्भर]</li>
+          <li><strong>मोललता (m):</strong> (विलेय के मोल) / (विलायक का भार किग्रा में) [ताप से स्वतंत्र]</li>
+          <li><strong>मोल अंश / प्रभाज (Xₐ):</strong> Xₐ = nₐ / (nₐ + nᵦ), सदैव Xₐ + Xᵦ = 1</li>
         </ul>
       </div>
 
       <div class="topic-card">
         <div class="topic-head">
           <h3>2. कार्बनिक रसायन बेसिक्स (GOC Foundation)</h3>
-          <span class="badge-why">12th Organic (35 Marks)</span>
+          <span class="badge-why">12th Organic Chemistry (35 अंक)</span>
         </div>
         <ul class="key-points-list">
-          <li><strong>प्रेरणिक प्रभाव (Inductive Effect):</strong> $+I$ (इलेक्ट्रॉन दाता, जैसे $-\text{CH}_3$), $-I$ (इलेक्ट्रॉन खींचने वाले, जैसे $-\text{NO}_2, -\text{Cl}$)</li>
-          <li><strong>कार्बोकैटायन स्थायित्व:</strong> $3^\circ > 2^\circ > 1^\circ > \text{CH}_3^+$</li>
-          <li><strong>संकरण (Hybridization):</strong> एकल बंध $\rightarrow sp^3$, द्विबंध $\rightarrow sp^2$, त्रिबंध $\rightarrow sp$</li>
+          <li><strong>प्रेरणिक प्रभाव (Inductive Effect):</strong><br>
+            • +I (इलेक्ट्रॉन दाता): -CH₃, -C₂H₅ (कार्बोकैटायन को स्थिर करते हैं)<br>
+            • -I (इलेक्ट्रॉन खींचने वाले): -NO₂, -CN, -COOH, -Cl
+          </li>
+          <li><strong>कार्बोकैटायन स्थायित्व का क्रम:</strong> 3° > 2° > 1° > CH₃⁺</li>
+          <li><strong>संकरण और आबंध:</strong><br>
+            • एकल आबंध: sp³ (109.5°)<br>
+            • द्वि-आबंध (C=C): sp² (120°)<br>
+            • त्रि-आबंध (C≡C): sp (180°)
+          </li>
         </ul>
       </div>
     </div>
@@ -353,9 +397,9 @@
           <span class="badge-why">12th Genetics & Reproduction</span>
         </div>
         <ul class="key-points-list">
-          <li><strong>समसूत्री विभाजन (Mitosis):</strong> कायिक कोशिकाओं में वृद्धि व मरम्मत हेतु (गुणसूत्र संख्या $2n \rightarrow 2n$ समान रहती है)।</li>
-          <li><strong>अर्धसूत्री विभाजन (Meiosis):</strong> युग्मक निर्माण के समय ($2n \rightarrow n$ आधी हो जाती है)।</li>
-          <li><strong>क्रॉसिंग ओवर (Crossing Over):</strong> प्रोफेज-I की पैकैटीन अवस्था में होता है, जिससे आनुवंशिक विविधता आती है।</li>
+          <li><strong>समसूत्री विभाजन (Mitosis):</strong> कायिक कोशिकाओं में वृद्धि हेतु होता है (गुणसूत्र संख्या 2n → 2n समान रहती है)।</li>
+          <li><strong>अर्धसूत्री विभाजन (Meiosis):</strong> युग्मक (शुक्राणु व अंडाणु) निर्माण के समय होता है (गुणसूत्र 2n → n आधे हो जाते हैं)।</li>
+          <li><strong>जीन विनिमय (Crossing Over):</strong> प्रोफेज-I की पैकैटीन उप-अवस्था में होता है, जो संतानों में नई विभिन्नताएं लाता है।</li>
         </ul>
       </div>
 
@@ -365,8 +409,9 @@
           <span class="badge-why">12th वंशागति का आण्विक आधार</span>
         </div>
         <ul class="key-points-list">
-          <li><strong>न्यूक्लियोटाइड:</strong> नाइट्रोजनी क्षार + पेंटोज शर्करा + फॉस्फेट ग्रुप</li>
-          <li><strong>क्षारक युग्मन (Chargaff Rule):</strong> Adenine (A) = Thymine (T) [2 हाइड्रोजन बंध], Guanine (G) $\equiv$ Cytosine (C) [3 हाइड्रोजन बंध]।</li>
+          <li><strong>न्यूक्लियोटाइड संरचना:</strong> नाइट्रोजनी क्षार + डीऑक्सीराइबोज शर्करा + फॉस्फेट समूह।</li>
+          <li><strong>चारगाफ नियम (Chargaff's Rule):</strong> A = T (2 हाइड्रोजन बंध) तथा G ≡ C (3 हाइड्रोजन बंध)।</li>
+          <li><strong>सेंट्रल डोग्मा:</strong> DNA → (अनुलेखन) → mRNA → (अनुवादन) → प्रोटीन।</li>
         </ul>
       </div>
     </div>
@@ -399,7 +444,8 @@
       document.querySelectorAll('.bridge-sec').forEach(sec => sec.classList.remove('active'));
 
       event.target.classList.add('active');
-      document.getElementById('sec-' + sub).classList.add('active');
+      const activeSec = document.getElementById('sec-' + sub);
+      if (activeSec) activeSec.classList.add('active');
     }
   </script>
 </body>
