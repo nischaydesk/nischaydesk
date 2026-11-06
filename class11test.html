@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>कक्षा 11वीं साइंस टेस्ट पोर्टल | NischayDesk - Smart Exam Engine</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Test Engine Stylesheets -->
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="navbar.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="test-engine.css" />
+
+  <!-- Firebase Modular Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WXM8RJ080H');
+  </script>
+
+  <script src="config.js"></script>
+  <script src="syllabus-data-11.js"></script>
+
+  <script>
+    localStorage.setItem("nd_selected_class", "11th");
+    localStorage.setItem("nischay_user_class", "11th");
+    localStorage.setItem("nischay_student_class", "11");
+    localStorage.setItem("user_class", "11th");
+    sessionStorage.setItem("nd_last_portal", "class11.html");
+
+    const savedTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+  </script>
+
+  <style>
+    /* 🌟 कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर */
+    .custom-select-trigger {
+      width: 100% !important;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1.8px solid var(--card-border, #cbd5e1);
+      font-size: 0.95rem;
+      font-weight: 700;
+      background: var(--card-bg, #ffffff);
+      color: var(--text-main, #0f172a);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .custom-select-trigger:active {
+      transform: scale(0.98);
+      border-color: #0284c7;
+    }
+    .custom-select-trigger .trigger-arrow {
+      font-size: 0.8rem;
+      color: #0284c7;
+      transition: transform 0.2s;
+    }
+
+    .class-locked-pill {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(2, 132, 199, 0.35);
+      background: rgba(2, 132, 199, 0.08);
+      color: #0284c7;
+      font-weight: 800;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 📱 स्क्रीन के बीच में खुलने वाला सेंटर-मोडल */
+    .center-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 99999999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .center-modal-backdrop.active {
+      display: flex !important;
+    }
+    .center-modal-box {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg, #ffffff);
+      border: 1.5px solid var(--card-border, #cbd5e1);
+      border-radius: 20px;
+      padding: 20px 18px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html[data-theme="dark"] .center-modal-box {
+      background: #0b1329 !important;
+      border-color: #1e3a8a !important;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .center-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border, #e2e8f0);
+      margin-bottom: 12px;
+    }
+    html[data-theme="dark"] .center-modal-header {
+      border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .center-modal-header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main, #0f172a);
+    }
+    html[data-theme="dark"] .center-modal-header h3 {
+      color: #ffffff !important;
+    }
+    .center-modal-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .center-modal-list {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 4px;
+    }
+    .center-modal-item {
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: rgba(128, 128, 128, 0.05);
+      border: 1.5px solid var(--card-border, #e2e8f0);
+      color: var(--text-main, #0f172a);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html[data-theme="dark"] .center-modal-item {
+      background: #13224a !important;
+      border-color: #1e3a8a !important;
+      color: #ffffff !important;
+    }
+    .center-modal-item:hover, .center-modal-item:active {
+      border-color: #0284c7;
+      background: rgba(2, 132, 199, 0.1);
+    }
+    .center-modal-item.selected {
+      background: rgba(2, 132, 199, 0.18) !important;
+      border-color: #0284c7 !important;
+      color: #0284c7 !important;
+      font-weight: 800;
+    }
+    html[data-theme="dark"] .center-modal-item.selected {
+      color: #38bdf8 !important;
+    }
+
+    /* 📱 बॉटम ऐप डॉक स्टाइल */
+    .mobile-bottom-dock {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 60px !important;
+      background: var(--card-bg, #ffffff) !important;
+      border-top: 1.5px solid var(--card-border, #cbd5e1) !important;
+      display: flex !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      z-index: 999999 !important;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    html[data-theme="dark"] .mobile-bottom-dock {
+      background: #071120 !important;
+      border-top-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .dock-link-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-decoration: none !important;
+      color: var(--text-muted, #64748b) !important;
+      flex: 1 !important;
+      height: 100% !important;
+      gap: 3px !important;
+    }
+    .dock-link-item.active { color: #0284c7 !important; }
+    .dock-icon-svg { font-size: 1.35rem !important; line-height: 1 !important; }
+    .dock-label-text { font-size: 0.72rem !important; font-weight: 700 !important; }
+  </style>
+</head>
+<body class="app-body">
+
+  <!-- 1. TOP NAVBAR -->
+  <header class="app-header">
+    <nav class="nav-container">
+      <div class="nav-brand-group">
+        <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <a href="class11.html" class="brand-entity">
+          <div class="brand-badge-icon">N</div>
+          <div class="brand-typography">
+            <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
+            <span class="brand-tagline">11th Science Hub</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-links-desktop">
+        <a href="class11.html" class="nav-item">11th डैशबोर्ड</a>
+        <a href="class11notes.html" class="nav-item">📚 11th नोट्स</a>
+        <a href="class11syllabus.html" class="nav-item">📋 11th सिलेबस</a>
+        <a href="class11pyq.html" class="nav-item">📄 एनुअल पेपर्स</a>
+        <a href="class11test.html" class="nav-item active">📝 ऑनलाइन टेस्ट</a>
+        <a href="todo.html?class=11th" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू लिस्ट</a>
+        <a href="pdf.html?class=11th" target="_blank" class="nav-item" style="color: #a855f7; font-weight: 800;">🖼️ इमेज To PDF</a>
+        <a href="ai-desk.html?class=11th" class="nav-item">🤖 AI स्टूडियो</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-auth-primary" id="headerAuthBtn">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Google लॉगिन</span>
+        </button>
+
+        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
+          <div class="user-info-text">
+            <span class="user-display-name" id="userDisplayName">छात्र</span>
+            <span class="user-session-badge" id="userSessionBadge">Class 11th</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 2. MOBILE DRAWER -->
+  <div class="drawer-scrim" id="drawerScrim"></div>
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <div class="brand-badge-icon sm">N</div>
+        <span>11th Science Hub</span>
+      </div>
+      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+    </div>
+
+    <div class="drawer-user-card" id="drawerUserCard" onclick="openProfileModal()">
+      <p class="drawer-user-prompt">⚡ छात्र प्रोफ़ाइल विवरण ▾</p>
+    </div>
+
+    <nav class="drawer-nav-list">
+      <a href="class11.html" class="drawer-nav-item">
+        <span class="icon">🧪</span> 11th मुख्य डैशबोर्ड
+      </a>
+      <a href="class11notes.html" class="drawer-nav-item">
+        <span class="icon">📚</span> 11th सम्पूर्ण नोट्स
+      </a>
+      <a href="class11syllabus.html" class="drawer-nav-item">
+        <span class="icon">📋</span> 11th बोर्ड सिलेबस
+      </a>
+      <a href="class11pyq.html" class="drawer-nav-item">
+        <span class="icon">📄</span> एनुअल & मासिक पेपर्स
+      </a>
+      <a href="class11test.html" class="drawer-nav-item active">
+        <span class="icon">📝</span> 11th ऑनलाइन टेस्ट पोर्टल
+      </a>
+      <a href="todo.html?class=11th" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800;">
+        <span class="icon">✅</span> माय टू-डू लिस्ट
+      </a>
+      <a href="pdf.html?class=11th" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800;">
+        <span class="icon">🖼️</span> इमेज To PDF मेकर
+      </a>
+      <a href="ai-desk.html?class=11th" class="drawer-nav-item">
+        <span class="icon">🤖</span> AI डाउट स्टूडियो
+      </a>
+      <a href="index.html" class="drawer-nav-item" style="color: #38bdf8;">
+        <span class="icon">🔄</span> कक्षा 10वीं पोर्टल पर जाएँ
+      </a>
+      <div class="drawer-theme-row">
+        <span class="theme-label">🌙 डार्क / लाइट मोड</span>
+        <label class="switch">
+          <input type="checkbox" id="themeSwitch">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </nav>
+
+    <div class="drawer-footer">
+      <span class="platform-meta">NischayDesk Class 11th Edition</span>
+    </div>
+  </aside>
+
+  <!-- 3. MAIN EXAM VIEWPORT -->
+  <main class="test-portal-container">
+
+    <!-- BREADCRUMB BAR -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
+      <a href="class11.html" style="display: inline-flex; align-items: center; gap: 6px; color: var(--brand-accent, #0284c7); text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); padding: 5px 12px; border-radius: var(--radius-pill, 20px);">
+        <span>🏠</span> 11th मुख्य डैशबोर्ड
+      </a>
+      <span style="font-size: 0.78rem; color: var(--text-muted, #64748b); font-weight: 600;">NischayDesk 11th Test Engine</span>
+    </div>
+
+    <!-- SCREEN 1: LOBBY & CUSTOM CENTER SELECTOR -->
+    <section class="test-view-panel active" id="testLobbyScreen">
+      <div class="lobby-card">
+        <div class="status-pill">
+          <span class="pulsing-dot"></span> BSEB 11वीं साइंस टेस्ट सीरीज
+        </div>
+        <h1 class="lobby-title">कक्षा 11वीं <span class="gradient-text">ऑनलाइन चैप्टर टेस्ट</span></h1>
+        <p class="lobby-subtitle">
+          भौतिकी, रसायन, गणित व जीव विज्ञान के अध्याय चुनें। बोर्ड परीक्षा टाइमर, वस्तुनिष्ठ प्रश्न और तुरंत विस्तृत व्याख्या के साथ अभ्यास करें।
+        </p>
+
+        <!-- Selection Controls Grid -->
+        <div class="test-selection-grid">
+          
+          <!-- 1. Locked Class Indicator -->
+          <div class="select-field-box">
+            <label>1. कक्षा (Class):</label>
+            <div class="class-locked-pill">
+              <span>🧪 कक्षा 11वीं (Science Stream)</span>
+            </div>
+          </div>
+
+          <!-- 2. Subject Select Trigger -->
+          <div class="select-field-box">
+            <label>2. विषय चुनें (Subject):</label>
+            <div class="custom-select-trigger" id="subjectTriggerBtn" onclick="openCenterModal('subject')">
+              <span id="subjectTriggerText">⚡ भौतिक विज्ञान (Physics)</span>
+              <span class="trigger-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- 3. Chapter Filter Trigger -->
+          <div class="select-field-box">
+            <label>3. अध्याय चुनें (Chapter):</label>
+            <div class="custom-select-trigger" id="chapterTriggerBtn" onclick="openCenterModal('chapter')">
+              <span id="chapterTriggerText">अध्याय 1: मात्रक एवं मापन</span>
+              <span class="trigger-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- 4. Exam Pattern Trigger -->
+          <div class="select-field-box">
+            <label>4. परीक्षा का समय व प्रकार:</label>
+            <div class="custom-select-trigger" id="patternTriggerBtn" onclick="openCenterModal('pattern')">
+              <span id="patternTriggerText">चैप्टर-वाइज टेस्ट (15 मिनट / 20 प्रश्न)</span>
+              <span class="trigger-arrow">▼</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Instructions Box -->
+        <div class="instructions-box">
+          <h3>📌 परीक्षा के सामान्य नियम:</h3>
+          <ul>
+            <li><strong>चैप्टर-वाइज टेस्ट:</strong> 15 मिनट का समय और 20 वस्तुनिष्ठ प्रश्न।</li>
+            <li><strong>फुल सिलेबस टेस्ट:</strong> 1 घंटा (60 मिनट) का समय और 50 बोर्ड-स्तरीय प्रश्न।</li>
+            <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
+            <li>नेगेटिव मार्किंग: गलत उत्तर देने पर <strong>-1 अंक</strong> काटा जाएगा।</li>
+            <li>सबमिट होते ही तुरंत स्कोरकार्ड और हर प्रश्न का सही हल (Answer Key) दिखेगा।</li>
+          </ul>
+        </div>
+
+        <button class="btn-start-exam" id="startExamBtn" style="margin: 0 auto; display: block;">
+          ⚡ टेस्ट शुरू करें (Start 11th Test)
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: RUNNING TEST SCREEN -->
+    <section class="test-view-panel" id="testRunningScreen">
+      <div class="exam-status-bar">
+        <div class="exam-active-subject">
+          <span class="subject-badge" id="liveExamBadge">11th Science</span>
+          <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 20</span>
+        </div>
+
+        <div class="exam-timer-box" id="examTimerBox">
+          <span class="timer-icon">⏳</span>
+          <span class="timer-digits" id="timerDigits">15:00</span>
+        </div>
+
+        <button class="btn-submit-exam-early" id="submitExamEarlyBtn">
+          सबमिट करें ✓
+        </button>
+      </div>
+
+      <div class="exam-workspace-grid">
+        <div class="question-stage-box">
+          <div class="question-header">
+            <span class="q-number-pill" id="displayQNumber">Q.1</span>
+            <span class="q-marks-tag">+4.0, -1.0</span>
+          </div>
+
+          <div class="question-text" id="displayQText">
+            प्रश्न लोड हो रहा है...
+          </div>
+
+          <div class="options-group" id="displayOptionsGroup"></div>
+
+          <div class="stage-nav-bar">
+            <button class="btn-stage-secondary" id="prevQBtn" disabled>&larr; पिछला</button>
+            <button class="btn-stage-ghost" id="clearSelectionBtn">विकल्प हटाएं</button>
+            <button class="btn-stage-primary" id="nextQBtn">अगला प्रश्न &rarr;</button>
+          </div>
+        </div>
+
+        <aside class="question-palette-box">
+          <h4 class="palette-title">प्रश्न पैलेट (OMR Status)</h4>
+          <div class="palette-legend">
+            <span><span class="dot-legend answered"></span> हल किया</span>
+            <span><span class="dot-legend unanswered"></span> शेष</span>
+          </div>
+          <div class="palette-buttons-grid" id="paletteButtonsGrid"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: RESULT & SCORECARD -->
+    <section class="test-view-panel" id="testResultScreen">
+      <div class="result-card-container">
+        
+        <div class="result-header-badge">
+          <span class="trophy-icon">🏆</span>
+          <h2>11वीं साइंस टेस्ट परिणाम</h2>
+          <p id="resultSubMeta">स्कोरकार्ड रिपोर्ट</p>
+        </div>
+
+        <div class="result-tiles-grid">
+          <div class="res-tile score-tile">
+            <span class="tile-label">कुल प्राप्तांक</span>
+            <span class="tile-val" id="resTotalMarks">0 / 80</span>
+          </div>
+          <div class="res-tile accuracy-tile">
+            <span class="tile-label">सटीकता (Accuracy)</span>
+            <span class="tile-val" id="resAccuracy">0%</span>
+          </div>
+          <div class="res-tile correct-tile">
+            <span class="tile-label">सही उत्तर</span>
+            <span class="tile-val" id="resCorrectCount">0</span>
+          </div>
+          <div class="res-tile wrong-tile">
+            <span class="tile-label">गलत उत्तर</span>
+            <span class="tile-val" id="resWrongCount">0</span>
+          </div>
+        </div>
+
+        <div class="solutions-review-section">
+          <h3 class="solutions-heading">📖 विस्तृत उत्तर एवं हल (Answer Key):</h3>
+          <div class="solutions-accordion-list" id="solutionsAccordionList"></div>
+        </div>
+
+        <div class="result-actions-footer">
+          <button class="btn-start-exam" id="restartTestBtn">🔄 दूसरा टेस्ट दें</button>
+          <a href="class11.html" class="btn-stage-primary" style="text-decoration:none; display:inline-flex; align-items:center;">📊 11th डैशबोर्ड पर जाएं</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 🌟 बीच में खुलने वाला सेंटर-मोडल (Center Modal Selector) -->
+  <div class="center-modal-backdrop" id="centerSelectorModal" onclick="handleCenterModalBackdrop(event)">
+    <div class="center-modal-box">
+      <div class="center-modal-header">
+        <h3 id="centerModalTitle">विकल्प चुनें</h3>
+        <button type="button" class="center-modal-close" onclick="closeCenterModal()">&times;</button>
+      </div>
+      <div class="center-modal-list" id="centerModalList"></div>
+    </div>
+  </div>
+
+  <!-- USER PROFILE MODAL -->
+  <div class="pdf-modal-backdrop" id="customProfileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+    <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 18px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.6); position: relative;">
+      
+      <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      
+      <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
+        <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
+        <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
+      </div>
+
+      <h3 id="modalUserName" style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
+      <p id="modalUserEmail" style="margin: 0 0 18px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
+
+      <div style="background: rgba(2, 132, 199, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 16px;">
+        <span style="font-size: 0.85rem; font-weight: 800; color: #38bdf8;">अध्ययन कक्षा: 11th (साइंस)</span>
+      </div>
+
+      <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+        🚪 लॉगआउट करें (Logout)
+      </button>
+
+      <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
+        ⏳ सुरक्षित लॉगआउट हो रहा है...
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="brand-col">
+        <div class="footer-brand">
+          <div class="brand-badge-icon sm">N</div>
+          <span class="brand-title">Nischay<span style="color: var(--brand-accent, #0284c7);">Desk</span></span>
+        </div>
+        <p class="footer-summary">
+          बिहार बोर्ड कक्षा 11वीं साइंस वार्षिक व प्रतियोगी परीक्षा तैयारी के लिए समर्पित डिजिटल टेस्ट पोर्टल।
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
+        <ul class="footer-nav">
+          <li><a href="class11.html">➔ 11th मुख्य डैशबोर्ड</a></li>
+          <li><a href="class11notes.html">➔ 11th सम्पूर्ण नोट्स</a></li>
+          <li><a href="class11syllabus.html">➔ 11th बोर्ड सिलेबस</a></li>
+          <li><a href="class11pyq.html">➔ एनुअल व मासिक पेपर्स</a></li>
+          <li><a href="index.html">➔ 10th मैट्रिक पोर्टल</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="server-status-tag">
+        &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● 11th साइंस टेस्ट इंजन सक्रिय है</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 5. MOBILE BOTTOM DOCK -->
+  <nav class="mobile-bottom-dock">
+    <a href="class11.html" class="dock-link-item">
+      <span class="dock-icon-svg">🧪</span>
+      <span class="dock-label-text">11th होम</span>
+    </a>
+    <a href="class11notes.html" class="dock-link-item">
+      <span class="dock-icon-svg">📚</span>
+      <span class="dock-label-text">नोट्स</span>
+    </a>
+    <a href="class11test.html" class="dock-link-item active">
+      <span class="dock-icon-svg">📝</span>
+      <span class="dock-label-text">टेस्ट</span>
+    </a>
+    <a href="class11pyq.html" class="dock-link-item">
+      <span class="dock-icon-svg">📄</span>
+      <span class="dock-label-text">पेपर्स</span>
+    </a>
+  </nav>
+
+  <!-- 6. CLASS 11TH ENGINE SCRIPT (JSON MAPPING & CONTROLLER) -->
+  <script>
+    // 🎯 11वीं साइंस की JSON फ़ाइलों की सटीक मैपिंग
+    const class11Subjects = [
+      { id: "physics", syllabusId: "11-physics", jsonFile: "11-physics.json", name: "⚡ भौतिक विज्ञान (Physics)" },
+      { id: "chemistry", syllabusId: "11-chemistry", jsonFile: "11-chemistry.json", name: "🧪 रसायन विज्ञान (Chemistry)" },
+      { id: "math", syllabusId: "11-math", jsonFile: "11-math.json", name: "📐 गणित (Mathematics)" },
+      { id: "biology", syllabusId: "11-biology", jsonFile: "11-biology.json", name: "🧬 जीव विज्ञान (Biology)" }
+    ];
+
+    const examPatterns = [
+      { id: "chapter", name: "चैप्टर-वाइज टेस्ट (15 मिनट / 20 प्रश्न)", timeMinutes: 15, questionCount: 20 },
+      { id: "full", name: "फुल सिलेबस टेस्ट (1 घंटा / 50 प्रश्न)", timeMinutes: 60, questionCount: 50 }
+    ];
+
+    let selectedSubject = class11Subjects[0];
+    let selectedChapter = { id: "ch1", name: "अध्याय 1: मात्रक एवं मापन" };
+    let selectedPattern = examPatterns[0];
+
+    let currentQuestions = [];
+    let currentQIndex = 0;
+    let userResponses = {};
+    let timerInterval = null;
+    let timeRemaining = 900;
+    let totalTestDuration = 900;
+
+    // syllabus-data-11.js से अध्यायों की लिस्ट लाना
+    function getChaptersForSubject(sylId) {
+      if (!window.NischaySyllabus11 || !window.NischaySyllabus11.subjects) return [];
+      const sub = window.NischaySyllabus11.subjects.find(s => s.id === sylId);
+      if (sub && sub.chapters) {
+        return sub.chapters.map(ch => ({
+          id: `ch${ch.no}`,
+          no: ch.no,
+          name: `अध्याय ${ch.no}: ${ch.name}`
+        }));
+      }
+      return [];
+    }
+
+    function syncUISelection() {
+      document.getElementById("subjectTriggerText").textContent = selectedSubject.name;
+      document.getElementById("chapterTriggerText").textContent = selectedChapter.name;
+      document.getElementById("patternTriggerText").textContent = selectedPattern.name;
+    }
+
+    // सेंटर मॉडल खोलना
+    function openCenterModal(type) {
+      const modal = document.getElementById("centerSelectorModal");
+      const title = document.getElementById("centerModalTitle");
+      const list = document.getElementById("centerModalList");
+
+      list.innerHTML = "";
+
+      if (type === "subject") {
+        title.textContent = "विषय चुनें (Select Subject)";
+        class11Subjects.forEach(sub => {
+          const item = document.createElement("div");
+          item.className = `center-modal-item ${selectedSubject.id === sub.id ? 'selected' : ''}`;
+          item.innerHTML = `<span>${sub.name}</span> ${selectedSubject.id === sub.id ? '<span>✓</span>' : ''}`;
+          item.onclick = () => {
+            selectedSubject = sub;
+            const chs = getChaptersForSubject(sub.syllabusId);
+            selectedChapter = chs.length > 0 ? chs[0] : { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+            selectedPattern = (selectedChapter.id === "all") ? examPatterns[1] : examPatterns[0];
+            syncUISelection();
+            closeCenterModal();
+          };
+          list.appendChild(item);
+        });
+      } else if (type === "chapter") {
+        title.textContent = "अध्याय चुनें (Select Chapter)";
+
+        // फुल सिलेबस विकल्प
+        const allItem = document.createElement("div");
+        allItem.className = `center-modal-item ${selectedChapter.id === 'all' ? 'selected' : ''}`;
+        allItem.innerHTML = `<span>🌟 संपूर्ण विषय (फुल सिलेबस टेस्ट)</span> ${selectedChapter.id === 'all' ? '<span>✓</span>' : ''}`;
+        allItem.onclick = () => {
+          selectedChapter = { id: "all", name: "संपूर्ण विषय (फुल सिलेबस टेस्ट)" };
+          selectedPattern = examPatterns[1];
+          syncUISelection();
+          closeCenterModal();
+        };
+        list.appendChild(allItem);
+
+        // व्यक्तिगत चैप्टर विकल्प
+        const chs = getChaptersForSubject(selectedSubject.syllabusId);
+        chs.forEach(ch => {
+          const item = document.createElement("div");
+          item.className = `center-modal-item ${selectedChapter.id === ch.id ? 'selected' : ''}`;
+          item.innerHTML = `<span>${ch.name}</span> ${selectedChapter.id === ch.id ? '<span>✓</span>' : ''}`;
+          item.onclick = () => {
+            selectedChapter = ch;
+            selectedPattern = examPatterns[0];
+            syncUISelection();
+            closeCenterModal();
+          };
+          list.appendChild(item);
+        });
+      } else if (type === "pattern") {
+        title.textContent = "परीक्षा का समय व प्रकार";
+        examPatterns.forEach(pat => {
+          const item = document.createElement("div");
+          item.className = `center-modal-item ${selectedPattern.id === pat.id ? 'selected' : ''}`;
+          item.innerHTML = `<span>${pat.name}</span> ${selectedPattern.id === pat.id ? '<span>✓</span>' : ''}`;
+          item.onclick = () => {
+            selectedPattern = pat;
+            syncUISelection();
+            closeCenterModal();
+          };
+          list.appendChild(item);
+        });
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeCenterModal() {
+      const modal = document.getElementById("centerSelectorModal");
+      if (modal) modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function handleCenterModalBackdrop(e) {
+      if (e.target.id === "centerSelectorModal") {
+        closeCenterModal();
+      }
+    }
+
+    // 🚀 JSON फाइल से प्रश्न लोड करना (11-physics.json आदि)
+    async function load11thQuestions() {
+      const fileName = selectedSubject.jsonFile;
+      const pathsToTry = [
+        `data/${fileName}`,
+        `./data/${fileName}`,
+        `/nischaydesk/data/${fileName}`,
+        `https://nischaydesk.github.io/nischaydesk/data/${fileName}`
+      ];
+
+      let rawData = null;
+      for (const p of pathsToTry) {
+        try {
+          const res = await fetch(`${p}?t=${Date.now()}`);
+          if (res.ok) {
+            rawData = await res.json();
+            break;
+          }
+        } catch (e) {}
+      }
+
+      if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
+        alert(`📢 सूचना:\n\n'${fileName}' फ़ाइल अभी डेटाबेस में जोड़ी जा रही है!\nआप बहुत जल्द इसके संपूर्ण प्रश्नों का अभ्यास कर सकेंगे।`);
+        return false;
+      }
+
+      const allQs = rawData.map(item => ({
+        chapter: parseInt(item.chapter) || 1,
+        q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
+        options: item.options || [],
+        correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
+        exp: item.exp || item.explanation || 'इस प्रश्न का विस्तृत हल जल्द उपलब्ध होगा।'
+      }));
+
+      if (selectedChapter.id === "all") {
+        currentQuestions = [...allQs];
+      } else {
+        const match = String(selectedChapter.id).match(/\d+/);
+        const targetCh = match ? parseInt(match[0]) : 1;
+        currentQuestions = allQs.filter(q => q.chapter === targetCh);
+        if (currentQuestions.length === 0) {
+          currentQuestions = allQs;
+        }
+      }
+
+      // रैंडमाइज
+      currentQuestions.sort(() => Math.random() - 0.5);
+
+      // सीमा
+      const maxLimit = selectedPattern.questionCount;
+      if (currentQuestions.length > maxLimit) {
+        currentQuestions = currentQuestions.slice(0, maxLimit);
+      }
+
+      return true;
+    }
+
+    // ⚡ टेस्ट शुरू करना
+    document.getElementById("startExamBtn").addEventListener("click", async function () {
+      const btn = this;
+      btn.disabled = true;
+      btn.innerText = "प्रश्न लोड हो रहे हैं...";
+
+      const success = await load11thQuestions();
+      btn.disabled = false;
+      btn.innerText = "⚡ टेस्ट शुरू करें (Start 11th Test)";
+
+      if (!success) return;
+
+      userResponses = {};
+      currentQIndex = 0;
+      timeRemaining = selectedPattern.timeMinutes * 60;
+      totalTestDuration = timeRemaining;
+
+      document.getElementById("testLobbyScreen").classList.remove("active");
+      document.getElementById("testResultScreen").classList.remove("active");
+      document.getElementById("testRunningScreen").classList.add("active");
+
+      document.getElementById("liveExamBadge").innerText = `11th ${selectedSubject.name.split(' ')[1]} • ${currentQuestions.length}Q (${selectedPattern.timeMinutes}m)`;
+      document.getElementById("liveQuestionCounter").innerText = `प्रश्न 1 / ${currentQuestions.length}`;
+
+      startTimer();
+      renderPalette();
+      renderQuestion(0);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    function renderQuestion(index) {
+      if (index < 0 || index >= currentQuestions.length) return;
+      currentQIndex = index;
+      const qData = currentQuestions[index];
+
+      document.getElementById("displayQNumber").innerText = `Q.${index + 1}`;
+      document.getElementById("liveQuestionCounter").innerText = `प्रश्न ${index + 1} / ${currentQuestions.length}`;
+      document.getElementById("displayQText").innerText = qData.q;
+
+      document.getElementById("prevQBtn").disabled = (index === 0);
+      document.getElementById("nextQBtn").innerText = (index === currentQuestions.length - 1) ? "सबमिट करें ✓" : "अगला प्रश्न →";
+
+      const optGroup = document.getElementById("displayOptionsGroup");
+      optGroup.innerHTML = "";
+      const letters = ['A', 'B', 'C', 'D'];
+
+      qData.options.forEach((optText, optIdx) => {
+        const isSelected = (userResponses[index] === optIdx);
+        const optCard = document.createElement("div");
+        optCard.className = `option-choice-item ${isSelected ? 'selected active' : ''}`;
+        optCard.innerHTML = `
+          <span class="option-letter">${letters[optIdx]}</span>
+          <span class="option-label-text">${optText}</span>
+        `;
+        optCard.onclick = () => {
+          userResponses[index] = optIdx;
+          renderQuestion(index);
+          updatePaletteStatus();
+        };
+        optGroup.appendChild(optCard);
+      });
+
+      updatePaletteStatus();
+    }
+
+    function renderPalette() {
+      const palette = document.getElementById("paletteButtonsGrid");
+      palette.innerHTML = "";
+      currentQuestions.forEach((_, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "palette-btn";
+        btn.id = `palette-btn-${idx}`;
+        btn.innerText = idx + 1;
+        btn.onclick = () => renderQuestion(idx);
+        palette.appendChild(btn);
+      });
+      updatePaletteStatus();
+    }
+
+    function updatePaletteStatus() {
+      currentQuestions.forEach((_, idx) => {
+        const btn = document.getElementById(`palette-btn-${idx}`);
+        if (!btn) return;
+        btn.classList.remove("active", "answered");
+        if (idx === currentQIndex) btn.classList.add("active");
+        if (userResponses[idx] !== undefined) btn.classList.add("answered");
+      });
+    }
+
+    document.getElementById("prevQBtn").onclick = () => {
+      if (currentQIndex > 0) renderQuestion(currentQIndex - 1);
+    };
+
+    document.getElementById("nextQBtn").onclick = () => {
+      if (currentQIndex < currentQuestions.length - 1) {
+        renderQuestion(currentQIndex + 1);
+      } else {
+        if (confirm("क्या आप अपना टेस्ट समाप्त और सबमिट करना चाहते हैं?")) {
+          finishAndSubmitExam();
+        }
+      }
+    };
+
+    document.getElementById("clearSelectionBtn").onclick = () => {
+      delete userResponses[currentQIndex];
+      renderQuestion(currentQIndex);
+      updatePaletteStatus();
+    };
+
+    document.getElementById("submitExamEarlyBtn").onclick = () => {
+      if (confirm("क्या आप वाकई टेस्ट अभी सबमिट करना चाहते हैं?")) {
+        finishAndSubmitExam();
+      }
+    };
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          alert("परीक्षा का समय समाप्त हो गया है! टेस्ट सबमिट किया जा रहा है।");
+          finishAndSubmitExam();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timeRemaining / 60);
+      const secs = timeRemaining % 60;
+      const digits = document.getElementById("timerDigits");
+      if (digits) {
+        digits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+    }
+
+    function finishAndSubmitExam() {
+      clearInterval(timerInterval);
+      let correctCount = 0, wrongCount = 0;
+
+      currentQuestions.forEach((q, idx) => {
+        const userAns = userResponses[idx];
+        if (userAns !== undefined) {
+          if (userAns === q.correct) correctCount++;
+          else wrongCount++;
+        }
+      });
+
+      const totalQs = currentQuestions.length;
+      const totalScore = (correctCount * 4) - (wrongCount * 1);
+      const maxScore = totalQs * 4;
+      const accuracy = Math.round((correctCount / (correctCount + wrongCount || 1)) * 100);
+
+      document.getElementById("resTotalMarks").innerText = `${totalScore} / ${maxScore}`;
+      document.getElementById("resAccuracy").innerText = `${accuracy}%`;
+      document.getElementById("resCorrectCount").innerText = correctCount;
+      document.getElementById("resWrongCount").innerText = wrongCount;
+
+      const solList = document.getElementById("solutionsAccordionList");
+      solList.innerHTML = "";
+      const letters = ['A', 'B', 'C', 'D'];
+
+      currentQuestions.forEach((q, idx) => {
+        const userAns = userResponses[idx];
+        const isCorrect = (userAns === q.correct);
+        const item = document.createElement("div");
+        item.className = "sol-item";
+        item.innerHTML = `
+          <div class="sol-q-title">Q.${idx + 1}: ${q.q}</div>
+          <div class="sol-ans-row ${isCorrect ? 'correct' : 'wrong'}">
+            ${userAns !== undefined ? `आपका उत्तर: (${letters[userAns]}) ${q.options[userAns]}` : 'आपने यह प्रश्न छोड़ दिया था'}
+          </div>
+          <div style="font-size:0.84rem; color:var(--success, #22c55e); font-weight:700; margin-bottom:4px;">
+            सटीक उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
+          </div>
+          <div class="sol-explanation"><strong>व्याख्या:</strong> ${q.exp}</div>
+        `;
+        solList.appendChild(item);
+      });
+
+      document.getElementById("testRunningScreen").classList.remove("active");
+      document.getElementById("testResultScreen").classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("restartTestBtn").onclick = () => {
+      document.getElementById("testResultScreen").classList.remove("active");
+      document.getElementById("testLobbyScreen").classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    function openProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (modal) modal.style.display = 'flex';
+    }
+    function closeProfileModal() {
+      const modal = document.getElementById('customProfileModal');
+      if (modal) modal.style.display = 'none';
+    }
+    function handleSlowLogout() {
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().finally(() => {
+          closeProfileModal();
+          window.location.reload();
+        });
+      } else {
+        closeProfileModal();
+        window.location.reload();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const initialChs = getChaptersForSubject(selectedSubject.syllabusId);
+      if (initialChs.length > 0) {
+        selectedChapter = initialChs[0];
+      }
+      syncUISelection();
+    });
+  </script>
+</body>
+</html>
