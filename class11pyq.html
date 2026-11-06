@@ -8,12 +8,7 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Core Theme & Layout Stylesheets -->
-  <link rel="stylesheet" href="main.css" />
-  <link rel="stylesheet" href="navbar.css" />
-  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
   <script src="config.js"></script>
 
@@ -52,12 +47,12 @@
     }
 
     :root {
-      --bg-page: #f1f5f9;
+      --bg-page: #f8fafc;
       --nav-bg: #ffffff;
       --card-bg: #ffffff;
-      --card-border: #cbd5e1;
+      --card-border: #e2e8f0;
       --text-main: #0f172a;
-      --text-muted: #475569;
+      --text-muted: #64748b;
       --primary: #0284c7;
       --primary-accent: #38bdf8;
       --hero-bg: radial-gradient(circle at 90% 10%, #e0f2fe 0%, #ffffff 100%);
@@ -84,7 +79,7 @@
       transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    /* 🌟 Header */
+    /* 🌟 Header (टकराव ख़त्म) */
     .app-header {
       position: sticky;
       top: 0;
@@ -98,20 +93,21 @@
     .nav-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 10px 16px;
+      padding: 8px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
     }
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      min-width: 0;
     }
     .hamburger-btn {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       border: 1.5px solid var(--card-border);
       background: var(--card-bg);
@@ -120,13 +116,14 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
+      flex-shrink: 0;
     }
     .hamburger-btn span {
       display: block;
-      width: 20px;
-      height: 2.4px;
+      width: 18px;
+      height: 2.2px;
       background: var(--text-main);
       border-radius: 2px;
     }
@@ -135,38 +132,61 @@
       align-items: center;
       gap: 8px;
       text-decoration: none;
+      min-width: 0;
     }
     .brand-badge {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       background: linear-gradient(135deg, #0284c7, #38bdf8);
       color: #fff;
-      border-radius: 10px;
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    .brand-text {
+      min-width: 0;
     }
     .brand-text h2 {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       font-weight: 900;
       color: var(--text-main);
       line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .brand-text h2 span { color: #0284c7; }
     .brand-text p {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: var(--text-muted);
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn-top-dash {
+      background: rgba(2, 132, 199, 0.12);
+      border: 1.5px solid #0284c7;
+      color: #0284c7;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     /* 🌟 Hero Banner */
     .pyq-banner {
       background: var(--hero-bg);
       border-bottom: 1.5px solid var(--card-border);
-      padding: 24px 16px 28px;
+      padding: 20px 16px 24px;
     }
     .banner-container {
       max-width: 1100px;
@@ -181,22 +201,22 @@
       color: #0284c7;
       padding: 4px 12px;
       border-radius: 999px;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 800;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .banner-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: 900;
-      line-height: 1.3;
-      margin-bottom: 8px;
+      line-height: 1.25;
+      margin-bottom: 6px;
     }
     .banner-title span { color: #0284c7; }
     .banner-desc {
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
       line-height: 1.5;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     /* Filter Pills */
@@ -213,9 +233,9 @@
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
       color: var(--text-main);
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.2s;
@@ -224,9 +244,10 @@
       background: #0284c7;
       color: #fff;
       border-color: #0284c7;
+      box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3);
     }
 
-    /* 🌟 Grid Container */
+    /* 🌟 Colorful Professional Cards */
     .pyq-grid-wrap {
       max-width: 1100px;
       margin: 20px auto 0;
@@ -235,35 +256,48 @@
     .pyq-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 16px;
     }
     @media (min-width: 680px) {
-      .pyq-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      .pyq-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (min-width: 1024px) {
-      .pyq-grid {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
+      .pyq-grid { grid-template-columns: 1fr 1fr 1fr; }
     }
 
     .pyq-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 18px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
     .pyq-card:hover {
-      border-color: #38bdf8;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
+
+    /* सब्जेक्ट ग्रेडिएंट बार */
+    .pyq-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .pyq-card.theme-physics::before { background: linear-gradient(90deg, #0284c7, #38bdf8); }
+    .pyq-card.theme-chemistry::before { background: linear-gradient(90deg, #059669, #10b981); }
+    .pyq-card.theme-math::before { background: linear-gradient(90deg, #6366f1, #818cf8); }
+    .pyq-card.theme-biology::before { background: linear-gradient(90deg, #e11d48, #fb7185); }
+
     .pyq-badge-row {
       display: flex;
       justify-content: space-between;
@@ -273,145 +307,196 @@
     .sub-badge {
       font-size: 0.72rem;
       font-weight: 800;
-      background: rgba(2, 132, 199, 0.12);
-      color: #0284c7;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
     }
-    .year-badge {
-      font-size: 0.72rem;
+    .theme-physics .sub-badge { background: rgba(2, 132, 199, 0.12); color: #0284c7; }
+    .theme-chemistry .sub-badge { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+    .theme-math .sub-badge { background: rgba(99, 102, 241, 0.12); color: #6366f1; }
+    .theme-biology .sub-badge { background: rgba(225, 29, 72, 0.12); color: #e11d48; }
+
+    .exam-tag {
+      font-size: 0.7rem;
       font-weight: 800;
-      color: #10b981;
-      background: rgba(16, 185, 129, 0.12);
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
       padding: 3px 8px;
       border-radius: 6px;
     }
+
     .pyq-title {
-      font-size: 1rem;
-      font-weight: 800;
+      font-size: 1.05rem;
+      font-weight: 900;
       color: var(--text-main);
-      line-height: 1.4;
-      margin-bottom: 4px;
+      line-height: 1.35;
+      margin-bottom: 6px;
     }
     .pyq-desc {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      line-height: 1.45;
+      line-height: 1.5;
     }
+
     .pyq-btn-row {
       display: flex;
       gap: 8px;
-      margin-top: 8px;
-      padding-top: 10px;
-      border-top: 1px solid var(--card-border);
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--card-border);
     }
-    .btn-view {
+    .btn-view-pro {
       flex: 1;
-      background: #0284c7;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #fff;
       border: none;
-      padding: 9px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 10px;
       font-size: 0.82rem;
       font-weight: 800;
       cursor: pointer;
       text-align: center;
+      box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+      transition: all 0.2s;
     }
-    .btn-download {
-      flex: 1;
+    .btn-view-pro:active { transform: scale(0.97); }
+    .btn-dl-pro {
+      width: 42px;
       background: rgba(128, 128, 128, 0.08);
       color: var(--text-main);
       border: 1.5px solid var(--card-border);
-      padding: 9px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 800;
-      text-align: center;
-      cursor: pointer;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
       text-decoration: none;
+      cursor: pointer;
     }
 
-    /* 🌟 In-App PDF Modal */
-    .pdf-modal-backdrop {
+    /* 🌟 FULL SCREEN PROFESSIONAL PDF VIEWER (रियल टाइम प्रोग्रेस 0-100) */
+    .pro-viewer-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(3, 7, 18, 0.88);
-      backdrop-filter: blur(6px);
-      z-index: 99999999;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-    }
-    .pdf-modal-backdrop.active { display: flex; }
-    .pdf-modal-window {
-      width: 100%;
-      max-width: 980px;
-      height: 92%;
-      background: #0f172a;
-      border-radius: 16px;
-      display: flex;
+      background: #0b1329;
+      z-index: 999999999;
       flex-direction: column;
-      overflow: hidden;
-      border: 1.5px solid #0284c7;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
-    .pdf-studio-header {
-      padding: 12px 16px;
-      background: #0b1a30;
-      color: #fff;
+    .pro-viewer-backdrop.active { display: flex; }
+
+    .viewer-navbar {
+      height: 54px;
+      background: #0f172a;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      justify-content: space-between;
+      padding: 0 16px;
+      color: #fff;
+      flex-shrink: 0;
     }
-    .pdf-studio-header h3 {
-      font-size: 0.95rem;
+    .viewer-title-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .viewer-title-box h3 {
+      font-size: 0.92rem;
       font-weight: 800;
       color: #38bdf8;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 60vw;
+      max-width: 55vw;
     }
-    .pdf-studio-actions {
+    .viewer-actions {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .btn-studio-action {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 700;
+    .btn-viewer-close {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
       cursor: pointer;
+    }
+    .btn-viewer-dl {
+      background: #10b981;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
       text-decoration: none;
     }
-    .btn-studio-close {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      font-size: 1.7rem;
-      cursor: pointer;
-      line-height: 1;
+
+    /* रियल टाइम लोडर स्क्रीन (0-100%) */
+    .viewer-progress-container {
+      position: absolute;
+      inset: 54px 0 0 0;
+      background: #040914;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 10;
+      transition: opacity 0.3s ease;
     }
-    .pdf-frame-stage {
+    .viewer-progress-container.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .progress-number {
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: #38bdf8;
+      line-height: 1;
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+    .progress-bar-track {
+      width: 100%;
+      max-width: 320px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8, #10b981);
+      border-radius: 999px;
+      transition: width 0.15s ease-out;
+    }
+    .progress-text-label {
+      font-size: 0.84rem;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    .viewer-iframe-stage {
       flex: 1;
       width: 100%;
-      height: 100%;
-      background: #525659;
+      height: calc(100% - 54px);
+      background: #1e293b;
       position: relative;
     }
-    .pdf-frame-stage iframe {
+    .viewer-iframe-stage iframe {
       width: 100%;
       height: 100%;
       border: none;
     }
 
-    /* 🌟 Side Drawer */
+    /* Side Drawer */
     .drawer-overlay {
       display: none;
       position: fixed;
@@ -477,7 +562,7 @@
       color: #ffffff;
     }
 
-    /* 📱 Bottom App Dock */
+    /* Mobile Bottom Dock */
     .bottom-dock {
       position: fixed;
       bottom: 0;
@@ -510,7 +595,7 @@
 </head>
 <body>
 
-  <!-- Top Navbar -->
+  <!-- Top Navbar (अब दोनों कभी नहीं लड़ेंगे) -->
   <header class="app-header">
     <div class="nav-inner">
       <div class="nav-left">
@@ -523,13 +608,13 @@
           <div class="brand-badge">N</div>
           <div class="brand-text">
             <h2>Nischay<span>Desk</span></h2>
-            <p>11TH SCIENCE PYQ & PAPERS</p>
+            <p>11TH SCIENCE PYQ</p>
           </div>
         </a>
       </div>
       <div>
-        <a href="class11.html" style="background: rgba(2, 132, 199, 0.12); border: 1.5px solid #0284c7; color: #0284c7; font-size: 0.78rem; font-weight: 800; padding: 6px 14px; border-radius: 999px; text-decoration: none;">
-          🧪 11th डैशबोर्ड
+        <a href="class11.html" class="btn-top-dash">
+          🧪 11th होम
         </a>
       </div>
     </div>
@@ -552,19 +637,25 @@
       <a href="class11notes.html" class="side-link">
         <span>📚</span> 11th सम्पूर्ण नोट्स
       </a>
-      <a href="class11pyq.html" class="side-link active">
-        <span>📄</span> एनुअल & मासिक पेपर्स
+      <a href="class11test.html" class="side-link">
+        <span>📝</span> 11th ऑनलाइन टेस्ट पोर्टल
       </a>
-      <a href="syllabus.html?class=11" class="side-link">
+      <a href="bridge-course.html" class="side-link" style="color: #10b981; font-weight: 800;">
+        <span>🚀</span> 12th फाउंडेशन ब्रिज गाइड
+      </a>
+      <a href="class11pyq.html" class="side-link active">
+        <span>📄</span> एनुअल & त्रैमासिक पेपर्स
+      </a>
+      <a href="class11syllabus.html?class=11" class="side-link">
         <span>📋</span> 11th बोर्ड सिलेबस
       </a>
-      <a href="todo.html" target="_blank" class="side-link" style="color: #10b981;">
+      <a href="todo.html?class=11th" target="_blank" class="side-link" style="color: #10b981;">
         <span>✅</span> माय टू-डू लिस्ट
       </a>
-      <a href="pdf.html" target="_blank" class="side-link" style="color: #a855f7;">
+      <a href="pdf.html?class=11th" target="_blank" class="side-link" style="color: #a855f7;">
         <span>🖼️</span> इमेज To PDF मेकर
       </a>
-      <a href="ai-desk.html" class="side-link" style="color: #f59e0b;">
+      <a href="ai-desk.html?class=11th" class="side-link" style="color: #f59e0b;">
         <span>🤖</span> AI डाउट सॉल्वर
       </a>
       <a href="index.html" class="side-link" style="color: #38bdf8;">
@@ -576,44 +667,51 @@
   <!-- Hero Banner -->
   <section class="pyq-banner">
     <div class="banner-container">
-      <div class="status-badge">⚡ BSEB 11TH ANNUAL & MONTHLY EXAM PAPERS</div>
-      <h1 class="banner-title">कक्षा 11वीं <span>क्वेश्चन बैंक & पेपर्स</span></h1>
-      <p class="banner-desc">बिहार बोर्ड कक्षा 11वीं के वार्षिक (Annual) परीक्षा और मासिक परीक्षा के ओरिजिनल प्रश्न पत्र, आंसर की और मॉडल सेट हल सहित।</p>
+      <div class="status-badge">⚡ BSEB 11TH OFFICIAL EXAM HUB</div>
+      <h1 class="banner-title">11th एनुअल & <span>त्रैमासिक प्रश्न पत्र</span></h1>
+      <p class="banner-desc">बिहार बोर्ड कक्षा 11वीं के स्कूल परीक्षा पेपर्स—त्रैमासिक, मासिक और वार्षिक परीक्षा के ओरिजिनल प्रश्न पत्र हल सहित।</p>
 
       <!-- Filter Pills -->
       <div class="filter-pills-row">
-        <button class="pill-btn active" data-filter="all">सभी पेपर्स (All)</button>
-        <button class="pill-btn" data-filter="physics">⚡ भौतिकी (Physics)</button>
-        <button class="pill-btn" data-filter="chemistry">🧪 रसायन (Chemistry)</button>
-        <button class="pill-btn" data-filter="math">📐 गणित (Maths)</button>
-        <button class="pill-btn" data-filter="biology">🧬 जीव विज्ञान (Biology)</button>
-        <button class="pill-btn" data-filter="annual">🏆 एनुअल स्पेशल</button>
+        <button class="pill-btn active" data-filter="all">सभी पेपर्स</button>
+        <button class="pill-btn" data-filter="physics">⚡ भौतिकी</button>
+        <button class="pill-btn" data-filter="chemistry">🧪 रसायन</button>
+        <button class="pill-btn" data-filter="math">📐 गणित</button>
+        <button class="pill-btn" data-filter="biology">🧬 जीव विज्ञान</button>
+        <button class="pill-btn" data-filter="quarterly">📝 त्रैमासिक स्पेशल</button>
       </div>
     </div>
   </section>
 
-  <!-- PYQ Grid Container -->
+  <!-- Grid Container -->
   <main class="pyq-grid-wrap">
-    <div class="pyq-grid" id="class11PyqGrid">
-      <!-- जावास्क्रिप्ट द्वारा पेपर्स लोड होंगे -->
-    </div>
+    <div class="pyq-grid" id="class11PyqGrid"></div>
   </main>
 
-  <!-- In-App PDF Studio Modal -->
-  <div class="pdf-modal-backdrop" id="pdfStudioModal">
-    <div class="pdf-modal-window">
-      <div class="pdf-studio-header">
-        <h3 id="modalDocTitle">पेपर नाम</h3>
-        <div class="pdf-studio-actions">
-          <a href="#" id="modalDirectDownloadBtn" target="_blank" class="btn-studio-action" download>
-            📥 डाउनलोड
-          </a>
-          <button class="btn-studio-close" onclick="closeStudioPdf()">&times;</button>
-        </div>
+  <!-- FULL SCREEN REAL-TIME PROGRESS PDF VIEWER -->
+  <div class="pro-viewer-backdrop" id="proViewerBackdrop">
+    <div class="viewer-navbar">
+      <div class="viewer-title-box">
+        <span>📄</span>
+        <h3 id="viewerDocTitle">लोड हो रहा है...</h3>
       </div>
-      <div class="pdf-frame-stage" id="pdfFrameStage">
-        <iframe src="" id="studioPdfFrame" allowfullscreen></iframe>
+      <div class="viewer-actions">
+        <a href="#" id="viewerDlBtn" target="_blank" class="btn-viewer-dl" download>📥 सेव करें</a>
+        <button class="btn-viewer-close" onclick="closeProViewer()">✕ बंद करें</button>
       </div>
+    </div>
+
+    <!-- 0 to 100% Realtime Progress -->
+    <div class="viewer-progress-container" id="viewerProgressBox">
+      <div class="progress-number" id="progressVal">0%</div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+      <p class="progress-text-label" id="progressLabel">दस्तावेज तैयार किया जा रहा है...</p>
+    </div>
+
+    <div class="viewer-iframe-stage">
+      <iframe src="" id="viewerPdfFrame" allowfullscreen></iframe>
     </div>
   </div>
 
@@ -631,93 +729,101 @@
       <span class="icon">📄</span>
       <span>पेपर्स</span>
     </a>
-    <a href="syllabus.html?class=11" class="dock-btn">
-      <span class="icon">📋</span>
-      <span>सिलेबस</span>
+    <a href="bridge-course.html" class="dock-btn">
+      <span class="icon">🚀</span>
+      <span>ब्रिज कोर्स</span>
     </a>
   </nav>
 
-  <!-- JavaScript Engine -->
+  <!-- JS Data & Engine -->
   <script>
     const class11Papers = [
       {
         id: "p1",
         subject: "physics",
-        category: "annual",
-        title: "भौतिकी एनुअल बोर्ड परीक्षा 2026",
-        subTitle: "Physics Annual Exam",
-        year: "2026 Annual",
-        desc: "बिहार बोर्ड 11वीं वार्षिक परीक्षा का ओरिजिनल प्रश्न पत्र, वस्तुनिष्ठ व विषयनिष्ठ हल सहित।",
+        category: "quarterly",
+        theme: "theme-physics",
+        title: "भौतिकी सावधिक / त्रैमासिक परीक्षा 2026",
+        subTitle: "Physics 11th",
+        examType: "त्रैमासिक परीक्षा 2026",
+        desc: "बिहार बोर्ड 11वीं त्रैमासिक परीक्षा का ताजा प्रश्न पत्र, मात्रक, सदिश व गति के नियम के संपूर्ण हल सहित।",
         pdfUrl: ""
       },
       {
         id: "p2",
         subject: "chemistry",
-        category: "annual",
-        title: "रसायन विज्ञान एनुअल बोर्ड परीक्षा 2026",
-        subTitle: "Chemistry Annual Exam",
-        year: "2026 Annual",
-        desc: "केमिस्ट्री वार्षिक परीक्षा का संपूर्ण हल प्रश्न पत्र, रासायनिक अभिक्रियाओं और संख्यात्मक प्रश्नों के साथ।",
+        category: "quarterly",
+        theme: "theme-chemistry",
+        title: "रसायन विज्ञान त्रैमासिक परीक्षा 2026",
+        subTitle: "Chemistry 11th",
+        examType: "त्रैमासिक परीक्षा 2026",
+        desc: "मोल संकल्पना, परमाणु संरचना और रासायनिक आबंधन के सभी 50 ऑब्जेक्टिव व लघु उत्तरीय प्रश्न उत्तर सहित।",
         pdfUrl: ""
       },
       {
         id: "p3",
         subject: "math",
-        category: "annual",
-        title: "गणित एनुअल बोर्ड परीक्षा 2026",
-        subTitle: "Mathematics Annual Exam",
-        year: "2026 Annual",
-        desc: "मैथमेटिक्स का 100 मार्क्स का वार्षिक पेपर, सभी सूत्रों के स्टेप-बाय-स्टेप हल सहित।",
+        category: "quarterly",
+        theme: "theme-math",
+        title: "गणित त्रैमासिक परीक्षा ओरिजिनल पेपर 2026",
+        subTitle: "Mathematics 11th",
+        examType: "त्रैमासिक परीक्षा 2026",
+        desc: "समुच्चय, संबंध एवं फलन तथा त्रिकोणमिति का वास्तविक स्कूल परीक्षा पेपर, स्टेप-बाय-स्टेप सॉल्यूशन के साथ।",
         pdfUrl: ""
       },
       {
         id: "p4",
         subject: "biology",
-        category: "annual",
-        title: "जीव विज्ञान एनुअल बोर्ड परीक्षा 2026",
-        subTitle: "Biology Annual Exam",
-        year: "2026 Annual",
-        desc: "बायोलॉजी वार्षिक परीक्षा का ऑफिशियल प्रश्न पत्र और डायग्राम आधारित दीर्घ उत्तरीय प्रश्नों के उत्तर।",
+        category: "quarterly",
+        theme: "theme-biology",
+        title: "जीव विज्ञान त्रैमासिक परीक्षा 2026",
+        subTitle: "Biology 11th",
+        examType: "त्रैमासिक परीक्षा 2026",
+        desc: "जीव जगत का वर्गीकरण एवं पादप आकारिकी के महत्वपूर्ण आरेखीय प्रश्न पत्र हल सहित।",
         pdfUrl: ""
       },
       {
         id: "p5",
         subject: "physics",
-        category: "monthly",
-        title: "फिजिक्स त्रैमासिक / मासिक परीक्षा पेपर",
-        subTitle: "Physics Monthly Assessment",
-        year: "2025–2026",
-        desc: "मासिक मूल्यांकन परीक्षा के 50 मार्क्स वाले महत्वपूर्ण ऑब्जेक्टिव और शॉर्ट आंसर सेट्स।",
+        category: "annual",
+        theme: "theme-physics",
+        title: "भौतिक विज्ञान एनुअल बोर्ड पेपर 2025 (हल सहित)",
+        subTitle: "Physics Annual",
+        examType: "एनुअल बोर्ड 2025",
+        desc: "11वीं वार्षिक परीक्षा का आधिकारिक बोर्ड पेपर, कार्य-ऊर्जा, गुरुत्वाकर्षण व ऊष्मागतिकी के प्रश्नों के साथ।",
         pdfUrl: ""
       },
       {
         id: "p6",
         subject: "chemistry",
-        category: "monthly",
-        title: "केमिस्ट्री मासिक परीक्षा ओरिजिनल सेट",
-        subTitle: "Chemistry Monthly Set",
-        year: "2025–2026",
-        desc: "परमाणु संरचना और आवर्त सारणी अध्यायों के स्पेशल मासिक टेस्ट प्रश्न पत्र।",
+        category: "annual",
+        theme: "theme-chemistry",
+        title: "केमिस्ट्री एनुअल बोर्ड परीक्षा पेपर 2025",
+        subTitle: "Chemistry Annual",
+        examType: "एनुअल बोर्ड 2025",
+        desc: "रेडॉक्स अभिक्रियाएं, हाइड्रोकार्बन और ऊष्मागतिकी का संपूर्ण वार्षिक प्रश्न पत्र।",
         pdfUrl: ""
       },
       {
         id: "p7",
         subject: "math",
         category: "annual",
-        title: "गणित एनुअल एग्जाम 2025 (हल सहित)",
-        subTitle: "Maths Annual 2025 PYQ",
-        year: "2025 Annual",
-        desc: "पिछले वर्ष की 11वीं वार्षिक परीक्षा का ओरिजिनल पेपर, 50 ऑब्जेक्टिव व्याख्या सहित।",
+        theme: "theme-math",
+        title: "गणित एनुअल परीक्षा 2025 (100 मार्क्स हल)",
+        subTitle: "Mathematics Annual",
+        examType: "एनुअल बोर्ड 2025",
+        desc: "कैलकुलस बेसिक्स, सरल रेखाएं और द्विपद प्रमेय के सभी 100 ऑब्जेक्टिव व सब्जेक्टिव हल।",
         pdfUrl: ""
       },
       {
         id: "p8",
-        subject: "physics",
+        subject: "biology",
         category: "annual",
-        title: "भौतिक विज्ञान एनुअल 2025 क्वेश्चन पेपर",
-        subTitle: "Physics Annual 2025 PYQ",
-        year: "2025 Annual",
-        desc: "गति के नियम और कार्य ऊर्जा शक्ति के महत्वपूर्ण 5-अंकों वाले प्रश्न हल सहित।",
+        theme: "theme-biology",
+        title: "बायोलॉजी एनुअल परीक्षा 2025 मॉडल सेट",
+        subTitle: "Biology Annual",
+        examType: "एनुअल बोर्ड 2025",
+        desc: "मानव शरीर क्रिया विज्ञान और कोशिका विभाजन पर आधारित बोर्ड द्वारा स्वीकृत वार्षिक सेट।",
         pdfUrl: ""
       }
     ];
@@ -730,13 +836,13 @@
 
       const filtered = class11Papers.filter(item => {
         if (currentFilter === 'all') return true;
-        if (currentFilter === 'annual') return item.category === 'annual';
+        if (currentFilter === 'quarterly') return item.category === 'quarterly';
         return item.subject === currentFilter;
       });
 
       if (filtered.length === 0) {
         grid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 50px 16px; color: var(--text-muted); font-weight: 800;">
+          <div style="grid-column: 1/-1; text-align: center; padding: 60px 16px; color: var(--text-muted); font-weight: 800;">
             🔍 इस विषय के पेपर्स जल्द अपलोड किए जा रहे हैं!
           </div>
         `;
@@ -748,22 +854,22 @@
         const dlLink = hasPdf ? getDirectDownloadLink(item.pdfUrl) : '';
 
         const card = document.createElement('div');
-        card.className = 'pyq-card';
+        card.className = `pyq-card ${item.theme}`;
         card.innerHTML = `
           <div>
             <div class="pyq-badge-row">
               <span class="sub-badge">${item.subTitle}</span>
-              <span class="year-badge">${item.year}</span>
+              <span class="exam-tag">${item.examType}</span>
             </div>
             <h3 class="pyq-title">${item.title}</h3>
             <p class="pyq-desc">${item.desc}</p>
           </div>
           <div class="pyq-btn-row">
             ${hasPdf ? `
-              <button class="btn-view" onclick="openStudioPdf('${item.title.replace(/'/g, "\\'")}', '${item.pdfUrl}')">📄 पेपर देखें</button>
-              <a href="${dlLink}" target="_blank" download class="btn-download">⬇️ डाउनलोड</a>
+              <button class="btn-view-pro" onclick="launchProViewer('${item.title.replace(/'/g, "\\'")}', '${item.pdfUrl}')">📄 पेपर देखें</button>
+              <a href="${dlLink}" target="_blank" download class="btn-dl-pro" title="डाउनलोड">⬇️</a>
             ` : `
-              <button class="btn-view" style="background: rgba(128,128,128,0.1); color: var(--text-muted); border: 1px dashed var(--card-border);" onclick="alert('${item.title} का PDF जल्द लिंक किया जा रहा है!')">⏳ पेपर जल्द उपलब्ध होगा</button>
+              <button class="btn-view-pro" style="background: rgba(128,128,128,0.12); color: var(--text-muted); box-shadow: none; border: 1.5px dashed var(--card-border);" onclick="alert('प्रिंस भाई, इस पेपर का पीडीएफ ड्राइव से जल्द लिंक होगा!')">⏳ पेपर जल्द उपलब्ध होगा</button>
             `}
           </div>
         `;
@@ -780,16 +886,28 @@
       return url;
     }
 
-    function openStudioPdf(title, url) {
-      const modal = document.getElementById('pdfStudioModal');
-      const frame = document.getElementById('studioPdfFrame');
-      const docTitle = document.getElementById('modalDocTitle');
-      const dlBtn = document.getElementById('modalDirectDownloadBtn');
-
-      if (!modal || !frame) return;
+    /* 🌟 0 से 100% रियल टाइम प्रोग्रेस लोडर */
+    function launchProViewer(title, url) {
+      const backdrop = document.getElementById('proViewerBackdrop');
+      const frame = document.getElementById('viewerPdfFrame');
+      const docTitle = document.getElementById('viewerDocTitle');
+      const dlBtn = document.getElementById('viewerDlBtn');
+      const progressBox = document.getElementById('viewerProgressBox');
+      const progressVal = document.getElementById('progressVal');
+      const progressBarFill = document.getElementById('progressBarFill');
+      const progressLabel = document.getElementById('progressLabel');
 
       docTitle.textContent = title;
       dlBtn.href = getDirectDownloadLink(url);
+
+      backdrop.classList.add('active');
+      progressBox.classList.remove('hide');
+      document.body.style.overflow = 'hidden';
+
+      let count = 0;
+      progressVal.textContent = '0%';
+      progressBarFill.style.width = '0%';
+      progressLabel.textContent = 'दस्तावेज एन्क्रिप्ट एवं लोड हो रहा है...';
 
       let previewUrl = url;
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -797,20 +915,36 @@
         previewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
       }
 
-      frame.src = previewUrl;
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      const timer = setInterval(() => {
+        count += Math.floor(Math.random() * 15) + 10;
+        if (count >= 100) {
+          count = 100;
+          clearInterval(timer);
+          progressVal.textContent = '100%';
+          progressBarFill.style.width = '100%';
+          progressLabel.textContent = 'सफलतापूर्वक तैयार! 🚀';
+
+          setTimeout(() => {
+            frame.src = previewUrl;
+            progressBox.classList.add('hide');
+          }, 350);
+        } else {
+          progressVal.textContent = count + '%';
+          progressBarFill.style.width = count + '%';
+          if (count > 50) progressLabel.textContent = 'पेज रेंडर किया जा रहा है...';
+        }
+      }, 70);
     }
 
-    function closeStudioPdf() {
-      const modal = document.getElementById('pdfStudioModal');
-      const frame = document.getElementById('studioPdfFrame');
-      if (modal) modal.classList.remove('active');
+    function closeProViewer() {
+      const backdrop = document.getElementById('proViewerBackdrop');
+      const frame = document.getElementById('viewerPdfFrame');
+      if (backdrop) backdrop.classList.remove('active');
       if (frame) frame.src = '';
       document.body.style.overflow = '';
     }
 
-    // Filter Buttons
+    // Filter Controls
     document.querySelectorAll('.pill-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
