@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,15 +8,51 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Core Theme & Layout Stylesheets -->
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="navbar.css">
   <link rel="stylesheet" href="dashboard.css">
 
+  <!-- Firebase Modular Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- External App Configs -->
+  <script src="config.js"></script>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <script>
+    const savedTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+  </script>
+
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+    }
+
+    body {
+      overflow-x: hidden !important;
+      width: 100% !important;
+      padding-bottom: 75px;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+    }
+
     /* पूरे पेज का कंटेनर */
-    .pyq-container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+    .pyq-container { 
+      max-width: 1100px; 
+      margin: 16px auto; 
+      padding: 0 14px; 
+    }
 
     /* बैनर */
     #ndHeroBanner {
@@ -26,6 +62,19 @@
       border-radius: 16px;
       margin-bottom: 22px;
       box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.4) !important;
+      position: relative;
+      overflow: hidden;
+    }
+    #ndHeroBanner::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      pointer-events: none;
     }
     #ndHeroBanner h1 { margin: 0 0 8px; font-size: 1.6rem; font-weight: 800; color: #ffffff !important; }
     #ndHeroBanner p { margin: 0; opacity: 0.95; font-size: 0.95rem; color: #f0f9ff !important; line-height: 1.5; }
@@ -47,12 +96,13 @@
       padding: 12px 14px;
       border-radius: 10px;
       border: 1.8px solid #94a3b8 !important;
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-size: 0.92rem;
+      font-weight: 700;
       outline: none;
       background: #f8fafc !important;
       color: #0f172a !important;
       font-family: inherit;
+      transition: all 0.2s ease;
     }
     #ndFilterBar select:focus,
     #ndFilterBar input:focus {
@@ -87,6 +137,11 @@
       border-color: #1e3a8a !important;
       color: #ffffff !important;
     }
+    html.dark-mode #ndFilterBar select option,
+    html[data-theme="dark"] #ndFilterBar select option {
+      background: #0c1633 !important;
+      color: #ffffff !important;
+    }
 
     /* मोडल स्टाइल */
     .pdf-modal { 
@@ -97,7 +152,7 @@
       height: 100%; 
       background: rgba(3, 7, 18, 0.88); 
       backdrop-filter: blur(6px);
-      z-index: 99999; 
+      z-index: 999999999; 
       justify-content: center; 
       align-items: center; 
       opacity: 0;
@@ -203,7 +258,7 @@
     /* 🌟 प्रोफ़ेशनल इन-ऐप टोस्ट नोटिफिकेशन */
     .nd-toast-container {
       position: fixed;
-      bottom: 24px;
+      bottom: 74px;
       left: 50%;
       transform: translateX(-50%) translateY(100px);
       background: rgba(15, 23, 42, 0.95);
@@ -216,7 +271,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      z-index: 999999;
+      z-index: 999999999;
       opacity: 0;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       max-width: 90%;
@@ -229,6 +284,343 @@
     }
     .nd-toast-icon { font-size: 1.4rem; flex-shrink: 0; }
     .nd-toast-content { font-size: 0.9rem; font-weight: 600; line-height: 1.4; color: #f8fafc; }
+
+    /* 📱 कस्टम क्लास बॉटम-शीट */
+    .nd-sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 999999999;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 60px;
+    }
+    .nd-sheet-backdrop.active { display: flex !important; }
+    .nd-sheet-content {
+      width: 100%;
+      max-width: 480px;
+      background: #0b1329;
+      border: 1.5px solid #1e3a8a;
+      border-radius: 22px 22px 0 0;
+      padding: 20px 18px 28px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      animation: ndSheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html.light-mode .nd-sheet-content,
+    html[data-theme="light"] .nd-sheet-content {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    @keyframes ndSheetSlideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .nd-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 14px;
+    }
+    html.light-mode .nd-sheet-header,
+    html[data-theme="light"] .nd-sheet-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
+    .nd-sheet-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nd-sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nd-sheet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nd-sheet-opt-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html.light-mode .nd-sheet-opt-item,
+    html[data-theme="light"] .nd-sheet-opt-item {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .nd-sheet-opt-item.selected {
+      background: rgba(2, 132, 199, 0.2) !important;
+      border-color: #0284c7 !important;
+      color: #38bdf8 !important;
+    }
+
+    /* 🌟 साइड ड्रॉअर */
+    .drawer-scrim {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 9999998 !important;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-scrim.active {
+      display: block !important;
+      opacity: 1 !important;
+    }
+    .side-drawer {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      bottom: 0 !important;
+      width: 300px !important;
+      max-width: 88vw !important;
+      height: 100vh !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      display: flex !important;
+      flex-direction: column !important;
+      background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.2) 0%, rgba(7, 17, 32, 0.98) 100%) !important;
+      backdrop-filter: blur(18px) !important;
+      border-right: 1.5px solid rgba(56, 189, 248, 0.35) !important;
+      box-shadow: 15px 0 40px rgba(0, 0, 0, 0.7) !important;
+      transform: translateX(-100%) !important;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      z-index: 99999999 !important;
+      visibility: hidden;
+      padding-bottom: 120px !important;
+    }
+    html.light-mode .side-drawer,
+    html[data-theme="light"] .side-drawer {
+      background: #ffffff !important;
+      border-right-color: #cbd5e1 !important;
+    }
+    .side-drawer.active {
+      transform: translateX(0) !important;
+      visibility: visible !important;
+    }
+    .drawer-footer-custom {
+      margin-top: 15px;
+      padding: 18px 16px 20px;
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      text-align: center;
+      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
+      flex-shrink: 0;
+    }
+    html.light-mode .drawer-footer-custom,
+    html[data-theme="light"] .drawer-footer-custom {
+      border-top-color: #e2e8f0 !important;
+      background: #f8fafc !important;
+    }
+    .developer-branding-tag {
+      font-size: 0.95rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .developer-sub-badge {
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    html.light-mode .developer-sub-badge,
+    html[data-theme="light"] .developer-sub-badge {
+      color: #0f172a !important;
+      background: #e2e8f0 !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    /* 🌟 WELCOME LOGIN MODAL (FULL POPUP) */
+    .nd-login-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 20, 0.82);
+      backdrop-filter: blur(10px);
+      z-index: 999999999;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+    }
+    .nd-login-backdrop.active { display: flex !important; }
+    .nd-login-card {
+      background: rgba(15, 23, 42, 0.96);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 380px;
+      padding: 30px 24px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      position: relative;
+      text-align: center;
+    }
+    html.light-mode .nd-login-card,
+    html[data-theme="light"] .nd-login-card {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    .nd-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      color: #94a3b8;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    .nd-logo-bubble {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nd-logo-bubble img { width: 44px; height: 44px; border-radius: 12px; }
+    .nd-btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #1f2937;
+      border: 1.5px solid #cbd5e1;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    /* 🌟 फ़ूटर स्टाइल */
+    .khan-full-footer {
+      background-color: #0b1a30 !important;
+      color: #ffffff !important;
+      padding: 38px 18px 30px !important;
+      margin-top: 40px !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      width: 100% !important;
+    }
+    .footer-inner-khan {
+      max-width: 1200px !important;
+      margin: 0 auto !important;
+      width: 100% !important;
+    }
+    .footer-columns-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 20px !important;
+      margin-bottom: 26px !important;
+    }
+    .footer-column-title {
+      font-size: 0.95rem !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      margin-bottom: 14px !important;
+    }
+    .footer-ul-links {
+      list-style: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .footer-ul-links a {
+      color: #94a3b8 !important;
+      text-decoration: none !important;
+      font-size: 0.85rem !important;
+      font-weight: 600 !important;
+    }
+    .founder-pro-strip {
+      background: rgba(15, 23, 42, 0.85) !important;
+      border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
+      border-radius: 16px !important;
+      padding: 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      margin-bottom: 24px !important;
+    }
+    .founder-info-left { display: flex !important; align-items: center !important; gap: 14px !important; }
+    .founder-avatar-pic {
+      width: 48px !important;
+      height: 48px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      border: 2px solid #38bdf8 !important;
+    }
+
+    /* 📱 बॉटम डॉक */
+    .mobile-bottom-dock {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: 60px !important;
+      background: #ffffff !important;
+      border-top: 1.5px solid #e2e8f0 !important;
+      display: flex !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      z-index: 9999999 !important;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+    }
+    html.dark-mode .mobile-bottom-dock,
+    html[data-theme="dark"] .mobile-bottom-dock {
+      background: #071120 !important;
+      border-top-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .dock-link-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-decoration: none !important;
+      color: #64748b !important;
+      flex: 1 !important;
+      height: 100% !important;
+      gap: 3px !important;
+    }
+    .dock-link-item.active { color: #0284c7 !important; }
+    .dock-link-item .dock-icon-svg { font-size: 1.45rem !important; }
+    .dock-link-item .dock-label-text { font-size: 0.74rem !important; font-weight: 700 !important; }
 
     @media (max-width: 600px) {
       .modal-box { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: none !important; }
@@ -251,7 +643,7 @@
           <div class="brand-badge-icon">N</div>
           <div class="brand-typography">
             <span class="brand-name">Nischay<span class="brand-name-accent">Desk</span></span>
-            <span class="brand-tagline">Smart Student Portal</span>
+            <span class="brand-tagline">10th Matric Hub</span>
           </div>
         </a>
       </div>
@@ -260,117 +652,249 @@
         <a href="index.html" class="nav-item">डैशबोर्ड</a>
         <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
         <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
-        <a href="syllabus.html" class="nav-item">📋 सिलेबस हब</a>
-        <a href="notes.html" class="nav-item">📚 स्टडी नोट्स</a>
+        <a href="bseb-print.html" class="nav-item" style="color: #38bdf8; font-weight: 800;">🎯 OMR एवं कॉपी जनरेटर</a>
+        <a href="syllabus.html" class="nav-item">📋 10th सिलेबस</a>
+        <a href="notes.html" class="nav-item">📚 10th नोट्स</a>
         <a href="test.html" class="nav-item">📝 चैप्टर टेस्ट</a>
         <a href="pyq.html" class="nav-item active">📖 क्वेश्चन बैंक</a>
         <a href="model-paper.html" class="nav-item">📝 मॉडल पेपर</a>
+        <a href="todo.html" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू लिस्ट</a>
+        <a href="pdf.html" target="_blank" class="nav-item" style="color: #a855f7; font-weight: 800;">🖼️ इमेज To PDF</a>
         <a href="ai-desk.html" class="nav-item">🤖 AI स्टूडियो</a>
       </div>
 
       <div class="nav-actions">
-        <a href="index.html" class="btn-home-exit" style="background: rgba(56, 189, 248, 0.12); border: 1px solid var(--border-subtle, #38bdf8); color: #38bdf8; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.78rem; font-weight: 700;">🏠 होम</a>
+        <button class="btn-auth-primary" id="headerAuthBtn" onclick="openWelcomeLoginModal()">
+          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
+            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
+          </svg>
+          <span id="authBtnLabel">Google लॉगिन</span>
+        </button>
+
+        <div class="user-profile-widget" id="userProfileWidget" onclick="openProfileModal()" style="display: none;">
+          <img src="" alt="Avatar" class="user-avatar-img" id="userAvatarImg" />
+          <div class="user-info-text">
+            <span class="user-display-name" id="userDisplayName">छात्र</span>
+            <span class="user-session-badge">Class 10th</span>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
 
   <!-- 2. MOBILE DRAWER -->
-  <div class="drawer-scrim" id="drawerScrim"></div>
+  <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
       <div class="drawer-brand">
         <div class="brand-badge-icon sm">N</div>
-        <span>NischayDesk</span>
+        <span>10th Matric Hub</span>
       </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn">&times;</button>
+      <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()">&times;</button>
     </div>
 
     <nav class="drawer-nav-list">
       <a href="index.html" class="drawer-nav-item">
-        <span class="icon">📊</span> मुख्य डैशबोर्ड
-      </a>
-      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 700;">
-        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
-      </a>
-      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80; font-weight: 700;">
-        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
+        <span class="icon">📊</span> 10th मुख्य डैशबोर्ड
       </a>
       <a href="syllabus.html" class="drawer-nav-item">
-        <span class="icon">📋</span> बोर्ड सिलेबस हब
+        <span class="icon">📋</span> 10th बोर्ड सिलेबस
       </a>
       <a href="notes.html" class="drawer-nav-item">
-        <span class="icon">📚</span> नोट्स लाइब्रेरी
-      </a>
-      <a href="test.html" class="drawer-nav-item">
-        <span class="icon">📝</span> चैप्टर टेस्ट सीरीज
+        <span class="icon">📚</span> 10th टॉपर्स नोट्स
       </a>
       <a href="pyq.html" class="drawer-nav-item active">
-        <span class="icon">📖</span> क्वेश्चन बैंक (PYQ)
+        <span class="icon">📖</span> 10th क्वेश्चन बैंक (2020-2026)
       </a>
       <a href="model-paper.html" class="drawer-nav-item">
-        <span class="icon">📝</span> ऑफिशियल मॉडल पेपर
+        <span class="icon">📝</span> 10th ऑफिशियल मॉडल पेपर
       </a>
-      <a href="ai-desk.html" class="drawer-nav-item">
-        <span class="icon">🤖</span> AI डाउट स्टूडियो
+      <a href="test.html" class="drawer-nav-item">
+        <span class="icon">📝</span> 10th चैप्टर-वाइज टेस्ट
       </a>
-      <a href="index.html#quickTools" class="drawer-nav-item">
-        <span class="icon">🛠️</span> स्मार्ट टूल्स
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8;">
+        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
+      </a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80;">
+        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
       </a>
 
-      <div class="drawer-theme-row">
-        <span class="theme-label">🌙 डार्क / लाइट मोड</span>
-        <label class="switch">
-          <input type="checkbox" id="themeSwitch">
-          <span class="slider round"></span>
-        </label>
+      <!-- SMART TOOLS -->
+      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+        <span class="icon">✅</span> माय टू-डू लिस्ट (To-Do List)
+      </a>
+      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;">
+        <span class="icon">🖼️</span> इमेज To PDF मेकर
+      </a>
+      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
+        <span class="icon">🤖</span> AI-Desk (स्मार्ट डाउट सॉल्वर)
+      </a>
+
+      <!-- 🌟 अन्य कक्षा पोर्टल्स -->
+      <div style="margin: 10px 0 4px; padding: 12px; background: rgba(56, 189, 248, 0.08); border-radius: 12px; border: 1px dashed rgba(56, 189, 248, 0.35);">
+        <span style="font-size: 0.74rem; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 8px;">अन्य कक्षा पोर्टल्स:</span>
+        <a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <span>🧪 कक्षा 11वीं (साइंस हब)</span>
+          <span style="color: #38bdf8; font-weight: 900;">खोलें ↗</span>
+        </a>
+        <a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0 0;">
+          <span>🏛️ कक्षा 12वीं (इंटर साइंस)</span>
+          <span style="color: #38bdf8; font-weight: 900;">खोलें ↗</span>
+        </a>
+      </div>
+
+      <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e;">
+        <span class="icon">💬</span> WhatsApp चैनल जुड़ें
+      </a>
+
+      <!-- डार्क/लाइट मोड स्विच -->
+      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+          <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
+          <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
     </nav>
 
-    <div class="drawer-footer">
-      <span class="platform-meta">NischayDesk Production</span>
+    <div class="drawer-footer-custom">
+      <div class="developer-branding-tag">Developed By Prince Kumar ⚡</div>
+      <div class="developer-sub-badge">NischayDesk Matric Hub • 2026</div>
     </div>
   </aside>
 
-  <div class="pyq-container">
-    <div id="ndHeroBanner">
-      <h1>📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020–2026)</h1>
-      <p>2020 से 2026 तक के वास्तविक परीक्षा प्रश्न पत्र। दोनों पालियों (Shift 1 & 2) के संपूर्ण हल।</p>
+  <!-- 3. MAIN CONTENT -->
+  <main class="dashboard-viewport">
+    <div class="pyq-container">
+      <!-- BREADCRUMB -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: #0284c7; text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(2, 132, 199, 0.12); border: 1px solid rgba(2, 132, 199, 0.25); padding: 5px 12px; border-radius: 20px;">
+          <span>🏠</span> मुख्य डैशबोर्ड
+        </a>
+        <span style="font-size: 0.78rem; color: #64748b; font-weight: 600;">NischayDesk 10th PYQ Archive</span>
+      </div>
+
+      <div id="ndHeroBanner">
+        <h1>📖 बिहार बोर्ड 10th क्वेश्चन बैंक (2020–2026)</h1>
+        <p>2020 से 2026 तक के वास्तविक परीक्षा प्रश्न पत्र। दोनों पालियों (Shift 1 & 2) के संपूर्ण हल।</p>
+      </div>
+
+      <!-- फिल्टर्स बार -->
+      <div id="ndFilterBar">
+        <select id="yearFilter">
+          <option value="all">सभी वर्ष (2020-2026)</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+
+        <select id="subjectFilter">
+          <option value="all">सभी विषय</option>
+          <option value="math">गणित (Math)</option>
+          <option value="science">विज्ञान (Science)</option>
+          <option value="sst">सामाजिक विज्ञान (SST)</option>
+          <option value="sanskrit">संस्कृत (Sanskrit)</option>
+          <option value="hindi">हिंदी (Hindi)</option>
+          <option value="english">अंग्रेजी (English)</option>
+        </select>
+
+        <select id="shiftFilter">
+          <option value="all">सभी पाली (Shift 1 & 2)</option>
+          <option value="1">प्रथम पाली (Shift 1)</option>
+          <option value="2">द्वितीय पाली (Shift 2)</option>
+        </select>
+
+        <input type="text" id="searchInput" placeholder="सब्जेक्ट या वर्ष खोजें...">
+      </div>
+
+      <!-- पेपर्स ग्रिड -->
+      <div id="pyqGrid"></div>
     </div>
+  </main>
 
-    <!-- फिल्टर्स बार -->
-    <div id="ndFilterBar">
-      <select id="yearFilter">
-        <option value="all">सभी वर्ष (2020-2026)</option>
-        <option value="2020">2020</option>
-        <option value="2021">2021</option>
-        <option value="2022">2022</option>
-        <option value="2023">2023</option>
-        <option value="2024">2024</option>
-        <option value="2025">2025</option>
-        <option value="2026">2026</option>
-      </select>
-
-      <select id="subjectFilter">
-        <option value="all">सभी विषय</option>
-        <option value="math">गणित (Math)</option>
-        <option value="science">विज्ञान (Science)</option>
-        <option value="sst">सामाजिक विज्ञान (SST)</option>
-        <option value="sanskrit">संस्कृत (Sanskrit)</option>
-        <option value="hindi">हिंदी (Hindi)</option>
-        <option value="english">अंग्रेजी (English)</option>
-      </select>
-
-      <select id="shiftFilter">
-        <option value="all">सभी पाली (Shift 1 & 2)</option>
-        <option value="1">प्रथम पाली (Shift 1)</option>
-        <option value="2">द्वितीय पाली (Shift 2)</option>
-      </select>
-
-      <input type="text" id="searchInput" placeholder="सब्जेक्ट या वर्ष खोजें...">
+  <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (Switching to 11th / 12th) -->
+  <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
+    <div class="nd-sheet-content">
+      <div class="nd-sheet-header">
+        <h3>कक्षा चुनें (Select Class)</h3>
+        <button type="button" class="nd-sheet-close-btn" onclick="closeCustomClassSheet()">&times;</button>
+      </div>
+      <div class="nd-sheet-options">
+        <div class="nd-sheet-opt-item selected" onclick="selectClassAndRedirect('10th')">
+          <span>Class 10th (मैट्रिक बोर्ड)</span>
+          <span style="color:#38bdf8; font-weight:900;">✓</span>
+        </div>
+        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('11th')">
+          <span>Class 11th (साइंस हब)</span>
+          <span style="color:#94a3b8; font-weight:900;">›</span>
+        </div>
+        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('12th')">
+          <span>Class 12th (इंटर साइंस बोर्ड)</span>
+          <span style="color:#94a3b8; font-weight:900;">›</span>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- पेपर्स ग्रिड -->
-    <div id="pyqGrid"></div>
+  <!-- 🌟 WELCOME LOGIN MODAL (FULL POPUP) -->
+  <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
+    <div class="nd-login-card">
+      <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
+
+      <div class="nd-logo-bubble">
+        <img src="logo.png" alt="NischayDesk Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
+      </div>
+
+      <h3 style="color:var(--text-main); font-size:1.35rem; font-weight:900; margin-bottom:6px;">Welcome to <span style="color:#38bdf8;">NischayDesk</span></h3>
+      <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:20px;">बिहार बोर्ड (BSEB) डिजिटल परीक्षा एवं टॉपर तैयारी पोर्टल 🚀</p>
+
+      <button type="button" class="nd-btn-google" id="btnContinueGoogleModal" onclick="triggerGooglePopupFromModal()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:20px; height:20px;">
+        <span>Continue with Google</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- DEDICATED USER PROFILE MODAL -->
+  <div class="nd-sheet-backdrop" id="customProfileModal" style="display: none; align-items: center; justify-content: center; padding: 16px;">
+    <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
+      
+      <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
+      
+      <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
+        <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
+        <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
+      </div>
+
+      <h3 id="modalUserName" style="margin: 0 0 4px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
+      <p id="modalUserEmail" style="margin: 0 0 16px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
+
+      <div style="text-align: left; margin-bottom: 16px;">
+        <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 8px;">अध्ययन कक्षा बदलें:</label>
+        <button type="button" onclick="closeProfileModal(); openCustomClassSheet();" style="width: 100%; background: #13224a; border: 1.5px solid #1e3a8a; color: #38bdf8; padding: 11px 14px; border-radius: 10px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+          <span>Class 10th (मैट्रिक)</span>
+          <span>बदलें ▾</span>
+        </button>
+      </div>
+
+      <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+        🚪 लॉगआउट करें (Logout)
+      </button>
+
+      <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
+        ⏳ सुरक्षित लॉगआउट हो रहा है...
+      </div>
+
+    </div>
   </div>
 
   <!-- PDF देखने का मोडल -->
@@ -403,8 +927,87 @@
     <div class="nd-toast-content" id="ndToastMsg">यह प्रश्न पत्र जल्द अपलोड किया जा रहा है!</div>
   </div>
 
+  <!-- 4. FOOTER (Full 2 Columns + Founder Card) -->
+  <footer class="khan-full-footer">
+    <div class="footer-inner-khan">
+      <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 8px;">
+        NischayDesk — कक्षा 10वीं बिहार बोर्ड मैट्रिक विशेष अध्ययन मंच
+      </div>
+      <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.5; margin-bottom: 24px;">
+        हमारा उद्देश्य बिहार विद्यालय परीक्षा समिति (BSEB) के प्रत्येक विद्यार्थी को 100% निःशुल्क, उच्च गुणवत्ता वाले नोट्स और परीक्षा सिमुलेटर उपलब्ध कराना है।
+      </p>
+
+      <div class="footer-columns-grid">
+        <div>
+          <div class="footer-column-title">पोर्टल मेनू</div>
+          <ul class="footer-ul-links">
+            <li><a href="index.html">➔ 10th मुख्य डैशबोर्ड</a></li>
+            <li><a href="notes.html">➔ हस्तलिखित टॉपर्स नोट्स</a></li>
+            <li><a href="syllabus.html">➔ आधिकारिक सिलेबस & ब्लूप्रिंट</a></li>
+            <li><a href="pyq.html">➔ मैट्रिक क्वेश्चन बैंक (2020–2026)</a></li>
+            <li><a href="model-paper.html">➔ ऑफिशियल मॉडल पेपर्स</a></li>
+            <li><a href="bseb-simulator.html">➔ 3h 15m लाइव परीक्षा हॉल</a></li>
+            <li><a href="bseb-result.html">➔ परिणाम व मार्कशीट पोर्टल</a></li>
+            <li><a href="bseb-print.html">➔ OMR शीट व आंसर कॉपी</a></li>
+            <li><a href="todo.html" target="_blank">➔ माय टू-डू लिस्ट (To-Do)</a></li>
+            <li><a href="pdf.html" target="_blank">➔ इमेज To PDF मेकर</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-column-title">10th मुख्य विषय</div>
+          <ul class="footer-ul-links">
+            <li><a href="notes.html?filter=10-math">➔ गणित (Mathematics)</a></li>
+            <li><a href="notes.html?filter=10-science-phy">➔ भौतिकी (Physics)</a></li>
+            <li><a href="notes.html?filter=10-science-chem">➔ रसायन विज्ञान (Chemistry)</a></li>
+            <li><a href="notes.html?filter=10-science-bio">➔ जीव विज्ञान (Biology)</a></li>
+            <li><a href="notes.html?filter=10-sst-all">➔ सम्पूर्ण सामाजिक विज्ञान (SST)</a></li>
+            <li><a href="notes.html?filter=10-sanskrit">➔ संस्कृत (पीयूषम् एवं व्याकरण)</a></li>
+            <li><a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: #38bdf8;">➔ कक्षा 11वीं साइंस हब ↗</a></li>
+            <li><a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: #38bdf8;">➔ कक्षा 12वीं इंटर साइंस ↗</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="founder-pro-strip">
+        <div class="founder-info-left">
+          <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
+          <div>
+            <h5 style="margin: 0; color: #fff; font-size: 1rem; font-weight: 800;">Prince Kumar</h5>
+            <p style="margin: 2px 0 0; color: #94a3b8; font-size: 0.78rem;">Founder & Developer, NischayDesk (463/500 Bihar Board Topper)</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.75rem; color: #64748b; text-align: center; line-height: 1.6;">
+        © 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 10वीं मैट्रिक विशेष पोर्टल<br>
+        Crafted with ❤️ by Prince Kumar for Bihar Board Students.
+      </div>
+    </div>
+  </footer>
+
+  <!-- 5. MOBILE BOTTOM DOCK -->
+  <nav class="mobile-bottom-dock">
+    <a href="index.html" class="dock-link-item">
+      <span class="dock-icon-svg">🏠</span>
+      <span class="dock-label-text">10th होम</span>
+    </a>
+    <a href="notes.html" class="dock-link-item">
+      <span class="dock-icon-svg">📖</span>
+      <span class="dock-label-text">नोट्स</span>
+    </a>
+    <a href="pyq.html" class="dock-link-item active">
+      <span class="dock-icon-svg">📚</span>
+      <span class="dock-label-text">क्वेश्चन बैंक</span>
+    </a>
+    <a href="bseb-simulator.html" class="dock-link-item">
+      <span class="dock-icon-svg">🏛️</span>
+      <span class="dock-label-text">एग्जाम हॉल</span>
+    </a>
+  </nav>
+
+  <!-- Scripts -->
   <script src="pyq-data.js"></script>
-  <script src="main.js"></script>
   <script>
     const pyqGrid = document.getElementById('pyqGrid');
     const yearFilter = document.getElementById('yearFilter');
@@ -418,7 +1021,75 @@
 
     let toastTimer = null;
 
-    // प्रोफ़ेशनल टोस्ट दिखाने का फ़ंक्शन (डिफ़ॉल्ट alert की जगह)
+    function initThemeSystem() {
+      const themeSwitch = document.getElementById("themeSwitch");
+      const currentTheme = localStorage.getItem("nd_app_theme") || "light";
+
+      if (themeSwitch) {
+        themeSwitch.checked = (currentTheme === "light");
+        themeSwitch.onchange = function() {
+          if (this.checked) {
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.classList.add("light-mode");
+            localStorage.setItem("nd_app_theme", "light");
+          } else {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.classList.remove("light-mode");
+            localStorage.setItem("nd_app_theme", "dark");
+          }
+        };
+      }
+    }
+
+    function openDrawerUnified() {
+      document.getElementById('sideDrawer').classList.add('active');
+      document.getElementById('drawerScrim').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawerUnified() {
+      document.getElementById('sideDrawer').classList.remove('active');
+      document.getElementById('drawerScrim').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('mobileMenuBtn').onclick = openDrawerUnified;
+
+    function openCustomClassSheet() {
+      const backdrop = document.getElementById('ndClassSheetBackdrop');
+      if (backdrop) {
+        backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeCustomClassSheet() {
+      const backdrop = document.getElementById('ndClassSheetBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function handleClassSheetBackdrop(e) {
+      if (e.target.id === 'ndClassSheetBackdrop') closeCustomClassSheet();
+    }
+
+    function selectClassAndRedirect(chosenClass) {
+      closeCustomClassSheet();
+      localStorage.setItem("nd_selected_class", chosenClass);
+      localStorage.setItem("nischay_user_class", chosenClass);
+      localStorage.setItem("user_class", chosenClass);
+
+      if (chosenClass === "11th") {
+        window.location.href = "https://nischaydesk.github.io/nischaydesk/class11.html";
+      } else if (chosenClass === "12th") {
+        window.location.href = "https://nischaydesk.github.io/nischaydesk/class12.html";
+      } else {
+        window.location.href = "https://nischaydesk.github.io/nischaydesk/index.html";
+      }
+    }
+
     function showToast(msg, icon = '⏳') {
       if (toastTimer) clearTimeout(toastTimer);
       ndToastMsg.innerText = msg;
@@ -459,7 +1130,6 @@
 
     function renderPyq() {
       const isLightMode = document.documentElement.classList.contains('light-mode') || 
-                          document.body.classList.contains('light-mode') ||
                           document.documentElement.getAttribute('data-theme') === 'light';
 
       const year = yearFilter.value;
@@ -508,15 +1178,12 @@
         const hasPdf = item.pdfUrl && item.pdfUrl.trim() !== '' && !item.pdfUrl.includes('xxxx');
         const hasDown = item.downloadUrl && item.downloadUrl.trim() !== '' && !item.downloadUrl.includes('xxxx');
 
-        // डबल ब्रैकेट फिक्स: साफ़ शीर्षक
         const safeDocTitle = `${item.subject} - वर्ष ${item.year} (${item.shift})`;
 
-        // पढ़ें एक्शन (प्रोफ़ेशनल टोस्ट के साथ)
         const readBtnAction = hasPdf 
           ? `onclick="openPdfModal('${safeDocTitle}', '${item.pdfUrl}')"`
           : `onclick="showToast('वर्ष ${item.year} : ${item.subject} का प्रश्न पत्र जल्द अपलोड किया जा रहा है!')"`;
 
-        // डाउनलोड एक्शन (प्रोफ़ेशनल टोस्ट के साथ)
         const cleanDownloadUrl = hasDown ? getDirectDownloadUrl(item.downloadUrl) : '';
         const downBtnAction = cleanDownloadUrl 
           ? `href="${cleanDownloadUrl}" target="_blank" download`
@@ -589,7 +1256,6 @@
       const modalBox = document.getElementById('modalBox');
       if (!document.fullscreenElement) {
         if (modalBox.requestFullscreen) modalBox.requestFullscreen();
-        else if (modalBox.webkitRequestFullscreen) modalBox.webkitRequestFullscreen();
       } else {
         if (document.exitFullscreen) document.exitFullscreen();
       }
@@ -603,16 +1269,105 @@
       if (e.key === 'Escape') closePdfModal();
     });
 
+    /* 🌟 AUTH STATE SYNC */
+    function syncUserAuthState(user) {
+      const authBtn = document.getElementById('headerAuthBtn');
+      const profileWidget = document.getElementById('userProfileWidget');
+      const userDisplay = document.getElementById('userDisplayName');
+      const userImg = document.getElementById('userAvatarImg');
+
+      const modalName = document.getElementById('modalUserName');
+      const modalEmail = document.getElementById('modalUserEmail');
+      const modalImg = document.getElementById('modalUserImg');
+
+      if (user) {
+        if (authBtn) authBtn.style.display = 'none';
+        if (profileWidget) profileWidget.style.display = 'flex';
+
+        const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
+        const firstName = rawName.trim().split(' ')[0];
+        const userPhoto = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
+
+        if (userDisplay) userDisplay.textContent = firstName;
+        if (userImg) userImg.src = userPhoto;
+
+        if (modalName) modalName.textContent = user.displayName || firstName;
+        if (modalEmail) modalEmail.textContent = user.email || "";
+        if (modalImg) modalImg.src = userPhoto;
+      } else {
+        if (authBtn) authBtn.style.display = 'inline-flex';
+        if (profileWidget) profileWidget.style.display = 'none';
+
+        if (modalName) modalName.textContent = "छात्र";
+        if (modalEmail) modalEmail.textContent = "student@email.com";
+        if (modalImg) modalImg.src = "https://ui-avatars.com/api/?name=User&background=0284c7&color=fff";
+      }
+    }
+
+    function openWelcomeLoginModal() {
+      const modal = document.getElementById('ndWelcomeLoginModal');
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeWelcomeLoginModal() {
+      const modal = document.getElementById('ndWelcomeLoginModal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function handleOutsideModalClick(e) {
+      if (e.target.id === 'ndWelcomeLoginModal') closeWelcomeLoginModal();
+    }
+
+    function triggerGooglePopupFromModal() {
+      if (window.firebase && firebase.auth) {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(() => {
+          closeWelcomeLoginModal();
+          window.location.reload();
+        }).catch(() => {
+          alert("लॉगिन विफल रहा, पुनः प्रयास करें");
+        });
+      }
+    }
+
+    function openProfileModal() {
+      document.getElementById('customProfileModal').style.display = 'flex';
+    }
+
+    function closeProfileModal() {
+      document.getElementById('customProfileModal').style.display = 'none';
+    }
+
+    function handleSlowLogout() {
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().finally(() => {
+          closeProfileModal();
+          window.location.reload();
+        });
+      }
+    }
+
     yearFilter.addEventListener('change', renderPyq);
     subjectFilter.addEventListener('change', renderPyq);
     shiftFilter.addEventListener('change', renderPyq);
     searchInput.addEventListener('input', renderPyq);
 
-    const themeObserver = new MutationObserver(renderPyq);
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
-    themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    document.addEventListener("DOMContentLoaded", () => {
+      initThemeSystem();
+      renderPyq();
 
-    document.addEventListener('DOMContentLoaded', renderPyq);
+      if (window.firebase && firebase.auth) {
+        firebase.auth().onAuthStateChanged((user) => {
+          syncUserAuthState(user);
+        });
+      }
+    });
   </script>
 </body>
 </html>
