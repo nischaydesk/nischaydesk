@@ -98,17 +98,17 @@
       --brand-blue: #0284c7;
       --accent-cyan: #0284c7;
       --accent-green: #059669;
-      --bg-page: #f1f5f9;
+      --bg-page: #f8fafc;
       --card-bg: #ffffff !important;
-      --card-border: #cbd5e1 !important;
+      --card-border: #e2e8f0 !important;
       --text-main: #0f172a !important;
-      --text-muted: #475569 !important;
+      --text-muted: #64748b !important;
     }
 
     body {
       background-color: var(--bg-page);
       color: var(--text-main);
-      padding-bottom: 70px;
+      padding-bottom: 75px;
       overflow-x: hidden !important;
       width: 100% !important;
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
@@ -246,7 +246,7 @@
     .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
       color: #ffffff;
-      padding: 24px 16px 32px;
+      padding: 24px 16px 28px;
       border-radius: 0 0 24px 24px;
       border-bottom: 1px solid var(--card-border);
       width: 100% !important;
@@ -267,7 +267,7 @@
       gap: 6px;
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #38bdf8;
+      color: #0284c7;
       padding: 4px 12px;
       border-radius: 999px;
       font-size: 0.74rem;
@@ -282,14 +282,14 @@
       letter-spacing: -0.4px;
     }
     .hero-main-title span {
-      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .hero-desc-p {
       font-size: 0.88rem;
       color: var(--text-muted);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       line-height: 1.55;
     }
     .hero-buttons-duo {
@@ -309,13 +309,14 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.3);
       text-align: center;
+      transition: transform 0.15s ease;
     }
+    .hero-btn-primary:active { transform: scale(0.97); }
     .hero-btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: #38bdf8 !important;
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff !important;
       text-decoration: none;
       padding: 12px 10px;
       border-radius: 12px;
@@ -326,26 +327,28 @@
       justify-content: center;
       gap: 6px;
       text-align: center;
+      transition: transform 0.15s ease;
     }
+    .hero-btn-secondary:active { transform: scale(0.97); }
 
-    /* 🌟 क्लास 10th स्टेटस बार (Fully Clickable) */
+    /* 🌟 क्लास 10th स्टेटस बार (Touch optimized) */
     .guest-class-bar {
       margin-bottom: 16px;
-      background: rgba(2, 132, 199, 0.12);
+      background: rgba(2, 132, 199, 0.1);
       border: 1.5px solid rgba(56, 189, 248, 0.35);
       border-radius: 14px;
       padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       gap: 10px;
       cursor: pointer;
       user-select: none;
-      transition: background 0.15s ease;
+      transition: all 0.2s ease;
     }
     .guest-class-bar:active {
-      background: rgba(2, 132, 199, 0.2);
+      transform: scale(0.99);
+      background: rgba(2, 132, 199, 0.18);
     }
     .guest-class-info {
       display: flex;
@@ -366,7 +369,7 @@
     .class-switch-btn {
       background: rgba(56, 189, 248, 0.15);
       border: 1px solid rgba(56, 189, 248, 0.4);
-      color: #38bdf8;
+      color: #0284c7;
       padding: 5px 12px;
       border-radius: 8px;
       font-size: 0.78rem;
@@ -395,7 +398,7 @@
     .trust-stat-box h4 {
       font-size: 1.15rem;
       font-weight: 900;
-      color: #38bdf8;
+      color: #0284c7;
       line-height: 1.1;
       margin: 0;
     }
@@ -407,13 +410,13 @@
       margin-bottom: 0;
     }
 
-    /* 🌟 OMR क्विज़ कार्ड */
+    /* 🌟 OMR क्विज़ कार्ड (Spaced for thumbs) */
     .daily-poll-card {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(16, 185, 129, 0.09));
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.12), rgba(16, 185, 129, 0.08));
       border: 1.5px solid rgba(56, 189, 248, 0.32);
       border-radius: 16px;
       padding: 16px;
-      margin-top: 18px;
+      margin-top: 20px;
       position: relative;
     }
     .poll-tag-row {
@@ -435,7 +438,7 @@
     }
     .poll-counter-indicator {
       font-size: 0.72rem;
-      color: #38bdf8;
+      color: #0284c7;
       font-weight: 800;
       background: rgba(56, 189, 248, 0.12);
       padding: 2px 8px;
@@ -452,38 +455,41 @@
     .poll-question-text {
       font-size: 0.95rem;
       font-weight: 800;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       color: var(--text-main);
       line-height: 1.45;
-      min-height: 42px;
+      min-height: 40px;
     }
     .poll-options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
     }
     .poll-opt-btn {
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      border: 1.5px solid var(--card-border);
       color: var(--text-main);
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 11px 12px;
+      border-radius: 10px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      user-select: none;
     }
-    .poll-opt-btn:hover { border-color: #38bdf8; }
+    .poll-opt-btn:active { transform: scale(0.97); }
     .poll-opt-btn.correct {
-      background: rgba(16, 185, 129, 0.25) !important;
+      background: rgba(16, 185, 129, 0.2) !important;
       border-color: #10b981 !important;
-      color: #34d399 !important;
+      color: #059669 !important;
+      font-weight: 800;
     }
     .poll-opt-btn.wrong {
-      background: rgba(239, 68, 68, 0.25) !important;
+      background: rgba(239, 68, 68, 0.2) !important;
       border-color: #ef4444 !important;
-      color: #f87171 !important;
+      color: #dc2626 !important;
+      font-weight: 800;
     }
 
     /* 🌟 पिल स्क्रोलर */
@@ -502,13 +508,14 @@
     .pill-anchor {
       flex: 0 0 auto;
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      border: 1.5px solid var(--card-border);
       color: var(--text-main);
       padding: 7px 15px;
       border-radius: 999px;
       font-size: 0.8rem;
       font-weight: 700;
       text-decoration: none;
+      transition: all 0.2s ease;
     }
     .pill-anchor.active {
       background: #0284c7;
@@ -557,8 +564,8 @@
       justify-content: center;
       font-size: 1.6rem;
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
       transition: transform 0.15s ease;
     }
     .pro-icon-link:active .icon-squircle-bubble { transform: scale(0.92); }
@@ -569,7 +576,7 @@
       line-height: 1.2;
     }
 
-    /* 🌟 रो लिस्ट्स */
+    /* 🌟 रो लिस्ट्स (Anti-Truncation Fixed) */
     .pro-rows-container {
       display: flex;
       flex-direction: column;
@@ -590,7 +597,7 @@
     }
     .pro-list-row:active {
       transform: scale(0.99);
-      background: rgba(56, 189, 248, 0.1);
+      background: rgba(56, 189, 248, 0.08);
     }
     .pro-row-left {
       display: flex;
@@ -600,24 +607,25 @@
       flex: 1;
     }
     .pro-row-badge-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       flex-shrink: 0;
     }
-    .pro-row-text { min-width: 0; }
+    .pro-row-text { 
+      min-width: 0; 
+      flex: 1;
+    }
     .pro-row-text h4 {
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       font-weight: 800;
       color: var(--text-main);
-      margin: 0 0 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin: 0 0 3px;
+      word-break: break-word; /* Prevents awkward dots */
     }
     .pro-row-text p {
       font-size: 0.76rem;
@@ -626,10 +634,11 @@
       line-height: 1.35;
     }
     .pro-row-arrow {
-      color: #64748b;
+      color: #94a3b8;
       font-weight: 800;
-      font-size: 1.1rem;
-      padding-left: 8px;
+      font-size: 1.2rem;
+      padding-left: 10px;
+      flex-shrink: 0;
     }
 
     /* 📱 कस्टम क्लास बॉटम-शीट */
@@ -642,6 +651,7 @@
       z-index: 999999999;
       align-items: flex-end;
       justify-content: center;
+      padding-bottom: 60px;
     }
     .nd-sheet-backdrop.active { display: flex !important; }
     .nd-sheet-content {
@@ -715,18 +725,18 @@
       color: #0f172a !important;
     }
     .nd-sheet-opt-item.selected {
-      background: rgba(2, 132, 199, 0.2) !important;
+      background: rgba(2, 132, 199, 0.15) !important;
       border-color: #0284c7 !important;
-      color: #38bdf8 !important;
+      color: #0284c7 !important;
     }
 
-    /* 🌟 साइड ड्रॉअर - OVERFLOW & PADDING FIXED */
+    /* 🌟 साइड ड्रॉअर - 100% REFINED & ZERO OVERFLOW */
     .drawer-scrim {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(2, 6, 23, 0.7);
-      backdrop-filter: blur(6px);
+      background: rgba(4, 9, 20, 0.75);
+      backdrop-filter: blur(8px);
       z-index: 9999998 !important;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -741,43 +751,41 @@
       top: 0 !important;
       left: 0 !important;
       bottom: 0 !important;
-      width: 300px !important;
-      max-width: 88vw !important;
+      width: min(320px, 84vw) !important;
       height: 100vh !important;
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
       display: flex !important;
       flex-direction: column !important;
-      background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.2) 0%, rgba(7, 17, 32, 0.98) 100%) !important;
-      backdrop-filter: blur(18px) !important;
-      border-right: 1.5px solid rgba(56, 189, 248, 0.35) !important;
-      box-shadow: 15px 0 40px rgba(0, 0, 0, 0.7) !important;
+      background: #ffffff !important;
+      border-right: 1.5px solid #e2e8f0 !important;
+      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.25) !important;
       transform: translateX(-100%) !important;
-      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
       z-index: 99999999 !important;
       visibility: hidden;
       padding-bottom: 120px !important;
     }
-    html.light-mode .side-drawer,
-    html[data-theme="light"] .side-drawer {
-      background: #ffffff !important;
-      border-right-color: #cbd5e1 !important;
+    html.dark-mode .side-drawer,
+    html[data-theme="dark"] .side-drawer {
+      background: #071120 !important;
+      border-right-color: rgba(56, 189, 248, 0.25) !important;
     }
     .side-drawer.active {
       transform: translateX(0) !important;
       visibility: visible !important;
     }
     .drawer-header {
-      padding: 16px 16px;
+      padding: 16px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid #e2e8f0;
       flex-shrink: 0;
     }
-    html.light-mode .drawer-header,
-    html[data-theme="light"] .drawer-header {
-      border-bottom-color: #e2e8f0 !important;
+    html.dark-mode .drawer-header,
+    html[data-theme="dark"] .drawer-header {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
     }
     .drawer-brand {
       display: flex;
@@ -785,29 +793,31 @@
       gap: 10px;
       font-size: 1.15rem;
       font-weight: 800;
-      color: #fff;
+      color: #0f172a;
     }
-    html.light-mode .drawer-brand,
-    html[data-theme="light"] .drawer-brand {
-      color: #0f172a !important;
+    html.dark-mode .drawer-brand,
+    html[data-theme="dark"] .drawer-brand {
+      color: #ffffff;
     }
     .drawer-close-btn {
-      background: rgba(255,255,255,0.08);
+      background: #f1f5f9;
       border: none;
-      color: #94a3b8;
+      color: #475569;
       width: 32px;
       height: 32px;
-      border-radius: 8px;
-      font-size: 1.4rem;
+      border-radius: 50%;
+      font-size: 1.3rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s;
     }
-    html.light-mode .drawer-close-btn,
-    html[data-theme="light"] .drawer-close-btn {
-      background: #f1f5f9 !important;
-      color: #475569 !important;
+    .drawer-close-btn:active { transform: scale(0.9); }
+    html.dark-mode .drawer-close-btn,
+    html[data-theme="dark"] .drawer-close-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
     }
     .drawer-nav-list {
       padding: 12px;
@@ -822,15 +832,15 @@
       gap: 12px;
       padding: 11px 14px;
       border-radius: 10px;
-      color: #cbd5e1;
+      color: #334155;
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 700;
       transition: all 0.2s ease;
     }
-    html.light-mode .drawer-nav-item,
-    html[data-theme="light"] .drawer-nav-item {
-      color: #334155 !important;
+    html.dark-mode .drawer-nav-item,
+    html[data-theme="dark"] .drawer-nav-item {
+      color: #cbd5e1;
     }
     .drawer-nav-item.active {
       background: #0284c7 !important;
@@ -841,39 +851,37 @@
     .drawer-footer-custom {
       margin-top: 15px;
       padding: 18px 16px 20px;
-      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      border-top: 1px solid #e2e8f0;
       text-align: center;
-      background: linear-gradient(180deg, rgba(4, 9, 20, 0) 0%, rgba(2, 132, 199, 0.15) 100%);
+      background: #f8fafc;
       flex-shrink: 0;
     }
-    html.light-mode .drawer-footer-custom,
-    html[data-theme="light"] .drawer-footer-custom {
-      border-top-color: #e2e8f0 !important;
-      background: #f8fafc !important;
+    html.dark-mode .drawer-footer-custom,
+    html[data-theme="dark"] .drawer-footer-custom {
+      border-top-color: rgba(56, 189, 248, 0.2);
+      background: rgba(4, 9, 20, 0.6);
     }
     .developer-branding-tag {
       font-size: 0.95rem;
       font-weight: 900;
-      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 50%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #0284c7;
       margin-bottom: 6px;
     }
     .developer-sub-badge {
       font-size: 0.72rem;
-      color: #e2e8f0;
+      color: #0f172a;
       font-weight: 700;
-      background: rgba(255, 255, 255, 0.1);
+      background: #e2e8f0;
       padding: 6px 14px;
       border-radius: 999px;
       display: inline-block;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid #cbd5e1;
     }
-    html.light-mode .developer-sub-badge,
-    html[data-theme="light"] .developer-sub-badge {
-      color: #0f172a !important;
-      background: #e2e8f0 !important;
-      border-color: #cbd5e1 !important;
+    html.dark-mode .developer-sub-badge,
+    html[data-theme="dark"] .developer-sub-badge {
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.15);
     }
 
     /* 🌟 WELCOME LOGIN MODAL (FULL POPUP) */
@@ -892,21 +900,21 @@
       display: flex !important;
     }
     .nd-login-card {
-      background: rgba(15, 23, 42, 0.96);
-      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
       border-radius: 24px;
       width: 100%;
       max-width: 380px;
       padding: 30px 24px 24px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
       position: relative;
       text-align: center;
       animation: ndPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    html.light-mode .nd-login-card,
-    html[data-theme="light"] .nd-login-card {
-      background: #ffffff !important;
-      border-color: #cbd5e1 !important;
+    html.dark-mode .nd-login-card,
+    html[data-theme="dark"] .nd-login-card {
+      background: rgba(15, 23, 42, 0.96) !important;
+      border-color: rgba(56, 189, 248, 0.35) !important;
     }
     @keyframes ndPop {
       0% { transform: scale(0.85); opacity: 0; }
@@ -916,12 +924,12 @@
       position: absolute;
       top: 14px;
       right: 16px;
-      background: rgba(255, 255, 255, 0.08);
+      background: #f1f5f9;
       border: none;
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      color: #94a3b8;
+      color: #64748b;
       font-size: 1.3rem;
       cursor: pointer;
       display: flex;
@@ -938,7 +946,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3);
     }
     .nd-logo-bubble img {
       width: 44px;
@@ -952,7 +960,7 @@
       margin-bottom: 6px;
       color: var(--text-main);
     }
-    .nd-login-card h3 span { color: #38bdf8; }
+    .nd-login-card h3 span { color: #0284c7; }
     .nd-tagline {
       font-size: 0.82rem;
       color: var(--text-muted);
@@ -961,7 +969,7 @@
     }
     .nd-features-box {
       background: rgba(2, 132, 199, 0.08);
-      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border: 1px dashed rgba(56, 189, 248, 0.4);
       border-radius: 14px;
       padding: 12px 14px;
       text-align: left;
@@ -991,7 +999,7 @@
       justify-content: center;
       gap: 12px;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     }
     .nd-btn-google:active { transform: scale(0.97); }
     .nd-btn-google img { width: 22px; height: 22px; }
@@ -1002,7 +1010,7 @@
       line-height: 1.4;
     }
 
-    /* 🌟 फ़ूटर स्टाइल - 2 COLUMNS RESTORED */
+    /* 🌟 फ़ूटर स्टाइल */
     .khan-full-footer {
       background-color: #0b1a30 !important;
       color: #ffffff !important;
@@ -1260,7 +1268,7 @@
     </nav>
   </header>
 
-  <!-- 2. साइड ड्रॉअर -->
+  <!-- 2. साइड ड्रॉअर (100% No-Cut, No-Space Fit) -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -1290,34 +1298,34 @@
       <a href="test.html" class="drawer-nav-item">
         <span class="icon">📝</span> 10th चैप्टर-वाइज टेस्ट
       </a>
-      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8;">
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #0284c7; font-weight: 700;">
         <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
       </a>
-      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80;">
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #059669; font-weight: 700;">
         <span class="icon">🔍</span> परिणाम देखें (Result Portal)
       </a>
 
       <!-- 🛠️ COMMON SMART TOOLS -->
-      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.08); border-radius: 10px;">
         <span class="icon">✅</span> माय टू-डू लिस्ट (To-Do List)
       </a>
-      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;">
+      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.08); border-radius: 10px;">
         <span class="icon">🖼️</span> इमेज To PDF मेकर
       </a>
-      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
+      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.08); border-radius: 10px;">
         <span class="icon">🤖</span> AI-Desk (स्मार्ट डाउट सॉल्वर)
       </a>
 
       <!-- 🌟 अन्य कक्षा पोर्टल्स -->
-      <div style="margin: 10px 0 4px; padding: 12px; background: rgba(56, 189, 248, 0.08); border-radius: 12px; border: 1px dashed rgba(56, 189, 248, 0.35);">
-        <span style="font-size: 0.74rem; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 8px;">अन्य कक्षा पोर्टल्स:</span>
-        <a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+      <div style="margin: 10px 0 4px; padding: 12px; background: rgba(2, 132, 199, 0.06); border-radius: 12px; border: 1px dashed rgba(2, 132, 199, 0.35);">
+        <span style="font-size: 0.74rem; color: #0284c7; font-weight: 800; display: block; margin-bottom: 8px;">अन्य कक्षा पोर्टल्स:</span>
+        <a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
           <span>🧪 कक्षा 11वीं (साइंस हब)</span>
-          <span style="color: #38bdf8; font-weight: 900;">खोलें ↗</span>
+          <span style="color: #0284c7; font-weight: 900;">खोलें ↗</span>
         </a>
         <a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0 0;">
           <span>🏛️ कक्षा 12वीं (इंटर साइंस)</span>
-          <span style="color: #38bdf8; font-weight: 900;">खोलें ↗</span>
+          <span style="color: #0284c7; font-weight: 900;">खोलें ↗</span>
         </a>
       </div>
 
@@ -1326,7 +1334,7 @@
       </a>
 
       <!-- डार्क/लाइट मोड स्विच -->
-      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
+      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(128, 128, 128, 0.06); border-radius: 12px;">
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
           <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
           <label class="switch">
@@ -1357,11 +1365,11 @@
         <!-- Welcome Card -->
         <div id="personalizedWelcomeCard" style="display: none; margin-bottom: 12px;">
           <div id="welcomeGreetingText" style="font-size: 1.35rem; font-weight: 800; line-height: 1.2;">
-            नमस्ते, <span id="welcomeUserName" style="color: #38bdf8;">छात्र</span> 👋
+            नमस्ते, <span id="welcomeUserName" style="color: #0284c7;">छात्र</span> 👋
           </div>
           <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 0.78rem;">
             <span style="color: var(--text-muted);">अध्ययन कक्षा:</span>
-            <span style="color: #38bdf8; font-weight: 800;">Class 10th (मैट्रिक)</span>
+            <span style="color: #0284c7; font-weight: 800;">Class 10th (मैट्रिक)</span>
           </div>
         </div>
 
@@ -1386,7 +1394,7 @@
           <a href="bseb-simulator.html" class="hero-btn-primary">
             <span>🏛️ परीक्षा हॉल में जाएँ</span>
           </a>
-          <a href="notes.html" class="hero-btn-secondary" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #fff !important; border: none;">
+          <a href="notes.html" class="hero-btn-secondary">
             <span>📚 10th नोट्स पढ़ें</span>
           </a>
         </div>
@@ -1403,7 +1411,7 @@
             <div class="poll-options-grid" id="pollOptionsGrid"></div>
           </div>
 
-          <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
+          <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 10px;"></div>
         </div>
 
       </div>
@@ -1438,7 +1446,7 @@
       <a href="syllabus.html" class="pill-anchor">📋 आधिकारिक सिलेबस</a>
       <a href="todo.html" target="_blank" class="pill-anchor" style="border-color: #10b981; color: #10b981;">✅ टू-डू लिस्ट</a>
       <a href="pdf.html" target="_blank" class="pill-anchor" style="border-color: #a855f7; color: #a855f7;">🖼️ इमेज To PDF</a>
-      <a href="bseb-print.html" class="pill-anchor" style="border-color: #38bdf8; color: #38bdf8;">🎯 OMR व कॉपी टूल</a>
+      <a href="bseb-print.html" class="pill-anchor" style="border-color: #0284c7; color: #0284c7;">🎯 OMR व कॉपी टूल</a>
       <a href="bseb-result.html" class="pill-anchor">📊 रिजल्ट पोर्टल</a>
     </div>
 
@@ -1449,8 +1457,8 @@
       </div>
       <div class="pro-icons-grid">
         <a href="notes.html" class="pro-icon-link">
-          <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #38bdf8;">📖</div>
-          <span style="color:#38bdf8; font-weight: 800;">10th नोट्स</span>
+          <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #0284c7;">📖</div>
+          <span style="color:#0284c7; font-weight: 800;">10th नोट्स</span>
         </a>
 
         <a href="model-paper.html" class="pro-icon-link">
@@ -1500,11 +1508,11 @@
       </div>
     </section>
 
-    <!-- 🌟 CLASS 10TH MATRIC SUBJECTS -->
+    <!-- 🌟 CLASS 10TH MATRIC SUBJECTS (Anti-Truncation Fully Fixed) -->
     <section class="portal-section-wrap" id="sectionClass10">
       <div class="section-head-pro">
         <h3>कक्षा 10वीं सम्पूर्ण अध्ययन विषय</h3>
-        <a href="notes.html">सब नोट्स देखें →</a>
+        <a href="notes.html" style="color: #0284c7; text-decoration: none; font-size: 0.84rem; font-weight: 800;">सब नोट्स देखें →</a>
       </div>
 
       <div class="pro-rows-container">
@@ -1565,7 +1573,7 @@
           <div class="pro-row-left">
             <div class="pro-row-badge-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">📖</div>
             <div class="pro-row-text">
-              <h4>मैट्रिक क्वेश्चन बैंक (2020 - 2026 हल सहित)</h4>
+              <h4>मैट्रिक क्वेश्चन बैंक (2020 – 2026 हल सहित)</h4>
               <p>दोनों पालियों (Shift 1 & 2) के वास्तविक परीक्षा प्रश्न पत्र</p>
             </div>
           </div>
@@ -1595,7 +1603,7 @@
         <div class="nd-sheet-options">
           <div class="nd-sheet-opt-item selected" onclick="selectClassAndRedirect('10th')">
             <span>Class 10th (मैट्रिक बोर्ड)</span>
-            <span style="color:#38bdf8; font-weight:900;">✓</span>
+            <span style="color:#0284c7; font-weight:900;">✓</span>
           </div>
           <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('11th')">
             <span>Class 11th (साइंस हब)</span>
@@ -1849,12 +1857,12 @@
       if (selectedIdx === qData.correctIndex) {
         btn.classList.add('correct');
         msg.textContent = `✓ बिल्कुल सही जवाब! (${qData.note})`;
-        msg.style.color = "#34d399";
+        msg.style.color = "#059669";
       } else {
         btn.classList.add('wrong');
         allBtns[qData.correctIndex].classList.add('correct');
         msg.textContent = `❌ गलत उत्तर! सही उत्तर (${String.fromCharCode(65 + qData.correctIndex)}) है। (${qData.note})`;
-        msg.style.color = "#f87171";
+        msg.style.color = "#dc2626";
       }
 
       setTimeout(() => {
@@ -1915,7 +1923,7 @@
       }
     }
 
-    /* 🚀 डायरेक्ट क्लास रीडायरेक्शन (Updated with Full URLs) */
+    /* 🚀 डायरेक्ट क्लास रीडायरेक्शन */
     function selectClassAndRedirect(chosenClass) {
       closeCustomClassSheet();
       localStorage.setItem("nd_selected_class", chosenClass);
@@ -2000,12 +2008,10 @@
         const firstName = rawName.trim().split(' ')[0];
         const userPhoto = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
 
-        // Header & Welcome elements
         if (userDisplay) userDisplay.textContent = firstName;
         if (welcomeDisplay) welcomeDisplay.textContent = firstName;
         if (userImg) userImg.src = userPhoto;
 
-        // Profile Popup Modal elements (Fixed)
         if (modalName) modalName.textContent = user.displayName || firstName;
         if (modalEmail) modalEmail.textContent = user.email || "";
         if (modalImg) modalImg.src = userPhoto;
