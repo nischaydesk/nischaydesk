@@ -129,20 +129,20 @@
 
   <header class="app-header">
     <a href="index.html" class="back-btn"><span>←</span> मुख्य डैशबोर्ड</a>
-    <div class="header-title">HD PDF<span>Studio</span></div>
+    <div class="header-title">HD PDF<span>Studio Pro</span></div>
   </header>
 
   <div class="main-container">
     <div class="title-board">
-      <h1>इमेज To <span>PDF मेकर</span></h1>
+      <h1>इमेज To <span>PDF मेकर (टर्बो इंजन)</span></h1>
       <p>फोटो चुनें, प्रीव्यू देखें और एक क्लिक में लीगल A4 फुल-पेज PDF तैयार करें।</p>
     </div>
 
     <div class="upload-zone" id="dropZone">
       <input type="file" id="fileInput" class="upload-input" accept="image/*,.heic,.heif" multiple>
-      <div class="upload-icon">📸 ➔ 📄</div>
-      <div class="upload-text">यहाँ तस्वीरें चुनें या ड्रैग करें</div>
-      <div class="upload-hint">JPG, PNG, WebP और iPhone HEIC — सभी फॉर्मेट 100% सपोर्टेड हैं</div>
+      <div class="upload-icon">⚡ ➔ 📄</div>
+      <div class="upload-text">यहाँ तस्वीरें चुनें या ड्रैग करें (एक साथ 50+ भी)</div>
+      <div class="upload-hint">JPG, PNG, WebP और iPhone HEIC — टर्बो पैरेलल इंजन एक्टिवेट है</div>
     </div>
 
     <div class="preview-header" id="previewHeader">
@@ -154,7 +154,7 @@
 
     <div class="action-panel" id="actionPanel">
       <button class="btn-generate" onclick="generatePdfWithCancel()">
-        ⚡ कन्वर्ट टू PDF (Convert to PDF)
+        ⚡ कन्वर्ट टू PDF (Superfast Mode)
       </button>
     </div>
   </div>
@@ -162,15 +162,15 @@
   <div class="progress-modal" id="progressModal">
     <div class="progress-box">
       <div style="font-size: 2.8rem; margin-bottom: 12px;">📑</div>
-      <h3 class="progress-title" id="progressHead">PDF तैयार हो रहा है...</h3>
-      <p class="progress-desc" id="progressDesc">पन्नों को A4 साइज में बैठाया जा रहा है</p>
+      <h3 class="progress-title" id="progressHead">तस्वीरें प्रोसेस हो रही हैं...</h3>
+      <p class="progress-desc" id="progressDesc">हाई-स्पीड इंजन चालू है...</p>
       
       <div class="track">
         <div class="fill" id="progressBar"></div>
       </div>
       
       <div class="stats-row">
-        <span id="progressText">0 / 0 पेज</span>
+        <span id="progressText">0 / 0</span>
         <span id="progressPercent">0%</span>
       </div>
 
@@ -190,7 +190,7 @@
     let processedImages = [];
     let isCancelled = false;
 
-    // 🌟 फ़ाइलें लोड करना और HEIC को सैनिटाइज़ करना
+    // 🚀 टर्बो पैरेलल फ़ाइल लोडर (एक साथ बैच प्रोसेसिंग)
     fileInput.addEventListener('change', async (e) => {
       const files = Array.from(e.target.files);
       if (!files.length) return;
@@ -207,36 +207,51 @@
       progressModal.style.display = 'flex';
       progressBar.style.width = '0%';
 
-      for (let i = 0; i < files.length; i++) {
+      let completed = 0;
+      const total = files.length;
+
+      // 4-4 इमेजेस को एक साथ प्रोसेस करने का कॉनकरेंट बैच (फ़ोन हैंग नहीं होगा)
+      const CONCURRENCY = 4;
+      const results = [];
+
+      for (let i = 0; i < files.length; i += CONCURRENCY) {
         if (isCancelled) break;
+        const slice = files.slice(i, i + CONCURRENCY);
 
-        let file = files[i];
-        const cur = i + 1;
-        progressDesc.textContent = `रीड हो रहा है: ${file.name}`;
-        progressText.textContent = `${cur} / ${files.length}`;
-        const pct = Math.round((cur / files.length) * 100);
-        progressBar.style.width = pct + '%';
-        progressPercent.textContent = pct + '%';
+        const batchPromises = slice.map(async (file) => {
+          let targetFile = file;
+          const ext = file.name.split('.').pop().toLowerCase();
 
-        const ext = file.name.split('.').pop().toLowerCase();
-        
-        // HEIC कन्वर्जन
-        if (ext === 'heic' || ext === 'heif') {
-          try {
-            progressDesc.textContent = `iPhone HEIC फॉर्मेट प्रोसेस हो रहा है...`;
-            const converted = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.85 });
-            file = Array.isArray(converted) ? converted[0] : converted;
-          } catch (err) {
-            console.warn("HEIC conversion fallback:", err);
+          if (ext === 'heic' || ext === 'heif') {
+            try {
+              const converted = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.85 });
+              targetFile = Array.isArray(converted) ? converted[0] : converted;
+            } catch (err) {
+              console.warn("HEIC fallback:", err);
+            }
           }
-        }
 
-        // शुद्ध JPEG Blob बनाना (SOI मार्कर सुनिश्चित करने के लिए)
-        const pureJpgBlob = await convertToPureJpeg(file);
-        processedImages.push({
-          blob: pureJpgBlob,
-          url: URL.createObjectURL(pureJpgBlob)
+          const pureJpgBlob = await convertToPureJpegFast(targetFile);
+          completed++;
+          
+          const pct = Math.round((completed / total) * 100);
+          progressBar.style.width = pct + '%';
+          progressPercent.textContent = pct + '%';
+          progressText.textContent = `${completed} / ${total}`;
+          progressDesc.textContent = `प्रोसेस हो रहा है: ${file.name}`;
+
+          return {
+            blob: pureJpgBlob,
+            url: URL.createObjectURL(pureJpgBlob)
+          };
         });
+
+        const batchResults = await Promise.all(batchPromises);
+        results.push(...batchResults);
+      }
+
+      if (!isCancelled) {
+        processedImages.push(...results);
       }
 
       progressModal.style.display = 'none';
@@ -244,46 +259,51 @@
       updateUI();
     });
 
-    // 🛠️ गारंटीड शुद्ध JPEG इंजन (SOI मार्कर त्रुटि को रोकने के लिए)
-    function convertToPureJpeg(file) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        const reader = new FileReader();
+    // ⚡ सुपरफास्ट इंजन (createImageBitmap + OffscreenCanvas)
+    async function convertToPureJpegFast(file) {
+      try {
+        // createImageBitmap नेटिव GPU/C++ थ्रेड में डिकोड करता है (सुपरफास्ट)
+        const bitmap = await createImageBitmap(file);
+        const MAX_DIM = 1600;
+        let w = bitmap.width;
+        let h = bitmap.height;
 
-        reader.onload = (e) => {
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const MAX_DIM = 1600;
-            let w = img.width;
-            let h = img.height;
+        if (w > h && w > MAX_DIM) {
+          h = Math.round((h * MAX_DIM) / w);
+          w = MAX_DIM;
+        } else if (h > MAX_DIM) {
+          w = Math.round((w * MAX_DIM) / h);
+          h = MAX_DIM;
+        }
 
-            if (w > h && w > MAX_DIM) {
-              h = Math.round((h * MAX_DIM) / w);
-              w = MAX_DIM;
-            } else if (h > MAX_DIM) {
-              w = Math.round((w * MAX_DIM) / h);
-              h = MAX_DIM;
-            }
+        // यदि ब्राउज़र OffscreenCanvas सपोर्ट करता है तो बैकग्राउंड में काम होगा
+        let canvas, ctx;
+        if (window.OffscreenCanvas) {
+          canvas = new OffscreenCanvas(w, h);
+          ctx = canvas.getContext('2d');
+        } else {
+          canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          ctx = canvas.getContext('2d');
+        }
 
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext('2d');
-            
-            // सफ़ेद बैकग्राउंड सेट करें ताकि पारदर्शी PNG भी सही JPEG बने
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, w, h);
-            ctx.drawImage(img, 0, 0, w, h);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(bitmap, 0, 0, w, h);
+        bitmap.close(); // मेमोरी तुरंत खाली करें
 
-            // लीगल 0xFFD8 JPEG आउटपुट
-            canvas.toBlob((blob) => {
-              resolve(blob || file);
-            }, 'image/jpeg', 0.85);
-          };
-          img.onerror = () => resolve(file);
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
+        if (canvas.convertToBlob) {
+          return await canvas.convertToBlob({ type: 'image/jpeg', quality: 0.85 });
+        }
+
+        return await new Promise((res) => {
+          canvas.toBlob((blob) => res(blob || file), 'image/jpeg', 0.85);
+        });
+      } catch (e) {
+        // अगर इमेज करप्ट हो या फॉर्मेट न समझे तो ओरिजिनल फ़ाइल भेजें
+        return file;
+      }
     }
 
     function updateUI() {
@@ -304,7 +324,7 @@
         div.className = 'img-card';
         div.innerHTML = `
           <span class="img-num">P.${index + 1}</span>
-          <img src="${item.url}">
+          <img src="${item.url}" loading="lazy">
           <button class="img-delete" onclick="removeImage(${index})" title="हटाएं">&times;</button>
         `;
         imageGrid.appendChild(div);
@@ -329,7 +349,7 @@
       alert("❌ प्रोसेस कैंसिल कर दिया गया!");
     };
 
-    // 🚀 PDF जनरेशन (100% SOI Safe & Fast)
+    // 🚀 टर्बो PDF जनरेटर
     async function generatePdfWithCancel() {
       if (processedImages.length === 0) return;
 
@@ -364,8 +384,6 @@
           progressPercent.textContent = pct + '%';
 
           const arrayBuffer = await processedImages[i].blob.arrayBuffer();
-          
-          // सुरक्षित एम्बेडिंग
           const embeddedImage = await pdfDoc.embedJpg(arrayBuffer);
 
           const imgDims = embeddedImage.scale(1);
@@ -379,17 +397,15 @@
           const finalWidth = imgDims.width * scale;
           const finalHeight = imgDims.height * scale;
 
-          const x = (A4_WIDTH - finalWidth) / 2;
-          const y = (A4_HEIGHT - finalHeight) / 2;
-
           page.drawImage(embeddedImage, {
-            x: x,
-            y: y,
+            x: (A4_WIDTH - finalWidth) / 2,
+            y: (A4_HEIGHT - finalHeight) / 2,
             width: finalWidth,
             height: finalHeight,
           });
 
-          await new Promise(r => setTimeout(r, 10));
+          // माइक्रो-टास्क ब्रेक ताकि UI बिल्कुल न लैग करे
+          if (i % 3 === 0) await new Promise(r => setTimeout(r, 0));
         }
 
         if (isCancelled) return;
@@ -404,7 +420,7 @@
 
         const a = document.createElement('a');
         a.href = downloadUrl;
-        a.download = `Nischay_Doc_${Date.now()}.pdf`;
+        a.download = `Nischay_Turbo_${Date.now()}.pdf`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
