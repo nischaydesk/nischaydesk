@@ -7,7 +7,7 @@
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Core Theme & Layout Stylesheets -->
@@ -112,7 +112,7 @@
       color: #ffffff !important; 
     }
 
-    /* 🌟 NOTES CARDS */
+    /* 🌟 NOTES CARDS AND TEXT FIXES */
     .notes-grid-catalog {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -134,7 +134,21 @@
       box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15) !important;
     }
 
-    /* 🌟 PDF MODAL (Popup Viewer - Full Click Fix) */
+    /* चैप्टर का नाम साफ दिखने के लिए फिक्स */
+    .note-card h3, .note-card h4, .note-title, .note-card-title,
+    .notes-grid-catalog h3, .notes-grid-catalog h4 {
+      color: var(--text-main, #0f172a) !important;
+      font-weight: 800 !important;
+      display: block !important;
+      margin: 8px 0 !important;
+    }
+    html.dark-mode .note-card h3, html.dark-mode .note-card h4,
+    html[data-theme="dark"] .note-card h3, html[data-theme="dark"] .note-card h4,
+    html.dark-mode .notes-grid-catalog h3, html[data-theme="dark"] .notes-grid-catalog h3 {
+      color: #f8fafc !important;
+    }
+
+    /* 🌟 PDF MODAL (Popup Viewer) */
     .pdf-modal-backdrop {
       display: none;
       position: fixed;
@@ -163,6 +177,7 @@
       overflow: hidden;
       border: 1.5px solid #0284c7 !important;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      position: relative;
     }
     .pdf-studio-header {
       padding: 12px 18px;
@@ -173,16 +188,27 @@
       border-bottom: 1.5px solid #1e3a8a;
       flex-shrink: 0;
     }
+    .pdf-doc-meta {
+      flex: 1;
+      min-width: 0;
+      padding-right: 12px;
+    }
+    /* मोडल हेडर में चैप्टर नाम का डार्क/लाइट दोनों में हाई कंट्रास्ट फिक्स */
     .pdf-doc-title {
-      color: #f8fafc !important; 
+      color: #ffffff !important; 
       font-weight: 800 !important;
-      font-size: 1rem;
-      margin: 4px 0 0;
+      font-size: 1.05rem !important;
+      margin: 4px 0 0 !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     }
     .pdf-studio-actions {
       display: flex;
       gap: 8px;
       align-items: center;
+      flex-shrink: 0;
     }
     .btn-studio-action {
       background: rgba(56, 189, 248, 0.14) !important;
@@ -228,6 +254,78 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
+    }
+
+    /* 🐍 PLAY STORE स्टाइल स्नेक सर्कुलर लूप लोडर (0 to 100%) */
+    .playstore-snake-loader {
+      position: absolute;
+      inset: 0;
+      background: #0b1329;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      gap: 20px;
+    }
+    .snake-ring-container {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .snake-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      animation: snakeContainerRotate 2s linear infinite;
+    }
+    .snake-circle-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 6;
+    }
+    .snake-circle-head {
+      fill: none;
+      stroke: url(#snakeGradient);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      animation: snakeDashLoop 1.6s ease-in-out infinite;
+    }
+    @keyframes snakeContainerRotate {
+      100% { transform: rotate(270deg); }
+    }
+    @keyframes snakeDashLoop {
+      0% {
+        stroke-dashoffset: 220;
+      }
+      50% {
+        stroke-dashoffset: 40;
+        transform: rotate(45deg);
+      }
+      100% {
+        stroke-dashoffset: 220;
+        transform: rotate(360deg);
+      }
+    }
+    .snake-percent-badge {
+      position: absolute;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: #38bdf8;
+      font-family: monospace;
+      letter-spacing: -0.5px;
+    }
+    .snake-status-title {
+      color: #f8fafc;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-align: center;
     }
 
     /* 📱 कस्टम क्लास बॉटम-शीट */
@@ -923,7 +1021,7 @@
     <div class="pdf-modal-window">
       <div class="pdf-studio-header">
         <div class="pdf-doc-meta">
-          <span class="pdf-doc-badge" id="modalDocBadge" style="background:#0284c7; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:4px;">Class 10th Matric</span>
+          <span class="pdf-doc-badge" id="modalDocBadge" style="background:#0284c7; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:4px; display:inline-block; margin-bottom:2px;">Class 10th Matric</span>
           <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
         </div>
         <div class="pdf-studio-actions">
@@ -938,6 +1036,25 @@
       </div>
 
       <div class="pdf-frame-stage" id="pdfFrameStage">
+        <!-- 🐍 PLAY STORE SNAKE LOOP LOADER -->
+        <div class="playstore-snake-loader" id="notesSnakeLoader">
+          <div class="snake-ring-container">
+            <svg class="snake-svg" viewBox="0 0 80 80">
+              <defs>
+                <linearGradient id="snakeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#0284c7" />
+                  <stop offset="50%" stop-color="#38bdf8" />
+                  <stop offset="100%" stop-color="#10b981" />
+                </linearGradient>
+              </defs>
+              <circle class="snake-circle-bg" cx="40" cy="40" r="34"></circle>
+              <circle class="snake-circle-head" cx="40" cy="40" r="34"></circle>
+            </svg>
+            <span class="snake-percent-badge" id="snakePercentText">0%</span>
+          </div>
+          <div class="snake-status-title" id="snakeStatusMsg">HD स्मार्ट रीडर लोड हो रहा है...</div>
+        </div>
+
         <iframe 
           src="" 
           id="studioPdfFrame" 
@@ -1193,14 +1310,61 @@
       }
     }
 
-    /* 🌟 इन-बिल्ट PDF मोडल हैंडलर्स */
+    /* 🌟 इन-बिल्ट PDF मोडल हैंडलर्स और स्नेक लोडर ऑटोमेशन */
     const pdfStudioModal = document.getElementById('pdfStudioModal');
     const studioPdfFrame = document.getElementById('studioPdfFrame');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
     const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
+    const snakeLoader = document.getElementById('notesSnakeLoader');
+    const snakePercentText = document.getElementById('snakePercentText');
+
+    let snakeProgressTimer = null;
+
+    function startSnakeLoader(chapterTitle) {
+      if (snakeLoader) snakeLoader.style.display = 'flex';
+      let progress = 0;
+      if (snakePercentText) snakePercentText.textContent = '0%';
+      if (snakeProgressTimer) clearInterval(snakeProgressTimer);
+
+      snakeProgressTimer = setInterval(() => {
+        if (progress < 75) {
+          progress += Math.floor(Math.random() * 8) + 4;
+        } else if (progress < 95) {
+          progress += Math.floor(Math.random() * 3) + 1;
+        }
+        if (progress > 95) progress = 95;
+        if (snakePercentText) snakePercentText.textContent = `${progress}%`;
+      }, 70);
+
+      // हेडर में चैप्टर नाम पक्का सेट और हाई कंट्रास्ट दिखाना
+      const docTitleEl = document.getElementById('modalDocTitle');
+      if (docTitleEl && chapterTitle) {
+        docTitleEl.textContent = chapterTitle;
+      }
+    }
+
+    function completeSnakeLoader() {
+      if (snakeProgressTimer) clearInterval(snakeProgressTimer);
+      if (snakePercentText) snakePercentText.textContent = '100%';
+      setTimeout(() => {
+        if (snakeLoader) snakeLoader.style.display = 'none';
+      }, 250);
+    }
+
+    if (studioPdfFrame) {
+      studioPdfFrame.addEventListener('load', () => {
+        completeSnakeLoader();
+      });
+    }
+
+    // ग्लोबल हुक: जब notes-viewer.js से कोई PDF ओपन ट्रिगर हो
+    window.triggerNotesViewerLoader = function(title) {
+      startSnakeLoader(title);
+    };
 
     if (modalCloseBtn) {
       modalCloseBtn.onclick = function() {
+        if (snakeProgressTimer) clearInterval(snakeProgressTimer);
         pdfStudioModal.classList.remove('active');
         pdfStudioModal.style.display = 'none';
         studioPdfFrame.src = '';
