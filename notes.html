@@ -39,7 +39,9 @@
     document.documentElement.setAttribute("data-theme", savedTheme);
     if (savedTheme === "light") {
       document.documentElement.classList.add("light-mode");
+      document.documentElement.classList.remove("dark-mode");
     } else {
+      document.documentElement.classList.add("dark-mode");
       document.documentElement.classList.remove("light-mode");
     }
   </script>
@@ -49,11 +51,34 @@
       box-sizing: border-box !important;
     }
 
+    /* 🎨 डार्क और लाइट मोड का यूनिवर्सल सिंक (पूरा पेज एक साथ बदलेगा) */
+    :root {
+      --bg-page: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --brand-blue: #0284c7;
+    }
+
+    html[data-theme="dark"], html.dark-mode, body.dark-mode {
+      --bg-page: #040914 !important;
+      --card-bg: #0b1a30 !important;
+      --card-border: #1e3a8a !important;
+      --text-main: #f8fafc !important;
+      --text-muted: #94a3b8 !important;
+      --brand-blue: #38bdf8 !important;
+    }
+
     body {
+      background-color: var(--bg-page) !important;
+      color: var(--text-main) !important;
+      padding-bottom: 75px;
       overflow-x: hidden !important;
       width: 100% !important;
-      padding-bottom: 75px;
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      margin: 0;
     }
 
     .bg-orb-1 { position: fixed; top: -10%; left: -10%; width: 40vw; height: 40vw; background: rgba(2, 132, 199, 0.15); filter: blur(90px); border-radius: 50%; z-index: -1; pointer-events: none; }
@@ -61,10 +86,9 @@
 
     /* 🌟 HEADER BANNER */
     .notes-header-banner {
-      background: var(--card-bg, #ffffff) !important;
+      background: var(--card-bg) !important;
       backdrop-filter: blur(12px) !important;
-      -webkit-backdrop-filter: blur(12px) !important;
-      border: 1.5px solid var(--card-border, #cbd5e1) !important;
+      border: 1.5px solid var(--card-border) !important;
       box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
       border-radius: 24px !important;
       padding: 26px 20px !important;
@@ -76,25 +100,24 @@
       background: linear-gradient(90deg, #0284c7, #38bdf8, #10b981);
     }
 
-    .notes-headline { color: var(--text-main, #0f172a) !important; }
-    .notes-subheadline { color: var(--text-muted, #64748b) !important; }
+    .notes-headline { color: var(--text-main) !important; }
+    .notes-subheadline { color: var(--text-muted) !important; }
 
     .notes-search-field {
-      background: rgba(128, 128, 128, 0.08) !important; 
-      border: 1.5px solid var(--card-border, #cbd5e1) !important;
+      background: var(--card-bg) !important; 
+      border: 1.5px solid var(--card-border) !important;
       transition: all 0.25s ease !important;
-      color: var(--text-main, #0f172a) !important;
+      color: var(--text-main) !important;
     }
     .notes-search-field:focus {
       border-color: #0284c7 !important;
-      background: #ffffff !important;
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
     }
 
     .filter-btn {
-      border: 1.5px solid var(--card-border, #cbd5e1) !important;
-      background: rgba(128, 128, 128, 0.06) !important;
-      color: var(--text-main, #0f172a) !important;
+      border: 1.5px solid var(--card-border) !important;
+      background: var(--card-bg) !important;
+      color: var(--text-main) !important;
       cursor: pointer;
       transition: all 0.2s ease !important;
     }
@@ -115,38 +138,31 @@
       gap: 16px;
       width: 100%;
     }
-    .notes-grid-catalog > div, .note-card {
-      background: var(--card-bg, #ffffff) !important;
-      border: 1.5px solid var(--card-border, #cbd5e1) !important;
-      color: var(--text-main, #0f172a) !important;
+    .notes-grid-catalog > div, .note-card, .note-item-card {
+      background: var(--card-bg) !important;
+      border: 1.5px solid var(--card-border) !important;
+      color: var(--text-main) !important;
       border-radius: 16px !important;
       padding: 16px !important;
       box-shadow: 0 4px 16px rgba(0,0,0,0.05) !important;
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
     }
-    .notes-grid-catalog > div:hover, .note-card:hover {
+    .notes-grid-catalog > div:hover, .note-card:hover, .note-item-card:hover {
       transform: translateY(-4px) !important;
       border-color: #0284c7 !important;
       box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15) !important;
     }
 
-    /* 🔥 चैप्टर नाम गायब होने का शत-प्रतिशत समाधान */
-    .note-card h3, .note-card h4, .note-title, .note-card-title,
+    /* 🔥 चैप्टर नाम गायब होने का पक्का समाधान */
     .notes-grid-catalog h3, .notes-grid-catalog h4,
-    .note-card .title, .note-card .chapter-title {
-      color: #0f172a !important; /* लाइट मोड में डार्क ब्लैक */
+    .note-item-card h3, .note-item-card h4,
+    .note-card h3, .note-card h4 {
+      color: var(--text-main) !important;
       font-weight: 800 !important;
-      font-size: 1.08rem !important;
+      font-size: 1.05rem !important;
       line-height: 1.4 !important;
       display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      margin: 8px 0 !important;
-    }
-    html.dark-mode .note-card h3, html.dark-mode .note-card h4,
-    html[data-theme="dark"] .note-card h3, html[data-theme="dark"] .note-card h4,
-    html.dark-mode .notes-grid-catalog h3, html[data-theme="dark"] .notes-grid-catalog h3 {
-      color: #f8fafc !important; /* डार्क मोड में स्पष्ट सफेद */
+      margin: 4px 0 !important;
     }
 
     /* 🎬 PDF MODAL (STUDIO POPUP) */
@@ -194,7 +210,6 @@
       min-width: 0;
       padding-right: 12px;
     }
-    /* मोडल हेडर में चैप्टर का नाम 100% स्पष्ट सफेद */
     .pdf-doc-title {
       color: #ffffff !important; 
       font-weight: 800 !important;
@@ -203,7 +218,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     }
     .pdf-studio-actions {
       display: flex;
@@ -257,7 +271,7 @@
       flex-shrink: 0;
     }
 
-    /* 🐍 PLAY STORE SNAKE-STYLE DYNAMIC FILLING LOADER (0 to 100%) */
+    /* 🐍 PLAY STORE SNAKE-STYLE PROGRESS LOADER */
     .playstore-snake-loader {
       position: absolute;
       inset: 0;
@@ -277,7 +291,6 @@
       align-items: center;
       justify-content: center;
     }
-    /* बीच में ऐप का आइकन */
     .app-icon-center {
       width: 60px;
       height: 60px;
@@ -304,13 +317,12 @@
       stroke: rgba(255, 255, 255, 0.08);
       stroke-width: 5;
     }
-    /* सांप जैसी घूमने और भरने वाली नीली लाइन */
     .snake-fill-bar {
       fill: none;
       stroke: #38bdf8;
       stroke-width: 5.5;
       stroke-linecap: round;
-      stroke-dasharray: 283; /* 2 * PI * 45 */
+      stroke-dasharray: 283;
       stroke-dashoffset: 283;
       transition: stroke-dashoffset 0.15s linear;
       filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
@@ -321,9 +333,7 @@
     @keyframes snakeSpin {
       100% { transform: rotate(270deg); }
     }
-    .snake-live-text-box {
-      text-align: center;
-    }
+    .snake-live-text-box { text-align: center; }
     .snake-percent-num {
       font-size: 1.45rem;
       font-weight: 900;
@@ -338,6 +348,73 @@
       letter-spacing: 0.4px;
     }
 
+    /* 📱 साइड ड्रॉअर (100% WORKING CONTROLS) */
+    .drawer-scrim {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 9, 20, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 9999998 !important;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-scrim.active {
+      display: block !important;
+      opacity: 1 !important;
+    }
+    .side-drawer {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      bottom: 0 !important;
+      width: min(320px, 84vw) !important;
+      height: 100vh !important;
+      overflow-y: auto !important;
+      background: var(--card-bg) !important;
+      border-right: 1.5px solid var(--card-border) !important;
+      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.25) !important;
+      transform: translateX(-100%) !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      z-index: 99999999 !important;
+      visibility: hidden;
+      padding-bottom: 120px !important;
+    }
+    .side-drawer.active {
+      transform: translateX(0) !important;
+      visibility: visible !important;
+    }
+
+    /* स्विच स्टाइल */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #334155;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #0284c7; }
+    input:checked + .slider:before { transform: translateX(22px); }
+
     /* 📱 बॉटम डॉक */
     .mobile-bottom-dock {
       position: fixed !important;
@@ -346,18 +423,13 @@
       right: 0 !important;
       width: 100% !important;
       height: 60px !important;
-      background: #ffffff !important;
-      border-top: 1.5px solid #e2e8f0 !important;
+      background: var(--card-bg) !important;
+      border-top: 1.5px solid var(--card-border) !important;
       display: flex !important;
       justify-content: space-around !important;
       align-items: center !important;
       z-index: 9999999 !important;
       box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
-    }
-    html.dark-mode .mobile-bottom-dock,
-    html[data-theme="dark"] .mobile-bottom-dock {
-      background: #071120 !important;
-      border-top-color: rgba(255, 255, 255, 0.08) !important;
     }
     .dock-link-item {
       display: flex !important;
@@ -365,7 +437,7 @@
       align-items: center !important;
       justify-content: center !important;
       text-decoration: none !important;
-      color: #64748b !important;
+      color: var(--text-muted) !important;
       flex: 1 !important;
       height: 100% !important;
       gap: 3px !important;
@@ -413,13 +485,7 @@
       </div>
 
       <div class="nav-actions">
-        <button class="btn-auth-primary" id="headerAuthBtn" onclick="openWelcomeLoginModal()">
-          <svg class="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
-            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
-            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.1-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"/>
-            <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 17c1.8 3.7 5.6 7 10.1 7z"/>
-          </svg>
+        <button class="btn-auth-primary" id="headerAuthBtn">
           <span id="authBtnLabel">Google लॉगिन</span>
         </button>
 
@@ -434,48 +500,40 @@
     </nav>
   </header>
 
-  <!-- 2. MOBILE DRAWER -->
+  <!-- 2. MOBILE DRAWER (पूर्ण रूप से कार्यशील) -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
-  <aside class="side-drawer" id="sideDrawer" style="position:fixed; top:0; left:0; bottom:0; width:min(320px, 84vw); height:100vh; overflow-y:auto; background:#ffffff; z-index:99999999; transform:translateX(-100%); transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
-    <div class="drawer-header" style="padding:16px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0;">
-      <div class="drawer-brand" style="display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:800;">
+  <aside class="side-drawer" id="sideDrawer">
+    <div class="drawer-header" style="padding:16px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--card-border);">
+      <div class="drawer-brand" style="display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:800; color:var(--text-main);">
         <div class="brand-badge-icon sm">N</div>
         <span>10th Matric Hub</span>
       </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()" style="border:none; background:#f1f5f9; width:32px; height:32px; border-radius:50%; cursor:pointer;">&times;</button>
+      <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()" style="border:none; background:rgba(128,128,128,0.15); width:32px; height:32px; border-radius:50%; cursor:pointer; color:var(--text-main); font-size:1.4rem;">&times;</button>
     </div>
 
     <nav class="drawer-nav-list" style="padding:12px; display:flex; flex-direction:column; gap:6px;">
-      <a href="index.html" class="drawer-nav-item"><span class="icon">📊</span> 10th मुख्य डैशबोर्ड</a>
-      <a href="syllabus.html" class="drawer-nav-item"><span class="icon">📋</span> 10th बोर्ड सिलेबस</a>
+      <a href="index.html" class="drawer-nav-item" style="color:var(--text-main);"><span class="icon">📊</span> 10th मुख्य डैशबोर्ड</a>
+      <a href="syllabus.html" class="drawer-nav-item" style="color:var(--text-main);"><span class="icon">📋</span> 10th बोर्ड सिलेबस</a>
       <a href="notes.html" class="drawer-nav-item active"><span class="icon">📚</span> 10th टॉपर्स नोट्स</a>
-      <a href="pyq.html" class="drawer-nav-item"><span class="icon">📖</span> 10th क्वेश्चन बैंक (2020-2026)</a>
-      <a href="model-paper.html" class="drawer-nav-item"><span class="icon">📝</span> 10th ऑफिशियल मॉडल पेपर</a>
-      <a href="test.html" class="drawer-nav-item"><span class="icon">📝</span> 10th चैप्टर-वाइज टेस्ट</a>
+      <a href="pyq.html" class="drawer-nav-item" style="color:var(--text-main);"><span class="icon">📖</span> 10th क्वेश्चन बैंक (2020-2026)</a>
+      <a href="model-paper.html" class="drawer-nav-item" style="color:var(--text-main);"><span class="icon">📝</span> 10th ऑफिशियल मॉडल पेपर</a>
+      <a href="test.html" class="drawer-nav-item" style="color:var(--text-main);"><span class="icon">📝</span> 10th चैप्टर-वाइज टेस्ट</a>
       <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8;"><span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल</a>
-      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80;"><span class="icon">🔍</span> परिणाम देखें (Result Portal)</a>
-      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;"><span class="icon">✅</span> माय टू-डू लिस्ट</a>
-      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;"><span class="icon">🖼️</span> इमेज To PDF</a>
-      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;"><span class="icon">🤖</span> AI डाउट स्टूडियो</a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80;"><span class="icon">🔍</span> परिणाम देखें</a>
       
-      <div style="margin: 10px 0 4px; padding: 12px; background: rgba(56, 189, 248, 0.08); border-radius: 12px; border: 1px dashed rgba(56, 189, 248, 0.35);">
-        <span style="font-size: 0.74rem; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 8px;">अन्य कक्षा पोर्टल्स:</span>
-        <a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
-          <span>🧪 11वीं साइंस हब</span><span style="color:#0284c7; font-weight:900;">खोलें ↗</span>
-        </a>
-        <a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; justify-content: space-between; padding: 6px 0 0;">
-          <span>🏛️ 12वीं इंटर साइंस</span><span style="color:#0284c7; font-weight:900;">खोलें ↗</span>
-        </a>
+      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(128,128,128,0.08); border-radius: 12px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
+        <label class="switch">
+          <input type="checkbox" id="themeSwitch">
+          <span class="slider"></span>
+        </label>
       </div>
-
-      <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e;"><span class="icon">💬</span> WhatsApp चैनल</a>
     </nav>
   </aside>
 
   <!-- 3. MAIN NOTES EXPLORER -->
   <main class="dashboard-viewport" style="max-width:1100px; margin:0 auto; padding:0 14px;">
 
-    <!-- BREADCRUMB BAR -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
       <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; color: #0284c7; text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(2, 132, 199, 0.1); border: 1px solid rgba(2, 132, 199, 0.25); padding: 5px 12px; border-radius: 20px;">
         <span>🏠</span> मुख्य डैशबोर्ड
@@ -483,10 +541,9 @@
       <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">NischayDesk Class 10th Notes Studio</span>
     </div>
 
-    <!-- HERO SEARCH & FILTER BANNER -->
     <section class="notes-header-banner">
-      <div class="status-pill" style="display:inline-flex; align-items:center; gap:6px; background:rgba(2,132,199,0.12); border:1px solid rgba(2,132,199,0.3); padding:4px 12px; border-radius:999px; font-size:0.75rem; font-weight:800; color:#0284c7; margin-bottom:12px;">
-        <span class="pulsing-dot" style="width:8px; height:8px; background:#10b981; border-radius:50%;"></span> 10th मैट्रिक बोर्ड टॉपर हस्तलिखित नोट्स
+      <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(2,132,199,0.12); border:1px solid rgba(2,132,199,0.3); padding:4px 12px; border-radius:999px; font-size:0.75rem; font-weight:800; color:#0284c7; margin-bottom:12px;">
+        <span style="width:8px; height:8px; background:#10b981; border-radius:50%;"></span> 10th मैट्रिक बोर्ड टॉपर हस्तलिखित नोट्स
       </div>
       <h1 class="notes-headline" style="font-size: 1.6rem; font-weight: 900; margin: 0 0 8px;">
         कक्षा 10वीं <span style="background:linear-gradient(135deg, #0284c7, #38bdf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">स्टडी नोट्स</span> हब
@@ -495,19 +552,17 @@
         मैट्रिक परीक्षा के लिए चैप्टर-वाइज थ्योरी, न्यूमेरिकल, फॉर्मूला शीट और इन-ऐप हाई-डेफिनिशन PDF रीडर।
       </p>
 
-      <!-- Search Field -->
-      <div class="search-bar-wrap" style="position:relative; margin-bottom:18px;">
-        <span class="search-icon" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:1rem;">🔍</span>
+      <div style="position:relative; margin-bottom:18px;">
+        <span style="position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:1rem;">🔍</span>
         <input 
           type="text" 
           id="notesSearchInput" 
           class="notes-search-field" 
           style="width:100%; padding:12px 14px 12px 42px; border-radius:12px; font-size:0.88rem; outline:none;"
-          placeholder="अध्याय या टॉपिक खोजें (उदा: प्रकाश, त्रिकोणमिति, रासायनिक अभिक्रियाएँ, यूरोप में राष्ट्रवाद...)" 
+          placeholder="अध्याय या टॉपिक खोजें..." 
         />
       </div>
 
-      <!-- Filter Pills -->
       <div class="filter-pill-container" id="filterPillContainer" style="display:flex; flex-wrap:wrap; gap:8px;">
         <button class="filter-btn active" data-filter="all" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">सभी 10th विषय (All)</button>
         <button class="filter-btn" data-filter="10-math" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">📐 10th गणित</button>
@@ -515,23 +570,17 @@
         <button class="filter-btn" data-filter="10-science-chem" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">🧪 10th रसायन</button>
         <button class="filter-btn" data-filter="10-science-bio" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">🧬 10th जीव विज्ञान</button>
         <button class="filter-btn" data-filter="10-sst-all" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">🌍 10th सम्पूर्ण SST</button>
-        <button class="filter-btn" data-filter="10-history" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">🏛️ 10th इतिहास</button>
-        <button class="filter-btn" data-filter="10-geography" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">🗺️ 10th भूगोल</button>
-        <button class="filter-btn" data-filter="10-civics" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">⚖️ 10th राजनीति</button>
-        <button class="filter-btn" data-filter="10-economics" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">📈 10th अर्थशास्त्र</button>
-        <button class="filter-btn" data-filter="10-disaster" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">🚨 10th आपदा प्रबंधन</button>
-        <button class="filter-btn" data-filter="10-sanskrit" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">📜 10th संस्कृत</button>
       </div>
     </section>
 
     <!-- DYNAMIC NOTES CATALOG GRID -->
-    <section class="notes-display-section" style="margin-top: 24px;">
+    <section style="margin-top: 24px;">
       <div class="notes-grid-catalog" id="notesCatalogGrid"></div>
     </section>
 
   </main>
 
-  <!-- 📱 इन-ऐप स्टूडियो मोडल (Google Play Store स्टाइल स्नेक लोडर + हाई कंट्रास्ट टाइटल) -->
+  <!-- 📱 इन-ऐप स्टूडियो मोडल (Google Play Store स्टाइल स्नेक लोडर) -->
   <div class="pdf-modal-backdrop" id="pdfStudioModal">
     <div class="pdf-modal-window">
       <div class="pdf-studio-header">
@@ -540,10 +589,10 @@
           <h3 class="pdf-doc-title" id="modalDocTitle">चैप्टर नाम</h3>
         </div>
         <div class="pdf-studio-actions">
-          <a href="#" id="modalDirectDownloadBtn" target="_blank" class="btn-studio-action" download title="डिवाइस में डाउनलोड करें">
+          <a href="#" id="modalDirectDownloadBtn" target="_blank" class="btn-studio-action" download title="डाउनलोड करें">
             📥 <span>डाउनलोड</span>
           </a>
-          <button class="btn-studio-action" id="modalFullscreenBtn" title="फुल-स्क्रीन मोड">⛶</button>
+          <button class="btn-studio-action" id="modalFullscreenBtn" title="फुल-स्क्रीन">⛶</button>
           <button class="btn-studio-close" id="modalCloseBtn" title="बंद करें">&times;</button>
         </div>
       </div>
@@ -574,31 +623,6 @@
     </div>
   </div>
 
-  <!-- 4. FOOTER -->
-  <footer class="khan-full-footer" style="background-color: #0b1a30; color: #ffffff; padding: 38px 18px 30px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
-    <div class="footer-inner-khan" style="max-width: 1200px; margin: 0 auto;">
-      <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 8px;">
-        NischayDesk — कक्षा 10वीं बिहार बोर्ड मैट्रिक विशेष अध्ययन मंच
-      </div>
-      <p style="font-size: 0.84rem; color: #94a3b8; line-height: 1.5; margin-bottom: 24px;">
-        हमारा उद्देश्य बिहार विद्यालय परीक्षा समिति (BSEB) के प्रत्येक विद्यार्थी को 100% निःशुल्क, उच्च गुणवत्ता वाले नोट्स और परीक्षा सिमुलेटर उपलब्ध कराना है।
-      </p>
-
-      <div class="founder-pro-strip" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
-        <img src="Prince.jpg" alt="Prince Kumar" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8;" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
-        <div>
-          <h5 style="margin: 0; color: #fff; font-size: 1rem; font-weight: 800;">Prince Kumar</h5>
-          <p style="margin: 2px 0 0; color: #94a3b8; font-size: 0.78rem;">Founder & Developer, NischayDesk (463/500 Bihar Board Topper)</p>
-        </div>
-      </div>
-
-      <div style="font-size: 0.75rem; color: #64748b; text-align: center; line-height: 1.6;">
-        © 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 10वीं मैट्रिक विशेष पोर्टल<br>
-        Crafted with ❤️ by Prince Kumar for Bihar Board Students.
-      </div>
-    </div>
-  </footer>
-
   <!-- 5. MOBILE BOTTOM DOCK -->
   <nav class="mobile-bottom-dock">
     <a href="index.html" class="dock-link-item"><span class="dock-icon-svg">🏠</span><span class="dock-label-text">10th होम</span></a>
@@ -612,21 +636,56 @@
   <script src="syllabus-data.js"></script>
   <script src="notes-viewer.js"></script>
   <script>
+    // 🌙 डार्क / लाइट मोड स्विच फिक्स (100% पेज सिंक)
+    function initThemeSystem() {
+      const themeSwitch = document.getElementById("themeSwitch");
+      const currentTheme = localStorage.getItem("nd_app_theme") || "light";
+
+      if (themeSwitch) {
+        themeSwitch.checked = (currentTheme === "dark");
+        themeSwitch.onchange = function() {
+          if (this.checked) {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.documentElement.classList.add("dark-mode");
+            document.documentElement.classList.remove("light-mode");
+            document.body.classList.add("dark-mode");
+            document.body.classList.remove("light-mode");
+            localStorage.setItem("nd_app_theme", "dark");
+          } else {
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.classList.add("light-mode");
+            document.documentElement.classList.remove("dark-mode");
+            document.body.classList.add("light-mode");
+            document.body.classList.remove("dark-mode");
+            localStorage.setItem("nd_app_theme", "light");
+          }
+          // कार्ड्स का टेक्स्ट कलर तुरंत अपडेट करें
+          updateCardsTextColor();
+        };
+      }
+    }
+
+    // 📱 साइड ड्रॉअर फिक्स
     function openDrawerUnified() {
-      document.getElementById('sideDrawer').style.transform = 'translateX(0)';
-      document.getElementById('drawerScrim').classList.add('active');
+      const drawer = document.getElementById('sideDrawer');
+      const scrim = document.getElementById('drawerScrim');
+      if (drawer) drawer.classList.add('active');
+      if (scrim) scrim.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeDrawerUnified() {
-      document.getElementById('sideDrawer').style.transform = 'translateX(-100%)';
-      document.getElementById('drawerScrim').classList.remove('active');
+      const drawer = document.getElementById('sideDrawer');
+      const scrim = document.getElementById('drawerScrim');
+      if (drawer) drawer.classList.remove('active');
+      if (scrim) scrim.classList.remove('active');
       document.body.style.overflow = '';
     }
 
-    document.getElementById('mobileMenuBtn').onclick = openDrawerUnified;
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    if (menuBtn) menuBtn.onclick = openDrawerUnified;
 
-    /* 🐍 PLAY STORE SNAKE LOADER LOGIC (0 to 100% FILLING RING) */
+    // 🐍 PLAY STORE SNAKE LOADER LOGIC
     const pdfStudioModal = document.getElementById('pdfStudioModal');
     const studioPdfFrame = document.getElementById('studioPdfFrame');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -636,7 +695,7 @@
     const snakePercentText = document.getElementById('snakePercentText');
     const docTitleEl = document.getElementById('modalDocTitle');
 
-    const TOTAL_CIRCUMFERENCE = 283; // 2 * PI * 45
+    const TOTAL_CIRCUMFERENCE = 283;
     let snakeProgressTimer = null;
 
     function setSnakeProgress(percent) {
@@ -663,7 +722,6 @@
         setSnakeProgress(currentProg);
       }, 70);
 
-      // मोडल हेडर में स्पष्ट सफेद नाम
       if (docTitleEl) {
         docTitleEl.textContent = chapterTitle || "स्टडी नोट्स";
       }
@@ -683,23 +741,24 @@
       });
     }
 
-    // हुक: जब notes-viewer.js से कोई कार्ड क्लिक हो
     window.triggerNotesViewerLoader = function(title) {
       startSnakeLoader(title);
     };
 
-    // DOM म्यूटेशन आब्जर्वर: कार्ड्स के लोड होते ही उनके चैप्टर टाइटल का रंग गहरा काला/सफेद लॉक करना
-    const catalogObserver = new MutationObserver(() => {
-      const titles = document.querySelectorAll('#notesCatalogGrid h3, #notesCatalogGrid h4, .note-card h3, .note-card h4');
+    function updateCardsTextColor() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.classList.contains('dark-mode');
+      const titles = document.querySelectorAll('.notes-grid-catalog h3, .notes-grid-catalog h4, .note-item-card h3, .note-item-card h4');
       titles.forEach(el => {
-        el.style.setProperty('color', document.documentElement.classList.contains('light-mode') ? '#0f172a' : '#f8fafc', 'important');
-        el.style.setProperty('display', 'block', 'important');
-        el.style.setProperty('visibility', 'visible', 'important');
+        el.style.setProperty('color', isDark ? '#f8fafc' : '#0f172a', 'important');
       });
-    });
+    }
 
+    // कार्ड्स रेंडर होते ही कलर फिक्स लगाना
     const catalogGrid = document.getElementById('notesCatalogGrid');
     if (catalogGrid) {
+      const catalogObserver = new MutationObserver(() => {
+        updateCardsTextColor();
+      });
       catalogObserver.observe(catalogGrid, { childList: true, subtree: true });
     }
 
@@ -723,6 +782,11 @@
         }
       };
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initThemeSystem();
+      updateCardsTextColor();
+    });
   </script>
 </body>
 </html>
