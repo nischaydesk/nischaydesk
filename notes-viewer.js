@@ -2,7 +2,7 @@
    NischayDesk Complete Notes Controller (v6.0 - 100% Class 10th Dedicated)
    Architected by: Prince Kumar (NischayDesk)
    Features: Dedicated Class 10th Matric, Large PDF Bypass (Native Drive),
-             Ultra-Premium Loading Animation, In-App HD Zoomable PDF Viewer
+             Play Store Style Snake Loader, In-App HD Zoomable PDF Viewer
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,39 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
   const modalDirectDownloadBtn = document.getElementById('modalDirectDownloadBtn');
-  const pdfFrameStage = document.getElementById('pdfFrameStage');
 
   let allChaptersMaster = [];
   let currentFilterSubject = 'all';
   let searchQuery = '';
-
-  // 🌟 ULTRA-PREMIUM LOADER (Glowing Logo & Smart Bar) 🌟
-  let frameLoader = null;
-  if (pdfFrameStage) {
-    frameLoader = document.createElement('div');
-    frameLoader.id = 'pdfInternalLoader';
-    frameLoader.style.cssText = 'position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; background:rgba(4,9,20,0.95); backdrop-filter:blur(10px); z-index:15; font-family:inherit;';
-    frameLoader.innerHTML = `
-      <div style="display:flex; flex-direction:column; align-items:center; gap:20px;">
-        <div style="position:relative; width:70px; height:70px;">
-          <div style="position:absolute; inset:0; border-radius:20px; background:linear-gradient(135deg, #0284c7, #38bdf8); animation:pulseGlow 1.5s infinite alternate;"></div>
-          <div style="position:absolute; inset:3px; background:#0f172a; border-radius:17px; display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:900; color:#38bdf8; box-shadow:inset 0 0 10px rgba(0,0,0,0.5);">N</div>
-        </div>
-        <div style="text-align:center;">
-          <span style="font-size:1.1rem; font-weight:800; color:#ffffff; letter-spacing:0.5px; display:block; margin-bottom:8px;">HD स्मार्ट रीडर लोड हो रहा है...</span>
-          <div style="width:140px; height:5px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden; margin:0 auto;">
-            <div style="width:40%; height:100%; background:linear-gradient(90deg, #38bdf8, #8b5cf6); border-radius:10px; animation:loadBar 1s infinite ease-in-out alternate;"></div>
-          </div>
-        </div>
-      </div>
-      <style>
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 15px rgba(56,189,248,0.2); transform:scale(0.95); } 100% { box-shadow: 0 0 40px rgba(56,189,248,0.7); transform:scale(1.05); } }
-        @keyframes loadBar { 0% { transform:translateX(-100%); } 100% { transform:translateX(250%); } }
-      </style>
-    `;
-    pdfFrameStage.style.position = 'relative';
-    pdfFrameStage.appendChild(frameLoader);
-  }
 
   // डेटा इनिशियलाइजेशन (सिर्फ Class 10th)
   initClass10Notes();
@@ -97,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // 1. मास्टर लिस्ट में सिर्फ 10th के चैप्टर्स लोड करना
     allChaptersMaster = [];
     window.NischaySyllabus.subjects.forEach(function (subject) {
       if (!subject.id.startsWith('10-')) return;
@@ -118,7 +88,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // 2. URL से फ़िल्टर चेक करना (?filter=10-math)
     const urlParams = new URLSearchParams(window.location.search);
     const requestedFilter = urlParams.get('filter') || urlParams.get('subject');
 
@@ -128,10 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
       currentFilterSubject = 'all';
     }
 
-    // 3. फ़िल्टर पिल्स को सेट करना
     adjustClass10FilterPills(currentFilterSubject);
-
-    // 4. ग्रिड रेंडर करना
     renderNotesGrid();
   }
 
@@ -184,12 +150,16 @@ document.addEventListener('DOMContentLoaded', function () {
       notesCatalogGrid.innerHTML = `
         <div class="loading-state-box" style="text-align:center; padding:40px 16px; width:100%; grid-column:1/-1;">
           <div style="font-size: 2.8rem; margin-bottom: 10px;">📚</div>
-          <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 6px; color: var(--text-pure, #ffffff);">कोई नोट्स नहीं मिले</h3>
-          <p class="card-desc" style="color: var(--text-secondary, #94a3b8); font-size: 0.88rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
+          <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 6px; color: var(--text-main, #0f172a);">कोई नोट्स नहीं मिले</h3>
+          <p class="card-desc" style="color: var(--text-muted, #64748b); font-size: 0.88rem;">कृपया दूसरा विषय चुनें या सर्च बॉक्स में दूसरा नाम लिखें।</p>
         </div>
       `;
       return;
     }
+
+    const isLight = document.documentElement.classList.contains('light-mode') || document.documentElement.getAttribute('data-theme') === 'light';
+    const titleColor = isLight ? '#0f172a' : '#f8fafc';
+    const descColor = isLight ? '#475569' : '#94a3b8';
 
     let htmlBuffer = '';
     filtered.forEach(function (note) {
@@ -206,34 +176,34 @@ document.addEventListener('DOMContentLoaded', function () {
       htmlBuffer += `
         <div class="note-item-card">
           <div>
-            <div class="note-badge-row">
-              <span class="note-badge-class">
+            <div class="note-badge-row" style="display:flex; justify-content:space-between; margin-bottom:10px;">
+              <span class="note-badge-class" style="background:rgba(2,132,199,0.12); color:#0284c7; padding:3px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; border:1px solid rgba(2,132,199,0.25);">
                 ${note.subjectTitle}
               </span>
-              <span class="note-badge-pages">
+              <span class="note-badge-pages" style="color:${descColor}; font-weight:700; font-size:0.78rem;">
                 📄 ${note.pages || 'हैंडनोट्स'}
               </span>
             </div>
 
             <div style="display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px;">
-              <div style="background: rgba(56, 189, 248, 0.14); color: var(--brand-accent, #38bdf8); min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; border: 1px solid var(--border-subtle, rgba(56, 189, 248, 0.2));">
+              <div style="background: rgba(2, 132, 199, 0.12); color: #0284c7; min-width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.88rem; flex-shrink: 0; border: 1px solid rgba(2, 132, 199, 0.3);">
                 ${note.no}
               </div>
-              <h3 style="font-size: 1rem; margin: 0; font-weight: 800; line-height: 1.4; color: var(--text-pure, #ffffff);">
+              <h3 style="font-size: 1.05rem; margin: 0; font-weight: 800; line-height: 1.4; color: ${titleColor} !important;">
                 ${note.name}
               </h3>
             </div>
 
-            <p class="note-desc" style="padding-left: 42px; font-size: 0.82rem; color: var(--text-secondary, #94a3b8); line-height: 1.5; margin-bottom: 14px;">
+            <p class="note-desc" style="padding-left: 42px; font-size: 0.82rem; color: ${descColor} !important; line-height: 1.45; margin-bottom: 14px;">
               ${note.desc}
             </p>
           </div>
 
-          <div class="note-btn-group" style="padding-top: 12px; border-top: 1px solid var(--border-subtle, rgba(255,255,255,0.08));">
-            <button class="btn-read-note" ${readAction}>
+          <div class="note-btn-group" style="padding-top: 12px; border-top: 1px solid rgba(128,128,128,0.15); display:flex; gap:8px;">
+            <button class="btn-read-note" ${readAction} style="flex:1; padding:9px 12px; border-radius:8px; font-weight:700; font-size:0.85rem; background:#0284c7; color:#fff; border:none; cursor:pointer;">
               📖 <span>नोट्स पढ़ें</span>
             </button>
-            <button class="btn-download-note" ${downloadAction}>
+            <button class="btn-download-note" ${downloadAction} style="flex:1; padding:9px 12px; border-radius:8px; font-weight:700; font-size:0.85rem; background:rgba(2,132,199,0.1); color:#0284c7; border:1px solid rgba(2,132,199,0.3); cursor:pointer;">
               📥 <span>डाउनलोड</span>
             </button>
           </div>
@@ -244,20 +214,20 @@ document.addEventListener('DOMContentLoaded', function () {
     notesCatalogGrid.innerHTML = htmlBuffer;
   }
 
+  // 🌟 मोडल ओपन होने पर स्नेक लोडर और टाइटल ट्रिगर
   window.openNoteModal = function (classTitle, title, pdfUrl) {
     if (!pdfStudioModal || !studioPdfFrame) return;
 
     if (modalDocBadge) modalDocBadge.innerText = classTitle;
     if (modalDocTitle) modalDocTitle.innerText = title;
-    
-    if (frameLoader) frameLoader.style.display = 'flex';
+
+    // notes.html में बना प्ले स्टोर स्नेक लोडर चलाएं
+    if (window.triggerNotesViewerLoader) {
+      window.triggerNotesViewerLoader(title);
+    }
 
     studioPdfFrame.removeAttribute('sandbox');
     studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
-
-    studioPdfFrame.onload = function () {
-      if (frameLoader) frameLoader.style.display = 'none';
-    };
 
     if (modalDirectDownloadBtn) {
       modalDirectDownloadBtn.onclick = function (e) {
@@ -274,7 +244,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!pdfStudioModal || !studioPdfFrame) return;
     pdfStudioModal.classList.remove('active');
     studioPdfFrame.src = '';
-    if (frameLoader) frameLoader.style.display = 'none';
     document.body.style.overflow = '';
   }
 
@@ -322,6 +291,10 @@ document.addEventListener('DOMContentLoaded', function () {
       renderNotesGrid();
     });
   }
+
+  // थीम बदलने पर कार्ड्स के रंग तुरंत दोबारा सिंक करना
+  const themeObserver = new MutationObserver(renderNotesGrid);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
   function escapeHtml(str) {
     if (!str) return '';
