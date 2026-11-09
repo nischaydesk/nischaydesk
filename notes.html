@@ -56,10 +56,8 @@
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
     }
 
-    /* 🌟 BACKGROUND ORBS */
-    .bg-orb-1 { position: fixed; top: -10%; left: -10%; width: 40vw; height: 40vw; background: rgba(2, 132, 199, 0.15); filter: blur(90px); border-radius: 50%; z-index: -1; animation: float 10s ease-in-out infinite alternate; pointer-events: none; }
-    .bg-orb-2 { position: fixed; bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: rgba(16, 185, 129, 0.1); filter: blur(90px); border-radius: 50%; z-index: -1; animation: float 12s ease-in-out infinite alternate-reverse; pointer-events: none; }
-    @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(30px, 30px); } }
+    .bg-orb-1 { position: fixed; top: -10%; left: -10%; width: 40vw; height: 40vw; background: rgba(2, 132, 199, 0.15); filter: blur(90px); border-radius: 50%; z-index: -1; pointer-events: none; }
+    .bg-orb-2 { position: fixed; bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: rgba(16, 185, 129, 0.1); filter: blur(90px); border-radius: 50%; z-index: -1; pointer-events: none; }
 
     /* 🌟 HEADER BANNER */
     .notes-header-banner {
@@ -81,7 +79,6 @@
     .notes-headline { color: var(--text-main, #0f172a) !important; }
     .notes-subheadline { color: var(--text-muted, #64748b) !important; }
 
-    /* 🌟 SEARCH FIELD */
     .notes-search-field {
       background: rgba(128, 128, 128, 0.08) !important; 
       border: 1.5px solid var(--card-border, #cbd5e1) !important;
@@ -94,7 +91,6 @@
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2) !important;
     }
 
-    /* 🌟 FILTER PILLS */
     .filter-btn {
       border: 1.5px solid var(--card-border, #cbd5e1) !important;
       background: rgba(128, 128, 128, 0.06) !important;
@@ -112,7 +108,7 @@
       color: #ffffff !important; 
     }
 
-    /* 🌟 NOTES CARDS AND TEXT FIXES */
+    /* 🌟 NOTES CARDS & CHAPTER NAME COLOR FIX */
     .notes-grid-catalog {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -134,21 +130,26 @@
       box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15) !important;
     }
 
-    /* चैप्टर का नाम साफ दिखने के लिए फिक्स */
+    /* 🔥 चैप्टर नाम गायब होने का शत-प्रतिशत समाधान */
     .note-card h3, .note-card h4, .note-title, .note-card-title,
-    .notes-grid-catalog h3, .notes-grid-catalog h4 {
-      color: var(--text-main, #0f172a) !important;
+    .notes-grid-catalog h3, .notes-grid-catalog h4,
+    .note-card .title, .note-card .chapter-title {
+      color: #0f172a !important; /* लाइट मोड में डार्क ब्लैक */
       font-weight: 800 !important;
+      font-size: 1.08rem !important;
+      line-height: 1.4 !important;
       display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
       margin: 8px 0 !important;
     }
     html.dark-mode .note-card h3, html.dark-mode .note-card h4,
     html[data-theme="dark"] .note-card h3, html[data-theme="dark"] .note-card h4,
     html.dark-mode .notes-grid-catalog h3, html[data-theme="dark"] .notes-grid-catalog h3 {
-      color: #f8fafc !important;
+      color: #f8fafc !important; /* डार्क मोड में स्पष्ट सफेद */
     }
 
-    /* 🌟 PDF MODAL (Popup Viewer) */
+    /* 🎬 PDF MODAL (STUDIO POPUP) */
     .pdf-modal-backdrop {
       display: none;
       position: fixed;
@@ -193,7 +194,7 @@
       min-width: 0;
       padding-right: 12px;
     }
-    /* मोडल हेडर में चैप्टर नाम का डार्क/लाइट दोनों में हाई कंट्रास्ट फिक्स */
+    /* मोडल हेडर में चैप्टर का नाम 100% स्पष्ट सफेद */
     .pdf-doc-title {
       color: #ffffff !important; 
       font-weight: 800 !important;
@@ -256,445 +257,85 @@
       flex-shrink: 0;
     }
 
-    /* 🐍 PLAY STORE स्टाइल स्नेक सर्कुलर लूप लोडर (0 to 100%) */
+    /* 🐍 PLAY STORE SNAKE-STYLE DYNAMIC FILLING LOADER (0 to 100%) */
     .playstore-snake-loader {
       position: absolute;
       inset: 0;
-      background: #0b1329;
+      background: #071120;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 50;
-      gap: 20px;
+      gap: 18px;
     }
-    .snake-ring-container {
+    .playstore-app-wrap {
       position: relative;
-      width: 90px;
-      height: 90px;
+      width: 110px;
+      height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .snake-svg {
+    /* बीच में ऐप का आइकन */
+    .app-icon-center {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+      z-index: 2;
+    }
+    .snake-svg-ring {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       transform: rotate(-90deg);
-      animation: snakeContainerRotate 2s linear infinite;
     }
-    .snake-circle-bg {
+    .snake-track {
       fill: none;
       stroke: rgba(255, 255, 255, 0.08);
-      stroke-width: 6;
+      stroke-width: 5;
     }
-    .snake-circle-head {
+    /* सांप जैसी घूमने और भरने वाली नीली लाइन */
+    .snake-fill-bar {
       fill: none;
-      stroke: url(#snakeGradient);
-      stroke-width: 6;
+      stroke: #38bdf8;
+      stroke-width: 5.5;
       stroke-linecap: round;
-      stroke-dasharray: 220;
-      stroke-dashoffset: 220;
-      animation: snakeDashLoop 1.6s ease-in-out infinite;
+      stroke-dasharray: 283; /* 2 * PI * 45 */
+      stroke-dashoffset: 283;
+      transition: stroke-dashoffset 0.15s linear;
+      filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
     }
-    @keyframes snakeContainerRotate {
+    .snake-rotating-loop {
+      animation: snakeSpin 1.8s linear infinite;
+    }
+    @keyframes snakeSpin {
       100% { transform: rotate(270deg); }
     }
-    @keyframes snakeDashLoop {
-      0% {
-        stroke-dashoffset: 220;
-      }
-      50% {
-        stroke-dashoffset: 40;
-        transform: rotate(45deg);
-      }
-      100% {
-        stroke-dashoffset: 220;
-        transform: rotate(360deg);
-      }
+    .snake-live-text-box {
+      text-align: center;
     }
-    .snake-percent-badge {
-      position: absolute;
-      font-size: 1.05rem;
+    .snake-percent-num {
+      font-size: 1.45rem;
       font-weight: 900;
       color: #38bdf8;
       font-family: monospace;
-      letter-spacing: -0.5px;
+      margin: 0 0 4px;
     }
     .snake-status-title {
-      color: #f8fafc;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.4px;
-      text-align: center;
-    }
-
-    /* 📱 कस्टम क्लास बॉटम-शीट */
-    .nd-sheet-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(3, 7, 18, 0.78);
-      backdrop-filter: blur(6px);
-      z-index: 999999999;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 60px;
-    }
-    .nd-sheet-backdrop.active { display: flex !important; }
-    .nd-sheet-content {
-      width: 100%;
-      max-width: 480px;
-      background: #0b1329;
-      border: 1.5px solid #1e3a8a;
-      border-radius: 22px 22px 0 0;
-      padding: 20px 18px 28px;
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
-      animation: ndSheetSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    html.light-mode .nd-sheet-content,
-    html[data-theme="light"] .nd-sheet-content {
-      background: #ffffff !important;
-      border-color: #cbd5e1 !important;
-    }
-    @keyframes ndSheetSlideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-    .nd-sheet-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 14px;
-    }
-    html.light-mode .nd-sheet-header,
-    html[data-theme="light"] .nd-sheet-header {
-      border-bottom-color: #e2e8f0 !important;
-    }
-    .nd-sheet-header h3 {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-    .nd-sheet-close-btn {
-      background: none;
-      border: none;
       color: #94a3b8;
-      font-size: 1.6rem;
-      cursor: pointer;
-      line-height: 1;
-    }
-    .nd-sheet-options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .nd-sheet-opt-item {
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: #13224a;
-      border: 1.5px solid #1e3a8a;
-      color: #ffffff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all 0.2s;
-    }
-    html.light-mode .nd-sheet-opt-item,
-    html[data-theme="light"] .nd-sheet-opt-item {
-      background: #f8fafc !important;
-      border-color: #cbd5e1 !important;
-      color: #0f172a !important;
-    }
-    .nd-sheet-opt-item.selected {
-      background: rgba(2, 132, 199, 0.15) !important;
-      border-color: #0284c7 !important;
-      color: #0284c7 !important;
-    }
-
-    /* 🌟 साइड ड्रॉअर */
-    .drawer-scrim {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 9, 20, 0.75);
-      backdrop-filter: blur(8px);
-      z-index: 9999998 !important;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .drawer-scrim.active {
-      display: block !important;
-      opacity: 1 !important;
-    }
-    .side-drawer {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      bottom: 0 !important;
-      width: min(320px, 84vw) !important;
-      height: 100vh !important;
-      overflow-y: auto !important;
-      -webkit-overflow-scrolling: touch;
-      display: flex !important;
-      flex-direction: column !important;
-      background: #ffffff !important;
-      border-right: 1.5px solid #e2e8f0 !important;
-      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.25) !important;
-      transform: translateX(-100%) !important;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-      z-index: 99999999 !important;
-      visibility: hidden;
-      padding-bottom: 120px !important;
-    }
-    html.dark-mode .side-drawer,
-    html[data-theme="dark"] .side-drawer {
-      background: #071120 !important;
-      border-right-color: rgba(56, 189, 248, 0.25) !important;
-    }
-    .side-drawer.active {
-      transform: translateX(0) !important;
-      visibility: visible !important;
-    }
-    .drawer-header {
-      padding: 16px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #e2e8f0;
-      flex-shrink: 0;
-    }
-    html.dark-mode .drawer-header,
-    html[data-theme="dark"] .drawer-header {
-      border-bottom-color: rgba(255, 255, 255, 0.08);
-    }
-    .drawer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #0f172a;
-    }
-    html.dark-mode .drawer-brand,
-    html[data-theme="dark"] .drawer-brand { color: #ffffff; }
-    .drawer-close-btn {
-      background: #f1f5f9;
-      border: none;
-      color: #475569;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 1.3rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    html.dark-mode .drawer-close-btn,
-    html[data-theme="dark"] .drawer-close-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-    }
-    .drawer-nav-list {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .drawer-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 14px;
-      border-radius: 10px;
-      color: #334155;
-      text-decoration: none;
       font-size: 0.88rem;
       font-weight: 700;
-      transition: all 0.2s ease;
-    }
-    html.dark-mode .drawer-nav-item,
-    html[data-theme="dark"] .drawer-nav-item { color: #cbd5e1; }
-    .drawer-nav-item.active {
-      background: #0284c7 !important;
-      color: #fff !important;
-    }
-
-    /* 🌟 डेवलपर बैज */
-    .drawer-footer-custom {
-      margin-top: 15px;
-      padding: 18px 16px 20px;
-      border-top: 1px solid #e2e8f0;
-      text-align: center;
-      background: #f8fafc;
-      flex-shrink: 0;
-    }
-    html.dark-mode .drawer-footer-custom,
-    html[data-theme="dark"] .drawer-footer-custom {
-      border-top-color: rgba(56, 189, 248, 0.2);
-      background: rgba(4, 9, 20, 0.6);
-    }
-    .developer-branding-tag {
-      font-size: 0.95rem;
-      font-weight: 900;
-      color: #0284c7;
-      margin-bottom: 6px;
-    }
-    .developer-sub-badge {
-      font-size: 0.72rem;
-      color: #0f172a;
-      font-weight: 700;
-      background: #e2e8f0;
-      padding: 6px 14px;
-      border-radius: 999px;
-      display: inline-block;
-      border: 1px solid #cbd5e1;
-    }
-    html.dark-mode .developer-sub-badge,
-    html[data-theme="dark"] .developer-sub-badge {
-      color: #e2e8f0;
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    /* 🌟 WELCOME LOGIN MODAL (FULL POPUP) */
-    .nd-login-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 9, 20, 0.82);
-      backdrop-filter: blur(10px);
-      z-index: 999999999;
-      justify-content: center;
-      align-items: center;
-      padding: 18px;
-    }
-    .nd-login-backdrop.active { display: flex !important; }
-    .nd-login-card {
-      background: #ffffff;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 24px;
-      width: 100%;
-      max-width: 380px;
-      padding: 30px 24px 24px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-      position: relative;
-      text-align: center;
-      animation: ndPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    html.dark-mode .nd-login-card,
-    html[data-theme="dark"] .nd-login-card {
-      background: rgba(15, 23, 42, 0.96) !important;
-      border-color: rgba(56, 189, 248, 0.35) !important;
-    }
-    @keyframes ndPop {
-      0% { transform: scale(0.85); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .nd-modal-close {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      background: #f1f5f9;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      color: #64748b;
-      font-size: 1.3rem;
-      cursor: pointer;
-    }
-    .nd-logo-bubble {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .nd-logo-bubble img { width: 44px; height: 44px; border-radius: 12px; }
-    .nd-btn-google {
-      width: 100%;
-      background: #ffffff;
-      color: #1f2937;
-      border: 1.5px solid #cbd5e1;
-      padding: 13px 16px;
-      border-radius: 12px;
-      font-size: 0.92rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      cursor: pointer;
-    }
-
-    /* 🌟 फ़ूटर स्टाइल */
-    .khan-full-footer {
-      background-color: #0b1a30 !important;
-      color: #ffffff !important;
-      padding: 38px 18px 30px !important;
-      margin-top: 40px !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-      width: 100% !important;
-    }
-    .footer-inner-khan {
-      max-width: 1200px !important;
-      margin: 0 auto !important;
-      width: 100% !important;
-    }
-    .footer-columns-grid {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 20px !important;
-      margin-bottom: 26px !important;
-    }
-    .footer-column-title {
-      font-size: 0.95rem !important;
-      font-weight: 800 !important;
-      color: #ffffff !important;
-      margin-bottom: 14px !important;
-    }
-    .footer-ul-links {
-      list-style: none !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 10px !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    .footer-ul-links a {
-      color: #94a3b8 !important;
-      text-decoration: none !important;
-      font-size: 0.85rem !important;
-      font-weight: 600 !important;
-    }
-    .founder-pro-strip {
-      background: rgba(15, 23, 42, 0.85) !important;
-      border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
-      border-radius: 16px !important;
-      padding: 16px !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 14px !important;
-      margin-bottom: 24px !important;
-    }
-    .founder-info-left { display: flex !important; align-items: center !important; gap: 14px !important; }
-    .founder-avatar-pic {
-      width: 48px !important;
-      height: 48px !important;
-      border-radius: 50% !important;
-      object-fit: cover !important;
-      border: 2px solid #38bdf8 !important;
+      letter-spacing: 0.4px;
     }
 
     /* 📱 बॉटम डॉक */
@@ -736,7 +377,6 @@
 </head>
 <body class="app-body">
 
-  <!-- Background Orbs -->
   <div class="bg-orb-1"></div>
   <div class="bg-orb-2"></div>
 
@@ -745,9 +385,7 @@
     <nav class="nav-container">
       <div class="nav-brand-group">
         <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
         </button>
 
         <a href="index.html" class="brand-entity">
@@ -798,89 +436,44 @@
 
   <!-- 2. MOBILE DRAWER -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
-  <aside class="side-drawer" id="sideDrawer">
-    <div class="drawer-header">
-      <div class="drawer-brand">
+  <aside class="side-drawer" id="sideDrawer" style="position:fixed; top:0; left:0; bottom:0; width:min(320px, 84vw); height:100vh; overflow-y:auto; background:#ffffff; z-index:99999999; transform:translateX(-100%); transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+    <div class="drawer-header" style="padding:16px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0;">
+      <div class="drawer-brand" style="display:flex; align-items:center; gap:10px; font-size:1.15rem; font-weight:800;">
         <div class="brand-badge-icon sm">N</div>
         <span>10th Matric Hub</span>
       </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()">&times;</button>
+      <button class="drawer-close-btn" id="drawerCloseBtn" onclick="closeDrawerUnified()" style="border:none; background:#f1f5f9; width:32px; height:32px; border-radius:50%; cursor:pointer;">&times;</button>
     </div>
 
-    <nav class="drawer-nav-list">
-      <a href="index.html" class="drawer-nav-item">
-        <span class="icon">📊</span> 10th मुख्य डैशबोर्ड
-      </a>
-      <a href="syllabus.html" class="drawer-nav-item">
-        <span class="icon">📋</span> 10th बोर्ड सिलेबस
-      </a>
-      <a href="notes.html" class="drawer-nav-item active">
-        <span class="icon">📚</span> 10th टॉपर्स नोट्स
-      </a>
-      <a href="pyq.html" class="drawer-nav-item">
-        <span class="icon">📖</span> 10th क्वेश्चन बैंक (2020-2026)
-      </a>
-      <a href="model-paper.html" class="drawer-nav-item">
-        <span class="icon">📝</span> 10th ऑफिशियल मॉडल पेपर
-      </a>
-      <a href="test.html" class="drawer-nav-item">
-        <span class="icon">📝</span> 10th चैप्टर-वाइज टेस्ट
-      </a>
-      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8;">
-        <span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल
-      </a>
-      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80;">
-        <span class="icon">🔍</span> परिणाम देखें (Result Portal)
-      </a>
-
-      <!-- SMART TOOLS -->
-      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
-        <span class="icon">✅</span> माय टू-डू लिस्ट (To-Do List)
-      </a>
-      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;">
-        <span class="icon">🖼️</span> इमेज To PDF मेकर
-      </a>
-      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;">
-        <span class="icon">🤖</span> AI-Desk (स्मार्ट डाउट सॉल्वर)
-      </a>
-
-      <!-- 🌟 अन्य कक्षा पोर्टल्स -->
+    <nav class="drawer-nav-list" style="padding:12px; display:flex; flex-direction:column; gap:6px;">
+      <a href="index.html" class="drawer-nav-item"><span class="icon">📊</span> 10th मुख्य डैशबोर्ड</a>
+      <a href="syllabus.html" class="drawer-nav-item"><span class="icon">📋</span> 10th बोर्ड सिलेबस</a>
+      <a href="notes.html" class="drawer-nav-item active"><span class="icon">📚</span> 10th टॉपर्स नोट्स</a>
+      <a href="pyq.html" class="drawer-nav-item"><span class="icon">📖</span> 10th क्वेश्चन बैंक (2020-2026)</a>
+      <a href="model-paper.html" class="drawer-nav-item"><span class="icon">📝</span> 10th ऑफिशियल मॉडल पेपर</a>
+      <a href="test.html" class="drawer-nav-item"><span class="icon">📝</span> 10th चैप्टर-वाइज टेस्ट</a>
+      <a href="bseb-simulator.html" class="drawer-nav-item" style="color: #38bdf8;"><span class="icon">🏛️</span> 3h 15m बोर्ड परीक्षा हॉल</a>
+      <a href="bseb-result.html" class="drawer-nav-item" style="color: #4ade80;"><span class="icon">🔍</span> परिणाम देखें (Result Portal)</a>
+      <a href="todo.html" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.1); border-radius: 10px;"><span class="icon">✅</span> माय टू-डू लिस्ट</a>
+      <a href="pdf.html" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800; background: rgba(168, 85, 247, 0.1); border-radius: 10px;"><span class="icon">🖼️</span> इमेज To PDF</a>
+      <a href="ai-desk.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800; background: rgba(245, 158, 11, 0.12); border-radius: 10px;"><span class="icon">🤖</span> AI डाउट स्टूडियो</a>
+      
       <div style="margin: 10px 0 4px; padding: 12px; background: rgba(56, 189, 248, 0.08); border-radius: 12px; border: 1px dashed rgba(56, 189, 248, 0.35);">
         <span style="font-size: 0.74rem; color: #38bdf8; font-weight: 800; display: block; margin-bottom: 8px;">अन्य कक्षा पोर्टल्स:</span>
-        <a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-          <span>🧪 कक्षा 11वीं (साइंस हब)</span>
-          <span style="color: #38bdf8; font-weight: 900;">खोलें ↗</span>
+        <a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
+          <span>🧪 11वीं साइंस हब</span><span style="color:#0284c7; font-weight:900;">खोलें ↗</span>
         </a>
-        <a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 0 0;">
-          <span>🏛️ कक्षा 12वीं (इंटर साइंस)</span>
-          <span style="color: #38bdf8; font-weight: 900;">खोलें ↗</span>
+        <a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: var(--text-main); font-size: 0.84rem; font-weight: 700; text-decoration: none; display: flex; justify-content: space-between; padding: 6px 0 0;">
+          <span>🏛️ 12वीं इंटर साइंस</span><span style="color:#0284c7; font-weight:900;">खोलें ↗</span>
         </a>
       </div>
 
-      <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e;">
-        <span class="icon">💬</span> WhatsApp चैनल जुड़ें
-      </a>
-
-      <!-- डार्क/लाइट मोड स्विच -->
-      <div class="drawer-theme-row" style="padding: 14px; margin-top: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-          <span style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">🌙 डार्क / लाइट मोड</span>
-          <label class="switch">
-            <input type="checkbox" id="themeSwitch">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
+      <a href="https://whatsapp.com/channel/0029VbDgXJG0lwgytlQMHP0I" target="_blank" class="drawer-nav-item" style="color: #22c55e;"><span class="icon">💬</span> WhatsApp चैनल</a>
     </nav>
-
-    <div class="drawer-footer-custom">
-      <div class="developer-branding-tag">Developed By Prince Kumar ⚡</div>
-      <div class="developer-sub-badge">NischayDesk Matric Hub • 2026</div>
-    </div>
   </aside>
 
   <!-- 3. MAIN NOTES EXPLORER -->
-  <main class="dashboard-viewport">
+  <main class="dashboard-viewport" style="max-width:1100px; margin:0 auto; padding:0 14px;">
 
     <!-- BREADCRUMB BAR -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
@@ -914,7 +507,7 @@
         />
       </div>
 
-      <!-- Filter Pills (10th Matric Only) -->
+      <!-- Filter Pills -->
       <div class="filter-pill-container" id="filterPillContainer" style="display:flex; flex-wrap:wrap; gap:8px;">
         <button class="filter-btn active" data-filter="all" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">सभी 10th विषय (All)</button>
         <button class="filter-btn" data-filter="10-math" style="padding:8px 14px; border-radius:999px; font-size:0.8rem; font-weight:700;">📐 10th गणित</button>
@@ -933,90 +526,12 @@
 
     <!-- DYNAMIC NOTES CATALOG GRID -->
     <section class="notes-display-section" style="margin-top: 24px;">
-      <div class="notes-grid-catalog" id="notesCatalogGrid">
-        <!-- जावास्क्रिप्ट द्वारा नोट्स कार्ड्स लोड होंगे -->
-      </div>
+      <div class="notes-grid-catalog" id="notesCatalogGrid"></div>
     </section>
 
   </main>
 
-  <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (Switching to 11th / 12th) -->
-  <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
-    <div class="nd-sheet-content">
-      <div class="nd-sheet-header">
-        <h3>कक्षा चुनें (Select Class)</h3>
-        <button type="button" class="nd-sheet-close-btn" onclick="closeCustomClassSheet()">&times;</button>
-      </div>
-      <div class="nd-sheet-options">
-        <div class="nd-sheet-opt-item selected" onclick="selectClassAndRedirect('10th')">
-          <span>Class 10th (मैट्रिक बोर्ड)</span>
-          <span style="color:#0284c7; font-weight:900;">✓</span>
-        </div>
-        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('11th')">
-          <span>Class 11th (साइंस हब)</span>
-          <span style="color:#94a3b8; font-weight:900;">›</span>
-        </div>
-        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('12th')">
-          <span>Class 12th (इंटर साइंस बोर्ड)</span>
-          <span style="color:#94a3b8; font-weight:900;">›</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 🌟 WELCOME LOGIN MODAL (FULL POPUP) -->
-  <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
-    <div class="nd-login-card">
-      <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
-
-      <div class="nd-logo-bubble">
-        <img src="logo.png" alt="NischayDesk Logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=0284c7&color=fff'">
-      </div>
-
-      <h3 style="color:var(--text-main); font-size:1.35rem; font-weight:900; margin-bottom:6px;">Welcome to <span style="color:#0284c7;">NischayDesk</span></h3>
-      <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:20px;">बिहार बोर्ड (BSEB) डिजिटल परीक्षा एवं टॉपर तैयारी पोर्टल 🚀</p>
-
-      <button type="button" class="nd-btn-google" id="btnContinueGoogleModal" onclick="triggerGooglePopupFromModal()">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:20px; height:20px;">
-        <span>Continue with Google</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- DEDICATED USER PROFILE MODAL -->
-  <div class="nd-sheet-backdrop" id="customProfileModal" style="display: none; align-items: center; justify-content: center; padding: 16px;">
-    <div style="background: #0b1329; border: 1.5px solid #1e3a8a; border-radius: 20px; width: 100%; max-width: 360px; padding: 24px; text-align: center; color: #ffffff !important; box-shadow: 0 10px 35px rgba(0,0,0,0.6); position: relative;">
-      
-      <button onclick="closeProfileModal()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; line-height: 1;">&times;</button>
-      
-      <div style="position: relative; width: 72px; height: 72px; margin: 0 auto 12px;">
-        <img id="modalUserImg" src="" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover;">
-        <span style="position: absolute; bottom: 2px; right: 2px; background: #22c55e; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #0b1329;"></span>
-      </div>
-
-      <h3 id="modalUserName" style="margin: 0 0 4px; font-size: 1.25rem; font-weight: 800; color: #ffffff !important;">छात्र</h3>
-      <p id="modalUserEmail" style="margin: 0 0 16px; font-size: 0.82rem; color: #93c5fd !important;">student@email.com</p>
-
-      <div style="text-align: left; margin-bottom: 16px;">
-        <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700; display: block; margin-bottom: 8px;">अध्ययन कक्षा बदलें:</label>
-        <button type="button" onclick="closeProfileModal(); openCustomClassSheet();" style="width: 100%; background: #13224a; border: 1.5px solid #1e3a8a; color: #38bdf8; padding: 11px 14px; border-radius: 10px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
-          <span>Class 10th (मैट्रिक)</span>
-          <span>बदलें ▾</span>
-        </button>
-      </div>
-
-      <button id="btnPerformLogout" onclick="handleSlowLogout()" style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; padding: 11px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-        🚪 लॉगआउट करें (Logout)
-      </button>
-
-      <div id="logoutLoadingState" style="display: none; margin-top: 14px; font-size: 0.82rem; color: #f59e0b; font-weight: 600;">
-        ⏳ सुरक्षित लॉगआउट हो रहा है...
-      </div>
-
-    </div>
-  </div>
-
-  <!-- IN-BUILT STUDIO MODAL PDF VIEWER (Auto-Active Support) -->
+  <!-- 📱 इन-ऐप स्टूडियो मोडल (Google Play Store स्टाइल स्नेक लोडर + हाई कंट्रास्ट टाइटल) -->
   <div class="pdf-modal-backdrop" id="pdfStudioModal">
     <div class="pdf-modal-window">
       <div class="pdf-studio-header">
@@ -1028,51 +543,40 @@
           <a href="#" id="modalDirectDownloadBtn" target="_blank" class="btn-studio-action" download title="डिवाइस में डाउनलोड करें">
             📥 <span>डाउनलोड</span>
           </a>
-          <button class="btn-studio-action" id="modalFullscreenBtn" title="फुल-स्क्रीन मोड">
-            ⛶
-          </button>
+          <button class="btn-studio-action" id="modalFullscreenBtn" title="फुल-स्क्रीन मोड">⛶</button>
           <button class="btn-studio-close" id="modalCloseBtn" title="बंद करें">&times;</button>
         </div>
       </div>
 
       <div class="pdf-frame-stage" id="pdfFrameStage">
-        <!-- 🐍 PLAY STORE SNAKE LOOP LOADER -->
+        <!-- 🐍 PLAY STORE SNAKE CIRCULAR PROGRESS LOADER -->
         <div class="playstore-snake-loader" id="notesSnakeLoader">
-          <div class="snake-ring-container">
-            <svg class="snake-svg" viewBox="0 0 80 80">
-              <defs>
-                <linearGradient id="snakeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#0284c7" />
-                  <stop offset="50%" stop-color="#38bdf8" />
-                  <stop offset="100%" stop-color="#10b981" />
-                </linearGradient>
-              </defs>
-              <circle class="snake-circle-bg" cx="40" cy="40" r="34"></circle>
-              <circle class="snake-circle-head" cx="40" cy="40" r="34"></circle>
+          <div class="playstore-app-wrap">
+            <svg class="snake-svg-ring snake-rotating-loop" viewBox="0 0 100 100">
+              <circle class="snake-track" cx="50" cy="50" r="45"></circle>
+              <circle class="snake-fill-bar" id="snakeCircleFill" cx="50" cy="50" r="45"></circle>
             </svg>
-            <span class="snake-percent-badge" id="snakePercentText">0%</span>
+            <div class="app-icon-center">N</div>
           </div>
-          <div class="snake-status-title" id="snakeStatusMsg">HD स्मार्ट रीडर लोड हो रहा है...</div>
+          <div class="snake-live-text-box">
+            <div class="snake-percent-num" id="snakePercentText">0%</div>
+            <div class="snake-status-title" id="snakeStatusMsg">HD स्मार्ट रीडर तैयार हो रहा है...</div>
+          </div>
         </div>
 
-        <iframe 
-          src="" 
-          id="studioPdfFrame" 
-          frameborder="0" 
-          allowfullscreen>
-        </iframe>
+        <iframe src="" id="studioPdfFrame" frameborder="0" allowfullscreen></iframe>
       </div>
 
       <div class="pdf-studio-footer">
         <span>NischayDesk Class 10th HD Reader</span>
-        <span class="reading-hint">ज़ूम करने के लिए पिंच करें या +/- दबाएं</span>
+        <span>ज़ूम करने के लिए पिंच करें या +/- दबाएं</span>
       </div>
     </div>
   </div>
 
-  <!-- 4. FOOTER (Full 2 Columns + Founder Card) -->
-  <footer class="khan-full-footer">
-    <div class="footer-inner-khan">
+  <!-- 4. FOOTER -->
+  <footer class="khan-full-footer" style="background-color: #0b1a30; color: #ffffff; padding: 38px 18px 30px; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+    <div class="footer-inner-khan" style="max-width: 1200px; margin: 0 auto;">
       <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 8px;">
         NischayDesk — कक्षा 10वीं बिहार बोर्ड मैट्रिक विशेष अध्ययन मंच
       </div>
@@ -1080,45 +584,11 @@
         हमारा उद्देश्य बिहार विद्यालय परीक्षा समिति (BSEB) के प्रत्येक विद्यार्थी को 100% निःशुल्क, उच्च गुणवत्ता वाले नोट्स और परीक्षा सिमुलेटर उपलब्ध कराना है।
       </p>
 
-      <div class="footer-columns-grid">
+      <div class="founder-pro-strip" style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+        <img src="Prince.jpg" alt="Prince Kumar" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8;" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
         <div>
-          <div class="footer-column-title">पोर्टल मेनू</div>
-          <ul class="footer-ul-links">
-            <li><a href="index.html">➔ 10th मुख्य डैशबोर्ड</a></li>
-            <li><a href="notes.html">➔ हस्तलिखित टॉपर्स नोट्स</a></li>
-            <li><a href="syllabus.html">➔ आधिकारिक सिलेबस & ब्लूप्रिंट</a></li>
-            <li><a href="pyq.html">➔ मैट्रिक क्वेश्चन बैंक (2020–2026)</a></li>
-            <li><a href="model-paper.html">➔ ऑफिशियल मॉडल पेपर्स</a></li>
-            <li><a href="bseb-simulator.html">➔ 3h 15m लाइव परीक्षा हॉल</a></li>
-            <li><a href="bseb-result.html">➔ परिणाम व मार्कशीट पोर्टल</a></li>
-            <li><a href="bseb-print.html">➔ OMR शीट व आंसर कॉपी</a></li>
-            <li><a href="todo.html" target="_blank">➔ माय टू-डू लिस्ट (To-Do)</a></li>
-            <li><a href="pdf.html" target="_blank">➔ इमेज To PDF मेकर</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div class="footer-column-title">10th मुख्य विषय</div>
-          <ul class="footer-ul-links">
-            <li><a href="notes.html?filter=10-math">➔ गणित (Mathematics)</a></li>
-            <li><a href="notes.html?filter=10-science-phy">➔ भौतिकी (Physics)</a></li>
-            <li><a href="notes.html?filter=10-science-chem">➔ रसायन विज्ञान (Chemistry)</a></li>
-            <li><a href="notes.html?filter=10-science-bio">➔ जीव विज्ञान (Biology)</a></li>
-            <li><a href="notes.html?filter=10-sst-all">➔ सम्पूर्ण सामाजिक विज्ञान (SST)</a></li>
-            <li><a href="notes.html?filter=10-sanskrit">➔ संस्कृत (पीयूषम् एवं व्याकरण)</a></li>
-            <li><a href="https://nischaydesk.github.io/nischaydesk/class11.html" style="color: #38bdf8;">➔ कक्षा 11वीं साइंस हब ↗</a></li>
-            <li><a href="https://nischaydesk.github.io/nischaydesk/class12.html" style="color: #38bdf8;">➔ कक्षा 12वीं इंटर साइंस ↗</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="founder-pro-strip">
-        <div class="founder-info-left">
-          <img src="Prince.jpg" alt="Prince Kumar" class="founder-avatar-pic" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=0284c7&color=fff'" />
-          <div>
-            <h5 style="margin: 0; color: #fff; font-size: 1rem; font-weight: 800;">Prince Kumar</h5>
-            <p style="margin: 2px 0 0; color: #94a3b8; font-size: 0.78rem;">Founder & Developer, NischayDesk (463/500 Bihar Board Topper)</p>
-          </div>
+          <h5 style="margin: 0; color: #fff; font-size: 1rem; font-weight: 800;">Prince Kumar</h5>
+          <p style="margin: 2px 0 0; color: #94a3b8; font-size: 0.78rem;">Founder & Developer, NischayDesk (463/500 Bihar Board Topper)</p>
         </div>
       </div>
 
@@ -1131,22 +601,10 @@
 
   <!-- 5. MOBILE BOTTOM DOCK -->
   <nav class="mobile-bottom-dock">
-    <a href="index.html" class="dock-link-item">
-      <span class="dock-icon-svg">🏠</span>
-      <span class="dock-label-text">10th होम</span>
-    </a>
-    <a href="notes.html" class="dock-link-item active">
-      <span class="dock-icon-svg">📖</span>
-      <span class="dock-label-text">नोट्स</span>
-    </a>
-    <a href="pyq.html" class="dock-link-item">
-      <span class="dock-icon-svg">📚</span>
-      <span class="dock-label-text">क्वेश्चन बैंक</span>
-    </a>
-    <a href="bseb-simulator.html" class="dock-link-item">
-      <span class="dock-icon-svg">🏛️</span>
-      <span class="dock-label-text">एग्जाम हॉल</span>
-    </a>
+    <a href="index.html" class="dock-link-item"><span class="dock-icon-svg">🏠</span><span class="dock-label-text">10th होम</span></a>
+    <a href="notes.html" class="dock-link-item active"><span class="dock-icon-svg">📖</span><span class="dock-label-text">नोट्स</span></a>
+    <a href="pyq.html" class="dock-link-item"><span class="dock-icon-svg">📚</span><span class="dock-label-text">क्वेश्चन बैंक</span></a>
+    <a href="bseb-simulator.html" class="dock-link-item"><span class="dock-icon-svg">🏛️</span><span class="dock-label-text">एग्जाम हॉल</span></a>
   </nav>
 
   <!-- Scripts -->
@@ -1154,198 +612,66 @@
   <script src="syllabus-data.js"></script>
   <script src="notes-viewer.js"></script>
   <script>
-    function initThemeSystem() {
-      const themeSwitch = document.getElementById("themeSwitch");
-      const currentTheme = localStorage.getItem("nd_app_theme") || "light";
-
-      if (themeSwitch) {
-        themeSwitch.checked = (currentTheme === "light");
-        themeSwitch.onchange = function() {
-          if (this.checked) {
-            document.documentElement.setAttribute("data-theme", "light");
-            document.documentElement.classList.add("light-mode");
-            localStorage.setItem("nd_app_theme", "light");
-          } else {
-            document.documentElement.setAttribute("data-theme", "dark");
-            document.documentElement.classList.remove("light-mode");
-            localStorage.setItem("nd_app_theme", "dark");
-          }
-        };
-      }
-    }
-
-    /* 📱 साइड ड्रॉअर */
     function openDrawerUnified() {
-      document.getElementById('sideDrawer').classList.add('active');
+      document.getElementById('sideDrawer').style.transform = 'translateX(0)';
       document.getElementById('drawerScrim').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeDrawerUnified() {
-      document.getElementById('sideDrawer').classList.remove('active');
+      document.getElementById('sideDrawer').style.transform = 'translateX(-100%)';
       document.getElementById('drawerScrim').classList.remove('active');
       document.body.style.overflow = '';
     }
 
     document.getElementById('mobileMenuBtn').onclick = openDrawerUnified;
 
-    /* 📱 क्लास शीट एवं रिडायरेक्शन */
-    function openCustomClassSheet() {
-      const backdrop = document.getElementById('ndClassSheetBackdrop');
-      if (backdrop) {
-        backdrop.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-    }
-
-    function closeCustomClassSheet() {
-      const backdrop = document.getElementById('ndClassSheetBackdrop');
-      if (backdrop) {
-        backdrop.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    }
-
-    function handleClassSheetBackdrop(e) {
-      if (e.target.id === 'ndClassSheetBackdrop') closeCustomClassSheet();
-    }
-
-    function selectClassAndRedirect(chosenClass) {
-      closeCustomClassSheet();
-      localStorage.setItem("nd_selected_class", chosenClass);
-      localStorage.setItem("nischay_user_class", chosenClass);
-      localStorage.setItem("user_class", chosenClass);
-
-      if (chosenClass === "11th") {
-        window.location.href = "https://nischaydesk.github.io/nischaydesk/class11.html";
-      } else if (chosenClass === "12th") {
-        window.location.href = "https://nischaydesk.github.io/nischaydesk/class12.html";
-      } else {
-        window.location.href = "https://nischaydesk.github.io/nischaydesk/index.html";
-      }
-    }
-
-    /* 🌟 लॉगिन मोडल */
-    function openWelcomeLoginModal() {
-      const modal = document.getElementById('ndWelcomeLoginModal');
-      if (modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-    }
-
-    function closeWelcomeLoginModal() {
-      const modal = document.getElementById('ndWelcomeLoginModal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    }
-
-    function handleOutsideModalClick(e) {
-      if (e.target.id === 'ndWelcomeLoginModal') closeWelcomeLoginModal();
-    }
-
-    function triggerGooglePopupFromModal() {
-      if (window.firebase && firebase.auth) {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(() => {
-          closeWelcomeLoginModal();
-          window.location.reload();
-        }).catch(() => {
-          alert("लॉगिन विफल रहा, पुनः प्रयास करें");
-        });
-      }
-    }
-
-    /* 🌟 प्रोफ़ाइल एवं ऑथ सिंक */
-    function syncUserAuthState(user) {
-      const authBtn = document.getElementById('headerAuthBtn');
-      const profileWidget = document.getElementById('userProfileWidget');
-      const userDisplay = document.getElementById('userDisplayName');
-      const userImg = document.getElementById('userAvatarImg');
-
-      const modalName = document.getElementById('modalUserName');
-      const modalEmail = document.getElementById('modalUserEmail');
-      const modalImg = document.getElementById('modalUserImg');
-
-      if (user) {
-        if (authBtn) authBtn.style.display = 'none';
-        if (profileWidget) profileWidget.style.display = 'flex';
-
-        const rawName = user.displayName || user.email.split('@')[0] || "छात्र";
-        const firstName = rawName.trim().split(' ')[0];
-        const userPhoto = user.photoURL || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(firstName) + '&background=0284c7&color=fff');
-
-        if (userDisplay) userDisplay.textContent = firstName;
-        if (userImg) userImg.src = userPhoto;
-
-        if (modalName) modalName.textContent = user.displayName || firstName;
-        if (modalEmail) modalEmail.textContent = user.email || "";
-        if (modalImg) modalImg.src = userPhoto;
-      } else {
-        if (authBtn) authBtn.style.display = 'inline-flex';
-        if (profileWidget) profileWidget.style.display = 'none';
-
-        if (modalName) modalName.textContent = "छात्र";
-        if (modalEmail) modalEmail.textContent = "student@email.com";
-        if (modalImg) modalImg.src = "https://ui-avatars.com/api/?name=User&background=0284c7&color=fff";
-      }
-    }
-
-    function openProfileModal() {
-      document.getElementById('customProfileModal').style.display = 'flex';
-    }
-
-    function closeProfileModal() {
-      document.getElementById('customProfileModal').style.display = 'none';
-    }
-
-    function handleSlowLogout() {
-      if (window.firebase && firebase.auth) {
-        firebase.auth().signOut().finally(() => {
-          closeProfileModal();
-          window.location.reload();
-        });
-      }
-    }
-
-    /* 🌟 इन-बिल्ट PDF मोडल हैंडलर्स और स्नेक लोडर ऑटोमेशन */
+    /* 🐍 PLAY STORE SNAKE LOADER LOGIC (0 to 100% FILLING RING) */
     const pdfStudioModal = document.getElementById('pdfStudioModal');
     const studioPdfFrame = document.getElementById('studioPdfFrame');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
     const modalFullscreenBtn = document.getElementById('modalFullscreenBtn');
     const snakeLoader = document.getElementById('notesSnakeLoader');
+    const snakeCircleFill = document.getElementById('snakeCircleFill');
     const snakePercentText = document.getElementById('snakePercentText');
+    const docTitleEl = document.getElementById('modalDocTitle');
 
+    const TOTAL_CIRCUMFERENCE = 283; // 2 * PI * 45
     let snakeProgressTimer = null;
+
+    function setSnakeProgress(percent) {
+      if (snakePercentText) snakePercentText.textContent = `${percent}%`;
+      if (snakeCircleFill) {
+        const offset = TOTAL_CIRCUMFERENCE - (percent / 100) * TOTAL_CIRCUMFERENCE;
+        snakeCircleFill.style.strokeDashoffset = offset;
+      }
+    }
 
     function startSnakeLoader(chapterTitle) {
       if (snakeLoader) snakeLoader.style.display = 'flex';
-      let progress = 0;
-      if (snakePercentText) snakePercentText.textContent = '0%';
+      setSnakeProgress(0);
       if (snakeProgressTimer) clearInterval(snakeProgressTimer);
 
+      let currentProg = 0;
       snakeProgressTimer = setInterval(() => {
-        if (progress < 75) {
-          progress += Math.floor(Math.random() * 8) + 4;
-        } else if (progress < 95) {
-          progress += Math.floor(Math.random() * 3) + 1;
+        if (currentProg < 75) {
+          currentProg += Math.floor(Math.random() * 8) + 4;
+        } else if (currentProg < 95) {
+          currentProg += Math.floor(Math.random() * 3) + 1;
         }
-        if (progress > 95) progress = 95;
-        if (snakePercentText) snakePercentText.textContent = `${progress}%`;
+        if (currentProg > 95) currentProg = 95;
+        setSnakeProgress(currentProg);
       }, 70);
 
-      // हेडर में चैप्टर नाम पक्का सेट और हाई कंट्रास्ट दिखाना
-      const docTitleEl = document.getElementById('modalDocTitle');
-      if (docTitleEl && chapterTitle) {
-        docTitleEl.textContent = chapterTitle;
+      // मोडल हेडर में स्पष्ट सफेद नाम
+      if (docTitleEl) {
+        docTitleEl.textContent = chapterTitle || "स्टडी नोट्स";
       }
     }
 
     function completeSnakeLoader() {
       if (snakeProgressTimer) clearInterval(snakeProgressTimer);
-      if (snakePercentText) snakePercentText.textContent = '100%';
+      setSnakeProgress(100);
       setTimeout(() => {
         if (snakeLoader) snakeLoader.style.display = 'none';
       }, 250);
@@ -1357,10 +683,25 @@
       });
     }
 
-    // ग्लोबल हुक: जब notes-viewer.js से कोई PDF ओपन ट्रिगर हो
+    // हुक: जब notes-viewer.js से कोई कार्ड क्लिक हो
     window.triggerNotesViewerLoader = function(title) {
       startSnakeLoader(title);
     };
+
+    // DOM म्यूटेशन आब्जर्वर: कार्ड्स के लोड होते ही उनके चैप्टर टाइटल का रंग गहरा काला/सफेद लॉक करना
+    const catalogObserver = new MutationObserver(() => {
+      const titles = document.querySelectorAll('#notesCatalogGrid h3, #notesCatalogGrid h4, .note-card h3, .note-card h4');
+      titles.forEach(el => {
+        el.style.setProperty('color', document.documentElement.classList.contains('light-mode') ? '#0f172a' : '#f8fafc', 'important');
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('visibility', 'visible', 'important');
+      });
+    });
+
+    const catalogGrid = document.getElementById('notesCatalogGrid');
+    if (catalogGrid) {
+      catalogObserver.observe(catalogGrid, { childList: true, subtree: true });
+    }
 
     if (modalCloseBtn) {
       modalCloseBtn.onclick = function() {
@@ -1382,16 +723,6 @@
         }
       };
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      initThemeSystem();
-
-      if (window.firebase && firebase.auth) {
-        firebase.auth().onAuthStateChanged((user) => {
-          syncUserAuthState(user);
-        });
-      }
-    });
   </script>
 </body>
 </html>
