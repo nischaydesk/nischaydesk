@@ -1,6 +1,6 @@
 /* ==========================================================================
    NischayDesk Class 12th Board Syllabus Repository & Controller
-   Class: 12th Science (Board Special) - 100% Full Official Chapters
+   Class: 12th Science & Language (Board Special) - 100% Full Official Chapters
    Curated by: Prince Kumar (NischayDesk)
    ========================================================================== */
 
@@ -75,6 +75,97 @@ window.NischaySyllabus12Data = {
         { no: 11, name: "अध्याय 11: जीव और समष्टियाँ (Organisms and Populations)", pdf: "" },
         { no: 12, name: "अध्याय 12: पारितंत्र (Ecosystem)", pdf: "" },
         { no: 13, name: "अध्याय 13: जैव विविधता एवं संरक्षण (Biodiversity and Conservation)", pdf: "" }
+      ]
+    },
+    "hindi": {
+      title: "हिन्दी - दिगंत भाग-2 (गद्य एवं काव्य खंड)",
+      chapters: [
+        { no: 1, name: "गद्य 1: बातचीत (बालकृष्ण भट्ट)", pdf: "" },
+        { no: 2, name: "गद्य 2: उसने कहा था (चन्द्रधर शर्मा गुलेरी)", pdf: "" },
+        { no: 3, name: "गद्य 3: संपूर्ण क्रांति (जयप्रकाश नारायण)", pdf: "" },
+        { no: 4, name: "गद्य 4: अर्धनारीश्वर (रामधारी सिंह 'दिनकर')", pdf: "" },
+        { no: 5, name: "गद्य 5: रोज (सच्चिदानंद हीरानंद वात्स्यायन 'अज्ञेय')", pdf: "" },
+        { no: 6, name: "गद्य 6: एक लेख और एक पत्र (भगत सिंह)", pdf: "" },
+        { no: 7, name: "गद्य 7: ओ सदानीरा (जगदीशचन्द्र माथुर)", pdf: "" },
+        { no: 8, name: "गद्य 8: सिपाही की माँ (मोहन राकेश)", pdf: "" },
+        { no: 9, name: "गद्य 9: प्रगीत और समाज (नामवर सिंह)", pdf: "" },
+        { no: 10, name: "गद्य 10: जूठन (ओमप्रकाश वाल्मीकि)", pdf: "" },
+        { no: 11, name: "गद्य 11: हँसते हुए मेरा अकेलापन (मलयज)", pdf: "" },
+        { no: 12, name: "गद्य 12: तिरिछ (उदय प्रकाश)", pdf: "" },
+        { no: 13, name: "गद्य 13: शिक्षा (जे. कृष्णमूर्ति)", pdf: "" },
+        { no: 14, name: "काव्य 1: कड़बक (मलिक मुहम्मद जायसी)", pdf: "" },
+        { no: 15, name: "काव्य 2: पद (सूरदास)", pdf: "" },
+        { no: 16, name: "काव्य 3: पद (तुलसीदास)", pdf: "" },
+        { no: 17, name: "काव्य 4: छप्पय (नाभादास)", pdf: "" },
+        { no: 18, name: "काव्य 5: कवित्त (भूषण)", pdf: "" },
+        { no: 19, name: "काव्य 6: तुमुल कोलाहल कलह में (जयशंकर प्रसाद)", pdf: "" },
+        { no: 20, name: "काव्य 7: पुत्र वियोग (सुभद्रा कुमारी चौहान)", pdf: "" },
+        { no: 21, name: "काव्य 8: उषा (शमशेर बहादुर सिंह)", pdf: "" },
+        { no: 22, name: "काव्य 9: जन-जन का चेहरा एक (गजानन माधव मुक्तिबोध)", pdf: "" },
+        { no: 23, name: "काव्य 10: अधिनायक (रघुवीर सहाय)", pdf: "" },
+        { no: 24, name: "काव्य 11: प्यारे नन्हे बेटे को (विनोद कुमार शुक्ल)", pdf: "" },
+        { no: 25, name: "काव्य 12: हार-जीत (अशोक वाजपेयी)", pdf: "" },
+        { no: 26, name: "काव्य 13: गाँव का घर (ज्ञानेन्द्रपति)", pdf: "" }
+      ]
+    },
+    "hindi_grammar": {
+      title: "हिन्दी व्याकरण (Hindi Grammar)",
+      chapters: [
+        { no: 1, name: "अध्याय 1: वर्ण विचार एवं उच्चारण स्थान", pdf: "" },
+        { no: 2, name: "अध्याय 2: संधि एवं संधि-विच्छेद (स्वर, व्यंजन, विसर्ग)", pdf: "" },
+        { no: 3, name: "अध्याय 3: समास एवं समास-विग्रह", pdf: "" },
+        { no: 4, name: "अध्याय 4: उपसर्ग एवं प्रत्यय", pdf: "" },
+        { no: 5, name: "अध्याय 5: संज्ञा, सर्वनाम, विशेषण एवं क्रिया", pdf: "" },
+        { no: 6, name: "अध्याय 6: लिंग, वचन एवं कारक", pdf: "" },
+        { no: 7, name: "अध्याय 7: पर्यायवाची शब्द (Synonyms)", pdf: "" },
+        { no: 8, name: "अध्याय 8: विलोम / विपरीतार्थक शब्द (Antonyms)", pdf: "" },
+        { no: 9, name: "अध्याय 9: अनेक शब्दों के लिए एक शब्द", pdf: "" },
+        { no: 10, name: "अध्याय 10: मुहावरे एवं लोकोक्तियाँ", pdf: "" },
+        { no: 11, name: "अध्याय 11: वाक्य शुद्धि एवं पदबंध", pdf: "" },
+        { no: 12, name: "अध्याय 12: काल एवं वाच्य (Tense & Voice in Hindi)", pdf: "" }
+      ]
+    },
+    "english": {
+      title: "English - Rainbow Part-2 (Prose & Poetry)",
+      chapters: [
+        { no: 1, name: "Prose 1: Indian Civilization and Culture (Mahatma Gandhi)", pdf: "" },
+        { no: 2, name: "Prose 2: Bharat is My Home (Dr. Zakir Hussain)", pdf: "" },
+        { no: 3, name: "Prose 3: A Pinch of Snuff (Manohar Malgaonkar)", pdf: "" },
+        { no: 4, name: "Prose 4: I Have a Dream (Martin Luther King, Jr.)", pdf: "" },
+        { no: 5, name: "Prose 5: Ideas That Have Helped Mankind (Bertrand Russell)", pdf: "" },
+        { no: 6, name: "Prose 6: The Artist (Shiga Naoya)", pdf: "" },
+        { no: 7, name: "Prose 7: A Child is Born (Germaine Greer)", pdf: "" },
+        { no: 8, name: "Prose 8: How Free is the Press (Dorothy L. Sayers)", pdf: "" },
+        { no: 9, name: "Prose 9: The Earth (H. E. Bates)", pdf: "" },
+        { no: 10, name: "Prose 10: India Through a Traveller's Eyes (Pearl S. Buck)", pdf: "" },
+        { no: 11, name: "Prose 11: A Marriage Proposal (Anton Chekhov)", pdf: "" },
+        { no: 12, name: "Poetry 1: Sweetest Love I Do Not Goe (John Donne)", pdf: "" },
+        { no: 13, name: "Poetry 2: Song of Myself (Walt Whitman)", pdf: "" },
+        { no: 14, name: "Poetry 3: Now the Leaves Are Falling Fast (W. H. Auden)", pdf: "" },
+        { no: 15, name: "Poetry 4: Ode to Autumn (John Keats)", pdf: "" },
+        { no: 16, name: "Poetry 5: An Epitaph (Walter de la Mare)", pdf: "" },
+        { no: 17, name: "Poetry 6: The Soldier (Rupert Brooke)", pdf: "" },
+        { no: 18, name: "Poetry 7: Macavity: The Mystery Cat (T. S. Eliot)", pdf: "" },
+        { no: 19, name: "Poetry 8: Fire-Hymn (Keki N. Daruwalla)", pdf: "" },
+        { no: 20, name: "Poetry 9: Snake (D. H. Lawrence)", pdf: "" },
+        { no: 21, name: "Poetry 10: My Grandmother's House (Kamala Das)", pdf: "" }
+      ]
+    },
+    "english_grammar": {
+      title: "English Grammar & Composition",
+      chapters: [
+        { no: 1, name: "Chapter 1: Time and Tense", pdf: "" },
+        { no: 2, name: "Chapter 2: Active and Passive Voice", pdf: "" },
+        { no: 3, name: "Chapter 3: Direct and Indirect Narration", pdf: "" },
+        { no: 4, name: "Chapter 4: Auxiliary Verbs & Modals", pdf: "" },
+        { no: 5, name: "Chapter 5: Prepositions & Fixed Prepositions", pdf: "" },
+        { no: 6, name: "Chapter 6: Articles (A, An, The)", pdf: "" },
+        { no: 7, name: "Chapter 7: Subject-Verb Agreement (Syntax)", pdf: "" },
+        { no: 8, name: "Chapter 8: Combination & Transformation of Sentences", pdf: "" },
+        { no: 9, name: "Chapter 9: Correct Spelling & Word Formation", pdf: "" },
+        { no: 10, name: "Chapter 10: Synonyms & Antonyms", pdf: "" },
+        { no: 11, name: "Chapter 11: Idioms, Phrases & One Word Substitution", pdf: "" },
+        { no: 12, name: "Chapter 12: Story of English (Old, Middle & Modern English)", pdf: "" }
       ]
     }
   }
