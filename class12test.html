@@ -3,27 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>कक्षा 12वीं इंटर साइंस टेस्ट पोर्टल | NischayDesk - Smart Exam Engine</title>
+  <title>कक्षा 12वीं इंटर बोर्ड टेस्ट इंजन | NischayDesk</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Core Theme & Test Engine Stylesheets -->
-  <link rel="stylesheet" href="main.css" />
-  <link rel="stylesheet" href="navbar.css" />
-  <link rel="stylesheet" href="dashboard.css" />
-  <link rel="stylesheet" href="test-engine.css" />
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXM8RJ080H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-WXM8RJ080H');
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
   <script src="config.js"></script>
   <script src="syllabus-data-12.js"></script>
@@ -37,757 +22,1223 @@
 
     const savedTheme = localStorage.getItem("nd_app_theme") || "light";
     document.documentElement.setAttribute("data-theme", savedTheme);
-    if (savedTheme === "light") {
-      document.documentElement.classList.add("light-mode");
-    } else {
-      document.documentElement.classList.remove("light-mode");
-    }
   </script>
 
   <style>
-    /* 🌟 12th Royal Indigo & Purple Custom Theme Overrides */
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
-      --brand-accent: #6366f1;
+      --bg-page: #f8fafc;
+      --nav-bg: #ffffff;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --success: #10b981;
+      --danger: #ef4444;
     }
 
-    /* नीले बैज और प्रश्न नंबर पिल में साफ़ सफ़ेद अक्षर */
-    .subject-badge, #liveExamBadge,
-    .q-number-pill, #displayQNumber {
-      background: #6366f1 !important;
-      color: #ffffff !important;
-      font-weight: 800 !important;
-      padding: 5px 12px !important;
-      border-radius: 8px !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      min-width: 44px;
+    html[data-theme="dark"] {
+      --bg-page: #040914;
+      --nav-bg: #071120;
+      --card-bg: #0b1a30;
+      --card-border: rgba(139, 92, 246, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
     }
 
-    /* कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर */
-    .custom-select-trigger {
-      width: 100% !important;
-      padding: 13px 16px;
-      border-radius: 12px;
-      border: 1.8px solid var(--card-border, #cbd5e1);
-      font-size: 0.95rem;
-      font-weight: 700;
-      background: var(--card-bg, #ffffff);
-      color: var(--text-main, #0f172a);
-      cursor: pointer;
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      overflow-x: hidden;
+      min-height: 100dvh;
+    }
+
+    /* 🌟 Top Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 52px;
+      background: var(--nav-bg);
+      border-bottom: 1.5px solid var(--card-border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+    .nav-inner {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      user-select: none;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
-    .custom-select-trigger:active {
-      transform: scale(0.98);
-      border-color: #6366f1;
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .custom-select-trigger .trigger-arrow {
-      font-size: 0.8rem;
+    .hamburger-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 16px;
+      height: 2px;
+      background: var(--text-main);
+      border-radius: 2px;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .brand-badge {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+    .brand-text h2 {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+    .brand-text h2 span { color: #6366f1; }
+    .brand-text p {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .btn-top-dash {
+      background: rgba(99, 102, 241, 0.12);
+      border: 1.5px solid #6366f1;
       color: #6366f1;
-      transition: transform 0.2s;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-decoration: none;
     }
 
-    .class-locked-pill {
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 12px;
-      border: 1.5px solid rgba(99, 102, 241, 0.35);
-      background: rgba(99, 102, 241, 0.08);
+    /* 🌟 Views Switcher */
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    /* =================================================================
+       SCREEN 1: STEP-BY-STEP SMART LOBBY
+       ================================================================= */
+    .lobby-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 16px 14px 82px;
+    }
+    .lobby-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+    }
+    .lobby-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .lobby-badge {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.12);
       color: #6366f1;
+      font-size: 0.72rem;
       font-weight: 800;
-      font-size: 0.92rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    .lobby-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+    .lobby-title span { color: #6366f1; }
+
+    /* Step Blocks */
+    .step-block {
+      margin-bottom: 14px;
+    }
+    .step-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .step-num {
+      background: #6366f1;
+      color: #fff;
+      padding: 1px 7px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      margin-right: 5px;
+    }
+
+    /* Step 1: Class Selector Pill */
+    .class-tap-box {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+      border: 1.8px solid #6366f1;
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .class-tap-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #6366f1;
+    }
+    .class-change-tag {
+      background: #6366f1;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    /* Step 2: Subject Grid */
+    .subject-grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .sub-pill-card {
+      background: var(--bg-page);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      padding: 11px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sub-pill-card.active {
+      background: rgba(99, 102, 241, 0.14);
+      border-color: #6366f1;
+      color: #6366f1;
+      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.15);
+    }
+
+    /* Step 3: Chapter Selector Trigger */
+    .chapter-tap-box {
+      width: 100%;
+      background: var(--bg-page);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .chapter-tap-text {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Auto-Mode Badge (50m vs 15m) */
+    .auto-mode-strip {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1.5px dashed #10b981;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .auto-mode-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #059669;
+    }
+    html[data-theme="dark"] .auto-mode-title { color: #34d399; }
+    .auto-mode-meta {
+      font-size: 0.74rem;
+      font-weight: 800;
+      background: #10b981;
+      color: #fff;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .btn-launch-test {
+      width: 100%;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      transition: transform 0.15s ease;
+    }
+    .btn-launch-test:active { transform: scale(0.98); }
+
+    /* =================================================================
+       SCREEN 2: ZERO-SCROLL ONE-HANDED RUNNING EXAM VIEWPORT
+       ================================================================= */
+    #testRunningScreen.active {
+      display: flex;
+      flex-direction: column;
+      height: calc(100dvh - 52px);
+      overflow: hidden;
+    }
+
+    /* Compact Top Bar */
+    .exam-compact-bar {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .exam-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .pill-sub-live {
+      background: #6366f1;
+      color: #ffffff !important;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .q-progress-txt {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      white-space: nowrap;
+    }
+    .exam-bar-right {
       display: flex;
       align-items: center;
       gap: 8px;
     }
+    .timer-pill-compact {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 900;
+      color: #fbbf24;
+      font-family: monospace;
+    }
+    .btn-top-submit {
+      background: #ef4444;
+      color: #ffffff;
+      border: none;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
 
-    /* 📱 स्क्रीन के बीच में खुलने वाला सेंटर-मोडल */
-    .center-modal-backdrop {
+    /* Middle Question & Options Area (Fits cleanly without scrolling) */
+    .exam-middle-stage {
+      flex: 1;
+      max-width: 820px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+    }
+    .q-card-compact {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+    .q-meta-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .q-num-badge {
+      background: #6366f1;
+      color: #ffffff !important;
+      font-size: 0.78rem;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+    .q-palette-trigger {
+      background: rgba(99, 102, 241, 0.12);
+      color: #6366f1;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .q-text-compact {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    /* Compact Options List */
+    .options-compact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .opt-row-btn {
+      width: 100%;
+      background: var(--bg-page);
+      border: 1.5px solid var(--card-border);
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.12s ease;
+    }
+    .opt-row-btn.selected {
+      background: rgba(99, 102, 241, 0.14);
+      border-color: #6366f1;
+    }
+    .opt-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 0.78rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .opt-row-btn.selected .opt-circle {
+      background: #6366f1;
+      border-color: #6366f1;
+      color: #ffffff;
+    }
+    .opt-txt {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    /* 🌟 FIXED ONE-HANDED BOTTOM CONTROL BAR (Never jumps or wraps) */
+    .fixed-bottom-controls {
+      height: 58px;
+      background: var(--nav-bg);
+      border-top: 1.5px solid var(--card-border);
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 0.8fr 1.2fr;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+    .ctrl-btn {
+      height: 40px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      transition: transform 0.1s;
+    }
+    .ctrl-btn:active { transform: scale(0.96); }
+    .btn-prev-fix {
+      background: rgba(100, 116, 139, 0.15);
+      color: var(--text-main);
+    }
+    .btn-prev-fix:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-clear-fix {
+      background: transparent;
+      border: 1.5px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+    .btn-next-fix {
+      background: #6366f1;
+      color: #ffffff !important;
+      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3);
+    }
+    .btn-next-fix.submit-mode {
+      background: #10b981;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    /* =================================================================
+       SCREEN 3: RESULT & SCORECARD
+       ================================================================= */
+    .result-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 18px 14px 85px;
+    }
+    .result-hero-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px 16px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .score-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .score-tile {
+      background: var(--bg-page);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .score-tile span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .score-tile strong {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #6366f1;
+    }
+    .sol-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .sol-q {
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .sol-exp {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(99, 102, 241, 0.06);
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+
+    /* =================================================================
+       CUSTOM MODALS (No Browser Alert/Confirm!)
+       ================================================================= */
+    .nd-modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(3, 7, 18, 0.78);
+      background: rgba(2, 6, 23, 0.78);
       backdrop-filter: blur(6px);
       z-index: 99999999;
       align-items: center;
       justify-content: center;
       padding: 16px;
     }
-    .center-modal-backdrop.active {
-      display: flex !important;
-    }
-    .center-modal-box {
+    .nd-modal-backdrop.active { display: flex !important; }
+    .nd-modal-card {
       width: 100%;
-      max-width: 440px;
-      background: var(--card-bg, #ffffff);
-      border: 1.5px solid var(--card-border, #cbd5e1);
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
       border-radius: 20px;
       padding: 20px 18px;
       max-height: 80vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      animation: popIn 0.2s ease-out;
     }
-    html[data-theme="dark"] .center-modal-box {
-      background: #0b1329 !important;
-      border-color: #4f46e5 !important;
-    }
-    @keyframes modalPop {
+    @keyframes popIn {
       from { transform: scale(0.92); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-    .center-modal-header {
+    .nd-modal-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--card-border, #e2e8f0);
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
       margin-bottom: 12px;
     }
-    html[data-theme="dark"] .center-modal-header {
-      border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    .nd-modal-head h3 {
+      font-size: 1.02rem;
+      font-weight: 900;
+      color: var(--text-main);
     }
-    .center-modal-header h3 {
-      margin: 0;
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text-main, #0f172a);
-    }
-    html[data-theme="dark"] .center-modal-header h3 {
-      color: #ffffff !important;
-    }
-    .center-modal-close {
+    .nd-modal-close {
       background: none;
       border: none;
-      color: #94a3b8;
       font-size: 1.6rem;
+      color: var(--text-muted);
       cursor: pointer;
       line-height: 1;
     }
-    .center-modal-list {
+    .nd-modal-body {
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      padding-bottom: 4px;
     }
-    .center-modal-item {
-      padding: 13px 16px;
+    .modal-opt-row {
+      padding: 12px 14px;
       border-radius: 12px;
-      background: rgba(128, 128, 128, 0.05);
-      border: 1.5px solid var(--card-border, #e2e8f0);
-      color: var(--text-main, #0f172a);
-      font-size: 0.92rem;
+      background: var(--bg-page);
+      border: 1.5px solid var(--card-border);
+      font-size: 0.88rem;
       font-weight: 700;
-      cursor: pointer;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: all 0.2s;
-    }
-    html[data-theme="dark"] .center-modal-item {
-      background: #13224a !important;
-      border-color: #1e3a8a !important;
-      color: #ffffff !important;
-    }
-    .center-modal-item:hover, .center-modal-item:active {
-      border-color: #6366f1;
-      background: rgba(99, 102, 241, 0.1);
-    }
-    .center-modal-item.selected {
-      background: rgba(99, 102, 241, 0.18) !important;
-      border-color: #6366f1 !important;
-      color: #6366f1 !important;
-      font-weight: 800;
-    }
-    html[data-theme="dark"] .center-modal-item.selected {
-      color: #818cf8 !important;
-    }
-
-    /* स्टार्ट बटन (12th Royal Gradient) */
-    .btn-start-exam {
-      background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35) !important;
-    }
-
-    /* 📱 बॉटम ऐप डॉक स्टाइल */
-    .mobile-bottom-dock {
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      height: 60px !important;
-      background: var(--card-bg, #ffffff) !important;
-      border-top: 1.5px solid var(--card-border, #cbd5e1) !important;
-      display: flex !important;
-      justify-content: space-around !important;
-      align-items: center !important;
-      z-index: 999999 !important;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-    }
-    html[data-theme="dark"] .mobile-bottom-dock {
-      background: #071120 !important;
-      border-top-color: rgba(255, 255, 255, 0.08) !important;
-    }
-    .dock-link-item {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      text-decoration: none !important;
-      color: var(--text-muted, #64748b) !important;
-      flex: 1 !important;
-      height: 100% !important;
-      gap: 3px !important;
-    }
-    .dock-link-item.active { color: #6366f1 !important; }
-    .dock-icon-svg { font-size: 1.35rem !important; line-height: 1 !important; }
-    .dock-label-text { font-size: 0.72rem !important; font-weight: 700 !important; }
-
-    /* हैमबर्गर आइकॉन स्टाइल */
-    .mobile-menu-trigger {
-      display: inline-flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 4px;
-      width: 38px;
-      height: 38px;
-      background: var(--card-bg, #ffffff);
-      border: 1.5px solid var(--card-border, #cbd5e1);
-      border-radius: 9px;
       cursor: pointer;
     }
-    .mobile-menu-trigger .bar {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: var(--text-main, #0f172a);
-      border-radius: 2px;
-    }
-    html[data-theme="dark"] .mobile-menu-trigger .bar {
-      background: #ffffff;
-    }
-    .nav-dash-pill {
-      background: rgba(99, 102, 241, 0.12);
-      border: 1.5px solid #6366f1;
+    .modal-opt-row.selected {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: #6366f1;
       color: #6366f1;
-      font-size: 0.78rem;
       font-weight: 800;
-      padding: 6px 14px;
-      border-radius: 999px;
-      text-decoration: none;
-      white-space: nowrap;
     }
+
+    /* OMR Palette Grid inside Modal */
+    .palette-modal-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      padding: 6px 0;
+    }
+    .pal-num-btn {
+      height: 38px;
+      border-radius: 9px;
+      border: 1.5px solid var(--card-border);
+      background: var(--bg-page);
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .pal-num-btn.answered {
+      background: #10b981;
+      border-color: #10b981;
+      color: #ffffff;
+    }
+    .pal-num-btn.current {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35);
+    }
+
+    /* Submit Stats Box inside Custom Confirm Modal */
+    .submit-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 0 16px;
+      text-align: center;
+    }
+    .stat-mini {
+      background: var(--bg-page);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 8px;
+    }
+    .stat-mini span { display: block; font-size: 0.68rem; color: var(--text-muted); font-weight: 700; }
+    .stat-mini strong { font-size: 1.05rem; font-weight: 900; }
+    .confirm-btn-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Side Drawer */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 99998;
+    }
+    .drawer-overlay.active { display: block; }
+    .side-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 290px;
+      max-width: 85vw;
+      background: var(--card-bg);
+      z-index: 99999;
+      transform: translateX(-100%);
+      transition: transform 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-bottom: 80px;
+    }
+    .side-nav.active { transform: translateX(0); }
+    .side-nav-header {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid var(--card-border);
+    }
+    .side-nav-list {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .side-link.active { background: #6366f1; color: #fff; }
+
+    /* Lobby Bottom Dock (Hidden during running test for zero distraction) */
+    .lobby-bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 58px;
+      background: var(--nav-bg);
+      border-top: 1.5px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 900;
+    }
+    body.exam-is-running .lobby-bottom-dock {
+      display: none !important;
+    }
+    .dock-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      gap: 2px;
+      flex: 1;
+    }
+    .dock-btn.active { color: #6366f1; }
+    .dock-btn span.icon { font-size: 1.25rem; }
   </style>
 </head>
-<body class="app-body">
+<body>
 
-  <!-- 1. TOP NAVBAR -->
+  <!-- Top Navbar -->
   <header class="app-header">
-    <nav class="nav-container">
-      <div class="nav-brand-group">
-        <button class="mobile-menu-trigger" id="mobileMenuBtn" aria-label="Toggle Navigation">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+    <div class="nav-inner">
+      <div class="nav-left">
+        <button class="hamburger-btn" onclick="openDrawer()" aria-label="Menu">
+          <span></span><span></span><span></span>
         </button>
-
-        <a href="class12.html" class="brand-entity">
-          <div class="brand-badge-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">N</div>
-          <div class="brand-typography">
-            <span class="brand-name">Nischay<span class="brand-name-accent" style="color:#6366f1;">Desk</span></span>
-            <span class="brand-tagline">12th Inter Science Hub</span>
+        <a href="class12.html" class="brand-wrap">
+          <div class="brand-badge">N</div>
+          <div class="brand-text">
+            <h2>Nischay<span>Desk</span></h2>
+            <p>12TH INTER BOARD TEST</p>
           </div>
         </a>
       </div>
-
-      <div class="nav-links-desktop">
-        <a href="class12.html" class="nav-item">12th डैशबोर्ड</a>
-        <a href="class12notes.html" class="nav-item">📚 नोट्स</a>
-        <a href="class12test.html" class="nav-item active" style="color:#6366f1;">📝 बोर्ड टेस्ट</a>
-        <a href="class12model.html" class="nav-item" style="color:#f59e0b; font-weight:800;">🏆 मॉडल पेपर</a>
-        <a href="class12pyq.html?class=12" class="nav-item">📄 क्वेश्चन बैंक</a>
-        <a href="class12syllabus.html?class=12" class="nav-item">📋 सिलेबस</a>
-        <a href="bridge-course.html" class="nav-item" style="color:#10b981; font-weight:800;">🚀 ब्रिज गाइड</a>
-        <a href="calculator.html" class="nav-item" style="color:#ec4899; font-weight:800;">🧮 कैलकुलेटर</a>
-        <a href="todo.html?class=12th" target="_blank" class="nav-item" style="color: #10b981; font-weight: 800;">✅ टू-डू</a>
-        <a href="pdf.html?class=12th" target="_blank" class="nav-item" style="color: #a855f7; font-weight: 800;">🖼️ इमेज To PDF</a>
-        <a href="ai-desk.html?class=12th" class="nav-item">🤖 AI स्टूडियो</a>
-      </div>
-
-      <div class="nav-actions">
-        <a href="class12.html" class="nav-dash-pill">
-          🎓 12th डैशबोर्ड
-        </a>
-      </div>
-    </nav>
+      <a href="class12.html" class="btn-top-dash">🎓 12th होम</a>
+    </div>
   </header>
 
-  <!-- 2. MOBILE DRAWER -->
-  <div class="drawer-scrim" id="drawerScrim"></div>
-  <aside class="side-drawer" id="sideDrawer">
-    <div class="drawer-header">
-      <div class="drawer-brand">
-        <div class="brand-badge-icon sm" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">N</div>
-        <span>12th Inter Board Hub</span>
-      </div>
-      <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close Drawer">&times;</button>
+  <!-- Side Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <aside class="side-nav" id="sideNav">
+    <div class="side-nav-header">
+      <div style="font-weight: 900; font-size: 1.05rem;">Nischay<span style="color:#6366f1;">Desk</span> 12th</div>
+      <button class="nd-modal-close" onclick="closeDrawer()">&times;</button>
     </div>
-
-    <nav class="drawer-nav-list">
-      <a href="class12.html" class="drawer-nav-item">
-        <span class="icon">🎓</span> 12th मुख्य डैशबोर्ड
-      </a>
-      <a href="class12notes.html" class="drawer-nav-item">
-        <span class="icon">📚</span> 12th सम्पूर्ण नोट्स
-      </a>
-      <a href="class12test.html" class="drawer-nav-item active" style="background:#6366f1; color:#fff;">
-        <span class="icon">📝</span> 12th ऑनलाइन टेस्ट पोर्टल
-      </a>
-      <a href="class12model.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800;">
-        <span class="icon">🏆</span> 12th ऑफिशियल मॉडल पेपर
-      </a>
-      <a href="class12pyq.html?class=12" class="drawer-nav-item">
-        <span class="icon">📄</span> 12th क्वेश्चन बैंक (PYQ)
-      </a>
-      <a href="class12syllabus.html?class=12" class="drawer-nav-item">
-        <span class="icon">📋</span> 12th बोर्ड सिलेबस
-      </a>
-      <a href="bridge-course.html" class="drawer-nav-item" style="color: #10b981; font-weight: 800;">
-        <span class="icon">🚀</span> 11th ➔ 12th ब्रिज गाइड
-      </a>
-      <a href="calculator.html" class="drawer-nav-item" style="color: #ec4899; font-weight: 800;">
-        <span class="icon">🧮</span> कैलकुलेटर
-      </a>
-      <a href="todo.html?class=12th" target="_blank" class="drawer-nav-item" style="color: #10b981; font-weight: 800;">
-        <span class="icon">✅</span> माय टू-डू लिस्ट
-      </a>
-      <a href="pdf.html?class=12th" target="_blank" class="drawer-nav-item" style="color: #a855f7; font-weight: 800;">
-        <span class="icon">🖼️</span> इमेज To PDF मेकर
-      </a>
-      <a href="ai-desk.html?class=12th" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800;">
-        <span class="icon">🤖</span> AI डाउट स्टूडियो
-      </a>
-      <a href="bseb-print.html?class=12th" class="drawer-nav-item" style="color: #0284c7; font-weight: 800;">
-        <span class="icon">🎯</span> OMR शीट जनरेटर
-      </a>
-      <a href="class11.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
-        <span class="icon">🧪</span> कक्षा 11वीं पोर्टल पर जाएँ
-      </a>
-      <a href="index.html" class="drawer-nav-item" style="color: #38bdf8; font-weight: 800;">
-        <span class="icon">🔄</span> कक्षा 10वीं पोर्टल पर जाएँ
-      </a>
-      
-      <div class="drawer-theme-row">
-        <span class="theme-label">🌙 डार्क मोड:</span>
-        <label class="switch">
-          <input type="checkbox" id="themeSwitch">
-          <span class="slider round"></span>
-        </label>
-      </div>
-    </nav>
-
-    <div class="drawer-footer">
-      <span class="platform-meta">Developed By Prince Kumar ⚡</span>
+    <div class="side-nav-list">
+      <a href="class12.html" class="side-link"><span>🎓</span> 12th मुख्य डैशबोर्ड</a>
+      <a href="class12notes.html" class="side-link"><span>📚</span> 12th सम्पूर्ण नोट्स</a>
+      <a href="class12test.html" class="side-link active"><span>📝</span> 12th ऑनलाइन टेस्ट</a>
+      <a href="class12model.html" class="side-link" style="color:#f59e0b;"><span>🏆</span> 12th मॉडल पेपर</a>
+      <a href="class12pyq.html?class=12" class="side-link"><span>📄</span> 12th क्वेश्चन बैंक</a>
+      <a href="class12syllabus.html?class=12" class="side-link"><span>📋</span> 12th बोर्ड सिलेबस</a>
+      <a href="bridge-course.html" class="side-link" style="color:#10b981;"><span>🚀</span> 11th ➔ 12th ब्रिज गाइड</a>
+      <a href="calculator.html" class="side-link" style="color:#ec4899;"><span>🧮</span> कैलकुलेटर</a>
+      <a href="class11test.html" class="side-link" style="color:#38bdf8;"><span>🧪</span> कक्षा 11वीं टेस्ट पोर्टल</a>
+      <a href="test.html" class="side-link" style="color:#38bdf8;"><span>🔄</span> कक्षा 10वीं टेस्ट पोर्टल</a>
     </div>
   </aside>
 
-  <!-- 3. MAIN EXAM VIEWPORT -->
-  <main class="test-portal-container">
-
-    <!-- BREADCRUMB BAR -->
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px;">
-      <a href="class12.html" style="display: inline-flex; align-items: center; gap: 6px; color: #6366f1; text-decoration: none; font-size: 0.85rem; font-weight: 700; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25); padding: 5px 12px; border-radius: var(--radius-pill, 20px);">
-        <span>🏠</span> 12th मुख्य डैशबोर्ड
-      </a>
-      <span style="font-size: 0.78rem; color: var(--text-muted, #64748b); font-weight: 600;">NischayDesk Inter Board Engine</span>
-    </div>
-
-    <!-- SCREEN 1: LOBBY & CUSTOM CENTER SELECTOR -->
-    <section class="test-view-panel active" id="testLobbyScreen">
+  <!-- =================================================================
+       SCREEN 1: STEP-BY-STEP SMART LOBBY
+       ================================================================= -->
+  <main id="testLobbyScreen" class="view-panel active">
+    <div class="lobby-container">
       <div class="lobby-card">
-        <div class="status-pill" style="background: rgba(99, 102, 241, 0.12); color: #6366f1; border-color: rgba(99, 102, 241, 0.3);">
-          <span class="pulsing-dot" style="background:#6366f1;"></span> BSEB 12वीं इंटर बोर्ड टेस्ट सीरीज
-        </div>
-        <h1 class="lobby-title">कक्षा 12वीं <span style="background: linear-gradient(135deg, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">इंटर बोर्ड टेस्ट इंजन</span></h1>
-        <p class="lobby-subtitle">
-          भौतिकी, रसायन, गणित व जीव विज्ञान के सभी अध्यायों के बोर्ड-स्तरीय वस्तुनिष्ठ प्रश्नों का अभ्यास करें। 50% ऑब्जेक्टिव में पूरे अंक पक्के करें!
-        </p>
-
-        <!-- Selection Controls Grid -->
-        <div class="test-selection-grid">
-          
-          <!-- 1. Locked Class Indicator -->
-          <div class="select-field-box">
-            <label>1. कक्षा (Class):</label>
-            <div class="class-locked-pill">
-              <span>🎓 कक्षा 12वीं (Inter Science Board)</span>
-            </div>
-          </div>
-
-          <!-- 2. Subject Select Trigger -->
-          <div class="select-field-box">
-            <label>2. विषय चुनें (Subject):</label>
-            <div class="custom-select-trigger" id="subjectTriggerBtn" onclick="openCenterModal('subject')">
-              <span id="subjectTriggerText">⚡ भौतिक विज्ञान (Physics)</span>
-              <span class="trigger-arrow">▼</span>
-            </div>
-          </div>
-
-          <!-- 3. Chapter Filter Trigger -->
-          <div class="select-field-box">
-            <label>3. अध्याय चुनें (Chapter):</label>
-            <div class="custom-select-trigger" id="chapterTriggerBtn" onclick="openCenterModal('chapter')">
-              <span id="chapterTriggerText">अध्याय 1: वैद्युत आवेश तथा क्षेत्र</span>
-              <span class="trigger-arrow">▼</span>
-            </div>
-          </div>
-
-          <!-- 4. Exam Pattern Trigger -->
-          <div class="select-field-box">
-            <label>4. परीक्षा का समय व प्रकार:</label>
-            <div class="custom-select-trigger" id="patternTriggerBtn" onclick="openCenterModal('pattern')">
-              <span id="patternTriggerText">चैप्टर-वाइज टेस्ट (15 मिनट / 20 प्रश्न)</span>
-              <span class="trigger-arrow">▼</span>
-            </div>
-          </div>
-
+        <div class="lobby-header">
+          <div class="lobby-badge">⚡ BSEB SMART CBT EXAM ENGINE</div>
+          <h1 class="lobby-title">ऑनलाइन <span>बोर्ड टेस्ट पोर्टल</span></h1>
         </div>
 
-        <!-- Instructions Box -->
-        <div class="instructions-box">
-          <h3>📌 इंटर बोर्ड परीक्षा टेस्ट नियम:</h3>
-          <ul>
-            <li><strong>चैप्टर-वाइज टेस्ट:</strong> 15 मिनट का समय और 20 वस्तुनिष्ठ प्रश्न।</li>
-            <li><strong>इंटर बोर्ड मॉडल टेस्ट:</strong> 1 घंटा (60 मिनट) का समय और 50 बोर्ड-स्तरीय प्रश्न।</li>
-            <li>प्रत्येक सही उत्तर के लिए <strong>+4 अंक</strong> दिए जाएंगे।</li>
-            <li>नेगेटिव मार्किंग: गलत उत्तर देने पर <strong>-1 अंक</strong> काटा जाएगा।</li>
-            <li>सबमिट होते ही तुरंत स्कोरकार्ड और हर प्रश्न का विस्तृत हल (Answer Key) दिखेगा।</li>
-          </ul>
+        <!-- STEP 1: Class (Pre-selected & Tappable to redirect) -->
+        <div class="step-block">
+          <div class="step-label">
+            <span><span class="step-num">1</span> आपकी कक्षा (टैप करके बदलें)</span>
+          </div>
+          <div class="class-tap-box" onclick="openCustomModal('classModal')">
+            <div class="class-tap-left">
+              <span>🎓</span>
+              <span>कक्षा 12वीं (Inter Science)</span>
+            </div>
+            <span class="class-change-tag">बदलें ▾</span>
+          </div>
         </div>
 
-        <button class="btn-start-exam" id="startExamBtn" style="margin: 0 auto; display: block;">
-          ⚡ 12th टेस्ट शुरू करें (Start Board Test)
+        <!-- STEP 2: Subject Selection -->
+        <div class="step-block">
+          <div class="step-label">
+            <span><span class="step-num">2</span> विषय चुनें (Subject)</span>
+          </div>
+          <div class="subject-grid-4" id="subjectGrid4">
+            <div class="sub-pill-card active" data-sub="physics" onclick="selectSubject('physics')">⚡ भौतिकी (Physics)</div>
+            <div class="sub-pill-card" data-sub="chemistry" onclick="selectSubject('chemistry')">🧪 रसायन (Chemistry)</div>
+            <div class="sub-pill-card" data-sub="math" onclick="selectSubject('math')">📐 गणित (Maths)</div>
+            <div class="sub-pill-card" data-sub="biology" onclick="selectSubject('biology')">🧬 जीव विज्ञान (Bio)</div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Chapter or Full Syllabus -->
+        <div class="step-block">
+          <div class="step-label">
+            <span><span class="step-num">3</span> अध्याय या संपूर्ण विषय चुनें</span>
+          </div>
+          <div class="chapter-tap-box" onclick="openChapterSelectorModal()">
+            <span class="chapter-tap-text" id="selectedChapterLabel">अध्याय 1: वैद्युत आवेश तथा क्षेत्र</span>
+            <span style="color:#6366f1; font-weight:900; font-size:0.85rem;">चुनें ▾</span>
+          </div>
+        </div>
+
+        <!-- Auto Time & Question Indicator -->
+        <div class="auto-mode-strip">
+          <span class="auto-mode-title" id="autoModeTitle">📘 चैप्टर-वाइज प्रैक्टिस टेस्ट</span>
+          <span class="auto-mode-meta" id="autoModeMeta">20 प्रश्न • 15 मिनट</span>
+        </div>
+
+        <button class="btn-launch-test" id="startExamBtn" onclick="startSelectedTest()">
+          🚀 टेस्ट शुरू करें (Start Test)
         </button>
       </div>
-    </section>
-
-    <!-- SCREEN 2: RUNNING TEST SCREEN -->
-    <section class="test-view-panel" id="testRunningScreen">
-      <div class="exam-status-bar">
-        <div class="exam-active-subject">
-          <span class="subject-badge" id="liveExamBadge" style="background:#6366f1; color:#ffffff !important;">12th Board</span>
-          <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 20</span>
-        </div>
-
-        <div class="exam-timer-box" id="examTimerBox">
-          <span class="timer-icon">⏳</span>
-          <span class="timer-digits" id="timerDigits">15:00</span>
-        </div>
-
-        <button class="btn-submit-exam-early" id="submitExamEarlyBtn">
-          सबमिट करें ✓
-        </button>
-      </div>
-
-      <div class="exam-workspace-grid">
-        <div class="question-stage-box">
-          <div class="question-header">
-            <span class="q-number-pill" id="displayQNumber" style="background:#6366f1; color:#ffffff !important;">Q.1</span>
-            <span class="q-marks-tag">+4.0, -1.0</span>
-          </div>
-
-          <div class="question-text" id="displayQText">
-            प्रश्न लोड हो रहा है...
-          </div>
-
-          <div class="options-group" id="displayOptionsGroup"></div>
-
-          <div class="stage-nav-bar">
-            <button class="btn-stage-secondary" id="prevQBtn" disabled>&larr; पिछला</button>
-            <button class="btn-stage-ghost" id="clearSelectionBtn">विकल्प हटाएं</button>
-            <button class="btn-stage-primary" id="nextQBtn" style="background:#6366f1; color:#ffffff !important;">अगला प्रश्न &rarr;</button>
-          </div>
-        </div>
-
-        <aside class="question-palette-box">
-          <h4 class="palette-title">प्रश्न पैलेट (OMR Status)</h4>
-          <div class="palette-legend">
-            <span><span class="dot-legend answered"></span> हल किया</span>
-            <span><span class="dot-legend unanswered"></span> शेष</span>
-          </div>
-          <div class="palette-buttons-grid" id="paletteButtonsGrid"></div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- SCREEN 3: RESULT & SCORECARD -->
-    <section class="test-view-panel" id="testResultScreen">
-      <div class="result-card-container">
-        
-        <div class="result-header-badge">
-          <span class="trophy-icon">🏆</span>
-          <h2>12वीं इंटर बोर्ड टेस्ट परिणाम</h2>
-          <p id="resultSubMeta">स्कोरकार्ड रिपोर्ट</p>
-        </div>
-
-        <div class="result-tiles-grid">
-          <div class="res-tile score-tile">
-            <span class="tile-label">कुल प्राप्तांक</span>
-            <span class="tile-val" id="resTotalMarks">0 / 80</span>
-          </div>
-          <div class="res-tile accuracy-tile">
-            <span class="tile-label">सटीकता (Accuracy)</span>
-            <span class="tile-val" id="resAccuracy">0%</span>
-          </div>
-          <div class="res-tile correct-tile">
-            <span class="tile-label">सही उत्तर</span>
-            <span class="tile-val" id="resCorrectCount">0</span>
-          </div>
-          <div class="res-tile wrong-tile">
-            <span class="tile-label">गलत उत्तर</span>
-            <span class="tile-val" id="resWrongCount">0</span>
-          </div>
-        </div>
-
-        <div class="solutions-review-section">
-          <h3 class="solutions-heading">📖 विस्तृत उत्तर एवं हल (Answer Key):</h3>
-          <div class="solutions-accordion-list" id="solutionsAccordionList"></div>
-        </div>
-
-        <div class="result-actions-footer">
-          <button class="btn-start-exam" id="restartTestBtn">🔄 दूसरा टेस्ट दें</button>
-          <a href="class12.html" class="btn-stage-primary" style="text-decoration:none; display:inline-flex; align-items:center; background:#6366f1; color:#ffffff !important;">📊 12th डैशबोर्ड पर जाएं</a>
-        </div>
-
-      </div>
-    </section>
-
+    </div>
   </main>
 
-  <!-- 🌟 बीच में खुलने वाला सेंटर-मोडल (Center Modal Selector) -->
-  <div class="center-modal-backdrop" id="centerSelectorModal" onclick="handleCenterModalBackdrop(event)">
-    <div class="center-modal-box">
-      <div class="center-modal-header">
-        <h3 id="centerModalTitle">विकल्प चुनें</h3>
-        <button type="button" class="center-modal-close" onclick="closeCenterModal()">&times;</button>
+  <!-- =================================================================
+       SCREEN 2: ZERO-SCROLL ONE-HANDED RUNNING TEST SCREEN
+       ================================================================= -->
+  <section id="testRunningScreen" class="view-panel">
+    <!-- Top Compact Status Bar -->
+    <div class="exam-compact-bar">
+      <div class="exam-bar-left">
+        <span class="pill-sub-live" id="liveExamBadge">12th Physics</span>
+        <span class="q-progress-txt" id="liveQuestionCounter">1 / 20</span>
       </div>
-      <div class="center-modal-list" id="centerModalList"></div>
+      <div class="exam-bar-right">
+        <div class="timer-pill-compact">⏳ <span id="timerDigits">15:00</span></div>
+        <button class="btn-top-submit" onclick="openSubmitConfirmModal()">सबमिट ✓</button>
+      </div>
+    </div>
+
+    <!-- Middle Question & Options Stage -->
+    <div class="exam-middle-stage">
+      <div class="q-card-compact">
+        <div class="q-meta-line">
+          <span class="q-num-badge" id="displayQNumber">Q.1</span>
+          <button class="q-palette-trigger" onclick="openPaletteModal()">🔢 प्रश्न सूची (OMR)</button>
+          <span style="font-size:0.74rem; font-weight:800; color:#10b981;">+4 / -1</span>
+        </div>
+
+        <div class="q-text-compact" id="displayQText">
+          प्रश्न लोड हो रहा है...
+        </div>
+
+        <div class="options-compact-list" id="displayOptionsGroup"></div>
+      </div>
+    </div>
+
+    <!-- Fixed Bottom One-Handed Navigation Bar -->
+    <div class="fixed-bottom-controls">
+      <button class="ctrl-btn btn-prev-fix" id="prevQBtn" onclick="goPrevQuestion()" disabled>← पिछला</button>
+      <button class="ctrl-btn btn-clear-fix" onclick="clearCurrentSelection()">हटाएं</button>
+      <button class="ctrl-btn btn-next-fix" id="nextQBtn" onclick="goNextQuestion()">अगला प्रश्न →</button>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SCREEN 3: RESULT & SCORECARD
+       ================================================================= -->
+  <section id="testResultScreen" class="view-panel">
+    <div class="result-wrap">
+      <div class="result-hero-card">
+        <div style="font-size:2.4rem; margin-bottom:4px;">🏆</div>
+        <h2 style="font-size:1.3rem; font-weight:900;">12वीं इंटर बोर्ड टेस्ट परिणाम</h2>
+        <p style="font-size:0.8rem; color:var(--text-muted);" id="resultSubMeta">स्कोरकार्ड विश्लेषण</p>
+
+        <div class="score-grid-4">
+          <div class="score-tile">
+            <span>कुल प्राप्तांक</span>
+            <strong id="resTotalMarks">0 / 80</strong>
+          </div>
+          <div class="score-tile">
+            <span>सटीकता (Accuracy)</span>
+            <strong id="resAccuracy">0%</strong>
+          </div>
+          <div class="score-tile">
+            <span>सही उत्तर</span>
+            <strong id="resCorrectCount" style="color:#10b981;">0</strong>
+          </div>
+          <div class="score-tile">
+            <span>गलत उत्तर</span>
+            <strong id="resWrongCount" style="color:#ef4444;">0</strong>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
+          <button class="btn-launch-test" style="padding:11px; font-size:0.88rem;" onclick="backToLobby()">🔄 दूसरा टेस्ट दें</button>
+          <a href="class12.html" class="btn-launch-test" style="padding:11px; font-size:0.88rem; text-decoration:none; display:flex; align-items:center; justify-content:center; background:#10b981;">🏠 12th होम</a>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem; font-weight:900; margin-bottom:10px;">📖 विस्तृत उत्तर एवं व्याख्या:</h3>
+      <div id="solutionsAccordionList"></div>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       PROFESSIONAL CUSTOM MODALS (No Browser Alert/Confirm)
+       ================================================================= -->
+
+  <!-- 1. Class Switcher Modal (Direct Redirect to 10th / 11th test.html) -->
+  <div class="nd-modal-backdrop" id="classModal" onclick="closeBackdrop(event, 'classModal')">
+    <div class="nd-modal-card">
+      <div class="nd-modal-head">
+        <h3>🎓 कक्षा चुनें (Direct Test Portal)</h3>
+        <button class="nd-modal-close" onclick="closeCustomModal('classModal')">&times;</button>
+      </div>
+      <div class="nd-modal-body">
+        <div class="modal-opt-row" onclick="window.location.href='test.html'">
+          <span>📘 कक्षा 10वीं (Matric Board Test)</span>
+          <span>➔</span>
+        </div>
+        <div class="modal-opt-row" onclick="window.location.href='class11test.html'">
+          <span>🧪 कक्षा 11वीं (11th Science Test)</span>
+          <span>➔</span>
+        </div>
+        <div class="modal-opt-row selected" onclick="closeCustomModal('classModal')">
+          <span>🎓 कक्षा 12वीं (Inter Board Test)</span>
+          <span>✓</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- 4. FOOTER -->
-  <footer class="app-footer">
-    <div class="footer-container">
-      <div class="brand-col">
-        <div class="footer-brand">
-          <div class="brand-badge-icon sm" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">N</div>
-          <span class="brand-title">Nischay<span style="color: #6366f1;">Desk</span></span>
+  <!-- 2. Chapter Selector Modal -->
+  <div class="nd-modal-backdrop" id="chapterModal" onclick="closeBackdrop(event, 'chapterModal')">
+    <div class="nd-modal-card">
+      <div class="nd-modal-head">
+        <h3 id="chapterModalTitle">अध्याय चुनें</h3>
+        <button class="nd-modal-close" onclick="closeCustomModal('chapterModal')">&times;</button>
+      </div>
+      <div class="nd-modal-body" id="chapterModalList"></div>
+    </div>
+  </div>
+
+  <!-- 3. OMR Question Palette Modal -->
+  <div class="nd-modal-backdrop" id="paletteModal" onclick="closeBackdrop(event, 'paletteModal')">
+    <div class="nd-modal-card">
+      <div class="nd-modal-head">
+        <h3>🔢 प्रश्न पैलेट (सीधे प्रश्न पर जाएं)</h3>
+        <button class="nd-modal-close" onclick="closeCustomModal('paletteModal')">&times;</button>
+      </div>
+      <div class="nd-modal-body">
+        <div style="display:flex; gap:14px; font-size:0.75rem; font-weight:800; margin-bottom:6px;">
+          <span style="color:#10b981;">● हल किया हुआ</span>
+          <span style="color:var(--text-muted);">○ शेष प्रश्न</span>
         </div>
-        <p class="footer-summary">
-          बिहार बोर्ड कक्षा 12वीं इंटर साइंस वार्षिक परीक्षा मिशन 450+ के लिए समर्पित डिजिटल टेस्ट पोर्टल।
+        <div class="palette-modal-grid" id="paletteButtonsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Professional Submit Confirmation Modal -->
+  <div class="nd-modal-backdrop" id="submitConfirmModal" onclick="closeBackdrop(event, 'submitConfirmModal')">
+    <div class="nd-modal-card">
+      <div class="nd-modal-head">
+        <h3>📋 टेस्ट सबमिट करें?</h3>
+        <button class="nd-modal-close" onclick="closeCustomModal('submitConfirmModal')">&times;</button>
+      </div>
+      <div class="nd-modal-body">
+        <p style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">
+          क्या आप अपना 12वीं इंटर बोर्ड टेस्ट समाप्त करके परिणाम देखना चाहते हैं?
         </p>
-      </div>
-
-      <div>
-        <h4 class="footer-heading">त्वरित नेविगेशन</h4>
-        <ul class="footer-nav">
-          <li><a href="class12.html">➔ 12th मुख्य डैशबोर्ड</a></li>
-          <li><a href="class12notes.html">➔ 12th सम्पूर्ण नोट्स</a></li>
-          <li><a href="class12model.html">➔ 12th ऑफिशियल मॉडल पेपर</a></li>
-          <li><a href="class12pyq.html?class=12">➔ 12th क्वेश्चन बैंक (PYQ)</a></li>
-          <li><a href="class12syllabus.html?class=12">➔ 12th बोर्ड सिलेबस</a></li>
-          <li><a href="class11.html">➔ 11th साइंस पोर्टल</a></li>
-          <li><a href="index.html">➔ 10th मैट्रिक पोर्टल</a></li>
-        </ul>
+        <div class="submit-stats-row">
+          <div class="stat-mini">
+            <span>कुल प्रश्न</span>
+            <strong id="subStatTotal" style="color:#6366f1;">20</strong>
+          </div>
+          <div class="stat-mini">
+            <span>हल किए</span>
+            <strong id="subStatAnswered" style="color:#10b981;">0</strong>
+          </div>
+          <div class="stat-mini">
+            <span>छोड़े गए</span>
+            <strong id="subStatUnanswered" style="color:#ef4444;">20</strong>
+          </div>
+        </div>
+        <div class="confirm-btn-pair">
+          <button class="ctrl-btn btn-prev-fix" onclick="closeCustomModal('submitConfirmModal')">अभी नहीं</button>
+          <button class="ctrl-btn btn-next-fix submit-mode" onclick="confirmAndFinishExam()">हाँ, सबमिट करें ✓</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="footer-bottom-bar">
-      <div class="server-status-tag">
-        &copy; 2026 NischayDesk. सर्वाधिकार सुरक्षित। • <span style="color: #22c55e;">● 12th इंटर बोर्ड टेस्ट इंजन सक्रिय है</span>
+  <!-- 5. Professional Info Alert Modal (Replaces Browser Alert) -->
+  <div class="nd-modal-backdrop" id="infoAlertModal" onclick="closeBackdrop(event, 'infoAlertModal')">
+    <div class="nd-modal-card">
+      <div class="nd-modal-head">
+        <h3 id="infoAlertTitle">📢 सूचना</h3>
+        <button class="nd-modal-close" onclick="closeCustomModal('infoAlertModal')">&times;</button>
+      </div>
+      <div class="nd-modal-body">
+        <p id="infoAlertMsg" style="font-size:0.88rem; color:var(--text-main); font-weight:700; line-height:1.5; margin-bottom:14px;"></p>
+        <button class="btn-launch-test" style="padding:10px; font-size:0.9rem;" onclick="closeCustomModal('infoAlertModal')">ठीक है</button>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <!-- 5. MOBILE BOTTOM DOCK -->
-  <nav class="mobile-bottom-dock">
-    <a href="class12.html" class="dock-link-item">
-      <span class="dock-icon-svg">🎓</span>
-      <span class="dock-label-text">12th होम</span>
+  <!-- Lobby Bottom Dock -->
+  <nav class="lobby-bottom-dock">
+    <a href="class12.html" class="dock-btn">
+      <span class="icon">🎓</span><span>12th होम</span>
     </a>
-    <a href="class12notes.html" class="dock-link-item">
-      <span class="dock-icon-svg">📚</span>
-      <span class="dock-label-text">नोट्स</span>
+    <a href="class12notes.html" class="dock-btn">
+      <span class="icon">📚</span><span>नोट्स</span>
     </a>
-    <a href="class12test.html" class="dock-link-item active">
-      <span class="dock-icon-svg">📝</span>
-      <span class="dock-label-text">टेस्ट</span>
+    <a href="class12test.html" class="dock-btn active">
+      <span class="icon">📝</span><span>टेस्ट</span>
     </a>
-    <a href="class12pyq.html?class=12" class="dock-link-item">
-      <span class="dock-icon-svg">📄</span>
-      <span class="dock-label-text">पेपर्स</span>
+    <a href="class12pyq.html?class=12" class="dock-btn">
+      <span class="icon">📄</span><span>पेपर्स</span>
     </a>
   </nav>
 
-  <!-- 6. CLASS 12TH ENGINE SCRIPT (DRAWER + JSON MAPPING + CONTROLLER) -->
+  <!-- =================================================================
+       JAVASCRIPT ENGINE
+       ================================================================= -->
   <script>
-    // 🌟 Side Drawer Controls
-    function openDrawer() {
-      const drawer = document.getElementById("sideDrawer");
-      const scrim = document.getElementById("drawerScrim");
-      if (drawer) drawer.classList.add("active");
-      if (scrim) scrim.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
+    const subjectConfig = {
+      physics: { sylId: "12-physics", jsonFile: "12-physics.json", shortName: "12th Physics" },
+      chemistry: { sylId: "12-chemistry", jsonFile: "12-chemistry.json", shortName: "12th Chemistry" },
+      math: { sylId: "12-math", jsonFile: "12-math.json", shortName: "12th Maths" },
+      biology: { sylId: "12-biology", jsonFile: "12-biology.json", shortName: "12th Biology" }
+    };
 
-    function closeDrawer() {
-      const drawer = document.getElementById("sideDrawer");
-      const scrim = document.getElementById("drawerScrim");
-      if (drawer) drawer.classList.remove("active");
-      if (scrim) scrim.classList.remove("active");
-      document.body.style.overflow = "";
-    }
-
-    // 🎯 12वीं साइंस की JSON फ़ाइलों की सटीक मैपिंग
-    const class12Subjects = [
-      { id: "physics", syllabusId: "12-physics", jsonFile: "12-physics.json", name: "⚡ भौतिक विज्ञान (Physics)" },
-      { id: "chemistry", syllabusId: "12-chemistry", jsonFile: "12-chemistry.json", name: "🧪 रसायन विज्ञान (Chemistry)" },
-      { id: "math", syllabusId: "12-math", jsonFile: "12-math.json", name: "📐 गणित (Mathematics)" },
-      { id: "biology", syllabusId: "12-biology", jsonFile: "12-biology.json", name: "🧬 जीव विज्ञान (Biology)" }
-    ];
-
-    const examPatterns = [
-      { id: "chapter", name: "चैप्टर-वाइज टेस्ट (15 मिनट / 20 प्रश्न)", timeMinutes: 15, questionCount: 20 },
-      { id: "full", name: "इंटर बोर्ड मॉडल टेस्ट (1 घंटा / 50 प्रश्न)", timeMinutes: 60, questionCount: 50 }
-    ];
-
-    let selectedSubject = class12Subjects[0];
-    let selectedChapter = { id: "ch1", name: "अध्याय 1: वैद्युत आवेश तथा क्षेत्र" };
-    let selectedPattern = examPatterns[0];
+    let currentSubKey = "physics";
+    let selectedChapterId = "ch1";
+    let selectedChapterName = "अध्याय 1: वैद्युत आवेश तथा क्षेत्र";
+    let isFullSyllabus = false;
 
     let currentQuestions = [];
     let currentQIndex = 0;
     let userResponses = {};
     let timerInterval = null;
     let timeRemaining = 900;
-    let totalTestDuration = 900;
 
-    // syllabus-data-12.js से अध्यायों की लिस्ट लाना
-    function getChaptersForSubject(sylId) {
-      if (!window.NischaySyllabus12 || !window.NischaySyllabus12.subjects) return [];
-      const sub = window.NischaySyllabus12.subjects.find(s => s.id === sylId);
-      if (sub && sub.chapters) {
-        return sub.chapters.map(ch => ({
-          id: `ch${ch.no}`,
-          no: ch.no,
-          name: `अध्याय ${ch.no}: ${ch.name}`
-        }));
+    function getChaptersList(subKey) {
+      const sylId = subjectConfig[subKey].sylId;
+      if (window.NischaySyllabus12 && window.NischaySyllabus12.subjects) {
+        const found = window.NischaySyllabus12.subjects.find(s => s.id === sylId);
+        if (found && found.chapters) {
+          return found.chapters.map(c => ({
+            id: `ch${c.no}`,
+            no: c.no,
+            name: `अध्याय ${c.no}: ${c.name}`
+          }));
+        }
       }
-      return [];
+      return [{ id: "ch1", no: 1, name: "अध्याय 1" }];
     }
 
-    function syncUISelection() {
-      document.getElementById("subjectTriggerText").textContent = selectedSubject.name;
-      document.getElementById("chapterTriggerText").textContent = selectedChapter.name;
-      document.getElementById("patternTriggerText").textContent = selectedPattern.name;
+    function selectSubject(subKey) {
+      currentSubKey = subKey;
+      document.querySelectorAll(".sub-pill-card").forEach(el => {
+        el.classList.toggle("active", el.getAttribute("data-sub") === subKey);
+      });
+
+      const chs = getChaptersList(subKey);
+      if (chs.length > 0) {
+        selectedChapterId = chs[0].id;
+        selectedChapterName = chs[0].name;
+      }
+      isFullSyllabus = false;
+      updateLobbyModeUI();
     }
 
-    // सेंटर मॉडल खोलना
-    function openCenterModal(type) {
-      const modal = document.getElementById("centerSelectorModal");
-      const title = document.getElementById("centerModalTitle");
-      const list = document.getElementById("centerModalList");
+    function updateLobbyModeUI() {
+      document.getElementById("selectedChapterLabel").textContent = selectedChapterName;
+      if (isFullSyllabus) {
+        document.getElementById("autoModeTitle").textContent = "🏆 संपूर्ण विषय बोर्ड मॉडल टेस्ट";
+        document.getElementById("autoModeMeta").textContent = "50 प्रश्न • 50 मिनट";
+      } else {
+        document.getElementById("autoModeTitle").textContent = "📘 चैप्टर-वाइज प्रैक्टिस टेस्ट";
+        document.getElementById("autoModeMeta").textContent = "20 प्रश्न • 15 मिनट";
+      }
+    }
 
+    function openChapterSelectorModal() {
+      const list = document.getElementById("chapterModalList");
       list.innerHTML = "";
 
-      if (type === "subject") {
-        title.textContent = "12वीं विषय चुनें (Select Subject)";
-        class12Subjects.forEach(sub => {
-          const item = document.createElement("div");
-          item.className = `center-modal-item ${selectedSubject.id === sub.id ? 'selected' : ''}`;
-          item.innerHTML = `<span>${sub.name}</span> ${selectedSubject.id === sub.id ? '<span>✓</span>' : ''}`;
-          item.onclick = () => {
-            selectedSubject = sub;
-            const chs = getChaptersForSubject(sub.syllabusId);
-            selectedChapter = chs.length > 0 ? chs[0] : { id: "all", name: "संपूर्ण विषय (इंटर बोर्ड मॉडल टेस्ट)" };
-            selectedPattern = (selectedChapter.id === "all") ? examPatterns[1] : examPatterns[0];
-            syncUISelection();
-            closeCenterModal();
-          };
-          list.appendChild(item);
-        });
-      } else if (type === "chapter") {
-        title.textContent = "12वीं अध्याय चुनें (Select Chapter)";
+      // Full Syllabus Option (Auto 50 Q / 50 Min)
+      const fullRow = document.createElement("div");
+      fullRow.className = `modal-opt-row ${isFullSyllabus ? 'selected' : ''}`;
+      fullRow.innerHTML = `<span>🏆 संपूर्ण विषय (50 प्रश्न • 50 मिनट)</span> ${isFullSyllabus ? '<span>✓</span>' : ''}`;
+      fullRow.onclick = () => {
+        isFullSyllabus = true;
+        selectedChapterId = "all";
+        selectedChapterName = "🏆 संपूर्ण विषय (Full Board Test)";
+        updateLobbyModeUI();
+        closeCustomModal("chapterModal");
+      };
+      list.appendChild(fullRow);
 
-        // फुल सिलेबस विकल्प
-        const allItem = document.createElement("div");
-        allItem.className = `center-modal-item ${selectedChapter.id === 'all' ? 'selected' : ''}`;
-        allItem.innerHTML = `<span>🏆 संपूर्ण विषय (इंटर बोर्ड मॉडल टेस्ट)</span> ${selectedChapter.id === 'all' ? '<span>✓</span>' : ''}`;
-        allItem.onclick = () => {
-          selectedChapter = { id: "all", name: "संपूर्ण विषय (इंटर बोर्ड मॉडल टेस्ट)" };
-          selectedPattern = examPatterns[1];
-          syncUISelection();
-          closeCenterModal();
+      // Chapter-wise Options (Auto 20 Q / 15 Min)
+      const chs = getChaptersList(currentSubKey);
+      chs.forEach(ch => {
+        const isSel = (!isFullSyllabus && selectedChapterId === ch.id);
+        const row = document.createElement("div");
+        row.className = `modal-opt-row ${isSel ? 'selected' : ''}`;
+        row.innerHTML = `<span>${ch.name}</span> ${isSel ? '<span>✓</span>' : ''}`;
+        row.onclick = () => {
+          isFullSyllabus = false;
+          selectedChapterId = ch.id;
+          selectedChapterName = ch.name;
+          updateLobbyModeUI();
+          closeCustomModal("chapterModal");
         };
-        list.appendChild(allItem);
+        list.appendChild(row);
+      });
 
-        // व्यक्तिगत चैप्टर विकल्प
-        const chs = getChaptersForSubject(selectedSubject.syllabusId);
-        chs.forEach(ch => {
-          const item = document.createElement("div");
-          item.className = `center-modal-item ${selectedChapter.id === ch.id ? 'selected' : ''}`;
-          item.innerHTML = `<span>${ch.name}</span> ${selectedChapter.id === ch.id ? '<span>✓</span>' : ''}`;
-          item.onclick = () => {
-            selectedChapter = ch;
-            selectedPattern = examPatterns[0];
-            syncUISelection();
-            closeCenterModal();
-          };
-          list.appendChild(item);
-        });
-      } else if (type === "pattern") {
-        title.textContent = "परीक्षा का समय व प्रकार";
-        examPatterns.forEach(pat => {
-          const item = document.createElement("div");
-          item.className = `center-modal-item ${selectedPattern.id === pat.id ? 'selected' : ''}`;
-          item.innerHTML = `<span>${pat.name}</span> ${selectedPattern.id === pat.id ? '<span>✓</span>' : ''}`;
-          item.onclick = () => {
-            selectedPattern = pat;
-            syncUISelection();
-            closeCenterModal();
-          };
-          list.appendChild(item);
-        });
-      }
-
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
+      openCustomModal("chapterModal");
     }
 
-    function closeCenterModal() {
-      const modal = document.getElementById("centerSelectorModal");
-      if (modal) modal.classList.remove("active");
-      document.body.style.overflow = "";
+    function showProAlert(title, msg) {
+      document.getElementById("infoAlertTitle").textContent = title;
+      document.getElementById("infoAlertMsg").textContent = msg;
+      openCustomModal("infoAlertModal");
     }
 
-    function handleCenterModalBackdrop(e) {
-      if (e.target.id === "centerSelectorModal") {
-        closeCenterModal();
-      }
-    }
+    async function startSelectedTest() {
+      const btn = document.getElementById("startExamBtn");
+      btn.disabled = true;
+      btn.textContent = "⏳ प्रश्न लोड हो रहे हैं...";
 
-    // 🚀 JSON फाइल से 12वीं के प्रश्न लोड करना (12-physics.json आदि)
-    async function load12thQuestions() {
-      const fileName = selectedSubject.jsonFile;
-      const pathsToTry = [
+      const fileName = subjectConfig[currentSubKey].jsonFile;
+      const paths = [
         `data/${fileName}`,
         `./data/${fileName}`,
         `/nischaydesk/data/${fileName}`,
@@ -795,7 +1246,7 @@
       ];
 
       let rawData = null;
-      for (const p of pathsToTry) {
+      for (const p of paths) {
         try {
           const res = await fetch(`${p}?t=${Date.now()}`);
           if (res.ok) {
@@ -805,223 +1256,175 @@
         } catch (e) {}
       }
 
+      btn.disabled = false;
+      btn.textContent = "🚀 टेस्ट शुरू करें (Start Test)";
+
       if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-        alert(`📢 सूचना:\n\n'${fileName}' फ़ाइल अभी तैयार की जा रही है!\nहम अभी 12वीं के सभी अध्यायों के प्रश्न जोड़ने जा रहे हैं।`);
-        return false;
+        showProAlert("डेटा उपलब्ध नहीं", `'${fileName}' फ़ाइल अभी तैयार की जा रही है। जल्द ही इस विषय के सभी प्रश्न उपलब्ध होंगे!`);
+        return;
       }
 
       const allQs = rawData.map(item => ({
         chapter: parseInt(item.chapter) || 1,
-        q: item.q || item.question || 'प्रश्न उपलब्ध नहीं है',
+        q: item.q || item.question || "",
         options: item.options || [],
-        correct: (item.correct !== undefined) ? item.correct : (item.correctIndex !== undefined ? item.correctIndex : 0),
-        exp: item.exp || item.explanation || 'इस प्रश्न का विस्तृत हल जल्द उपलब्ध होगा।'
+        correct: (item.correct !== undefined) ? item.correct : 0,
+        exp: item.exp || "व्याख्या उपलब्ध नहीं है।"
       }));
 
-      if (selectedChapter.id === "all") {
-        currentQuestions = [...allQs];
+      if (isFullSyllabus) {
+        currentQuestions = [...allQs].sort(() => Math.random() - 0.5).slice(0, 50);
+        timeRemaining = 50 * 60; // 50 Minutes
       } else {
-        const match = String(selectedChapter.id).match(/\d+/);
-        const targetCh = match ? parseInt(match[0]) : 1;
-        currentQuestions = allQs.filter(q => q.chapter === targetCh);
-        if (currentQuestions.length === 0) {
-          currentQuestions = allQs;
-        }
+        const chNum = parseInt(selectedChapterId.replace(/\D/g, "")) || 1;
+        let filtered = allQs.filter(q => q.chapter === chNum);
+        if (filtered.length === 0) filtered = allQs;
+        currentQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, 20);
+        timeRemaining = 15 * 60; // 15 Minutes
       }
-
-      // रैंडमाइज
-      currentQuestions.sort(() => Math.random() - 0.5);
-
-      // सीमा
-      const maxLimit = selectedPattern.questionCount;
-      if (currentQuestions.length > maxLimit) {
-        currentQuestions = currentQuestions.slice(0, maxLimit);
-      }
-
-      return true;
-    }
-
-    // ⚡ टेस्ट शुरू करना
-    document.getElementById("startExamBtn").addEventListener("click", async function () {
-      const btn = this;
-      btn.disabled = true;
-      btn.innerText = "12th प्रश्न लोड हो रहे हैं...";
-
-      const success = await load12thQuestions();
-      btn.disabled = false;
-      btn.innerText = "⚡ 12th टेस्ट शुरू करें (Start Board Test)";
-
-      if (!success) return;
 
       userResponses = {};
       currentQIndex = 0;
-      timeRemaining = selectedPattern.timeMinutes * 60;
-      totalTestDuration = timeRemaining;
 
+      document.body.classList.add("exam-is-running");
       document.getElementById("testLobbyScreen").classList.remove("active");
       document.getElementById("testResultScreen").classList.remove("active");
       document.getElementById("testRunningScreen").classList.add("active");
 
-      const subCleanName = selectedSubject.name.split(' ')[1] || "12th";
-      document.getElementById("liveExamBadge").innerText = `12th ${subCleanName} • ${currentQuestions.length}Q (${selectedPattern.timeMinutes}m)`;
-      document.getElementById("liveQuestionCounter").innerText = `प्रश्न 1 / ${currentQuestions.length}`;
-
+      document.getElementById("liveExamBadge").textContent = subjectConfig[currentSubKey].shortName;
       startTimer();
-      renderPalette();
       renderQuestion(0);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    }
 
     function renderQuestion(index) {
       if (index < 0 || index >= currentQuestions.length) return;
       currentQIndex = index;
       const qData = currentQuestions[index];
 
-      document.getElementById("displayQNumber").innerText = `Q.${index + 1}`;
-      document.getElementById("liveQuestionCounter").innerText = `प्रश्न ${index + 1} / ${currentQuestions.length}`;
-      document.getElementById("displayQText").innerText = qData.q;
+      document.getElementById("displayQNumber").textContent = `Q.${index + 1}`;
+      document.getElementById("liveQuestionCounter").textContent = `${index + 1} / ${currentQuestions.length}`;
+      document.getElementById("displayQText").textContent = qData.q;
 
       document.getElementById("prevQBtn").disabled = (index === 0);
-      document.getElementById("nextQBtn").innerText = (index === currentQuestions.length - 1) ? "सबमिट करें ✓" : "अगला प्रश्न →";
+
+      const nextBtn = document.getElementById("nextQBtn");
+      if (index === currentQuestions.length - 1) {
+        nextBtn.textContent = "सबमिट करें ✓";
+        nextBtn.classList.add("submit-mode");
+      } else {
+        nextBtn.textContent = "अगला प्रश्न →";
+        nextBtn.classList.remove("submit-mode");
+      }
 
       const optGroup = document.getElementById("displayOptionsGroup");
       optGroup.innerHTML = "";
-      const letters = ['A', 'B', 'C', 'D'];
+      const letters = ["A", "B", "C", "D"];
 
       qData.options.forEach((optText, optIdx) => {
-        const isSelected = (userResponses[index] === optIdx);
-        const optCard = document.createElement("div");
-        optCard.className = `option-choice-item ${isSelected ? 'selected active' : ''}`;
-        optCard.innerHTML = `
-          <span class="option-letter">${letters[optIdx]}</span>
-          <span class="option-label-text">${optText}</span>
+        const isSel = (userResponses[index] === optIdx);
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = `opt-row-btn ${isSel ? "selected" : ""}`;
+        row.innerHTML = `
+          <span class="opt-circle">${letters[optIdx]}</span>
+          <span class="opt-txt">${optText}</span>
         `;
-        optCard.onclick = () => {
+        row.onclick = () => {
           userResponses[index] = optIdx;
           renderQuestion(index);
-          updatePaletteStatus();
         };
-        optGroup.appendChild(optCard);
-      });
-
-      updatePaletteStatus();
-    }
-
-    function renderPalette() {
-      const palette = document.getElementById("paletteButtonsGrid");
-      palette.innerHTML = "";
-      currentQuestions.forEach((_, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "palette-btn";
-        btn.id = `palette-btn-${idx}`;
-        btn.innerText = idx + 1;
-        btn.onclick = () => renderQuestion(idx);
-        palette.appendChild(btn);
-      });
-      updatePaletteStatus();
-    }
-
-    function updatePaletteStatus() {
-      currentQuestions.forEach((_, idx) => {
-        const btn = document.getElementById(`palette-btn-${idx}`);
-        if (!btn) return;
-        btn.classList.remove("active", "answered");
-        if (idx === currentQIndex) btn.classList.add("active");
-        if (userResponses[idx] !== undefined) btn.classList.add("answered");
+        optGroup.appendChild(row);
       });
     }
 
-    document.getElementById("prevQBtn").onclick = () => {
+    function goPrevQuestion() {
       if (currentQIndex > 0) renderQuestion(currentQIndex - 1);
-    };
+    }
 
-    document.getElementById("nextQBtn").onclick = () => {
+    function goNextQuestion() {
       if (currentQIndex < currentQuestions.length - 1) {
         renderQuestion(currentQIndex + 1);
       } else {
-        if (confirm("क्या आप अपना 12th टेस्ट समाप्त और सबमिट करना चाहते हैं?")) {
-          finishAndSubmitExam();
-        }
+        openSubmitConfirmModal();
       }
-    };
+    }
 
-    document.getElementById("clearSelectionBtn").onclick = () => {
+    function clearCurrentSelection() {
       delete userResponses[currentQIndex];
       renderQuestion(currentQIndex);
-      updatePaletteStatus();
-    };
-
-    document.getElementById("submitExamEarlyBtn").onclick = () => {
-      if (confirm("क्या आप वाकई टेस्ट अभी सबमिट करना चाहते हैं?")) {
-        finishAndSubmitExam();
-      }
-    };
-
-    function startTimer() {
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      timerInterval = setInterval(() => {
-        timeRemaining--;
-        updateTimerDisplay();
-        if (timeRemaining <= 0) {
-          clearInterval(timerInterval);
-          alert("परीक्षा का समय समाप्त हो गया है! टेस्ट सबमिट किया जा रहा है।");
-          finishAndSubmitExam();
-        }
-      }, 1000);
     }
 
-    function updateTimerDisplay() {
-      const mins = Math.floor(timeRemaining / 60);
-      const secs = timeRemaining % 60;
-      const digits = document.getElementById("timerDigits");
-      if (digits) {
-        digits.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-      }
+    function openPaletteModal() {
+      const grid = document.getElementById("paletteButtonsGrid");
+      grid.innerHTML = "";
+      currentQuestions.forEach((_, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "pal-num-btn";
+        if (userResponses[idx] !== undefined) btn.classList.add("answered");
+        if (idx === currentQIndex) btn.classList.add("current");
+        btn.textContent = idx + 1;
+        btn.onclick = () => {
+          closeCustomModal("paletteModal");
+          renderQuestion(idx);
+        };
+        grid.appendChild(btn);
+      });
+      openCustomModal("paletteModal");
     }
 
-    function finishAndSubmitExam() {
-      clearInterval(timerInterval);
-      let correctCount = 0, wrongCount = 0;
+    function openSubmitConfirmModal() {
+      const total = currentQuestions.length;
+      const answered = Object.keys(userResponses).length;
+      document.getElementById("subStatTotal").textContent = total;
+      document.getElementById("subStatAnswered").textContent = answered;
+      document.getElementById("subStatUnanswered").textContent = total - answered;
+      openCustomModal("submitConfirmModal");
+    }
 
+    function confirmAndFinishExam() {
+      closeCustomModal("submitConfirmModal");
+      clearInterval(timerInterval);
+      document.body.classList.remove("exam-is-running");
+
+      let correct = 0, wrong = 0;
       currentQuestions.forEach((q, idx) => {
-        const userAns = userResponses[idx];
-        if (userAns !== undefined) {
-          if (userAns === q.correct) correctCount++;
-          else wrongCount++;
+        const ans = userResponses[idx];
+        if (ans !== undefined) {
+          if (ans === q.correct) correct++;
+          else wrong++;
         }
       });
 
-      const totalQs = currentQuestions.length;
-      const totalScore = (correctCount * 4) - (wrongCount * 1);
-      const maxScore = totalQs * 4;
-      const accuracy = Math.round((correctCount / (correctCount + wrongCount || 1)) * 100);
+      const total = currentQuestions.length;
+      const score = (correct * 4) - (wrong * 1);
+      const maxScore = total * 4;
+      const acc = Math.round((correct / (correct + wrong || 1)) * 100);
 
-      document.getElementById("resTotalMarks").innerText = `${totalScore} / ${maxScore}`;
-      document.getElementById("resAccuracy").innerText = `${accuracy}%`;
-      document.getElementById("resCorrectCount").innerText = correctCount;
-      document.getElementById("resWrongCount").innerText = wrongCount;
+      document.getElementById("resTotalMarks").textContent = `${score} / ${maxScore}`;
+      document.getElementById("resAccuracy").textContent = `${acc}%`;
+      document.getElementById("resCorrectCount").textContent = correct;
+      document.getElementById("resWrongCount").textContent = wrong;
 
       const solList = document.getElementById("solutionsAccordionList");
       solList.innerHTML = "";
-      const letters = ['A', 'B', 'C', 'D'];
+      const letters = ["A", "B", "C", "D"];
 
       currentQuestions.forEach((q, idx) => {
-        const userAns = userResponses[idx];
-        const isCorrect = (userAns === q.correct);
-        const item = document.createElement("div");
-        item.className = "sol-item";
-        item.innerHTML = `
-          <div class="sol-q-title">Q.${idx + 1}: ${q.q}</div>
-          <div class="sol-ans-row ${isCorrect ? 'correct' : 'wrong'}">
-            ${userAns !== undefined ? `आपका उत्तर: (${letters[userAns]}) ${q.options[userAns]}` : 'आपने यह प्रश्न छोड़ दिया था'}
+        const ans = userResponses[idx];
+        const isOk = (ans === q.correct);
+        const card = document.createElement("div");
+        card.className = "sol-card";
+        card.innerHTML = `
+          <div class="sol-q">Q.${idx + 1}: ${q.q}</div>
+          <div style="font-size:0.8rem; font-weight:800; color:${ans === undefined ? '#f59e0b' : (isOk ? '#10b981' : '#ef4444')};">
+            ${ans !== undefined ? `आपका उत्तर: (${letters[ans]}) ${q.options[ans]}` : 'छोड़ा गया प्रश्न'}
           </div>
-          <div style="font-size:0.84rem; color:var(--success, #22c55e); font-weight:700; margin-bottom:4px;">
-            सटीक उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
+          <div style="font-size:0.8rem; font-weight:800; color:#10b981; margin-top:2px;">
+            सही उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
           </div>
-          <div class="sol-explanation"><strong>व्याख्या:</strong> ${q.exp}</div>
+          <div class="sol-exp"><strong>व्याख्या:</strong> ${q.exp}</div>
         `;
-        solList.appendChild(item);
+        solList.appendChild(card);
       });
 
       document.getElementById("testRunningScreen").classList.remove("active");
@@ -1029,43 +1432,57 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    document.getElementById("restartTestBtn").onclick = () => {
+    function backToLobby() {
       document.getElementById("testResultScreen").classList.remove("active");
       document.getElementById("testLobbyScreen").classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+    }
 
-    // 🌟 DOM Ready Listener
+    function startTimer() {
+      clearInterval(timerInterval);
+      updateTimerUI();
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerUI();
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          confirmAndFinishExam();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const m = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
+      const s = (timeRemaining % 60).toString().padStart(2, "0");
+      document.getElementById("timerDigits").textContent = `${m}:${s}`;
+    }
+
+    /* Modals & Drawer Helpers */
+    function openCustomModal(id) {
+      document.getElementById(id).classList.add("active");
+    }
+    function closeCustomModal(id) {
+      document.getElementById(id).classList.remove("active");
+    }
+    function closeBackdrop(e, id) {
+      if (e.target.id === id) closeCustomModal(id);
+    }
+    function openDrawer() {
+      document.getElementById("sideNav").classList.add("active");
+      document.getElementById("drawerOverlay").classList.add("active");
+    }
+    function closeDrawer() {
+      document.getElementById("sideNav").classList.remove("active");
+      document.getElementById("drawerOverlay").classList.remove("active");
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
-      const menuBtn = document.getElementById("mobileMenuBtn");
-      const closeBtn = document.getElementById("drawerCloseBtn");
-      const scrim = document.getElementById("drawerScrim");
-
-      if (menuBtn) menuBtn.addEventListener("click", openDrawer);
-      if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
-      if (scrim) scrim.addEventListener("click", closeDrawer);
-
-      const themeSwitch = document.getElementById("themeSwitch");
-      if (themeSwitch) {
-        const currentTheme = localStorage.getItem("nd_app_theme") || "light";
-        themeSwitch.checked = (currentTheme === "dark");
-        themeSwitch.addEventListener("change", function() {
-          const newTheme = this.checked ? "dark" : "light";
-          document.documentElement.setAttribute("data-theme", newTheme);
-          localStorage.setItem("nd_app_theme", newTheme);
-          if (newTheme === "light") {
-            document.documentElement.classList.add("light-mode");
-          } else {
-            document.documentElement.classList.remove("light-mode");
-          }
-        });
+      const chs = getChaptersList("physics");
+      if (chs.length > 0) {
+        selectedChapterId = chs[0].id;
+        selectedChapterName = chs[0].name;
       }
-
-      const initialChs = getChaptersForSubject(selectedSubject.syllabusId);
-      if (initialChs.length > 0) {
-        selectedChapter = initialChs[0];
-      }
-      syncUISelection();
+      updateLobbyModeUI();
     });
   </script>
 </body>
