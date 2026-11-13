@@ -425,6 +425,52 @@
     @media(max-width:600px){#exam-status-progress{order:4;flex-basis:100%;max-width:none;margin:2px 0 0}.exam-progress-copy{justify-content:flex-start}}
   </style>
 
+
+  <style id="exam-viewport-fix">
+    /* Exam mode: keep the test inside the viewport instead of growing the page. */
+    body.exam-live { overflow:hidden!important; }
+    body.exam-live .app-footer,
+    body.exam-live .mobile-bottom-dock,
+    body.exam-live .test-portal-container > div:first-child { display:none!important; }
+    body.exam-live .test-portal-container { max-width:1440px!important; height:calc(100dvh - 77px); min-height:0!important; box-sizing:border-box; padding:14px 20px 18px!important; overflow:hidden; }
+    body.exam-live #testRunningScreen { height:100%; min-height:0; }
+    body.exam-live .exam-status-bar { position:relative!important; top:auto!important; height:74px; box-sizing:border-box; margin:0 0 14px!important; padding:10px 14px!important; }
+    body.exam-live .exam-workspace-grid { height:calc(100% - 88px); min-height:0; grid-template-rows:minmax(0,1fr); }
+    body.exam-live .question-stage-box { min-height:0; height:100%; box-sizing:border-box; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+    body.exam-live .question-palette-box { max-height:100%; overflow-y:auto; }
+    /* The former blank blue blocks were text-color collisions. */
+    body.exam-live #liveExamBadge,
+    body.exam-live #displayQNumber,
+    .subject-badge,
+    .q-number-pill { color:#fff!important; text-shadow:0 1px 2px rgba(0,0,0,.22); display:inline-flex!important; align-items:center; justify-content:center; min-width:44px; min-height:34px; }
+    body.exam-live #liveExamBadge { min-width:110px; padding:7px 10px; border-radius:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    body.exam-live #displayQNumber { min-width:48px; }
+    body.exam-live .question-text { margin-top:6px; }
+    @media(max-width:900px) {
+      body.exam-live .test-portal-container { height:calc(100dvh - 61px); padding:8px 10px 10px!important; }
+      body.exam-live .exam-status-bar { height:78px; margin-bottom:10px!important; border-radius:16px!important; }
+      body.exam-live .exam-workspace-grid { display:block!important; height:calc(100% - 88px); }
+      body.exam-live .question-stage-box { height:100%; max-height:none; padding:15px 13px!important; border-radius:18px!important; }
+      body.exam-live .question-palette-box { display:none!important; }
+      body.exam-live .stage-nav-bar { position:sticky; bottom:0; margin-left:-13px; margin-right:-13px; padding:12px 13px 2px!important; background:linear-gradient(180deg,rgba(255,255,255,0),var(--surface-solid) 28%); }
+      html[data-theme="dark"] body.exam-live .stage-nav-bar { background:linear-gradient(180deg,rgba(11,19,41,0),#0b1329 28%); }
+      body.exam-live .option-choice-item { padding:11px 12px!important; margin:8px 0!important; min-height:48px; box-sizing:border-box; }
+      body.exam-live .option-letter { width:30px!important; height:30px!important; }
+      body.exam-live .question-text { font-size:1.04rem!important; line-height:1.52!important; }
+      body.exam-live .question-header { padding-bottom:10px; margin-bottom:13px; }
+      body.exam-live #exam-status-progress { display:none; }
+    }
+    @media(max-width:480px) {
+      body.exam-live .exam-status-bar { display:grid!important; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:7px; }
+      body.exam-live #liveExamBadge { min-width:0; max-width:100px; font-size:.65rem; }
+      body.exam-live .question-counter { font-size:.72rem!important; }
+      body.exam-live .exam-timer-box { padding:8px 9px!important; }
+      body.exam-live .timer-icon { display:none; }
+      body.exam-live .btn-submit-exam-early { padding:8px 9px!important; font-size:.68rem!important; }
+      body.exam-live .stage-nav-bar button { min-width:0; padding:10px 7px!important; font-size:.76rem!important; }
+    }
+  </style>
+
 </head>
 <body class="app-body">
 
@@ -998,6 +1044,7 @@
       timeRemaining = selectedPattern.timeMinutes * 60;
       totalTestDuration = timeRemaining;
 
+      document.body.classList.add("exam-live");
       document.getElementById("testLobbyScreen").classList.remove("active");
       document.getElementById("testResultScreen").classList.remove("active");
       document.getElementById("testRunningScreen").classList.add("active");
@@ -1163,12 +1210,14 @@
         solList.appendChild(item);
       });
 
+      document.body.classList.remove("exam-live");
       document.getElementById("testRunningScreen").classList.remove("active");
       document.getElementById("testResultScreen").classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     document.getElementById("restartTestBtn").onclick = () => {
+      document.body.classList.remove("exam-live");
       document.getElementById("testResultScreen").classList.remove("active");
       document.getElementById("testLobbyScreen").classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1238,6 +1287,5 @@
       }
     });
   })();
-</script>
-</body>
+          </script></body>
 </html>
