@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BSEB Class 12th Inter Science Portal | NischayDesk</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script src="config.js"></script>
+
+  <script>
+    // 12th state ko strictly lock karein
+    localStorage.setItem("nd_selected_class", "12th");
+    localStorage.setItem("nischay_user_class", "12th");
+    localStorage.setItem("nischay_student_class", "12");
+    localStorage.setItem("user_class", "12th");
+    sessionStorage.setItem("nd_last_portal", "class12.html");
+
+    const savedTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(3, 7, 18, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #6366f1, #8b5cf6);
+      border-radius: 10px;
+    }
+
+    :root {
+      --bg-page: #f8fafc;
+      --nav-bg: #ffffff;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --primary: #6366f1;
+      --primary-accent: #8b5cf6;
+      --brand-green: #059669;
+      --hero-bg: radial-gradient(circle at 90% 10%, #ede9fe 0%, #ffffff 100%);
+      --footer-bg: #071120;
+      --footer-text: #ffffff;
+      --drawer-bg: #ffffff;
+    }
+
+    html[data-theme="dark"] {
+      --bg-page: #040914;
+      --nav-bg: #071120;
+      --card-bg: #0b1a30;
+      --card-border: rgba(139, 92, 246, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-accent: #a78bfa;
+      --brand-green: #10b981;
+      --hero-bg: radial-gradient(circle at 90% 10%, #1e1b4b 0%, #071120 100%);
+      --footer-bg: #0b1a30;
+      --footer-text: #ffffff;
+      --drawer-bg: #071120;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      padding-bottom: 74px;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* 🌟 Splash Screen (Session Controlled) */
+    #nischaySplashOverlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1e1b4b 0%, #040914 100%);
+      z-index: 99999999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    html[data-theme="light"] #nischaySplashOverlay {
+      background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+    }
+    #nischaySplashOverlay.fade-away {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .splash-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+    .splash-logo {
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
+      animation: popLogo 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .splash-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .splash-title span { color: #6366f1; }
+    .splash-tag { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 20px; }
+    .splash-dev-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+      padding-top: 12px;
+      color: var(--text-main);
+    }
+    .splash-dev-badge span { color: #8b5cf6; }
+
+    @keyframes popLogo {
+      0% { transform: scale(0.3); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 🌟 Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--nav-bg);
+      border-bottom: 1.5px solid var(--card-border);
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hamburger-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 20px;
+      height: 2.4px;
+      background: var(--text-main);
+      border-radius: 2px;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .brand-badge {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+    }
+    .brand-text h2 {
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+    .brand-text h2 span { color: #6366f1; }
+    .brand-text p {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .class-switch-pill {
+      background: rgba(99, 102, 241, 0.12);
+      border: 1.5px solid #6366f1;
+      color: #6366f1;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* 🌟 Hero */
+    .hero-sec {
+      background: var(--hero-bg);
+      border-bottom: 1.5px solid var(--card-border);
+      padding: 24px 16px 28px;
+    }
+    .hero-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1.5px solid rgba(139, 92, 246, 0.35);
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .hero-bar span.btn-sub {
+      background: #6366f1;
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--brand-green);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .hero-title {
+      font-size: 1.65rem;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+    .hero-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .btn-hero-primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 12px 10px;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+    }
+    .btn-hero-secondary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 12px 10px;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+    }
+
+    /* 🌟 Trust Stats Strip */
+    .trust-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: rgba(11, 26, 48, 0.6);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 16px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
+    }
+    html.light-mode .trust-stats-strip,
+    html[data-theme="light"] .trust-stats-strip {
+      background: #ffffff;
+    }
+    .trust-stat-box h4 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #6366f1;
+      line-height: 1.1;
+      margin: 0;
+    }
+    .trust-stat-box p {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-top: 3px;
+      margin-bottom: 0;
+    }
+
+    /* 🌟 Horizontal Pills Scroller */
+    .pills-scroll-tray {
+      display: flex;
+      gap: 8px;
+      padding: 16px 16px 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
+    }
+    .pills-scroll-tray::-webkit-scrollbar { display: none; }
+    .pill-anchor {
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .pill-anchor.active {
+      background: #6366f1;
+      color: #ffffff;
+      border-color: #6366f1;
+    }
+
+    /* 🌟 12th स्मार्ट टूल्स ग्रिड */
+    .portal-section-wrap {
+      padding: 18px 16px 4px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100% !important;
+    }
+    .section-head-pro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .section-head-pro h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+    }
+    .pro-icons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 10px;
+      text-align: center;
+    }
+    .pro-icon-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .icon-squircle-bubble {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.15s ease;
+    }
+    .pro-icon-link:active .icon-squircle-bubble { transform: scale(0.92); }
+    .pro-icon-link span {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    /* 🌟 Live Quiz */
+    .poll-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(236, 72, 153, 0.08));
+      border: 1.5px solid rgba(139, 92, 246, 0.35);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 18px;
+    }
+    .poll-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .poll-tag {
+      background: #6366f1;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .poll-num {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #6366f1;
+    }
+    .poll-q {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .poll-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .poll-btn {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+    .poll-btn.correct { background: rgba(16, 185, 129, 0.25) !important; border-color: #10b981 !important; color: #10b981 !important; }
+    .poll-btn.wrong { background: rgba(239, 68, 68, 0.25) !important; border-color: #ef4444 !important; color: #ef4444 !important; }
+
+    /* 🌟 Content Cards */
+    .content-sec {
+      max-width: 1100px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+    }
+    .sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .sec-head h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .list-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--card-border);
+      text-decoration: none;
+      transition: transform 0.15s ease;
+    }
+    .item-card:active { transform: scale(0.99); }
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+    .item-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .item-text h4 {
+      font-size: 0.94rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .item-text p {
+      font-size: 0.77rem;
+      color: var(--text-muted);
+    }
+    .item-arrow {
+      color: #64748b;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    /* 🌟 Side Drawer */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 99998;
+    }
+    .drawer-overlay.active { display: block; }
+    .side-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 300px;
+      max-width: 85vw;
+      background: var(--drawer-bg);
+      z-index: 99999;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+      padding-bottom: 120px;
+    }
+    .side-nav.active { transform: translateX(0); }
+    .side-nav-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid var(--card-border);
+      flex-shrink: 0;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+    }
+    .side-nav-list {
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .side-link.active {
+      background: #6366f1;
+      color: #ffffff;
+    }
+    .side-control-card {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .lang-btn-switch {
+      background: var(--card-bg);
+      border: 1.5px solid #6366f1;
+      color: #6366f1;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #64748b;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #6366f1; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .drawer-dev {
+      padding: 16px;
+      text-align: center;
+      border-top: 1.5px solid var(--card-border);
+      background: rgba(99, 102, 241, 0.05);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .dev-badge {
+      font-size: 0.92rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #6366f1, #ec4899, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    /* 🌟 Bottom Sheet Modal (Class Changer) */
+    .nd-sheet-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 999999999;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .nd-sheet-backdrop.active { display: flex !important; }
+    .nd-sheet-content {
+      width: 100%;
+      max-width: 480px;
+      background: #0b1329;
+      border: 1.5px solid #4f46e5;
+      border-radius: 22px 22px 0 0;
+      padding: 20px 18px 28px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html[data-theme="light"] .nd-sheet-content {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .nd-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 14px;
+    }
+    html[data-theme="light"] .nd-sheet-header {
+      border-bottom-color: #e2e8f0 !important;
+    }
+    .nd-sheet-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nd-sheet-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .nd-sheet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .nd-sheet-opt-item {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #13224a;
+      border: 1.5px solid #1e3a8a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    html[data-theme="light"] .nd-sheet-opt-item {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .nd-sheet-opt-item.selected {
+      background: rgba(99, 102, 241, 0.22) !important;
+      border-color: #6366f1 !important;
+      color: #818cf8 !important;
+    }
+
+    /* 🌟 Footer */
+    .site-footer {
+      background: var(--footer-bg);
+      color: var(--footer-text);
+      padding: 38px 18px 30px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer-columns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 26px;
+    }
+    .footer-column-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+    .footer-ul-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-ul-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .footer-ul-links a:hover { color: #a78bfa; }
+
+    .founder-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(139, 92, 246, 0.25);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .founder-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .founder-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #8b5cf6;
+      object-fit: cover;
+    }
+    .founder-info h5 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .founder-info p {
+      font-size: 0.76rem;
+      color: #94a3b8;
+    }
+
+    /* 📱 Bottom App Dock */
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--nav-bg);
+      border-top: 1.5px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 9999;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .dock-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      gap: 3px;
+      flex: 1;
+    }
+    .dock-btn.active { color: #6366f1; }
+    .dock-btn span.icon { font-size: 1.3rem; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌟 0. Splash Screen (Session Controlled) -->
+  <div id="nischaySplashOverlay">
+    <div class="splash-box">
+      <img src="logo.png" alt="NischayDesk Logo" class="splash-logo" onerror="this.src='https://ui-avatars.com/api/?name=N&background=6366f1&color=fff'">
+      <h1 class="splash-title">Nischay<span>Desk</span></h1>
+      <p class="splash-tag" data-i18n="splashTag">कक्षा 12वीं (Inter Science) मिशन 450+ पोर्टल 🏆</p>
+      <div class="splash-dev-badge">
+        By <span class="dev-name">Prince Kumar</span> (Developer) ⚡
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. Top Navbar -->
+  <header class="app-header">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <button class="hamburger-btn" onclick="openDrawer()" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <a href="class12.html" class="brand-wrap">
+          <div class="brand-badge">N</div>
+          <div class="brand-text">
+            <h2>Nischay<span>Desk</span></h2>
+            <p data-i18n="portalBadge">12TH INTER BOARD HUB</p>
+          </div>
+        </a>
+      </div>
+      <div>
+        <button class="class-switch-pill" onclick="openClassSheet()" data-i18n="switchClassBtn">कक्षा 12th ▾</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Side Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <aside class="side-nav" id="sideNav">
+    <div class="side-nav-header">
+      <div style="font-weight: 900; font-size: 1.1rem; color: var(--text-main);">
+        Nischay<span style="color:#6366f1;">Desk</span> 12th
+      </div>
+      <button class="close-btn" onclick="closeDrawer()">&times;</button>
+    </div>
+
+    <div class="side-nav-list">
+      <a href="class12.html" class="side-link active">
+        <span>🎓</span> <span data-i18n="menuHome">12th मुख्य डैशबोर्ड</span>
+      </a>
+      <a href="class12notes.html" class="side-link">
+        <span>📚</span> <span data-i18n="menuNotes">12th सम्पूर्ण नोट्स</span>
+      </a>
+      <a href="class12test.html" class="side-link" style="color: #8b5cf6; font-weight: 800;">
+        <span>📝</span> <span>12th ऑनलाइन टेस्ट पोर्टल</span>
+      </a>
+      <a href="class12pyq.html?class=12" class="side-link">
+        <span>📄</span> <span data-i18n="menuPapers">12th क्वेश्चन बैंक (PYQ)</span>
+      </a>
+      <a href="class12syllabus.html?class=12" class="side-link">
+        <span>📋</span> <span data-i18n="menuSyllabus">12th बोर्ड सिलेबस</span>
+      </a>
+      <a href="bridge-course.html" class="side-link" style="color: #10b981; font-weight: 800;">
+        <span>🚀</span> <span>11th ➔ 12th ब्रिज गाइड</span>
+      </a>
+      <a href="calculator.html" class="side-link" style="color: #ec4899; font-weight: 800;">
+        <span>🧮</span> <span>कैलकुलेटर</span>
+      </a>
+      <a href="todo.html?class=12th" target="_blank" class="side-link" style="color: #10b981; font-weight: 800;">
+        <span>✅</span> <span data-i18n="menuTodo">माय टू-डू लिस्ट</span>
+      </a>
+      <a href="pdf.html?class=12th" target="_blank" class="side-link" style="color: #a855f7; font-weight: 800;">
+        <span>🖼️</span> <span data-i18n="menuPdf">इमेज To PDF मेकर</span>
+      </a>
+      <a href="ai-desk.html?class=12th" class="side-link" style="color: #f59e0b; font-weight: 800;">
+        <span>🤖</span> <span data-i18n="menuAi">AI डाउट सॉल्वर</span>
+      </a>
+      <a href="bseb-print.html?class=12th" class="side-link" style="color: #0284c7; font-weight: 800;">
+        <span>🎯</span> <span data-i18n="menuOmr">OMR शीट जनरेटर</span>
+      </a>
+      <a href="javascript:void(0)" onclick="closeDrawer(); openClassSheet();" class="side-link" style="color: #6366f1;">
+        <span>🔄</span> <span data-i18n="menuChangeClass">कक्षा बदलें (10th / 11th)</span>
+      </a>
+
+      <!-- Controls -->
+      <div class="side-control-card">
+        <div class="control-row">
+          <span data-i18n="langLabel">🌐 भाषा (Language):</span>
+          <button class="lang-btn-switch" id="langSwitchBtn" onclick="toggleLanguage()">English</button>
+        </div>
+        <div class="control-row">
+          <span data-i18n="themeLabel">🌙 डार्क मोड:</span>
+          <label class="switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-dev">
+      <div class="dev-badge">Developed By Prince Kumar ⚡</div>
+      <p style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NischayDesk Production • 2026</p>
+    </div>
+  </aside>
+
+  <!-- 3. Hero Section -->
+  <section class="hero-sec">
+    <div class="hero-container">
+      <div class="hero-bar" onclick="openClassSheet()">
+        <span>🎓 <span data-i18n="currentClassText">वर्तमान कक्षा: <strong>Class 12th (Inter Science)</strong></span></span>
+        <span class="btn-sub" data-i18n="changeBtn">बदलें ⚙️</span>
+      </div>
+
+      <div class="hero-badge-tag" data-i18n="heroBadge">🏆 BSEB INTER BOARD MISSION 450+ HUB</div>
+      <h1 class="hero-title" data-i18n="heroHeading">इंटर बोर्ड परीक्षा में <span>टॉपर बनने का महाअभियान!</span></h1>
+      <p class="hero-p" data-i18n="heroSubHeading">
+        बिहार बोर्ड कक्षा 12वीं साइंस (PCM/PCB) के लिए NCERT हैंडरिटन नोट्स, 50% ऑब्जेक्टिव मास्टर बैंक, मॉडल पेपर्स और 2018–2026 के सभी प्रश्न पत्र।
+      </p>
+
+      <div class="hero-btns">
+        <a href="class12notes.html" class="btn-hero-primary" data-i18n="btnViewNotes">📚 12th नोट्स देखें</a>
+        <a href="class12test.html" class="btn-hero-secondary">📝 12th बोर्ड टेस्ट दें</a>
+      </div>
+
+      <!-- 12th Live Board Quiz -->
+      <div class="poll-card">
+        <div class="poll-head">
+          <span class="poll-tag" data-i18n="pollTag">🎯 12th इंटर बोर्ड लाइव प्रश्न (4s Fast)</span>
+          <span class="poll-num" id="pollCounter">प्रश्न: 1 / 8</span>
+        </div>
+
+        <div class="poll-q" id="dailyPollQ">लोड हो रहा है...</div>
+        <div class="poll-options" id="pollOptionsGrid"></div>
+        <div id="pollFeedbackMsg" style="display:none; font-size: 0.78rem; font-weight: 800; margin-top: 8px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌟 ट्रस्ट स्टैट्स स्ट्रिप -->
+  <div class="trust-stats-strip">
+    <div class="trust-stat-box">
+      <h4>PCM/B</h4>
+      <p>इंटर नोट्स</p>
+    </div>
+    <div class="trust-stat-box">
+      <h4>50%</h4>
+      <p>ऑब्जेक्टिव बैंक</p>
+    </div>
+    <div class="trust-stat-box">
+      <h4>PYQ</h4>
+      <p>2018–2026 पेपर्स</p>
+    </div>
+    <div class="trust-stat-box">
+      <h4>450+</h4>
+      <p>टॉपर टारगेट</p>
+    </div>
+  </div>
+
+  <!-- 🌟 हॉरिज़ॉन्टल पिल स्क्रोलर -->
+  <div class="pills-scroll-tray">
+    <a href="#quickTools" class="pill-anchor active">🔥 12th टूल्स</a>
+    <a href="class12notes.html" class="pill-anchor">📖 12th नोट्स</a>
+    <a href="class12test.html" class="pill-anchor" style="border-color: #10b981; color: #10b981;">📝 बोर्ड टेस्ट</a>
+    <a href="class12pyq.html?class=12" class="pill-anchor">📑 क्वेश्चन बैंक</a>
+    <a href="class12syllabus.html?class=12" class="pill-anchor">📋 सिलेबस</a>
+    <a href="bridge-course.html" class="pill-anchor" style="border-color: #6366f1; color: #6366f1;">🚀 ब्रिज गाइड</a>
+    <a href="calculator.html" class="pill-anchor" style="border-color: #ec4899; color: #ec4899;">🧮 कैलकुलेटर</a>
+    <a href="todo.html?class=12th" target="_blank" class="pill-anchor">✅ टू-डू लिस्ट</a>
+    <a href="pdf.html?class=12th" target="_blank" class="pill-anchor">🖼️ इमेज To PDF</a>
+    <a href="bseb-print.html?class=12th" class="pill-anchor">🎯 OMR शीट</a>
+  </div>
+
+  <!-- 🌟 4. कक्षा 12वीं स्मार्ट टूल्स -->
+  <section class="portal-section-wrap" id="quickTools">
+    <div class="section-head-pro">
+      <h3>कक्षा 12वीं स्मार्ट टूल्स (NischayDesk Inter Tools)</h3>
+    </div>
+    <div class="pro-icons-grid">
+      <a href="class12notes.html" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#6366f1; border: 1.5px solid #818cf8;">📖</div>
+        <span style="color:#6366f1; font-weight: 800;">12th नोट्स</span>
+      </a>
+
+      <a href="class12test.html" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#10b981; border: 1.5px solid #10b981;">📝</div>
+        <span style="color:#10b981; font-weight: 800;">बोर्ड टेस्ट</span>
+      </a>
+
+      <a href="class12pyq.html?class=12" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#ea580c;">📚</div>
+        <span>क्वेश्चन बैंक</span>
+      </a>
+
+      <a href="bseb-print.html?class=12th" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#0284c7;">🎯</div>
+        <span>OMR व कॉपी</span>
+      </a>
+
+      <a href="todo.html?class=12th" target="_blank" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#10b981;">✅</div>
+        <span>टू-डू लिस्ट</span>
+      </a>
+
+      <a href="pdf.html?class=12th" target="_blank" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#a855f7;">🖼️</div>
+        <span>इमेज To PDF</span>
+      </a>
+
+      <a href="class12syllabus.html?class=12" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#10b981;">📋</div>
+        <span>12th सिलेबस</span>
+      </a>
+
+      <a href="calculator.html" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#ec4899;">🧮</div>
+        <span>कैलकुलेटर</span>
+      </a>
+
+      <a href="ai-desk.html?class=12th" class="pro-icon-link">
+        <div class="icon-squircle-bubble" style="color:#f59e0b;">🤖</div>
+        <span>AI डाउट हल</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 🌟 5. Class 12th Core Subjects -->
+  <section class="content-sec" id="subjects">
+    <div class="sec-head">
+      <h3 data-i18n="subjectHeading">कक्षा 12वीं मुख्य विषय (PCM/PCB)</h3>
+      <span style="font-size: 0.76rem; color: #6366f1; font-weight: 800;" data-i18n="ncertBadge">BSEB इंटर पैटर्न</span>
+    </div>
+
+    <div class="list-cards">
+      <!-- Physics -->
+      <a href="class12notes.html?filter=12-physics" class="item-card">
+        <div class="item-left">
+          <div class="item-icon" style="background: rgba(2, 132, 199, 0.12); color:#0284c7;">⚡</div>
+          <div class="item-text">
+            <h4 data-i18n="subPhy">भौतिकी (Physics 12th)</h4>
+            <p data-i18n="subPhyDesc">स्थिरवैद्युतिकी, धारा विद्युत, चुंबकत्व, प्रकाशिकी एवं आधुनिक भौतिकी</p>
+          </div>
+        </div>
+        <span class="item-arrow">›</span>
+      </a>
+
+      <!-- Chemistry -->
+      <a href="class12notes.html?filter=12-chemistry" class="item-card">
+        <div class="item-left">
+          <div class="item-icon" style="background: rgba(16, 185, 129, 0.12); color:#10b981;">🧪</div>
+          <div class="item-text">
+            <h4 data-i18n="subChem">रसायन विज्ञान (Chemistry 12th)</h4>
+            <p data-i18n="subChemDesc">विलयन, विद्युतरसायन, रासायनिक बलगतिकी एवं सम्पूर्ण ऑर्गेनिक केमिस्ट्री</p>
+          </div>
+        </div>
+        <span class="item-arrow">›</span>
+      </a>
+
+      <!-- Math -->
+      <a href="class12notes.html?filter=12-math" class="item-card">
+        <div class="item-left">
+          <div class="item-icon" style="background: rgba(99, 102, 241, 0.12); color:#6366f1;">📐</div>
+          <div class="item-text">
+            <h4 data-i18n="subMath">गणित (Mathematics 12th)</h4>
+            <p data-i18n="subMathDesc">कैलकुलस (44 अंक), आव्यूह व सारणिक, सदिश एवं 3D ज्यामिति, प्रायिकता</p>
+          </div>
+        </div>
+        <span class="item-arrow">›</span>
+      </a>
+
+      <!-- Biology -->
+      <a href="class12notes.html?filter=12-biology" class="item-card">
+        <div class="item-left">
+          <div class="item-icon" style="background: rgba(236, 72, 153, 0.12); color:#ec4899;">🧬</div>
+          <div class="item-text">
+            <h4 data-i18n="subBio">जीव विज्ञान (Biology 12th)</h4>
+            <p data-i18n="subBioDesc">जनन (Reproduction), आनुवंशिकी एवं विकास, बायोटेक्नोलॉजी, पारिस्थितिकी</p>
+          </div>
+        </div>
+        <span class="item-arrow">›</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 🌟 6. 12th Board Question Bank & Model Papers -->
+  <section class="content-sec" style="margin-top: 24px;">
+    <div class="sec-head">
+      <h3 data-i18n="papersHeading">12th बोर्ड क्वेश्चन बैंक & मॉडल सेट</h3>
+    </div>
+
+    <div class="list-cards">
+      <a href="class12pyq.html?class=12" class="item-card">
+        <div class="item-left">
+          <div class="item-icon" style="background: rgba(99, 102, 241, 0.12); color:#6366f1;">📄</div>
+          <div class="item-text">
+            <h4 data-i18n="annualPapers">12th बोर्ड क्वेश्चन बैंक (2018–2026)</h4>
+            <p data-i18n="annualPapersDesc">बिहार बोर्ड इंटर वार्षिक परीक्षा के सभी सेट्स संपूर्ण हल सहित</p>
+          </div>
+        </div>
+        <span class="item-arrow">›</span>
+      </a>
+
+      <a href="bridge-course.html" class="item-card" style="border: 1.5px dashed #10b981;">
+        <div class="item-left">
+          <div class="item-icon" style="background: rgba(16, 185, 129, 0.15); color:#10b981;">🚀</div>
+          <div class="item-text">
+            <h4 style="color:#10b981;" data-i18n="bridgeCourse">11th ➔ 12th फाउंडेशन ब्रिज गाइड</h4>
+            <p data-i18n="bridgeCourseDesc">12वीं शुरू करने से पहले 11वीं के अनिवार्य टॉपिक्स की स्टेप-बाय-स्टेप गाइड</p>
+          </div>
+        </div>
+        <span class="item-arrow" style="color:#10b981;">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 🌟 7. Bottom Sheet Modal (Class Changer) -->
+  <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
+    <div class="nd-sheet-content">
+      <div class="nd-sheet-header">
+        <h3 data-i18n="sheetTitle">कक्षा चुनें (Select Class)</h3>
+        <button type="button" class="nd-sheet-close-btn" onclick="closeClassSheet()">&times;</button>
+      </div>
+      <div class="nd-sheet-options">
+        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('10th')">
+          <span>Class 10th (मैट्रिक बोर्ड)</span>
+          <span style="font-weight:900;">›</span>
+        </div>
+        <div class="nd-sheet-opt-item" onclick="selectClassAndRedirect('11th')">
+          <span>Class 11th (साइंस हब)</span>
+          <span style="font-weight:900;">›</span>
+        </div>
+        <div class="nd-sheet-opt-item selected" onclick="selectClassAndRedirect('12th')">
+          <span>Class 12th (इंटर साइंस बोर्ड)</span>
+          <span style="color:#818cf8; font-weight:900;">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌟 8. Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-columns-grid">
+        <div>
+          <div class="footer-column-title" data-i18n="footerCol1Title">पोर्टल मेनू</div>
+          <ul class="footer-ul-links">
+            <li><a href="class12.html">➔ 12th मुख्य डैशबोर्ड</a></li>
+            <li><a href="class12notes.html">➔ 12th सम्पूर्ण नोट्स</a></li>
+            <li><a href="class12test.html">➔ 12th ऑनलाइन टेस्ट सीरीज</a></li>
+            <li><a href="class12pyq.html?class=12">➔ 12th बोर्ड क्वेश्चन बैंक</a></li>
+            <li><a href="class12syllabus.html?class=12">➔ 12th आधिकारिक सिलेबस</a></li>
+            <li><a href="bridge-course.html">➔ 11th ➔ 12th ब्रिज गाइड</a></li>
+            <li><a href="calculator.html">➔ कैलकुलेटर</a></li>
+            <li><a href="todo.html?class=12th" target="_blank">➔ माय टू-डू लिस्ट</a></li>
+            <li><a href="pdf.html?class=12th" target="_blank">➔ इमेज To PDF मेकर</a></li>
+            <li><a href="bseb-print.html?class=12th">➔ OMR शीट जनरेटर</a></li>
+            <li><a href="ai-desk.html?class=12th">➔ AI डाउट स्टूडियो</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-column-title" data-i18n="footerCol2Title">12th मुख्य विषय</div>
+          <ul class="footer-ul-links">
+            <li><a href="class12notes.html?filter=12-physics">➔ भौतिक विज्ञान (Physics)</a></li>
+            <li><a href="class12notes.html?filter=12-chemistry">➔ रसायन विज्ञान (Chemistry)</a></li>
+            <li><a href="class12notes.html?filter=12-math">➔ गणित (Mathematics)</a></li>
+            <li><a href="class12notes.html?filter=12-biology">➔ जीव विज्ञान (Biology)</a></li>
+            <li><a href="index.html" style="color: #818cf8;">➔ कक्षा 10वीं मैट्रिक पोर्टल ↗</a></li>
+            <li><a href="class11.html" style="color: #818cf8;">➔ कक्षा 11वीं साइंस हब ↗</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="founder-card">
+        <div class="founder-left">
+          <img src="Prince.jpg" alt="Prince Kumar" class="founder-img" onerror="this.src='https://ui-avatars.com/api/?name=Prince+Kumar&background=6366f1&color=fff'" />
+          <div class="founder-info">
+            <h5>Prince Kumar</h5>
+            <p data-i18n="founderTag">Founder & Developer, NischayDesk (463/500 Bihar Board Topper)</p>
+          </div>
+        </div>
+        <div>
+          <a href="privacy.html" style="font-size:0.8rem; color:#818cf8; text-decoration:none; font-weight:700;">🔒 प्राइवेसी पॉलिसी एवं शर्तें</a>
+        </div>
+      </div>
+
+      <div style="font-size: 0.74rem; color: #94a3b8; text-align: center; line-height: 1.6;" data-i18n="footerCopy">
+        © 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 12वीं इंटर साइंस बोर्ड पोर्टल<br>
+        Crafted with ❤️ by Prince Kumar for Bihar Board Students.
+      </div>
+    </div>
+  </footer>
+
+  <!-- 🌟 9. Mobile Bottom Dock -->
+  <nav class="bottom-dock">
+    <a href="class12.html" class="dock-btn active">
+      <span class="icon">🎓</span>
+      <span data-i18n="dockHome">12th होम</span>
+    </a>
+    <a href="class12notes.html" class="dock-btn">
+      <span class="icon">📖</span>
+      <span data-i18n="dockNotes">12th नोट्स</span>
+    </a>
+    <a href="class12test.html" class="dock-btn">
+      <span class="icon">📝</span>
+      <span>टेस्ट</span>
+    </a>
+    <a href="class12pyq.html?class=12" class="dock-btn">
+      <span class="icon">📄</span>
+      <span data-i18n="dockPapers">पेपर्स</span>
+    </a>
+  </nav>
+
+  <!-- 🌟 10. Scripts Engine -->
+  <script>
+    const I18N = {
+      hi: {
+        splashTag: "कक्षा 12वीं (Inter Science) मिशन 450+ पोर्टल 🏆",
+        portalBadge: "12TH INTER BOARD HUB",
+        switchClassBtn: "कक्षा 12th ▾",
+        menuHome: "12th मुख्य डैशबोर्ड",
+        menuNotes: "12th सम्पूर्ण नोट्स",
+        menuPapers: "12th क्वेश्चन बैंक (PYQ)",
+        menuSyllabus: "12th बोर्ड सिलेबस",
+        menuTodo: "माय टू-डू लिस्ट",
+        menuPdf: "इमेज To PDF मेकर",
+        menuAi: "AI डाउट सॉल्वर",
+        menuOmr: "OMR शीट जनरेटर",
+        menuChangeClass: "कक्षा बदलें (10th / 11th)",
+        langLabel: "🌐 भाषा (Language):",
+        themeLabel: "🌙 डार्क मोड:",
+        currentClassText: "वर्तमान कक्षा: <strong>Class 12th (Inter Science)</strong>",
+        changeBtn: "बदलें ⚙️",
+        heroBadge: "🏆 BSEB INTER BOARD MISSION 450+ HUB",
+        heroHeading: "इंटर बोर्ड परीक्षा में <span>टॉपर बनने का महाअभियान!</span>",
+        heroSubHeading: "बिहार बोर्ड कक्षा 12वीं साइंस (PCM/PCB) के लिए NCERT हैंडरिटन नोट्स, 50% ऑब्जेक्टिव मास्टर बैंक, मॉडल पेपर्स और 2018–2026 के सभी प्रश्न पत्र।",
+        btnViewNotes: "📚 12th नोट्स देखें",
+        pollTag: "🎯 12th इंटर बोर्ड लाइव प्रश्न (4s Fast)",
+        subjectHeading: "कक्षा 12वीं मुख्य विषय (PCM/PCB)",
+        ncertBadge: "BSEB इंटर पैटर्न",
+        subPhy: "भौतिकी (Physics 12th)",
+        subPhyDesc: "स्थिरवैद्युतिकी, धारा विद्युत, चुंबकत्व, प्रकाशिकी एवं आधुनिक भौतिकी",
+        subChem: "रसायन विज्ञान (Chemistry 12th)",
+        subChemDesc: "विलयन, विद्युतरसायन, रासायनिक बलगतिकी एवं सम्पूर्ण ऑर्गेनिक केमिस्ट्री",
+        subMath: "गणित (Mathematics 12th)",
+        subMathDesc: "कैलकुलस (44 अंक), आव्यूह व सारणिक, सदिश एवं 3D ज्यामिति, प्रायिकता",
+        subBio: "जीव विज्ञान (Biology 12th)",
+        subBioDesc: "जनन (Reproduction), आनुवंशिकी एवं विकास, बायोटेक्नोलॉजी, पारिस्थितिकी",
+        papersHeading: "12th बोर्ड क्वेश्चन बैंक & मॉडल सेट",
+        annualPapers: "12th बोर्ड क्वेश्चन बैंक (2018–2026)",
+        annualPapersDesc: "बिहार बोर्ड इंटर वार्षिक परीक्षा के सभी सेट्स संपूर्ण हल सहित",
+        bridgeCourse: "11th ➔ 12th फाउंडेशन ब्रिज गाइड",
+        bridgeCourseDesc: "12वीं शुरू करने से पहले 11वीं के अनिवार्य टॉपिक्स की स्टेप-बाय-स्टेप गाइड",
+        sheetTitle: "कक्षा चुनें (Select Class)",
+        footerCol1Title: "पोर्टल मेनू",
+        footerCol2Title: "12th मुख्य विषय",
+        founderTag: "Founder & Developer, NischayDesk (463/500 Bihar Board Topper)",
+        footerCopy: "© 2026 NischayDesk. सर्वाधिकार सुरक्षित। • कक्षा 12वीं इंटर साइंस बोर्ड पोर्टल<br>Crafted with ❤️ by Prince Kumar for Bihar Board Students.",
+        dockHome: "12th होम",
+        dockNotes: "12th नोट्स",
+        dockPapers: "पेपर्स"
+      },
+      en: {
+        splashTag: "Class 12th (Inter Science) Mission 450+ Portal 🏆",
+        portalBadge: "12TH INTER BOARD HUB",
+        switchClassBtn: "Class 12th ▾",
+        menuHome: "12th Main Dashboard",
+        menuNotes: "12th Complete Notes",
+        menuPapers: "12th Question Bank (PYQ)",
+        menuSyllabus: "12th Board Syllabus",
+        menuTodo: "My To-Do List",
+        menuPdf: "Image To PDF Maker",
+        menuAi: "AI Doubt Solver",
+        menuOmr: "OMR Sheet Generator",
+        menuChangeClass: "Change Class (10th / 11th)",
+        langLabel: "🌐 Language (भाषा):",
+        themeLabel: "🌙 Dark Mode:",
+        currentClassText: "Current Class: <strong>Class 12th (Inter Science)</strong>",
+        changeBtn: "Change ⚙️",
+        heroBadge: "🏆 BSEB INTER BOARD MISSION 450+ HUB",
+        heroHeading: "Mission to Become <span>Inter Board Topper!</span>",
+        heroSubHeading: "Handwritten NCERT Notes, 50% Objective Master Bank, Model Papers and 2018–2026 PYQs for BSEB Class 12th Science.",
+        btnViewNotes: "📚 View 12th Notes",
+        pollTag: "🎯 12th Inter Board Live Question (4s Fast)",
+        subjectHeading: "Class 12th Core Subjects (PCM/PCB)",
+        ncertBadge: "BSEB Inter Pattern",
+        subPhy: "Physics 12th",
+        subPhyDesc: "Electrostatics, Current Electricity, Magnetism, Optics & Modern Physics",
+        subChem: "Chemistry 12th",
+        subChemDesc: "Solutions, Electrochemistry, Chemical Kinetics & Organic Chemistry",
+        subMath: "Mathematics 12th",
+        subMathDesc: "Calculus (44 Marks), Matrices & Determinants, Vector & 3D, Probability",
+        subBio: "Biology 12th",
+        subBioDesc: "Reproduction, Genetics & Evolution, Biotechnology, Ecology",
+        papersHeading: "12th Board Question Bank & Model Sets",
+        annualPapers: "12th Board Question Bank (2018–2026)",
+        annualPapersDesc: "All sets of BSEB Inter Annual Exams with complete solutions",
+        bridgeCourse: "11th ➔ 12th Foundation Bridge Guide",
+        bridgeCourseDesc: "Step-by-step revision guide of mandatory 11th basics for Class 12th",
+        sheetTitle: "Select Class",
+        footerCol1Title: "Portal Menu",
+        footerCol2Title: "12th Core Subjects",
+        founderTag: "Founder & Developer, NischayDesk (463/500 Bihar Board Topper)",
+        footerCopy: "© 2026 NischayDesk. All Rights Reserved. • Class 12th Inter Science Portal<br>Crafted with ❤️ by Prince Kumar for Bihar Board Students.",
+        dockHome: "12th Home",
+        dockNotes: "12th Notes",
+        dockPapers: "Papers"
+      }
+    };
+
+    let currentLang = localStorage.getItem("nd_app_lang") || "hi";
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem("nd_app_lang", lang);
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (I18N[lang] && I18N[lang][key]) {
+          el.innerHTML = I18N[lang][key];
+        }
+      });
+      const btn = document.getElementById("langSwitchBtn");
+      if (btn) btn.innerText = (lang === "hi") ? "English" : "हिन्दी";
+    }
+
+    function toggleLanguage() {
+      const nextLang = (currentLang === "hi") ? "en" : "hi";
+      applyLanguage(nextLang);
+    }
+
+    // 🌟 Drawer Controls
+    function openDrawer() {
+      document.getElementById("sideNav").classList.add("active");
+      document.getElementById("drawerOverlay").classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+    function closeDrawer() {
+      document.getElementById("sideNav").classList.remove("active");
+      document.getElementById("drawerOverlay").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    // 🌟 Theme Controls
+    function toggleTheme(checkbox) {
+      if (checkbox.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("nd_app_theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("nd_app_theme", "light");
+      }
+    }
+
+    // 🌟 Class Sheet Controls
+    function openClassSheet() {
+      document.getElementById('ndClassSheetBackdrop').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeClassSheet() {
+      document.getElementById('ndClassSheetBackdrop').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function handleClassSheetBackdrop(e) {
+      if (e.target.id === 'ndClassSheetBackdrop') closeClassSheet();
+    }
+    function selectClassAndRedirect(chosenClass) {
+      closeClassSheet();
+      localStorage.setItem("nd_selected_class", chosenClass);
+      localStorage.setItem("nischay_user_class", chosenClass);
+      localStorage.setItem("nischay_student_class", chosenClass.replace(/[^0-9]/g, ''));
+      localStorage.setItem("user_class", chosenClass);
+
+      if (chosenClass === "10th") {
+        sessionStorage.setItem("nd_last_portal", "index.html");
+        window.location.href = "index.html";
+      } else if (chosenClass === "11th") {
+        sessionStorage.setItem("nd_last_portal", "class11.html");
+        window.location.href = "class11.html";
+      } else {
+        sessionStorage.setItem("nd_last_portal", "class12.html");
+        window.location.href = "class12.html";
+      }
+    }
+
+    // 🌟 12th Board Live Question Poll Data
+    const questions12th = [
+      { question: "विद्युत फ्लक्स (Electric Flux) का SI मात्रक क्या होता है?", options: ["वोल्ट × मीटर (V·m)", "न्यूटन/कूलॉम", "फैराडे", "टेस्ला"], correctIndex: 0, note: "Φ = E · A = (V/m) × m² = V·m" },
+      { question: "d/dx (tan⁻¹ x) का मान क्या होता है?", options: ["1 / (1 + x²)", "1 / √(1 - x²)", "-1 / (1 + x²)", "sec² x"], correctIndex: 0, note: "tan⁻¹ x का मानक अवकलज 1/(1+x²) है।" },
+      { question: "शुद्ध जल की मोलरता (Molarity) कितनी होती है?", options: ["55.56 M", "18 M", "1 M", "100 M"], correctIndex: 0, note: "1000g / 18 = 55.56 मोल/लीटर।" },
+      { question: "मनुष्य में युग्मक (शुक्राणु व अंडाणु) गुणसूत्रों की संख्या कितनी होती है?", options: ["23 (अगुणित)", "46 (द्विगुणित)", "44", "22"], correctIndex: 0, note: "अर्धसूत्री विभाजन से युग्मकों में 23 गुणसूत्र होते हैं।" },
+      { question: "निर्वात की विद्युतशीलता (ε₀) का मान कितना होता है?", options: ["8.85 × 10⁻¹² C²/N·m²", "9 × 10⁹ N·m²/C²", "1.6 × 10⁻¹⁹ C", "6.63 × 10⁻³⁴ J·s"], correctIndex: 0, note: "ε₀ = 8.854 × 10⁻¹² F/m होता है।" },
+      { question: "∫ eˣ dx का मान क्या होगा?", options: ["eˣ + C", "x eˣ⁻¹ + C", "log x + C", "eˣ / x + C"], correctIndex: 0, note: "eˣ का समाकलन स्वयं eˣ + C होता है।" },
+      { question: "द्वितीय कोटि की अभिक्रिया के वेग स्थिरांक (k) की इकाई क्या है?", options: ["mol⁻¹ L s⁻¹", "s⁻¹", "mol L⁻¹ s⁻¹", "mol² L⁻² s⁻¹"], correctIndex: 0, note: "k की इकाई (mol L⁻¹)¹⁻ⁿ s⁻¹ में n=2 रखने पर।" },
+      { question: "DNA के एक घुमाव (Pitch) की लंबाई कितनी होती है?", options: ["34 Å (3.4 nm)", "3.4 Å", "20 Å", "10 Å"], correctIndex: 0, note: "B-DNA के एक पूर्ण घुमाव की लंबाई 34 Å है।" }
+    ];
+
+    let currentQIndex = 0;
+    let autoRotateTimer = null;
+
+    function renderQuestion(idx) {
+      if (idx >= questions12th.length) idx = 0;
+      currentQIndex = idx;
+      const q = questions12th[currentQIndex];
+
+      document.getElementById('pollCounter').innerText = `प्रश्न: ${currentQIndex + 1} / ${questions12th.length}`;
+      document.getElementById('dailyPollQ').innerText = q.question;
+      document.getElementById('pollFeedbackMsg').style.display = 'none';
+
+      const grid = document.getElementById('pollOptionsGrid');
+      grid.innerHTML = '';
+
+      const labels = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'poll-btn';
+        btn.innerText = `${labels[i]}. ${opt}`;
+        btn.onclick = function() {
+          clearInterval(autoRotateTimer);
+          grid.querySelectorAll('.poll-btn').forEach(b => b.disabled = true);
+          const feedback = document.getElementById('pollFeedbackMsg');
+          feedback.style.display = 'block';
+
+          if (i === q.correctIndex) {
+            btn.classList.add('correct');
+            feedback.innerText = `✓ बिल्कुल सही उत्तर! (${q.note})`;
+            feedback.style.color = '#10b981';
+          } else {
+            btn.classList.add('wrong');
+            grid.querySelectorAll('.poll-btn')[q.correctIndex].classList.add('correct');
+            feedback.innerText = `❌ गलत उत्तर! सही उत्तर (${labels[q.correctIndex]}) है। (${q.note})`;
+            feedback.style.color = '#ef4444';
+          }
+
+          setTimeout(() => {
+            renderQuestion(currentQIndex + 1);
+            startTimer();
+          }, 3500);
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function startTimer() {
+      clearInterval(autoRotateTimer);
+      autoRotateTimer = setInterval(() => {
+        renderQuestion(currentQIndex + 1);
+      }, 4500);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentTheme = localStorage.getItem("nd_app_theme") || "light";
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      const themeToggle = document.getElementById("themeToggle");
+      if (themeToggle) themeToggle.checked = (currentTheme === "dark");
+
+      applyLanguage(currentLang);
+      renderQuestion(0);
+      startTimer();
+
+      // स्प्लैश केवल सेशन में पहली बार दिखेगा
+      const splash = document.getElementById("nischaySplashOverlay");
+      const alreadyShown = sessionStorage.getItem("nd_splash_shown_12");
+
+      if (alreadyShown === "true") {
+        if (splash) splash.style.display = "none";
+      } else {
+        sessionStorage.setItem("nd_splash_shown_12", "true");
+        setTimeout(() => {
+          if (splash) {
+            splash.classList.add("fade-away");
+            setTimeout(() => splash.style.display = "none", 350);
+          }
+        }, 1200);
+      }
+    });
+  </script>
+</body>
+</html>
