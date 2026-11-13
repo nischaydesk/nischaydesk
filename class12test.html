@@ -10,7 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
 
+  <!-- External Config & 12th Official Syllabus Repository -->
   <script src="config.js"></script>
+  <script src="syllabus-12.js"></script>
 
   <script>
     localStorage.setItem("nd_selected_class", "12th");
@@ -149,7 +151,7 @@
       text-decoration: none;
     }
 
-    /* 🌟 Complete Side Drawer (All 12 Items + Controls + Developer Footer) */
+    /* 🌟 Complete Side Drawer */
     .drawer-overlay {
       display: none;
       position: fixed;
@@ -356,7 +358,6 @@
       margin-right: 6px;
     }
 
-    /* Step 1: Class Selector Pill */
     .class-tap-box {
       width: 100%;
       background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(139, 92, 246, 0.08));
@@ -385,7 +386,6 @@
       border-radius: 8px;
     }
 
-    /* Step 2: Subjects Grid */
     .subject-grid-6 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -412,7 +412,6 @@
       box-shadow: 0 3px 10px rgba(99, 102, 241, 0.18);
     }
 
-    /* Step 3: Chapter Selector Trigger */
     .chapter-tap-box {
       width: 100%;
       background: var(--bg-page);
@@ -434,7 +433,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Step 4: 4 Custom Pack Options Grid */
     .packs-grid-4 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -467,7 +465,6 @@
       color: var(--text-muted);
     }
 
-    /* Full Subject Auto Banner */
     .full-mode-banner {
       background: rgba(245, 158, 11, 0.12);
       border: 1.5px dashed #f59e0b;
@@ -1081,7 +1078,7 @@
           </div>
         </div>
 
-        <!-- STEP 2: Subject Selection (Includes Hindi & English Grammar) -->
+        <!-- STEP 2: Subject Selection -->
         <div class="step-section" id="step2Block">
           <div class="step-label">
             <span><span class="step-num">2</span> विषय चुनें (Subject)</span>
@@ -1096,7 +1093,7 @@
           </div>
         </div>
 
-        <!-- STEP 3: Chapter Selection (Dynamic from External Data/Engine) -->
+        <!-- STEP 3: Chapter Selection (Linked with syllabus-12.js) -->
         <div class="step-section hidden-step" id="step3Block">
           <div class="step-label">
             <span><span class="step-num">3</span> अध्याय या संपूर्ण विषय चुनें</span>
@@ -1346,7 +1343,7 @@
   </nav>
 
   <!-- =================================================================
-       JAVASCRIPT ENGINE
+       JAVASCRIPT ENGINE (Connected directly with window.NischaySyllabus12Data)
        ================================================================= -->
   <script>
     const subjectConfig = {
@@ -1360,7 +1357,7 @@
 
     let currentSubKey = "";
     let selectedChapterId = "all";
-    let selectedChapterName = "🏆 संपूर्ण विषय (Full Board Test)";
+    let selectedChapterName = "";
     let isFullSyllabus = false;
     let chosenQuestionsCount = 20;
     let chosenTimeMinutes = 15;
@@ -1372,7 +1369,7 @@
     let timerInterval = null;
     let timeRemaining = 900;
 
-    // Fetch JSON file dynamically & extract available chapters from the JSON itself
+    // Fetch JSON file dynamically
     async function fetchSubjectJson(subKey) {
       const fileName = subjectConfig[subKey].jsonFile;
       const paths = [
@@ -1396,6 +1393,30 @@
       return [];
     }
 
+    // Get Chapters from window.NischaySyllabus12Data (syllabus-12.js) OR fallback to JSON chapters
+    function getOfficialChapters(subKey) {
+      if (
+        window.NischaySyllabus12Data &&
+        window.NischaySyllabus12Data.subjects &&
+        window.NischaySyllabus12Data.subjects[subKey] &&
+        Array.isArray(window.NischaySyllabus12Data.subjects[subKey].chapters)
+      ) {
+        return window.NischaySyllabus12Data.subjects[subKey].chapters.map(ch => ({
+          id: `ch${ch.no}`,
+          no: ch.no,
+          name: ch.name
+        }));
+      }
+
+      // If subject is Hindi/English (not in syllabus-12.js), extract chapters directly from JSON
+      const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
+      return uniqueChNums.map(num => ({
+        id: `ch${num}`,
+        no: num,
+        name: `अध्याय ${num}`
+      }));
+    }
+
     async function handleSubjectPick(subKey) {
       currentSubKey = subKey;
       document.querySelectorAll(".sub-pill-card").forEach(el => {
@@ -1406,20 +1427,18 @@
       document.getElementById("step3Block").classList.remove("hidden-step");
 
       cachedSubjectQuestions = await fetchSubjectJson(subKey);
+      const chList = getOfficialChapters(subKey);
 
-      if (cachedSubjectQuestions.length === 0) {
+      if (chList.length === 0) {
         document.getElementById("selectedChapterLabel").textContent = "⚠️ इस विषय के प्रश्न जल्द जुड़ेंगे";
         document.getElementById("step4Block").classList.add("hidden-step");
         document.getElementById("step5Block").classList.add("hidden-step");
         return;
       }
 
-      // Extract unique chapter numbers present in JSON
-      const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
-
       isFullSyllabus = false;
-      selectedChapterId = `ch${uniqueChNums[0]}`;
-      selectedChapterName = `अध्याय ${uniqueChNums[0]}`;
+      selectedChapterId = chList[0].id;
+      selectedChapterName = chList[0].name;
       chosenQuestionsCount = 20;
       chosenTimeMinutes = 15;
 
@@ -1443,7 +1462,8 @@
     }
 
     function openChapterSelectorModal() {
-      if (cachedSubjectQuestions.length === 0) {
+      const chList = getOfficialChapters(currentSubKey);
+      if (chList.length === 0) {
         showProAlert("डेटा तैयार हो रहा है", `'${subjectConfig[currentSubKey].jsonFile}' फ़ाइल अभी तैयार की जा रही है।`);
         return;
       }
@@ -1469,19 +1489,16 @@
       };
       list.appendChild(fullRow);
 
-      // Dynamic Chapters from JSON
-      const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
-      uniqueChNums.forEach(chNo => {
-        const chId = `ch${chNo}`;
-        const chLabel = `अध्याय ${chNo}`;
-        const isSel = (!isFullSyllabus && selectedChapterId === chId);
+      // Official Chapters from window.NischaySyllabus12Data
+      chList.forEach(ch => {
+        const isSel = (!isFullSyllabus && selectedChapterId === ch.id);
         const row = document.createElement("div");
         row.className = `modal-opt-row ${isSel ? 'selected' : ''}`;
-        row.innerHTML = `<span>${chLabel}</span> ${isSel ? '<span>✓</span>' : ''}`;
+        row.innerHTML = `<span>${ch.name}</span> ${isSel ? '<span>✓</span>' : ''}`;
         row.onclick = () => {
           isFullSyllabus = false;
-          selectedChapterId = chId;
-          selectedChapterName = chLabel;
+          selectedChapterId = ch.id;
+          selectedChapterName = ch.name;
           chosenQuestionsCount = 20;
           chosenTimeMinutes = 15;
 
@@ -1504,7 +1521,7 @@
 
     function startSelectedTest() {
       if (!currentSubKey || cachedSubjectQuestions.length === 0) {
-        showProAlert("विषय चुनें", "कृपया पहले उपलब्ध विषय और अध्याय चुनें!");
+        showProAlert("डेटा तैयार हो रहा है", `'${subjectConfig[currentSubKey]?.jsonFile || 'JSON'}' फ़ाइल अभी तैयार की जा रही है। जल्द ही सभी प्रश्न उपलब्ध होंगे!`);
         return;
       }
 
