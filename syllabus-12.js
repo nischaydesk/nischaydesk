@@ -1,6 +1,6 @@
 /* ==========================================================================
-   NischayDesk Class 12th Board Syllabus Repository & Controller
-   Class: 12th Science & Language (Board Special) - 100% Full Official Chapters
+   NischayDesk Class 12th Board Syllabus Repository & Controller (2000 Cr Edition)
+   Separated Gadya, Kavya, Prose, Poetry & Grammar
    Curated by: Prince Kumar (NischayDesk)
    ========================================================================== */
 
@@ -23,7 +23,7 @@ window.NischaySyllabus12Data = {
         { no: 11, name: "अध्याय 11: विकिरण तथा द्रव्य की द्वैत प्रकृति (Dual Nature of Radiation and Matter)", pdf: "" },
         { no: 12, name: "अध्याय 12: परमाणु (Atoms)", pdf: "" },
         { no: 13, name: "अध्याय 13: नाभिक (Nuclei)", pdf: "" },
-        { no: 14, name: "अध्याय 14: अर्धचालक इलेक्ट्रॉनिकी: पदार्थ, युक्तियाँ तथा सरल परिपथ (Semiconductor Electronics: Materials, Devices & Simple Circuits)", pdf: "" }
+        { no: 14, name: "अध्याय 14: अर्धचालक इलेक्ट्रॉनिकी: पदार्थ, युक्तियाँ तथा सरल परिपथ (Semiconductor Electronics)", pdf: "" }
       ]
     },
     "chemistry": {
@@ -77,8 +77,8 @@ window.NischaySyllabus12Data = {
         { no: 13, name: "अध्याय 13: जैव विविधता एवं संरक्षण (Biodiversity and Conservation)", pdf: "" }
       ]
     },
-    "hindi": {
-      title: "हिन्दी - दिगंत भाग-2 (गद्य एवं काव्य खंड)",
+    "hindi_gadya": {
+      title: "हिन्दी — गद्य खंड (Prose Section)",
       chapters: [
         { no: 1, name: "गद्य 1: बातचीत (बालकृष्ण भट्ट)", pdf: "" },
         { no: 2, name: "गद्य 2: उसने कहा था (चन्द्रधर शर्मा गुलेरी)", pdf: "" },
@@ -92,20 +92,25 @@ window.NischaySyllabus12Data = {
         { no: 10, name: "गद्य 10: जूठन (ओमप्रकाश वाल्मीकि)", pdf: "" },
         { no: 11, name: "गद्य 11: हँसते हुए मेरा अकेलापन (मलयज)", pdf: "" },
         { no: 12, name: "गद्य 12: तिरिछ (उदय प्रकाश)", pdf: "" },
-        { no: 13, name: "गद्य 13: शिक्षा (जे. कृष्णमूर्ति)", pdf: "" },
-        { no: 14, name: "काव्य 1: कड़बक (मलिक मुहम्मद जायसी)", pdf: "" },
-        { no: 15, name: "काव्य 2: पद (सूरदास)", pdf: "" },
-        { no: 16, name: "काव्य 3: पद (तुलसीदास)", pdf: "" },
-        { no: 17, name: "काव्य 4: छप्पय (नाभादास)", pdf: "" },
-        { no: 18, name: "काव्य 5: कवित्त (भूषण)", pdf: "" },
-        { no: 19, name: "काव्य 6: तुमुल कोलाहल कलह में (जयशंकर प्रसाद)", pdf: "" },
-        { no: 20, name: "काव्य 7: पुत्र वियोग (सुभद्रा कुमारी चौहान)", pdf: "" },
-        { no: 21, name: "काव्य 8: उषा (शमशेर बहादुर सिंह)", pdf: "" },
-        { no: 22, name: "काव्य 9: जन-जन का चेहरा एक (गजानन माधव मुक्तिबोध)", pdf: "" },
-        { no: 23, name: "काव्य 10: अधिनायक (रघुवीर सहाय)", pdf: "" },
-        { no: 24, name: "काव्य 11: प्यारे नन्हे बेटे को (विनोद कुमार शुक्ल)", pdf: "" },
-        { no: 25, name: "काव्य 12: हार-जीत (अशोक वाजपेयी)", pdf: "" },
-        { no: 26, name: "काव्य 13: गाँव का घर (ज्ञानेन्द्रपति)", pdf: "" }
+        { no: 13, name: "गद्य 13: शिक्षा (जे. कृष्णमूर्ति)", pdf: "" }
+      ]
+    },
+    "hindi_kavya": {
+      title: "हिन्दी — काव्य खंड (Poetry Section)",
+      chapters: [
+        { no: 1, name: "काव्य 1: कड़बक (मलिक मुहम्मद जायसी)", pdf: "" },
+        { no: 2, name: "काव्य 2: पद (सूरदास)", pdf: "" },
+        { no: 3, name: "काव्य 3: पद (तुलसीदास)", pdf: "" },
+        { no: 4, name: "काव्य 4: छप्पय (नाभादास)", pdf: "" },
+        { no: 5, name: "काव्य 5: कवित्त (भूषण)", pdf: "" },
+        { no: 6, name: "काव्य 6: तुमुल कोलाहल कलह में (जयशंकर प्रसाद)", pdf: "" },
+        { no: 7, name: "काव्य 7: पुत्र वियोग (सुभद्रा कुमारी चौहान)", pdf: "" },
+        { no: 8, name: "काव्य 8: उषा (शमशेर बहादुर सिंह)", pdf: "" },
+        { no: 9, name: "काव्य 9: जन-जन का चेहरा एक (गजानन माधव मुक्तिबोध)", pdf: "" },
+        { no: 10, name: "काव्य 10: अधिनायक (रघुवीर सहाय)", pdf: "" },
+        { no: 11, name: "काव्य 11: प्यारे नन्हे बेटे को (विनोद कुमार शुक्ल)", pdf: "" },
+        { no: 12, name: "काव्य 12: हार-जीत (अशोक वाजपेयी)", pdf: "" },
+        { no: 13, name: "काव्य 13: गाँव का घर (ज्ञानेन्द्रपति)", pdf: "" }
       ]
     },
     "hindi_grammar": {
@@ -122,11 +127,11 @@ window.NischaySyllabus12Data = {
         { no: 9, name: "अध्याय 9: अनेक शब्दों के लिए एक शब्द", pdf: "" },
         { no: 10, name: "अध्याय 10: मुहावरे एवं लोकोक्तियाँ", pdf: "" },
         { no: 11, name: "अध्याय 11: वाक्य शुद्धि एवं पदबंध", pdf: "" },
-        { no: 12, name: "अध्याय 12: काल एवं वाच्य (Tense & Voice in Hindi)", pdf: "" }
+        { no: 12, name: "अध्याय 12: काल एवं वाच्य", pdf: "" }
       ]
     },
-    "english": {
-      title: "English - Rainbow Part-2 (Prose & Poetry)",
+    "english_prose": {
+      title: "English — Prose Section (Rainbow Part-2)",
       chapters: [
         { no: 1, name: "Prose 1: Indian Civilization and Culture (Mahatma Gandhi)", pdf: "" },
         { no: 2, name: "Prose 2: Bharat is My Home (Dr. Zakir Hussain)", pdf: "" },
@@ -138,21 +143,26 @@ window.NischaySyllabus12Data = {
         { no: 8, name: "Prose 8: How Free is the Press (Dorothy L. Sayers)", pdf: "" },
         { no: 9, name: "Prose 9: The Earth (H. E. Bates)", pdf: "" },
         { no: 10, name: "Prose 10: India Through a Traveller's Eyes (Pearl S. Buck)", pdf: "" },
-        { no: 11, name: "Prose 11: A Marriage Proposal (Anton Chekhov)", pdf: "" },
-        { no: 12, name: "Poetry 1: Sweetest Love I Do Not Goe (John Donne)", pdf: "" },
-        { no: 13, name: "Poetry 2: Song of Myself (Walt Whitman)", pdf: "" },
-        { no: 14, name: "Poetry 3: Now the Leaves Are Falling Fast (W. H. Auden)", pdf: "" },
-        { no: 15, name: "Poetry 4: Ode to Autumn (John Keats)", pdf: "" },
-        { no: 16, name: "Poetry 5: An Epitaph (Walter de la Mare)", pdf: "" },
-        { no: 17, name: "Poetry 6: The Soldier (Rupert Brooke)", pdf: "" },
-        { no: 18, name: "Poetry 7: Macavity: The Mystery Cat (T. S. Eliot)", pdf: "" },
-        { no: 19, name: "Poetry 8: Fire-Hymn (Keki N. Daruwalla)", pdf: "" },
-        { no: 20, name: "Poetry 9: Snake (D. H. Lawrence)", pdf: "" },
-        { no: 21, name: "Poetry 10: My Grandmother's House (Kamala Das)", pdf: "" }
+        { no: 11, name: "Prose 11: A Marriage Proposal (Anton Chekhov)", pdf: "" }
+      ]
+    },
+    "english_poetry": {
+      title: "English — Poetry Section (Rainbow Part-2)",
+      chapters: [
+        { no: 1, name: "Poetry 1: Sweetest Love I Do Not Goe (John Donne)", pdf: "" },
+        { no: 2, name: "Poetry 2: Song of Myself (Walt Whitman)", pdf: "" },
+        { no: 3, name: "Poetry 3: Now the Leaves Are Falling Fast (W. H. Auden)", pdf: "" },
+        { no: 4, name: "Poetry 4: Ode to Autumn (John Keats)", pdf: "" },
+        { no: 5, name: "Poetry 5: An Epitaph (Walter de la Mare)", pdf: "" },
+        { no: 6, name: "Poetry 6: The Soldier (Rupert Brooke)", pdf: "" },
+        { no: 7, name: "Poetry 7: Macavity: The Mystery Cat (T. S. Eliot)", pdf: "" },
+        { no: 8, name: "Poetry 8: Fire-Hymn (Keki N. Daruwalla)", pdf: "" },
+        { no: 9, name: "Poetry 9: Snake (D. H. Lawrence)", pdf: "" },
+        { no: 10, name: "Poetry 10: My Grandmother's House (Kamala Das)", pdf: "" }
       ]
     },
     "english_grammar": {
-      title: "English Grammar & Composition",
+      title: "English Grammar & Story of English",
       chapters: [
         { no: 1, name: "Chapter 1: Time and Tense", pdf: "" },
         { no: 2, name: "Chapter 2: Active and Passive Voice", pdf: "" },
@@ -170,88 +180,3 @@ window.NischaySyllabus12Data = {
     }
   }
 };
-
-// ============================================================================
-// DEDICATED DOM CONTROLLER FOR CLASS 12TH SYLLABUS
-// ============================================================================
-document.addEventListener('DOMContentLoaded', function () {
-  const subjectSelect = document.getElementById('sylSubjectFilter') || document.getElementById('syllabusSubjectSelect');
-  const chaptersContainer = document.getElementById('syllabusChaptersContainer') || document.getElementById('syllabusChaptersList');
-
-  if (!subjectSelect || !chaptersContainer) return;
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlSubject = urlParams.get('subject');
-
-  function populateSubjects(targetSubjectToSelect) {
-    const data = window.NischaySyllabus12Data;
-    subjectSelect.innerHTML = '';
-
-    if (!data || !data.subjects) {
-      subjectSelect.innerHTML = '<option value="">कोई विषय उपलब्ध नहीं</option>';
-      renderChapters([]);
-      return;
-    }
-
-    Object.keys(data.subjects).forEach(subKey => {
-      const opt = document.createElement('option');
-      opt.value = subKey;
-      opt.textContent = data.subjects[subKey].title;
-      subjectSelect.appendChild(opt);
-    });
-
-    if (targetSubjectToSelect && data.subjects[targetSubjectToSelect]) {
-      subjectSelect.value = targetSubjectToSelect;
-    }
-
-    loadChapters();
-  }
-
-  function loadChapters() {
-    const selectedSubject = subjectSelect.value;
-    const data = window.NischaySyllabus12Data;
-
-    if (data && data.subjects && data.subjects[selectedSubject]) {
-      renderChapters(data.subjects[selectedSubject].chapters);
-    } else {
-      renderChapters([]);
-    }
-  }
-
-  function renderChapters(chapters) {
-    chaptersContainer.innerHTML = '';
-
-    if (!chapters || chapters.length === 0) {
-      chaptersContainer.innerHTML = `
-        <div class="loading-state-box" style="text-align:center; padding:30px 16px;">
-          <div style="font-size:2.2rem; margin-bottom:8px;">📋</div>
-          <p style="color:var(--text-secondary);">इस विषय का 12th आधिकारिक सिलेबस शीघ्र जोड़ा जा रहा है।</p>
-        </div>
-      `;
-      return;
-    }
-
-    chapters.forEach(ch => {
-      const card = document.createElement('div');
-      card.className = 'chapter-bar-card';
-
-      const hasPdf = ch.pdf && ch.pdf.trim() !== '' && ch.pdf !== '#';
-      const actionButton = hasPdf
-        ? `<button class="btn-view-syllabus" onclick="window.openPdfViewer ? window.openPdfViewer('${ch.pdf}', '${ch.name.replace(/'/g, "\\'")}') : window.open('${ch.pdf}', '_blank')">📖 <span>सिलेबस देखें</span></button>`
-        : `<button class="btn-view-syllabus" style="background:var(--surface-elevated, rgba(255,255,255,0.06)); border:1px solid var(--border-subtle, rgba(255,255,255,0.1)); color:var(--brand-accent, #38bdf8);" onclick="alert('कक्षा 12वीं अध्याय ${ch.no} का बोर्ड सिलेबस PDF जल्द लिंक किया जा रहा है!')">📖 <span>जल्द आ रहा है</span></button>`;
-
-      card.innerHTML = `
-        <div class="chapter-meta-wrap">
-          <span class="chapter-idx-pill">अध्याय ${ch.no}</span>
-          <span class="chapter-title-text">${ch.name}</span>
-        </div>
-        <div>${actionButton}</div>
-      `;
-
-      chaptersContainer.appendChild(card);
-    });
-  }
-
-  subjectSelect.addEventListener('change', loadChapters);
-  populateSubjects(urlSubject);
-});
