@@ -8,7 +8,7 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
 
   <script src="config.js"></script>
   <script src="syllabus-data-12.js"></script>
@@ -155,19 +155,19 @@
     .view-panel.active { display: block; }
 
     /* =================================================================
-       SCREEN 1: STEP-BY-STEP SMART LOBBY
+       SCREEN 1: PROGRESSIVE STEP-BY-STEP LOBBY
        ================================================================= */
     .lobby-container {
       max-width: 640px;
       margin: 0 auto;
-      padding: 16px 14px 82px;
+      padding: 16px 14px 86px;
     }
     .lobby-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 18px 16px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
     }
     .lobby-header {
       text-align: center;
@@ -189,33 +189,48 @@
       color: var(--text-main);
     }
     .lobby-title span { color: #6366f1; }
-
-    /* Step Blocks */
-    .step-block {
-      margin-bottom: 14px;
+    .bseb-rule-note {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: #10b981;
+      margin-top: 4px;
     }
+
+    /* Progressive Step Animation */
+    .step-section {
+      margin-bottom: 16px;
+      animation: slideFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .step-section.hidden-step {
+      display: none;
+    }
+    @keyframes slideFade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .step-label {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .step-num {
       background: #6366f1;
       color: #fff;
-      padding: 1px 7px;
+      padding: 2px 8px;
       border-radius: 6px;
       font-size: 0.7rem;
-      margin-right: 5px;
+      margin-right: 6px;
     }
 
     /* Step 1: Class Selector Pill */
     .class-tap-box {
       width: 100%;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(139, 92, 246, 0.08));
       border: 1.8px solid #6366f1;
       border-radius: 14px;
       padding: 12px 16px;
@@ -241,8 +256,8 @@
       border-radius: 8px;
     }
 
-    /* Step 2: Subject Grid */
-    .subject-grid-4 {
+    /* Step 2: 6 Subjects Grid (PCM/B + Hindi & English Grammar) */
+    .subject-grid-6 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
@@ -255,17 +270,17 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 800;
       color: var(--text-main);
       cursor: pointer;
       transition: all 0.15s ease;
     }
     .sub-pill-card.active {
-      background: rgba(99, 102, 241, 0.14);
+      background: rgba(99, 102, 241, 0.15);
       border-color: #6366f1;
       color: #6366f1;
-      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.18);
     }
 
     /* Step 3: Chapter Selector Trigger */
@@ -290,31 +305,55 @@
       text-overflow: ellipsis;
     }
 
-    /* Auto-Mode Badge (50m vs 15m) */
-    .auto-mode-strip {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1.5px dashed #10b981;
+    /* Step 4: 4 Custom Pack Options Grid */
+    .packs-grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .pack-choice-card {
+      background: var(--bg-page);
+      border: 1.5px solid var(--card-border);
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pack-choice-card.active {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: #10b981;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.15);
+    }
+    .pack-title {
+      font-size: 0.84rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .pack-choice-card.active .pack-title { color: #059669; }
+    html[data-theme="dark"] .pack-choice-card.active .pack-title { color: #34d399; }
+    .pack-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* Full Syllabus Auto Banner */
+    .full-mode-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1.5px dashed #f59e0b;
+      border-radius: 12px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
     }
-    .auto-mode-title {
-      font-size: 0.82rem;
+    .full-mode-banner span {
+      font-size: 0.84rem;
       font-weight: 800;
-      color: #059669;
+      color: #d97706;
     }
-    html[data-theme="dark"] .auto-mode-title { color: #34d399; }
-    .auto-mode-meta {
-      font-size: 0.74rem;
-      font-weight: 800;
-      background: #10b981;
-      color: #fff;
-      padding: 3px 9px;
-      border-radius: 999px;
-    }
+    html[data-theme="dark"] .full-mode-banner span { color: #fbbf24; }
 
     .btn-launch-test {
       width: 100%;
@@ -332,13 +371,12 @@
     .btn-launch-test:active { transform: scale(0.98); }
 
     /* =================================================================
-       SCREEN 2: ZERO-SCROLL ONE-HANDED RUNNING EXAM VIEWPORT
+       SCREEN 2: THUMB-FRIENDLY ONE-HANDED RUNNING EXAM VIEWPORT
        ================================================================= */
     #testRunningScreen.active {
       display: flex;
       flex-direction: column;
-      height: calc(100dvh - 52px);
-      overflow: hidden;
+      min-height: calc(100dvh - 52px);
     }
 
     /* Compact Top Bar */
@@ -399,27 +437,26 @@
       cursor: pointer;
     }
 
-    /* Middle Question & Options Area (Fits cleanly without scrolling) */
-    .exam-middle-stage {
-      flex: 1;
-      max-width: 820px;
+    /* 🌟 Question Card + Elevated Thumb Controls + Stylish All the Best */
+    .exam-stage-wrap {
+      max-width: 680px;
       width: 100%;
       margin: 0 auto;
-      padding: 10px 14px;
+      padding: 12px 14px 20px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      overflow-y: auto;
+      gap: 12px;
     }
+
     .q-card-compact {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     }
     .q-meta-line {
       display: flex;
@@ -444,11 +481,19 @@
       border-radius: 999px;
       cursor: pointer;
     }
+    .bseb-mark-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
     .q-text-compact {
       font-size: 0.98rem;
       font-weight: 800;
       color: var(--text-main);
-      line-height: 1.4;
+      line-height: 1.42;
     }
 
     /* Compact Options List */
@@ -500,23 +545,22 @@
       line-height: 1.3;
     }
 
-    /* 🌟 FIXED ONE-HANDED BOTTOM CONTROL BAR (Never jumps or wraps) */
-    .fixed-bottom-controls {
-      height: 58px;
-      background: var(--nav-bg);
-      border-top: 1.5px solid var(--card-border);
-      padding: 8px 12px;
+    /* 🌟 ELEVATED ONE-HANDED THUMB CONTROLS (Right below options, easy reach!) */
+    .elevated-thumb-controls {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 16px;
+      padding: 10px 12px;
       display: grid;
-      grid-template-columns: 1fr 0.8fr 1.2fr;
+      grid-template-columns: 1fr 0.75fr 1.25fr;
       gap: 8px;
       align-items: center;
-      flex-shrink: 0;
-      z-index: 50;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     }
     .ctrl-btn {
-      height: 40px;
-      border-radius: 10px;
-      font-size: 0.82rem;
+      height: 42px;
+      border-radius: 11px;
+      font-size: 0.84rem;
       font-weight: 800;
       border: none;
       cursor: pointer;
@@ -536,20 +580,46 @@
       background: transparent;
       border: 1.5px solid var(--card-border);
       color: var(--text-muted);
-      font-size: 0.76rem;
+      font-size: 0.78rem;
     }
     .btn-next-fix {
-      background: #6366f1;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: #ffffff !important;
       box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3);
     }
     .btn-next-fix.submit-mode {
-      background: #10b981;
+      background: linear-gradient(135deg, #10b981, #059669);
       box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
     }
 
+    /* 🌟 STYLISH "ALL THE BEST" BADGE BELOW CONTROLS */
+    .all-the-best-banner {
+      text-align: center;
+      padding: 12px 16px;
+      margin-top: 2px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.08));
+      border: 1px dashed rgba(99, 102, 241, 0.3);
+    }
+    .all-the-best-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      background: linear-gradient(90deg, #6366f1, #ec4899, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .all-the-best-sub {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
     /* =================================================================
-       SCREEN 3: RESULT & SCORECARD
+       SCREEN 3: RESULT & SCORECARD (1 Mark Per Question - BSEB Pattern)
        ================================================================= */
     .result-wrap {
       max-width: 760px;
@@ -610,7 +680,7 @@
     }
 
     /* =================================================================
-       CUSTOM MODALS (No Browser Alert/Confirm!)
+       CUSTOM MODALS
        ================================================================= */
     .nd-modal-backdrop {
       display: none;
@@ -688,7 +758,6 @@
       font-weight: 800;
     }
 
-    /* OMR Palette Grid inside Modal */
     .palette-modal-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -715,7 +784,6 @@
       box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35);
     }
 
-    /* Submit Stats Box inside Custom Confirm Modal */
     .submit-stats-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -790,7 +858,7 @@
     }
     .side-link.active { background: #6366f1; color: #fff; }
 
-    /* Lobby Bottom Dock (Hidden during running test for zero distraction) */
+    /* Lobby Bottom Dock */
     .lobby-bottom-dock {
       position: fixed;
       bottom: 0;
@@ -804,9 +872,7 @@
       align-items: center;
       z-index: 900;
     }
-    body.exam-is-running .lobby-bottom-dock {
-      display: none !important;
-    }
+    body.exam-is-running .lobby-bottom-dock { display: none !important; }
     .dock-btn {
       display: flex;
       flex-direction: column;
@@ -865,69 +931,103 @@
   </aside>
 
   <!-- =================================================================
-       SCREEN 1: STEP-BY-STEP SMART LOBBY
+       SCREEN 1: PROGRESSIVE STEP-BY-STEP LOBBY
        ================================================================= -->
   <main id="testLobbyScreen" class="view-panel active">
     <div class="lobby-container">
       <div class="lobby-card">
         <div class="lobby-header">
-          <div class="lobby-badge">⚡ BSEB SMART CBT EXAM ENGINE</div>
-          <h1 class="lobby-title">ऑनलाइन <span>बोर्ड टेस्ट पोर्टल</span></h1>
+          <div class="lobby-badge">🏆 BIHAR BOARD OFFICIAL PATTERN</div>
+          <h1 class="lobby-title">12वीं <span>इंटर बोर्ड टेस्ट पोर्टल</span></h1>
+          <div class="bseb-rule-note">✓ प्रत्येक सही उत्तर = +1 अंक • कोई नेगेटिव मार्किंग नहीं</div>
         </div>
 
-        <!-- STEP 1: Class (Pre-selected & Tappable to redirect) -->
-        <div class="step-block">
+        <!-- STEP 1: Class (Always visible first) -->
+        <div class="step-section" id="step1Block">
           <div class="step-label">
-            <span><span class="step-num">1</span> आपकी कक्षा (टैप करके बदलें)</span>
+            <span><span class="step-num">1</span> कक्षा चुनें (टैप करके बदलें)</span>
           </div>
           <div class="class-tap-box" onclick="openCustomModal('classModal')">
             <div class="class-tap-left">
               <span>🎓</span>
-              <span>कक्षा 12वीं (Inter Science)</span>
+              <span>कक्षा 12वीं (Inter Science + Language)</span>
             </div>
             <span class="class-change-tag">बदलें ▾</span>
           </div>
         </div>
 
-        <!-- STEP 2: Subject Selection -->
-        <div class="step-block">
+        <!-- STEP 2: Subject Selection (Includes Hindi & English Grammar) -->
+        <div class="step-section" id="step2Block">
           <div class="step-label">
             <span><span class="step-num">2</span> विषय चुनें (Subject)</span>
           </div>
-          <div class="subject-grid-4" id="subjectGrid4">
-            <div class="sub-pill-card active" data-sub="physics" onclick="selectSubject('physics')">⚡ भौतिकी (Physics)</div>
-            <div class="sub-pill-card" data-sub="chemistry" onclick="selectSubject('chemistry')">🧪 रसायन (Chemistry)</div>
-            <div class="sub-pill-card" data-sub="math" onclick="selectSubject('math')">📐 गणित (Maths)</div>
-            <div class="sub-pill-card" data-sub="biology" onclick="selectSubject('biology')">🧬 जीव विज्ञान (Bio)</div>
+          <div class="subject-grid-6">
+            <div class="sub-pill-card" data-sub="physics" onclick="handleSubjectPick('physics')">⚡ भौतिकी (Physics)</div>
+            <div class="sub-pill-card" data-sub="chemistry" onclick="handleSubjectPick('chemistry')">🧪 रसायन (Chemistry)</div>
+            <div class="sub-pill-card" data-sub="math" onclick="handleSubjectPick('math')">📐 गणित (Maths)</div>
+            <div class="sub-pill-card" data-sub="biology" onclick="handleSubjectPick('biology')">🧬 जीव विज्ञान (Bio)</div>
+            <div class="sub-pill-card" data-sub="hindi" onclick="handleSubjectPick('hindi')">🇮🇳 हिन्दी + व्याकरण</div>
+            <div class="sub-pill-card" data-sub="english" onclick="handleSubjectPick('english')">🇬🇧 English + Grammar</div>
           </div>
         </div>
 
-        <!-- STEP 3: Chapter or Full Syllabus -->
-        <div class="step-block">
+        <!-- STEP 3: Chapter Selection (Reveals smoothly after Subject is picked) -->
+        <div class="step-section hidden-step" id="step3Block">
           <div class="step-label">
             <span><span class="step-num">3</span> अध्याय या संपूर्ण विषय चुनें</span>
           </div>
           <div class="chapter-tap-box" onclick="openChapterSelectorModal()">
-            <span class="chapter-tap-text" id="selectedChapterLabel">अध्याय 1: वैद्युत आवेश तथा क्षेत्र</span>
+            <span class="chapter-tap-text" id="selectedChapterLabel">अध्याय चुनने के लिए टैप करें...</span>
             <span style="color:#6366f1; font-weight:900; font-size:0.85rem;">चुनें ▾</span>
           </div>
         </div>
 
-        <!-- Auto Time & Question Indicator -->
-        <div class="auto-mode-strip">
-          <span class="auto-mode-title" id="autoModeTitle">📘 चैप्टर-वाइज प्रैक्टिस टेस्ट</span>
-          <span class="auto-mode-meta" id="autoModeMeta">20 प्रश्न • 15 मिनट</span>
+        <!-- STEP 4: Custom Question & Time Pack Selection (Reveals after Chapter) -->
+        <div class="step-section hidden-step" id="step4Block">
+          <div class="step-label">
+            <span><span class="step-num">4</span> अपनी पसंद का टेस्ट पैक चुनें</span>
+          </div>
+
+          <!-- 4 Choices for Chapter-wise -->
+          <div class="packs-grid-4" id="chapterPacksGrid">
+            <div class="pack-choice-card" data-q="10" data-t="8" onclick="selectPack(this, 10, 8)">
+              <div class="pack-title">⚡ 10 प्रश्न</div>
+              <div class="pack-sub">समय: 8 मिनट (Quick)</div>
+            </div>
+            <div class="pack-choice-card active" data-q="20" data-t="15" onclick="selectPack(this, 20, 15)">
+              <div class="pack-title">📘 20 प्रश्न</div>
+              <div class="pack-sub">समय: 15 मिनट (Standard)</div>
+            </div>
+            <div class="pack-choice-card" data-q="30" data-t="25" onclick="selectPack(this, 30, 25)">
+              <div class="pack-title">🔥 30 प्रश्न</div>
+              <div class="pack-sub">समय: 25 मिनट (Medium)</div>
+            </div>
+            <div class="pack-choice-card" data-q="40" data-t="35" onclick="selectPack(this, 40, 35)">
+              <div class="pack-title">🏆 40 प्रश्न</div>
+              <div class="pack-sub">समय: 35 मिनट (Master)</div>
+            </div>
+          </div>
+
+          <!-- Auto 50 Q / 50 Min Banner when Full Subject is picked -->
+          <div class="full-mode-banner" id="fullSubjectBanner" style="display:none;">
+            <span>🏆 संपूर्ण विषय बोर्ड मॉडल टेस्ट</span>
+            <strong style="color:#d97706; font-size:0.85rem;">50 प्रश्न • 50 मिनट</strong>
+          </div>
         </div>
 
-        <button class="btn-launch-test" id="startExamBtn" onclick="startSelectedTest()">
-          🚀 टेस्ट शुरू करें (Start Test)
-        </button>
+        <!-- STEP 5: Launch Button -->
+        <div class="step-section hidden-step" id="step5Block" style="margin-bottom:0;">
+          <button class="btn-launch-test" id="startExamBtn" onclick="startSelectedTest()">
+            🚀 टेस्ट शुरू करें (Start Test)
+          </button>
+        </div>
+
       </div>
     </div>
   </main>
 
   <!-- =================================================================
-       SCREEN 2: ZERO-SCROLL ONE-HANDED RUNNING TEST SCREEN
+       SCREEN 2: ONE-HANDED THUMB-ZONE RUNNING TEST SCREEN
        ================================================================= -->
   <section id="testRunningScreen" class="view-panel">
     <!-- Top Compact Status Bar -->
@@ -942,13 +1042,13 @@
       </div>
     </div>
 
-    <!-- Middle Question & Options Stage -->
-    <div class="exam-middle-stage">
+    <!-- Main Stage: Question Card + Elevated Buttons + Stylish All The Best -->
+    <div class="exam-stage-wrap">
       <div class="q-card-compact">
         <div class="q-meta-line">
           <span class="q-num-badge" id="displayQNumber">Q.1</span>
           <button class="q-palette-trigger" onclick="openPaletteModal()">🔢 प्रश्न सूची (OMR)</button>
-          <span style="font-size:0.74rem; font-weight:800; color:#10b981;">+4 / -1</span>
+          <span class="bseb-mark-pill">+1 अंक</span>
         </div>
 
         <div class="q-text-compact" id="displayQText">
@@ -957,41 +1057,47 @@
 
         <div class="options-compact-list" id="displayOptionsGroup"></div>
       </div>
-    </div>
 
-    <!-- Fixed Bottom One-Handed Navigation Bar -->
-    <div class="fixed-bottom-controls">
-      <button class="ctrl-btn btn-prev-fix" id="prevQBtn" onclick="goPrevQuestion()" disabled>← पिछला</button>
-      <button class="ctrl-btn btn-clear-fix" onclick="clearCurrentSelection()">हटाएं</button>
-      <button class="ctrl-btn btn-next-fix" id="nextQBtn" onclick="goNextQuestion()">अगला प्रश्न →</button>
+      <!-- Elevated Thumb Controls (Right in comfortable thumb reach!) -->
+      <div class="elevated-thumb-controls">
+        <button class="ctrl-btn btn-prev-fix" id="prevQBtn" onclick="goPrevQuestion()" disabled>← पिछला</button>
+        <button class="ctrl-btn btn-clear-fix" onclick="clearCurrentSelection()">हटाएं</button>
+        <button class="ctrl-btn btn-next-fix" id="nextQBtn" onclick="goNextQuestion()">अगला प्रश्न →</button>
+      </div>
+
+      <!-- Stylish "All the best" Banner right below buttons -->
+      <div class="all-the-best-banner">
+        <div class="all-the-best-text">✨ All the Best ✨</div>
+        <div class="all-the-best-sub">NischayDesk Bihar Board Mission 450+</div>
+      </div>
     </div>
   </section>
 
   <!-- =================================================================
-       SCREEN 3: RESULT & SCORECARD
+       SCREEN 3: RESULT & SCORECARD (+1 Mark Per Question)
        ================================================================= -->
   <section id="testResultScreen" class="view-panel">
     <div class="result-wrap">
       <div class="result-hero-card">
         <div style="font-size:2.4rem; margin-bottom:4px;">🏆</div>
         <h2 style="font-size:1.3rem; font-weight:900;">12वीं इंटर बोर्ड टेस्ट परिणाम</h2>
-        <p style="font-size:0.8rem; color:var(--text-muted);" id="resultSubMeta">स्कोरकार्ड विश्लेषण</p>
+        <p style="font-size:0.8rem; color:var(--text-muted);" id="resultSubMeta">बिहार बोर्ड मार्किंग पैटर्न (1 प्रश्न = 1 अंक)</p>
 
         <div class="score-grid-4">
           <div class="score-tile">
             <span>कुल प्राप्तांक</span>
-            <strong id="resTotalMarks">0 / 80</strong>
+            <strong id="resTotalMarks">0 / 20</strong>
           </div>
           <div class="score-tile">
             <span>सटीकता (Accuracy)</span>
             <strong id="resAccuracy">0%</strong>
           </div>
           <div class="score-tile">
-            <span>सही उत्तर</span>
+            <span>सही उत्तर (+1)</span>
             <strong id="resCorrectCount" style="color:#10b981;">0</strong>
           </div>
           <div class="score-tile">
-            <span>गलत उत्तर</span>
+            <span>गलत / छोड़े</span>
             <strong id="resWrongCount" style="color:#ef4444;">0</strong>
           </div>
         </div>
@@ -1008,10 +1114,10 @@
   </section>
 
   <!-- =================================================================
-       PROFESSIONAL CUSTOM MODALS (No Browser Alert/Confirm)
+       CUSTOM MODALS
        ================================================================= -->
 
-  <!-- 1. Class Switcher Modal (Direct Redirect to 10th / 11th test.html) -->
+  <!-- 1. Class Switcher Modal -->
   <div class="nd-modal-backdrop" id="classModal" onclick="closeBackdrop(event, 'classModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1063,7 +1169,7 @@
     </div>
   </div>
 
-  <!-- 4. Professional Submit Confirmation Modal -->
+  <!-- 4. Submit Confirmation Modal -->
   <div class="nd-modal-backdrop" id="submitConfirmModal" onclick="closeBackdrop(event, 'submitConfirmModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1072,7 +1178,7 @@
       </div>
       <div class="nd-modal-body">
         <p style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">
-          क्या आप अपना 12वीं इंटर बोर्ड टेस्ट समाप्त करके परिणाम देखना चाहते हैं?
+          क्या आप अपना 12वीं इंटर बोर्ड टेस्ट समाप्त करके स्कोरकार्ड देखना चाहते हैं?
         </p>
         <div class="submit-stats-row">
           <div class="stat-mini">
@@ -1096,7 +1202,7 @@
     </div>
   </div>
 
-  <!-- 5. Professional Info Alert Modal (Replaces Browser Alert) -->
+  <!-- 5. Info Alert Modal -->
   <div class="nd-modal-backdrop" id="infoAlertModal" onclick="closeBackdrop(event, 'infoAlertModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1112,18 +1218,10 @@
 
   <!-- Lobby Bottom Dock -->
   <nav class="lobby-bottom-dock">
-    <a href="class12.html" class="dock-btn">
-      <span class="icon">🎓</span><span>12th होम</span>
-    </a>
-    <a href="class12notes.html" class="dock-btn">
-      <span class="icon">📚</span><span>नोट्स</span>
-    </a>
-    <a href="class12test.html" class="dock-btn active">
-      <span class="icon">📝</span><span>टेस्ट</span>
-    </a>
-    <a href="class12pyq.html?class=12" class="dock-btn">
-      <span class="icon">📄</span><span>पेपर्स</span>
-    </a>
+    <a href="class12.html" class="dock-btn"><span class="icon">🎓</span><span>12th होम</span></a>
+    <a href="class12notes.html" class="dock-btn"><span class="icon">📚</span><span>नोट्स</span></a>
+    <a href="class12test.html" class="dock-btn active"><span class="icon">📝</span><span>टेस्ट</span></a>
+    <a href="class12pyq.html?class=12" class="dock-btn"><span class="icon">📄</span><span>पेपर्स</span></a>
   </nav>
 
   <!-- =================================================================
@@ -1134,13 +1232,35 @@
       physics: { sylId: "12-physics", jsonFile: "12-physics.json", shortName: "12th Physics" },
       chemistry: { sylId: "12-chemistry", jsonFile: "12-chemistry.json", shortName: "12th Chemistry" },
       math: { sylId: "12-math", jsonFile: "12-math.json", shortName: "12th Maths" },
-      biology: { sylId: "12-biology", jsonFile: "12-biology.json", shortName: "12th Biology" }
+      biology: { sylId: "12-biology", jsonFile: "12-biology.json", shortName: "12th Biology" },
+      hindi: { sylId: "12-hindi", jsonFile: "12-hindi.json", shortName: "12th हिन्दी" },
+      english: { sylId: "12-english", jsonFile: "12-english.json", shortName: "12th English" }
     };
 
-    let currentSubKey = "physics";
-    let selectedChapterId = "ch1";
-    let selectedChapterName = "अध्याय 1: वैद्युत आवेश तथा क्षेत्र";
+    // Hindi & English Grammar Built-in Chapters List
+    const extraLanguageChapters = {
+      hindi: [
+        { id: "ch1", no: 1, name: "गद्य खंड: बातचीत, उसने कहा था, संपूर्ण क्रांति" },
+        { id: "ch2", no: 2, name: "गद्य खंड: अर्धनारीश्वर, रोज, एक लेख और एक पत्र" },
+        { id: "ch3", no: 3, name: "काव्य खंड: कड़बक, सूरदास व तुलसीदास के पद" },
+        { id: "ch4", no: 4, name: "हिन्दी व्याकरण: संधि, समास, उपसर्ग एवं प्रत्यय" },
+        { id: "ch5", no: 5, name: "हिन्दी व्याकरण: मुहावरे, पर्यायवाची, विलोम व कारक" }
+      ],
+      english: [
+        { id: "ch1", no: 1, name: "Prose: Indian Civilization & Culture, Bharat is My Home" },
+        { id: "ch2", no: 2, name: "Prose: A Pinch of Snuff, I Have a Dream, Ideas That Have Helped Mankind" },
+        { id: "ch3", no: 3, name: "Poetry: Sweetest Love I Do Not Goe, Song of Myself, An Epitaph" },
+        { id: "ch4", no: 4, name: "English Grammar: Tense, Voice, Narration & Modals" },
+        { id: "ch5", no: 5, name: "English Grammar: Prepositions, Articles, Synonyms & Antonyms" }
+      ]
+    };
+
+    let currentSubKey = "";
+    let selectedChapterId = "";
+    let selectedChapterName = "";
     let isFullSyllabus = false;
+    let chosenQuestionsCount = 20;
+    let chosenTimeMinutes = 15;
 
     let currentQuestions = [];
     let currentQIndex = 0;
@@ -1149,6 +1269,9 @@
     let timeRemaining = 900;
 
     function getChaptersList(subKey) {
+      if (extraLanguageChapters[subKey]) {
+        return extraLanguageChapters[subKey];
+      }
       const sylId = subjectConfig[subKey].sylId;
       if (window.NischaySyllabus12 && window.NischaySyllabus12.subjects) {
         const found = window.NischaySyllabus12.subjects.find(s => s.id === sylId);
@@ -1163,30 +1286,40 @@
       return [{ id: "ch1", no: 1, name: "अध्याय 1" }];
     }
 
-    function selectSubject(subKey) {
+    // Step 2 Trigger: Pick Subject -> Reveal Step 3 & Step 4
+    function handleSubjectPick(subKey) {
       currentSubKey = subKey;
       document.querySelectorAll(".sub-pill-card").forEach(el => {
         el.classList.toggle("active", el.getAttribute("data-sub") === subKey);
       });
 
       const chs = getChaptersList(subKey);
-      if (chs.length > 0) {
-        selectedChapterId = chs[0].id;
-        selectedChapterName = chs[0].name;
-      }
+      selectedChapterId = chs[0].id;
+      selectedChapterName = chs[0].name;
       isFullSyllabus = false;
-      updateLobbyModeUI();
+      chosenQuestionsCount = 20;
+      chosenTimeMinutes = 15;
+
+      document.getElementById("selectedChapterLabel").textContent = selectedChapterName;
+      document.getElementById("chapterPacksGrid").style.display = "grid";
+      document.getElementById("fullSubjectBanner").style.display = "none";
+
+      // Reset pack highlight to 20 Q
+      document.querySelectorAll(".pack-choice-card").forEach(c => {
+        c.classList.toggle("active", c.getAttribute("data-q") === "20");
+      });
+
+      // Reveal Steps 3, 4, 5 smoothly
+      document.getElementById("step3Block").classList.remove("hidden-step");
+      document.getElementById("step4Block").classList.remove("hidden-step");
+      document.getElementById("step5Block").classList.remove("hidden-step");
     }
 
-    function updateLobbyModeUI() {
-      document.getElementById("selectedChapterLabel").textContent = selectedChapterName;
-      if (isFullSyllabus) {
-        document.getElementById("autoModeTitle").textContent = "🏆 संपूर्ण विषय बोर्ड मॉडल टेस्ट";
-        document.getElementById("autoModeMeta").textContent = "50 प्रश्न • 50 मिनट";
-      } else {
-        document.getElementById("autoModeTitle").textContent = "📘 चैप्टर-वाइज प्रैक्टिस टेस्ट";
-        document.getElementById("autoModeMeta").textContent = "20 प्रश्न • 15 मिनट";
-      }
+    function selectPack(el, qCount, tMins) {
+      document.querySelectorAll(".pack-choice-card").forEach(c => c.classList.remove("active"));
+      el.classList.add("active");
+      chosenQuestionsCount = qCount;
+      chosenTimeMinutes = tMins;
     }
 
     function openChapterSelectorModal() {
@@ -1201,12 +1334,17 @@
         isFullSyllabus = true;
         selectedChapterId = "all";
         selectedChapterName = "🏆 संपूर्ण विषय (Full Board Test)";
-        updateLobbyModeUI();
+        chosenQuestionsCount = 50;
+        chosenTimeMinutes = 50;
+
+        document.getElementById("selectedChapterLabel").textContent = selectedChapterName;
+        document.getElementById("chapterPacksGrid").style.display = "none";
+        document.getElementById("fullSubjectBanner").style.display = "flex";
         closeCustomModal("chapterModal");
       };
       list.appendChild(fullRow);
 
-      // Chapter-wise Options (Auto 20 Q / 15 Min)
+      // Chapter-wise Options (Reveals 4 custom packs)
       const chs = getChaptersList(currentSubKey);
       chs.forEach(ch => {
         const isSel = (!isFullSyllabus && selectedChapterId === ch.id);
@@ -1217,7 +1355,12 @@
           isFullSyllabus = false;
           selectedChapterId = ch.id;
           selectedChapterName = ch.name;
-          updateLobbyModeUI();
+          chosenQuestionsCount = 20;
+          chosenTimeMinutes = 15;
+
+          document.getElementById("selectedChapterLabel").textContent = selectedChapterName;
+          document.getElementById("chapterPacksGrid").style.display = "grid";
+          document.getElementById("fullSubjectBanner").style.display = "none";
           closeCustomModal("chapterModal");
         };
         list.appendChild(row);
@@ -1233,6 +1376,11 @@
     }
 
     async function startSelectedTest() {
+      if (!currentSubKey) {
+        showProAlert("विषय चुनें", "कृपया पहले अपना विषय चुनें!");
+        return;
+      }
+
       const btn = document.getElementById("startExamBtn");
       btn.disabled = true;
       btn.textContent = "⏳ प्रश्न लोड हो रहे हैं...";
@@ -1260,7 +1408,7 @@
       btn.textContent = "🚀 टेस्ट शुरू करें (Start Test)";
 
       if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-        showProAlert("डेटा उपलब्ध नहीं", `'${fileName}' फ़ाइल अभी तैयार की जा रही है। जल्द ही इस विषय के सभी प्रश्न उपलब्ध होंगे!`);
+        showProAlert("डेटा तैयार हो रहा है", `'${fileName}' फ़ाइल अभी जोड़ी जा रही है। जल्द ही इस विषय के सभी प्रश्न उपलब्ध होंगे!`);
         return;
       }
 
@@ -1274,13 +1422,13 @@
 
       if (isFullSyllabus) {
         currentQuestions = [...allQs].sort(() => Math.random() - 0.5).slice(0, 50);
-        timeRemaining = 50 * 60; // 50 Minutes
+        timeRemaining = 50 * 60;
       } else {
         const chNum = parseInt(selectedChapterId.replace(/\D/g, "")) || 1;
         let filtered = allQs.filter(q => q.chapter === chNum);
         if (filtered.length === 0) filtered = allQs;
-        currentQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, 20);
-        timeRemaining = 15 * 60; // 15 Minutes
+        currentQuestions = filtered.sort(() => Math.random() - 0.5).slice(0, chosenQuestionsCount);
+        timeRemaining = chosenTimeMinutes * 60;
       }
 
       userResponses = {};
@@ -1386,24 +1534,20 @@
       clearInterval(timerInterval);
       document.body.classList.remove("exam-is-running");
 
-      let correct = 0, wrong = 0;
+      let correct = 0;
       currentQuestions.forEach((q, idx) => {
-        const ans = userResponses[idx];
-        if (ans !== undefined) {
-          if (ans === q.correct) correct++;
-          else wrong++;
-        }
+        if (userResponses[idx] === q.correct) correct++;
       });
 
       const total = currentQuestions.length;
-      const score = (correct * 4) - (wrong * 1);
-      const maxScore = total * 4;
-      const acc = Math.round((correct / (correct + wrong || 1)) * 100);
+      const wrongOrSkipped = total - correct;
+      const acc = Math.round((correct / total) * 100);
 
-      document.getElementById("resTotalMarks").textContent = `${score} / ${maxScore}`;
+      // BSEB Pattern: 1 Question = 1 Mark, No Negative
+      document.getElementById("resTotalMarks").textContent = `${correct} / ${total}`;
       document.getElementById("resAccuracy").textContent = `${acc}%`;
       document.getElementById("resCorrectCount").textContent = correct;
-      document.getElementById("resWrongCount").textContent = wrong;
+      document.getElementById("resWrongCount").textContent = wrongOrSkipped;
 
       const solList = document.getElementById("solutionsAccordionList");
       solList.innerHTML = "";
@@ -1417,7 +1561,7 @@
         card.innerHTML = `
           <div class="sol-q">Q.${idx + 1}: ${q.q}</div>
           <div style="font-size:0.8rem; font-weight:800; color:${ans === undefined ? '#f59e0b' : (isOk ? '#10b981' : '#ef4444')};">
-            ${ans !== undefined ? `आपका उत्तर: (${letters[ans]}) ${q.options[ans]}` : 'छोड़ा गया प्रश्न'}
+            ${ans !== undefined ? `आपका उत्तर: (${letters[ans]}) ${q.options[ans]}` : 'छोड़ा गया प्रश्न (0 अंक)'}
           </div>
           <div style="font-size:0.8rem; font-weight:800; color:#10b981; margin-top:2px;">
             सही उत्तर: (${letters[q.correct]}) ${q.options[q.correct]}
@@ -1458,15 +1602,9 @@
     }
 
     /* Modals & Drawer Helpers */
-    function openCustomModal(id) {
-      document.getElementById(id).classList.add("active");
-    }
-    function closeCustomModal(id) {
-      document.getElementById(id).classList.remove("active");
-    }
-    function closeBackdrop(e, id) {
-      if (e.target.id === id) closeCustomModal(id);
-    }
+    function openCustomModal(id) { document.getElementById(id).classList.add("active"); }
+    function closeCustomModal(id) { document.getElementById(id).classList.remove("active"); }
+    function closeBackdrop(e, id) { if (e.target.id === id) closeCustomModal(id); }
     function openDrawer() {
       document.getElementById("sideNav").classList.add("active");
       document.getElementById("drawerOverlay").classList.add("active");
@@ -1475,15 +1613,6 @@
       document.getElementById("sideNav").classList.remove("active");
       document.getElementById("drawerOverlay").classList.remove("active");
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const chs = getChaptersList("physics");
-      if (chs.length > 0) {
-        selectedChapterId = chs[0].id;
-        selectedChapterName = chs[0].name;
-      }
-      updateLobbyModeUI();
-    });
   </script>
 </body>
 </html>
