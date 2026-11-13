@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>कक्षा 12वीं इंटर बोर्ड टेस्ट इंजन | NischayDesk</title>
+  <title>कक्षा 12वीं इंटर बोर्ड टेस्ट इंजन | NischayDesk Pro</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@1,800;1,900&display=swap" rel="stylesheet">
 
-  <!-- External Config & 12th Official Syllabus Repository -->
+  <!-- External Config & Updated 12th Official Syllabus -->
   <script src="config.js"></script>
   <script src="syllabus-12.js"></script>
 
@@ -33,23 +33,23 @@
     }
 
     :root {
-      --bg-page: #f8fafc;
-      --nav-bg: #ffffff;
-      --card-bg: #ffffff;
-      --card-border: #e2e8f0;
+      --bg-page: #f4f7fb;
+      --nav-bg: rgba(255, 255, 255, 0.86);
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --card-border: rgba(99, 102, 241, 0.18);
       --text-main: #0f172a;
       --text-muted: #64748b;
       --primary: #6366f1;
-      --primary-dark: #4f46e5;
+      --primary-dark: #4338ca;
       --success: #10b981;
       --danger: #ef4444;
     }
 
     html[data-theme="dark"] {
-      --bg-page: #040914;
-      --nav-bg: #071120;
-      --card-bg: #0b1a30;
-      --card-border: rgba(139, 92, 246, 0.25);
+      --bg-page: #030712;
+      --nav-bg: rgba(7, 17, 32, 0.88);
+      --card-bg: rgba(13, 24, 46, 0.92);
+      --card-border: rgba(139, 92, 246, 0.28);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --primary: #6366f1;
@@ -62,19 +62,56 @@
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
       overflow-x: hidden;
       min-height: 100dvh;
+      position: relative;
     }
 
-    /* 🌟 Top Header */
+    /* 🌌 2000-CRORE AURORA AMBIENT GLOW BACKGROUND */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      filter: blur(95px);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.45;
+      animation: auroraFloat 10s ease-in-out infinite alternate;
+    }
+    body::before {
+      top: -80px;
+      left: -80px;
+      background: radial-gradient(circle, #6366f1, #a855f7);
+    }
+    body::after {
+      bottom: -80px;
+      right: -80px;
+      background: radial-gradient(circle, #ec4899, #f59e0b);
+      animation-delay: -5s;
+    }
+    @keyframes auroraFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(35px, 25px) scale(1.15); }
+    }
+
+    /* 🌟 Glass Top Header */
     .app-header {
       position: sticky;
       top: 0;
       width: 100%;
-      height: 52px;
+      height: 54px;
       background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1.5px solid var(--card-border);
       z-index: 1000;
       display: flex;
       align-items: center;
+      animation: dropIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes dropIn {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     .nav-inner {
       width: 100%;
@@ -91,9 +128,9 @@
       gap: 10px;
     }
     .hamburger-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       border: 1.5px solid var(--card-border);
       background: var(--card-bg);
       display: flex;
@@ -102,10 +139,12 @@
       align-items: center;
       gap: 4px;
       cursor: pointer;
+      transition: transform 0.15s;
     }
+    .hamburger-btn:active { transform: scale(0.92); }
     .hamburger-btn span {
       display: block;
-      width: 16px;
+      width: 17px;
       height: 2px;
       background: var(--text-main);
       border-radius: 2px;
@@ -117,19 +156,20 @@
       text-decoration: none;
     }
     .brand-badge {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
       color: #fff;
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
     }
     .brand-text h2 {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 900;
       color: var(--text-main);
       line-height: 1.1;
@@ -138,15 +178,16 @@
     .brand-text p {
       font-size: 0.6rem;
       color: var(--text-muted);
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: 0.5px;
     }
     .btn-top-dash {
-      background: rgba(99, 102, 241, 0.12);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.12));
       border: 1.5px solid #6366f1;
       color: #6366f1;
       font-size: 0.74rem;
       font-weight: 800;
-      padding: 5px 12px;
+      padding: 6px 13px;
       border-radius: 999px;
       text-decoration: none;
     }
@@ -169,12 +210,13 @@
       width: 300px;
       max-width: 85vw;
       background: var(--card-bg);
+      backdrop-filter: blur(18px);
       z-index: 99999;
       transform: translateX(-100%);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.45);
       overflow-y: auto;
       padding-bottom: 90px;
     }
@@ -199,15 +241,18 @@
       align-items: center;
       gap: 12px;
       padding: 11px 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       color: var(--text-main);
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 700;
+      transition: transform 0.15s;
     }
+    .side-link:active { transform: scale(0.97); }
     .side-link.active {
-      background: #6366f1;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: #ffffff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
 
     .side-control-card {
@@ -215,7 +260,7 @@
       padding: 12px 14px;
       background: rgba(99, 102, 241, 0.08);
       border: 1.5px solid var(--card-border);
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -289,40 +334,74 @@
     .view-panel.active { display: block; }
 
     /* =================================================================
-       SCREEN 1: PROGRESSIVE STEP-BY-STEP LOBBY
+       SCREEN 1: 2000-CRORE GLASSMORPHIC ENTRANCE LOBBY
        ================================================================= */
     .lobby-container {
       max-width: 640px;
       margin: 0 auto;
       padding: 16px 14px 86px;
+      animation: heroZoomEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    @keyframes heroZoomEntrance {
+      0% { opacity: 0; transform: translateY(24px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .lobby-card {
       background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border: 1.5px solid var(--card-border);
-      border-radius: 22px;
-      padding: 18px 16px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+      border-radius: 24px;
+      padding: 20px 16px;
+      box-shadow: 0 16px 40px rgba(99, 102, 241, 0.12);
+      position: relative;
+      overflow: hidden;
     }
+    .lobby-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #6366f1, #ec4899, #f59e0b, #10b981);
+      background-size: 300% 100%;
+      animation: shimmerLine 4s linear infinite;
+    }
+    @keyframes shimmerLine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
     .lobby-header {
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .lobby-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
       color: #6366f1;
       font-size: 0.72rem;
       font-weight: 800;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .lobby-title {
-      font-size: 1.35rem;
+      font-size: 1.45rem;
       font-weight: 900;
       color: var(--text-main);
+      letter-spacing: -0.3px;
     }
-    .lobby-title span { color: #6366f1; }
+    .lobby-title span {
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     .bseb-rule-note {
       font-size: 0.74rem;
       font-weight: 800;
@@ -332,12 +411,12 @@
 
     .step-section {
       margin-bottom: 16px;
-      animation: slideFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: stepPopIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .step-section.hidden-step { display: none; }
-    @keyframes slideFade {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes stepPopIn {
+      0% { opacity: 0; transform: translateY(14px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .step-label {
@@ -350,7 +429,7 @@
       margin-bottom: 8px;
     }
     .step-num {
-      background: #6366f1;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: #fff;
       padding: 2px 8px;
       border-radius: 6px;
@@ -360,20 +439,22 @@
 
     .class-tap-box {
       width: 100%;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(139, 92, 246, 0.08));
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(236, 72, 153, 0.08));
       border: 1.8px solid #6366f1;
-      border-radius: 14px;
+      border-radius: 15px;
       padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
+      transition: transform 0.15s;
     }
+    .class-tap-box:active { transform: scale(0.98); }
     .class-tap-left {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.95rem;
+      font-size: 0.94rem;
       font-weight: 900;
       color: #6366f1;
     }
@@ -389,13 +470,13 @@
     .subject-grid-6 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 9px;
     }
     .sub-pill-card {
       background: var(--bg-page);
       border: 1.5px solid var(--card-border);
-      border-radius: 12px;
-      padding: 11px 12px;
+      border-radius: 14px;
+      padding: 12px 12px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -403,27 +484,34 @@
       font-weight: 800;
       color: var(--text-main);
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .sub-pill-card:hover {
+      transform: translateY(-2px);
+      border-color: #6366f1;
+    }
+    .sub-pill-card:active { transform: scale(0.96); }
     .sub-pill-card.active {
-      background: rgba(99, 102, 241, 0.15);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.16), rgba(139, 92, 246, 0.12));
       border-color: #6366f1;
       color: #6366f1;
-      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.18);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.2);
     }
 
     .chapter-tap-box {
       width: 100%;
       background: var(--bg-page);
       border: 1.5px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px 14px;
+      border-radius: 14px;
+      padding: 13px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
       cursor: pointer;
+      transition: transform 0.15s;
     }
+    .chapter-tap-box:active { transform: scale(0.98); }
     .chapter-tap-text {
       font-size: 0.88rem;
       font-weight: 800;
@@ -441,15 +529,16 @@
     .pack-choice-card {
       background: var(--bg-page);
       border: 1.5px solid var(--card-border);
-      border-radius: 12px;
+      border-radius: 13px;
       padding: 10px 12px;
       cursor: pointer;
       transition: all 0.15s;
     }
+    .pack-choice-card:active { transform: scale(0.96); }
     .pack-choice-card.active {
-      background: rgba(16, 185, 129, 0.12);
+      background: rgba(16, 185, 129, 0.14);
       border-color: #10b981;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.15);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.18);
     }
     .pack-title {
       font-size: 0.84rem;
@@ -468,7 +557,7 @@
     .full-mode-banner {
       background: rgba(245, 158, 11, 0.12);
       border: 1.5px dashed #f59e0b;
-      border-radius: 12px;
+      border-radius: 13px;
       padding: 12px 14px;
       display: flex;
       align-items: center;
@@ -483,18 +572,82 @@
 
     .btn-launch-test {
       width: 100%;
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      background: linear-gradient(135deg, #6366f1, #ec4899);
       color: #ffffff;
       border: none;
-      padding: 14px;
-      border-radius: 14px;
-      font-size: 1rem;
+      padding: 15px;
+      border-radius: 15px;
+      font-size: 1.02rem;
       font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
       transition: transform 0.15s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-launch-test:active { transform: scale(0.98); }
+    .btn-launch-test:active { transform: scale(0.97); }
+
+    /* =================================================================
+       💥 3 -> 2 -> 1 -> BLAST! CINEMATIC COUNTDOWN OVERLAY
+       ================================================================= */
+    .blast-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1e1b4b 0%, #030712 100%);
+      z-index: 999999999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+    .blast-overlay.active { display: flex; }
+
+    .blast-ring {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      border: 4px solid rgba(99, 102, 241, 0.5);
+      animation: ringPulse 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+    @keyframes ringPulse {
+      0% { transform: scale(0.4); opacity: 1; border-color: #ec4899; }
+      100% { transform: scale(2.4); opacity: 0; border-color: #6366f1; }
+    }
+
+    .blast-digit {
+      font-size: 6.5rem;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #38bdf8, #818cf8, #f472b6, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 28px rgba(99, 102, 241, 0.75));
+      animation: digitPunch 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 2;
+    }
+    .blast-digit.is-blast-word {
+      font-size: 3.1rem;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+    @keyframes digitPunch {
+      0% { transform: scale(0.2) rotate(-12deg); opacity: 0; }
+      60% { transform: scale(1.18) rotate(3deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .blast-sub-caption {
+      margin-top: 16px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #e2e8f0;
+      letter-spacing: 1px;
+      z-index: 2;
+    }
 
     /* =================================================================
        SCREEN 2: THUMB-FRIENDLY ONE-HANDED RUNNING EXAM VIEWPORT
@@ -502,7 +655,12 @@
     #testRunningScreen.active {
       display: flex;
       flex-direction: column;
-      min-height: calc(100dvh - 52px);
+      min-height: calc(100dvh - 54px);
+      animation: examReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes examReveal {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .exam-compact-bar {
@@ -522,7 +680,7 @@
       min-width: 0;
     }
     .pill-sub-live {
-      background: #6366f1;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: #ffffff !important;
       font-size: 0.72rem;
       font-weight: 800;
@@ -574,14 +732,24 @@
 
     .q-card-compact {
       background: var(--card-bg);
+      backdrop-filter: blur(14px);
       border: 1.5px solid var(--card-border);
       border-radius: 18px;
       padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
+    .q-card-compact.q-slide-anim {
+      animation: qSwipeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes qSwipeIn {
+      from { opacity: 0.4; transform: translateX(12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
     .q-meta-line {
       display: flex;
       align-items: center;
@@ -629,18 +797,20 @@
       width: 100%;
       background: var(--bg-page);
       border: 1.5px solid var(--card-border);
-      border-radius: 11px;
+      border-radius: 12px;
       padding: 10px 12px;
       display: flex;
       align-items: center;
       gap: 10px;
       cursor: pointer;
       text-align: left;
-      transition: all 0.12s ease;
+      transition: all 0.14s ease;
     }
+    .opt-row-btn:active { transform: scale(0.98); }
     .opt-row-btn.selected {
-      background: rgba(99, 102, 241, 0.14);
+      background: rgba(99, 102, 241, 0.15);
       border-color: #6366f1;
+      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.15);
     }
     .opt-circle {
       width: 26px;
@@ -693,7 +863,7 @@
       white-space: nowrap;
       transition: transform 0.1s;
     }
-    .ctrl-btn:active { transform: scale(0.96); }
+    .ctrl-btn:active { transform: scale(0.95); }
     .btn-prev-fix {
       background: rgba(100, 116, 139, 0.15);
       color: var(--text-main);
@@ -727,7 +897,7 @@
     .all-the-best-text {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 1.35rem;
+      font-size: 1.38rem;
       font-weight: 900;
       letter-spacing: 0.8px;
       background: linear-gradient(90deg, #6366f1, #ec4899, #f59e0b);
@@ -748,14 +918,16 @@
       max-width: 760px;
       margin: 0 auto;
       padding: 18px 14px 85px;
+      animation: heroZoomEntrance 0.5s ease;
     }
     .result-hero-card {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 20px 16px;
       text-align: center;
       margin-bottom: 16px;
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.12);
     }
     .score-grid-4 {
       display: grid;
@@ -810,7 +982,7 @@
       position: fixed;
       inset: 0;
       background: rgba(2, 6, 23, 0.78);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(8px);
       z-index: 99999999;
       align-items: center;
       justify-content: center;
@@ -819,19 +991,19 @@
     .nd-modal-backdrop.active { display: flex !important; }
     .nd-modal-card {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 20px 18px;
-      max-height: 80vh;
+      max-height: 82vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      animation: popIn 0.2s ease-out;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     @keyframes popIn {
-      from { transform: scale(0.92); opacity: 0; }
+      from { transform: scale(0.88); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
     .nd-modal-head {
@@ -859,7 +1031,7 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 9px;
     }
     .modal-opt-row {
       padding: 12px 14px;
@@ -881,30 +1053,29 @@
       font-weight: 800;
     }
 
-    /* Sub-Option Choice Card inside Hindi / English Modal */
+    /* 3 Distinct Section Cards inside Hindi / English Modal */
     .sub-branch-btn {
-      padding: 14px 16px;
-      border-radius: 14px;
+      padding: 13px 15px;
+      border-radius: 15px;
       background: var(--bg-page);
       border: 1.8px solid var(--card-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.18s ease;
     }
     .sub-branch-btn:hover, .sub-branch-btn:active {
       border-color: #6366f1;
-      background: rgba(99, 102, 241, 0.1);
+      background: rgba(99, 102, 241, 0.12);
+      transform: translateX(4px);
     }
     .branch-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .branch-icon {
-      font-size: 1.4rem;
-    }
+    .branch-icon { font-size: 1.45rem; }
     .branch-info h4 {
       font-size: 0.94rem;
       font-weight: 900;
@@ -972,6 +1143,7 @@
       right: 0;
       height: 58px;
       background: var(--nav-bg);
+      backdrop-filter: blur(14px);
       border-top: 1.5px solid var(--card-border);
       display: flex;
       justify-content: space-around;
@@ -996,6 +1168,13 @@
 </head>
 <body>
 
+  <!-- 💥 3 -> 2 -> 1 -> BLAST! CINEMATIC COUNTDOWN OVERLAY -->
+  <div class="blast-overlay" id="blastOverlay">
+    <div class="blast-ring"></div>
+    <div class="blast-digit" id="blastDigitText">3</div>
+    <div class="blast-sub-caption" id="blastSubCaption">तैयार हो जाइए...</div>
+  </div>
+
   <!-- Top Navbar -->
   <header class="app-header">
     <div class="nav-inner">
@@ -1015,7 +1194,7 @@
     </div>
   </header>
 
-  <!-- 🌟 COMPLETE SIDE DRAWER (100% Restored) -->
+  <!-- 🌟 COMPLETE SIDE DRAWER -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
   <aside class="side-nav" id="sideNav">
     <div class="side-nav-header">
@@ -1095,12 +1274,12 @@
     <div class="lobby-container">
       <div class="lobby-card">
         <div class="lobby-header">
-          <div class="lobby-badge">🏆 BIHAR BOARD OFFICIAL PATTERN</div>
+          <div class="lobby-badge">⚡ NISCHAYDESK NEXT-GEN CBT ENGINE</div>
           <h1 class="lobby-title">12वीं <span>इंटर बोर्ड टेस्ट पोर्टल</span></h1>
           <div class="bseb-rule-note">✓ प्रत्येक सही उत्तर = +1 अंक • कोई नेगेटिव मार्किंग नहीं</div>
         </div>
 
-        <!-- STEP 1: Class (Always visible first) -->
+        <!-- STEP 1: Class -->
         <div class="step-section" id="step1Block">
           <div class="step-label">
             <span><span class="step-num">1</span> कक्षा चुनें (टैप करके बदलें)</span>
@@ -1124,15 +1303,15 @@
             <div class="sub-pill-card" data-sub="chemistry" onclick="handleSubjectPick('chemistry')">🧪 रसायन (Chemistry)</div>
             <div class="sub-pill-card" data-sub="math" onclick="handleSubjectPick('math')">📐 गणित (Maths)</div>
             <div class="sub-pill-card" data-sub="biology" onclick="handleSubjectPick('biology')">🧬 जीव विज्ञान (Bio)</div>
-            <div class="sub-pill-card" data-sub="hindi_group" onclick="openLanguageBranchModal('hindi')">🇮🇳 हिन्दी + व्याकरण</div>
-            <div class="sub-pill-card" data-sub="english_group" onclick="openLanguageBranchModal('english')">🇬🇧 English + Grammar</div>
+            <div class="sub-pill-card" data-sub="hindi_group" onclick="openLanguageBranchModal('hindi')">🇮🇳 हिन्दी (गद्य / काव्य / व्याकरण)</div>
+            <div class="sub-pill-card" data-sub="english_group" onclick="openLanguageBranchModal('english')">🇬🇧 English (Prose / Poetry / Grammar)</div>
           </div>
         </div>
 
-        <!-- STEP 3: Chapter Selection (Linked with syllabus-12.js) -->
+        <!-- STEP 3: Chapter Selection -->
         <div class="step-section hidden-step" id="step3Block">
           <div class="step-label">
-            <span><span class="step-num">3</span> <span id="step3DynamicLabel">अध्याय या संपूर्ण विषय चुनें</span></span>
+            <span><span class="step-num">3</span> <span id="step3DynamicLabel">अध्याय चुनें</span></span>
           </div>
           <div class="chapter-tap-box" onclick="openChapterSelectorModal()">
             <span class="chapter-tap-text" id="selectedChapterLabel">अध्याय चुनने के लिए टैप करें...</span>
@@ -1166,7 +1345,7 @@
           </div>
 
           <div class="full-mode-banner" id="fullSubjectBanner" style="display:none;">
-            <span>🏆 संपूर्ण विषय बोर्ड मॉडल टेस्ट</span>
+            <span>🏆 संपूर्ण खंड बोर्ड मॉडल टेस्ट</span>
             <strong style="color:#d97706; font-size:0.85rem;">50 प्रश्न • 50 मिनट</strong>
           </div>
         </div>
@@ -1198,7 +1377,7 @@
     </div>
 
     <div class="exam-stage-wrap">
-      <div class="q-card-compact">
+      <div class="q-card-compact" id="questionStageCard">
         <div class="q-meta-line">
           <span class="q-num-badge" id="displayQNumber">Q.1</span>
           <button class="q-palette-trigger" onclick="openPaletteModal()">🔢 प्रश्न सूची (OMR)</button>
@@ -1233,8 +1412,8 @@
   <section id="testResultScreen" class="view-panel">
     <div class="result-wrap">
       <div class="result-hero-card">
-        <div style="font-size:2.4rem; margin-bottom:4px;">🏆</div>
-        <h2 style="font-size:1.3rem; font-weight:900;">12वीं इंटर बोर्ड टेस्ट परिणाम</h2>
+        <div style="font-size:2.6rem; margin-bottom:4px;">🏆</div>
+        <h2 style="font-size:1.35rem; font-weight:900;">12वीं इंटर बोर्ड टेस्ट परिणाम</h2>
         <p style="font-size:0.8rem; color:var(--text-muted);" id="resultSubMeta">बिहार बोर्ड मार्किंग पैटर्न (1 प्रश्न = 1 अंक)</p>
 
         <div class="score-grid-4">
@@ -1258,7 +1437,7 @@
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
           <button class="btn-launch-test" style="padding:11px; font-size:0.88rem;" onclick="backToLobby()">🔄 दूसरा टेस्ट दें</button>
-          <a href="class12.html" class="btn-launch-test" style="padding:11px; font-size:0.88rem; text-decoration:none; display:flex; align-items:center; justify-content:center; background:#10b981;">🏠 12th होम</a>
+          <a href="class12.html" class="btn-launch-test" style="padding:11px; font-size:0.88rem; text-decoration:none; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, #10b981, #059669);">🏠 12th होम</a>
         </div>
       </div>
 
@@ -1295,11 +1474,11 @@
     </div>
   </div>
 
-  <!-- 2. Hindi / English Branch Selector Modal (Book vs Grammar) -->
+  <!-- 2. 3-Part Separate Section Modal for Hindi (गद्य / काव्य / व्याकरण) & English (Prose / Poetry / Grammar) -->
   <div class="nd-modal-backdrop" id="langBranchModal" onclick="closeBackdrop(event, 'langBranchModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
-        <h3 id="langBranchTitle">किस भाग का टेस्ट देना चाहते हैं?</h3>
+        <h3 id="langBranchTitle">किस खंड का टेस्ट देना चाहते हैं?</h3>
         <button class="nd-modal-close" onclick="closeCustomModal('langBranchModal')">&times;</button>
       </div>
       <div class="nd-modal-body" id="langBranchOptions"></div>
@@ -1390,7 +1569,7 @@
   </nav>
 
   <!-- =================================================================
-       JAVASCRIPT ENGINE (Connected directly with syllabus-12.js & Separate JSONs)
+       JAVASCRIPT ENGINE (Separate Gadya, Kavya, Prose, Poetry, Grammar + 3-2-1 Blast!)
        ================================================================= -->
   <script>
     const subjectConfig = {
@@ -1398,9 +1577,11 @@
       chemistry:       { jsonFile: "12-chemistry.json",       shortName: "12th Chemistry",       pillGroup: "chemistry" },
       math:            { jsonFile: "12-math.json",            shortName: "12th Maths",           pillGroup: "math" },
       biology:         { jsonFile: "12-biology.json",         shortName: "12th Biology",         pillGroup: "biology" },
-      hindi:           { jsonFile: "12-hindi.json",           shortName: "12th हिन्दी (किताब)",    pillGroup: "hindi_group" },
+      hindi_gadya:     { jsonFile: "12-hindi-gadya.json",     shortName: "12th हिन्दी गद्य",     pillGroup: "hindi_group" },
+      hindi_kavya:     { jsonFile: "12-hindi-kavya.json",     shortName: "12th हिन्दी काव्य",    pillGroup: "hindi_group" },
       hindi_grammar:   { jsonFile: "12-hindi-grammar.json",   shortName: "12th हिन्दी व्याकरण",   pillGroup: "hindi_group" },
-      english:         { jsonFile: "12-english.json",         shortName: "12th English Book",    pillGroup: "english_group" },
+      english_prose:   { jsonFile: "12-english-prose.json",   shortName: "12th English Prose",   pillGroup: "english_group" },
+      english_poetry:  { jsonFile: "12-english-poetry.json",  shortName: "12th English Poetry",  pillGroup: "english_group" },
       english_grammar: { jsonFile: "12-english-grammar.json", shortName: "12th English Grammar", pillGroup: "english_group" }
     };
 
@@ -1418,7 +1599,6 @@
     let timerInterval = null;
     let timeRemaining = 900;
 
-    // Fetch JSON file dynamically
     async function fetchSubjectJson(subKey) {
       const fileName = subjectConfig[subKey].jsonFile;
       const paths = [
@@ -1442,7 +1622,6 @@
       return [];
     }
 
-    // Get Chapters directly from window.NischaySyllabus12Data (syllabus-12.js)
     function getOfficialChapters(subKey) {
       if (
         window.NischaySyllabus12Data &&
@@ -1456,31 +1635,34 @@
           name: ch.name
         }));
       }
-
-      // Fallback from JSON if needed
-      const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
-      return uniqueChNums.map(num => ({
-        id: `ch${num}`,
-        no: num,
-        name: `अध्याय ${num}`
-      }));
+      return [{ id: "ch1", no: 1, name: "अध्याय 1" }];
     }
 
-    // Open Two-Option Sub-Modal for Hindi or English
+    // 3 Separate Choices Modal for Hindi (गद्य, काव्य, व्याकरण) & English (Prose, Poetry, Grammar)
     function openLanguageBranchModal(langType) {
       const titleEl = document.getElementById("langBranchTitle");
       const boxEl = document.getElementById("langBranchOptions");
       boxEl.innerHTML = "";
 
       if (langType === "hindi") {
-        titleEl.textContent = "🇮🇳 हिन्दी — भाग चुनें";
+        titleEl.textContent = "🇮🇳 हिन्दी — अपना खंड चुनें";
         boxEl.innerHTML = `
-          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('hindi');">
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('hindi_gadya');">
             <div class="branch-left">
               <span class="branch-icon">📖</span>
               <div class="branch-info">
-                <h4>हिन्दी (दिगंत भाग-2: गद्य एवं काव्य खंड)</h4>
-                <p>सभी 26 अध्यायों के चैप्टर-वाइज वस्तुनिष्ठ प्रश्न</p>
+                <h4>हिन्दी — गद्य खंड (Prose Section)</h4>
+                <p>बातचीत, उसने कहा था, संपूर्ण क्रांति आदि (13 अध्याय)</p>
+              </div>
+            </div>
+            <span style="color:#6366f1; font-weight:900;">➔</span>
+          </div>
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('hindi_kavya');">
+            <div class="branch-left">
+              <span class="branch-icon">📜</span>
+              <div class="branch-info">
+                <h4>हिन्दी — काव्य खंड (Poetry Section)</h4>
+                <p>कड़बक, सूरदास-तुलसीदास के पद, उषा आदि (13 अध्याय)</p>
               </div>
             </div>
             <span style="color:#6366f1; font-weight:900;">➔</span>
@@ -1490,21 +1672,31 @@
               <span class="branch-icon">✍️</span>
               <div class="branch-info">
                 <h4>हिन्दी व्याकरण (Hindi Grammar)</h4>
-                <p>संधि, समास, उपसर्ग-प्रत्यय, मुहावरे, पर्यायवाची आदि</p>
+                <p>संधि, समास, उपसर्ग-प्रत्यय, मुहावरे, पर्यायवाची (12 अध्याय)</p>
               </div>
             </div>
             <span style="color:#6366f1; font-weight:900;">➔</span>
           </div>
         `;
       } else {
-        titleEl.textContent = "🇬🇧 English — Select Section";
+        titleEl.textContent = "🇬🇧 English — Choose Separate Section";
         boxEl.innerHTML = `
-          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('english');">
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('english_prose');">
             <div class="branch-left">
               <span class="branch-icon">📖</span>
               <div class="branch-info">
-                <h4>English Book (Rainbow Part-2: Prose & Poetry)</h4>
-                <p>All 21 Chapters Chapter-wise Objective Questions</p>
+                <h4>English — Prose Section</h4>
+                <p>Indian Civilization, Bharat is My Home, The Earth (11 Chapters)</p>
+              </div>
+            </div>
+            <span style="color:#6366f1; font-weight:900;">➔</span>
+          </div>
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('english_poetry');">
+            <div class="branch-left">
+              <span class="branch-icon">🎭</span>
+              <div class="branch-info">
+                <h4>English — Poetry Section</h4>
+                <p>Sweetest Love, Ode to Autumn, The Soldier, Snake (10 Chapters)</p>
               </div>
             </div>
             <span style="color:#6366f1; font-weight:900;">➔</span>
@@ -1514,7 +1706,7 @@
               <span class="branch-icon">✍️</span>
               <div class="branch-info">
                 <h4>English Grammar & Story of English</h4>
-                <p>Tense, Voice, Narration, Modals, Prepositions, Articles</p>
+                <p>Tense, Voice, Narration, Modals, Prepositions (12 Chapters)</p>
               </div>
             </div>
             <span style="color:#6366f1; font-weight:900;">➔</span>
@@ -1570,14 +1762,13 @@
       const list = document.getElementById("chapterModalList");
       list.innerHTML = "";
 
-      // Full Syllabus Option (Auto 50 Q / 50 Min)
       const fullRow = document.createElement("div");
       fullRow.className = `modal-opt-row ${isFullSyllabus ? 'selected' : ''}`;
-      fullRow.innerHTML = `<span>🏆 संपूर्ण विषय (50 प्रश्न • 50 मिनट)</span> ${isFullSyllabus ? '<span>✓</span>' : ''}`;
+      fullRow.innerHTML = `<span>🏆 संपूर्ण खंड (50 प्रश्न • 50 मिनट)</span> ${isFullSyllabus ? '<span>✓</span>' : ''}`;
       fullRow.onclick = () => {
         isFullSyllabus = true;
         selectedChapterId = "all";
-        selectedChapterName = "🏆 संपूर्ण विषय (Full Board Test)";
+        selectedChapterName = "🏆 संपूर्ण खंड (Full Section Test)";
         chosenQuestionsCount = 50;
         chosenTimeMinutes = 50;
 
@@ -1588,7 +1779,6 @@
       };
       list.appendChild(fullRow);
 
-      // Official Chapters from window.NischaySyllabus12Data
       chList.forEach(ch => {
         const isSel = (!isFullSyllabus && selectedChapterId === ch.id);
         const row = document.createElement("div");
@@ -1616,6 +1806,46 @@
       document.getElementById("infoAlertTitle").textContent = title;
       document.getElementById("infoAlertMsg").textContent = msg;
       openCustomModal("infoAlertModal");
+    }
+
+    /* 💥 CINEMATIC 3 -> 2 -> 1 -> BLAST! ALL THE BEST ANIMATION */
+    function run321BlastCountdown(onComplete) {
+      const overlay = document.getElementById("blastOverlay");
+      const digitEl = document.getElementById("blastDigitText");
+      const subEl = document.getElementById("blastSubCaption");
+
+      overlay.classList.add("active");
+      const steps = [
+        { text: "3", sub: "अपना ध्यान केंद्रित करें...", isWord: false },
+        { text: "2", sub: "तैयार हो जाइए...", isWord: false },
+        { text: "1", sub: "मिशन 450+ शुरू...", isWord: false },
+        { text: "💥 BLAST!\nAll the Best ✨", sub: "शानदार प्रदर्शन करें!", isWord: true }
+      ];
+
+      let idx = 0;
+      function showStep() {
+        const s = steps[idx];
+        digitEl.className = s.isWord ? "blast-digit is-blast-word" : "blast-digit";
+        digitEl.style.whiteSpace = "pre-line";
+        digitEl.textContent = s.text;
+        subEl.textContent = s.sub;
+
+        // Re-trigger animation
+        digitEl.style.animation = "none";
+        void digitEl.offsetWidth;
+        digitEl.style.animation = "";
+
+        idx++;
+        if (idx < steps.length) {
+          setTimeout(showStep, 650);
+        } else {
+          setTimeout(() => {
+            overlay.classList.remove("active");
+            onComplete();
+          }, 850);
+        }
+      }
+      showStep();
     }
 
     function startSelectedTest() {
@@ -1651,20 +1881,28 @@
       userResponses = {};
       currentQIndex = 0;
 
-      document.body.classList.add("exam-is-running");
-      document.getElementById("testLobbyScreen").classList.remove("active");
-      document.getElementById("testResultScreen").classList.remove("active");
-      document.getElementById("testRunningScreen").classList.add("active");
+      // Launch 3 -> 2 -> 1 -> BLAST Animation before showing Exam Screen!
+      run321BlastCountdown(() => {
+        document.body.classList.add("exam-is-running");
+        document.getElementById("testLobbyScreen").classList.remove("active");
+        document.getElementById("testResultScreen").classList.remove("active");
+        document.getElementById("testRunningScreen").classList.add("active");
 
-      document.getElementById("liveExamBadge").textContent = subjectConfig[currentSubKey].shortName;
-      startTimer();
-      renderQuestion(0);
+        document.getElementById("liveExamBadge").textContent = subjectConfig[currentSubKey].shortName;
+        startTimer();
+        renderQuestion(0);
+      });
     }
 
     function renderQuestion(index) {
       if (index < 0 || index >= currentQuestions.length) return;
       currentQIndex = index;
       const qData = currentQuestions[index];
+
+      const card = document.getElementById("questionStageCard");
+      card.classList.remove("q-slide-anim");
+      void card.offsetWidth;
+      card.classList.add("q-slide-anim");
 
       document.getElementById("displayQNumber").textContent = `Q.${index + 1}`;
       document.getElementById("liveQuestionCounter").textContent = `${index + 1} / ${currentQuestions.length}`;
