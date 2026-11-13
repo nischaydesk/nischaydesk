@@ -50,6 +50,20 @@
       --brand-accent: #6366f1;
     }
 
+    /* नीले बैज और प्रश्न नंबर पिल में साफ़ सफ़ेद अक्षर */
+    .subject-badge, #liveExamBadge,
+    .q-number-pill, #displayQNumber {
+      background: #6366f1 !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      padding: 5px 12px !important;
+      border-radius: 8px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 44px;
+    }
+
     /* कस्टम ऐप-स्टाइल सेलेक्ट ट्रिगर */
     .custom-select-trigger {
       width: 100% !important;
@@ -272,205 +286,6 @@
       white-space: nowrap;
     }
   </style>
-
-  <style id="professional-overhaul">
-    /* =========================================================
-       NischayDesk Professional UI Overhaul
-       Existing HTML, links and test-engine logic are preserved.
-       ========================================================= */
-    :root {
-      --brand-accent: #6366f1;
-      --brand-deep: #4338ca;
-      --brand-pink: #ec4899;
-      --ink: #0f172a;
-      --muted: #64748b;
-      --surface: rgba(255,255,255,.82);
-      --surface-solid: #ffffff;
-      --line: rgba(148,163,184,.25);
-      --soft: #f8fafc;
-      --shadow-sm: 0 8px 28px rgba(15,23,42,.07);
-      --shadow-lg: 0 24px 80px rgba(15,23,42,.14);
-      --radius-xl: 28px;
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --ease: cubic-bezier(.2,.8,.2,1);
-    }
-    html { scroll-behavior:smooth; }
-    body.app-body {
-      min-height:100vh;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at 8% 0%, rgba(99,102,241,.18), transparent 28rem),
-        radial-gradient(circle at 92% 8%, rgba(236,72,153,.11), transparent 24rem),
-        linear-gradient(180deg,#f8faff 0%,#f7f8fc 52%,#eef2ff 100%);
-      font-family:"Plus Jakarta Sans","Noto Sans Devanagari",system-ui,sans-serif;
-      letter-spacing:-.012em;
-    }
-    body.app-body::before {
-      content:""; position:fixed; inset:0; pointer-events:none; opacity:.22; z-index:-1;
-      background-image:linear-gradient(rgba(99,102,241,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.035) 1px,transparent 1px);
-      background-size:34px 34px;
-      mask-image:linear-gradient(to bottom,black,transparent 78%);
-    }
-    html[data-theme="dark"] body.app-body {
-      color:#e5e7eb;
-      background:radial-gradient(circle at 8% 0%,rgba(79,70,229,.24),transparent 30rem),linear-gradient(180deg,#071120,#0b1329 60%,#101a36);
-    }
-    .app-header {
-      position:sticky!important; top:0; z-index:1000;
-      background:rgba(255,255,255,.74)!important;
-      border-bottom:1px solid rgba(148,163,184,.20)!important;
-      backdrop-filter:blur(18px) saturate(160%);
-      box-shadow:0 8px 30px rgba(15,23,42,.05);
-    }
-    html[data-theme="dark"] .app-header { background:rgba(7,17,32,.78)!important; }
-    .nav-container { max-width:1440px!important; min-height:76px!important; padding:12px 28px!important; }
-    .brand-entity { gap:12px!important; }
-    .brand-badge-icon { box-shadow:0 10px 22px rgba(99,102,241,.28); border-radius:14px!important; }
-    .brand-name { font-size:1.13rem!important; letter-spacing:-.04em; }
-    .brand-tagline { opacity:.75; }
-    .nav-links-desktop { gap:6px!important; }
-    .nav-item { padding:10px 12px!important; border-radius:12px!important; transition:background .2s var(--ease),transform .2s var(--ease)!important; }
-    .nav-item:hover { background:rgba(99,102,241,.09); transform:translateY(-1px); }
-    .nav-dash-pill { box-shadow:0 8px 18px rgba(99,102,241,.12); transition:transform .2s var(--ease),box-shadow .2s var(--ease)!important; }
-    .nav-dash-pill:hover { transform:translateY(-2px); box-shadow:0 12px 24px rgba(99,102,241,.20); }
-    .test-portal-container { max-width:1240px!important; margin:0 auto!important; padding:32px 24px 110px!important; }
-    .lobby-card,.question-stage-box,.question-palette-box,.result-card-container {
-      border:1px solid var(--line)!important;
-      background:var(--surface)!important;
-      box-shadow:var(--shadow-lg)!important;
-      backdrop-filter:blur(20px) saturate(140%);
-    }
-    .lobby-card { position:relative; overflow:hidden; border-radius:var(--radius-xl)!important; padding:clamp(26px,5vw,58px)!important; }
-    .lobby-card::after { content:""; position:absolute; width:260px; height:260px; right:-100px; top:-120px; border-radius:50%; background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(236,72,153,.08)); pointer-events:none; }
-    .status-pill { box-shadow:0 8px 22px rgba(99,102,241,.10); }
-    .lobby-title { max-width:900px; font-size:clamp(2rem,5vw,4.1rem)!important; line-height:1.1!important; letter-spacing:-.06em!important; }
-    .lobby-subtitle { max-width:780px!important; font-size:1.04rem!important; line-height:1.85!important; color:var(--muted)!important; }
-    .test-selection-grid { gap:16px!important; }
-    .select-field-box { padding:17px!important; border:1px solid var(--line)!important; background:rgba(255,255,255,.54)!important; border-radius:18px!important; box-shadow:var(--shadow-sm); }
-    html[data-theme="dark"] .select-field-box { background:rgba(19,34,74,.55)!important; }
-    .select-field-box label { display:block; margin-bottom:9px; font-size:.78rem!important; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
-    .custom-select-trigger,.class-locked-pill { min-height:50px; box-sizing:border-box; }
-    .custom-select-trigger:hover { border-color:#818cf8; box-shadow:0 8px 24px rgba(99,102,241,.13); transform:translateY(-1px); }
-    .instructions-box { border-radius:18px!important; border:1px solid rgba(99,102,241,.18)!important; background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(236,72,153,.05))!important; padding:20px 22px!important; }
-    .instructions-box li { line-height:1.7; margin:7px 0; }
-    .btn-start-exam,.btn-stage-primary { border:0!important; border-radius:14px!important; min-height:50px; padding:13px 22px!important; font-weight:800!important; transition:transform .2s var(--ease),box-shadow .2s var(--ease),filter .2s var(--ease)!important; }
-    .btn-start-exam:hover,.btn-stage-primary:hover { transform:translateY(-2px); filter:saturate(1.08); }
-    .btn-start-exam:active,.btn-stage-primary:active { transform:translateY(0) scale(.98); }
-    .btn-start-exam:disabled { opacity:.65; cursor:wait; transform:none; }
-    .exam-status-bar { position:sticky; top:90px; z-index:20; padding:12px 14px!important; margin-bottom:18px; border:1px solid var(--line); border-radius:18px; background:rgba(255,255,255,.78); backdrop-filter:blur(16px); box-shadow:var(--shadow-sm); }
-    html[data-theme="dark"] .exam-status-bar { background:rgba(11,19,41,.86); }
-    .exam-timer-box { border-radius:12px!important; box-shadow:inset 0 0 0 1px rgba(239,68,68,.08),0 5px 15px rgba(239,68,68,.08); }
-    .exam-workspace-grid { align-items:start!important; gap:22px!important; }
-    .question-stage-box { border-radius:var(--radius-xl)!important; padding:clamp(20px,4vw,38px)!important; }
-    .question-header { border-bottom:1px solid var(--line); padding-bottom:18px; margin-bottom:24px; }
-    .question-text { font-size:clamp(1.1rem,2vw,1.55rem)!important; line-height:1.75!important; font-weight:800!important; }
-    .option-choice-item { border:1px solid var(--line)!important; border-radius:16px!important; padding:15px 17px!important; margin:11px 0!important; background:rgba(255,255,255,.68)!important; transition:all .2s var(--ease)!important; }
-    html[data-theme="dark"] .option-choice-item { background:rgba(19,34,74,.55)!important; }
-    .option-choice-item:hover { border-color:#818cf8!important; transform:translateX(4px); box-shadow:0 10px 22px rgba(99,102,241,.10); }
-    .option-choice-item.selected,.option-choice-item.active { border-color:#6366f1!important; background:linear-gradient(90deg,rgba(99,102,241,.14),rgba(139,92,246,.07))!important; box-shadow:0 10px 24px rgba(99,102,241,.14); }
-    .option-letter { width:36px!important; height:36px!important; border-radius:11px!important; font-weight:900!important; }
-    .stage-nav-bar { gap:10px!important; padding-top:22px!important; margin-top:22px!important; border-top:1px solid var(--line); }
-    .question-palette-box { position:sticky; top:166px; border-radius:var(--radius-lg)!important; padding:21px!important; }
-    .palette-buttons-grid { gap:8px!important; }
-    .palette-btn { border-radius:10px!important; min-width:38px; min-height:38px; font-weight:800; transition:transform .2s var(--ease),box-shadow .2s var(--ease)!important; }
-    .palette-btn:hover { transform:translateY(-2px); }
-    .palette-btn.active { box-shadow:0 0 0 3px rgba(99,102,241,.18); }
-    .result-card-container { border-radius:var(--radius-xl)!important; padding:clamp(22px,5vw,50px)!important; }
-    .result-header-badge { padding-bottom:28px!important; border-bottom:1px solid var(--line); }
-    .trophy-icon { filter:drop-shadow(0 8px 16px rgba(245,158,11,.25)); }
-    .res-tile { border:1px solid var(--line)!important; border-radius:18px!important; box-shadow:var(--shadow-sm); transition:transform .2s var(--ease); }
-    .res-tile:hover { transform:translateY(-4px); }
-    .sol-item { border:1px solid var(--line)!important; border-radius:16px!important; margin:12px 0!important; padding:18px!important; background:rgba(255,255,255,.55)!important; }
-    html[data-theme="dark"] .sol-item { background:rgba(19,34,74,.55)!important; }
-    .app-footer { margin-top:40px!important; border-top:1px solid var(--line)!important; background:rgba(255,255,255,.52)!important; backdrop-filter:blur(18px); }
-    html[data-theme="dark"] .app-footer { background:rgba(7,17,32,.55)!important; }
-    .footer-container { max-width:1240px!important; padding:40px 24px!important; }
-    button,a,.custom-select-trigger,.option-choice-item { -webkit-tap-highlight-color:transparent; }
-    button:focus-visible,a:focus-visible,.custom-select-trigger:focus-visible { outline:3px solid rgba(99,102,241,.42)!important; outline-offset:3px; }
-    @media (max-width:900px) {
-      .nav-container { padding:10px 16px!important; }
-      .nav-links-desktop { display:none!important; }
-      .nav-actions { margin-left:auto; }
-      .nav-dash-pill { padding:8px 11px!important; font-size:.72rem!important; }
-      .test-portal-container { padding:24px 14px 96px!important; }
-      .exam-status-bar { top:70px; flex-wrap:wrap; gap:10px; }
-      .question-palette-box { position:static; }
-    }
-    @media (max-width:600px) {
-      .brand-tagline { display:none!important; }
-      .nav-dash-pill { display:none!important; }
-      .lobby-card { border-radius:22px!important; padding:22px 16px!important; }
-      .lobby-title { font-size:2rem!important; }
-      .lobby-subtitle { font-size:.94rem!important; }
-      .test-selection-grid { grid-template-columns:1fr!important; }
-      .exam-status-bar { top:60px; padding:10px!important; }
-      .exam-active-subject { min-width:0; flex:1; }
-      .question-counter { font-size:.8rem!important; }
-      .btn-submit-exam-early { padding:9px 10px!important; font-size:.75rem!important; }
-      .stage-nav-bar { flex-wrap:wrap; }
-      .stage-nav-bar button { flex:1; min-width:120px; }
-      .question-stage-box { padding:18px 14px!important; border-radius:20px!important; }
-      .question-palette-box { padding:16px!important; }
-      .mobile-bottom-dock { height:64px!important; padding-bottom:env(safe-area-inset-bottom); }
-    }
-    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }
-  </style>
-
-  <style>
-    #exam-status-progress { min-width:150px; flex:1; max-width:250px; margin:0 8px; }
-    .exam-progress-copy { display:flex; justify-content:flex-end; color:var(--muted); font-size:.72rem; font-weight:800; margin-bottom:5px; }
-    .exam-progress-track { height:6px; border-radius:999px; overflow:hidden; background:rgba(148,163,184,.18); }
-    .exam-progress-track i { display:block; width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,#6366f1,#ec4899); transition:width .3s ease; }
-    @media(max-width:600px){#exam-status-progress{order:4;flex-basis:100%;max-width:none;margin:2px 0 0}.exam-progress-copy{justify-content:flex-start}}
-  </style>
-
-
-  <style id="exam-viewport-fix">
-    /* Exam mode: keep the test inside the viewport instead of growing the page. */
-    body.exam-live { overflow:hidden!important; }
-    body.exam-live .app-footer,
-    body.exam-live .mobile-bottom-dock,
-    body.exam-live .test-portal-container > div:first-child { display:none!important; }
-    body.exam-live .test-portal-container { max-width:1440px!important; height:calc(100dvh - 77px); min-height:0!important; box-sizing:border-box; padding:14px 20px 18px!important; overflow:hidden; }
-    body.exam-live #testRunningScreen { height:100%; min-height:0; }
-    body.exam-live .exam-status-bar { position:relative!important; top:auto!important; height:74px; box-sizing:border-box; margin:0 0 14px!important; padding:10px 14px!important; }
-    body.exam-live .exam-workspace-grid { height:calc(100% - 88px); min-height:0; grid-template-rows:minmax(0,1fr); }
-    body.exam-live .question-stage-box { min-height:0; height:100%; box-sizing:border-box; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
-    body.exam-live .question-palette-box { max-height:100%; overflow-y:auto; }
-    /* The former blank blue blocks were text-color collisions. */
-    body.exam-live #liveExamBadge,
-    body.exam-live #displayQNumber,
-    .subject-badge,
-    .q-number-pill { color:#fff!important; text-shadow:0 1px 2px rgba(0,0,0,.22); display:inline-flex!important; align-items:center; justify-content:center; min-width:44px; min-height:34px; }
-    body.exam-live #liveExamBadge { min-width:110px; padding:7px 10px; border-radius:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    body.exam-live #displayQNumber { min-width:48px; }
-    body.exam-live .question-text { margin-top:6px; }
-    @media(max-width:900px) {
-      body.exam-live .test-portal-container { height:calc(100dvh - 61px); padding:8px 10px 10px!important; }
-      body.exam-live .exam-status-bar { height:78px; margin-bottom:10px!important; border-radius:16px!important; }
-      body.exam-live .exam-workspace-grid { display:block!important; height:calc(100% - 88px); }
-      body.exam-live .question-stage-box { height:100%; max-height:none; padding:15px 13px!important; border-radius:18px!important; }
-      body.exam-live .question-palette-box { display:none!important; }
-      body.exam-live .stage-nav-bar { position:sticky; bottom:0; margin-left:-13px; margin-right:-13px; padding:12px 13px 2px!important; background:linear-gradient(180deg,rgba(255,255,255,0),var(--surface-solid) 28%); }
-      html[data-theme="dark"] body.exam-live .stage-nav-bar { background:linear-gradient(180deg,rgba(11,19,41,0),#0b1329 28%); }
-      body.exam-live .option-choice-item { padding:11px 12px!important; margin:8px 0!important; min-height:48px; box-sizing:border-box; }
-      body.exam-live .option-letter { width:30px!important; height:30px!important; }
-      body.exam-live .question-text { font-size:1.04rem!important; line-height:1.52!important; }
-      body.exam-live .question-header { padding-bottom:10px; margin-bottom:13px; }
-      body.exam-live #exam-status-progress { display:none; }
-    }
-    @media(max-width:480px) {
-      body.exam-live .exam-status-bar { display:grid!important; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:7px; }
-      body.exam-live #liveExamBadge { min-width:0; max-width:100px; font-size:.65rem; }
-      body.exam-live .question-counter { font-size:.72rem!important; }
-      body.exam-live .exam-timer-box { padding:8px 9px!important; }
-      body.exam-live .timer-icon { display:none; }
-      body.exam-live .btn-submit-exam-early { padding:8px 9px!important; font-size:.68rem!important; }
-      body.exam-live .stage-nav-bar button { min-width:0; padding:10px 7px!important; font-size:.76rem!important; }
-    }
-  </style>
-
 </head>
 <body class="app-body">
 
@@ -497,6 +312,7 @@
         <a href="class12.html" class="nav-item">12th डैशबोर्ड</a>
         <a href="class12notes.html" class="nav-item">📚 नोट्स</a>
         <a href="class12test.html" class="nav-item active" style="color:#6366f1;">📝 बोर्ड टेस्ट</a>
+        <a href="class12model.html" class="nav-item" style="color:#f59e0b; font-weight:800;">🏆 मॉडल पेपर</a>
         <a href="class12pyq.html?class=12" class="nav-item">📄 क्वेश्चन बैंक</a>
         <a href="class12syllabus.html?class=12" class="nav-item">📋 सिलेबस</a>
         <a href="bridge-course.html" class="nav-item" style="color:#10b981; font-weight:800;">🚀 ब्रिज गाइड</a>
@@ -535,13 +351,12 @@
       <a href="class12test.html" class="drawer-nav-item active" style="background:#6366f1; color:#fff;">
         <span class="icon">📝</span> 12th ऑनलाइन टेस्ट पोर्टल
       </a>
+      <a href="class12model.html" class="drawer-nav-item" style="color: #f59e0b; font-weight: 800;">
+        <span class="icon">🏆</span> 12th ऑफिशियल मॉडल पेपर
+      </a>
       <a href="class12pyq.html?class=12" class="drawer-nav-item">
         <span class="icon">📄</span> 12th क्वेश्चन बैंक (PYQ)
       </a>
-      <a href="class12model.html" class="side-link" style="color: #f59e0b; font-weight: 800;">
-  <span>🏆</span> <span>12th ऑफिशियल मॉडल पेपर</span>
-</a>
-
       <a href="class12syllabus.html?class=12" class="drawer-nav-item">
         <span class="icon">📋</span> 12th बोर्ड सिलेबस
       </a>
@@ -668,7 +483,7 @@
     <section class="test-view-panel" id="testRunningScreen">
       <div class="exam-status-bar">
         <div class="exam-active-subject">
-          <span class="subject-badge" id="liveExamBadge" style="background:#6366f1;">12th Board</span>
+          <span class="subject-badge" id="liveExamBadge" style="background:#6366f1; color:#ffffff !important;">12th Board</span>
           <span class="question-counter" id="liveQuestionCounter">प्रश्न 1 / 20</span>
         </div>
 
@@ -676,8 +491,6 @@
           <span class="timer-icon">⏳</span>
           <span class="timer-digits" id="timerDigits">15:00</span>
         </div>
-
-        <div id="exam-status-progress" aria-live="polite"></div>
 
         <button class="btn-submit-exam-early" id="submitExamEarlyBtn">
           सबमिट करें ✓
@@ -687,7 +500,7 @@
       <div class="exam-workspace-grid">
         <div class="question-stage-box">
           <div class="question-header">
-            <span class="q-number-pill" id="displayQNumber" style="background:#6366f1;">Q.1</span>
+            <span class="q-number-pill" id="displayQNumber" style="background:#6366f1; color:#ffffff !important;">Q.1</span>
             <span class="q-marks-tag">+4.0, -1.0</span>
           </div>
 
@@ -700,7 +513,7 @@
           <div class="stage-nav-bar">
             <button class="btn-stage-secondary" id="prevQBtn" disabled>&larr; पिछला</button>
             <button class="btn-stage-ghost" id="clearSelectionBtn">विकल्प हटाएं</button>
-            <button class="btn-stage-primary" id="nextQBtn" style="background:#6366f1;">अगला प्रश्न &rarr;</button>
+            <button class="btn-stage-primary" id="nextQBtn" style="background:#6366f1; color:#ffffff !important;">अगला प्रश्न &rarr;</button>
           </div>
         </div>
 
@@ -751,7 +564,7 @@
 
         <div class="result-actions-footer">
           <button class="btn-start-exam" id="restartTestBtn">🔄 दूसरा टेस्ट दें</button>
-          <a href="class12.html" class="btn-stage-primary" style="text-decoration:none; display:inline-flex; align-items:center; background:#6366f1;">📊 12th डैशबोर्ड पर जाएं</a>
+          <a href="class12.html" class="btn-stage-primary" style="text-decoration:none; display:inline-flex; align-items:center; background:#6366f1; color:#ffffff !important;">📊 12th डैशबोर्ड पर जाएं</a>
         </div>
 
       </div>
@@ -788,6 +601,7 @@
         <ul class="footer-nav">
           <li><a href="class12.html">➔ 12th मुख्य डैशबोर्ड</a></li>
           <li><a href="class12notes.html">➔ 12th सम्पूर्ण नोट्स</a></li>
+          <li><a href="class12model.html">➔ 12th ऑफिशियल मॉडल पेपर</a></li>
           <li><a href="class12pyq.html?class=12">➔ 12th क्वेश्चन बैंक (PYQ)</a></li>
           <li><a href="class12syllabus.html?class=12">➔ 12th बोर्ड सिलेबस</a></li>
           <li><a href="class11.html">➔ 11th साइंस पोर्टल</a></li>
@@ -1044,12 +858,12 @@
       timeRemaining = selectedPattern.timeMinutes * 60;
       totalTestDuration = timeRemaining;
 
-      document.body.classList.add("exam-live");
       document.getElementById("testLobbyScreen").classList.remove("active");
       document.getElementById("testResultScreen").classList.remove("active");
       document.getElementById("testRunningScreen").classList.add("active");
 
-      document.getElementById("liveExamBadge").innerText = `12th ${selectedSubject.name.split(' ')[1]} • ${currentQuestions.length}Q (${selectedPattern.timeMinutes}m)`;
+      const subCleanName = selectedSubject.name.split(' ')[1] || "12th";
+      document.getElementById("liveExamBadge").innerText = `12th ${subCleanName} • ${currentQuestions.length}Q (${selectedPattern.timeMinutes}m)`;
       document.getElementById("liveQuestionCounter").innerText = `प्रश्न 1 / ${currentQuestions.length}`;
 
       startTimer();
@@ -1210,14 +1024,12 @@
         solList.appendChild(item);
       });
 
-      document.body.classList.remove("exam-live");
       document.getElementById("testRunningScreen").classList.remove("active");
       document.getElementById("testResultScreen").classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     document.getElementById("restartTestBtn").onclick = () => {
-      document.body.classList.remove("exam-live");
       document.getElementById("testResultScreen").classList.remove("active");
       document.getElementById("testLobbyScreen").classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1225,7 +1037,6 @@
 
     // 🌟 DOM Ready Listener
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. मेन्यू ओपन/क्लोज ट्रिगर
       const menuBtn = document.getElementById("mobileMenuBtn");
       const closeBtn = document.getElementById("drawerCloseBtn");
       const scrim = document.getElementById("drawerScrim");
@@ -1234,7 +1045,6 @@
       if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
       if (scrim) scrim.addEventListener("click", closeDrawer);
 
-      // 2. डार्क/लाइट मोड स्विच
       const themeSwitch = document.getElementById("themeSwitch");
       if (themeSwitch) {
         const currentTheme = localStorage.getItem("nd_app_theme") || "light";
@@ -1251,7 +1061,6 @@
         });
       }
 
-      // 3. डिफ़ॉल्ट सब्जेक्ट और चैप्टर सिंक
       const initialChs = getChaptersForSubject(selectedSubject.syllabusId);
       if (initialChs.length > 0) {
         selectedChapter = initialChs[0];
@@ -1259,33 +1068,5 @@
       syncUISelection();
     });
   </script>
-
-<script id="professional-enhancements">
-  (() => {
-    const $ = (id) => document.getElementById(id);
-    const updateProgress = () => {
-      const total = Array.isArray(currentQuestions) ? currentQuestions.length : 0;
-      const answered = userResponses ? Object.keys(userResponses).length : 0;
-      const bar = $('examProgressBar');
-      const label = $('examProgressLabel');
-      if (bar && total) bar.style.width = `${Math.round(answered / total * 100)}%`;
-      if (label && total) label.textContent = `${answered}/${total} हल किए`;
-    };
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        if (typeof closeCenterModal === 'function') closeCenterModal();
-        if (typeof closeDrawer === 'function') closeDrawer();
-      }
-      if (event.key === 'ArrowLeft' && $('testRunningScreen')?.classList.contains('active')) $('prevQBtn')?.click();
-      if (event.key === 'ArrowRight' && $('testRunningScreen')?.classList.contains('active')) $('nextQBtn')?.click();
-    });
-    document.addEventListener('click', () => setTimeout(updateProgress, 0));
-    document.addEventListener('DOMContentLoaded', () => {
-      const status = $('exam-status-progress');
-      if (status && !$('examProgressBar')) {
-        status.innerHTML = '<div class="exam-progress-copy"><span id="examProgressLabel">0/0 हल किए</span></div><div class="exam-progress-track"><i id="examProgressBar"></i></div>';
-      }
-    });
-  })();
-          </script></body>
+</body>
 </html>
