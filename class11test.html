@@ -1955,13 +1955,29 @@
         return;
       }
 
-      const allQs = cachedSubjectQuestions.map(item => ({
-        chapter: parseInt(item.chapter) || 1,
-        q: item.q || item.question || "",
-        options: item.options || [],
-        correct: (item.correct !== undefined) ? item.correct : 0,
-        exp: item.exp || "व्याख्या उपलब्ध नहीं है।"
-      }));
+      
+            const allQs = cachedSubjectQuestions.map(item => {
+        const rawOptions = Array.isArray(item.options) ? [...item.options] : [];
+        const rawCorrectIdx = (item.correct !== undefined) ? item.correct : 0;
+        const correctText = rawOptions[rawCorrectIdx];
+
+        // Fisher-Yates Shuffle (विकल्पों को रैंडमली ऊपर-नीचे करने के लिए)
+        for (let i = rawOptions.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [rawOptions[i], rawOptions[j]] = [rawOptions[j], rawOptions[i]];
+        }
+
+        const newCorrectIdx = rawOptions.indexOf(correctText);
+
+        return {
+          chapter: parseInt(item.chapter) || 1,
+          q: item.q || item.question || "",
+          options: rawOptions,
+          correct: newCorrectIdx !== -1 ? newCorrectIdx : 0,
+          exp: item.exp || "व्याख्या उपलब्ध नहीं है।"
+        };
+      });
+
 
       if (isFullSyllabus) {
         currentQuestions = [...allQs].sort(() => Math.random() - 0.5).slice(0, 50);
