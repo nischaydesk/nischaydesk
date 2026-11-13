@@ -881,6 +881,42 @@
       font-weight: 800;
     }
 
+    /* Sub-Option Choice Card inside Hindi / English Modal */
+    .sub-branch-btn {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--bg-page);
+      border: 1.8px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sub-branch-btn:hover, .sub-branch-btn:active {
+      border-color: #6366f1;
+      background: rgba(99, 102, 241, 0.1);
+    }
+    .branch-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .branch-icon {
+      font-size: 1.4rem;
+    }
+    .branch-info h4 {
+      font-size: 0.94rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+    .branch-info p {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
     .palette-modal-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -1088,15 +1124,15 @@
             <div class="sub-pill-card" data-sub="chemistry" onclick="handleSubjectPick('chemistry')">🧪 रसायन (Chemistry)</div>
             <div class="sub-pill-card" data-sub="math" onclick="handleSubjectPick('math')">📐 गणित (Maths)</div>
             <div class="sub-pill-card" data-sub="biology" onclick="handleSubjectPick('biology')">🧬 जीव विज्ञान (Bio)</div>
-            <div class="sub-pill-card" data-sub="hindi" onclick="handleSubjectPick('hindi')">🇮🇳 हिन्दी + व्याकरण</div>
-            <div class="sub-pill-card" data-sub="english" onclick="handleSubjectPick('english')">🇬🇧 English + Grammar</div>
+            <div class="sub-pill-card" data-sub="hindi_group" onclick="openLanguageBranchModal('hindi')">🇮🇳 हिन्दी + व्याकरण</div>
+            <div class="sub-pill-card" data-sub="english_group" onclick="openLanguageBranchModal('english')">🇬🇧 English + Grammar</div>
           </div>
         </div>
 
         <!-- STEP 3: Chapter Selection (Linked with syllabus-12.js) -->
         <div class="step-section hidden-step" id="step3Block">
           <div class="step-label">
-            <span><span class="step-num">3</span> अध्याय या संपूर्ण विषय चुनें</span>
+            <span><span class="step-num">3</span> <span id="step3DynamicLabel">अध्याय या संपूर्ण विषय चुनें</span></span>
           </div>
           <div class="chapter-tap-box" onclick="openChapterSelectorModal()">
             <span class="chapter-tap-text" id="selectedChapterLabel">अध्याय चुनने के लिए टैप करें...</span>
@@ -1259,7 +1295,18 @@
     </div>
   </div>
 
-  <!-- 2. Chapter Selector Modal -->
+  <!-- 2. Hindi / English Branch Selector Modal (Book vs Grammar) -->
+  <div class="nd-modal-backdrop" id="langBranchModal" onclick="closeBackdrop(event, 'langBranchModal')">
+    <div class="nd-modal-card">
+      <div class="nd-modal-head">
+        <h3 id="langBranchTitle">किस भाग का टेस्ट देना चाहते हैं?</h3>
+        <button class="nd-modal-close" onclick="closeCustomModal('langBranchModal')">&times;</button>
+      </div>
+      <div class="nd-modal-body" id="langBranchOptions"></div>
+    </div>
+  </div>
+
+  <!-- 3. Chapter Selector Modal -->
   <div class="nd-modal-backdrop" id="chapterModal" onclick="closeBackdrop(event, 'chapterModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1270,7 +1317,7 @@
     </div>
   </div>
 
-  <!-- 3. OMR Question Palette Modal -->
+  <!-- 4. OMR Question Palette Modal -->
   <div class="nd-modal-backdrop" id="paletteModal" onclick="closeBackdrop(event, 'paletteModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1287,7 +1334,7 @@
     </div>
   </div>
 
-  <!-- 4. Submit Confirmation Modal -->
+  <!-- 5. Submit Confirmation Modal -->
   <div class="nd-modal-backdrop" id="submitConfirmModal" onclick="closeBackdrop(event, 'submitConfirmModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1320,7 +1367,7 @@
     </div>
   </div>
 
-  <!-- 5. Info Alert Modal -->
+  <!-- 6. Info Alert Modal -->
   <div class="nd-modal-backdrop" id="infoAlertModal" onclick="closeBackdrop(event, 'infoAlertModal')">
     <div class="nd-modal-card">
       <div class="nd-modal-head">
@@ -1343,16 +1390,18 @@
   </nav>
 
   <!-- =================================================================
-       JAVASCRIPT ENGINE (Connected directly with window.NischaySyllabus12Data)
+       JAVASCRIPT ENGINE (Connected directly with syllabus-12.js & Separate JSONs)
        ================================================================= -->
   <script>
     const subjectConfig = {
-      physics: { jsonFile: "12-physics.json", shortName: "12th Physics" },
-      chemistry: { jsonFile: "12-chemistry.json", shortName: "12th Chemistry" },
-      math: { jsonFile: "12-math.json", shortName: "12th Maths" },
-      biology: { jsonFile: "12-biology.json", shortName: "12th Biology" },
-      hindi: { jsonFile: "12-hindi.json", shortName: "12th हिन्दी" },
-      english: { jsonFile: "12-english.json", shortName: "12th English" }
+      physics:         { jsonFile: "12-physics.json",         shortName: "12th Physics",         pillGroup: "physics" },
+      chemistry:       { jsonFile: "12-chemistry.json",       shortName: "12th Chemistry",       pillGroup: "chemistry" },
+      math:            { jsonFile: "12-math.json",            shortName: "12th Maths",           pillGroup: "math" },
+      biology:         { jsonFile: "12-biology.json",         shortName: "12th Biology",         pillGroup: "biology" },
+      hindi:           { jsonFile: "12-hindi.json",           shortName: "12th हिन्दी (किताब)",    pillGroup: "hindi_group" },
+      hindi_grammar:   { jsonFile: "12-hindi-grammar.json",   shortName: "12th हिन्दी व्याकरण",   pillGroup: "hindi_group" },
+      english:         { jsonFile: "12-english.json",         shortName: "12th English Book",    pillGroup: "english_group" },
+      english_grammar: { jsonFile: "12-english-grammar.json", shortName: "12th English Grammar", pillGroup: "english_group" }
     };
 
     let currentSubKey = "";
@@ -1393,7 +1442,7 @@
       return [];
     }
 
-    // Get Chapters from window.NischaySyllabus12Data (syllabus-12.js) OR fallback to JSON chapters
+    // Get Chapters directly from window.NischaySyllabus12Data (syllabus-12.js)
     function getOfficialChapters(subKey) {
       if (
         window.NischaySyllabus12Data &&
@@ -1408,7 +1457,7 @@
         }));
       }
 
-      // If subject is Hindi/English (not in syllabus-12.js), extract chapters directly from JSON
+      // Fallback from JSON if needed
       const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
       return uniqueChNums.map(num => ({
         id: `ch${num}`,
@@ -1417,24 +1466,79 @@
       }));
     }
 
+    // Open Two-Option Sub-Modal for Hindi or English
+    function openLanguageBranchModal(langType) {
+      const titleEl = document.getElementById("langBranchTitle");
+      const boxEl = document.getElementById("langBranchOptions");
+      boxEl.innerHTML = "";
+
+      if (langType === "hindi") {
+        titleEl.textContent = "🇮🇳 हिन्दी — भाग चुनें";
+        boxEl.innerHTML = `
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('hindi');">
+            <div class="branch-left">
+              <span class="branch-icon">📖</span>
+              <div class="branch-info">
+                <h4>हिन्दी (दिगंत भाग-2: गद्य एवं काव्य खंड)</h4>
+                <p>सभी 26 अध्यायों के चैप्टर-वाइज वस्तुनिष्ठ प्रश्न</p>
+              </div>
+            </div>
+            <span style="color:#6366f1; font-weight:900;">➔</span>
+          </div>
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('hindi_grammar');">
+            <div class="branch-left">
+              <span class="branch-icon">✍️</span>
+              <div class="branch-info">
+                <h4>हिन्दी व्याकरण (Hindi Grammar)</h4>
+                <p>संधि, समास, उपसर्ग-प्रत्यय, मुहावरे, पर्यायवाची आदि</p>
+              </div>
+            </div>
+            <span style="color:#6366f1; font-weight:900;">➔</span>
+          </div>
+        `;
+      } else {
+        titleEl.textContent = "🇬🇧 English — Select Section";
+        boxEl.innerHTML = `
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('english');">
+            <div class="branch-left">
+              <span class="branch-icon">📖</span>
+              <div class="branch-info">
+                <h4>English Book (Rainbow Part-2: Prose & Poetry)</h4>
+                <p>All 21 Chapters Chapter-wise Objective Questions</p>
+              </div>
+            </div>
+            <span style="color:#6366f1; font-weight:900;">➔</span>
+          </div>
+          <div class="sub-branch-btn" onclick="closeCustomModal('langBranchModal'); handleSubjectPick('english_grammar');">
+            <div class="branch-left">
+              <span class="branch-icon">✍️</span>
+              <div class="branch-info">
+                <h4>English Grammar & Story of English</h4>
+                <p>Tense, Voice, Narration, Modals, Prepositions, Articles</p>
+              </div>
+            </div>
+            <span style="color:#6366f1; font-weight:900;">➔</span>
+          </div>
+        `;
+      }
+
+      openCustomModal("langBranchModal");
+    }
+
     async function handleSubjectPick(subKey) {
       currentSubKey = subKey;
+      const pillGroup = subjectConfig[subKey].pillGroup;
+
       document.querySelectorAll(".sub-pill-card").forEach(el => {
-        el.classList.toggle("active", el.getAttribute("data-sub") === subKey);
+        el.classList.toggle("active", el.getAttribute("data-sub") === pillGroup);
       });
 
+      document.getElementById("step3DynamicLabel").textContent = `${subjectConfig[subKey].shortName} — अध्याय चुनें`;
       document.getElementById("selectedChapterLabel").textContent = "⏳ अध्याय लोड हो रहे हैं...";
       document.getElementById("step3Block").classList.remove("hidden-step");
 
       cachedSubjectQuestions = await fetchSubjectJson(subKey);
       const chList = getOfficialChapters(subKey);
-
-      if (chList.length === 0) {
-        document.getElementById("selectedChapterLabel").textContent = "⚠️ इस विषय के प्रश्न जल्द जुड़ेंगे";
-        document.getElementById("step4Block").classList.add("hidden-step");
-        document.getElementById("step5Block").classList.add("hidden-step");
-        return;
-      }
 
       isFullSyllabus = false;
       selectedChapterId = chList[0].id;
@@ -1463,11 +1567,6 @@
 
     function openChapterSelectorModal() {
       const chList = getOfficialChapters(currentSubKey);
-      if (chList.length === 0) {
-        showProAlert("डेटा तैयार हो रहा है", `'${subjectConfig[currentSubKey].jsonFile}' फ़ाइल अभी तैयार की जा रही है।`);
-        return;
-      }
-
       const list = document.getElementById("chapterModalList");
       list.innerHTML = "";
 
@@ -1520,8 +1619,13 @@
     }
 
     function startSelectedTest() {
-      if (!currentSubKey || cachedSubjectQuestions.length === 0) {
-        showProAlert("डेटा तैयार हो रहा है", `'${subjectConfig[currentSubKey]?.jsonFile || 'JSON'}' फ़ाइल अभी तैयार की जा रही है। जल्द ही सभी प्रश्न उपलब्ध होंगे!`);
+      if (!currentSubKey) {
+        showProAlert("विषय चुनें", "कृपया पहले अपना विषय और अध्याय चुनें!");
+        return;
+      }
+
+      if (cachedSubjectQuestions.length === 0) {
+        showProAlert("डेटा तैयार हो रहा है", `'data/${subjectConfig[currentSubKey].jsonFile}' फ़ाइल अभी जोड़ी जा रही है। जल्द ही सभी प्रश्न उपलब्ध होंगे!`);
         return;
       }
 
