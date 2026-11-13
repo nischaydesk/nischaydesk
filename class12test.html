@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@1,700;1,900&display=swap" rel="stylesheet">
 
   <script src="config.js"></script>
-  <script src="syllabus-data-12.js"></script>
 
   <script>
     localStorage.setItem("nd_selected_class", "12th");
@@ -150,6 +149,139 @@
       text-decoration: none;
     }
 
+    /* 🌟 Complete Side Drawer (All 12 Items + Controls + Developer Footer) */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 99998;
+    }
+    .drawer-overlay.active { display: block; }
+    .side-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 300px;
+      max-width: 85vw;
+      background: var(--card-bg);
+      z-index: 99999;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+      padding-bottom: 90px;
+    }
+    .side-nav.active { transform: translateX(0); }
+    .side-nav-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid var(--card-border);
+      flex-shrink: 0;
+    }
+    .side-nav-list {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    .side-link.active {
+      background: #6366f1;
+      color: #ffffff;
+    }
+
+    .side-control-card {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .lang-btn-switch {
+      background: var(--card-bg);
+      border: 1.5px solid #6366f1;
+      color: #6366f1;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #64748b;
+      transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #6366f1; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .drawer-dev {
+      padding: 16px;
+      text-align: center;
+      border-top: 1.5px solid var(--card-border);
+      background: rgba(99, 102, 241, 0.05);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .dev-badge {
+      font-size: 0.92rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #6366f1, #ec4899, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
     /* 🌟 Views Switcher */
     .view-panel { display: none; }
     .view-panel.active { display: block; }
@@ -196,14 +328,11 @@
       margin-top: 4px;
     }
 
-    /* Progressive Step Animation */
     .step-section {
       margin-bottom: 16px;
       animation: slideFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .step-section.hidden-step {
-      display: none;
-    }
+    .step-section.hidden-step { display: none; }
     @keyframes slideFade {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -256,7 +385,7 @@
       border-radius: 8px;
     }
 
-    /* Step 2: 6 Subjects Grid (PCM/B + Hindi & English Grammar) */
+    /* Step 2: Subjects Grid */
     .subject-grid-6 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -338,7 +467,7 @@
       color: var(--text-muted);
     }
 
-    /* Full Syllabus Auto Banner */
+    /* Full Subject Auto Banner */
     .full-mode-banner {
       background: rgba(245, 158, 11, 0.12);
       border: 1.5px dashed #f59e0b;
@@ -379,7 +508,6 @@
       min-height: calc(100dvh - 52px);
     }
 
-    /* Compact Top Bar */
     .exam-compact-bar {
       background: #0f172a;
       color: #ffffff;
@@ -437,7 +565,6 @@
       cursor: pointer;
     }
 
-    /* 🌟 Question Card + Elevated Thumb Controls + Stylish All the Best */
     .exam-stage-wrap {
       max-width: 680px;
       width: 100%;
@@ -496,7 +623,6 @@
       line-height: 1.42;
     }
 
-    /* Compact Options List */
     .options-compact-list {
       display: flex;
       flex-direction: column;
@@ -545,7 +671,7 @@
       line-height: 1.3;
     }
 
-    /* 🌟 ELEVATED ONE-HANDED THUMB CONTROLS (Right below options, easy reach!) */
+    /* 🌟 ELEVATED ONE-HANDED THUMB CONTROLS */
     .elevated-thumb-controls {
       background: var(--card-bg);
       border: 1.5px solid var(--card-border);
@@ -592,7 +718,7 @@
       box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
     }
 
-    /* 🌟 STYLISH "ALL THE BEST" BADGE BELOW CONTROLS */
+    /* 🌟 STYLISH "ALL THE BEST" BADGE */
     .all-the-best-banner {
       text-align: center;
       padding: 12px 16px;
@@ -619,7 +745,7 @@
     }
 
     /* =================================================================
-       SCREEN 3: RESULT & SCORECARD (1 Mark Per Question - BSEB Pattern)
+       SCREEN 3: RESULT & SCORECARD
        ================================================================= */
     .result-wrap {
       max-width: 760px;
@@ -805,59 +931,6 @@
       gap: 10px;
     }
 
-    /* Side Drawer */
-    .drawer-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 6, 23, 0.75);
-      backdrop-filter: blur(6px);
-      z-index: 99998;
-    }
-    .drawer-overlay.active { display: block; }
-    .side-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 290px;
-      max-width: 85vw;
-      background: var(--card-bg);
-      z-index: 99999;
-      transform: translateX(-100%);
-      transition: transform 0.28s ease;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      padding-bottom: 80px;
-    }
-    .side-nav.active { transform: translateX(0); }
-    .side-nav-header {
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1.5px solid var(--card-border);
-    }
-    .side-nav-list {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .side-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 0.86rem;
-      font-weight: 700;
-    }
-    .side-link.active { background: #6366f1; color: #fff; }
-
     /* Lobby Bottom Dock */
     .lobby-bottom-dock {
       position: fixed;
@@ -909,24 +982,76 @@
     </div>
   </header>
 
-  <!-- Side Drawer -->
+  <!-- 🌟 COMPLETE SIDE DRAWER (100% Restored) -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
   <aside class="side-nav" id="sideNav">
     <div class="side-nav-header">
-      <div style="font-weight: 900; font-size: 1.05rem;">Nischay<span style="color:#6366f1;">Desk</span> 12th</div>
+      <div style="font-weight: 900; font-size: 1.1rem; color: var(--text-main);">
+        Nischay<span style="color:#6366f1;">Desk</span> 12th
+      </div>
       <button class="nd-modal-close" onclick="closeDrawer()">&times;</button>
     </div>
+
     <div class="side-nav-list">
-      <a href="class12.html" class="side-link"><span>🎓</span> 12th मुख्य डैशबोर्ड</a>
-      <a href="class12notes.html" class="side-link"><span>📚</span> 12th सम्पूर्ण नोट्स</a>
-      <a href="class12test.html" class="side-link active"><span>📝</span> 12th ऑनलाइन टेस्ट</a>
-      <a href="class12model.html" class="side-link" style="color:#f59e0b;"><span>🏆</span> 12th मॉडल पेपर</a>
-      <a href="class12pyq.html?class=12" class="side-link"><span>📄</span> 12th क्वेश्चन बैंक</a>
-      <a href="class12syllabus.html?class=12" class="side-link"><span>📋</span> 12th बोर्ड सिलेबस</a>
-      <a href="bridge-course.html" class="side-link" style="color:#10b981;"><span>🚀</span> 11th ➔ 12th ब्रिज गाइड</a>
-      <a href="calculator.html" class="side-link" style="color:#ec4899;"><span>🧮</span> कैलकुलेटर</a>
-      <a href="class11test.html" class="side-link" style="color:#38bdf8;"><span>🧪</span> कक्षा 11वीं टेस्ट पोर्टल</a>
-      <a href="test.html" class="side-link" style="color:#38bdf8;"><span>🔄</span> कक्षा 10वीं टेस्ट पोर्टल</a>
+      <a href="class12.html" class="side-link">
+        <span>🎓</span> 12th मुख्य डैशबोर्ड
+      </a>
+      <a href="class12notes.html" class="side-link">
+        <span>📚</span> 12th सम्पूर्ण नोट्स
+      </a>
+      <a href="class12test.html" class="side-link active">
+        <span>📝</span> 12th ऑनलाइन टेस्ट पोर्टल
+      </a>
+      <a href="class12pyq.html?class=12" class="side-link">
+        <span>📄</span> 12th क्वेश्चन बैंक (PYQ)
+      </a>
+      <a href="class12model.html" class="side-link" style="color: #f59e0b; font-weight: 800;">
+        <span>🏆</span> 12th ऑफिशियल मॉडल पेपर
+      </a>
+      <a href="class12syllabus.html?class=12" class="side-link">
+        <span>📋</span> 12th बोर्ड सिलेबस
+      </a>
+      <a href="bridge-course.html" class="side-link" style="color: #10b981; font-weight: 800;">
+        <span>🚀</span> 11th ➔ 12th ब्रिज गाइड
+      </a>
+      <a href="calculator.html" class="side-link" style="color: #ec4899; font-weight: 800;">
+        <span>🧮</span> कैलकुलेटर
+      </a>
+      <a href="todo.html?class=12th" target="_blank" class="side-link" style="color: #10b981; font-weight: 800;">
+        <span>✅</span> माय टू-डू लिस्ट
+      </a>
+      <a href="pdf.html?class=12th" target="_blank" class="side-link" style="color: #a855f7; font-weight: 800;">
+        <span>🖼️</span> इमेज To PDF मेकर
+      </a>
+      <a href="ai-desk.html?class=12th" class="side-link" style="color: #f59e0b; font-weight: 800;">
+        <span>🤖</span> AI डाउट सॉल्वर
+      </a>
+      <a href="bseb-print.html?class=12th" class="side-link" style="color: #0284c7; font-weight: 800;">
+        <span>🎯</span> OMR शीट जनरेटर
+      </a>
+      <a href="javascript:void(0)" onclick="closeDrawer(); openCustomModal('classModal');" class="side-link" style="color: #38bdf8; font-weight: 800;">
+        <span>🔄</span> कक्षा बदलें (10th / 11th)
+      </a>
+
+      <!-- Controls -->
+      <div class="side-control-card">
+        <div class="control-row">
+          <span>🌐 भाषा (Language):</span>
+          <button class="lang-btn-switch" id="langSwitchBtn" onclick="toggleLanguage()">English</button>
+        </div>
+        <div class="control-row">
+          <span>🌙 डार्क मोड:</span>
+          <label class="switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-dev">
+      <div class="dev-badge">Developed By Prince Kumar ⚡</div>
+      <p style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">NischayDesk Production • 2026</p>
     </div>
   </aside>
 
@@ -971,7 +1096,7 @@
           </div>
         </div>
 
-        <!-- STEP 3: Chapter Selection (Reveals smoothly after Subject is picked) -->
+        <!-- STEP 3: Chapter Selection (Dynamic from External Data/Engine) -->
         <div class="step-section hidden-step" id="step3Block">
           <div class="step-label">
             <span><span class="step-num">3</span> अध्याय या संपूर्ण विषय चुनें</span>
@@ -982,13 +1107,12 @@
           </div>
         </div>
 
-        <!-- STEP 4: Custom Question & Time Pack Selection (Reveals after Chapter) -->
+        <!-- STEP 4: Custom Question & Time Pack Selection -->
         <div class="step-section hidden-step" id="step4Block">
           <div class="step-label">
             <span><span class="step-num">4</span> अपनी पसंद का टेस्ट पैक चुनें</span>
           </div>
 
-          <!-- 4 Choices for Chapter-wise -->
           <div class="packs-grid-4" id="chapterPacksGrid">
             <div class="pack-choice-card" data-q="10" data-t="8" onclick="selectPack(this, 10, 8)">
               <div class="pack-title">⚡ 10 प्रश्न</div>
@@ -1008,7 +1132,6 @@
             </div>
           </div>
 
-          <!-- Auto 50 Q / 50 Min Banner when Full Subject is picked -->
           <div class="full-mode-banner" id="fullSubjectBanner" style="display:none;">
             <span>🏆 संपूर्ण विषय बोर्ड मॉडल टेस्ट</span>
             <strong style="color:#d97706; font-size:0.85rem;">50 प्रश्न • 50 मिनट</strong>
@@ -1030,7 +1153,6 @@
        SCREEN 2: ONE-HANDED THUMB-ZONE RUNNING TEST SCREEN
        ================================================================= -->
   <section id="testRunningScreen" class="view-panel">
-    <!-- Top Compact Status Bar -->
     <div class="exam-compact-bar">
       <div class="exam-bar-left">
         <span class="pill-sub-live" id="liveExamBadge">12th Physics</span>
@@ -1042,7 +1164,6 @@
       </div>
     </div>
 
-    <!-- Main Stage: Question Card + Elevated Buttons + Stylish All The Best -->
     <div class="exam-stage-wrap">
       <div class="q-card-compact">
         <div class="q-meta-line">
@@ -1058,14 +1179,14 @@
         <div class="options-compact-list" id="displayOptionsGroup"></div>
       </div>
 
-      <!-- Elevated Thumb Controls (Right in comfortable thumb reach!) -->
+      <!-- Elevated Thumb Controls -->
       <div class="elevated-thumb-controls">
         <button class="ctrl-btn btn-prev-fix" id="prevQBtn" onclick="goPrevQuestion()" disabled>← पिछला</button>
         <button class="ctrl-btn btn-clear-fix" onclick="clearCurrentSelection()">हटाएं</button>
         <button class="ctrl-btn btn-next-fix" id="nextQBtn" onclick="goNextQuestion()">अगला प्रश्न →</button>
       </div>
 
-      <!-- Stylish "All the best" Banner right below buttons -->
+      <!-- Stylish "All the best" Banner -->
       <div class="all-the-best-banner">
         <div class="all-the-best-text">✨ All the Best ✨</div>
         <div class="all-the-best-sub">NischayDesk Bihar Board Mission 450+</div>
@@ -1074,7 +1195,7 @@
   </section>
 
   <!-- =================================================================
-       SCREEN 3: RESULT & SCORECARD (+1 Mark Per Question)
+       SCREEN 3: RESULT & SCORECARD
        ================================================================= -->
   <section id="testResultScreen" class="view-panel">
     <div class="result-wrap">
@@ -1229,74 +1350,76 @@
        ================================================================= -->
   <script>
     const subjectConfig = {
-      physics: { sylId: "12-physics", jsonFile: "12-physics.json", shortName: "12th Physics" },
-      chemistry: { sylId: "12-chemistry", jsonFile: "12-chemistry.json", shortName: "12th Chemistry" },
-      math: { sylId: "12-math", jsonFile: "12-math.json", shortName: "12th Maths" },
-      biology: { sylId: "12-biology", jsonFile: "12-biology.json", shortName: "12th Biology" },
-      hindi: { sylId: "12-hindi", jsonFile: "12-hindi.json", shortName: "12th हिन्दी" },
-      english: { sylId: "12-english", jsonFile: "12-english.json", shortName: "12th English" }
-    };
-
-    // Hindi & English Grammar Built-in Chapters List
-    const extraLanguageChapters = {
-      hindi: [
-        { id: "ch1", no: 1, name: "गद्य खंड: बातचीत, उसने कहा था, संपूर्ण क्रांति" },
-        { id: "ch2", no: 2, name: "गद्य खंड: अर्धनारीश्वर, रोज, एक लेख और एक पत्र" },
-        { id: "ch3", no: 3, name: "काव्य खंड: कड़बक, सूरदास व तुलसीदास के पद" },
-        { id: "ch4", no: 4, name: "हिन्दी व्याकरण: संधि, समास, उपसर्ग एवं प्रत्यय" },
-        { id: "ch5", no: 5, name: "हिन्दी व्याकरण: मुहावरे, पर्यायवाची, विलोम व कारक" }
-      ],
-      english: [
-        { id: "ch1", no: 1, name: "Prose: Indian Civilization & Culture, Bharat is My Home" },
-        { id: "ch2", no: 2, name: "Prose: A Pinch of Snuff, I Have a Dream, Ideas That Have Helped Mankind" },
-        { id: "ch3", no: 3, name: "Poetry: Sweetest Love I Do Not Goe, Song of Myself, An Epitaph" },
-        { id: "ch4", no: 4, name: "English Grammar: Tense, Voice, Narration & Modals" },
-        { id: "ch5", no: 5, name: "English Grammar: Prepositions, Articles, Synonyms & Antonyms" }
-      ]
+      physics: { jsonFile: "12-physics.json", shortName: "12th Physics" },
+      chemistry: { jsonFile: "12-chemistry.json", shortName: "12th Chemistry" },
+      math: { jsonFile: "12-math.json", shortName: "12th Maths" },
+      biology: { jsonFile: "12-biology.json", shortName: "12th Biology" },
+      hindi: { jsonFile: "12-hindi.json", shortName: "12th हिन्दी" },
+      english: { jsonFile: "12-english.json", shortName: "12th English" }
     };
 
     let currentSubKey = "";
-    let selectedChapterId = "";
-    let selectedChapterName = "";
+    let selectedChapterId = "all";
+    let selectedChapterName = "🏆 संपूर्ण विषय (Full Board Test)";
     let isFullSyllabus = false;
     let chosenQuestionsCount = 20;
     let chosenTimeMinutes = 15;
 
+    let cachedSubjectQuestions = [];
     let currentQuestions = [];
     let currentQIndex = 0;
     let userResponses = {};
     let timerInterval = null;
     let timeRemaining = 900;
 
-    function getChaptersList(subKey) {
-      if (extraLanguageChapters[subKey]) {
-        return extraLanguageChapters[subKey];
+    // Fetch JSON file dynamically & extract available chapters from the JSON itself
+    async function fetchSubjectJson(subKey) {
+      const fileName = subjectConfig[subKey].jsonFile;
+      const paths = [
+        `data/${fileName}`,
+        `./data/${fileName}`,
+        `/nischaydesk/data/${fileName}`,
+        `https://nischaydesk.github.io/nischaydesk/data/${fileName}`
+      ];
+
+      for (const p of paths) {
+        try {
+          const res = await fetch(`${p}?t=${Date.now()}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+              return data;
+            }
+          }
+        } catch (e) {}
       }
-      const sylId = subjectConfig[subKey].sylId;
-      if (window.NischaySyllabus12 && window.NischaySyllabus12.subjects) {
-        const found = window.NischaySyllabus12.subjects.find(s => s.id === sylId);
-        if (found && found.chapters) {
-          return found.chapters.map(c => ({
-            id: `ch${c.no}`,
-            no: c.no,
-            name: `अध्याय ${c.no}: ${c.name}`
-          }));
-        }
-      }
-      return [{ id: "ch1", no: 1, name: "अध्याय 1" }];
+      return [];
     }
 
-    // Step 2 Trigger: Pick Subject -> Reveal Step 3 & Step 4
-    function handleSubjectPick(subKey) {
+    async function handleSubjectPick(subKey) {
       currentSubKey = subKey;
       document.querySelectorAll(".sub-pill-card").forEach(el => {
         el.classList.toggle("active", el.getAttribute("data-sub") === subKey);
       });
 
-      const chs = getChaptersList(subKey);
-      selectedChapterId = chs[0].id;
-      selectedChapterName = chs[0].name;
+      document.getElementById("selectedChapterLabel").textContent = "⏳ अध्याय लोड हो रहे हैं...";
+      document.getElementById("step3Block").classList.remove("hidden-step");
+
+      cachedSubjectQuestions = await fetchSubjectJson(subKey);
+
+      if (cachedSubjectQuestions.length === 0) {
+        document.getElementById("selectedChapterLabel").textContent = "⚠️ इस विषय के प्रश्न जल्द जुड़ेंगे";
+        document.getElementById("step4Block").classList.add("hidden-step");
+        document.getElementById("step5Block").classList.add("hidden-step");
+        return;
+      }
+
+      // Extract unique chapter numbers present in JSON
+      const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
+
       isFullSyllabus = false;
+      selectedChapterId = `ch${uniqueChNums[0]}`;
+      selectedChapterName = `अध्याय ${uniqueChNums[0]}`;
       chosenQuestionsCount = 20;
       chosenTimeMinutes = 15;
 
@@ -1304,13 +1427,10 @@
       document.getElementById("chapterPacksGrid").style.display = "grid";
       document.getElementById("fullSubjectBanner").style.display = "none";
 
-      // Reset pack highlight to 20 Q
       document.querySelectorAll(".pack-choice-card").forEach(c => {
         c.classList.toggle("active", c.getAttribute("data-q") === "20");
       });
 
-      // Reveal Steps 3, 4, 5 smoothly
-      document.getElementById("step3Block").classList.remove("hidden-step");
       document.getElementById("step4Block").classList.remove("hidden-step");
       document.getElementById("step5Block").classList.remove("hidden-step");
     }
@@ -1323,6 +1443,11 @@
     }
 
     function openChapterSelectorModal() {
+      if (cachedSubjectQuestions.length === 0) {
+        showProAlert("डेटा तैयार हो रहा है", `'${subjectConfig[currentSubKey].jsonFile}' फ़ाइल अभी तैयार की जा रही है।`);
+        return;
+      }
+
       const list = document.getElementById("chapterModalList");
       list.innerHTML = "";
 
@@ -1344,17 +1469,19 @@
       };
       list.appendChild(fullRow);
 
-      // Chapter-wise Options (Reveals 4 custom packs)
-      const chs = getChaptersList(currentSubKey);
-      chs.forEach(ch => {
-        const isSel = (!isFullSyllabus && selectedChapterId === ch.id);
+      // Dynamic Chapters from JSON
+      const uniqueChNums = [...new Set(cachedSubjectQuestions.map(q => parseInt(q.chapter) || 1))].sort((a, b) => a - b);
+      uniqueChNums.forEach(chNo => {
+        const chId = `ch${chNo}`;
+        const chLabel = `अध्याय ${chNo}`;
+        const isSel = (!isFullSyllabus && selectedChapterId === chId);
         const row = document.createElement("div");
         row.className = `modal-opt-row ${isSel ? 'selected' : ''}`;
-        row.innerHTML = `<span>${ch.name}</span> ${isSel ? '<span>✓</span>' : ''}`;
+        row.innerHTML = `<span>${chLabel}</span> ${isSel ? '<span>✓</span>' : ''}`;
         row.onclick = () => {
           isFullSyllabus = false;
-          selectedChapterId = ch.id;
-          selectedChapterName = ch.name;
+          selectedChapterId = chId;
+          selectedChapterName = chLabel;
           chosenQuestionsCount = 20;
           chosenTimeMinutes = 15;
 
@@ -1375,44 +1502,13 @@
       openCustomModal("infoAlertModal");
     }
 
-    async function startSelectedTest() {
-      if (!currentSubKey) {
-        showProAlert("विषय चुनें", "कृपया पहले अपना विषय चुनें!");
+    function startSelectedTest() {
+      if (!currentSubKey || cachedSubjectQuestions.length === 0) {
+        showProAlert("विषय चुनें", "कृपया पहले उपलब्ध विषय और अध्याय चुनें!");
         return;
       }
 
-      const btn = document.getElementById("startExamBtn");
-      btn.disabled = true;
-      btn.textContent = "⏳ प्रश्न लोड हो रहे हैं...";
-
-      const fileName = subjectConfig[currentSubKey].jsonFile;
-      const paths = [
-        `data/${fileName}`,
-        `./data/${fileName}`,
-        `/nischaydesk/data/${fileName}`,
-        `https://nischaydesk.github.io/nischaydesk/data/${fileName}`
-      ];
-
-      let rawData = null;
-      for (const p of paths) {
-        try {
-          const res = await fetch(`${p}?t=${Date.now()}`);
-          if (res.ok) {
-            rawData = await res.json();
-            break;
-          }
-        } catch (e) {}
-      }
-
-      btn.disabled = false;
-      btn.textContent = "🚀 टेस्ट शुरू करें (Start Test)";
-
-      if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
-        showProAlert("डेटा तैयार हो रहा है", `'${fileName}' फ़ाइल अभी जोड़ी जा रही है। जल्द ही इस विषय के सभी प्रश्न उपलब्ध होंगे!`);
-        return;
-      }
-
-      const allQs = rawData.map(item => ({
+      const allQs = cachedSubjectQuestions.map(item => ({
         chapter: parseInt(item.chapter) || 1,
         q: item.q || item.question || "",
         options: item.options || [],
@@ -1543,7 +1639,6 @@
       const wrongOrSkipped = total - correct;
       const acc = Math.round((correct / total) * 100);
 
-      // BSEB Pattern: 1 Question = 1 Mark, No Negative
       document.getElementById("resTotalMarks").textContent = `${correct} / ${total}`;
       document.getElementById("resAccuracy").textContent = `${acc}%`;
       document.getElementById("resCorrectCount").textContent = correct;
@@ -1601,10 +1696,11 @@
       document.getElementById("timerDigits").textContent = `${m}:${s}`;
     }
 
-    /* Modals & Drawer Helpers */
+    /* Modals & Drawer & Theme Helpers */
     function openCustomModal(id) { document.getElementById(id).classList.add("active"); }
     function closeCustomModal(id) { document.getElementById(id).classList.remove("active"); }
     function closeBackdrop(e, id) { if (e.target.id === id) closeCustomModal(id); }
+
     function openDrawer() {
       document.getElementById("sideNav").classList.add("active");
       document.getElementById("drawerOverlay").classList.add("active");
@@ -1613,6 +1709,34 @@
       document.getElementById("sideNav").classList.remove("active");
       document.getElementById("drawerOverlay").classList.remove("active");
     }
+
+    function toggleTheme(checkbox) {
+      if (checkbox.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("nd_app_theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("nd_app_theme", "light");
+      }
+    }
+
+    function toggleLanguage() {
+      const cur = localStorage.getItem("nd_app_lang") || "hi";
+      const next = (cur === "hi") ? "en" : "hi";
+      localStorage.setItem("nd_app_lang", next);
+      const btn = document.getElementById("langSwitchBtn");
+      if (btn) btn.innerText = (next === "hi") ? "English" : "हिन्दी";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const curTheme = localStorage.getItem("nd_app_theme") || "light";
+      const themeToggle = document.getElementById("themeToggle");
+      if (themeToggle) themeToggle.checked = (curTheme === "dark");
+
+      const curLang = localStorage.getItem("nd_app_lang") || "hi";
+      const langBtn = document.getElementById("langSwitchBtn");
+      if (langBtn) langBtn.innerText = (curLang === "hi") ? "English" : "हिन्दी";
+    });
   </script>
 </body>
 </html>
