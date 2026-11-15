@@ -1,9 +1,30 @@
 /* ==========================================================================
-   NischayDesk Complete Notes Controller (v6.0 - 100% Class 10th Dedicated)
+   NischayDesk Complete Notes Controller (v7.0 - In-App Pinch-to-Zoom Edition)
    Architected by: Prince Kumar (NischayDesk)
-   Features: Dedicated Class 10th Matric, Large PDF Bypass (Native Drive),
-             Play Store Style Snake Loader, In-App HD Zoomable PDF Viewer
+   Features: Dedicated Class 10th Matric, Native Pinch-to-Zoom PDF.js Reader,
+             Play Store Style Snake Loader, Zero Link Changes Required
    ========================================================================== */
+
+// 1. यहाँ अपना Google Apps Script वाला Web App URL पेस्ट करें
+const NISCHAY_APPS_SCRIPT_URL = 'यहाँ_अपना_APPS_SCRIPT_URL_पेस्ट_करें';
+
+// PDF.js लाइब्रेरी को अपने आप लोड करने वाला हेल्पर
+function ensurePdfJsLoaded() {
+  return new Promise((resolve, reject) => {
+    if (window.pdfjsLib) {
+      resolve(window.pdfjsLib);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    script.onload = () => {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      resolve(window.pdfjsLib);
+    };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   const notesCatalogGrid = document.getElementById('notesCatalogGrid');
@@ -22,6 +43,117 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentFilterSubject = 'all';
   let searchQuery = '';
 
+  // ज़ूम कंटेनर को मोडल के अंदर तैयार करना (HTML को बिना छुए)
+  let customZoomViewport = null;
+  let customZoomCanvasWrap = null;
+  let currentZoomScale = 1;
+  let initialPinchDist = null;
+  let initialZoomScale = 1;
+
+  function setupCustomZoomContainer() {
+    if (customZoomViewport || !studioPdfFrame) return;
+
+    const parentStage = studioPdfFrame.parentElement;
+    customZoomViewport = document.createElement('div');
+    customZoomViewport.id = 'nischayZoomViewport';
+    customZoomViewport.style.cssText = `
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: #ffffff;
+      display: none;
+      position: relative;
+      touch-action: pan-x pan-y pinch-zoom;
+      -webkit-overflow-scrolling: touch;
+    `;
+
+    customZoomCanvasWrap = document.createElement('div');
+    customZoomCanvasWrap.id = 'nischayZoomCanvasWrap';
+    customZoomCanvasWrap.style.cssText = `
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+      transform-origin: 0 0;
+    `;
+
+    // फ्लोटिंग ज़ूम कंट्रोल पिल (नीचे दाईं तरफ)
+    const zoomPill = document.createElement('div');
+    zoomPill.style.cssText = `
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: rgba(15, 23, 42, 0.88);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 99999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    `;
+    zoomPill.innerHTML = `
+      <button type="button" id="nZoomOut" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:0 4px;">−</button>
+      <span id="nZoomLabel">100%</span>
+      <button type="button" id="nZoomIn" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:0 4px;">+</button>
+      <button type="button" id="nZoomReset" style="background:none;border:none;border-left:1px solid #475569;color:#38bdf8;font-size:11px;cursor:pointer;padding-left:8px;">Reset</button>
+    `;
+
+    customZoomViewport.appendChild(customZoomCanvasWrap);
+    customZoomViewport.appendChild(zoomPill);
+    parentStage.appendChild(customZoomViewport);
+
+    // ज़ूम अपडेट हेल्पर
+    const updateZoomUI = () => {
+      customZoomCanvasWrap.style.width = (currentZoomScale * 100) + '%';
+      const lbl = document.getElementById('nZoomLabel');
+      if (lbl) lbl.innerText = Math.round(currentZoomScale * 100) + '%';
+    };
+
+    document.getElementById('nZoomIn').onclick = () => {
+      currentZoomScale = Math.min(3.5, currentZoomScale + 0.25);
+      updateZoomUI();
+    };
+    document.getElementById('nZoomOut').onclick = () => {
+      currentZoomScale = Math.max(1, currentZoomScale - 0.25);
+      updateZoomUI();
+    };
+    document.getElementById('nZoomReset').onclick = () => {
+      currentZoomScale = 1;
+      updateZoomUI();
+    };
+
+    // मोबाइल पर दो उंगलियों से हाथ से ज़ूम (Pinch-to-Zoom)
+    customZoomCanvasWrap.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        initialPinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        initialZoomScale = currentZoomScale;
+      }
+    }, { passive: false });
+
+    customZoomCanvasWrap.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && initialPinchDist) {
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        currentZoomScale = Math.min(Math.max(1, initialZoomScale * (dist / initialPinchDist)), 3.5);
+        updateZoomUI();
+      }
+    }, { passive: false });
+
+    customZoomCanvasWrap.addEventListener('touchend', (e) => {
+      if (e.touches.length < 2) initialPinchDist = null;
+    });
+  }
+
   // डेटा इनिशियलाइजेशन (सिर्फ Class 10th)
   initClass10Notes();
 
@@ -33,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return (matchParam && matchParam[1]) ? matchParam[1] : null;
   }
 
-  // 🚀 Native Google Drive Preview URL
   function getSafePreviewUrl(rawUrl) {
     const fileId = extractDriveId(rawUrl);
     if (fileId) {
@@ -91,11 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const requestedFilter = urlParams.get('filter') || urlParams.get('subject');
 
-    if (requestedFilter) {
-      currentFilterSubject = requestedFilter;
-    } else {
-      currentFilterSubject = 'all';
-    }
+    currentFilterSubject = requestedFilter ? requestedFilter : 'all';
 
     adjustClass10FilterPills(currentFilterSubject);
     renderNotesGrid();
@@ -214,20 +341,18 @@ document.addEventListener('DOMContentLoaded', function () {
     notesCatalogGrid.innerHTML = htmlBuffer;
   }
 
-  // 🌟 मोडल ओपन होने पर स्नेक लोडर और टाइटल ट्रिगर
-  window.openNoteModal = function (classTitle, title, pdfUrl) {
+  // 🌟 मोडल ओपन होने पर HD Pinch-to-Zoom रीडर लोड करना
+  window.openNoteModal = async function (classTitle, title, pdfUrl) {
     if (!pdfStudioModal || !studioPdfFrame) return;
+
+    setupCustomZoomContainer();
 
     if (modalDocBadge) modalDocBadge.innerText = classTitle;
     if (modalDocTitle) modalDocTitle.innerText = title;
 
-    // notes.html में बना प्ले स्टोर स्नेक लोडर चलाएं
     if (window.triggerNotesViewerLoader) {
       window.triggerNotesViewerLoader(title);
     }
-
-    studioPdfFrame.removeAttribute('sandbox');
-    studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
 
     if (modalDirectDownloadBtn) {
       modalDirectDownloadBtn.onclick = function (e) {
@@ -238,12 +363,69 @@ document.addEventListener('DOMContentLoaded', function () {
 
     pdfStudioModal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    const fileId = extractDriveId(pdfUrl);
+    const hasValidScript = NISCHAY_APPS_SCRIPT_URL && NISCHAY_APPS_SCRIPT_URL.startsWith('https://script.google.com');
+
+    // यदि Apps Script सेटअप है, तो PDF.js ज़ूम रीडर चलाएं
+    if (fileId && hasValidScript) {
+      studioPdfFrame.style.display = 'none';
+      customZoomViewport.style.display = 'block';
+      customZoomCanvasWrap.innerHTML = '<div style="text-align:center;padding:50px 20px;color:#0f172a;font-weight:700;">नोट्स लोड हो रहे हैं... ⏳</div>';
+      currentZoomScale = 1;
+      customZoomCanvasWrap.style.width = '100%';
+      const lbl = document.getElementById('nZoomLabel');
+      if (lbl) lbl.innerText = '100%';
+
+      try {
+        const pdfjsLib = await ensurePdfJsLoaded();
+        const response = await fetch(`${NISCHAY_APPS_SCRIPT_URL}?id=${fileId}`);
+        const base64Data = await response.text();
+
+        const binaryString = atob(base64Data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+        customZoomCanvasWrap.innerHTML = '';
+
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          const page = await pdf.getPage(pageNum);
+          const viewport = page.getViewport({ scale: 2.2 });
+
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          canvas.style.cssText = 'width:100%; height:auto; display:block; margin:0; padding:0;';
+
+          await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+          customZoomCanvasWrap.appendChild(canvas);
+        }
+      } catch (err) {
+        console.error("PDF.js लोड एरर, फॉलबैक पर स्विच हो रहा है:", err);
+        // किसी कारणवश नेटवर्क फेल हो तो पुराना Google Drive व्यूअर अपने आप खुल जाएगा
+        customZoomViewport.style.display = 'none';
+        studioPdfFrame.style.display = 'block';
+        studioPdfFrame.removeAttribute('sandbox');
+        studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
+      }
+    } else {
+      // फॉलबैक: पुराना Google Drive प्रीव्यू
+      if (customZoomViewport) customZoomViewport.style.display = 'none';
+      studioPdfFrame.style.display = 'block';
+      studioPdfFrame.removeAttribute('sandbox');
+      studioPdfFrame.src = getSafePreviewUrl(pdfUrl);
+    }
   };
 
   function closeNoteModal() {
     if (!pdfStudioModal || !studioPdfFrame) return;
     pdfStudioModal.classList.remove('active');
     studioPdfFrame.src = '';
+    if (customZoomCanvasWrap) customZoomCanvasWrap.innerHTML = '';
     document.body.style.overflow = '';
   }
 
@@ -262,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (modalFullscreenBtn) {
     modalFullscreenBtn.addEventListener('click', function() {
-      const stage = document.getElementById('pdfFrameStage') || studioPdfFrame;
+      const stage = document.getElementById('pdfFrameStage') || customZoomViewport || studioPdfFrame;
       if (!document.fullscreenElement) {
         if (stage.requestFullscreen) stage.requestFullscreen();
         else if (stage.webkitRequestFullscreen) stage.webkitRequestFullscreen();
@@ -292,7 +474,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // थीम बदलने पर कार्ड्स के रंग तुरंत दोबारा सिंक करना
   const themeObserver = new MutationObserver(renderNotesGrid);
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
