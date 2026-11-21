@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NischayDesk AI Smart Board | कक्षा 10वीं लाइव स्मार्ट क्लास</title>
+
+  <!-- Fonts: Clean Modern + Realistic Teacher Handwriting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Firebase Auth Sync (Same as index.html) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="config.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      color: #0f172a;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* =========================================================
+       VIEW 1: PREMIUM CHAPTER LOBBY (10TH ALL SUBJECTS)
+       ========================================================= */
+    .lobby-shell {
+      min-height: 100vh;
+      background: radial-gradient(circle at 90% 0%, #eff6ff 0%, #ffffff 55%, #f8fafc 100%);
+      padding-bottom: 40px;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .lobby-shell.hidden {
+      display: none;
+    }
+
+    .lobby-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid #e2e8f0;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-home-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-title-wrap h1 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.1;
+    }
+
+    .brand-title-wrap h1 span {
+      color: #2563eb;
+    }
+
+    .brand-title-wrap p {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #1d4ed8;
+      cursor: pointer;
+    }
+
+    .user-chip img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Hero Banner inside Lobby */
+    .lobby-hero {
+      max-width: 1040px;
+      margin: 18px auto 12px;
+      padding: 0 16px;
+    }
+
+    .hero-card-pro {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      border-radius: 22px;
+      padding: 22px 20px;
+      color: #ffffff;
+      box-shadow: 0 14px 34px rgba(30, 58, 138, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.18);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero-card-pro h2 {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .hero-card-pro p {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .quick-search-bar {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      padding: 11px 14px;
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .quick-search-bar::placeholder {
+      color: #94a3b8;
+    }
+
+    /* Subject Horizontal Tabs */
+    .subject-tabs-wrapper {
+      max-width: 1040px;
+      margin: 14px auto;
+      padding: 0 16px;
+    }
+
+    .subject-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .subject-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .subj-tab {
+      flex: 0 0 auto;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #334155;
+      padding: 9px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .subj-tab.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Chapters Grid */
+    .chapters-container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 6px 16px;
+    }
+
+    .subject-meta-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .subject-meta-head h3 {
+      font-size: 17px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .chapter-count-tag {
+      background: #eff6ff;
+      color: #2563eb;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 12px;
+    }
+
+    .chapter-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 15px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.03);
+    }
+
+    .chapter-card:hover {
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.1);
+    }
+
+    .chapter-card:active {
+      transform: scale(0.98);
+    }
+
+    .ch-num-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 900;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ch-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ch-info h4 {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 3px;
+      line-height: 1.35;
+    }
+
+    .ch-info span {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #64748b;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .free-pill {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .lock-pill {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .play-circle-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Footer inside Lobby */
+    .lobby-footer {
+      max-width: 1040px;
+      margin: 34px auto 0;
+      padding: 20px 16px 0;
+      border-top: 1.5px solid #e2e8f0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 12.5px;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .footer-links-row {
+      display: flex;
+      gap: 14px;
+    }
+
+    .footer-links-row a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    /* =========================================================
+       VIEW 2: 100% PURE HD LANDSCAPE SMART WHITEBOARD
+       ========================================================= */
+    .board-viewport {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      z-index: 5000;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px 34px 18px 34px;
+      overflow: hidden;
+      animation: boardZoomEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .board-viewport.active {
+      display: flex;
+    }
+
+    @keyframes boardZoomEnter {
+      from { opacity: 0; transform: scale(1.06); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Portrait Rotation Notice inside Board */
+    .portrait-warning {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      z-index: 9000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    @media screen and (orientation: portrait) and (max-width: 768px) {
+      .board-viewport.active ~ .portrait-warning {
+        display: flex;
+      }
+    }
+
+    /* Minimal Top Header (JEET AI Style) */
+    .wb-header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .wb-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wb-subject-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #2563eb;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .wb-slide-count {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f97316;
+    }
+
+    .wb-rec-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.65);
+      animation: pulseRec 1.2s infinite;
+    }
+
+    @keyframes pulseRec {
+      50% { opacity: 0.3; }
+    }
+
+    .wb-progress-line {
+      width: 74%;
+      height: 2px;
+      background: #bfdbfe;
+      margin-left: 28px;
+      position: relative;
+    }
+
+    .wb-progress-fill {
+      height: 100%;
+      width: 25%;
+      background: #2563eb;
+      transition: width 0.5s ease;
+      position: relative;
+    }
+
+    .wb-progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #60a5fa;
+    }
+
+    /* Main Board Stage */
+    .wb-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Intro Slide Layout */
+    .wb-intro-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: center;
+      padding: 0 18px;
+    }
+
+    .wb-kicker {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #3b82f6;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .wb-hero-heading {
+      font-size: 32px;
+      font-weight: 800;
+      color: #2563eb;
+      line-height: 1.2;
+      display: inline-block;
+    }
+
+    .wb-red-stroke {
+      width: 0;
+      height: 3px;
+      background: #ef4444;
+      border-radius: 2px;
+      margin-top: 4px;
+      transition: width 0.85s ease-out;
+    }
+
+    .drawn .wb-red-stroke {
+      width: 94%;
+    }
+
+    .wb-hand-note {
+      font-family: 'Caveat', cursive;
+      font-size: 24px;
+      font-weight: 700;
+      color: #2563eb;
+      margin-top: 6px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.55s ease;
+    }
+
+    .wb-hand-note.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .wb-question-area {
+      margin-top: 24px;
+      font-size: 15px;
+      font-weight: 700;
+      font-style: italic;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+
+    .red-under {
+      position: relative;
+      display: inline-block;
+    }
+
+    .red-under::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 2.5px;
+      background: #ef4444;
+      transition: width 0.7s ease;
+    }
+
+    .drawn .red-under::after {
+      width: 100%;
+    }
+
+    .wb-diagram-frame {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 22px;
+      padding: 16px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 215px;
+    }
+
+    /* Points Slide Layout */
+    .wb-points-list {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 18px;
+    }
+
+    .wb-goal-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 16px;
+      color: #0f172a;
+      cursor: pointer;
+    }
+
+    .bullet-box {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bullet-blue {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      background: #2563eb;
+    }
+
+    .bullet-red-ring {
+      position: absolute;
+      inset: -4px;
+      width: 32px;
+      height: 32px;
+      stroke: #ef4444;
+      stroke-width: 2.3;
+      fill: none;
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      transition: stroke-dashoffset 0.7s ease;
+    }
+
+    .wb-goal-item.circled .bullet-red-ring {
+      stroke-dashoffset: 0;
+    }
+
+    .side-script {
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      font-weight: 700;
+      color: #2563eb;
+      margin-left: 8px;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: all 0.55s ease;
+    }
+
+    .side-script.green {
+      color: #16a34a;
+      display: block;
+      margin-left: 39px;
+      margin-top: 2px;
+    }
+
+    .wb-goal-item.drawn .side-script {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Freehand Finger Sketch Canvas */
+    #wbSketchCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 30;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    /* Corner Floating Controls */
+    .wb-floating-dock {
+      position: fixed;
+      bottom: 12px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 120;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .wb-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #1e293b;
+      cursor: pointer;
+    }
+
+    .wb-btn.primary {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .wb-btn.doubt {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .wb-btn.exit {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    /* AI Generating & Thinking Loader Overlay */
+    .ai-loader-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      z-index: 8000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .ai-loader-overlay.show {
+      display: flex;
+    }
+
+    .brain-pulse {
+      font-size: 52px;
+      margin-bottom: 12px;
+      animation: pulseBrain 0.9s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseBrain {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.1); }
+    }
+
+    /* Modals (Doubt & Login) */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9500;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 410px;
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: popModal 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popModal {
+      from { transform: scale(0.88); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 14px;
+      margin: 14px 0;
+      outline: none;
+    }
+
+    .google-login-btn {
+      width: 100%;
+      background: #ffffff;
+      color: #0f172a;
+      border: 1.5px solid #cbd5e1;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       1. CHAPTER LOBBY VIEW (100% BSEB CLASS 10TH CHAPTERS)
+       ========================================================= -->
+  <div class="lobby-shell" id="lobbyView">
+    <header class="lobby-navbar">
+      <div class="nav-left">
+        <a href="index.html" class="back-home-btn">← होम</a>
+        <div class="brand-title-wrap">
+          <h1>Nischay<span>Board</span> AI</h1>
+          <p>Class 10th • बिहार बोर्ड स्मार्ट क्लास</p>
+        </div>
+      </div>
+
+      <div class="user-chip" id="userAuthChip" onclick="handleUserChipClick()">
+        <img id="chipAvatar" src="https://ui-avatars.com/api/?name=Guest&background=2563eb&color=fff" alt="User">
+        <span id="chipName">Google लॉगिन</span>
+      </div>
+    </header>
+
+    <div class="lobby-hero">
+      <div class="hero-card-pro">
+        <div class="hero-pill-badge">⚡ 100% BSEB CLASS 10TH COMPLETE SYLLABUS</div>
+        <h2>हर विषय का हर चैप्टर, अब असली AI स्मार्ट व्हाइटबोर्ड पर!</h2>
+        <p>किसी भी चैप्टर को चुनें—AI टीचर असली इंसान जैसी आवाज़ में चित्र बनाकर और हाथ से लिखकर पूरा पाठ समझाएगा।</p>
+        <input type="text" class="quick-search-bar" id="chapterSearchInput" placeholder="🔍 कोई भी चैप्टर या टॉपिक खोजें (जैसे: त्रिकोणमिति, विद्युत, राष्ट्रवाद)..." oninput="filterChapters()">
+      </div>
+    </div>
+
+    <!-- Subject Tabs -->
+    <div class="subject-tabs-wrapper">
+      <div class="subject-tabs" id="subjectTabs"></div>
+    </div>
+
+    <!-- Chapters List -->
+    <div class="chapters-container">
+      <div class="subject-meta-head">
+        <h3 id="currentSubjectTitle">भौतिकी (Physics)</h3>
+        <span class="chapter-count-tag" id="chapterCountTag">6 अध्याय</span>
+      </div>
+      <div class="chapters-grid" id="chaptersGrid"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lobby-footer">
+      <div>© 2026 NischayDesk AI Smart Board • Developed by Prince Kumar</div>
+      <div class="footer-links-row">
+        <a href="index.html">डैशबोर्ड</a>
+        <a href="notes.html">10th नोट्स</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- =========================================================
+       2. 100% PURE HD LANDSCAPE SMART WHITEBOARD
+       ========================================================= -->
+  <div class="board-viewport" id="boardView">
+    <div class="wb-header">
+      <div class="wb-top-row">
+        <div class="wb-subject-tag" id="wbSubjectTag">PHYSICS • अध्याय 1</div>
+        <div class="wb-slide-count" id="wbSlideCount">Slide 1 of 3</div>
+        <div class="wb-rec-dot"></div>
+      </div>
+      <div class="wb-progress-line">
+        <div class="wb-progress-fill" id="wbProgressFill"></div>
+      </div>
+    </div>
+
+    <div class="wb-stage" id="wbStage"></div>
+    <canvas id="wbSketchCanvas"></canvas>
+
+    <div class="wb-floating-dock">
+      <button class="wb-btn exit" onclick="exitBoardToLobby()">← चैप्टर्स</button>
+      <button class="wb-btn" onclick="prevSlide()">⏮️</button>
+      <button class="wb-btn primary" id="wbPlayBtn" onclick="togglePlay()">▶️ Start</button>
+      <button class="wb-btn doubt" onclick="openDoubtModal()">✋ पूछें</button>
+      <button class="wb-btn" onclick="clearSketch()">🧹</button>
+      <button class="wb-btn" onclick="nextSlide()">⏭️</button>
+      <button class="wb-btn" onclick="requestFullLandscape()">⛶</button>
+    </div>
+  </div>
+
+  <!-- Portrait Warning -->
+  <div class="portrait-warning">
+    <div style="font-size: 54px; margin-bottom: 12px;">📱</div>
+    <h2 style="font-size: 20px; margin-bottom: 8px;">मोबाइल को आड़ा (Landscape) करें भाई!</h2>
+    <p style="font-size: 14px; color: #64748b; margin-bottom: 18px;">100% असली HD व्हाइटबोर्ड और चित्र देखने के लिए फोन घुमाएं।</p>
+    <button class="wb-btn primary" style="padding: 12px 22px; font-size: 14px;" onclick="requestFullLandscape()">⛶ फुल-स्क्रीन करें</button>
+  </div>
+
+  <!-- AI Lesson Builder & Thinking Loader -->
+  <div class="ai-loader-overlay" id="aiLoaderOverlay">
+    <div class="brain-pulse">🧠</div>
+    <h3 id="loaderTitle" style="font-size: 19px; font-weight: 900; color: #0f172a; margin-bottom: 6px;">AI स्मार्ट बोर्ड तैयार हो रहा है...</h3>
+    <p id="loaderSub" style="font-size: 13.5px; color: #64748b; max-width: 320px;">चैप्टर के मुख्य बिंदु, हाथ से लिखे नोट्स और डायग्राम बनाए जा रहे हैं।</p>
+  </div>
+
+  <!-- Doubt Modal -->
+  <div class="modal-backdrop" id="doubtModal">
+    <div class="modal-card">
+      <h3 style="font-size: 17px; font-weight: 900;">✋ अपना डाउट पूछें (AI टीचर समझाएगा)</h3>
+      <p style="font-size: 12.5px; color: #64748b; margin-top: 4px;">बोर्ड पर उंगली से गोला बनाकर या सीधे अपना सवाल लिखकर पूछें।</p>
+      <input type="text" id="doubtInput" placeholder="जैसे: अवतल दर्पण के उपयोग क्या हैं?">
+      <div style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="wb-btn" onclick="closeModals()">बंद करें</button>
+        <button class="wb-btn primary" onclick="askDoubtToAI()">AI से समझें 🧠</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Soft Google Login Gate Modal -->
+  <div class="modal-backdrop" id="loginGateModal">
+    <div class="modal-card">
+      <button onclick="closeModals()" style="position: absolute; top: 12px; right: 14px; border: none; background: #f1f5f9; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+      <div style="font-size: 44px; margin-bottom: 10px;">🎓</div>
+      <h3 style="font-size: 19px; font-weight: 900; margin-bottom: 6px;">सभी चैप्टर्स अनलॉक करें!</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.5; margin-bottom: 18px;">
+        कक्षा 10वीं के सभी 9 विषयों के पूरे चैप्टर्स और लाइव AI डाउट सॉल्वर का उपयोग करने के लिए 1-क्लिक Google लॉगिन करें।
+      </p>
+      <button class="google-login-btn" onclick="loginWithGoogleFirebase()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" height="20" alt="Google">
+        <span>Continue with Google</span>
+      </button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { GoogleGenAI } from 'https://esm.sh/@google/genai';
+
+    const GEMINI_API_KEY = "AQ.Ab8RN6KMJuccpLexBPXkjNEF-jcnlLhir08-sc9xA09pWKCAUg";
+    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+
+    // Termux / Render Edge-TTS Server (Zero Rate Limit & Real Human Voice)
+    const EDGE_TTS_SERVER = "http://localhost:5000/speak";
+
+    // =========================================================
+    // COMPLETE BSEB CLASS 10TH SYLLABUS (ALL 9 SUBJECTS)
+    // =========================================================
+    const class10Syllabus = {
+      physics: {
+        label: "🔭 भौतिकी (Physics)",
+        chapters: [
+          "1. प्रकाश का परावर्तन (Reflection of Light)",
+          "2. प्रकाश का अपवर्तन (Refraction of Light)",
+          "3. मानव नेत्र तथा रंगबिरंगा संसार",
+          "4. विद्युत धारा (Electric Current)",
+          "5. विद्युत धारा के चुंबकीय प्रभाव",
+          "6. ऊर्जा के स्रोत (Sources of Energy)"
+        ]
+      },
+      chemistry: {
+        label: "🧪 रसायन विज्ञान (Chemistry)",
+        chapters: [
+          "1. रासायनिक अभिक्रियाएँ एवं समीकरण",
+          "2. अम्ल, क्षारक एवं लवण",
+          "3. धातु एवं अधातु (Metals & Non-Metals)",
+          "4. कार्बन एवं उसके यौगिक",
+          "5. तत्वों का आवर्त वर्गीकरण"
+        ]
+      },
+      biology: {
+        label: "🧬 जीव विज्ञान (Biology)",
+        chapters: [
+          "1. जैव प्रक्रम : पोषण (Nutrition)",
+          "2. जैव प्रक्रम : श्वसन (Respiration)",
+          "3. जैव प्रक्रम : परिवहन (Transportation)",
+          "4. जैव प्रक्रम : उत्सर्जन (Excretion)",
+          "5. नियंत्रण एवं समन्वय (Control & Coordination)",
+          "6. जीव जनन कैसे करते हैं (Reproduction)",
+          "7. आनुवंशिकता एवं जैव विकास",
+          "8. हमारा पर्यावरण (Our Environment)"
+        ]
+      },
+      math: {
+        label: "📐 गणित (Mathematics)",
+        chapters: [
+          "1. वास्तविक संख्याएँ (Real Numbers)",
+          "2. बहुपद (Polynomials)",
+          "3. दो चर वाले रैखिक समीकरण युग्म",
+          "4. द्विघात समीकरण (Quadratic Equations)",
+          "5. समांतर श्रेढ़ियाँ (Arithmetic Progressions)",
+          "6. त्रिभुज (Triangles & Theorems)",
+          "7. निर्देशांक ज्यामिति (Coordinate Geometry)",
+          "8. त्रिकोणमिति का परिचय (Trigonometry)",
+          "9. त्रिकोणमिति के कुछ अनुप्रयोग (Height & Distance)",
+          "10. वृत्त (Circles)",
+          "11. रचनाएँ (Constructions)",
+          "12. वृत्तों से संबंधित क्षेत्रफल",
+          "13. पृष्ठीय क्षेत्रफल और आयतन",
+          "14. सांख्यिकी (Statistics)",
+          "15. प्रायिकता (Probability)"
+        ]
+      },
+      history: {
+        label: "🏛️ इतिहास (History)",
+        chapters: [
+          "1. यूरोप में राष्ट्रवाद का उदय",
+          "2. समाजवाद एवं साम्यवाद",
+          "3. हिंद-चीन में राष्ट्रवादी आंदोलन",
+          "4. भारत में राष्ट्रवाद (Nationalism in India)",
+          "5. अर्थव्यवस्था और आजीविका",
+          "6. शहरीकरण एवं शहरी जीवन",
+          "7. व्यापार और भूमंडलीकरण",
+          "8. प्रेस-संस्कृति एवं राष्ट्रवाद"
+        ]
+      },
+      geography: {
+        label: "🌍 भूगोल व आपदा (Geography)",
+        chapters: [
+          "1. भारत : संसाधन एवं उपयोग (क-वन, ख-जल, ग-खनिज, घ-शक्ति)",
+          "2. कृषि (Agriculture)",
+          "3. निर्माण उद्योग (Manufacturing Industries)",
+          "4. परिवहन, संचार एवं व्यापार",
+          "5. बिहार : कृषि एवं वन संसाधन",
+          "6. मानचित्र अध्ययन (उच्चावच निरूपण)",
+          "7. आपदा प्रबंधन : प्राकृतिक आपदा एवं बाढ़-सुखाड़",
+          "8. आपदा प्रबंधन : भूकंप, सुनामी एवं जीवन रक्षक उपाय"
+        ]
+      },
+      civics: {
+        label: "⚖️ राजनीतिक विज्ञान (Civics)",
+        chapters: [
+          "1. लोकतंत्र में सत्ता की साझेदारी",
+          "2. सत्ता में साझेदारी की कार्यप्रणाली",
+          "3. लोकतंत्र में प्रतिस्पर्धा एवं संघर्ष",
+          "4. लोकतंत्र की उपलब्धियाँ",
+          "5. लोकतंत्र की चुनौतियाँ"
+        ]
+      },
+      economics: {
+        label: "💰 अर्थशास्त्र (Economics)",
+        chapters: [
+          "1. अर्थव्यवस्था एवं इसके विकास का इतिहास",
+          "2. राज्य एवं राष्ट्र की आय",
+          "3. मुद्रा, बचत एवं साख",
+          "4. हमारी वित्तीय संस्थाएँ",
+          "5. रोजगार एवं सेवाएँ",
+          "6. वैश्वीकरण (Globalization)",
+          "7. उपभोक्ता जागरण एवं संरक्षण"
+        ]
+      },
+      hindi: {
+        label: "📖 हिंदी (गोधूलि व वर्णिका)",
+        chapters: [
+          "1. श्रम विभाजन और जाति प्रथा (भीमराव अंबेडकर)",
+          "2. विष के दाँत (नलिन विलोचन शर्मा)",
+          "3. भारत से हम क्या सीखें (मैक्स मूलर)",
+          "4. नाखून क्यों बढ़ते हैं (हजारी प्रसाद द्विवेदी)",
+          "5. नागरी लिपि (गुणाकर मुले)",
+          "6. बहादुर (अमरकांत)",
+          "7. परंपरा का मूल्यांकन (रामविलास शर्मा)",
+          "8. जित-जित मैं निरखत हूँ (बिरजू महाराज)",
+          "9. आविन्यों (अशोक वाजपेयी)",
+          "10. मछली (विनोद कुमार शुक्ल)",
+          "11. नौबतखाने में इबादत (यतींद्र मिश्र)",
+          "12. शिक्षा और संस्कृति (महात्मा गांधी)",
+          "13. काव्य खंड : गुरु नानक, रसखान, घनानंद, प्रेमघन, पंत, दिनकर",
+          "14. काव्य खंड : अज्ञेय, कुँवर नारायण, वीरेन डंगवाल, अनामिका, जीवनानंद दास, रेनर मारिया रिल्के",
+          "15. वर्णिका भाग-2 : दही वाली मंगम्मा, ढहते विश्वास, माँ, नगर, धरती कब तक घूमेगी"
+        ]
+      },
+      sanskrit: {
+        label: "🕉️ संस्कृत (पीयूषम् भाग-2)",
+        chapters: [
+          "1. मङ्गलम् (Mangalam)",
+          "2. पाटलिपुत्रवैभवम् (Patliputra Vaibhavam)",
+          "3. अलसकथा (Alaskatha)",
+          "4. संस्कृतसाहित्ये लेखिकाः",
+          "5. भारतमहिमा (Bharat Mahima)",
+          "6. भारतीयसंस्काराः (Bhartiya Sanskara)",
+          "7. नीतिश्लोकाः (Neeti Shloka)",
+          "8. कर्मवीरकथा (Karmaveer Katha)",
+          "9. स्वामी दयानन्दः (Swami Dayanand)",
+          "10. मन्दाकिनीवर्णनम् (Mandakini Varnanam)",
+          "11. व्याघ्रपथिककथा (Vyaghra Pathik Katha)",
+          "12. कर्णस्य दानवीरता (Karnasya Danveerta)",
+          "13. विश्वशान्तिः (Vishwa Shanti)",
+          "14. शास्त्रकाराः (Shastrakara)"
+        ]
+      }
+    };
+
+    // Default Pre-Loaded Chapter (100% Instant Free Demo: प्रकाश का परावर्तन)
+    const defaultPhysicsSlideDeck = [
+      {
+        type: "intro",
+        kicker: "PHYSICS • CHAPTER 1",
+        heroTitle: "प्रकाश का परावर्तन",
+        handSub: "reflection of light → optics starts",
+        qPrefix: "जब प्रकाश की किरण किसी ",
+        qUnderlined: "चिकनी या चमकीली सतह",
+        qSuffix: " से टकराकर वापस लौटती है, तो उसे क्या कहते हैं?",
+        qHandNote: "angle i = angle r → law of reflection!",
+        svg: `
+          <svg viewBox="0 0 320 200" width="100%" height="190">
+            <line x1="30" y1="160" x2="290" y2="160" stroke="#0f172a" stroke-width="3"/>
+            <line x1="160" y1="35" x2="160" y2="160" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5"/>
+            <text x="142" y="26" font-size="11" font-weight="bold" fill="#475569">अभिलंब (N)</text>
+
+            <line x1="65" y1="55" x2="160" y2="160" stroke="#2563eb" stroke-width="2.5"/>
+            <text x="45" y="48" font-size="11" font-weight="bold" fill="#2563eb">आपतित किरण</text>
+
+            <line x1="160" y1="160" x2="255" y2="55" stroke="#dc2626" stroke-width="2.5"/>
+            <text x="215" y="48" font-size="11" font-weight="bold" fill="#dc2626">परावर्तित किरण</text>
+
+            <circle cx="160" cy="140" r="18" fill="none" stroke="#16a34a" stroke-width="2"/>
+            <text x="136" y="135" font-size="11" font-weight="bold" fill="#15803d">∠i</text>
+            <text x="172" y="135" font-size="11" font-weight="bold" fill="#15803d">∠r</text>
+          </svg>
+        `,
+        steps: [
+          {
+            targetId: "wbHeroTitle",
+            voice: "हाय प्रिंस भाई! आज हम कक्षा दसवीं भौतिकी का पहला अध्याय प्रकाश का परावर्तन बिल्कुल असली स्मार्ट बोर्ड पर समझेंगे।"
+          },
+          {
+            targetId: "wbQuestionArea",
+            voice: "दाईं तरफ चित्र में देखो भाई। नीली किरण दर्पण से टकराकर लाल किरण के रूप में वापस लौट रही है। इसी घटना को प्रकाश का परावर्तन कहते हैं।"
+          }
+        ]
+      },
+      {
+        type: "points",
+        headerNote: "परावर्तन के दो मुख्य नियम (Laws of Reflection)",
+        points: [
+          {
+            text: "पहला नियम: <span class='red-under'>आपतन कोण (∠i)</span> हमेशा <span class='red-under'>परावर्तन कोण (∠r)</span> के बराबर होता है।",
+            sideNote: "∠i = ∠r (हर स्थिति में!)",
+            circleBullet: false,
+            voice: "पहला नियम ध्यान से देखो। प्रकाश जितने कोण से दर्पण पर गिरता है, ठीक उतने ही कोण से वापस लौटता है।"
+          },
+          {
+            text: "दूसरा नियम: आपतित किरण, परावर्तित किरण और अभिलंब <span class='red-under'>तीनों एक ही समतल</span> में होते हैं।",
+            sideNote: "एक ही बिंदु (आपतन बिंदु) पर!",
+            circleBullet: false,
+            voice: "दूसरा नियम कहता है कि आने वाली किरण, जाने वाली किरण और बीच का अभिलंब तीनों एक ही तल में स्थित होते हैं।"
+          },
+          {
+            text: "बोर्ड परीक्षा लक्ष्य: <span class='red-under'>अवतल दर्पण (Concave Mirror)</span> के उपयोग और किरण आरेख सबसे ज़रूरी हैं।",
+            greenNote: "Goal 3 = दाढ़ी बनाने, टॉर्च व गाड़ियों की हेडलाइट में ✓",
+            circleBullet: true,
+            voice: "और परीक्षा के लिए सबसे ज़रूरी लक्ष्य है अवतल दर्पण के उपयोग याद रखना—जैसे दाढ़ी बनाने में और गाड़ियों की हेडलाइट में।"
+          }
+        ]
+      }
+    ];
+
+    let activeSubjectKey = "physics";
+    let currentUser = null;
+    let activeSlides = defaultPhysicsSlideDeck;
+    let currentSlideIdx = 0;
+    let currentStepIdx = -1;
+    let isPlaying = false;
+    let activeAudio = null;
+    const audioCache = new Map();
+
+    // =========================================================
+    // FIREBASE GOOGLE LOGIN SYNC
+    // =========================================================
+    if (window.firebase && firebase.auth) {
+      firebase.auth().onAuthStateChanged((user) => {
+        currentUser = user;
+        const chipName = document.getElementById("chipName");
+        const chipAvatar = document.getElementById("chipAvatar");
+        if (user) {
+          const firstName = (user.displayName || user.email.split("@")[0]).split(" ")[0];
+          chipName.textContent = firstName;
+          chipAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName)}&background=2563eb&color=fff`;
+        } else {
+          chipName.textContent = "Google लॉगिन";
+          chipAvatar.src = "https://ui-avatars.com/api/?name=Guest&background=2563eb&color=fff";
+        }
+        renderChapters(activeSubjectKey);
+      });
+    }
+
+    window.handleUserChipClick = function() {
+      if (!currentUser) {
+        document.getElementById("loginGateModal").classList.add("open");
+      } else {
+        alert(`लॉगिन है: ${currentUser.displayName || currentUser.email} ✅`);
+      }
+    };
+
+    window.loginWithGoogleFirebase = function() {
+      if (window.firebase && firebase.auth) {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+        firebase.auth().signInWithPopup(provider)
+          .then(() => {
+            closeModals();
+          })
+          .catch((err) => {
+            if (err.code === "auth/popup-blocked") {
+              firebase.auth().signInWithRedirect(provider);
+            } else {
+              alert("लॉगिन में समस्या हुई, कृपया पुनः प्रयास करें।");
+            }
+          });
+      }
+    };
+
+    // =========================================================
+    // LOBBY RENDERING (TABS & ALL CHAPTERS)
+    // =========================================================
+    function initSubjectTabs() {
+      const tabsEl = document.getElementById("subjectTabs");
+      tabsEl.innerHTML = "";
+      Object.keys(class10Syllabus).forEach((key) => {
+        const btn = document.createElement("button");
+        btn.className = `subj-tab ${key === activeSubjectKey ? "active" : ""}`;
+        btn.textContent = class10Syllabus[key].label;
+        btn.onclick = () => {
+          activeSubjectKey = key;
+          document.querySelectorAll(".subj-tab").forEach(t => t.classList.remove("active"));
+          btn.classList.add("active");
+          document.getElementById("chapterSearchInput").value = "";
+          renderChapters(key);
+        };
+        tabsEl.appendChild(btn);
+      });
+    }
+
+    function renderChapters(subjectKey, searchQuery = "") {
+      const subj = class10Syllabus[subjectKey];
+      document.getElementById("currentSubjectTitle").textContent = subj.label;
+      const grid = document.getElementById("chaptersGrid");
+      grid.innerHTML = "";
+
+      const filtered = subj.chapters.filter(ch =>
+        ch.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      document.getElementById("chapterCountTag").textContent = `${filtered.length} अध्याय`;
+
+      filtered.forEach((chapterName, index) => {
+        // पहला चैप्टर हमेशा फ्री है; बाकी चैप्टर्स के लिए Soft Login Gate
+        const isFreeDemo = (subjectKey === "physics" && index === 0) || Boolean(currentUser);
+
+        const card = document.createElement("div");
+        card.className = "chapter-card";
+        card.innerHTML = `
+          <div class="ch-num-box">${index + 1}</div>
+          <div class="ch-info">
+            <h4>${chapterName}</h4>
+            <span>
+              ${isFreeDemo
+                ? `<span class="free-pill">FREE LIVE</span> HD व्हाइटबोर्ड`
+                : `<span class="lock-pill">🔒 LOGIN</span> 1-क्लिक अनलॉक`}
+            </span>
+          </div>
+          <div class="play-circle-btn">▶</div>
+        `;
+        card.onclick = () => openChapterInSmartBoard(subj.label, chapterName, isFreeDemo);
+        grid.appendChild(card);
+      });
+    }
+
+    window.filterChapters = function() {
+      const q = document.getElementById("chapterSearchInput").value.trim();
+      renderChapters(activeSubjectKey, q);
+    };
+
+    // =========================================================
+    // OPEN CHAPTER IN AI SMART WHITEBOARD
+    // =========================================================
+    async function openChapterInSmartBoard(subjectLabel, chapterTitle, allowed) {
+      if (!allowed) {
+        document.getElementById("loginGateModal").classList.add("open");
+        return;
+      }
+
+      document.getElementById("wbSubjectTag").textContent = `${subjectLabel} • ${chapterTitle}`;
+
+      // अगर पहला चैप्टर है तो तुरंत बिना देरी के खुलेगा!
+      if (chapterTitle.includes("प्रकाश का परावर्तन")) {
+        activeSlides = defaultPhysicsSlideDeck;
+        launchBoardScreen();
+        return;
+      }
+
+      // बाकी किसी भी चैप्टर के लिए Gemini AI से लाइव बोर्ड स्लाइड्स तैयार करना
+      const loader = document.getElementById("aiLoaderOverlay");
+      document.getElementById("loaderTitle").textContent = `"${chapterTitle}" तैयार हो रहा है...`;
+      loader.classList.add("show");
+
+      try {
+        const prompt = `बिहार बोर्ड कक्षा 10वीं के छात्र के लिए विषय "${subjectLabel}" के अध्याय "${chapterTitle}" पर एक 2-स्लाइड इंटरैक्टिव स्मार्ट व्हाइटबोर्ड लेसन शुद्ध JSON फॉर्मेट में बनाओ (बिना markdown backticks के):
+        [
+          {
+            "type": "intro",
+            "kicker": "${subjectLabel}",
+            "heroTitle": "अध्याय का मुख्य शीर्षक",
+            "handSub": "short english concept -> starts",
+            "qPrefix": "मुख्य प्रश्न का पहला भाग ",
+            "qUnderlined": "रेखांकित मुख्य शब्द",
+            "qSuffix": " प्रश्न का शेष भाग?",
+            "qHandNote": "short formula or trick!",
+            "svg": "<svg viewBox='0 0 320 200' width='100%' height='190'>सरल और साफ़ रंगीन SVG आरेख</svg>",
+            "steps": [
+              {
+                "targetId": "wbHeroTitle",
+                "voice": "हाय प्रिंस भाई! आज हम इस अध्याय को आसान हिंदी में समझेंगे।"
+              },
+              {
+                "targetId": "wbQuestionArea",
+                "voice": "बोर्ड पर बने चित्र को देखो और मुख्य परिभाषा समझो।"
+              }
+            ]
+          },
+          {
+            "type": "points",
+            "headerNote": "परीक्षा के लिए सबसे महत्वपूर्ण बिंदु",
+            "points": [
+              {
+                "text": "पहला मुख्य बिंदु <span class='red-under'>मुख्य शब्द</span> के साथ।",
+                "sideNote": "छोटा नीला नोट!",
+                "circleBullet": false,
+                "voice": "पहला बिंदु ध्यान से समझो।"
+              },
+              {
+                "text": "बोर्ड परीक्षा लक्ष्य: <span class='red-under'>सबसे ज़रूरी प्रश्न</span>।",
+                "greenNote": "Goal = परीक्षा में पक्का आएगा ✓",
+                "circleBullet": true,
+                "voice": "और यह अंतिम बिंदु बोर्ड परीक्षा के लिए सबसे महत्वपूर्ण है।"
+              }
+            ]
+          }
+        ]`;
+
+        const res = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: prompt
+        });
+
+        const cleanJson = res.text.replace(/```json|```/g, "").trim();
+        const generated = JSON.parse(cleanJson);
+        if (Array.isArray(generated) && generated.length > 0) {
+          activeSlides = generated;
+        } else {
+          activeSlides = defaultPhysicsSlideDeck;
+        }
+      } catch (err) {
+        console.warn("Lesson generation fallback:", err);
+        activeSlides = defaultPhysicsSlideDeck;
+      } finally {
+        loader.classList.remove("show");
+        launchBoardScreen();
+      }
+    }
+
+    function launchBoardScreen() {
+      document.getElementById("lobbyView").classList.add("hidden");
+      const board = document.getElementById("boardView");
+      board.classList.add("active");
+      currentSlideIdx = 0;
+      currentStepIdx = -1;
+      renderSlide(0);
+      requestFullLandscape();
+      setTimeout(startLecture, 450);
+    }
+
+    window.exitBoardToLobby = function() {
+      isPlaying = false;
+      stopAudio();
+      document.getElementById("boardView").classList.remove("active");
+      document.getElementById("lobbyView").classList.remove("hidden");
+    };
+
+    window.requestFullLandscape = function() {
+      const el = document.documentElement;
+      if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(() => {});
+      }
+    };
+
+    // =========================================================
+    // ZERO-GAP HUMAN VOICE ENGINE (Edge-TTS Pre-fetcher)
+    // =========================================================
+    async function preloadVoice(text) {
+      if (audioCache.has(text)) return audioCache.get(text);
+      try {
+        const url = `${EDGE_TTS_SERVER}?text=${encodeURIComponent(text)}&voice=hi-IN-MadhurNeural`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const blob = await res.blob();
+        const objUrl = URL.createObjectURL(blob);
+        audioCache.set(text, objUrl);
+        return objUrl;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function preloadSlideDeck(idx) {
+      const s = activeSlides[idx];
+      if (!s) return;
+      const list = s.type === "intro" ? s.steps : s.points;
+      list.forEach(item => preloadVoice(item.voice));
+    }
+
+    async function speakSmooth(text, onDone) {
+      stopAudio();
+      const cached = await preloadVoice(text);
+      if (cached) {
+        const audio = new Audio(cached);
+        activeAudio = audio;
+        audio.onended = () => {
+          activeAudio = null;
+          if (onDone) onDone();
+        };
+        await audio.play();
+      } else {
+        // Fallback timing if local voice server is off
+        setTimeout(() => { if (onDone) onDone(); }, 3200);
+      }
+    }
+
+    function stopAudio() {
+      if (activeAudio) {
+        activeAudio.pause();
+        activeAudio = null;
+      }
+    }
+
+    // =========================================================
+    // RENDER WHITEBOARD SLIDES & ANIMATIONS
+    // =========================================================
+    function renderSlide(idx) {
+      const s = activeSlides[idx];
+      document.getElementById("wbSlideCount").textContent = `Slide ${idx + 1} of ${activeSlides.length}`;
+      document.getElementById("wbProgressFill").style.width = `${((idx + 1) / activeSlides.length) * 100}%`;
+      clearSketch();
+
+      const stage = document.getElementById("wbStage");
+      if (s.type === "intro") {
+        stage.innerHTML = `
+          <div class="wb-intro-grid">
+            <div>
+              <div class="wb-kicker">${s.kicker}</div>
+              <div class="wb-hero-heading" id="wbHeroTitle">
+                ${s.heroTitle}
+                <div class="wb-red-stroke"></div>
+              </div>
+              <div class="wb-hand-note" id="wbHandSub">${s.handSub}</div>
+
+              <div class="wb-question-area" id="wbQuestionArea">
+                ${s.qPrefix}<span class="red-under">${s.qUnderlined}</span>${s.qSuffix}
+                <div class="wb-hand-note" id="wbQHand" style="font-size: 20px;">${s.qHandNote}</div>
+              </div>
+            </div>
+            <div class="wb-diagram-frame">${s.svg}</div>
+          </div>
+        `;
+      } else {
+        let html = `<div class="wb-points-list">
+          <div class="wb-hand-note show" style="margin-left: 38px;">${s.headerNote}</div>`;
+
+        s.points.forEach((pt, i) => {
+          html += `
+            <div>
+              <div class="wb-goal-item" id="wb-goal-${i}" onclick="explainPoint(${i})">
+                <div class="bullet-box">
+                  <div class="bullet-blue"></div>
+                  <svg class="bullet-red-ring" viewBox="0 0 36 36">
+                    <path d="M 18,3 C 28,3 33,10 33,18 C 33,27 26,33 17,33 C 8,33 3,26 3,18 C 3,10 9,4 18,3" />
+                  </svg>
+                </div>
+                <div style="line-height: 1.5; font-weight: 600;">${pt.text}</div>
+                ${pt.sideNote ? `<div class="side-script">${pt.sideNote}</div>` : ""}
+              </div>
+              ${pt.greenNote ? `<div class="side-script green" id="wb-green-${i}">${pt.greenNote}</div>` : ""}
+            </div>
+          `;
+        });
+        html += `</div>`;
+        stage.innerHTML = html;
+      }
+
+      preloadSlideDeck(idx);
+      if (idx + 1 < activeSlides.length) preloadSlideDeck(idx + 1);
+    }
+
+    window.togglePlay = function() {
+      if (isPlaying) {
+        isPlaying = false;
+        stopAudio();
+        document.getElementById("wbPlayBtn").textContent = "▶️ Resume";
+      } else {
+        startLecture();
+      }
+    };
+
+    function startLecture() {
+      isPlaying = true;
+      document.getElementById("wbPlayBtn").textContent = "⏸️ Pause";
+      runStep();
+    }
+
+    function runStep() {
+      if (!isPlaying) return;
+      const s = activeSlides[currentSlideIdx];
+      const list = s.type === "intro" ? s.steps : s.points;
+      currentStepIdx++;
+
+      if (currentStepIdx >= list.length) {
+        if (currentSlideIdx < activeSlides.length - 1) {
+          currentSlideIdx++;
+          currentStepIdx = -1;
+          renderSlide(currentSlideIdx);
+          setTimeout(runStep, 200);
+        } else {
+          isPlaying = false;
+          document.getElementById("wbPlayBtn").textContent = "🔄 फिर से";
+          currentStepIdx = -1;
+        }
+        return;
+      }
+
+      if (s.type === "intro") {
+        if (currentStepIdx === 0) {
+          document.getElementById("wbHeroTitle").classList.add("drawn");
+          document.getElementById("wbHandSub").classList.add("show");
+        } else {
+          document.getElementById("wbQuestionArea").classList.add("drawn");
+          document.getElementById("wbQHand").classList.add("show");
+        }
+      } else {
+        const row = document.getElementById(`wb-goal-${currentStepIdx}`);
+        row.classList.add("drawn");
+        if (list[currentStepIdx].circleBullet) row.classList.add("circled");
+        const gEl = document.getElementById(`wb-green-${currentStepIdx}`);
+        if (gEl) {
+          gEl.style.opacity = "1";
+          gEl.style.transform = "translateX(0)";
+        }
+      }
+
+      speakSmooth(list[currentStepIdx].voice, () => {
+        if (isPlaying) setTimeout(runStep, 50);
+      });
+    }
+
+    window.explainPoint = function(i) {
+      isPlaying = false;
+      stopAudio();
+      document.getElementById("wbPlayBtn").textContent = "▶️ Resume";
+      const row = document.getElementById(`wb-goal-${i}`);
+      row.classList.add("drawn", "circled");
+      speakSmooth(activeSlides[currentSlideIdx].points[i].voice);
+    };
+
+    window.nextSlide = function() {
+      isPlaying = false;
+      stopAudio();
+      currentSlideIdx = (currentSlideIdx + 1) % activeSlides.length;
+      currentStepIdx = -1;
+      renderSlide(currentSlideIdx);
+      startLecture();
+    };
+
+    window.prevSlide = function() {
+      isPlaying = false;
+      stopAudio();
+      currentSlideIdx = (currentSlideIdx - 1 + activeSlides.length) % activeSlides.length;
+      currentStepIdx = -1;
+      renderSlide(currentSlideIdx);
+      startLecture();
+    };
+
+    // =========================================================
+    // FINGER SKETCH & AI DOUBT SOLVER
+    // =========================================================
+    const sketchCanvas = document.getElementById("wbSketchCanvas");
+    const sCtx = sketchCanvas.getContext("2d");
+    let drawing = false;
+
+    function fitSketch() {
+      sketchCanvas.width = window.innerWidth;
+      sketchCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", fitSketch);
+    fitSketch();
+
+    window.clearSketch = function() {
+      sCtx.clearRect(0, 0, sketchCanvas.width, sketchCanvas.height);
+    };
+
+    sketchCanvas.addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".wb-floating-dock") || e.target.closest(".modal-backdrop")) return;
+      drawing = true;
+      sCtx.beginPath();
+      sCtx.moveTo(e.clientX, e.clientY);
+    });
+
+    sketchCanvas.addEventListener("pointermove", (e) => {
+      if (!drawing) return;
+      sCtx.strokeStyle = "#ef4444";
+      sCtx.lineWidth = 3;
+      sCtx.lineCap = "round";
+      sCtx.lineTo(e.clientX, e.clientY);
+      sCtx.stroke();
+    });
+
+    sketchCanvas.addEventListener("pointerup", () => {
+      if (!drawing) return;
+      drawing = false;
+      openDoubtModal();
+    });
+
+    window.openDoubtModal = function() {
+      isPlaying = false;
+      stopAudio();
+      document.getElementById("wbPlayBtn").textContent = "▶️ Resume";
+      if (!currentUser) {
+        document.getElementById("loginGateModal").classList.add("open");
+        return;
+      }
+      document.getElementById("doubtModal").classList.add("open");
+      document.getElementById("doubtInput").focus();
+    };
+
+    window.closeModals = function() {
+      document.getElementById("doubtModal").classList.remove("open");
+      document.getElementById("loginGateModal").classList.remove("open");
+    };
+
+    window.askDoubtToAI = async function() {
+      const q = document.getElementById("doubtInput").value.trim();
+      if (!q) return;
+      closeModals();
+      document.getElementById("doubtInput").value = "";
+
+      const loader = document.getElementById("aiLoaderOverlay");
+      document.getElementById("loaderTitle").textContent = "🧠 AI टीचर तुम्हारा सवाल सोच रहा है...";
+      loader.classList.add("show");
+
+      try {
+        const res = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: `तुम बिहार बोर्ड कक्षा 10वीं के छात्र प्रिंस भाई के निजी शिक्षक हो। छात्र ने यह डाउट पूछा है: "${q}"। उसे 2-3 वाक्यों में बहुत ही सरल, देसी और स्पष्ट हिंदी में समझाओ।`
+        });
+        loader.classList.remove("show");
+        speakSmooth(res.text);
+      } catch (e) {
+        loader.classList.remove("show");
+        speakSmooth("बहुत अच्छा सवाल है प्रिंस भाई! इसे चित्र और परिभाषा से समझो तो बोर्ड परीक्षा में पूरे अंक मिलेंगे।");
+      }
+    };
+
+    // Initialize Lobby
+    initSubjectTabs();
+    renderChapters("physics");
+  </script>
+</body>
+</html>
