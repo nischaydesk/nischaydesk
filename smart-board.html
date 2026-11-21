@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -7,14 +7,47 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Firebase Auth Sync -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="config.js"></script>
 
+  <script>
+    const initTheme = localStorage.getItem("nd_app_theme") || "light";
+    document.documentElement.setAttribute("data-theme", initTheme);
+  </script>
+
   <style>
+    :root {
+      --bg-app: #f4f7fb;
+      --bg-surface: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.88);
+      --border-subtle: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent-blue: #2563eb;
+      --accent-cyan: #0284c7;
+      --chip-bg: #eff6ff;
+      --chip-text: #1d4ed8;
+      --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    html[data-theme="dark"] {
+      --bg-app: #040914;
+      --bg-surface: #0b162c;
+      --bg-glass: rgba(11, 22, 44, 0.88);
+      --border-subtle: rgba(56, 189, 248, 0.22);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #38bdf8;
+      --chip-bg: rgba(56, 189, 248, 0.14);
+      --chip-text: #38bdf8;
+      --shadow-card: 0 14px 36px rgba(0, 0, 0, 0.45);
+    }
+
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -25,62 +58,91 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: #f8fafc;
-      color: #0f172a;
+      background: var(--bg-app);
+      color: var(--text-primary);
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
       overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
       user-select: none;
     }
 
     /* =========================================================
-       1. NATIVE APP SPLASH SCREEN
+       1. PREMIUM 3D APP SPLASH SCREEN
        ========================================================= */
     #appSplash {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, #ffffff 0%, #eff6ff 100%);
+      background: radial-gradient(circle at 50% 35%, #1e3a8a 0%, #040914 100%);
       z-index: 99999;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.45s ease, transform 0.45s ease;
+      color: #ffffff;
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     #appSplash.hide {
       opacity: 0;
-      transform: scale(1.08);
+      transform: scale(1.12);
       pointer-events: none;
     }
 
-    .splash-app-icon {
-      width: 84px;
-      height: 84px;
-      border-radius: 24px;
-      background: linear-gradient(135deg, #2563eb, #0284c7);
-      color: #ffffff;
-      font-size: 42px;
+    .splash-orb {
+      width: 92px;
+      height: 92px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 16px 36px rgba(37, 99, 235, 0.35);
-      margin-bottom: 16px;
-      animation: iconPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 46px;
+      box-shadow: 0 0 45px rgba(56, 189, 248, 0.55);
+      margin-bottom: 18px;
+      animation: orbFloat 1.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    @keyframes iconPop {
-      from { transform: scale(0.4); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    @keyframes orbFloat {
+      0% { transform: translateY(30px) scale(0.5) rotate(-12deg); opacity: 0; }
+      100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .splash-loader-bar {
+      width: 140px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .splash-loader-fill {
+      width: 45%;
+      height: 100%;
+      background: #38bdf8;
+      border-radius: 99px;
+      animation: barSlide 0.9s infinite ease-in-out;
+    }
+
+    @keyframes barSlide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(260%); }
     }
 
     /* =========================================================
-       2. APP SHELL & TOP HEADER
+       2. APP SHELL & GLASS TOP BAR
        ========================================================= */
     .app-container {
       min-height: 100vh;
-      padding-bottom: 84px;
+      padding-bottom: 88px;
       display: flex;
       flex-direction: column;
+      animation: appReveal 0.5s ease;
+    }
+
+    @keyframes appReveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .app-container.hidden {
@@ -91,14 +153,15 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
-      border-bottom: 1.5px solid #e2e8f0;
-      padding: 12px 16px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1.5px solid var(--border-subtle);
+      padding: 11px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
 
     .top-left-group {
@@ -108,9 +171,9 @@
     }
 
     .app-back-pill {
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-primary);
       padding: 7px 12px;
       border-radius: 12px;
       font-size: 13px;
@@ -119,44 +182,71 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      transition: transform 0.15s;
+      transition: transform 0.15s ease;
     }
 
     .app-back-pill:active {
-      transform: scale(0.95);
+      transform: scale(0.93);
     }
 
     .app-title-block h1 {
       font-size: 16px;
       font-weight: 900;
-      color: #0f172a;
+      color: var(--text-primary);
       line-height: 1.15;
     }
 
     .app-title-block h1 span {
-      color: #2563eb;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .app-title-block p {
       font-size: 11px;
       font-weight: 700;
-      color: #64748b;
+      color: var(--text-secondary);
+    }
+
+    .top-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .theme-toggle-btn:active {
+      transform: rotate(35deg) scale(0.9);
     }
 
     .profile-pill-btn {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: #eff6ff;
-      border: 1.5px solid #bfdbfe;
-      padding: 5px 12px 5px 6px;
+      gap: 7px;
+      background: var(--chip-bg);
+      border: 1.5px solid var(--border-subtle);
+      padding: 4px 11px 4px 5px;
       border-radius: 999px;
       cursor: pointer;
       transition: transform 0.15s ease;
     }
 
     .profile-pill-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
     }
 
     .profile-pill-btn img {
@@ -167,18 +257,22 @@
     }
 
     .profile-pill-btn span {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 800;
-      color: #1d4ed8;
+      color: var(--chip-text);
+      max-width: 84px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* =========================================================
-       3. TWO CORE APP MODES (SYLLABUS vs AI SESSION)
+       3. TWO CORE APP MODES (AI STUDIO vs SYLLABUS)
        ========================================================= */
     .mode-switcher-wrap {
       max-width: 980px;
       width: 100%;
-      margin: 16px auto 8px;
+      margin: 16px auto 10px;
       padding: 0 16px;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -186,42 +280,189 @@
     }
 
     .mode-card {
-      background: #ffffff;
-      border: 2px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 14px;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 15px;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-card);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
     }
 
     .mode-card.active {
-      border-color: #2563eb;
-      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.14);
-      transform: translateY(-2px);
+      border-color: var(--accent-blue);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.18);
+    }
+
+    .mode-card.active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 54px;
+      height: 54px;
+      background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.2), transparent 70%);
     }
 
     .mode-card-icon {
-      font-size: 26px;
+      font-size: 28px;
       margin-bottom: 6px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .mode-card.active .mode-card-icon {
+      transform: scale(1.12);
     }
 
     .mode-card h3 {
       font-size: 14.5px;
       font-weight: 900;
-      color: #0f172a;
+      color: var(--text-primary);
       margin-bottom: 3px;
     }
 
     .mode-card p {
       font-size: 11.5px;
       font-weight: 600;
-      color: #64748b;
+      color: var(--text-secondary);
       line-height: 1.35;
     }
 
     /* =========================================================
-       4. MODE A: EXTERNAL JSON SYLLABUS VIEW
+       4. MODE A: AI LIVE SESSION GENERATOR
+       ========================================================= */
+    .ai-studio-section {
+      max-width: 980px;
+      width: 100%;
+      margin: 8px auto;
+      padding: 0 16px;
+      display: none;
+      animation: panelSpring 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ai-studio-section.active {
+      display: block;
+    }
+
+    @keyframes panelSpring {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .studio-box {
+      background: linear-gradient(135deg, #091326 0%, #172e6e 55%, #0284c7 100%);
+      border-radius: 24px;
+      padding: 24px 20px;
+      color: #ffffff;
+      box-shadow: 0 18px 40px rgba(2, 132, 199, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .studio-model-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #7dd3fc;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .studio-box h2 {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .studio-box p {
+      font-size: 13px;
+      color: #e2e8f0;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .studio-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .studio-input:focus {
+      border-color: #38bdf8;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .studio-input::placeholder {
+      color: #cbd5e1;
+    }
+
+    .studio-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .topic-suggestion {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+    }
+
+    .topic-suggestion:active {
+      transform: scale(0.94);
+      background: rgba(56, 189, 248, 0.35);
+    }
+
+    .generate-video-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+      color: #0f172a;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 15.5px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease;
+    }
+
+    .generate-video-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* =========================================================
+       5. MODE B: EXTERNAL JSON SYLLABUS VIEW
        ========================================================= */
     .syllabus-section {
       max-width: 980px;
@@ -229,16 +470,11 @@
       margin: 8px auto;
       padding: 0 16px;
       display: none;
-      animation: fadeSlideUp 0.35s ease;
+      animation: panelSpring 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .syllabus-section.active {
       display: block;
-    }
-
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .subject-scroller {
@@ -255,9 +491,9 @@
 
     .subj-pill {
       flex: 0 0 auto;
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
-      color: #334155;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
+      color: var(--text-primary);
       padding: 9px 14px;
       border-radius: 12px;
       font-size: 13px;
@@ -267,9 +503,9 @@
     }
 
     .subj-pill.active {
-      background: #2563eb;
+      background: var(--accent-blue);
       color: #ffffff;
-      border-color: #2563eb;
+      border-color: var(--accent-blue);
       box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
     }
 
@@ -283,12 +519,12 @@
     .chapter-list-header h3 {
       font-size: 16.5px;
       font-weight: 900;
-      color: #0f172a;
+      color: var(--text-primary);
     }
 
     .count-badge {
-      background: #eff6ff;
-      color: #2563eb;
+      background: var(--chip-bg);
+      color: var(--chip-text);
       padding: 4px 10px;
       border-radius: 8px;
       font-size: 12px;
@@ -302,8 +538,8 @@
     }
 
     .ch-card {
-      background: #ffffff;
-      border: 1.5px solid #e2e8f0;
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-subtle);
       border-radius: 16px;
       padding: 14px 15px;
       display: flex;
@@ -311,20 +547,21 @@
       justify-content: space-between;
       gap: 12px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      box-shadow: var(--shadow-card);
+      transition: all 0.22s ease;
     }
 
     .ch-card:active {
-      transform: scale(0.98);
-      border-color: #2563eb;
+      transform: scale(0.97);
+      border-color: var(--accent-blue);
     }
 
     .ch-index {
       width: 40px;
       height: 40px;
       border-radius: 12px;
-      background: #eff6ff;
-      color: #2563eb;
+      background: var(--chip-bg);
+      color: var(--chip-text);
       font-weight: 900;
       font-size: 14px;
       display: flex;
@@ -341,7 +578,7 @@
     .ch-body h4 {
       font-size: 14px;
       font-weight: 800;
-      color: #0f172a;
+      color: var(--text-primary);
       margin-bottom: 3px;
       line-height: 1.35;
     }
@@ -349,15 +586,15 @@
     .ch-body p {
       font-size: 11.5px;
       font-weight: 700;
-      color: #64748b;
+      color: var(--text-secondary);
     }
 
     .ch-arrow {
       width: 34px;
       height: 34px;
       border-radius: 10px;
-      background: #f1f5f9;
-      color: #2563eb;
+      background: var(--chip-bg);
+      color: var(--chip-text);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -366,103 +603,14 @@
       flex-shrink: 0;
     }
 
-    /* Empty / Pending JSON Notice Box */
     .json-pending-card {
-      background: #ffffff;
-      border: 2px dashed #cbd5e1;
-      border-radius: 18px;
-      padding: 26px 20px;
+      background: var(--bg-surface);
+      border: 2px dashed var(--border-subtle);
+      border-radius: 20px;
+      padding: 28px 20px;
       text-align: center;
       margin-top: 8px;
-    }
-
-    /* =========================================================
-       5. MODE B: AI LIVE SESSION GENERATOR
-       ========================================================= */
-    .ai-studio-section {
-      max-width: 980px;
-      width: 100%;
-      margin: 10px auto;
-      padding: 0 16px;
-      display: none;
-      animation: fadeSlideUp 0.35s ease;
-    }
-
-    .ai-studio-section.active {
-      display: block;
-    }
-
-    .studio-box {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-      border-radius: 22px;
-      padding: 22px 20px;
-      color: #ffffff;
-      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.2);
-    }
-
-    .studio-box h2 {
-      font-size: 20px;
-      font-weight: 900;
-      margin-bottom: 6px;
-    }
-
-    .studio-box p {
-      font-size: 13px;
-      color: #cbd5e1;
-      margin-bottom: 16px;
-      line-height: 1.5;
-    }
-
-    .studio-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1.5px solid rgba(255, 255, 255, 0.28);
-      border-radius: 14px;
-      padding: 14px 16px;
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 600;
-      outline: none;
-      margin-bottom: 12px;
-    }
-
-    .studio-input::placeholder {
-      color: #94a3b8;
-    }
-
-    .studio-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .topic-suggestion {
-      background: rgba(56, 189, 248, 0.16);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #7dd3fc;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .generate-video-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
-      color: #ffffff;
-      border: none;
-      padding: 15px;
-      border-radius: 14px;
-      font-size: 15.5px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      box-shadow: var(--shadow-card);
     }
 
     /* =========================================================
@@ -474,9 +622,10 @@
       left: 0;
       right: 0;
       height: 64px;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(12px);
-      border-top: 1.5px solid #e2e8f0;
+      background: var(--bg-glass);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1.5px solid var(--border-subtle);
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -491,14 +640,19 @@
       align-items: center;
       justify-content: center;
       gap: 3px;
-      color: #64748b;
+      color: var(--text-secondary);
       font-size: 11.5px;
       font-weight: 800;
       cursor: pointer;
+      transition: color 0.2s, transform 0.15s;
+    }
+
+    .dock-tab:active {
+      transform: scale(0.92);
     }
 
     .dock-tab.active {
-      color: #2563eb;
+      color: var(--accent-blue);
     }
 
     .dock-tab span.ico {
@@ -506,14 +660,14 @@
     }
 
     /* =========================================================
-       7. TOPIC-WISE SLIDE-UP SHEET (CHAPTER -> TOPICS)
+       7. TOPIC-WISE SLIDE-UP SHEET
        ========================================================= */
     .sheet-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.72);
-      backdrop-filter: blur(6px);
+      background: rgba(4, 9, 20, 0.76);
+      backdrop-filter: blur(8px);
       z-index: 1500;
       align-items: flex-end;
       justify-content: center;
@@ -526,12 +680,14 @@
     .topic-sheet {
       width: 100%;
       max-width: 560px;
-      background: #ffffff;
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border-top: 1.5px solid var(--border-subtle);
       border-radius: 26px 26px 0 0;
       padding: 20px 18px 28px;
       max-height: 82vh;
       overflow-y: auto;
-      animation: slideUpSheet 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: slideUpSheet 0.34s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes slideUpSheet {
@@ -542,15 +698,15 @@
     .sheet-drag-bar {
       width: 42px;
       height: 5px;
-      background: #cbd5e1;
+      background: var(--border-subtle);
       border-radius: 99px;
       margin: 0 auto 14px;
     }
 
     .topic-row-btn {
       width: 100%;
-      background: #f8fafc;
-      border: 1.5px solid #e2e8f0;
+      background: var(--bg-app);
+      border: 1.5px solid var(--border-subtle);
       border-radius: 14px;
       padding: 14px 16px;
       margin-bottom: 10px;
@@ -563,9 +719,8 @@
     }
 
     .topic-row-btn:active {
-      transform: scale(0.98);
-      border-color: #2563eb;
-      background: #eff6ff;
+      transform: scale(0.97);
+      border-color: var(--accent-blue);
     }
 
     /* =========================================================
@@ -575,7 +730,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: #0f172a;
+      background: radial-gradient(circle at center, #0f172a 0%, #040914 100%);
       color: #ffffff;
       z-index: 6000;
       flex-direction: column;
@@ -595,7 +750,7 @@
       border-radius: 50%;
       border: 4px solid rgba(56, 189, 248, 0.2);
       border-top-color: #38bdf8;
-      animation: spinRing 0.9s linear infinite;
+      animation: spinRing 0.85s linear infinite;
       margin-bottom: 20px;
     }
 
@@ -607,18 +762,18 @@
       margin-top: 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      font-size: 13px;
+      gap: 9px;
+      font-size: 13.5px;
       color: #94a3b8;
     }
 
     .prep-step.done {
       color: #4ade80;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     /* =========================================================
-       9. 100% PURE HD LANDSCAPE SMART WHITEBOARD STAGE
+       9. HD LANDSCAPE SMART WHITEBOARD STAGE (LIGHT & DARK SYNCED)
        ========================================================= */
     .wb-fullscreen {
       display: none;
@@ -626,7 +781,8 @@
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background: #ffffff;
+      background: var(--bg-surface);
+      color: var(--text-primary);
       z-index: 7000;
       flex-direction: column;
       justify-content: space-between;
@@ -640,7 +796,7 @@
     }
 
     @keyframes boardFadeZoom {
-      from { opacity: 0; transform: scale(1.05); }
+      from { opacity: 0; transform: scale(1.06); }
       to { opacity: 1; transform: scale(1); }
     }
 
@@ -648,7 +804,8 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: #ffffff;
+      background: var(--bg-surface);
+      color: var(--text-primary);
       z-index: 9900;
       flex-direction: column;
       align-items: center;
@@ -663,7 +820,6 @@
       }
     }
 
-    /* Minimal Top Header (JEET AI Style) */
     .wb-top-bar {
       display: flex;
       flex-direction: column;
@@ -684,9 +840,9 @@
     }
 
     .wb-exit-pill {
-      background: #fee2e2;
-      color: #dc2626;
-      border: none;
+      background: rgba(239, 68, 68, 0.14);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
       padding: 4px 10px;
       border-radius: 8px;
       font-size: 12px;
@@ -697,7 +853,7 @@
     .wb-crumb {
       font-size: 12px;
       font-weight: 800;
-      color: #2563eb;
+      color: var(--accent-blue);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -711,18 +867,17 @@
     .wb-prog-track {
       width: 76%;
       height: 2px;
-      background: #bfdbfe;
+      background: var(--border-subtle);
       margin-left: 72px;
     }
 
     .wb-prog-bar {
       height: 100%;
       width: 25%;
-      background: #2563eb;
+      background: var(--accent-blue);
       transition: width 0.5s ease;
     }
 
-    /* Main Board Workspace */
     .wb-main-canvas {
       flex: 1;
       display: flex;
@@ -746,7 +901,7 @@
     .intro-badge {
       font-size: 11px;
       font-weight: 800;
-      color: #3b82f6;
+      color: var(--accent-cyan);
       letter-spacing: 1px;
       margin-bottom: 6px;
     }
@@ -754,7 +909,7 @@
     .intro-title {
       font-size: 28px;
       font-weight: 800;
-      color: #2563eb;
+      color: var(--accent-blue);
       line-height: 1.25;
       display: inline-block;
     }
@@ -776,7 +931,7 @@
       font-family: 'Caveat', cursive;
       font-size: 23px;
       font-weight: 700;
-      color: #2563eb;
+      color: var(--accent-cyan);
       margin-top: 6px;
       opacity: 0;
       transform: translateY(5px);
@@ -793,12 +948,12 @@
       font-size: 15px;
       font-weight: 700;
       font-style: italic;
-      color: #0f172a;
+      color: var(--text-primary);
       line-height: 1.45;
     }
 
     .diagram-card-clean {
-      border: 1.5px solid #cbd5e1;
+      border: 1.5px solid var(--border-subtle);
       border-radius: 20px;
       padding: 14px;
       background: #ffffff;
@@ -823,7 +978,7 @@
       align-items: center;
       gap: 14px;
       font-size: 15.5px;
-      color: #0f172a;
+      color: var(--text-primary);
     }
 
     .sq-wrap {
@@ -840,7 +995,7 @@
       width: 13px;
       height: 13px;
       border-radius: 3px;
-      background: #2563eb;
+      background: var(--accent-blue);
     }
 
     .sq-ring {
@@ -884,7 +1039,7 @@
       font-family: 'Caveat', cursive;
       font-size: 21px;
       font-weight: 700;
-      color: #2563eb;
+      color: var(--accent-cyan);
       margin-left: 8px;
       opacity: 0;
       transform: translateX(-6px);
@@ -903,11 +1058,11 @@
       top: 46px;
       left: 50%;
       transform: translateX(-50%);
-      background: #ffffff;
-      border: 2px solid #2563eb;
+      background: var(--bg-surface);
+      border: 2px solid var(--accent-blue);
       border-radius: 999px;
       padding: 6px 14px;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.22);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.28);
       z-index: 7500;
       align-items: center;
       gap: 10px;
@@ -955,7 +1110,7 @@
     .quiz-q-title {
       font-size: 19px;
       font-weight: 800;
-      color: #0f172a;
+      color: var(--text-primary);
       margin-bottom: 16px;
     }
 
@@ -966,28 +1121,28 @@
     }
 
     .quiz-opt-card {
-      background: #f8fafc;
-      border: 2px solid #cbd5e1;
+      background: var(--bg-app);
+      border: 2px solid var(--border-subtle);
       border-radius: 14px;
       padding: 12px 16px;
       font-size: 14.5px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--text-primary);
       text-align: left;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .quiz-opt-card.right {
-      background: #dcfce7;
+      background: rgba(22, 163, 74, 0.18);
       border-color: #16a34a;
-      color: #15803d;
+      color: #16a34a;
     }
 
     .quiz-opt-card.wrong {
-      background: #fee2e2;
+      background: rgba(220, 38, 38, 0.18);
       border-color: #dc2626;
-      color: #dc2626;
+      color: #ef4444;
     }
 
     /* Finger Sketch Canvas */
@@ -1010,12 +1165,12 @@
       align-items: center;
       gap: 6px;
       z-index: 7200;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(8px);
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
       padding: 5px 10px;
       border-radius: 999px;
-      border: 1.5px solid #e2e8f0;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid var(--border-subtle);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }
 
     .c-btn {
@@ -1025,26 +1180,26 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: 800;
-      color: #1e293b;
+      color: var(--text-primary);
       cursor: pointer;
     }
 
     .c-btn.blue {
-      background: #2563eb;
+      background: var(--accent-blue);
       color: #ffffff;
     }
 
     .c-btn.amber {
-      background: #fef3c7;
-      color: #b45309;
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
     }
 
-    /* Modals (Profile / Virtual Login / Doubt) */
+    /* Modals */
     .app-modal-mask {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.78);
+      background: rgba(4, 9, 20, 0.8);
       backdrop-filter: blur(8px);
       z-index: 9800;
       align-items: center;
@@ -1059,11 +1214,13 @@
     .app-modal-card {
       width: 100%;
       max-width: 390px;
-      background: #ffffff;
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-subtle);
       border-radius: 24px;
       padding: 24px;
       text-align: center;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
       position: relative;
       animation: modalScaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -1076,7 +1233,9 @@
     .app-modal-card input {
       width: 100%;
       padding: 12px 14px;
-      border: 1.5px solid #cbd5e1;
+      background: var(--bg-app);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-subtle);
       border-radius: 12px;
       font-size: 14.5px;
       margin: 12px 0;
@@ -1106,17 +1265,18 @@
 <body>
 
   <!-- =========================================================
-       NATIVE APP SPLASH SCREEN
+       1. PREMIUM 3D APP SPLASH SCREEN
        ========================================================= -->
   <div id="appSplash">
-    <div class="splash-app-icon">📺</div>
-    <div style="font-size: 11px; font-weight: 900; color: #2563eb; letter-spacing: 3px; margin-bottom: 4px;">NISCHAYDESK SMART APP</div>
-    <h1 style="font-size: 26px; font-weight: 900; color: #0f172a;">Nischay<span style="color: #2563eb;">Board</span> AI</h1>
-    <p style="font-size: 13px; color: #64748b; font-weight: 700; margin-top: 4px;">बिहार बोर्ड लाइव स्मार्ट क्लास ऐप ⚡</p>
+    <div class="splash-orb">📺</div>
+    <div style="font-size: 11px; font-weight: 900; color: #38bdf8; letter-spacing: 3px; margin-bottom: 4px;">NISCHAYDESK SMART APP</div>
+    <h1 style="font-size: 27px; font-weight: 900; color: #ffffff;">Nischay<span style="color: #38bdf8;">Board</span> AI</h1>
+    <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">बिहार बोर्ड लाइव स्मार्ट क्लास ऐप ⚡</p>
+    <div class="splash-loader-bar"><div class="splash-loader-fill"></div></div>
   </div>
 
   <!-- =========================================================
-       MAIN APP SHELL
+       2. MAIN APP SHELL
        ========================================================= -->
   <div class="app-container" id="mainAppShell">
     <header class="app-top-bar">
@@ -1128,10 +1288,13 @@
         </div>
       </div>
 
-      <button class="profile-pill-btn" onclick="openProfileOrLoginModal()">
-        <img id="topUserAvatar" src="https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff" alt="User">
-        <span id="topUserName">अपना नाम लिखें</span>
-      </button>
+      <div class="top-right-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppTheme()" title="Light / Dark Mode">🌙</button>
+        <button class="profile-pill-btn" onclick="openProfileOrLoginModal()">
+          <img id="topUserAvatar" src="https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff" alt="User">
+          <span id="topUserName">अपना नाम लिखें</span>
+        </button>
+      </div>
     </header>
 
     <!-- TWO CORE MODES -->
@@ -1152,6 +1315,7 @@
     <!-- MODE A: AI LIVE SESSION GENERATOR -->
     <section class="ai-studio-section active" id="viewAIStudio">
       <div class="studio-box">
+        <div class="studio-model-pill">⚡ POWERED BY GEMINI 3.5 FLASH LITE</div>
         <h2>✨ किसी भी टॉपिक पर AI स्मार्ट वीडियो क्लास बनाएं</h2>
         <p>अपना टॉपिक टाइप करें—AI पहले आपका नाम लेकर इंट्रो देगा, फिर असली चित्र बनाकर समझाएगा और अंत में ऑब्जेक्टिव टेस्ट भी लेगा!</p>
         <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: ओम का नियम, प्रकाश संश्लेषण, या त्रिकोणमिति...">
@@ -1168,7 +1332,7 @@
       </div>
     </section>
 
-    <!-- MODE B: EXTERNAL JSON SYLLABUS VIEW (NO HARDCODED CLASSES) -->
+    <!-- MODE B: EXTERNAL JSON SYLLABUS VIEW -->
     <section class="syllabus-section" id="viewSyllabus">
       <div class="subject-scroller" id="subjectScroller"></div>
 
@@ -1198,19 +1362,19 @@
   </div>
 
   <!-- =========================================================
-       TOPIC-WISE SLIDE-UP SHEET (CHAPTER -> TOPICS)
+       TOPIC-WISE SLIDE-UP SHEET
        ========================================================= -->
   <div class="sheet-backdrop" id="topicSheetMask" onclick="closeTopicSheet(event)">
     <div class="topic-sheet">
       <div class="sheet-drag-bar"></div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
         <div>
-          <span id="sheetSubjectTag" style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase;">SUBJECT</span>
-          <h3 id="sheetChapterTitle" style="font-size: 17px; font-weight: 900; color: #0f172a;">अध्याय का नाम</h3>
+          <span id="sheetSubjectTag" style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase;">SUBJECT</span>
+          <h3 id="sheetChapterTitle" style="font-size: 17px; font-weight: 900;">अध्याय का नाम</h3>
         </div>
-        <button onclick="document.getElementById('topicSheetMask').classList.remove('open')" style="border: none; background: #f1f5f9; width: 32px; height: 32px; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+        <button onclick="document.getElementById('topicSheetMask').classList.remove('open')" style="border: none; background: var(--bg-app); color: var(--text-primary); width: 32px; height: 32px; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
       </div>
-      <p style="font-size: 12.5px; color: #64748b; font-weight: 700; margin-bottom: 12px;">पढ़ने के लिए नीचे से कोई भी टॉपिक चुनें:</p>
+      <p style="font-size: 12.5px; color: var(--text-secondary); font-weight: 700; margin-bottom: 12px;">पढ़ने के लिए नीचे से कोई भी टॉपिक चुनें:</p>
       <div id="topicListContainer"></div>
     </div>
   </div>
@@ -1229,7 +1393,7 @@
   </div>
 
   <!-- =========================================================
-       100% PURE HD LANDSCAPE SMART WHITEBOARD STAGE
+       HD LANDSCAPE SMART WHITEBOARD STAGE
        ========================================================= -->
   <div class="wb-fullscreen" id="wbScreen">
     <div class="wb-top-bar">
@@ -1247,7 +1411,7 @@
 
     <!-- 👍 LIKE / 👎 DISLIKE UNDERSTANDING CHECK -->
     <div class="understanding-check-bar" id="understandingBar">
-      <span style="font-size: 12.5px; font-weight: 800; color: #0f172a;">क्या यह समझ आ गया?</span>
+      <span style="font-size: 12.5px; font-weight: 800; color: var(--text-primary);">क्या यह समझ आ गया?</span>
       <button class="check-btn like" onclick="handleUnderstandLike()">👍 हाँ, समझ गया</button>
       <button class="check-btn dislike" onclick="handleUnderstandDislike()">👎 नहीं आया</button>
     </div>
@@ -1256,6 +1420,7 @@
     <canvas id="boardFingerCanvas"></canvas>
 
     <div class="wb-corner-dock">
+      <button class="c-btn" onclick="toggleAppTheme()" id="wbThemeBtn">🌙</button>
       <button class="c-btn blue" id="wbPlayPauseBtn" onclick="toggleWbPlay()">⏸️ Pause</button>
       <button class="c-btn amber" onclick="openDoubtPrompt()">✋ डाउट पूछें</button>
       <button class="c-btn" onclick="clearFingerSketch()">🧹</button>
@@ -1267,7 +1432,7 @@
   <div class="portrait-lock-screen">
     <div style="font-size: 52px; margin-bottom: 12px;">📱</div>
     <h2 style="font-size: 20px; margin-bottom: 6px;">मोबाइल आड़ा (Landscape) करें!</h2>
-    <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">असली स्मार्ट बोर्ड और टेस्ट देखने के लिए फोन घुमाएं।</p>
+    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">असली स्मार्ट बोर्ड और टेस्ट देखने के लिए फोन घुमाएं।</p>
     <button class="c-btn blue" style="padding: 12px 22px; font-size: 14px;" onclick="forceFullLandscape()">⛶ फुल-स्क्रीन करें</button>
   </div>
 
@@ -1281,7 +1446,7 @@
   <div class="app-modal-mask" id="doubtModalMask" onclick="closeAllMasks(event)">
     <div class="app-modal-card">
       <h3 style="font-size: 17px; font-weight: 900;">🤔 क्या चीज़ समझ नहीं आई?</h3>
-      <p style="font-size: 12.5px; color: #64748b; margin-top: 4px;">लिखकर पूछें—AI टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
+      <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—AI टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
       <input type="text" id="userDoubtField" placeholder="जैसे: यह सूत्र कैसे आया? या परिभाषा फिर से बताइए...">
       <div style="display: flex; gap: 8px; justify-content: flex-end;">
         <button class="c-btn" onclick="document.getElementById('doubtModalMask').classList.remove('open')">बंद करें</button>
@@ -1291,7 +1456,7 @@
   </div>
 
   <script>
-    // 🔒 SPLIT & REVERSED API KEY (GitHub स्कैनर और आम इंसान से सुरक्षित)
+    // 🔒 SPLIT & REVERSED API KEY
     const _segA = "gUACWKp90Ax9cs-80rih";
     const _segB = "Llncj-FENjkXPBxeLpcc";
     const _segC = "uJMK6NR8bA.QA";
@@ -1299,9 +1464,33 @@
       return (_segA + _segB + _segC).split("").reverse().join("");
     }
 
+    // पक्का मॉडल: Gemini 3.5 Flash Lite (with automatic fallback to 2.5-flash if needed)
+    const PRIMARY_MODEL = "gemini-3.5-flash-lite";
+    const FALLBACK_MODEL = "gemini-2.5-flash";
+
     const EDGE_TTS_URL = "http://localhost:5000/speak";
     const SYLLABUS_JSON_PATH = "data/syllabus-10th.json";
     const LESSONS_JSON_PATH = "data/lessons-pack.json";
+
+    // =========================================================
+    // THEME ENGINE (LIGHT / DARK SYNCED WITH INDEX.HTML)
+    // =========================================================
+    function applyThemeUI(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("nd_app_theme", theme);
+      const icon = theme === "dark" ? "☀️" : "🌙";
+      const btn1 = document.getElementById("themeToggleBtn");
+      const btn2 = document.getElementById("wbThemeBtn");
+      if (btn1) btn1.textContent = icon;
+      if (btn2) btn2.textContent = icon;
+    }
+
+    window.toggleAppTheme = function() {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      applyThemeUI(current === "dark" ? "light" : "dark");
+    };
+
+    applyThemeUI(localStorage.getItem("nd_app_theme") || "light");
 
     // =========================================================
     // STATE MANAGEMENT (NO HARDCODED USER NAME)
@@ -1353,7 +1542,7 @@
     }
 
     // =========================================================
-    // LOAD EXTERNAL JSON FILES (data/syllabus-10th.json & lessons-pack.json)
+    // LOAD EXTERNAL JSON FILES (NO HARDCODED SYLLABUS IN HTML)
     // =========================================================
     async function loadExternalJsonData() {
       try {
@@ -1389,8 +1578,8 @@
       document.getElementById("chapterCardsContainer").innerHTML = `
         <div class="json-pending-card">
           <div style="font-size: 40px; margin-bottom: 8px;">📂</div>
-          <h4 style="font-size: 16px; font-weight: 900; color: #0f172a; margin-bottom: 6px;">चैप्टर डेटा अलग JSON फाइल से जुड़ेगा</h4>
-          <p style="font-size: 13px; color: #64748b; line-height: 1.5; max-width: 420px; margin: 0 auto 14px;">
+          <h4 style="font-size: 16px; font-weight: 900; margin-bottom: 6px;">चैप्टर डेटा अलग JSON फाइल से जुड़ेगा</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 420px; margin: 0 auto 14px;">
             जैसे ही <b>data/syllabus-10th.json</b> और <b>data/lessons-pack.json</b> फाइलें जोड़ी जाएंगी, सभी विषयों और चैप्टर्स की लिस्ट यहाँ अपने आप दिखने लगेगी।
           </p>
           <button class="generate-video-btn" style="max-width: 280px; margin: 0 auto; padding: 12px;" onclick="switchAppMode('ai')">
@@ -1409,26 +1598,26 @@
 
       if (firebaseUser) {
         card.innerHTML = `
-          <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:#f1f5f9;width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
+          <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:var(--bg-app);color:var(--text-primary);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
           <img src="${firebaseUser.photoURL || 'https://ui-avatars.com/api/?name=Student'}" style="width:68px;height:68px;border-radius:50%;border:3px solid #2563eb;margin-bottom:10px;">
           <h3 style="font-size:18px;font-weight:900;">${firebaseUser.displayName || studentName}</h3>
-          <p style="font-size:12px;color:#64748b;margin-bottom:14px;">${firebaseUser.email}</p>
-          <div style="background:#eff6ff;padding:10px;border-radius:12px;font-size:12.5px;font-weight:700;color:#1d4ed8;">
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">${firebaseUser.email}</p>
+          <div style="background:var(--chip-bg);padding:10px;border-radius:12px;font-size:12.5px;font-weight:700;color:var(--chip-text);">
             🎙️ AI टीचर क्लास में तुम्हें <b>"${getDisplayStudentName()}"</b> बोलकर पढ़ाएंगे!
           </div>
           <button class="logout-anim-btn" onclick="performAnimatedLogout()">🚪 सुरक्षित लॉगआउट करें</button>
         `;
       } else {
         card.innerHTML = `
-          <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:#f1f5f9;width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
+          <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:var(--bg-app);color:var(--text-primary);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
           <div style="font-size:40px;margin-bottom:8px;">🎓</div>
           <h3 style="font-size:18px;font-weight:900;">अपना नाम सेट करें (वर्चुअल लॉगिन)</h3>
-          <p style="font-size:12.5px;color:#64748b;margin-top:4px;">AI टीचर लाइव बोर्ड पर तुम्हारा यही नाम लेकर पढ़ाएगा!</p>
+          <p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px;">AI टीचर लाइव बोर्ड पर तुम्हारा यही नाम लेकर पढ़ाएगा!</p>
           <input type="text" id="virtualNameInput" value="${studentName}" placeholder="अपना नाम लिखें (जैसे: अमन, पूजा, राहुल)...">
-          <button class="generate-video-btn" style="padding:12px;font-size:14px;" onclick="saveVirtualStudentName()">✅ नाम सेव करें</button>
+          <button class="generate-video-btn" style="padding:12px;font-size:14px;background:linear-gradient(135deg,#2563eb,#0284c7);color:#fff;" onclick="saveVirtualStudentName()">✅ नाम सेव करें</button>
           ${studentName ? `<button class="logout-anim-btn" onclick="performAnimatedLogout()">🚪 नाम हटाएं (लॉगआउट)</button>` : ""}
-          <div style="margin:12px 0;font-size:11px;color:#94a3b8;font-weight:700;">— या —</div>
-          <button onclick="triggerGoogleSignIn()" style="width:100%;padding:11px;border-radius:12px;border:1.5px solid #cbd5e1;background:#ffffff;font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;">
+          <div style="margin:12px 0;font-size:11px;color:var(--text-secondary);font-weight:700;">— या —</div>
+          <button onclick="triggerGoogleSignIn()" style="width:100%;padding:11px;border-radius:12px;border:1.5px solid var(--border-subtle);background:var(--bg-app);color:var(--text-primary);font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18">
             <span>Google से लॉगिन करें</span>
           </button>
@@ -1545,10 +1734,10 @@
         btn.className = "topic-row-btn";
         btn.innerHTML = `
           <div>
-            <div style="font-size:11px;font-weight:800;color:#2563eb;">TOPIC ${i + 1}</div>
-            <div style="font-size:14.5px;font-weight:800;color:#0f172a;margin-top:2px;">${topicTitle}</div>
+            <div style="font-size:11px;font-weight:800;color:var(--accent-blue);">TOPIC ${i + 1}</div>
+            <div style="font-size:14.5px;font-weight:800;color:var(--text-primary);margin-top:2px;">${topicTitle}</div>
           </div>
-          <span style="background:#2563eb;color:#fff;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
+          <span style="background:var(--accent-blue);color:#fff;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
         `;
         btn.onclick = () => {
           document.getElementById("topicSheetMask").classList.remove("open");
@@ -1580,11 +1769,11 @@
     };
 
     // =========================================================
-    // DIRECT GEMINI REST API CALL + EXTERNAL LESSONS-PACK.JSON CHECK
+    // GEMINI 3.5 FLASH LITE ENGINE + SMART FALLBACK
     // =========================================================
-    async function callGeminiDirect(promptText) {
+    async function callGeminiModel(modelName, promptText) {
       const apiKey = getSecureApiKey();
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
       const response = await fetch(endpoint, {
         method: "POST",
@@ -1598,13 +1787,23 @@
         })
       });
 
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error("Gemini API Request Failed");
+        throw new Error(data.error?.message || `HTTP ${response.status}`);
       }
 
-      const data = await response.json();
-      const rawText = data.candidates[0].content.parts[0].text;
+      let rawText = data.candidates[0].content.parts[0].text;
+      rawText = rawText.replace(/```json|```/g, "").trim();
       return JSON.parse(rawText);
+    }
+
+    async function callGeminiSmart(promptText) {
+      try {
+        return await callGeminiModel(PRIMARY_MODEL, promptText);
+      } catch (e1) {
+        console.warn("Primary model fallback:", e1.message);
+        return await callGeminiModel(FALLBACK_MODEL, promptText);
+      }
     }
 
     async function prepareAndLaunchLesson(subjectLabel, fullTopicTitle, lessonId) {
@@ -1615,24 +1814,22 @@
       const s3 = document.getElementById("pStep3");
 
       s1.className = "prep-step"; s1.textContent = `⏳ 1. "${activeStudent}" के नाम से परिचय (Intro) सेट हो रहा है...`;
-      s2.className = "prep-step"; s2.textContent = "⏳ 2. HD चित्र और पेन नोट्स बन रहे हैं...";
+      s2.className = "prep-step"; s2.textContent = "⏳ 2. Gemini 3.5 Flash Lite चित्र व नोट्स बना रहा है...";
       s3.className = "prep-step"; s3.textContent = "⏳ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...";
       prep.classList.add("open");
 
       setTimeout(() => { s1.classList.add("done"); s1.textContent = `✅ 1. "${activeStudent}" के नाम से परिचय तैयार!`; }, 450);
       setTimeout(() => { s2.classList.add("done"); s2.textContent = "✅ 2. HD व्हाइटबोर्ड चित्र और नोट्स तैयार!"; }, 900);
 
-      // 1. पहले बाहरी data/lessons-pack.json में चेक करें
       if (lessonId && externalLessonsPack[lessonId]) {
         currentLessonPlan = JSON.parse(JSON.stringify(externalLessonsPack[lessonId]));
         currentLessonPlan.intro.voice = currentLessonPlan.intro.voice.replace(/{{STUDENT}}/g, activeStudent);
       } else {
-        // 2. अन्यथा सीधे Gemini REST API से रियलिस्टिक डायग्राम और स्लाइड्स बनाएं
         try {
           const prompt = `तुम बिहार बोर्ड कक्षा 10वीं के छात्र "${activeStudent}" के सबसे बेहतरीन और मिलनसार शिक्षक हो।
           विषय: "${subjectLabel}", टॉपिक: "${fullTopicTitle}"।
           निम्नलिखित नियमों के अनुसार शुद्ध JSON बनाओ:
-          1. "intro": सीधे परिभाषा मत बताओ! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी के एक मज़ेदार उदाहरण या सवाल से परिचय (Intro) दो। साथ में "svg" में उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 320 190' width='100%' height='185'> चित्र बनाओ (नकली गोला नहीं, बल्कि वास्तविक आरेख जैसे लेंस, परिपथ, त्रिभुज या कोशिका)।
+          1. "intro": सीधे परिभाषा मत बताओ! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी के एक मज़ेदार उदाहरण या सवाल से परिचय (Intro) दो। साथ में "svg" में उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 320 190' width='100%' height='185'> चित्र बनाओ।
           2. "points": ठीक 3 मुख्य शिक्षण बिंदु दो जिनमें मुख्य शब्द पर <span class='red-under'>...</span> लगा हो और बगल में छोटा नीला हैंड-रिटन नोट हो।
           3. "quiz": बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव सवाल (4 विकल्पों के साथ)।
           JSON संरचना:
@@ -1662,11 +1859,11 @@
             }
           }`;
 
-          currentLessonPlan = await callGeminiDirect(prompt);
+          currentLessonPlan = await callGeminiSmart(prompt);
         } catch (err) {
-          console.error("Direct Gemini Error:", err);
+          console.error("Gemini API Error:", err);
           prep.classList.remove("open");
-          alert("नेटवर्क या API में समस्या आई है, कृपया इंटरनेट जांचें और पुनः प्रयास करें।");
+          alert("API कारण: " + err.message);
           return;
         }
       }
@@ -1681,7 +1878,7 @@
     }
 
     // =========================================================
-    // WHITEBOARD LECTURE ENGINE (INTRO -> TEACH -> LIKE/DISLIKE -> QUIZ)
+    // WHITEBOARD LECTURE ENGINE
     // =========================================================
     async function speakEdgeVoice(text, onDone) {
       if (currentAudio) {
@@ -1816,14 +2013,12 @@
       });
     }
 
-    // 👍 Like -> आगे बढ़कर ऑब्जेक्टिव टेस्ट लेगा
     window.handleUnderstandLike = function() {
       document.getElementById("understandingBar").classList.remove("show");
       currentPhase = 2;
       renderObjectiveQuizPhase();
     };
 
-    // 👎 Dislike -> पूछेगा कि क्या समझ नहीं आया
     window.handleUnderstandDislike = function() {
       const activeStudent = getDisplayStudentName();
       document.getElementById("understandingBar").classList.remove("show");
@@ -1835,7 +2030,6 @@
       document.getElementById("userDoubtField").focus();
     };
 
-    // चरण 3: लाइव ऑब्जेक्टिव टेस्ट
     function renderObjectiveQuizPhase() {
       const activeStudent = getDisplayStudentName();
       document.getElementById("wbStageIndicator").textContent = "चरण 3 / 3 : ऑब्जेक्टिव टेस्ट";
@@ -1853,7 +2047,7 @@
 
       canvas.innerHTML = `
         <div class="quiz-board-box">
-          <div style="font-size:12px;font-weight:800;color:#2563eb;margin-bottom:6px;">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</div>
+          <div style="font-size:12px;font-weight:800;color:var(--accent-blue);margin-bottom:6px;">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</div>
           <div class="quiz-q-title">${qObj.question}</div>
           <div class="quiz-opts-grid">${optsHtml}</div>
           <div id="quizResultNote" style="margin-top:16px;font-size:14px;font-weight:800;"></div>
@@ -1871,21 +2065,18 @@
 
       if (chosenIdx === qObj.correctIndex) {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("right");
-        note.style.color = "#15803d";
+        note.style.color = "#16a34a";
         note.textContent = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation})`;
         speakEdgeVoice(`वाह ${activeStudent}, बिल्कुल सही जवाब! ${qObj.explanation}। अब तुम वापस जाकर अगला टॉपिक चुन सकते हो।`);
       } else {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("wrong");
         document.getElementById(`qOpt-${qObj.correctIndex}`).classList.add("right");
-        note.style.color = "#dc2626";
+        note.style.color = "#ef4444";
         note.textContent = `❌ कोई बात नहीं! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation})`;
         speakEdgeVoice(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
       }
     };
 
-    // =========================================================
-    // DOUBT SOLVING & FINGER DRAWING
-    // =========================================================
     window.openDoubtPrompt = function() {
       isWbPlaying = false;
       if (currentAudio) currentAudio.pause();
@@ -1905,18 +2096,18 @@
       canvas.innerHTML = `<div style="text-align:center;"><div style="font-size:46px;margin-bottom:8px;">🧠</div><h3 style="font-weight:900;">AI टीचर "${activeStudent}" के डाउट पर सोच रहा है...</h3></div>`;
 
       try {
-        const resObj = await callGeminiDirect(`छात्र "${activeStudent}" को टॉपिक "${currentLessonPlan.topic}" में यह बात समझ नहीं आई: "${doubtText}"। शुद्ध JSON में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण"}`);
+        const resObj = await callGeminiSmart(`छात्र "${activeStudent}" को टॉपिक "${currentLessonPlan.topic}" में यह बात समझ नहीं आई: "${doubtText}"। शुद्ध JSON में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण"}`);
         const answer = resObj.answer;
         canvas.innerHTML = `
           <div style="max-width:740px;padding:20px;">
             <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
-            <div style="font-size:17px;font-weight:700;line-height:1.55;color:#0f172a;margin-bottom:18px;">${answer}</div>
+            <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:18px;">${answer}</div>
             <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="handleUnderstandLike()">👍 अब समझ आ गया — टेस्ट दें ➔</button>
           </div>
         `;
         speakEdgeVoice(answer);
       } catch (e) {
-        speakEdgeVoice(`${activeStudent}, इसे आसान भाषा में समझो—हर नियम एक व्यावहारिक उदाहरण से जुड़ा होता है।`);
+        alert("API कारण: " + e.message);
       }
     };
 
@@ -1948,7 +2139,6 @@
       }
     };
 
-    // Finger Drawing on Board
     const fCanvas = document.getElementById("boardFingerCanvas");
     const fCtx = fCanvas.getContext("2d");
     let isDrawing = false;
@@ -1986,7 +2176,6 @@
       openDoubtPrompt();
     });
 
-    // Boot App & Load External JSON
     loadExternalJsonData();
   </script>
 </body>
