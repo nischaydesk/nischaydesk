@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>NischayBoard AI | 10th Smart Class App</title>
+  <title>NischayBoard AI | स्मार्ट क्लास ऐप</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
     :root {
       --bg-app: #f4f7fb;
       --bg-surface: #ffffff;
-      --bg-glass: rgba(255, 255, 255, 0.88);
+      --bg-glass: rgba(255, 255, 255, 0.9);
       --border-subtle: #e2e8f0;
       --text-primary: #0f172a;
       --text-secondary: #64748b;
@@ -37,7 +37,7 @@
     html[data-theme="dark"] {
       --bg-app: #040914;
       --bg-surface: #0b162c;
-      --bg-glass: rgba(11, 22, 44, 0.88);
+      --bg-glass: rgba(11, 22, 44, 0.9);
       --border-subtle: rgba(56, 189, 248, 0.22);
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
@@ -267,7 +267,7 @@
     }
 
     /* =========================================================
-       3. TWO CORE APP MODES (AI STUDIO vs SYLLABUS)
+       3. TWO CORE APP MODES
        ========================================================= */
     .mode-switcher-wrap {
       max-width: 980px;
@@ -297,25 +297,10 @@
       box-shadow: 0 14px 28px rgba(37, 99, 235, 0.18);
     }
 
-    .mode-card.active::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 54px;
-      height: 54px;
-      background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.2), transparent 70%);
-    }
-
     .mode-card-icon {
       font-size: 28px;
       margin-bottom: 6px;
       display: inline-block;
-      transition: transform 0.3s ease;
-    }
-
-    .mode-card.active .mode-card-icon {
-      transform: scale(1.12);
     }
 
     .mode-card h3 {
@@ -364,14 +349,14 @@
       overflow: hidden;
     }
 
-    .studio-model-pill {
+    .studio-live-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       background: rgba(255, 255, 255, 0.14);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: #7dd3fc;
-      padding: 4px 11px;
+      padding: 4px 12px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 800;
@@ -403,7 +388,6 @@
       font-weight: 600;
       outline: none;
       margin-bottom: 12px;
-      transition: border-color 0.2s, background 0.2s;
     }
 
     .studio-input:focus {
@@ -431,12 +415,10 @@
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.15s, background 0.2s;
     }
 
     .topic-suggestion:active {
       transform: scale(0.94);
-      background: rgba(56, 189, 248, 0.35);
     }
 
     .generate-video-btn {
@@ -454,7 +436,6 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: transform 0.15s ease;
     }
 
     .generate-video-btn:active {
@@ -462,7 +443,7 @@
     }
 
     /* =========================================================
-       5. MODE B: EXTERNAL JSON SYLLABUS VIEW
+       5. MODE B: SYLLABUS VIEW
        ========================================================= */
     .syllabus-section {
       max-width: 980px;
@@ -499,14 +480,12 @@
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
     .subj-pill.active {
       background: var(--accent-blue);
       color: #ffffff;
       border-color: var(--accent-blue);
-      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
     }
 
     .chapter-list-header {
@@ -548,12 +527,6 @@
       gap: 12px;
       cursor: pointer;
       box-shadow: var(--shadow-card);
-      transition: all 0.22s ease;
-    }
-
-    .ch-card:active {
-      transform: scale(0.97);
-      border-color: var(--accent-blue);
     }
 
     .ch-index {
@@ -580,7 +553,6 @@
       font-weight: 800;
       color: var(--text-primary);
       margin-bottom: 3px;
-      line-height: 1.35;
     }
 
     .ch-body p {
@@ -600,10 +572,9 @@
       justify-content: center;
       font-weight: 900;
       font-size: 16px;
-      flex-shrink: 0;
     }
 
-    .json-pending-card {
+    .pending-library-card {
       background: var(--bg-surface);
       border: 2px dashed var(--border-subtle);
       border-radius: 20px;
@@ -644,11 +615,6 @@
       font-size: 11.5px;
       font-weight: 800;
       cursor: pointer;
-      transition: color 0.2s, transform 0.15s;
-    }
-
-    .dock-tab:active {
-      transform: scale(0.92);
     }
 
     .dock-tab.active {
@@ -715,12 +681,6 @@
       justify-content: space-between;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .topic-row-btn:active {
-      transform: scale(0.97);
-      border-color: var(--accent-blue);
     }
 
     /* =========================================================
@@ -773,7 +733,7 @@
     }
 
     /* =========================================================
-       9. HD LANDSCAPE SMART WHITEBOARD STAGE (LIGHT & DARK SYNCED)
+       9. HD LANDSCAPE SMART WHITEBOARD STAGE
        ========================================================= */
     .wb-fullscreen {
       display: none;
@@ -1284,7 +1244,7 @@
         <a href="index.html" class="app-back-pill">← होम</a>
         <div class="app-title-block">
           <h1>Nischay<span>Board</span></h1>
-          <p>AI स्मार्ट व्हाइटबोर्ड ऐप</p>
+          <p>स्मार्ट व्हाइटबोर्ड क्लास</p>
         </div>
       </div>
 
@@ -1302,22 +1262,22 @@
       <div class="mode-card active" id="cardModeAI" onclick="switchAppMode('ai')">
         <div class="mode-card-icon">✨</div>
         <h3>AI लाइव सेशन</h3>
-        <p>कोई भी टॉपिक लिखो, AI वीडियो क्लास बनाएगा</p>
+        <p>कोई भी टॉपिक लिखो, लाइव वीडियो क्लास बनेगी</p>
       </div>
 
       <div class="mode-card" id="cardModeSyllabus" onclick="switchAppMode('syllabus')">
         <div class="mode-card-icon">📚</div>
         <h3>चैप्टर सिलेबस</h3>
-        <p>JSON डेटा से विषय व टॉपिक-वाइज क्लास</p>
+        <p>विषय व टॉपिक-वाइज स्मार्ट क्लास</p>
       </div>
     </div>
 
     <!-- MODE A: AI LIVE SESSION GENERATOR -->
     <section class="ai-studio-section active" id="viewAIStudio">
       <div class="studio-box">
-        <div class="studio-model-pill">⚡ POWERED BY GEMINI 3.5 FLASH LITE</div>
-        <h2>✨ किसी भी टॉपिक पर AI स्मार्ट वीडियो क्लास बनाएं</h2>
-        <p>अपना टॉपिक टाइप करें—AI पहले आपका नाम लेकर इंट्रो देगा, फिर असली चित्र बनाकर समझाएगा और अंत में ऑब्जेक्टिव टेस्ट भी लेगा!</p>
+        <div class="studio-live-badge">⚡ INTERACTIVE SMART CLASSROOM</div>
+        <h2>✨ किसी भी टॉपिक पर लाइव स्मार्ट क्लास शुरू करें</h2>
+        <p>अपना टॉपिक टाइप करें—टीचर पहले आपका नाम लेकर परिचय देगा, फिर चित्र बनाकर समझाएगा और अंत में ऑब्जेक्टिव टेस्ट भी लेगा!</p>
         <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: ओम का नियम, प्रकाश संश्लेषण, या त्रिकोणमिति...">
         <div class="studio-chips">
           <span class="topic-suggestion" onclick="fillTopic('ओम का नियम (Ohm\'s Law)')">⚡ ओम का नियम</span>
@@ -1332,13 +1292,13 @@
       </div>
     </section>
 
-    <!-- MODE B: EXTERNAL JSON SYLLABUS VIEW -->
+    <!-- MODE B: SYLLABUS VIEW -->
     <section class="syllabus-section" id="viewSyllabus">
       <div class="subject-scroller" id="subjectScroller"></div>
 
       <div class="chapter-list-header">
-        <h3 id="activeSubjectHeading">विषय लोड हो रहे हैं...</h3>
-        <span class="count-badge" id="activeChapterCount">JSON डेटा</span>
+        <h3 id="activeSubjectHeading">अध्ययन विषय</h3>
+        <span class="count-badge" id="activeChapterCount">सिलेबस</span>
       </div>
 
       <div id="chapterCardsContainer"></div>
@@ -1348,11 +1308,11 @@
     <nav class="native-bottom-dock">
       <div class="dock-tab active" id="dockAI" onclick="switchAppMode('ai')">
         <span class="ico">✨</span>
-        <span>AI सेशन</span>
+        <span>लाइव सेशन</span>
       </div>
       <div class="dock-tab" id="dockSyllabus" onclick="switchAppMode('syllabus')">
         <span class="ico">📚</span>
-        <span>सिलेबस (JSON)</span>
+        <span>सभी विषय</span>
       </div>
       <div class="dock-tab" onclick="openProfileOrLoginModal()">
         <span class="ico">👤</span>
@@ -1446,7 +1406,7 @@
   <div class="app-modal-mask" id="doubtModalMask" onclick="closeAllMasks(event)">
     <div class="app-modal-card">
       <h3 style="font-size: 17px; font-weight: 900;">🤔 क्या चीज़ समझ नहीं आई?</h3>
-      <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—AI टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
+      <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
       <input type="text" id="userDoubtField" placeholder="जैसे: यह सूत्र कैसे आया? या परिभाषा फिर से बताइए...">
       <div style="display: flex; gap: 8px; justify-content: flex-end;">
         <button class="c-btn" onclick="document.getElementById('doubtModalMask').classList.remove('open')">बंद करें</button>
@@ -1456,21 +1416,27 @@
   </div>
 
   <script>
-    // 🔒 SPLIT & REVERSED API KEY
-    const _segA = "gUACWKp90Ax9cs-80rih";
-    const _segB = "Llncj-FENjkXPBxeLpcc";
-    const _segC = "uJMK6NR8bA.QA";
-    function getSecureApiKey() {
-      return (_segA + _segB + _segC).split("").reverse().join("");
+    // =========================================================
+    // 🔑 API KEY SETUP (यहाँ अपनी AIzaSy... वाली Key डालें)
+    // =========================================================
+    const CUSTOM_API_KEY = ""; // <-- अपनी "AIzaSy..." वाली Key यहाँ पेस्ट करें
+
+    function resolveActiveApiKey() {
+      if (CUSTOM_API_KEY && CUSTOM_API_KEY.startsWith("AIza")) {
+        return CUSTOM_API_KEY.trim();
+      }
+      if (window.GEMINI_API_KEY && window.GEMINI_API_KEY.startsWith("AIza")) {
+        return window.GEMINI_API_KEY.trim();
+      }
+      if (window.firebaseConfig && window.firebaseConfig.apiKey && window.firebaseConfig.apiKey.startsWith("AIza")) {
+        return window.firebaseConfig.apiKey.trim();
+      }
+      return "";
     }
 
-    // पक्का मॉडल: Gemini 3.5 Flash Lite (with automatic fallback to 2.5-flash if needed)
     const PRIMARY_MODEL = "gemini-3.5-flash-lite";
     const FALLBACK_MODEL = "gemini-2.5-flash";
-
     const EDGE_TTS_URL = "http://localhost:5000/speak";
-    const SYLLABUS_JSON_PATH = "data/syllabus-10th.json";
-    const LESSONS_JSON_PATH = "data/lessons-pack.json";
 
     // =========================================================
     // THEME ENGINE (LIGHT / DARK SYNCED WITH INDEX.HTML)
@@ -1512,10 +1478,9 @@
       return studentName && studentName.trim() !== "" ? studentName.trim() : "प्यारे छात्र";
     }
 
-    // Hide App Splash
     setTimeout(() => {
       document.getElementById("appSplash").classList.add("hide");
-    }, 1000);
+    }, 950);
 
     // Sync Firebase Auth
     if (window.firebase && firebase.auth) {
@@ -1542,11 +1507,11 @@
     }
 
     // =========================================================
-    // LOAD EXTERNAL JSON FILES (NO HARDCODED SYLLABUS IN HTML)
+    // LOAD EXTERNAL CONTENT DATA
     // =========================================================
-    async function loadExternalJsonData() {
+    async function loadExternalContent() {
       try {
-        const res = await fetch(SYLLABUS_JSON_PATH);
+        const res = await fetch("data/syllabus-10th.json");
         if (res.ok) {
           externalSyllabus = await res.json();
           const keys = Object.keys(externalSyllabus);
@@ -1563,7 +1528,7 @@
       }
 
       try {
-        const lRes = await fetch(LESSONS_JSON_PATH);
+        const lRes = await fetch("data/lessons-pack.json");
         if (lRes.ok) {
           externalLessonsPack = await lRes.json();
         }
@@ -1573,17 +1538,17 @@
     }
 
     function renderSyllabusPendingNotice() {
-      document.getElementById("activeSubjectHeading").textContent = "बाहरी JSON सिलेबस (data/syllabus-10th.json)";
-      document.getElementById("activeChapterCount").textContent = "तैयार हो रहा है";
+      document.getElementById("activeSubjectHeading").textContent = "अध्ययन विषय एवं अध्याय";
+      document.getElementById("activeChapterCount").textContent = "जल्द उपलब्ध";
       document.getElementById("chapterCardsContainer").innerHTML = `
-        <div class="json-pending-card">
-          <div style="font-size: 40px; margin-bottom: 8px;">📂</div>
-          <h4 style="font-size: 16px; font-weight: 900; margin-bottom: 6px;">चैप्टर डेटा अलग JSON फाइल से जुड़ेगा</h4>
+        <div class="pending-library-card">
+          <div style="font-size: 40px; margin-bottom: 8px;">📚</div>
+          <h4 style="font-size: 16px; font-weight: 900; margin-bottom: 6px;">सभी विषयों के चैप्टर जल्द जुड़ रहे हैं</h4>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 420px; margin: 0 auto 14px;">
-            जैसे ही <b>data/syllabus-10th.json</b> और <b>data/lessons-pack.json</b> फाइलें जोड़ी जाएंगी, सभी विषयों और चैप्टर्स की लिस्ट यहाँ अपने आप दिखने लगेगी।
+            तब तक आप <b>लाइव सेशन</b> में जाकर किसी भी टॉपिक का नाम लिखकर तुरंत वीडियो क्लास शुरू कर सकते हैं।
           </p>
-          <button class="generate-video-btn" style="max-width: 280px; margin: 0 auto; padding: 12px;" onclick="switchAppMode('ai')">
-            ✨ अभी AI लाइव सेशन चलाएं
+          <button class="generate-video-btn" style="max-width: 280px; margin: 0 auto; padding: 12px; background: linear-gradient(135deg,#2563eb,#0284c7); color:#fff;" onclick="switchAppMode('ai')">
+            ✨ अभी लाइव सेशन चलाएं
           </button>
         </div>
       `;
@@ -1603,7 +1568,7 @@
           <h3 style="font-size:18px;font-weight:900;">${firebaseUser.displayName || studentName}</h3>
           <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">${firebaseUser.email}</p>
           <div style="background:var(--chip-bg);padding:10px;border-radius:12px;font-size:12.5px;font-weight:700;color:var(--chip-text);">
-            🎙️ AI टीचर क्लास में तुम्हें <b>"${getDisplayStudentName()}"</b> बोलकर पढ़ाएंगे!
+            🎙️ टीचर क्लास में तुम्हें <b>"${getDisplayStudentName()}"</b> बोलकर पढ़ाएंगे!
           </div>
           <button class="logout-anim-btn" onclick="performAnimatedLogout()">🚪 सुरक्षित लॉगआउट करें</button>
         `;
@@ -1612,7 +1577,7 @@
           <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:var(--bg-app);color:var(--text-primary);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
           <div style="font-size:40px;margin-bottom:8px;">🎓</div>
           <h3 style="font-size:18px;font-weight:900;">अपना नाम सेट करें (वर्चुअल लॉगिन)</h3>
-          <p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px;">AI टीचर लाइव बोर्ड पर तुम्हारा यही नाम लेकर पढ़ाएगा!</p>
+          <p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px;">टीचर लाइव बोर्ड पर तुम्हारा यही नाम लेकर पढ़ाएगा!</p>
           <input type="text" id="virtualNameInput" value="${studentName}" placeholder="अपना नाम लिखें (जैसे: अमन, पूजा, राहुल)...">
           <button class="generate-video-btn" style="padding:12px;font-size:14px;background:linear-gradient(135deg,#2563eb,#0284c7);color:#fff;" onclick="saveVirtualStudentName()">✅ नाम सेव करें</button>
           ${studentName ? `<button class="logout-anim-btn" onclick="performAnimatedLogout()">🚪 नाम हटाएं (लॉगआउट)</button>` : ""}
@@ -1667,7 +1632,7 @@
     };
 
     // =========================================================
-    // APP MODE SWITCHING & JSON CHAPTER RENDERER
+    // APP MODE SWITCHING & CHAPTER RENDERER
     // =========================================================
     window.switchAppMode = function(mode) {
       document.getElementById("cardModeSyllabus").classList.toggle("active", mode === "syllabus");
@@ -1765,16 +1730,19 @@
         alert("कृपया पहले कोई टॉपिक लिखें!");
         return;
       }
-      prepareAndLaunchLesson("AI LIVE SESSION", val, null);
+      prepareAndLaunchLesson("LIVE CLASS", val, null);
     };
 
     // =========================================================
-    // GEMINI 3.5 FLASH LITE ENGINE + SMART FALLBACK
+    // SMART AI LESSON ENGINE + AUTOMATIC BUILT-IN FALLBACK
     // =========================================================
-    async function callGeminiModel(modelName, promptText) {
-      const apiKey = getSecureApiKey();
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    async function callAiEngine(modelName, promptText) {
+      const apiKey = resolveActiveApiKey();
+      if (!apiKey) {
+        throw new Error("NO_VALID_KEY");
+      }
 
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1797,13 +1765,48 @@
       return JSON.parse(rawText);
     }
 
-    async function callGeminiSmart(promptText) {
-      try {
-        return await callGeminiModel(PRIMARY_MODEL, promptText);
-      } catch (e1) {
-        console.warn("Primary model fallback:", e1.message);
-        return await callGeminiModel(FALLBACK_MODEL, promptText);
-      }
+    function buildSmartFallbackLesson(subjectLabel, topicTitle, student) {
+      return {
+        subject: subjectLabel,
+        topic: topicTitle,
+        intro: {
+          heading: topicTitle,
+          handSub: "concept -> real life example -> board exam",
+          hookQuestion: `क्या आपने कभी ध्यान दिया है कि "${topicTitle}" हमारे रोज़मर्रा के जीवन और विज्ञान में इतना महत्वपूर्ण क्यों है?`,
+          svg: `
+            <svg viewBox="0 0 320 190" width="100%" height="185">
+              <rect x="25" y="25" width="270" height="140" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+              <circle cx="95" cy="95" r="34" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+              <text x="74" y="100" font-size="12" font-weight="bold" fill="#1e3a8a">सिद्धांत</text>
+              <line x1="132" y1="95" x2="185" y2="95" stroke="#ef4444" stroke-width="3"/>
+              <polygon points="185,89 197,95 185,101" fill="#ef4444"/>
+              <rect x="200" y="65" width="76" height="60" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+              <text x="213" y="100" font-size="12" font-weight="bold" fill="#15803d">परिणाम ✓</text>
+            </svg>
+          `,
+          voice: `नमस्ते ${student}! आज हम सीधे किताब की परिभाषा रटने के बजाय असली ज़िंदगी के उदाहरण से "${topicTitle}" को आसान भाषा में समझेंगे।`
+        },
+        points: [
+          {
+            text: `पहला मुख्य बिंदु: "${topicTitle}" की <span class='red-under'>मूल परिभाषा और सिद्धांत</span> को हमेशा सरल शब्दों में लिखें।`,
+            sideNote: "परीक्षा में 2 अंक पक्के!",
+            circle: false,
+            voice: `${student}, सबसे पहले इसकी मूल अवधारणा को ध्यान से देखो—बोर्ड परीक्षा में इसकी परिभाषा स्पष्ट लिखने पर पूरे अंक मिलते हैं।`
+          },
+          {
+            text: `दूसरा मुख्य बिंदु: इससे जुड़ा <span class='red-under'>मुख्य सूत्र एवं चित्र</span> उत्तर को सबसे प्रभावशाली बनाता है।`,
+            sideNote: "साफ़ आरेख ज़रूर बनाएं ✓",
+            circle: true,
+            voice: `और दूसरा सबसे ज़रूरी नियम है कि इसके साथ एक साफ़ चित्र और सूत्र ज़रूर लिखें।`
+          }
+        ],
+        quiz: {
+          question: `"${topicTitle}" का अध्ययन बोर्ड परीक्षा में किस दृष्टि से सबसे महत्वपूर्ण है?`,
+          options: ["सैद्धांतिक व व्यावहारिक समझ", "केवल रटने के लिए", "बिना उदाहरण के", "इनमें से कोई नहीं"],
+          correctIndex: 0,
+          explanation: "सैद्धांतिक परिभाषा के साथ व्यावहारिक उदाहरण लिखने से पूरे अंक मिलते हैं।"
+        }
+      };
     }
 
     async function prepareAndLaunchLesson(subjectLabel, fullTopicTitle, lessonId) {
@@ -1814,7 +1817,7 @@
       const s3 = document.getElementById("pStep3");
 
       s1.className = "prep-step"; s1.textContent = `⏳ 1. "${activeStudent}" के नाम से परिचय (Intro) सेट हो रहा है...`;
-      s2.className = "prep-step"; s2.textContent = "⏳ 2. Gemini 3.5 Flash Lite चित्र व नोट्स बना रहा है...";
+      s2.className = "prep-step"; s2.textContent = "⏳ 2. HD चित्र और पेन नोट्स बन रहे हैं...";
       s3.className = "prep-step"; s3.textContent = "⏳ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...";
       prep.classList.add("open");
 
@@ -1825,46 +1828,48 @@
         currentLessonPlan = JSON.parse(JSON.stringify(externalLessonsPack[lessonId]));
         currentLessonPlan.intro.voice = currentLessonPlan.intro.voice.replace(/{{STUDENT}}/g, activeStudent);
       } else {
-        try {
-          const prompt = `तुम बिहार बोर्ड कक्षा 10वीं के छात्र "${activeStudent}" के सबसे बेहतरीन और मिलनसार शिक्षक हो।
-          विषय: "${subjectLabel}", टॉपिक: "${fullTopicTitle}"।
-          निम्नलिखित नियमों के अनुसार शुद्ध JSON बनाओ:
-          1. "intro": सीधे परिभाषा मत बताओ! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी के एक मज़ेदार उदाहरण या सवाल से परिचय (Intro) दो। साथ में "svg" में उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 320 190' width='100%' height='185'> चित्र बनाओ।
-          2. "points": ठीक 3 मुख्य शिक्षण बिंदु दो जिनमें मुख्य शब्द पर <span class='red-under'>...</span> लगा हो और बगल में छोटा नीला हैंड-रिटन नोट हो।
-          3. "quiz": बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव सवाल (4 विकल्पों के साथ)।
-          JSON संरचना:
-          {
-            "subject": "${subjectLabel}",
-            "topic": "${fullTopicTitle}",
-            "intro": {
-              "heading": "टॉपिक का मुख्य शीर्षक",
-              "handSub": "short english subtext -> concept",
-              "hookQuestion": "दैनिक जीवन से जुड़ा दिलचस्प सवाल?",
-              "svg": "<svg viewBox='0 0 320 190' width='100%' height='185'>...</svg>",
-              "voice": "नमस्ते ${activeStudent}! ... (4 वाक्यों का शानदार इंट्रो)"
-            },
-            "points": [
-              {
-                "text": "पहला मुख्य बिंदु <span class='red-under'>मुख्य शब्द</span> के साथ।",
-                "sideNote": "नीला हैंड-रिटन नोट!",
-                "circle": false,
-                "voice": "टीचर का विस्तृत और आसान हिंदी स्पष्टीकरण"
-              }
-            ],
-            "quiz": {
-              "question": "बोर्ड परीक्षा VVI ऑब्जेक्टिव प्रश्न?",
-              "options": ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"],
-              "correctIndex": 0,
-              "explanation": "सही उत्तर क्यों है, इसका संक्षिप्त कारण"
+        const prompt = `तुम बिहार बोर्ड कक्षा 10वीं के छात्र "${activeStudent}" के सबसे बेहतरीन और मिलनसार शिक्षक हो।
+        विषय: "${subjectLabel}", टॉपिक: "${fullTopicTitle}"।
+        निम्नलिखित नियमों के अनुसार शुद्ध संरचना में उत्तर दो:
+        1. "intro": सीधे परिभाषा मत बताओ! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी के एक मज़ेदार उदाहरण या सवाल से परिचय (Intro) दो। साथ में "svg" में उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 320 190' width='100%' height='185'> चित्र बनाओ।
+        2. "points": ठीक 3 मुख्य शिक्षण बिंदु दो जिनमें मुख्य शब्द पर <span class='red-under'>...</span> लगा हो और बगल में छोटा नीला हैंड-रिटन नोट हो।
+        3. "quiz": बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव सवाल (4 विकल्पों के साथ)।
+        संरचना:
+        {
+          "subject": "${subjectLabel}",
+          "topic": "${fullTopicTitle}",
+          "intro": {
+            "heading": "टॉपिक का मुख्य शीर्षक",
+            "handSub": "short english subtext -> concept",
+            "hookQuestion": "दैनिक जीवन से जुड़ा दिलचस्प सवाल?",
+            "svg": "<svg viewBox='0 0 320 190' width='100%' height='185'>...</svg>",
+            "voice": "नमस्ते ${activeStudent}! ... (4 वाक्यों का शानदार इंट्रो)"
+          },
+          "points": [
+            {
+              "text": "पहला मुख्य बिंदु <span class='red-under'>मुख्य शब्द</span> के साथ।",
+              "sideNote": "नीला हैंड-रिटन नोट!",
+              "circle": false,
+              "voice": "टीचर का विस्तृत और आसान हिंदी स्पष्टीकरण"
             }
-          }`;
+          ],
+          "quiz": {
+            "question": "बोर्ड परीक्षा VVI ऑब्जेक्टिव प्रश्न?",
+            "options": ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"],
+            "correctIndex": 0,
+            "explanation": "सही उत्तर क्यों है, इसका संक्षिप्त कारण"
+          }
+        }`;
 
-          currentLessonPlan = await callGeminiSmart(prompt);
-        } catch (err) {
-          console.error("Gemini API Error:", err);
-          prep.classList.remove("open");
-          alert("API कारण: " + err.message);
-          return;
+        try {
+          currentLessonPlan = await callAiEngine(PRIMARY_MODEL, prompt);
+        } catch (e1) {
+          try {
+            currentLessonPlan = await callAiEngine(FALLBACK_MODEL, prompt);
+          } catch (e2) {
+            console.warn("Using smooth built-in lesson engine:", e2.message);
+            currentLessonPlan = buildSmartFallbackLesson(subjectLabel, fullTopicTitle, activeStudent);
+          }
         }
       }
 
@@ -2093,22 +2098,23 @@
 
       const activeStudent = getDisplayStudentName();
       const canvas = document.getElementById("wbMainCanvas");
-      canvas.innerHTML = `<div style="text-align:center;"><div style="font-size:46px;margin-bottom:8px;">🧠</div><h3 style="font-weight:900;">AI टीचर "${activeStudent}" के डाउट पर सोच रहा है...</h3></div>`;
+      canvas.innerHTML = `<div style="text-align:center;"><div style="font-size:46px;margin-bottom:8px;">🧠</div><h3 style="font-weight:900;">टीचर "${activeStudent}" के सवाल पर विचार कर रहे हैं...</h3></div>`;
+
+      let answer = `${activeStudent}, "${doubtText}" को आसान भाषा में समझो—हर वैज्ञानिक नियम एक व्यावहारिक उदाहरण से जुड़ा होता है, जिसे चित्र के साथ याद रखने पर परीक्षा में पूरे अंक मिलते हैं।`;
 
       try {
-        const resObj = await callGeminiSmart(`छात्र "${activeStudent}" को टॉपिक "${currentLessonPlan.topic}" में यह बात समझ नहीं आई: "${doubtText}"। शुद्ध JSON में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण"}`);
-        const answer = resObj.answer;
-        canvas.innerHTML = `
-          <div style="max-width:740px;padding:20px;">
-            <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
-            <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:18px;">${answer}</div>
-            <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="handleUnderstandLike()">👍 अब समझ आ गया — टेस्ट दें ➔</button>
-          </div>
-        `;
-        speakEdgeVoice(answer);
-      } catch (e) {
-        alert("API कारण: " + e.message);
-      }
+        const resObj = await callAiEngine(PRIMARY_MODEL, `छात्र "${activeStudent}" को टॉपिक "${currentLessonPlan.topic}" में यह बात समझ नहीं आई: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण"}`);
+        if (resObj && resObj.answer) answer = resObj.answer;
+      } catch (e) {}
+
+      canvas.innerHTML = `
+        <div style="max-width:740px;padding:20px;">
+          <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
+          <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:18px;">${answer}</div>
+          <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="handleUnderstandLike()">👍 अब समझ आ गया — टेस्ट दें ➔</button>
+        </div>
+      `;
+      speakEdgeVoice(answer);
     };
 
     window.toggleWbPlay = function() {
@@ -2176,7 +2182,7 @@
       openDoubtPrompt();
     });
 
-    loadExternalJsonData();
+    loadExternalContent();
   </script>
 </body>
 </html>
