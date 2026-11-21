@@ -20,8 +20,8 @@
   <!-- Primary SEO Tags -->
   <link rel="canonical" href="https://nischaydesk.github.io/" />
   <meta name="title" content="NischayDesk | कक्षा 10वीं स्मार्ट EdTech & स्टूडेंट पोर्टल" />
-  <meta name="description" content="NischayDesk Class 10th BSEB Matric Topper Portal. Free handwritten notes, 3h 15m exam simulator, OMR generator, and question banks." />
-  <meta name="keywords" content="NischayDesk, BSEB 10th Notes, Bihar Board Matric 2026, Prince Kumar, निश्चय डेस्क 10th" />
+  <meta name="description" content="NischayDesk Class 10th BSEB Matric Topper Portal. Free handwritten notes, 3h 15m exam simulator, OMR generator, AI Smart Whiteboard, and question banks." />
+  <meta name="keywords" content="NischayDesk, BSEB 10th Notes, Bihar Board Matric 2026, Prince Kumar, निश्चय डेस्क 10th, AI Smart Board" />
   <meta name="author" content="Prince Kumar" />
   <meta name="robots" content="index, follow" />
 
@@ -242,6 +242,49 @@
     @keyframes splashFadeIn { to { opacity: 1; } }
     @keyframes splashLoadingSlide { 0% { left: -22px; } 50% { left: 44px; } 100% { left: -22px; } }
 
+    /* 🚀 AI स्मार्ट बोर्ड ऐप लॉन्च एनिमेशन ओवरले */
+    #smartBoardLaunchSplash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #ffffff 0%, #eff6ff 100%);
+      z-index: 999999999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.12);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #smartBoardLaunchSplash.launching {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    .sb-launch-icon {
+      width: 86px;
+      height: 86px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #2563eb, #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      box-shadow: 0 14px 32px rgba(37, 99, 235, 0.35);
+      margin-bottom: 18px;
+      animation: sbFloatBounce 0.75s infinite alternate ease-in-out;
+    }
+
+    @keyframes sbFloatBounce {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-10px) scale(1.06); }
+    }
+
     /* 🌟 HERO SPOTLIGHT */
     .hero-spotlight-khan {
       background: radial-gradient(circle at 90% 10%, #112644 0%, var(--brand-navy) 100%);
@@ -331,7 +374,37 @@
     }
     .hero-btn-secondary:active { transform: scale(0.97); }
 
-    /* 🌟 क्लास 10th स्टेटस बार (Touch optimized) */
+    /* 🌟 AI स्मार्ट व्हाइटबोर्ड प्रमुख हीरो बटन */
+    .hero-btn-smartboard {
+      margin-top: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 13px 14px;
+      border-radius: 13px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: transform 0.15s ease;
+    }
+    .hero-btn-smartboard:active { transform: scale(0.98); }
+    .sb-new-badge {
+      background: #facc15;
+      color: #0f172a;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    /* 🌟 क्लास 10th स्टेटस बार */
     .guest-class-bar {
       margin-bottom: 16px;
       background: rgba(2, 132, 199, 0.1);
@@ -410,7 +483,7 @@
       margin-bottom: 0;
     }
 
-    /* 🌟 OMR क्विज़ कार्ड (Spaced for thumbs) */
+    /* 🌟 OMR क्विज़ कार्ड */
     .daily-poll-card {
       background: linear-gradient(135deg, rgba(2, 132, 199, 0.12), rgba(16, 185, 129, 0.08));
       border: 1.5px solid rgba(56, 189, 248, 0.32);
@@ -576,7 +649,7 @@
       line-height: 1.2;
     }
 
-    /* 🌟 रो लिस्ट्स (Anti-Truncation Fixed) */
+    /* 🌟 रो लिस्ट्स */
     .pro-rows-container {
       display: flex;
       flex-direction: column;
@@ -625,7 +698,7 @@
       font-weight: 800;
       color: var(--text-main);
       margin: 0 0 3px;
-      word-break: break-word; /* Prevents awkward dots */
+      word-break: break-word;
     }
     .pro-row-text p {
       font-size: 0.76rem;
@@ -730,7 +803,7 @@
       color: #0284c7 !important;
     }
 
-    /* 🌟 साइड ड्रॉअर - 100% REFINED & ZERO OVERFLOW */
+    /* 🌟 साइड ड्रॉअर */
     .drawer-scrim {
       display: none;
       position: fixed;
@@ -884,7 +957,7 @@
       border-color: rgba(255, 255, 255, 0.15);
     }
 
-    /* 🌟 WELCOME LOGIN MODAL (FULL POPUP) */
+    /* 🌟 WELCOME LOGIN MODAL */
     .nd-login-backdrop {
       display: none;
       position: fixed;
@@ -1212,6 +1285,14 @@
     </div>
   </div>
 
+  <!-- 🚀 AI Smart Board ऐप लॉन्च एनिमेशन स्क्रीन -->
+  <div id="smartBoardLaunchSplash">
+    <div class="sb-launch-icon">📺</div>
+    <div style="font-size: 0.74rem; font-weight: 900; color: #0284c7; letter-spacing: 3px; margin-bottom: 4px;">NISCHAYDESK SMART CLASS</div>
+    <h2 style="font-size: 1.65rem; font-weight: 900; color: #0f172a; margin: 0 0 6px;">AI स्मार्ट बोर्ड खुल रहा है...</h2>
+    <p style="font-size: 0.84rem; color: #64748b; font-weight: 700;">HD लैंडस्केप व्हाइटबोर्ड एवं AI टीचर तैयार हो रहे हैं ⚡</p>
+  </div>
+
   <!-- 1. टॉप नेवबार -->
   <header class="app-header">
     <nav class="nav-container">
@@ -1233,6 +1314,7 @@
 
       <div class="nav-links-desktop">
         <a href="index.html" class="nav-item active">डैशबोर्ड</a>
+        <a href="smart-board.html" onclick="launchSmartBoardApp(event)" class="nav-item" style="color: #2563eb; font-weight: 800;">📺 AI स्मार्ट बोर्ड</a>
         <a href="bseb-simulator.html" class="nav-item" style="color: #38bdf8; font-weight: 700;">🏛️ बोर्ड परीक्षा हॉल</a>
         <a href="bseb-result.html" class="nav-item" style="color: #4ade80; font-weight: 700;">🔍 रिजल्ट पोर्टल</a>
         <a href="bseb-print.html" class="nav-item" style="color: #38bdf8; font-weight: 800;">🎯 OMR एवं कॉपी जनरेटर</a>
@@ -1268,7 +1350,7 @@
     </nav>
   </header>
 
-  <!-- 2. साइड ड्रॉअर (100% No-Cut, No-Space Fit) -->
+  <!-- 2. साइड ड्रॉअर -->
   <div class="drawer-scrim" id="drawerScrim" onclick="closeDrawerUnified()"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div class="drawer-header">
@@ -1282,6 +1364,9 @@
     <nav class="drawer-nav-list">
       <a href="index.html" class="drawer-nav-item active">
         <span class="icon">📊</span> 10th मुख्य डैशबोर्ड
+      </a>
+      <a href="smart-board.html" onclick="launchSmartBoardApp(event)" class="drawer-nav-item" style="color: #2563eb; font-weight: 800; background: rgba(37, 99, 235, 0.1); border-radius: 10px;">
+        <span class="icon">📺</span> AI स्मार्ट व्हाइटबोर्ड (Live)
       </a>
       <a href="syllabus.html" class="drawer-nav-item">
         <span class="icon">📋</span> 10th बोर्ड सिलेबस
@@ -1373,7 +1458,7 @@
           </div>
         </div>
 
-        <!-- 10th क्लास स्टेटस बार (Clickable) -->
+        <!-- 10th क्लास स्टेटस बार -->
         <div class="guest-class-bar" onclick="openCustomClassSheet()">
           <div class="guest-class-info">
             <span>📚 वर्तमान अध्ययन हब:</span>
@@ -1398,6 +1483,13 @@
             <span>📚 10th नोट्स पढ़ें</span>
           </a>
         </div>
+
+        <!-- 📺 AI स्मार्ट व्हाइटबोर्ड प्रमुख हीरो बटन -->
+        <a href="smart-board.html" onclick="launchSmartBoardApp(event)" class="hero-btn-smartboard">
+          <span style="font-size: 1.2rem;">📺</span>
+          <span>AI स्मार्ट व्हाइटबोर्ड क्लास (Live Board)</span>
+          <span class="sb-new-badge">NEW</span>
+        </a>
 
         <!-- इंटरैक्टिव 10th OMR सवाल -->
         <div class="daily-poll-card">
@@ -1440,6 +1532,7 @@
     <!-- HORIZONTAL PILLS SCROLLER -->
     <div class="pills-scroll-tray">
       <a href="#quickTools" class="pill-anchor active">🔥 10th टूल्स</a>
+      <a href="smart-board.html" onclick="launchSmartBoardApp(event)" class="pill-anchor" style="border-color: #2563eb; color: #2563eb;">📺 AI स्मार्ट बोर्ड</a>
       <a href="notes.html" class="pill-anchor">📖 टॉपर्स नोट्स</a>
       <a href="model-paper.html" class="pill-anchor">📑 मॉडल पेपर</a>
       <a href="pyq.html" class="pill-anchor">📚 क्वेश्चन बैंक</a>
@@ -1456,6 +1549,11 @@
         <h3>कक्षा 10वीं स्मार्ट टूल्स (NischayDesk Tools)</h3>
       </div>
       <div class="pro-icons-grid">
+        <a href="smart-board.html" onclick="launchSmartBoardApp(event)" class="pro-icon-link">
+          <div class="icon-squircle-bubble" style="color:#2563eb; border: 1.5px solid #2563eb; background: rgba(37, 99, 235, 0.08);">📺</div>
+          <span style="color:#2563eb; font-weight: 800;">AI स्मार्ट बोर्ड</span>
+        </a>
+
         <a href="notes.html" class="pro-icon-link">
           <div class="icon-squircle-bubble" style="color:#0284c7; border: 1.5px solid #0284c7;">📖</div>
           <span style="color:#0284c7; font-weight: 800;">10th नोट्स</span>
@@ -1508,7 +1606,7 @@
       </div>
     </section>
 
-    <!-- 🌟 CLASS 10TH MATRIC SUBJECTS (Anti-Truncation Fully Fixed) -->
+    <!-- 🌟 CLASS 10TH MATRIC SUBJECTS -->
     <section class="portal-section-wrap" id="sectionClass10">
       <div class="section-head-pro">
         <h3>कक्षा 10वीं सम्पूर्ण अध्ययन विषय</h3>
@@ -1593,7 +1691,7 @@
       </div>
     </section>
 
-    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल (Switching to 11th / 12th) -->
+    <!-- 📱 कस्टम क्लास बॉटम-शीट मोडल -->
     <div class="nd-sheet-backdrop" id="ndClassSheetBackdrop" onclick="handleClassSheetBackdrop(event)">
       <div class="nd-sheet-content">
         <div class="nd-sheet-header">
@@ -1617,7 +1715,7 @@
       </div>
     </div>
 
-    <!-- 🌟 WELCOME LOGIN MODAL (FULL POPUP) -->
+    <!-- 🌟 WELCOME LOGIN MODAL -->
     <div class="nd-login-backdrop" id="ndWelcomeLoginModal" onclick="handleOutsideModalClick(event)">
       <div class="nd-login-card">
         <button type="button" class="nd-modal-close" onclick="closeWelcomeLoginModal()">&times;</button>
@@ -1630,9 +1728,9 @@
         <p class="nd-tagline">बिहार बोर्ड (BSEB) डिजिटल परीक्षा एवं टॉपर तैयारी पोर्टल 🚀</p>
 
         <div class="nd-features-box">
+          <div><span>📺</span> AI स्मार्ट व्हाइटबोर्ड लाइव क्लासेस</div>
           <div><span>✨</span> 100% फ्री टॉपर हैंडराइटिंग नोट्स</div>
           <div><span>⏱️</span> 3h 15m लाइव परीक्षा सिमुलेटर</div>
-          <div><span>🎯</span> OMR जनरेटर एवं ऑटो-रैंकिंग सिस्टम</div>
         </div>
 
         <button type="button" class="nd-btn-google" id="btnContinueGoogleModal" onclick="triggerGooglePopupFromModal()">
@@ -1681,7 +1779,7 @@
 
   </main>
 
-  <!-- 4. फ़ुटर (Full 2 Columns) -->
+  <!-- 4. फ़ुटर -->
   <footer class="khan-full-footer">
     <div class="footer-inner-khan">
       <div style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin-bottom: 8px;">
@@ -1697,6 +1795,7 @@
           <div class="footer-column-title">पोर्टल मेनू</div>
           <ul class="footer-ul-links">
             <li><a href="index.html">➔ 10th मुख्य डैशबोर्ड</a></li>
+            <li><a href="smart-board.html" onclick="launchSmartBoardApp(event)" style="color: #38bdf8;">➔ AI स्मार्ट व्हाइटबोर्ड क्लास</a></li>
             <li><a href="notes.html">➔ हस्तलिखित टॉपर्स नोट्स</a></li>
             <li><a href="syllabus.html">➔ आधिकारिक सिलेबस & ब्लूप्रिंट</a></li>
             <li><a href="pyq.html">➔ मैट्रिक क्वेश्चन बैंक (2020–2026)</a></li>
@@ -1758,9 +1857,9 @@
       <span class="dock-icon-svg">📖</span>
       <span class="dock-label-text">नोट्स</span>
     </a>
-    <a href="pyq.html" class="dock-link-item">
-      <span class="dock-icon-svg">📚</span>
-      <span class="dock-label-text">क्वेश्चन बैंक</span>
+    <a href="smart-board.html" onclick="launchSmartBoardApp(event)" class="dock-link-item" style="color: #2563eb;">
+      <span class="dock-icon-svg">📺</span>
+      <span class="dock-label-text">AI बोर्ड</span>
     </a>
     <a href="bseb-simulator.html" class="dock-link-item">
       <span class="dock-icon-svg">🏛️</span>
@@ -1770,6 +1869,25 @@
 
   <!-- 6. जावास्क्रिप्ट लॉजिक -->
   <script>
+    /* 🚀 AI स्मार्ट व्हाइटबोर्ड ऐप मोड लॉन्चर (मस्त एनिमेशन के साथ) */
+    function launchSmartBoardApp(e) {
+      if (e) e.preventDefault();
+      closeDrawerUnified();
+
+      const sbSplash = document.getElementById("smartBoardLaunchSplash");
+      if (sbSplash) {
+        sbSplash.classList.add("launching");
+      }
+
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+
+      setTimeout(() => {
+        window.location.href = "smart-board.html";
+      }, 550);
+    }
+
     function initThemeSystem() {
       const themeSwitch = document.getElementById("themeSwitch");
       const currentTheme = localStorage.getItem("nd_app_theme") || "light";
@@ -1985,7 +2103,7 @@
       }
     }
 
-    /* 🌟 Auth State Sync - Fixed Profile Modal Display */
+    /* 🌟 Auth State Sync */
     function syncUserAuthState(user) {
       const authBtn = document.getElementById('headerAuthBtn');
       const profileWidget = document.getElementById('userProfileWidget');
@@ -1994,7 +2112,6 @@
       const welcomeDisplay = document.getElementById('welcomeUserName');
       const userImg = document.getElementById('userAvatarImg');
 
-      // Modal elements
       const modalName = document.getElementById('modalUserName');
       const modalEmail = document.getElementById('modalUserEmail');
       const modalImg = document.getElementById('modalUserImg');
