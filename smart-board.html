@@ -2,7 +2,7 @@
 <html lang="hi" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>NischayBoard AI | स्मार्ट क्लास ऐप</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
     :root {
       --bg-app: #f4f7fb;
       --bg-surface: #ffffff;
-      --bg-glass: rgba(255, 255, 255, 0.9);
+      --bg-glass: rgba(255, 255, 255, 0.92);
       --border-subtle: #e2e8f0;
       --text-primary: #0f172a;
       --text-secondary: #64748b;
@@ -37,7 +37,7 @@
     html[data-theme="dark"] {
       --bg-app: #040914;
       --bg-surface: #0b162c;
-      --bg-glass: rgba(11, 22, 44, 0.9);
+      --bg-glass: rgba(11, 22, 44, 0.92);
       --border-subtle: rgba(56, 189, 248, 0.22);
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
@@ -733,7 +733,7 @@
     }
 
     /* =========================================================
-       9. HD LANDSCAPE SMART WHITEBOARD STAGE
+       9. HD LANDSCAPE SMART WHITEBOARD STAGE (MULTI-SLIDE)
        ========================================================= */
     .wb-fullscreen {
       display: none;
@@ -833,7 +833,7 @@
 
     .wb-prog-bar {
       height: 100%;
-      width: 25%;
+      width: 20%;
       background: var(--accent-blue);
       transition: width 0.5s ease;
     }
@@ -848,14 +848,20 @@
       position: relative;
     }
 
-    /* Intro Slide */
-    .intro-split {
+    /* Intro & Visual Lesson Split Grid */
+    .slide-split-grid {
       width: 100%;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 24px;
       align-items: center;
-      padding: 0 14px;
+      padding: 0 12px;
+      animation: slideEnterRight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideEnterRight {
+      from { opacity: 0; transform: translateX(24px); }
+      to { opacity: 1; transform: translateX(0); }
     }
 
     .intro-badge {
@@ -866,12 +872,13 @@
       margin-bottom: 6px;
     }
 
-    .intro-title {
-      font-size: 28px;
+    .slide-main-heading {
+      font-size: 25px;
       font-weight: 800;
       color: var(--accent-blue);
       line-height: 1.25;
       display: inline-block;
+      margin-bottom: 8px;
     }
 
     .red-line-anim {
@@ -892,7 +899,7 @@
       font-size: 23px;
       font-weight: 700;
       color: var(--accent-cyan);
-      margin-top: 6px;
+      margin-top: 4px;
       opacity: 0;
       transform: translateY(5px);
       transition: all 0.5s ease;
@@ -904,56 +911,68 @@
     }
 
     .hook-question {
-      margin-top: 18px;
+      margin-top: 14px;
       font-size: 15px;
       font-weight: 700;
       font-style: italic;
       color: var(--text-primary);
-      line-height: 1.45;
+      line-height: 1.48;
     }
 
     .diagram-card-clean {
       border: 1.5px solid var(--border-subtle);
       border-radius: 20px;
-      padding: 14px;
+      padding: 12px;
       background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 200px;
+      min-height: 205px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      animation: diagramPop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* Teaching Points Slide */
+    @keyframes diagramPop {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Teaching Points inside Slide */
     .teach-stack {
-      width: 100%;
-      max-width: 880px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      padding: 0 16px;
+      gap: 13px;
+      margin-top: 8px;
     }
 
     .teach-row {
       display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 15.5px;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 14.5px;
       color: var(--text-primary);
+      opacity: 0.45;
+      transition: opacity 0.35s ease;
+    }
+
+    .teach-row.drawn {
+      opacity: 1;
     }
 
     .sq-wrap {
       position: relative;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      margin-top: 2px;
     }
 
     .sq-blue {
-      width: 13px;
-      height: 13px;
+      width: 11px;
+      height: 11px;
       border-radius: 3px;
       background: var(--accent-blue);
     }
@@ -961,8 +980,8 @@
     .sq-ring {
       position: absolute;
       inset: -4px;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       stroke: #ef4444;
       stroke-width: 2.3;
       fill: none;
@@ -978,6 +997,7 @@
     .red-under {
       position: relative;
       display: inline-block;
+      font-weight: 800;
     }
 
     .red-under::after {
@@ -997,10 +1017,11 @@
 
     .side-hand {
       font-family: 'Caveat', cursive;
-      font-size: 21px;
+      font-size: 19px;
       font-weight: 700;
       color: var(--accent-cyan);
-      margin-left: 8px;
+      display: block;
+      margin-top: 2px;
       opacity: 0;
       transform: translateX(-6px);
       transition: all 0.5s ease;
@@ -1277,7 +1298,7 @@
       <div class="studio-box">
         <div class="studio-live-badge">⚡ INTERACTIVE SMART CLASSROOM</div>
         <h2>✨ किसी भी टॉपिक पर लाइव स्मार्ट क्लास शुरू करें</h2>
-        <p>अपना टॉपिक टाइप करें—टीचर पहले आपका नाम लेकर परिचय देगा, फिर चित्र बनाकर समझाएगा और अंत में ऑब्जेक्टिव टेस्ट भी लेगा!</p>
+        <p>अपना टॉपिक टाइप करें—टीचर पहले आपका नाम लेकर परिचय देगा, फिर हर स्लाइड पर नया चित्र बनाकर समझाएगा और अंत में टेस्ट भी लेगा!</p>
         <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: ओम का नियम, प्रकाश संश्लेषण, या त्रिकोणमिति...">
         <div class="studio-chips">
           <span class="topic-suggestion" onclick="fillTopic('ओम का नियम (Ohm\'s Law)')">⚡ ओम का नियम</span>
@@ -1347,7 +1368,7 @@
     <h3 id="prepTitle" style="font-size: 19px; font-weight: 900;">स्मार्ट बोर्ड तैयार हो रहा है...</h3>
     <div class="prep-steps-box">
       <div class="prep-step" id="pStep1">⏳ 1. छात्र के नाम से परिचय (Intro) सेट हो रहा है...</div>
-      <div class="prep-step" id="pStep2">⏳ 2. HD चित्र और पेन नोट्स बन रहे हैं...</div>
+      <div class="prep-step" id="pStep2">⏳ 2. हर स्लाइड के लिए कस्टम चित्र बन रहे हैं...</div>
       <div class="prep-step" id="pStep3">⏳ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...</div>
     </div>
   </div>
@@ -1362,7 +1383,7 @@
           <button class="wb-exit-pill" onclick="exitWhiteboard()">← वापस</button>
           <span class="wb-crumb" id="wbCrumbTitle">LIVE CLASS</span>
         </div>
-        <span class="wb-stage-tag" id="wbStageIndicator">चरण 1: परिचय (Intro)</span>
+        <span class="wb-stage-tag" id="wbStageIndicator">Slide 1</span>
       </div>
       <div class="wb-prog-track">
         <div class="wb-prog-bar" id="wbProgBar"></div>
@@ -1381,9 +1402,11 @@
 
     <div class="wb-corner-dock">
       <button class="c-btn" onclick="toggleAppTheme()" id="wbThemeBtn">🌙</button>
+      <button class="c-btn" onclick="prevBoardSlide()">⏮️</button>
       <button class="c-btn blue" id="wbPlayPauseBtn" onclick="toggleWbPlay()">⏸️ Pause</button>
       <button class="c-btn amber" onclick="openDoubtPrompt()">✋ डाउट पूछें</button>
       <button class="c-btn" onclick="clearFingerSketch()">🧹</button>
+      <button class="c-btn" onclick="nextBoardSlide()">⏭️</button>
       <button class="c-btn" onclick="forceFullLandscape()">⛶</button>
     </div>
   </div>
@@ -1417,26 +1440,19 @@
 
   <script>
     // =========================================================
-    // 🔑 API KEY SETUP (यहाँ अपनी AIzaSy... वाली Key डालें)
+    // 🔒 ENCODED API KEY & 3-TIER VOICE CONFIG (SAME AS AI STUDIO)
     // =========================================================
-    const CUSTOM_API_KEY = ""; // <-- अपनी "AIzaSy..." वाली Key यहाँ पेस्ट करें
-
-    function resolveActiveApiKey() {
-      if (CUSTOM_API_KEY && CUSTOM_API_KEY.startsWith("AIza")) {
-        return CUSTOM_API_KEY.trim();
-      }
-      if (window.GEMINI_API_KEY && window.GEMINI_API_KEY.startsWith("AIza")) {
-        return window.GEMINI_API_KEY.trim();
-      }
-      if (window.firebaseConfig && window.firebaseConfig.apiKey && window.firebaseConfig.apiKey.startsWith("AIza")) {
-        return window.firebaseConfig.apiKey.trim();
-      }
-      return "";
+    function getDecodedKey() {
+      const _s = [70, 86, 51, 70, 103, 61, 87, 83, 59, 79, 94, 125, 110, 110, 110, 104, 95, 110, 121, 121, 122, 95, 83, 59, 80, 56, 112, 120, 111, 92, 111, 71, 119, 122, 115, 91, 79, 95, 60, 55, 115, 70, 113, 77, 75, 62, 50, 90, 108, 76, 53, 124, 86];
+      return _s.map(c => String.fromCharCode(c - 5)).join('');
     }
 
-    const PRIMARY_MODEL = "gemini-3.5-flash-lite";
+    const MODEL_NAME = "gemini-3.5-flash-lite";
     const FALLBACK_MODEL = "gemini-2.5-flash";
-    const EDGE_TTS_URL = "http://localhost:5000/speak";
+
+    // 3-Tier Human Voice Setup (1. ElevenLabs -> 2. Edge-TTS -> 3. Default)
+    const ELEVEN_KEY = "sk_db06af05bfb315577f97a9fba3d24b673ecdbc025b54bd55";
+    const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
 
     // =========================================================
     // THEME ENGINE (LIGHT / DARK SYNCED WITH INDEX.HTML)
@@ -1468,10 +1484,11 @@
     let activeSubjectKey = null;
 
     let isWbPlaying = false;
-    let currentLessonPlan = null;
-    let currentPhase = 0; // 0 = Intro, 1 = Teaching, 2 = Quiz
-    let currentTeachPoint = 0;
-    let currentAudio = null;
+    let currentLessonSlides = [];
+    let currentSlideIndex = 0;
+    let currentPointIndex = 0;
+    let globalAudioPlayer = new Audio();
+    let currentAudioUrl = null;
     const voiceCache = new Map();
 
     function getDisplayStudentName() {
@@ -1734,23 +1751,23 @@
     };
 
     // =========================================================
-    // SMART AI LESSON ENGINE + AUTOMATIC BUILT-IN FALLBACK
+    // AI FREEFORM LESSON GENERATOR (SAME HEADER & KEY AS STUDIO)
     // =========================================================
-    async function callAiEngine(modelName, promptText) {
-      const apiKey = resolveActiveApiKey();
-      if (!apiKey) {
-        throw new Error("NO_VALID_KEY");
-      }
+    async function requestDynamicSlidesFromAI(modelToUse, promptText) {
+      const activeKey = getDecodedKey();
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${activeKey}`;
 
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": activeKey
+        },
         body: JSON.stringify({
           contents: [{ parts: [{ text: promptText }] }],
           generationConfig: {
-            temperature: 0.7,
-            responseMimeType: "application/json"
+            temperature: 0.85,
+            maxOutputTokens: 8192
           }
         })
       });
@@ -1765,50 +1782,6 @@
       return JSON.parse(rawText);
     }
 
-    function buildSmartFallbackLesson(subjectLabel, topicTitle, student) {
-      return {
-        subject: subjectLabel,
-        topic: topicTitle,
-        intro: {
-          heading: topicTitle,
-          handSub: "concept -> real life example -> board exam",
-          hookQuestion: `क्या आपने कभी ध्यान दिया है कि "${topicTitle}" हमारे रोज़मर्रा के जीवन और विज्ञान में इतना महत्वपूर्ण क्यों है?`,
-          svg: `
-            <svg viewBox="0 0 320 190" width="100%" height="185">
-              <rect x="25" y="25" width="270" height="140" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
-              <circle cx="95" cy="95" r="34" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
-              <text x="74" y="100" font-size="12" font-weight="bold" fill="#1e3a8a">सिद्धांत</text>
-              <line x1="132" y1="95" x2="185" y2="95" stroke="#ef4444" stroke-width="3"/>
-              <polygon points="185,89 197,95 185,101" fill="#ef4444"/>
-              <rect x="200" y="65" width="76" height="60" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
-              <text x="213" y="100" font-size="12" font-weight="bold" fill="#15803d">परिणाम ✓</text>
-            </svg>
-          `,
-          voice: `नमस्ते ${student}! आज हम सीधे किताब की परिभाषा रटने के बजाय असली ज़िंदगी के उदाहरण से "${topicTitle}" को आसान भाषा में समझेंगे।`
-        },
-        points: [
-          {
-            text: `पहला मुख्य बिंदु: "${topicTitle}" की <span class='red-under'>मूल परिभाषा और सिद्धांत</span> को हमेशा सरल शब्दों में लिखें।`,
-            sideNote: "परीक्षा में 2 अंक पक्के!",
-            circle: false,
-            voice: `${student}, सबसे पहले इसकी मूल अवधारणा को ध्यान से देखो—बोर्ड परीक्षा में इसकी परिभाषा स्पष्ट लिखने पर पूरे अंक मिलते हैं।`
-          },
-          {
-            text: `दूसरा मुख्य बिंदु: इससे जुड़ा <span class='red-under'>मुख्य सूत्र एवं चित्र</span> उत्तर को सबसे प्रभावशाली बनाता है।`,
-            sideNote: "साफ़ आरेख ज़रूर बनाएं ✓",
-            circle: true,
-            voice: `और दूसरा सबसे ज़रूरी नियम है कि इसके साथ एक साफ़ चित्र और सूत्र ज़रूर लिखें।`
-          }
-        ],
-        quiz: {
-          question: `"${topicTitle}" का अध्ययन बोर्ड परीक्षा में किस दृष्टि से सबसे महत्वपूर्ण है?`,
-          options: ["सैद्धांतिक व व्यावहारिक समझ", "केवल रटने के लिए", "बिना उदाहरण के", "इनमें से कोई नहीं"],
-          correctIndex: 0,
-          explanation: "सैद्धांतिक परिभाषा के साथ व्यावहारिक उदाहरण लिखने से पूरे अंक मिलते हैं।"
-        }
-      };
-    }
-
     async function prepareAndLaunchLesson(subjectLabel, fullTopicTitle, lessonId) {
       const activeStudent = getDisplayStudentName();
       const prep = document.getElementById("prepOverlay");
@@ -1817,254 +1790,390 @@
       const s3 = document.getElementById("pStep3");
 
       s1.className = "prep-step"; s1.textContent = `⏳ 1. "${activeStudent}" के नाम से परिचय (Intro) सेट हो रहा है...`;
-      s2.className = "prep-step"; s2.textContent = "⏳ 2. HD चित्र और पेन नोट्स बन रहे हैं...";
+      s2.className = "prep-step"; s2.textContent = "⏳ 2. हर स्लाइड के लिए कस्टम चित्र बन रहे हैं...";
       s3.className = "prep-step"; s3.textContent = "⏳ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...";
       prep.classList.add("open");
 
       setTimeout(() => { s1.classList.add("done"); s1.textContent = `✅ 1. "${activeStudent}" के नाम से परिचय तैयार!`; }, 450);
-      setTimeout(() => { s2.classList.add("done"); s2.textContent = "✅ 2. HD व्हाइटबोर्ड चित्र और नोट्स तैयार!"; }, 900);
+      setTimeout(() => { s2.classList.add("done"); s2.textContent = "✅ 2. कस्टम चित्र और स्लाइड्स तैयार हो रहे हैं!"; }, 900);
 
       if (lessonId && externalLessonsPack[lessonId]) {
-        currentLessonPlan = JSON.parse(JSON.stringify(externalLessonsPack[lessonId]));
-        currentLessonPlan.intro.voice = currentLessonPlan.intro.voice.replace(/{{STUDENT}}/g, activeStudent);
+        const packData = JSON.parse(JSON.stringify(externalLessonsPack[lessonId]));
+        currentLessonSlides = packData.slides.map(sl => {
+          if (sl.voice) sl.voice = sl.voice.replace(/{{STUDENT}}/g, activeStudent);
+          return sl;
+        });
       } else {
-        const prompt = `तुम बिहार बोर्ड कक्षा 10वीं के छात्र "${activeStudent}" के सबसे बेहतरीन और मिलनसार शिक्षक हो।
-        विषय: "${subjectLabel}", टॉपिक: "${fullTopicTitle}"।
-        निम्नलिखित नियमों के अनुसार शुद्ध संरचना में उत्तर दो:
-        1. "intro": सीधे परिभाषा मत बताओ! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी के एक मज़ेदार उदाहरण या सवाल से परिचय (Intro) दो। साथ में "svg" में उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 320 190' width='100%' height='185'> चित्र बनाओ।
-        2. "points": ठीक 3 मुख्य शिक्षण बिंदु दो जिनमें मुख्य शब्द पर <span class='red-under'>...</span> लगा हो और बगल में छोटा नीला हैंड-रिटन नोट हो।
-        3. "quiz": बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव सवाल (4 विकल्पों के साथ)।
-        संरचना:
+        const prompt = `तुम एक रचनात्मक, विश्वस्तरीय भारतीय शिक्षक हो जो छात्र "${activeStudent}" को विषय "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर लाइव स्मार्ट बोर्ड क्लास दे रहे हो।
+        तुम्हें पूरी छूट है! टॉपिक की गहराई के अनुसार अपने मन से 4 से 5 अलग-अलग स्लाइड्स बनाओ ताकि छात्र को असली वीडियो लेक्चर जैसा अनुभव मिले।
+
+        सख्त नियम:
+        1. पहली स्लाइड ("type": "intro") होनी चाहिए: सीधे परिभाषा मत रटाना! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी की एक मज़ेदार घटना या सवाल (hook) से परिचय दो, और दाईं तरफ के लिए उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 340 200' width='100%' height='190'>...</svg> चित्र बनाओ।
+        2. बीच की 2 से 3 स्लाइड्स ("type": "lesson") होनी चाहिए: हर स्लाइड में टॉपिक का अगला भाग समझाओ, 2-3 मुख्य बिंदु (<span class='red-under'>मुख्य शब्द</span> + छोटा नीला sideNote) लिखो, और **हर स्लाइड के लिए बिल्कुल अलग और नया वास्तविक SVG चित्र** बनाओ (जैसे पाचन तंत्र का अंग, विद्युत परिपथ, प्रिज्म, ग्राफ़ या फ्लोचार्ट)।
+        3. आखिरी स्लाइड ("type": "quiz") होनी चाहिए: बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव प्रश्न (4 विकल्पों और व्याख्या सहित)।
+
+        केवल शुद्ध वैध संरचना में उत्तर दो (बिना किसी अतिरिक्त टेक्स्ट के):
         {
           "subject": "${subjectLabel}",
           "topic": "${fullTopicTitle}",
-          "intro": {
-            "heading": "टॉपिक का मुख्य शीर्षक",
-            "handSub": "short english subtext -> concept",
-            "hookQuestion": "दैनिक जीवन से जुड़ा दिलचस्प सवाल?",
-            "svg": "<svg viewBox='0 0 320 190' width='100%' height='185'>...</svg>",
-            "voice": "नमस्ते ${activeStudent}! ... (4 वाक्यों का शानदार इंट्रो)"
-          },
-          "points": [
+          "slides": [
             {
-              "text": "पहला मुख्य बिंदु <span class='red-under'>मुख्य शब्द</span> के साथ।",
-              "sideNote": "नीला हैंड-रिटन नोट!",
-              "circle": false,
-              "voice": "टीचर का विस्तृत और आसान हिंदी स्पष्टीकरण"
+              "type": "intro",
+              "title": "टॉपिक का मुख्य शीर्षक",
+              "handSub": "short cursive note -> starts",
+              "hook": "दैनिक जीवन से जुड़ा दिलचस्प सवाल या उदाहरण?",
+              "svg": "<svg viewBox='0 0 340 200' width='100%' height='190'>...</svg>",
+              "voice": "नमस्ते ${activeStudent}! ... (4 वाक्यों का शानदार इंट्रो)"
+            },
+            {
+              "type": "lesson",
+              "title": "स्लाइड का शीर्षक",
+              "svg": "<svg viewBox='0 0 340 200' width='100%' height='190'>...</svg>",
+              "points": [
+                {
+                  "text": "शिक्षण बिंदु <span class='red-under'>मुख्य शब्द</span> के साथ।",
+                  "sideNote": "नीला हैंड-रिटन नोट!",
+                  "circle": true,
+                  "voice": "टीचर की बोलने वाली आसान हिंदी व्याख्या"
+                }
+              ]
+            },
+            {
+              "type": "quiz",
+              "question": "बोर्ड परीक्षा VVI ऑब्जेक्टिव प्रश्न?",
+              "options": ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"],
+              "correctIndex": 0,
+              "explanation": "सही उत्तर क्यों है, इसका संक्षिप्त कारण"
             }
-          ],
-          "quiz": {
-            "question": "बोर्ड परीक्षा VVI ऑब्जेक्टिव प्रश्न?",
-            "options": ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"],
-            "correctIndex": 0,
-            "explanation": "सही उत्तर क्यों है, इसका संक्षिप्त कारण"
-          }
+          ]
         }`;
 
         try {
-          currentLessonPlan = await callAiEngine(PRIMARY_MODEL, prompt);
+          const parsed = await requestDynamicSlidesFromAI(MODEL_NAME, prompt);
+          currentLessonSlides = parsed.slides || [];
         } catch (e1) {
           try {
-            currentLessonPlan = await callAiEngine(FALLBACK_MODEL, prompt);
+            const parsed2 = await requestDynamicSlidesFromAI(FALLBACK_MODEL, prompt);
+            currentLessonSlides = parsed2.slides || [];
           } catch (e2) {
-            console.warn("Using smooth built-in lesson engine:", e2.message);
-            currentLessonPlan = buildSmartFallbackLesson(subjectLabel, fullTopicTitle, activeStudent);
+            prep.classList.remove("open");
+            alert("त्रुटि: " + e2.message);
+            return;
           }
         }
       }
 
+      if (!currentLessonSlides || currentLessonSlides.length === 0) {
+        prep.classList.remove("open");
+        alert("स्लाइड्स तैयार नहीं हो पाईं, कृपया पुनः प्रयास करें।");
+        return;
+      }
+
       s3.classList.add("done");
-      s3.textContent = "✅ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार!";
+      s3.textContent = `✅ 3. कुल ${currentLessonSlides.length} कस्टम स्लाइड्स व टेस्ट तैयार!`;
 
       setTimeout(() => {
         prep.classList.remove("open");
-        openWhiteboardStage();
+        openWhiteboardStage(subjectLabel, fullTopicTitle);
       }, 550);
     }
 
     // =========================================================
-    // WHITEBOARD LECTURE ENGINE
+    // 3-TIER HUMAN VOICE ENGINE (ELEVENLABS -> EDGE-TTS -> DEFAULT)
     // =========================================================
-    async function speakEdgeVoice(text, onDone) {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
+    function stopAllVoices() {
+      if (globalAudioPlayer) {
+        globalAudioPlayer.pause();
+        globalAudioPlayer.currentTime = 0;
       }
-
-      try {
-        let url = voiceCache.get(text);
-        if (!url) {
-          const res = await fetch(`${EDGE_TTS_URL}?text=${encodeURIComponent(text)}&voice=hi-IN-MadhurNeural`);
-          if (res.ok) {
-            const blob = await res.blob();
-            url = URL.createObjectURL(blob);
-            voiceCache.set(text, url);
-          }
-        }
-        if (url) {
-          const audio = new Audio(url);
-          currentAudio = audio;
-          audio.onended = () => {
-            currentAudio = null;
-            if (onDone) onDone();
-          };
-          await audio.play();
-          return;
-        }
-      } catch (e) {}
-
-      setTimeout(() => { if (onDone) onDone(); }, 3500);
+      if (currentAudioUrl) {
+        URL.revokeObjectURL(currentAudioUrl);
+        currentAudioUrl = null;
+      }
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
     }
 
-    function openWhiteboardStage() {
-      document.getElementById("mainAppShell").classList.add("hidden");
-      const wb = document.getElementById("wbScreen");
-      wb.classList.add("open");
-      document.getElementById("wbCrumbTitle").textContent = `${currentLessonPlan.subject} • ${currentLessonPlan.topic}`;
-      forceFullLandscape();
+    async function speakThreeTier(rawText, onDone) {
+      stopAllVoices();
 
-      currentPhase = 0;
-      currentTeachPoint = 0;
-      isWbPlaying = true;
-      document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
-      renderIntroPhase();
-    }
+      const clean = rawText
+        .replace(/<[^>]*>/g, "")
+        .replace(/[*#_`$~]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
 
-    function renderIntroPhase() {
-      const activeStudent = getDisplayStudentName();
-      document.getElementById("wbStageIndicator").textContent = "चरण 1 / 3 : परिचय (Intro)";
-      document.getElementById("wbProgBar").style.width = "33%";
-      document.getElementById("understandingBar").classList.remove("show");
-      clearFingerSketch();
-
-      const intro = currentLessonPlan.intro;
-      const canvas = document.getElementById("wbMainCanvas");
-      canvas.innerHTML = `
-        <div class="intro-split">
-          <div>
-            <div class="intro-badge">INTRODUCTION • ${activeStudent}</div>
-            <div class="intro-title" id="introHero">
-              ${intro.heading}
-              <div class="red-line-anim"></div>
-            </div>
-            <div class="hand-cursive" id="introHand">${intro.handSub}</div>
-            <div class="hook-question" id="introHook">${intro.hookQuestion}</div>
-          </div>
-          <div class="diagram-card-clean">${intro.svg}</div>
-        </div>
-      `;
-
-      setTimeout(() => {
-        document.getElementById("introHero").classList.add("drawn");
-        document.getElementById("introHand").classList.add("show");
-      }, 300);
-
-      speakEdgeVoice(intro.voice, () => {
-        if (!isWbPlaying) return;
-        currentPhase = 1;
-        currentTeachPoint = 0;
-        renderTeachingPhase();
-      });
-    }
-
-    function renderTeachingPhase() {
-      document.getElementById("wbStageIndicator").textContent = "चरण 2 / 3 : मुख्य व्याख्या";
-      document.getElementById("wbProgBar").style.width = "66%";
-      document.getElementById("understandingBar").classList.remove("show");
-      clearFingerSketch();
-
-      const pts = currentLessonPlan.points;
-      const canvas = document.getElementById("wbMainCanvas");
-      let html = `<div class="teach-stack">`;
-      pts.forEach((p, idx) => {
-        html += `
-          <div class="teach-row" id="tRow-${idx}">
-            <div class="sq-wrap">
-              <div class="sq-blue"></div>
-              <svg class="sq-ring" viewBox="0 0 36 36">
-                <path d="M 18,3 C 28,3 33,10 33,18 C 33,27 26,33 17,33 C 8,33 3,26 3,18 C 3,10 9,4 18,3" />
-              </svg>
-            </div>
-            <div style="font-weight:600;line-height:1.45;">${p.text}</div>
-            <div class="side-hand">${p.sideNote || ""}</div>
-          </div>
-        `;
-      });
-      html += `</div>`;
-      canvas.innerHTML = html;
-
-      playNextTeachRow();
-    }
-
-    function playNextTeachRow() {
-      if (!isWbPlaying) return;
-      const pts = currentLessonPlan.points;
-      const activeStudent = getDisplayStudentName();
-
-      if (currentTeachPoint >= pts.length) {
-        document.getElementById("understandingBar").classList.add("show");
-        speakEdgeVoice(`${activeStudent}, क्या यह पूरा टॉपिक तुम्हें अच्छे से समझ आ गया? ऊपर लाइक या डिसलाइक दबाकर बताओ!`);
+      if (!clean) {
+        if (onDone) onDone();
         return;
       }
 
-      const row = document.getElementById(`tRow-${currentTeachPoint}`);
-      row.classList.add("drawn");
-      if (pts[currentTeachPoint].circle) row.classList.add("circled");
+      // Check Cache first
+      if (voiceCache.has(clean)) {
+        const cachedUrl = voiceCache.get(clean);
+        globalAudioPlayer.src = cachedUrl;
+        globalAudioPlayer.onended = () => { if (onDone) onDone(); };
+        await globalAudioPlayer.play();
+        return;
+      }
 
-      const voiceLine = pts[currentTeachPoint].voice;
-      currentTeachPoint++;
-      speakEdgeVoice(voiceLine, () => {
-        if (isWbPlaying) setTimeout(playNextTeachRow, 200);
+      // [Tier 1]: ElevenLabs
+      try {
+        const res1 = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_22050_32`, {
+          method: "POST",
+          headers: {
+            "xi-api-key": ELEVEN_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            text: clean,
+            model_id: "eleven_multilingual_v2",
+            voice_settings: { stability: 0.5, similarity_boost: 0.8 }
+          })
+        });
+
+        if (!res1.ok) throw new Error("ElevenLabs limit");
+        const blob1 = await res1.blob();
+        const url1 = URL.createObjectURL(blob1);
+        voiceCache.set(clean, url1);
+        globalAudioPlayer.src = url1;
+        globalAudioPlayer.onended = () => { if (onDone) onDone(); };
+        globalAudioPlayer.onerror = () => speakEdgeTier2(clean, onDone);
+        await globalAudioPlayer.play();
+        return;
+      } catch (e1) {
+        await speakEdgeTier2(clean, onDone);
+      }
+    }
+
+    // [Tier 2]: Edge-TTS
+    async function speakEdgeTier2(clean, onDone) {
+      try {
+        const res2 = await fetch("http://localhost:3000/api/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: clean, voice: "hi-IN-SwaraNeural", rate: "+6%" })
+        });
+        if (!res2.ok) throw new Error("Edge-TTS offline");
+        const blob2 = await res2.blob();
+        const url2 = URL.createObjectURL(blob2);
+        voiceCache.set(clean, url2);
+        globalAudioPlayer.src = url2;
+        globalAudioPlayer.onended = () => { if (onDone) onDone(); };
+        globalAudioPlayer.onerror = () => speakDefaultTier3(clean, onDone);
+        await globalAudioPlayer.play();
+      } catch (e2) {
+        speakDefaultTier3(clean, onDone);
+      }
+    }
+
+    // [Tier 3]: Default System Speech
+    function speakDefaultTier3(clean, onDone) {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(clean);
+        utt.lang = "hi-IN";
+        utt.rate = 1.05;
+        utt.onend = utt.onerror = () => { if (onDone) onDone(); };
+        window.speechSynthesis.speak(utt);
+      } else {
+        setTimeout(() => { if (onDone) onDone(); }, 3000);
+      }
+    }
+
+    // =========================================================
+    // DYNAMIC MULTI-SLIDE WHITEBOARD PLAYER
+    // =========================================================
+    function openWhiteboardStage(subjectLabel, topicTitle) {
+      document.getElementById("mainAppShell").classList.add("hidden");
+      const wb = document.getElementById("wbScreen");
+      wb.classList.add("open");
+      document.getElementById("wbCrumbTitle").textContent = `${subjectLabel} • ${topicTitle}`;
+      forceFullLandscape();
+
+      currentSlideIndex = 0;
+      currentPointIndex = 0;
+      isWbPlaying = true;
+      document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
+      renderCurrentSlide();
+    }
+
+    function renderCurrentSlide() {
+      const activeStudent = getDisplayStudentName();
+      const total = currentLessonSlides.length;
+      const slide = currentLessonSlides[currentSlideIndex];
+
+      document.getElementById("wbStageIndicator").textContent = `Slide ${currentSlideIndex + 1} of ${total}`;
+      document.getElementById("wbProgBar").style.width = `${((currentSlideIndex + 1) / total) * 100}%`;
+      document.getElementById("understandingBar").classList.remove("show");
+      clearFingerSketch();
+
+      const canvas = document.getElementById("wbMainCanvas");
+
+      if (slide.type === "intro") {
+        canvas.innerHTML = `
+          <div class="slide-split-grid">
+            <div>
+              <div class="intro-badge">INTRODUCTION • ${activeStudent}</div>
+              <div class="slide-main-heading" id="introHero">
+                ${slide.title}
+                <div class="red-line-anim"></div>
+              </div>
+              <div class="hand-cursive" id="introHand">${slide.handSub || ""}</div>
+              <div class="hook-question">${slide.hook || ""}</div>
+            </div>
+            <div class="diagram-card-clean">${slide.svg || ""}</div>
+          </div>
+        `;
+
+        setTimeout(() => {
+          const h = document.getElementById("introHero");
+          const c = document.getElementById("introHand");
+          if (h) h.classList.add("drawn");
+          if (c) c.classList.add("show");
+        }, 250);
+
+        speakThreeTier(slide.voice || slide.hook, () => {
+          if (!isWbPlaying) return;
+          advanceToNextSlide();
+        });
+      } else if (slide.type === "lesson") {
+        let pointsHtml = "";
+        (slide.points || []).forEach((pt, idx) => {
+          pointsHtml += `
+            <div class="teach-row" id="tRow-${idx}">
+              <div class="sq-wrap">
+                <div class="sq-blue"></div>
+                <svg class="sq-ring" viewBox="0 0 36 36">
+                  <path d="M 18,3 C 28,3 33,10 33,18 C 33,27 26,33 17,33 C 8,33 3,26 3,18 C 3,10 9,4 18,3" />
+                </svg>
+              </div>
+              <div style="flex:1;line-height:1.45;">
+                ${pt.text}
+                ${pt.sideNote ? `<span class="side-hand">${pt.sideNote}</span>` : ""}
+              </div>
+            </div>
+          `;
+        });
+
+        canvas.innerHTML = `
+          <div class="slide-split-grid">
+            <div>
+              <div class="slide-main-heading drawn">
+                ${slide.title}
+                <div class="red-line-anim"></div>
+              </div>
+              <div class="teach-stack">${pointsHtml}</div>
+            </div>
+            <div class="diagram-card-clean">${slide.svg || ""}</div>
+          </div>
+        `;
+
+        currentPointIndex = 0;
+        playLessonSlidePoints();
+      } else if (slide.type === "quiz") {
+        const labels = ["A", "B", "C", "D"];
+        let optsHtml = "";
+        (slide.options || []).forEach((opt, idx) => {
+          optsHtml += `<button class="quiz-opt-card" id="qOpt-${idx}" onclick="checkBoardQuiz(${idx})">${labels[idx]}. ${opt}</button>`;
+        });
+
+        canvas.innerHTML = `
+          <div class="quiz-board-box">
+            <div style="font-size:12px;font-weight:800;color:var(--accent-blue);margin-bottom:6px;">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</div>
+            <div class="quiz-q-title">${slide.question}</div>
+            <div class="quiz-opts-grid">${optsHtml}</div>
+            <div id="quizResultNote" style="margin-top:16px;font-size:14px;font-weight:800;"></div>
+          </div>
+        `;
+
+        speakThreeTier(`शाबाश ${activeStudent}! अब बोर्ड पर एक ऑब्जेक्टिव टेस्ट है। सवाल पढ़ो और सही विकल्प पर टैप करो: ${slide.question}`);
+      }
+    }
+
+    function playLessonSlidePoints() {
+      if (!isWbPlaying) return;
+      const slide = currentLessonSlides[currentSlideIndex];
+      const pts = slide.points || [];
+
+      if (currentPointIndex >= pts.length) {
+        // Check if the next slide is a quiz -> ask 👍/👎 before starting quiz
+        const nextSlide = currentLessonSlides[currentSlideIndex + 1];
+        if (nextSlide && nextSlide.type === "quiz") {
+          const activeStudent = getDisplayStudentName();
+          document.getElementById("understandingBar").classList.add("show");
+          speakThreeTier(`${activeStudent}, क्या यह पूरा टॉपिक तुम्हें अच्छे से समझ आ गया? ऊपर लाइक या डिसलाइक दबाकर बताओ!`);
+        } else {
+          setTimeout(() => {
+            if (isWbPlaying) advanceToNextSlide();
+          }, 400);
+        }
+        return;
+      }
+
+      const row = document.getElementById(`tRow-${currentPointIndex}`);
+      if (row) {
+        row.classList.add("drawn");
+        if (pts[currentPointIndex].circle) row.classList.add("circled");
+      }
+
+      const voiceLine = pts[currentPointIndex].voice || pts[currentPointIndex].text;
+      currentPointIndex++;
+      speakThreeTier(voiceLine, () => {
+        if (isWbPlaying) setTimeout(playLessonSlidePoints, 150);
       });
     }
 
+    function advanceToNextSlide() {
+      if (currentSlideIndex < currentLessonSlides.length - 1) {
+        currentSlideIndex++;
+        renderCurrentSlide();
+      } else {
+        isWbPlaying = false;
+        document.getElementById("wbPlayPauseBtn").textContent = "🔄 फिर से";
+      }
+    }
+
+    window.nextBoardSlide = function() {
+      stopAllVoices();
+      if (currentSlideIndex < currentLessonSlides.length - 1) {
+        currentSlideIndex++;
+        isWbPlaying = true;
+        document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
+        renderCurrentSlide();
+      }
+    };
+
+    window.prevBoardSlide = function() {
+      stopAllVoices();
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        isWbPlaying = true;
+        document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
+        renderCurrentSlide();
+      }
+    };
+
     window.handleUnderstandLike = function() {
       document.getElementById("understandingBar").classList.remove("show");
-      currentPhase = 2;
-      renderObjectiveQuizPhase();
+      advanceToNextSlide();
     };
 
     window.handleUnderstandDislike = function() {
       const activeStudent = getDisplayStudentName();
       document.getElementById("understandingBar").classList.remove("show");
       isWbPlaying = false;
-      if (currentAudio) currentAudio.pause();
+      stopAllVoices();
       document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
-      speakEdgeVoice(`कोई बात नहीं ${activeStudent}! बताओ इसमें कौन सी चीज़ समझ नहीं आई, मैं अभी आसान उदाहरण से समझाता हूँ।`);
+      speakThreeTier(`कोई बात नहीं ${activeStudent}! बताओ इसमें कौन सी चीज़ समझ नहीं आई, मैं अभी आसान उदाहरण से समझाता हूँ।`);
       document.getElementById("doubtModalMask").classList.add("open");
       document.getElementById("userDoubtField").focus();
     };
 
-    function renderObjectiveQuizPhase() {
-      const activeStudent = getDisplayStudentName();
-      document.getElementById("wbStageIndicator").textContent = "चरण 3 / 3 : ऑब्जेक्टिव टेस्ट";
-      document.getElementById("wbProgBar").style.width = "100%";
-      clearFingerSketch();
-
-      const qObj = currentLessonPlan.quiz;
-      const canvas = document.getElementById("wbMainCanvas");
-      const labels = ["A", "B", "C", "D"];
-
-      let optsHtml = "";
-      qObj.options.forEach((opt, idx) => {
-        optsHtml += `<button class="quiz-opt-card" id="qOpt-${idx}" onclick="checkBoardQuiz(${idx})">${labels[idx]}. ${opt}</button>`;
-      });
-
-      canvas.innerHTML = `
-        <div class="quiz-board-box">
-          <div style="font-size:12px;font-weight:800;color:var(--accent-blue);margin-bottom:6px;">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</div>
-          <div class="quiz-q-title">${qObj.question}</div>
-          <div class="quiz-opts-grid">${optsHtml}</div>
-          <div id="quizResultNote" style="margin-top:16px;font-size:14px;font-weight:800;"></div>
-        </div>
-      `;
-
-      speakEdgeVoice(`शाबाश ${activeStudent}! अब बोर्ड पर एक ऑब्जेक्टिव टेस्ट है। सवाल पढ़ो और सही विकल्प पर टैप करो: ${qObj.question}`);
-    }
-
     window.checkBoardQuiz = function(chosenIdx) {
       const activeStudent = getDisplayStudentName();
-      const qObj = currentLessonPlan.quiz;
+      const qObj = currentLessonSlides[currentSlideIndex];
       document.querySelectorAll(".quiz-opt-card").forEach(b => b.disabled = true);
       const note = document.getElementById("quizResultNote");
 
@@ -2072,19 +2181,19 @@
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("right");
         note.style.color = "#16a34a";
         note.textContent = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation})`;
-        speakEdgeVoice(`वाह ${activeStudent}, बिल्कुल सही जवाब! ${qObj.explanation}। अब तुम वापस जाकर अगला टॉपिक चुन सकते हो।`);
+        speakThreeTier(`वाह ${activeStudent}, बिल्कुल सही जवाब! ${qObj.explanation}। अब तुम वापस जाकर अगला टॉपिक चुन सकते हो।`);
       } else {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("wrong");
         document.getElementById(`qOpt-${qObj.correctIndex}`).classList.add("right");
         note.style.color = "#ef4444";
         note.textContent = `❌ कोई बात नहीं! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation})`;
-        speakEdgeVoice(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
+        speakThreeTier(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
       }
     };
 
     window.openDoubtPrompt = function() {
       isWbPlaying = false;
-      if (currentAudio) currentAudio.pause();
+      stopAllVoices();
       document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
       document.getElementById("doubtModalMask").classList.add("open");
       document.getElementById("userDoubtField").focus();
@@ -2100,39 +2209,39 @@
       const canvas = document.getElementById("wbMainCanvas");
       canvas.innerHTML = `<div style="text-align:center;"><div style="font-size:46px;margin-bottom:8px;">🧠</div><h3 style="font-weight:900;">टीचर "${activeStudent}" के सवाल पर विचार कर रहे हैं...</h3></div>`;
 
-      let answer = `${activeStudent}, "${doubtText}" को आसान भाषा में समझो—हर वैज्ञानिक नियम एक व्यावहारिक उदाहरण से जुड़ा होता है, जिसे चित्र के साथ याद रखने पर परीक्षा में पूरे अंक मिलते हैं।`;
-
       try {
-        const resObj = await callAiEngine(PRIMARY_MODEL, `छात्र "${activeStudent}" को टॉपिक "${currentLessonPlan.topic}" में यह बात समझ नहीं आई: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण"}`);
-        if (resObj && resObj.answer) answer = resObj.answer;
-      } catch (e) {}
-
-      canvas.innerHTML = `
-        <div style="max-width:740px;padding:20px;">
-          <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
-          <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:18px;">${answer}</div>
-          <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="handleUnderstandLike()">👍 अब समझ आ गया — टेस्ट दें ➔</button>
-        </div>
-      `;
-      speakEdgeVoice(answer);
+        const resObj = await requestDynamicSlidesFromAI(MODEL_NAME, `छात्र "${activeStudent}" को यह बात समझ नहीं आई: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण", "svg": "<svg viewBox='0 0 320 180' width='100%' height='175'>समझाने के लिए एक साफ़ चित्र</svg>"}`);
+        canvas.innerHTML = `
+          <div class="slide-split-grid">
+            <div>
+              <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
+              <div style="font-size:16.5px;font-weight:700;line-height:1.55;margin-bottom:18px;">${resObj.answer}</div>
+              <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="handleUnderstandLike()">👍 अब समझ आ गया — टेस्ट दें ➔</button>
+            </div>
+            <div class="diagram-card-clean">${resObj.svg || ""}</div>
+          </div>
+        `;
+        speakThreeTier(resObj.answer);
+      } catch (e) {
+        alert("त्रुटि: " + e.message);
+      }
     };
 
     window.toggleWbPlay = function() {
       if (isWbPlaying) {
         isWbPlaying = false;
-        if (currentAudio) currentAudio.pause();
+        stopAllVoices();
         document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
       } else {
         isWbPlaying = true;
         document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
-        if (currentPhase === 0) renderIntroPhase();
-        else if (currentPhase === 1) playNextTeachRow();
+        renderCurrentSlide();
       }
     };
 
     window.exitWhiteboard = function() {
       isWbPlaying = false;
-      if (currentAudio) currentAudio.pause();
+      stopAllVoices();
       document.getElementById("wbScreen").classList.remove("open");
       document.getElementById("mainAppShell").classList.remove("hidden");
     };
