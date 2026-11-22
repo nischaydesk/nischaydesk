@@ -1804,7 +1804,7 @@
       if (globalAudioPlayer) globalAudioPlayer.playbackRate = playbackSpeed;
     };
 
-    async function speakMasterVoice(rawText, onDone) {
+        async function speakMasterVoice(rawText, onDone) {
       stopAllVoices();
       const clean = (rawText || "").replace(/<[^>]*>/g, "").replace(/[*#_`$~]/g, "").replace(/\s+/g, " ").trim();
 
@@ -1821,47 +1821,23 @@
         return;
       }
 
-      // Tier 1: ElevenLabs
       try {
-        const res1 = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_22050_32`, {
-          method: "POST",
-          headers: { "xi-api-key": ELEVEN_KEY, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            text: clean,
-            model_id: "eleven_multilingual_v2",
-            voice_settings: { stability: 0.5, similarity_boost: 0.8 }
-          })
-        });
-        if (!res1.ok) throw new Error("Tier 1 limit");
-        const url1 = URL.createObjectURL(await res1.blob());
-        voiceCache.set(clean, url1);
-        globalAudioPlayer.src = url1;
-        globalAudioPlayer.playbackRate = playbackSpeed;
-        globalAudioPlayer.onended = () => { if (onDone) onDone(); };
-        globalAudioPlayer.onerror = () => speakEdgeTier2(clean, onDone);
-        await globalAudioPlayer.play();
-        return;
-      } catch (e1) {
-        await speakEdgeTier2(clean, onDone);
-      }
-    }
+        const localUrl = `http://127.0.0.1:5000/speak?text=${encodeURIComponent(clean)}&voice=hi-IN-MadhurNeural`;
+        const resLocal = await fetch(localUrl);
+        if (!resLocal.ok) throw new Error("Local 5000 error");
 
-    async function speakEdgeTier2(clean, onDone) {
-      try {
-        const res2 = await fetch("http://localhost:3000/api/tts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: clean, voice: "hi-IN-SwaraNeural", rate: "+5%" })
-        });
-        if (!res2.ok) throw new Error("Tier 2 offline");
-        const url2 = URL.createObjectURL(await res2.blob());
-        voiceCache.set(clean, url2);
-        globalAudioPlayer.src = url2;
+        const blobLocal = await resLocal.blob();
+        const audioUrl = URL.createObjectURL(blobLocal);
+        voiceCache.set(clean, audioUrl);
+
+        globalAudioPlayer.src = audioUrl;
         globalAudioPlayer.playbackRate = playbackSpeed;
         globalAudioPlayer.onended = () => { if (onDone) onDone(); };
         globalAudioPlayer.onerror = () => speakDefaultTier3(clean, onDone);
         await globalAudioPlayer.play();
-      } catch (e2) {
+        return;
+      } catch (errLocal) {
+        console.warn("Termux 5000 पर कॉल नहीं गई:", errLocal);
         speakDefaultTier3(clean, onDone);
       }
     }
