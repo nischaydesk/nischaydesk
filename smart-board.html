@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NischayBoard AI | असली स्मार्ट व्हाइटबोर्ड</title>
+  <title>NischayBoard AI | असली हैंड-रिटन व्हाइटबोर्ड</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Kalam:wght@400;700&family=Plus+Jakarta+Sans:wght@500;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Firebase Auth Sync -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -15,16 +15,6 @@
   <script src="config.js"></script>
 
   <style>
-    :root {
-      --lobby-bg: #f4f7fb;
-      --lobby-card: #ffffff;
-      --lobby-border: #e2e8f0;
-      --lobby-text: #0f172a;
-      --lobby-muted: #64748b;
-      --accent-blue: #2563eb;
-      --accent-orange: #ea580c;
-    }
-
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -35,15 +25,39 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: var(--lobby-bg);
-      color: var(--lobby-text);
+      background: #f4f7fb;
+      color: #0f172a;
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
       overflow-x: hidden;
       user-select: none;
     }
 
     /* =========================================================
-       1. APP SPLASH & AUDIO PRELOADER
+       REAL STACKED FRACTION (असली गणितीय बटा)
+       ========================================================= */
+    .math-frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 4px;
+      font-weight: 700;
+      line-height: 1.08;
+    }
+    .math-frac .num {
+      padding: 0 5px 2px;
+      border-bottom: 2px solid currentColor;
+      display: block;
+      text-align: center;
+    }
+    .math-frac .den {
+      padding: 2px 5px 0;
+      display: block;
+      text-align: center;
+    }
+
+    /* =========================================================
+       1. SPLASH & AUDIO PRELOADER
        ========================================================= */
     #appSplash {
       position: fixed;
@@ -75,8 +89,8 @@
     .lesson-preloader.open { display: flex; }
 
     .loader-ring {
-      width: 74px;
-      height: 74px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       border: 4px solid #e2e8f0;
       border-top-color: #ea580c;
@@ -102,12 +116,11 @@
     }
 
     /* =========================================================
-       2. STUDENT LOBBY (CLEAN WHITE UI)
+       2. LOBBY UI
        ========================================================= */
     .app-container {
       min-height: 100vh;
       padding-bottom: 84px;
-      background: var(--lobby-bg);
     }
     .app-container.hidden { display: none; }
 
@@ -115,18 +128,17 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
-      border-bottom: 1.5px solid var(--lobby-border);
+      border-bottom: 1.5px solid #e2e8f0;
       padding: 11px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
     .app-back-pill {
       background: #ffffff;
-      border: 1.5px solid var(--lobby-border);
+      border: 1.5px solid #e2e8f0;
       color: #0f172a;
       padding: 7px 12px;
       border-radius: 12px;
@@ -134,7 +146,6 @@
       font-weight: 800;
       text-decoration: none;
     }
-
     .profile-pill-btn {
       display: flex;
       align-items: center;
@@ -148,24 +159,6 @@
     .profile-pill-btn img { width: 26px; height: 26px; border-radius: 50%; }
     .profile-pill-btn span { font-size: 12px; font-weight: 800; color: #1d4ed8; }
 
-    .resume-banner-wrap {
-      max-width: 980px;
-      margin: 14px auto 0;
-      padding: 0 16px;
-      display: none;
-    }
-    .resume-banner-wrap.show { display: block; }
-    .resume-card {
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-      color: #ffffff;
-      border-radius: 18px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
     .mode-switcher-wrap {
       max-width: 980px;
       margin: 14px auto 8px;
@@ -176,14 +169,14 @@
     }
     .mode-card {
       background: #ffffff;
-      border: 2px solid var(--lobby-border);
+      border: 2px solid #e2e8f0;
       border-radius: 20px;
       padding: 14px;
       cursor: pointer;
     }
     .mode-card.active { border-color: #2563eb; }
     .mode-card h3 { font-size: 14.5px; font-weight: 900; margin: 4px 0 2px; }
-    .mode-card p { font-size: 11.5px; color: var(--lobby-muted); font-weight: 600; }
+    .mode-card p { font-size: 11.5px; color: #64748b; font-weight: 600; }
 
     .syllabus-section, .ai-studio-section {
       max-width: 980px;
@@ -205,7 +198,7 @@
     .subj-pill {
       flex: 0 0 auto;
       background: #ffffff;
-      border: 1.5px solid var(--lobby-border);
+      border: 1.5px solid #e2e8f0;
       color: #0f172a;
       padding: 9px 14px;
       border-radius: 12px;
@@ -222,7 +215,7 @@
     }
     .ch-card {
       background: #ffffff;
-      border: 1.5px solid var(--lobby-border);
+      border: 1.5px solid #e2e8f0;
       border-radius: 16px;
       padding: 14px 15px;
       display: flex;
@@ -269,7 +262,6 @@
       outline: none;
       margin: 12px 0;
     }
-    .studio-input::placeholder { color: #e2e8f0; }
 
     .native-bottom-dock {
       position: fixed;
@@ -278,7 +270,7 @@
       right: 0;
       height: 64px;
       background: #ffffff;
-      border-top: 1.5px solid var(--lobby-border);
+      border-top: 1.5px solid #e2e8f0;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -335,7 +327,7 @@
     }
 
     /* =========================================================
-       3. UNIFIED WHITEBOARD STAGE (ALWAYS PURE WHITE BY DEFAULT + SUBTLE TINT)
+       3. CONTINUOUS HAND-WRITTEN SCROLLING WHITEBOARD
        ========================================================= */
     .wb-fullscreen {
       display: none;
@@ -344,19 +336,18 @@
       width: 100vw;
       height: 100vh;
       background: #ffffff;
+      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+      background-size: 24px 24px;
       color: #0f172a;
       z-index: 7000;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 12px 30px 16px 30px;
       overflow: hidden;
-      transition: background 0.3s ease, color 0.3s ease;
     }
     .wb-fullscreen.open { display: flex; }
 
-    /* Optional Soft Dark Mode for Night Eye Comfort */
     html[data-board-theme="soft-dark"] .wb-fullscreen {
       background: #131c2e;
+      background-image: radial-gradient(#1e293b 1px, transparent 1px);
       color: #f1f5f9;
     }
 
@@ -377,197 +368,159 @@
       .wb-fullscreen.open ~ .portrait-lock-screen { display: flex; }
     }
 
-    /* Auto-Hiding Top Header & Bottom Control Bar (Reveals on 1 Tap!) */
+    /* Auto-Hide Chrome (Tap screen once to toggle) */
     .wb-chrome {
-      transition: opacity 0.28s ease, transform 0.28s ease;
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
     .wb-fullscreen.controls-hidden .wb-top-bar {
       opacity: 0;
-      transform: translateY(-24px);
+      transform: translateY(-28px);
       pointer-events: none;
     }
     .wb-fullscreen.controls-hidden .jeet-center-dock {
       opacity: 0;
-      transform: translate(-50%, 28px);
+      transform: translate(-50%, 32px);
       pointer-events: none;
     }
 
     .wb-top-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex-shrink: 0;
-      z-index: 100;
-    }
-    .wb-meta-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 24px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 7400;
     }
-    .wb-left-nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    html[data-board-theme="soft-dark"] .wb-top-bar {
+      background: rgba(19, 28, 46, 0.92);
+      border-color: #334155;
     }
+
     .wb-back-circle {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: #ef4444;
       color: #ffffff;
       border: none;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 900;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .wb-crumb {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #ea580c;
-      text-transform: uppercase;
-    }
-    .wb-slide-counter {
-      font-size: 12.5px;
-      font-weight: 800;
-      color: #ea580c;
-    }
-    .wb-prog-track {
-      width: 78%;
-      height: 2.5px;
-      background: #fed7aa;
-      margin-left: 46px;
-    }
-    .wb-prog-bar {
-      height: 100%;
-      width: 10%;
-      background: #ea580c;
-      transition: width 0.4s ease;
     }
 
-    /* Main Board Workspace */
-    .wb-main-canvas {
+    /* Two-Column Continuous Board: LEFT = Teacher Handwriting Scroll | RIGHT = Sticky Live Diagram */
+    .continuous-board-layout {
       flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
       overflow: hidden;
-      position: relative;
       cursor: pointer;
     }
 
-    .lesson-split-stage {
-      width: 100%;
-      display: grid;
-      grid-template-columns: 0.96fr 1.04fr;
-      gap: 24px;
-      align-items: center;
-      padding: 0 10px;
+    /* LEFT SIDE: Infinite Continuous Notebook Stream */
+    .left-notebook-scroll {
+      height: 100%;
+      overflow-y: auto;
+      padding: 28px 26px 140px 34px;
+      scroll-behavior: smooth;
+      border-right: 1.5px dashed #cbd5e1;
     }
-
-    /* Left Scientific Diagram & Live Pen Drawing Box */
-    .visual-board-panel {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      border-radius: 18px;
-      background: #f8fafc;
-      border: 2px solid #e2e8f0;
-      min-height: 225px;
-      position: relative;
-    }
-    html[data-board-theme="soft-dark"] .visual-board-panel {
-      background: #1e293b;
+    html[data-board-theme="soft-dark"] .left-notebook-scroll {
       border-color: #334155;
     }
 
-    /* SVG Pen Stroke Animation */
-    .diagram-svg-holder {
-      width: 100%;
+    .notebook-topic-banner {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ea580c;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 2px solid #fed7aa;
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+    }
+
+    /* Hand-Written Block Entry */
+    .handwritten-block {
+      margin-bottom: 20px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: background 0.45s ease, box-shadow 0.45s ease;
+    }
+
+    /* Reference Highlight when Teacher scrolls back to show an earlier equation */
+    .handwritten-block.ref-glow {
+      background: #fef08a !important;
+      color: #0f172a !important;
+      box-shadow: 0 0 0 3px #f59e0b;
+    }
+
+    .hw-section-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #2563eb;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-    .diagram-svg-holder svg {
-      max-width: 100%;
-      max-height: 185px;
-    }
-    .diagram-svg-holder svg line,
-    .diagram-svg-holder svg path,
-    .diagram-svg-holder svg circle,
-    .diagram-svg-holder svg polygon {
-      stroke-dasharray: 600;
-      stroke-dashoffset: 600;
-      animation: drawPenStroke 1.6s ease forwards;
-    }
-    @keyframes drawPenStroke {
-      to { stroke-dashoffset: 0; }
+      gap: 6px;
     }
 
-    .pen-caption-line {
-      font-family: 'Caveat', cursive;
-      font-size: 23px;
+    .hw-line {
+      font-family: 'Kalam', 'Noto Sans Devanagari', cursive;
+      font-size: 18.5px;
+      font-weight: 400;
+      line-height: 1.75;
+      margin-bottom: 10px;
+      color: inherit;
+    }
+
+    .hw-line.formula-box {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 8px 14px;
+      border-radius: 0 10px 10px 0;
       font-weight: 700;
-      color: #2563eb;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: all 0.5s ease;
+      color: #1e3a8a;
     }
-    .pen-caption-line.show {
-      opacity: 1;
-      transform: translateY(0);
+    html[data-board-theme="soft-dark"] .hw-line.formula-box {
+      background: #1e293b;
+      color: #93c5fd;
     }
 
-    /* Right Side: Step-by-Step Teacher Notes (Exact Sync with Voice!) */
-    .teacher-notes-col {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-    }
-
-    .note-step-block {
-      font-size: 15px;
-      line-height: 1.55;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .note-step-block.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Live Pen Cursor Blinking While Writing */
-    .pen-cursor {
+    .pen-nib {
       display: inline-block;
       color: #ef4444;
-      font-weight: 900;
-      animation: blinkPen 0.5s infinite;
+      font-size: 18px;
+      animation: nibWiggle 0.35s infinite alternate;
     }
-    @keyframes blinkPen { 50% { opacity: 0; } }
+    @keyframes nibWiggle {
+      from { transform: translateY(0) rotate(-10deg); }
+      to { transform: translateY(-3px) rotate(5deg); }
+    }
 
-    /* Red Underline & Red Circle appear ONLY AFTER that line is spoken & explained */
+    /* Red Pen Underline & Circle drawn AFTER speaking */
     .red-under {
       position: relative;
       display: inline-block;
-      font-weight: 800;
+      font-weight: 700;
     }
     .red-under::after {
       content: '';
       position: absolute;
       left: 0;
-      bottom: -2px;
+      bottom: 1px;
       width: 0;
       height: 2.5px;
       background: #ef4444;
-      transition: width 0.6s ease;
+      transition: width 0.65s ease;
     }
     .pen-marked .red-under::after { width: 100%; }
 
@@ -580,107 +533,94 @@
     .pen-marked .red-oval {
       border-color: #ef4444;
       color: #dc2626;
-      font-weight: 800;
+      font-weight: 700;
     }
 
-    /* Learning Goals Full List */
-    .goals-full-list {
-      width: 100%;
-      max-width: 880px;
+    /* RIGHT SIDE: Sticky Pinned Live Diagram Panel */
+    .right-diagram-sticky {
+      height: 100%;
+      padding: 24px 18px 80px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      padding: 0 18px;
-    }
-    .goal-line-item {
-      display: flex;
       align-items: center;
-      gap: 14px;
-      font-size: 15.5px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      justify-content: center;
+      background: rgba(248, 250, 252, 0.7);
     }
-    .goal-line-item.visible { opacity: 1; }
-    .blue-bullet-sq {
-      width: 13px;
-      height: 13px;
-      border-radius: 3px;
-      background: #2563eb;
-      flex-shrink: 0;
+    html[data-board-theme="soft-dark"] .right-diagram-sticky {
+      background: rgba(15, 23, 42, 0.6);
     }
 
-    /* Quiz Stage + 2-Minute Timer + Auto-Next After Answer */
-    .quiz-board-box {
+    .diagram-card-box {
       width: 100%;
-      max-width: 760px;
-      padding: 6px 20px 44px;
-    }
-    .quiz-header-strip {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      margin-bottom: 8px;
+      gap: 8px;
     }
-    .quiz-timer-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    html[data-board-theme="soft-dark"] .diagram-card-box {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .diagram-card-box svg {
+      max-width: 100%;
+      max-height: 195px;
+    }
+    .diagram-card-box svg line,
+    .diagram-card-box svg path,
+    .diagram-card-box svg circle,
+    .diagram-card-box svg polygon {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: drawPenStroke 1.5s ease forwards;
+    }
+    @keyframes drawPenStroke { to { stroke-dashoffset: 0; } }
+
+    .diag-hand-note {
+      font-family: 'Caveat', cursive;
+      font-size: 21px;
+      font-weight: 700;
+      color: #2563eb;
+      text-align: center;
+    }
+
+    /* Inline Quiz Inside the Scrolling Notebook */
+    .inline-quiz-card {
       background: #fff7ed;
-      border: 2px solid #ea580c;
-      color: #ea580c;
-      padding: 4px 13px;
-      border-radius: 999px;
-      font-size: 13.5px;
-      font-weight: 900;
+      border: 2px dashed #ea580c;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-top: 10px;
     }
-    .quiz-timer-pill.warning {
-      background: #fee2e2;
-      border-color: #dc2626;
-      color: #dc2626;
-    }
-    .quiz-q-card {
-      background: #f8fafc;
-      border: 1.5px dashed #ea580c;
-      border-radius: 14px;
-      padding: 11px 15px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    html[data-board-theme="soft-dark"] .quiz-q-card {
+    html[data-board-theme="soft-dark"] .inline-quiz-card {
       background: #1e293b;
     }
     .quiz-opts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 9px;
+      gap: 8px;
+      margin-top: 10px;
     }
-    .quiz-opt-card {
-      background: #f8fafc;
-      border: 2px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 10px 14px;
+    .quiz-opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 9px 12px;
       font-size: 14px;
       font-weight: 700;
-      color: inherit;
+      color: #0f172a;
       text-align: left;
       cursor: pointer;
     }
-    html[data-board-theme="soft-dark"] .quiz-opt-card {
-      background: #1e293b;
-      border-color: #334155;
-    }
-    .quiz-opt-card.right {
-      background: rgba(22, 163, 74, 0.18) !important;
-      border-color: #16a34a !important;
-      color: #16a34a !important;
-    }
-    .quiz-opt-card.wrong {
-      background: rgba(220, 38, 38, 0.18) !important;
-      border-color: #dc2626 !important;
-      color: #ef4444 !important;
-    }
+    .quiz-opt-btn.right { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+    .quiz-opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #b91c1c; }
 
-    /* Centered Control Dock (Hidden inside board until user taps screen!) */
+    /* Floating Bottom Dock */
     .jeet-center-dock {
       position: fixed;
       bottom: 14px;
@@ -693,14 +633,13 @@
       border: 1.5px solid #fed7aa;
       border-radius: 16px;
       padding: 6px 16px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-      z-index: 7300;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.14);
+      z-index: 7500;
     }
     html[data-board-theme="soft-dark"] .jeet-center-dock {
       background: #1e293b;
       border-color: #334155;
     }
-
     .dock-ctrl-btn {
       background: transparent;
       border: none;
@@ -708,22 +647,9 @@
       font-size: 13.5px;
       font-weight: 900;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
       padding: 5px 8px;
-      border-radius: 8px;
     }
     .dock-divider { width: 1px; height: 18px; background: #cbd5e1; }
-
-    .slide-num-corner {
-      position: fixed;
-      bottom: 12px;
-      right: 18px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #94a3b8;
-    }
 
     /* Modals */
     .app-modal-mask {
@@ -751,7 +677,6 @@
       width: 100%;
       padding: 12px 14px;
       background: #f8fafc;
-      color: #0f172a;
       border: 1.5px solid #cbd5e1;
       border-radius: 12px;
       font-size: 14.5px;
@@ -762,30 +687,30 @@
 </head>
 <body>
 
-  <!-- 1. SPLASH SCREEN -->
+  <!-- 1. SPLASH -->
   <div id="appSplash">
-    <div style="font-size: 46px; margin-bottom: 10px;">📺</div>
+    <div style="font-size: 46px; margin-bottom: 10px;">✍️</div>
     <h1 style="font-size: 26px; font-weight: 900;">Nischay<span style="color: #38bdf8;">Board</span> AI</h1>
-    <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">असली स्मार्ट व्हाइटबोर्ड क्लास ⚡</p>
+    <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">असली हैंड-रिटन स्मार्ट व्हाइटबोर्ड ⚡</p>
   </div>
 
   <!-- 2. AUDIO PRELOADER -->
   <div class="lesson-preloader" id="lessonPreloader">
     <div class="loader-ring"></div>
-    <h3 id="preloadHeading" style="font-size: 18px; font-weight: 900;">मास्टर जी की क्लास तैयार हो रही है...</h3>
-    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">सारी स्लाइड्स और आवाज़ें पहले से लोड हो रही हैं...</p>
+    <h3 id="preloadHeading" style="font-size: 18px; font-weight: 900;">मास्टर जी की क्लास लोड हो रही है...</h3>
+    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">पूरी क्लास की आवाज़ पहले से तैयार हो रही है ताकि बिना रुके चले...</p>
     <div class="preload-bar-wrap"><div class="preload-bar-fill" id="preloadBarFill"></div></div>
     <div id="preloadPercentText" style="font-size: 12.5px; font-weight: 800; color: #2563eb;">0% तैयार</div>
   </div>
 
-  <!-- 3. MAIN STUDENT LOBBY -->
+  <!-- 3. LOBBY -->
   <div class="app-container" id="mainAppShell">
     <header class="app-top-bar">
       <div style="display:flex;align-items:center;gap:10px;">
         <a href="index.html" class="app-back-pill">← होम</a>
         <div>
           <h1 style="font-size:16px;font-weight:900;">Nischay<span style="color:#2563eb;">Board</span></h1>
-          <p style="font-size:11px;font-weight:700;color:#64748b;">व्हाइटबोर्ड स्मार्ट क्लास</p>
+          <p style="font-size:11px;font-weight:700;color:#64748b;">हैंड-रिटन व्हाइटबोर्ड क्लास</p>
         </div>
       </div>
       <button class="profile-pill-btn" onclick="openProfileOrLoginModal()">
@@ -794,17 +719,6 @@
       </button>
     </header>
 
-    <div class="resume-banner-wrap" id="resumeBannerWrap">
-      <div class="resume-card" onclick="resumeLastSavedClass()">
-        <div>
-          <div style="font-size: 11px; font-weight: 800;">⏮️ पिछली क्लास वहीं से शुरू करें</div>
-          <h4 id="resumeTopicTitle" style="font-size: 14.5px; font-weight: 900;">टॉपिक</h4>
-          <p id="resumeSlideInfo" style="font-size: 11.5px; opacity: 0.9;">Slide 1</p>
-        </div>
-        <span style="background:#fff;color:#1d4ed8;padding:8px 14px;border-radius:12px;font-size:12.5px;font-weight:900;">जारी रखें ▶</span>
-      </div>
-    </div>
-
     <div class="mode-switcher-wrap">
       <div class="mode-card active" id="cardModeSyllabus" onclick="switchAppMode('syllabus')">
         <div style="font-size: 26px;">📚</div>
@@ -812,7 +726,7 @@
         <p>हर चैप्टर • 30 मिनट क्लास</p>
       </div>
       <div class="mode-card" id="cardModeAI" onclick="switchAppMode('ai')">
-        <div style="font-size: 26px;">✨</div>
+        <div style="font-size: 26px;">✍️</div>
         <h3>AI लाइव सेशन</h3>
         <p>कोई भी टॉपिक लिखकर पढ़ें</p>
       </div>
@@ -829,15 +743,15 @@
 
     <section class="ai-studio-section" id="viewAIStudio">
       <div class="studio-box">
-        <h2 style="font-size: 19px; font-weight: 900;">किसी भी टॉपिक पर लाइव क्लास शुरू करें</h2>
-        <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: प्रकाश का परावर्तन, ओम का नियम...">
-        <button style="width:100%;background:#fff;color:#0f172a;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;" onclick="startCustomMasterClass()">🎬 क्लास शुरू करें</button>
+        <h2 style="font-size: 19px; font-weight: 900;">किसी भी टॉपिक पर लाइव हैंड-रिटन क्लास शुरू करें</h2>
+        <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: दर्पण सूत्र सिद्ध करें, ओम का नियम...">
+        <button style="width:100%;background:#fff;color:#0f172a;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;" onclick="startCustomMasterClass()">✍️ क्लास शुरू करें</button>
       </div>
     </section>
 
     <nav class="native-bottom-dock">
       <div class="dock-tab active" id="dockSyllabus" onclick="switchAppMode('syllabus')"><span style="font-size:20px;">📚</span><span>सभी विषय</span></div>
-      <div class="dock-tab" id="dockAI" onclick="switchAppMode('ai')"><span style="font-size:20px;">✨</span><span>मास्टर क्लास</span></div>
+      <div class="dock-tab" id="dockAI" onclick="switchAppMode('ai')"><span style="font-size:20px;">✍️</span><span>मास्टर क्लास</span></div>
       <div class="dock-tab" onclick="openProfileOrLoginModal()"><span style="font-size:20px;">👤</span><span>प्रोफ़ाइल</span></div>
     </nav>
   </div>
@@ -857,39 +771,43 @@
   </div>
 
   <!-- =========================================================
-       4. HD LANDSCAPE WHITEBOARD STAGE (TAP SCREEN TO TOGGLE CONTROLS!)
+       4. CONTINUOUS SCROLLING WHITEBOARD (NO PAGE FLIP!)
        ========================================================= -->
   <div class="wb-fullscreen controls-hidden" id="wbScreen">
     <div class="wb-top-bar wb-chrome">
-      <div class="wb-meta-line">
-        <div class="wb-left-nav">
-          <button class="wb-back-circle" onclick="exitWhiteboard()" title="बाहर निकलें">←</button>
-          <span class="wb-crumb" id="wbCrumbTitle">SMART WHITEBOARD</span>
-        </div>
-        <span class="wb-slide-counter" id="wbSlideCounter">Slide 1 of 10</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="wb-back-circle" onclick="exitWhiteboard()" title="बाहर निकलें">←</button>
+        <span id="wbCrumbTitle" style="font-size:13.5px;font-weight:800;color:#ea580c;">SMART WHITEBOARD</span>
       </div>
-      <div class="wb-prog-track"><div class="wb-prog-bar" id="wbProgBar"></div></div>
+      <span id="wbStepStatus" style="font-size:12px;font-weight:800;color:#2563eb;">भाग 1</span>
     </div>
 
-    <!-- Tap anywhere on blank board to toggle controls -->
-    <div class="wb-main-canvas" id="wbMainCanvas" onclick="handleBoardSurfaceTap(event)"></div>
+    <!-- Left: Continuous Hand-Written Scroll | Right: Sticky Live Diagram -->
+    <div class="continuous-board-layout" onclick="handleBoardSurfaceTap(event)">
+      <div class="left-notebook-scroll" id="notebookScrollContainer">
+        <div class="notebook-topic-banner" id="notebookTopicBanner">TOPIC</div>
+        <div id="notebookStreamBody"></div>
+      </div>
 
-    <!-- Centered Floating Dock (Hidden inside board until user taps screen once!) -->
+      <div class="right-diagram-sticky">
+        <div class="diagram-card-box" id="stickyDiagramCard">
+          <div style="font-size:12px;font-weight:800;color:#64748b;">लाइव चित्र बोर्ड</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tap-to-Reveal Control Dock -->
     <div class="jeet-center-dock wb-chrome">
       <button class="dock-ctrl-btn" id="btnMuteToggle" onclick="toggleAudioMute()">🔊</button>
       <div class="dock-divider"></div>
       <button class="dock-ctrl-btn" onclick="openDoubtPrompt()">✋ पूछें</button>
       <div class="dock-divider"></div>
-      <button class="dock-ctrl-btn" id="btnBoardTint" onclick="toggleSoftBoardTint()" title="White / Soft Dark">🌓</button>
+      <button class="dock-ctrl-btn" onclick="toggleSoftBoardTint()" title="White / Soft Dark">🌓</button>
       <div class="dock-divider"></div>
       <button class="dock-ctrl-btn" id="btnSpeedToggle" onclick="cyclePlaybackSpeed()">1x</button>
       <div class="dock-divider"></div>
       <button class="dock-ctrl-btn" id="btnPlayPause" onclick="toggleWbPlay()">⏸️</button>
-      <div class="dock-divider"></div>
-      <button class="dock-ctrl-btn" onclick="nextBoardSlide()">➔</button>
     </div>
-
-    <div class="slide-num-corner" id="bottomRightSlideNum">01</div>
   </div>
 
   <!-- Portrait Notice -->
@@ -908,19 +826,16 @@
   <div class="app-modal-mask" id="doubtModalMask" onclick="closeAllMasks(event)">
     <div class="app-modal-card">
       <h3 style="font-size: 17px; font-weight: 900;">🤔 क्या चीज़ समझ नहीं आई?</h3>
-      <p id="doubtContextLabel" style="font-size: 12.5px; color: #64748b; margin-top: 4px;">लिखकर पूछें—मास्टर जी बच्चों की तरह आसान भाषा में समझाएंगे!</p>
+      <p style="font-size: 12.5px; color: #64748b; margin-top: 4px;">लिखकर पूछें—मास्टर जी इसी कॉपी में नीचे लिखकर समझाएंगे!</p>
       <input type="text" id="userDoubtField" placeholder="अपना सवाल यहाँ लिखें...">
       <div style="display: flex; gap: 8px; justify-content: flex-end;">
         <button style="border:none;background:transparent;padding:8px 14px;font-weight:800;color:#64748b;" onclick="document.getElementById('doubtModalMask').classList.remove('open')">बंद करें</button>
-        <button style="border:none;background:#2563eb;color:#fff;padding:9px 16px;border-radius:10px;font-weight:800;" onclick="submitDoubtExplanation()">समझाएं 🧠</button>
+        <button style="border:none;background:#2563eb;color:#fff;padding:9px 16px;border-radius:10px;font-weight:800;" onclick="submitDoubtExplanation()">समझाएं ✍️</button>
       </div>
     </div>
   </div>
 
   <script>
-    // =========================================================
-    // 🔒 API KEY & MODEL FALLBACK CHAIN
-    // =========================================================
     function getDecodedKey() {
       const _s = [70, 86, 51, 70, 103, 61, 87, 83, 59, 79, 94, 125, 110, 110, 110, 104, 95, 110, 121, 121, 122, 95, 83, 59, 80, 56, 112, 120, 111, 92, 111, 71, 119, 122, 115, 91, 79, 95, 60, 55, 115, 70, 113, 77, 75, 62, 50, 90, 108, 76, 53, 124, 86];
       return _s.map(c => String.fromCharCode(c - 5)).join('');
@@ -951,8 +866,14 @@
     };
 
     // =========================================================
-    // UNIFIED WHITEBOARD + OPTIONAL SOFT DARK TINT TOGGLE
+    // REAL STACKED FRACTION FORMATTER ([[A/B]] -> Real Fraction)
     // =========================================================
+    function renderMathFractions(htmlStr) {
+      return (htmlStr || "").replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (match, num, den) => {
+        return `<span class="math-frac"><span class="num">${num.trim()}</span><span class="den">${den.trim()}</span></span>`;
+      });
+    }
+
     window.toggleSoftBoardTint = function() {
       const htmlEl = document.documentElement;
       const cur = htmlEl.getAttribute("data-board-theme") || "white";
@@ -962,25 +883,18 @@
     };
     document.documentElement.setAttribute("data-board-theme", localStorage.getItem("nd_board_tint") || "white");
 
-    // Tap anywhere on board to show/hide top & bottom controls
     let controlsAutoHideTimer = null;
     window.handleBoardSurfaceTap = function(e) {
-      if (e.target.closest(".quiz-opt-card") || e.target.closest(".quiz-q-card") || e.target.closest("button")) return;
+      if (e.target.closest("button")) return;
       const wb = document.getElementById("wbScreen");
       wb.classList.toggle("controls-hidden");
       if (!wb.classList.contains("controls-hidden")) {
         clearTimeout(controlsAutoHideTimer);
-        controlsAutoHideTimer = setTimeout(() => {
-          wb.classList.add("controls-hidden");
-        }, 4500);
+        controlsAutoHideTimer = setTimeout(() => { wb.classList.add("controls-hidden"); }, 4500);
       }
     };
 
-    // =========================================================
-    // STATE MANAGEMENT
-    // =========================================================
     let studentName = localStorage.getItem("nd_virtual_student_name") || "";
-    let firebaseUser = null;
     let externalSyllabus = null;
     const loadedSubjectLessons = {};
     let activeSubjectKey = null;
@@ -988,62 +902,22 @@
     let isWbPlaying = false;
     let isMuted = false;
     let playbackSpeed = 1.0;
-    let currentLessonSlides = [];
-    let currentSlideIndex = 0;
-    let currentStepIndex = 0;
+    let lessonBlocks = [];
+    let currentBlockIndex = 0;
+    let currentLineIndex = 0;
     let currentLessonMeta = { subject: "", topic: "" };
 
     let globalAudioPlayer = new Audio();
     const voiceCache = new Map();
-    let quizTimerInterval = null;
-    let quizRemainingSeconds = 120;
-    let activeDoubtQuestionContext = "";
 
     function getDisplayStudentName() {
       return studentName && studentName.trim() !== "" ? studentName.trim() : "प्यारे छात्र";
     }
 
-    setTimeout(() => {
-      document.getElementById("appSplash").classList.add("hide");
-    }, 700);
-
-    function checkSavedClassProgress() {
-      try {
-        const raw = localStorage.getItem("nd_saved_classroom_state");
-        if (!raw) return;
-        const saved = JSON.parse(raw);
-        if (saved && saved.slides && saved.slides.length > 0) {
-          document.getElementById("resumeBannerWrap").classList.add("show");
-          document.getElementById("resumeTopicTitle").textContent = saved.topic;
-          document.getElementById("resumeSlideInfo").textContent = `Slide ${saved.slideIndex + 1} of ${saved.slides.length} पर रुके थे`;
-        }
-      } catch (e) {}
-    }
-
-    function saveClassProgress() {
-      if (!currentLessonSlides.length) return;
-      localStorage.setItem("nd_saved_classroom_state", JSON.stringify({
-        subject: currentLessonMeta.subject,
-        topic: currentLessonMeta.topic,
-        slideIndex: currentSlideIndex,
-        slides: currentLessonSlides
-      }));
-    }
-
-    window.resumeLastSavedClass = async function() {
-      try {
-        const saved = JSON.parse(localStorage.getItem("nd_saved_classroom_state"));
-        if (!saved) return;
-        currentLessonMeta = { subject: saved.subject, topic: saved.topic };
-        currentLessonSlides = saved.slides;
-        await preDownloadAllSlideVoices(currentLessonSlides);
-        openWhiteboardStage(saved.subject, saved.topic, saved.slideIndex || 0);
-      } catch (e) {}
-    };
+    setTimeout(() => { document.getElementById("appSplash").classList.add("hide"); }, 700);
 
     if (window.firebase && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
-        firebaseUser = user;
         if (user) {
           const first = (user.displayName || user.email.split("@")[0]).split(" ")[0];
           studentName = first;
@@ -1052,13 +926,11 @@
           document.getElementById("topUserAvatar").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(first)}&background=2563eb&color=fff`;
         } else if (studentName) {
           document.getElementById("topUserName").textContent = studentName;
-          document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=2563eb&color=fff`;
         }
       });
     }
 
     async function loadExternalContent() {
-      checkSavedClassProgress();
       try {
         const res = await fetch(SYLLABUS_MASTER_FILE);
         if (res.ok) {
@@ -1158,7 +1030,7 @@
           <div>
             <div style="font-size:11px;font-weight:800;color:#2563eb;">TOPIC ${i + 1}</div>
             <div style="font-size:14.5px;font-weight:800;margin:2px 0;">${topicTitle}</div>
-            <div style="font-size:11px;font-weight:700;color:#ea580c;">⏱️ ~30 मिनट • मास्टर जी की लाइव क्लास</div>
+            <div style="font-size:11px;font-weight:700;color:#ea580c;">✍️ ~30 मिनट • निरंतर हैंड-रिटन क्लास</div>
           </div>
           <span style="background:#2563eb;color:#fff;padding:7px 13px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
         `;
@@ -1173,9 +1045,7 @@
     }
 
     window.closeTopicSheet = function(e) {
-      if (e.target.id === "topicSheetMask") {
-        document.getElementById("topicSheetMask").classList.remove("open");
-      }
+      if (e.target.id === "topicSheetMask") document.getElementById("topicSheetMask").classList.remove("open");
     };
 
     window.startCustomMasterClass = function() {
@@ -1185,14 +1055,17 @@
     };
 
     // =========================================================
-    // 🚀 AUDIO PRE-DOWNLOADER (READS EXACT SCREEN TEXT!)
+    // AUDIO PRELOADER (EXACT TEXT TO NATURAL HINDI SPEECH)
     // =========================================================
     function cleanSpeechString(raw) {
       return (raw || "")
+        .replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, "$1 बटे $2")
         .replace(/<[^>]*>/g, "")
         .replace(/[*#_`$~]/g, "")
         .replace(/∠/g, "कोण ")
         .replace(/=/g, " बराबर ")
+        .replace(/△/g, "त्रिभुज ")
+        .replace(/~/g, " समरूप ")
         .replace(/\s+/g, " ")
         .trim();
     }
@@ -1209,42 +1082,32 @@
       } catch (e) {}
     }
 
-    async function preDownloadAllSlideVoices(slidesArray) {
+    async function preDownloadAllVoices(blocks) {
       const loader = document.getElementById("lessonPreloader");
       const bar = document.getElementById("preloadBarFill");
       const pctTxt = document.getElementById("preloadPercentText");
 
-      const allVoiceLines = [];
-      slidesArray.forEach((sl) => {
-        if (sl.type === "goals" && sl.goals) {
-          sl.goals.forEach(g => allVoiceLines.push(cleanSpeechString(g.text)));
-        } else if (sl.type === "diagram_lesson") {
-          if (sl.diagramVoice) allVoiceLines.push(cleanSpeechString(sl.diagramVoice));
-          if (sl.steps) sl.steps.forEach(st => allVoiceLines.push(cleanSpeechString(st.text)));
-        } else if (sl.type === "quiz" && sl.question) {
-          allVoiceLines.push(cleanSpeechString(`अब बोर्ड पर परीक्षा का प्रश्न है। ध्यान से पढ़ो: ${sl.question}`));
-        }
+      const allLines = [];
+      blocks.forEach(b => {
+        if (b.diagramVoice) allLines.push(cleanSpeechString(b.diagramVoice));
+        if (b.lines) b.lines.forEach(l => allLines.push(cleanSpeechString(l.text)));
+        if (b.type === "quiz" && b.question) allLines.push(cleanSpeechString(`अब अभ्यास प्रश्न हल करते हैं: ${b.question}`));
       });
 
-      const uniqueLines = [...new Set(allVoiceLines.filter(Boolean))];
-      if (uniqueLines.length === 0) return;
+      const unique = [...new Set(allLines.filter(Boolean))];
+      if (!unique.length) return;
 
       loader.classList.add("open");
-      bar.style.width = "10%";
-      pctTxt.textContent = "10% तैयार...";
-
-      let completed = 0;
-      const batchSize = 4;
-      for (let i = 0; i < uniqueLines.length; i += batchSize) {
-        const batch = uniqueLines.slice(i, i + batchSize);
-        await Promise.all(batch.map(line => fetchSingleAudioBlob(line)));
-        completed += batch.length;
-        const pct = Math.min(100, Math.round((completed / uniqueLines.length) * 100));
+      let done = 0;
+      for (let i = 0; i < unique.length; i += 4) {
+        const batch = unique.slice(i, i + 4);
+        await Promise.all(batch.map(t => fetchSingleAudioBlob(t)));
+        done += batch.length;
+        const pct = Math.min(100, Math.round((done / unique.length) * 100));
         bar.style.width = pct + "%";
-        pctTxt.textContent = `${pct}% आवाज़ डाउनलोड हो गई...`;
+        pctTxt.textContent = `${pct}% आवाज़ तैयार...`;
       }
-
-      setTimeout(() => { loader.classList.remove("open"); }, 200);
+      setTimeout(() => loader.classList.remove("open"), 200);
     }
 
     async function callGeminiWithFallbackChain(promptText) {
@@ -1273,48 +1136,42 @@
     async function prepareAndLaunchMasterClass(subjKey, subjectLabel, fullTopicTitle, chapterId) {
       const activeStudent = getDisplayStudentName();
       const loader = document.getElementById("lessonPreloader");
-      document.getElementById("preloadHeading").textContent = `"${fullTopicTitle}" लोड हो रहा है...`;
+      document.getElementById("preloadHeading").textContent = `"${fullTopicTitle}" तैयार हो रहा है...`;
       document.getElementById("preloadBarFill").style.width = "15%";
       loader.classList.add("open");
 
       currentLessonMeta = { subject: subjectLabel, topic: fullTopicTitle };
 
       if (subjKey && chapterId) {
-        const subjectPack = await fetchSubjectLessonPack(subjKey);
-        if (subjectPack && subjectPack[chapterId] && subjectPack[chapterId][fullTopicTitle]) {
-          const prebuilt = JSON.parse(JSON.stringify(subjectPack[chapterId][fullTopicTitle].slides));
-          currentLessonSlides = prebuilt.map(sl => {
-            if (sl.diagramVoice) sl.diagramVoice = sl.diagramVoice.replace(/{{STUDENT}}/g, activeStudent);
-            if (sl.goals) sl.goals.forEach(g => { g.text = g.text.replace(/{{STUDENT}}/g, activeStudent); });
-            if (sl.steps) sl.steps.forEach(s => { s.text = s.text.replace(/{{STUDENT}}/g, activeStudent); });
-            return sl;
+        const pack = await fetchSubjectLessonPack(subjKey);
+        if (pack && pack[chapterId] && pack[chapterId][fullTopicTitle]) {
+          const data = JSON.parse(JSON.stringify(pack[chapterId][fullTopicTitle]));
+          // Support both new "blocks" format and legacy "slides" format seamlessly
+          const rawBlocks = data.blocks || convertSlidesToContinuousBlocks(data.slides);
+          lessonBlocks = rawBlocks.map(b => {
+            if (b.diagramVoice) b.diagramVoice = b.diagramVoice.replace(/{{STUDENT}}/g, activeStudent);
+            if (b.lines) b.lines.forEach(l => { l.text = l.text.replace(/{{STUDENT}}/g, activeStudent); });
+            return b;
           });
-          await preDownloadAllSlideVoices(currentLessonSlides);
-          openWhiteboardStage(subjectLabel, fullTopicTitle, 0);
+          await preDownloadAllVoices(lessonBlocks);
+          openContinuousWhiteboard();
           return;
         }
       }
 
-      const prompt = `तुम एक भारतीय शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर बच्चों की तरह एकदम सरल और गहरी क्लास दे रहे हो।
-      कुल 8 स्लाइड्स बनाओ। केवल शुद्ध देवनागरी हिंदी (कोई उर्दू या अजीब अक्षर नहीं)।
-      स्ट्रक्चर:
+      const prompt = `तुम एक अनुभवी शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में हाथ से लिख-लिखकर पढ़ा रहे हो।
+      महत्वपूर्ण: जहाँ भी बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो (जैसे [[1/v]] + [[1/u]] = [[1/f]]) ताकि वह असली बटा दिखे! केवल शुद्ध देवनागरी हिंदी लिखो।
+      कुल 5 विस्तृत खंड (blocks) बनाओ (अंत में 2 क्विज़ प्रश्न):
       {
-        "slides": [
+        "blocks": [
           {
-            "type": "goals",
-            "header": "आज हम क्या सीखेंगे?",
-            "goals": [
-              { "text": "पहला लक्ष्य <span class='red-under'>मुख्य शब्द</span> के साथ।" }
-            ]
-          },
-          {
-            "type": "diagram_lesson",
-            "header": "स्लाइड का शीर्षक",
-            "svg": "<svg viewBox='0 0 340 190' width='100%' height='180'>रंगीन वैज्ञानिक चित्र</svg>",
-            "diagramCaption": "नीली पेन नोट",
-            "diagramVoice": "इस चित्र को ध्यान से देखो ${activeStudent}, इसमें...",
-            "steps": [
-              { "text": "पहली लाइन जो स्क्रीन पर दिखेगी और हूबहू पढ़ी जाएगी <span class='red-under'>मुख्य शब्द</span>।" }
+            "id": "step1",
+            "title": "1. परिचय एवं मुख्य चित्र",
+            "svg": "<svg viewBox='0 0 340 190'>रंगीन चित्र</svg>",
+            "diagramCaption": "चित्र का नाम",
+            "diagramVoice": "दाईं तरफ बने चित्र को देखो ${activeStudent}...",
+            "lines": [
+              { "text": "पहली लाइन जो बाईं तरफ हाथ से लिखी जाएगी <span class='red-under'>मुख्य शब्द</span>।" }
             ]
           },
           {
@@ -1322,30 +1179,48 @@
             "question": "प्रश्न?",
             "options": ["A", "B", "C", "D"],
             "correctIndex": 0,
-            "explanation": "सरल व्याख्या"
+            "explanation": "व्याख्या"
           }
         ]
       }`;
 
       try {
         const res = await callGeminiWithFallbackChain(prompt);
-        currentLessonSlides = res.slides || [];
-        await preDownloadAllSlideVoices(currentLessonSlides);
-        openWhiteboardStage(subjectLabel, fullTopicTitle, 0);
+        lessonBlocks = res.blocks || [];
+        await preDownloadAllVoices(lessonBlocks);
+        openContinuousWhiteboard();
       } catch (err) {
         loader.classList.remove("open");
         alert("त्रुटि: " + err.message);
       }
     }
 
+    function convertSlidesToContinuousBlocks(slides) {
+      return (slides || []).map((sl, i) => {
+        if (sl.type === "quiz") return sl;
+        if (sl.type === "goals") {
+          return {
+            id: `blk-${i}`,
+            title: sl.header || "आज हम क्या सीखेंगे?",
+            lines: (sl.goals || []).map(g => ({ text: g.text }))
+          };
+        }
+        return {
+          id: `blk-${i}`,
+          title: sl.header || `भाग ${i + 1}`,
+          svg: sl.svg || "",
+          diagramCaption: sl.diagramCaption || "",
+          diagramVoice: sl.diagramVoice || "",
+          lines: (sl.steps || []).map(s => ({ text: s.text }))
+        };
+      });
+    }
+
     // =========================================================
-    // ZERO-GAP VOICE PLAYER
+    // ZERO-GAP AUDIO PLAYER
     // =========================================================
     function stopAllVoices() {
-      if (globalAudioPlayer) {
-        globalAudioPlayer.pause();
-        globalAudioPlayer.currentTime = 0;
-      }
+      if (globalAudioPlayer) { globalAudioPlayer.pause(); globalAudioPlayer.currentTime = 0; }
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     }
 
@@ -1366,7 +1241,6 @@
     async function speakExactText(rawText, onDone) {
       stopAllVoices();
       const clean = cleanSpeechString(rawText);
-
       if (!clean || isMuted) {
         setTimeout(() => { if (onDone) onDone(); }, 2200 / playbackSpeed);
         return;
@@ -1405,325 +1279,283 @@
         utt.onend = utt.onerror = () => { if (onDone) onDone(); };
         window.speechSynthesis.speak(utt);
       } else {
-        setTimeout(() => { if (onDone) onDone(); }, 2500 / playbackSpeed);
+        setTimeout(() => { if (onDone) onDone(); }, 2400 / playbackSpeed);
       }
     }
 
     // =========================================================
-    // 2-MINUTE QUIZ TIMER
+    // CONTINUOUS SCROLLING NOTEBOOK & LIVE PEN ENGINE
     // =========================================================
-    function clearQuizCountdown() {
-      if (quizTimerInterval) { clearInterval(quizTimerInterval); quizTimerInterval = null; }
+    function openContinuousWhiteboard() {
+      document.getElementById("mainAppShell").classList.add("hidden");
+      const wb = document.getElementById("wbScreen");
+      wb.classList.add("open");
+      wb.classList.add("controls-hidden");
+      forceFullLandscape();
+
+      document.getElementById("wbCrumbTitle").textContent = currentLessonMeta.topic;
+      document.getElementById("notebookTopicBanner").textContent = `${currentLessonMeta.subject} • ${currentLessonMeta.topic}`;
+      document.getElementById("notebookStreamBody").innerHTML = "";
+
+      currentBlockIndex = 0;
+      currentLineIndex = 0;
+      isWbPlaying = true;
+      document.getElementById("btnPlayPause").textContent = "⏸️";
+      processNextBlock();
     }
 
-    function startTwoMinuteQuizTimer() {
-      clearQuizCountdown();
-      quizRemainingSeconds = 120;
-      updateQuizTimerDisplay();
-      quizTimerInterval = setInterval(() => {
-        quizRemainingSeconds--;
-        updateQuizTimerDisplay();
-        if (quizRemainingSeconds <= 0) {
-          clearQuizCountdown();
-          handleQuizTimeUp();
-        }
-      }, 1000);
+    function autoScrollNotebookBottom() {
+      const box = document.getElementById("notebookScrollContainer");
+      if (box) box.scrollTo({ top: box.scrollHeight, behavior: "smooth" });
     }
 
-    function updateQuizTimerDisplay() {
-      const pill = document.getElementById("quizTimerPill");
-      const txt = document.getElementById("quizTimerText");
-      if (!pill || !txt) return;
-      const m = Math.floor(quizRemainingSeconds / 60);
-      const s = quizRemainingSeconds % 60;
-      txt.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-      pill.classList.toggle("warning", quizRemainingSeconds <= 30);
-    }
-
-    function handleQuizTimeUp() {
-      const qObj = currentLessonSlides[currentSlideIndex];
-      if (!qObj || qObj.type !== "quiz") return;
-      const btns = document.querySelectorAll(".quiz-opt-card");
-      if (btns.length && btns[0].disabled) return;
-      btns.forEach(b => b.disabled = true);
-      const rBtn = document.getElementById(`qOpt-${qObj.correctIndex}`);
-      if (rBtn) rBtn.classList.add("right");
-      const note = document.getElementById("quizResultNote");
-      if (note) {
-        note.style.color = "#ef4444";
-        note.textContent = `⏰ समय समाप्त! सही उत्तर: ${qObj.options[qObj.correctIndex]}`;
+    function highlightPreviousEquationAndReturn(refBlockId, callback) {
+      const refEl = document.getElementById(refBlockId);
+      const scrollBox = document.getElementById("notebookScrollContainer");
+      if (!refEl || !scrollBox) {
+        if (callback) callback();
+        return;
       }
-      speakExactText(`समय समाप्त हो गया! सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`, () => {
-        setTimeout(() => nextBoardSlide(), 1500);
-      });
+      // Scroll UP to show the earlier equation ("देखो यहाँ ये लिया था")
+      refEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      refEl.classList.add("ref-glow");
+
+      setTimeout(() => {
+        refEl.classList.remove("ref-glow");
+        autoScrollNotebookBottom();
+        if (callback) callback();
+      }, 2200);
     }
 
-    // =========================================================
-    // REAL PEN WRITING ENGINE (WRITES & READS EXACT SAME TEXT!)
-    // =========================================================
-    function typeHtmlWithPenCursor(element, fullHtml, speedMs, onComplete) {
+    function typeLineWithHandPen(element, rawHtml, speedMs) {
       if (!element) return;
       if (element._typingTimer) clearInterval(element._typingTimer);
+      const formattedHtml = renderMathFractions(rawHtml);
       element.innerHTML = "";
       let idx = 0;
 
       element._typingTimer = setInterval(() => {
-        if (fullHtml[idx] === "<") {
-          const closeTag = fullHtml.indexOf(">", idx);
+        if (formattedHtml[idx] === "<") {
+          const closeTag = formattedHtml.indexOf(">", idx);
           if (closeTag !== -1) idx = closeTag + 1;
           else idx++;
         } else {
           idx++;
         }
 
-        const currentSlice = fullHtml.slice(0, idx);
-        if (idx < fullHtml.length) {
-          element.innerHTML = currentSlice + `<span class="pen-cursor">✒️</span>`;
+        if (idx < formattedHtml.length) {
+          element.innerHTML = formattedHtml.slice(0, idx) + `<span class="pen-nib">✒️</span>`;
         } else {
-          element.innerHTML = fullHtml;
+          element.innerHTML = formattedHtml;
           clearInterval(element._typingTimer);
           element._typingTimer = null;
-          if (onComplete) onComplete();
         }
+        autoScrollNotebookBottom();
       }, speedMs);
     }
 
-    function openWhiteboardStage(subjectLabel, topicTitle, startIndex = 0) {
-      document.getElementById("mainAppShell").classList.add("hidden");
-      const wb = document.getElementById("wbScreen");
-      wb.classList.add("open");
-      wb.classList.add("controls-hidden"); // Clean whiteboard by default; 1 tap reveals controls
-      forceFullLandscape();
-
-      currentSlideIndex = startIndex;
-      currentStepIndex = 0;
-      isWbPlaying = true;
-      document.getElementById("btnPlayPause").textContent = "⏸️";
-      renderCurrentSlide();
-    }
-
-    function renderCurrentSlide() {
-      clearQuizCountdown();
-      saveClassProgress();
-      activeDoubtQuestionContext = "";
-
-      const activeStudent = getDisplayStudentName();
-      const slide = currentLessonSlides[currentSlideIndex];
-      if (!slide) return;
-
-      const total = currentLessonSlides.length;
-      document.getElementById("wbSlideCounter").textContent = `Slide ${currentSlideIndex + 1} of ${total}`;
-      document.getElementById("bottomRightSlideNum").textContent = String(currentSlideIndex + 1).padStart(2, "0");
-      document.getElementById("wbProgBar").style.width = `${((currentSlideIndex + 1) / total) * 100}%`;
-      document.getElementById("wbCrumbTitle").textContent = slide.header || currentLessonMeta.topic;
-
-      const canvas = document.getElementById("wbMainCanvas");
-
-      // 1. GOALS SLIDE
-      if (slide.type === "goals") {
-        let html = `<div class="goals-full-list">`;
-        (slide.goals || []).forEach((g, idx) => {
-          html += `
-            <div class="goal-line-item" id="goalRow-${idx}">
-              <div class="blue-bullet-sq"></div>
-              <div style="flex:1;" id="goalText-${idx}"></div>
-            </div>
-          `;
-        });
-        html += `</div>`;
-        canvas.innerHTML = html;
-        currentStepIndex = 0;
-        playGoalSteps();
-      }
-      // 2. DIAGRAM + STEP-BY-STEP PEN TEACHING SLIDE
-      else if (slide.type === "diagram_lesson") {
-        let stepsHtml = "";
-        (slide.steps || []).forEach((st, sIdx) => {
-          stepsHtml += `<div class="note-step-block" id="nStep-${sIdx}"></div>`;
-        });
-
-        canvas.innerHTML = `
-          <div class="lesson-split-stage">
-            <div class="visual-board-panel">
-              <div class="diagram-svg-holder">${slide.svg || ""}</div>
-              <div class="pen-caption-line" id="diagCaptionLine">${slide.diagramCaption || ""}</div>
-            </div>
-            <div class="teacher-notes-col">${stepsHtml}</div>
-          </div>
-        `;
-
-        // First explain the diagram drawn on the left, THEN write & explain each line on the right!
-        const diagCaption = document.getElementById("diagCaptionLine");
-        if (slide.diagramVoice) {
-          setTimeout(() => { if (diagCaption) diagCaption.classList.add("show"); }, 600);
-          speakExactText(slide.diagramVoice, () => {
-            currentStepIndex = 0;
-            if (isWbPlaying) playBoardSteps();
-          });
-        } else {
-          if (diagCaption) diagCaption.classList.add("show");
-          currentStepIndex = 0;
-          playBoardSteps();
-        }
-      }
-      // 3. OBJECTIVE QUIZ SLIDE (AUTO-ADVANCES AFTER ANSWER!)
-      else if (slide.type === "quiz") {
-        const labels = ["A", "B", "C", "D"];
-        let optsHtml = "";
-        (slide.options || []).forEach((opt, idx) => {
-          optsHtml += `<button class="quiz-opt-card" id="qOpt-${idx}" onclick="checkBoardQuiz(${idx})">${labels[idx]}. ${opt}</button>`;
-        });
-
-        canvas.innerHTML = `
-          <div class="quiz-board-box">
-            <div class="quiz-header-strip">
-              <span style="font-size:12px;font-weight:800;color:#ea580c;">🎯 अभ्यास प्रश्न • ${activeStudent}</span>
-              <div class="quiz-timer-pill" id="quizTimerPill">
-                <span>⏱️</span>
-                <span id="quizTimerText">02:00</span>
-              </div>
-            </div>
-            <div class="quiz-q-card" onclick="openDoubtForCurrentQuestion()">
-              <div style="font-size:17px;font-weight:800;line-height:1.4;">${slide.question}</div>
-              <div style="font-size:11.5px;font-weight:800;color:#2563eb;margin-top:5px;">🤔 प्रश्न समझ नहीं आया? यहाँ टैप करके सीधे डाउट पूछें</div>
-            </div>
-            <div class="quiz-opts-grid">${optsHtml}</div>
-            <div id="quizResultNote" style="margin-top:10px;font-size:13.5px;font-weight:800;"></div>
-          </div>
-        `;
-
-        startTwoMinuteQuizTimer();
-        speakExactText(`अब बोर्ड पर परीक्षा का प्रश्न है। ध्यान से पढ़ो: ${slide.question}`);
-      }
-    }
-
-    function playGoalSteps() {
+    function processNextBlock() {
       if (!isWbPlaying) return;
-      const slide = currentLessonSlides[currentSlideIndex];
-      const list = slide.goals || [];
-      if (currentStepIndex >= list.length) {
-        setTimeout(() => { if (isWbPlaying) nextBoardSlide(); }, 500);
-        return;
-      }
-
-      const idx = currentStepIndex;
-      const row = document.getElementById(`goalRow-${idx}`);
-      const txtEl = document.getElementById(`goalText-${idx}`);
-      if (row) row.classList.add("visible");
-
-      // Write with pen AND read the EXACT SAME text displayed on screen!
-      const exactLine = list[idx].text;
-      typeHtmlWithPenCursor(txtEl, exactLine, 22);
-      currentStepIndex++;
-
-      speakExactText(exactLine, () => {
-        // Draw red underline ONLY AFTER finishing reading this line!
-        if (row) row.classList.add("pen-marked");
-        if (isWbPlaying) setTimeout(playGoalSteps, 450);
-      });
-    }
-
-    function playBoardSteps() {
-      if (!isWbPlaying) return;
-      const slide = currentLessonSlides[currentSlideIndex];
-      const steps = slide.steps || [];
-
-      if (currentStepIndex >= steps.length) {
-        setTimeout(() => { if (isWbPlaying) nextBoardSlide(); }, 600);
-        return;
-      }
-
-      const idx = currentStepIndex;
-      const stepEl = document.getElementById(`nStep-${idx}`);
-      const exactLine = steps[idx].text;
-
-      if (stepEl) {
-        stepEl.classList.add("visible");
-        typeHtmlWithPenCursor(stepEl, exactLine, 20);
-      }
-
-      currentStepIndex++;
-
-      // Read EXACTLY what is being written on the screen, THEN draw red underline/circle!
-      speakExactText(exactLine, () => {
-        if (stepEl) stepEl.classList.add("pen-marked");
-        if (isWbPlaying) setTimeout(playBoardSteps, 500);
-      });
-    }
-
-    window.nextBoardSlide = function() {
-      stopAllVoices();
-      clearQuizCountdown();
-      if (currentSlideIndex < currentLessonSlides.length - 1) {
-        currentSlideIndex++;
-        isWbPlaying = true;
-        document.getElementById("btnPlayPause").textContent = "⏸️";
-        renderCurrentSlide();
-      } else {
+      if (currentBlockIndex >= lessonBlocks.length) {
         isWbPlaying = false;
         document.getElementById("btnPlayPause").textContent = "🔄";
-        localStorage.removeItem("nd_saved_classroom_state");
-        alert(`🎉 शाबाश ${getDisplayStudentName()}! यह टॉपिक पूरा हो गया है।`);
-        exitWhiteboard();
+        return;
       }
-    };
 
-    window.toggleWbPlay = function() {
-      if (isWbPlaying) {
-        isWbPlaying = false;
-        stopAllVoices();
-        document.getElementById("btnPlayPause").textContent = "▶️";
+      const block = lessonBlocks[currentBlockIndex];
+      document.getElementById("wbStepStatus").textContent = `भाग ${currentBlockIndex + 1} / ${lessonBlocks.length}`;
+      const streamBody = document.getElementById("notebookStreamBody");
+
+      // Update Sticky Right Diagram Board if this block has a diagram
+      if (block.svg) {
+        document.getElementById("stickyDiagramCard").innerHTML = `
+          ${block.svg}
+          <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
+        `;
+      }
+
+      // If this block is an Inline Quiz
+      if (block.type === "quiz") {
+        const qId = `inlineQuiz-${currentBlockIndex}`;
+        const labels = ["A", "B", "C", "D"];
+        let optsHtml = "";
+        (block.options || []).forEach((opt, oIdx) => {
+          optsHtml += `<button class="quiz-opt-btn" id="${qId}-opt-${oIdx}" onclick="answerInlineQuiz(${currentBlockIndex}, ${oIdx})">${labels[oIdx]}. ${renderMathFractions(opt)}</button>`;
+        });
+
+        const qCard = document.createElement("div");
+        qCard.className = "handwritten-block inline-quiz-card";
+        qCard.innerHTML = `
+          <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">🎯 अभ्यास प्रश्न (हल करें)</div>
+          <div style="font-size:16px;font-weight:800;">${renderMathFractions(block.question)}</div>
+          <div class="quiz-opts-grid">${optsHtml}</div>
+          <div id="${qId}-note" style="margin-top:8px;font-size:13.5px;font-weight:800;"></div>
+        `;
+        streamBody.appendChild(qCard);
+        autoScrollNotebookBottom();
+
+        speakExactText(`अब अभ्यास प्रश्न हल करते हैं: ${block.question}`);
+        return;
+      }
+
+      // Create a continuous handwritten block on the Left Notebook
+      const blkEl = document.createElement("div");
+      blkEl.className = "handwritten-block";
+      if (block.id) blkEl.id = block.id;
+      blkEl.innerHTML = `<div class="hw-section-title">📌 ${renderMathFractions(block.title || "")}</div>`;
+      streamBody.appendChild(blkEl);
+      autoScrollNotebookBottom();
+
+      // If this block references an earlier equation (e.g. refId: "eq1"), scroll up briefly to show it!
+      const startWritingBlock = () => {
+        if (block.diagramVoice) {
+          speakExactText(block.diagramVoice, () => {
+            currentLineIndex = 0;
+            if (isWbPlaying) writeNextLineInBlock(blkEl, block);
+          });
+        } else {
+          currentLineIndex = 0;
+          writeNextLineInBlock(blkEl, block);
+        }
+      };
+
+      if (block.refId) {
+        highlightPreviousEquationAndReturn(block.refId, startWritingBlock);
       } else {
-        isWbPlaying = true;
-        document.getElementById("btnPlayPause").textContent = "⏸️";
-        renderCurrentSlide();
+        startWritingBlock();
       }
-    };
+    }
 
-    window.openDoubtForCurrentQuestion = function() {
-      const slide = currentLessonSlides[currentSlideIndex];
-      if (slide && slide.type === "quiz") {
-        activeDoubtQuestionContext = slide.question;
-        document.getElementById("doubtContextLabel").innerHTML = `<b>प्रश्न:</b> "${slide.question}" — इस पर अपना सवाल पूछें:`;
-        document.getElementById("userDoubtField").value = "इस प्रश्न का सही हल बच्चों की तरह सरल भाषा में समझाइए?";
+    function writeNextLineInBlock(blkEl, block) {
+      if (!isWbPlaying) return;
+      const lines = block.lines || [];
+      if (currentLineIndex >= lines.length) {
+        currentBlockIndex++;
+        setTimeout(() => { if (isWbPlaying) processNextBlock(); }, 500);
+        return;
       }
-      openDoubtPrompt(true);
-    };
 
-    window.checkBoardQuiz = function(chosenIdx) {
-      clearQuizCountdown();
+      const lineObj = lines[currentLineIndex];
+      const lineDiv = document.createElement("div");
+      lineDiv.className = `hw-line ${lineObj.isFormula ? "formula-box" : ""}`;
+      blkEl.appendChild(lineDiv);
+      autoScrollNotebookBottom();
+
+      typeLineWithHandPen(lineDiv, lineObj.text, 22);
+      currentLineIndex++;
+
+      speakExactText(lineObj.text, () => {
+        lineDiv.classList.add("pen-marked");
+        if (isWbPlaying) setTimeout(() => writeNextLineInBlock(blkEl, block), 400);
+      });
+    }
+
+    window.answerInlineQuiz = function(blkIdx, chosenIdx) {
+      const block = lessonBlocks[blkIdx];
+      const qId = `inlineQuiz-${blkIdx}`;
       const activeStudent = getDisplayStudentName();
-      const qObj = currentLessonSlides[currentSlideIndex];
-      document.querySelectorAll(".quiz-opt-card").forEach(b => b.disabled = true);
-      const note = document.getElementById("quizResultNote");
 
-      if (chosenIdx === qObj.correctIndex) {
-        document.getElementById(`qOpt-${chosenIdx}`).classList.add("right");
-        note.style.color = "#16a34a";
-        note.textContent = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation}) — आगे बढ़ रहे हैं...`;
-        speakExactText(`बिल्कुल सही जवाब ${activeStudent}! ${qObj.explanation}`, () => {
-          setTimeout(() => nextBoardSlide(), 1400);
-        });
-      } else {
-        document.getElementById(`qOpt-${chosenIdx}`).classList.add("wrong");
-        document.getElementById(`qOpt-${qObj.correctIndex}`).classList.add("right");
-        note.style.color = "#ef4444";
-        note.textContent = `❌ सही उत्तर: ${qObj.options[qObj.correctIndex]} (${qObj.explanation}) — आगे बढ़ रहे हैं...`;
-        speakExactText(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`, () => {
-          setTimeout(() => nextBoardSlide(), 1800);
-        });
+          function processNextBlock() {
+      if (!isWbPlaying) return;
+      if (currentBlockIndex >= lessonBlocks.length) {
+        isWbPlaying = false;
+        document.getElementById("btnPlayPause").textContent = "🔄";
+        return;
       }
-    };
 
-    window.openDoubtPrompt = function(keepPrefill = false) {
+      const block = lessonBlocks[currentBlockIndex];
+      document.getElementById("wbStepStatus").textContent = `भाग ${currentBlockIndex + 1} / ${lessonBlocks.length}`;
+      const streamBody = document.getElementById("notebookStreamBody");
+
+      if (block.svgBase !== undefined || block.svg) {
+        document.getElementById("stickyDiagramCard").innerHTML = `
+          <svg id="liveStepSvg" viewBox="0 0 340 195" width="100%" height="190">
+            ${block.svgBase || ""}
+          </svg>
+          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
+        `;
+      }
+
+      if (block.type === "quiz") {
+        const qId = `inlineQuiz-${currentBlockIndex}`;
+        const labels = ["A", "B", "C", "D"];
+        let optsHtml = "";
+        (block.options || []).forEach((opt, oIdx) => {
+          optsHtml += `<button class="quiz-opt-btn" id="${qId}-opt-${oIdx}" onclick="answerInlineQuiz(${currentBlockIndex}, ${oIdx})">${labels[oIdx]}. ${renderMathFractions(opt)}</button>`;
+        });
+
+        const qCard = document.createElement("div");
+        qCard.className = "handwritten-block inline-quiz-card";
+        qCard.innerHTML = `
+          <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">🎯 अभ्यास प्रश्न (हल करें)</div>
+          <div style="font-size:16px;font-weight:800;">${renderMathFractions(block.question)}</div>
+          <div class="quiz-opts-grid">${optsHtml}</div>
+          <div id="${qId}-note" style="margin-top:8px;font-size:13.5px;font-weight:800;"></div>
+        `;
+        streamBody.appendChild(qCard);
+        autoScrollNotebookBottom();
+
+        speakExactText(`अब अभ्यास प्रश्न हल करते हैं: ${block.question}`);
+        return;
+      }
+
+      const blkEl = document.createElement("div");
+      blkEl.className = "handwritten-block";
+      if (block.id) blkEl.id = block.id;
+      blkEl.innerHTML = `<div class="hw-section-title">📌 ${renderMathFractions(block.title || "")}</div>`;
+      streamBody.appendChild(blkEl);
+      autoScrollNotebookBottom();
+
+      const startWritingBlock = () => {
+        currentLineIndex = 0;
+        writeNextLineInBlock(blkEl, block);
+      };
+
+      if (block.refId) {
+        highlightPreviousEquationAndReturn(block.refId, startWritingBlock);
+      } else {
+        startWritingBlock();
+      }
+    }
+
+    function writeNextLineInBlock(blkEl, block) {
+      if (!isWbPlaying) return;
+      const lines = block.lines || [];
+      if (currentLineIndex >= lines.length) {
+        currentBlockIndex++;
+        setTimeout(() => { if (isWbPlaying) processNextBlock(); }, 500);
+        return;
+      }
+
+      const lineObj = lines[currentLineIndex];
+      const lineDiv = document.createElement("div");
+      lineDiv.className = `hw-line ${lineObj.isFormula ? "formula-box" : ""}`;
+      blkEl.appendChild(lineDiv);
+      autoScrollNotebookBottom();
+
+      if (lineObj.drawSvg) {
+        const liveSvg = document.getElementById("liveStepSvg");
+        if (liveSvg) {
+          const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+          g.innerHTML = lineObj.drawSvg;
+          liveSvg.appendChild(g);
+        }
+      }
+
+      typeLineWithHandPen(lineDiv, lineObj.text, 22);
+      currentLineIndex++;
+
+      speakExactText(lineObj.text, () => {
+        lineDiv.classList.add("pen-marked");
+        if (isWbPlaying) setTimeout(() => writeNextLineInBlock(blkEl, block), 400);
+      });
+    }
+
+    window.openDoubtPrompt = function() {
       isWbPlaying = false;
       stopAllVoices();
       document.getElementById("btnPlayPause").textContent = "▶️";
-      if (!keepPrefill) {
-        activeDoubtQuestionContext = "";
-        document.getElementById("doubtContextLabel").textContent = "लिखकर पूछें—मास्टर जी बच्चों की तरह आसान भाषा में समझाएंगे!";
-        document.getElementById("userDoubtField").value = "";
-      }
+      document.getElementById("userDoubtField").value = "";
       document.getElementById("doubtModalMask").classList.add("open");
       document.getElementById("userDoubtField").focus();
     };
@@ -1734,33 +1566,35 @@
       document.getElementById("doubtModalMask").classList.remove("open");
 
       const activeStudent = getDisplayStudentName();
-      const canvas = document.getElementById("wbMainCanvas");
-      canvas.innerHTML = `<div style="text-align:center;"><div class="loader-ring" style="margin:0 auto 12px;"></div><h3>मास्टर जी "${activeStudent}" के सवाल का हल लिख रहे हैं...</h3></div>`;
+      const streamBody = document.getElementById("notebookStreamBody");
+      const doubtBlk = document.createElement("div");
+      doubtBlk.className = "handwritten-block";
+      doubtBlk.style.background = "#eff6ff";
+      doubtBlk.innerHTML = `<div class="hw-section-title">💡 ${activeStudent} के डाउट का हल:</div>`;
+      streamBody.appendChild(doubtBlk);
+      autoScrollNotebookBottom();
+
+      const ansLine = document.createElement("div");
+      ansLine.className = "hw-line";
+      ansLine.textContent = "मास्टर जी लिख रहे हैं...";
+      doubtBlk.appendChild(ansLine);
 
       try {
-        const resObj = await callGeminiWithFallbackChain(`छात्र "${activeStudent}" को यह बात समझ नहीं आई: "${doubtText}" (संदर्भ: ${activeDoubtQuestionContext || currentLessonMeta.topic})। निर्देश: केवल शुद्ध देवनागरी हिंदी में लिखो (कोई उर्दू अक्षर नहीं), और छोटे बच्चे को समझाने जैसा बेहद सरल उदाहरण दो। शुद्ध JSON दो: {"answer": "3 वाक्यों में सरल हिंदी में स्पष्टीकरण", "formula": "मुख्य सूत्र या ट्रिक"}`);
-        canvas.innerHTML = `
-          <div style="max-width:740px;padding:20px;text-align:left;">
-            <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
-            <div id="doubtWrittenAns" style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:12px;"></div>
-            <div class="pen-caption-line show" style="text-align:left;margin-bottom:16px;">${resObj.formula || ""}</div>
-            <button style="background:#2563eb;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:800;cursor:pointer;" onclick="renderCurrentSlide()">🔙 वापस क्लास में जाएं</button>
-          </div>
-        `;
-        typeHtmlWithPenCursor(document.getElementById("doubtWrittenAns"), resObj.answer, 22);
-        speakExactText(resObj.answer);
+        const resObj = await callGeminiWithFallbackChain(`छात्र "${activeStudent}" का डाउट: "${doubtText}" (टॉपिक: ${currentLessonMeta.topic})। केवल शुद्ध देवनागरी हिंदी में बच्चों की तरह सरल भाषा में समझाओ, और बटा हो तो [[अंश/हर]] लिखो। शुद्ध JSON दो: {"answer": "सरल हिंदी स्पष्टीकरण"}`);
+        typeLineWithHandPen(ansLine, resObj.answer, 22);
+        speakExactText(resObj.answer, () => {
+          isWbPlaying = true;
+          document.getElementById("btnPlayPause").textContent = "⏸️";
+          processNextBlock();
+        });
       } catch (e) {
-        alert("त्रुटि: " + e.message);
-        renderCurrentSlide();
+        ansLine.textContent = "त्रुटि: " + e.message;
       }
     };
 
     window.exitWhiteboard = function() {
       isWbPlaying = false;
       stopAllVoices();
-      clearQuizCountdown();
-      saveClassProgress();
-      checkSavedClassProgress();
       document.getElementById("wbScreen").classList.remove("open");
       document.getElementById("mainAppShell").classList.remove("hidden");
     };
@@ -1768,9 +1602,7 @@
     window.forceFullLandscape = function() {
       const el = document.documentElement;
       if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(() => {});
-      }
+      if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(() => {});
     };
 
     window.openProfileOrLoginModal = function() {
@@ -1782,7 +1614,6 @@
         <h3 style="font-size:18px;font-weight:900;">अपना नाम सेट करें</h3>
         <input type="text" id="virtualNameInput" value="${studentName}" placeholder="अपना नाम लिखें...">
         <button style="width:100%;background:#2563eb;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;" onclick="saveVirtualStudentName()">✅ नाम सेव करें</button>
-        ${studentName ? `<button style="width:100%;background:#ef4444;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:800;margin-top:10px;cursor:pointer;" onclick="performAnimatedLogout()">🚪 लॉगआउट करें</button>` : ""}
       `;
       mask.classList.add("open");
     };
@@ -1793,15 +1624,6 @@
       studentName = val;
       localStorage.setItem("nd_virtual_student_name", studentName);
       document.getElementById("topUserName").textContent = val;
-      document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(val)}&background=2563eb&color=fff`;
-      document.getElementById("profileModalMask").classList.remove("open");
-    };
-
-    window.performAnimatedLogout = function() {
-      if (window.firebase && firebase.auth) firebase.auth().signOut();
-      localStorage.removeItem("nd_virtual_student_name");
-      studentName = "";
-      document.getElementById("topUserName").textContent = "अपना नाम लिखें";
       document.getElementById("profileModalMask").classList.remove("open");
     };
 
