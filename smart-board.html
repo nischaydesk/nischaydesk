@@ -172,7 +172,6 @@
     .profile-pill-btn img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
     .profile-pill-btn span { font-size: 12px; font-weight: 800; color: #1d4ed8; }
 
-    /* Hero Classroom Banner */
     .hero-dash-banner {
       max-width: 980px;
       margin: 14px auto 0;
@@ -201,7 +200,6 @@
       margin-bottom: 6px;
     }
 
-    /* Resume Banner */
     .resume-banner-wrap {
       max-width: 980px;
       margin: 12px auto 0;
@@ -455,7 +453,6 @@
       .wb-fullscreen.open ~ .portrait-lock-screen { display: flex; }
     }
 
-    /* Auto-Hide Chrome (Tap screen once to toggle) */
     .wb-chrome {
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
@@ -501,7 +498,6 @@
       cursor: pointer;
     }
 
-    /* Two-Column Continuous Board: LEFT = Teacher Handwriting Scroll | RIGHT = Sticky Live Diagram */
     .continuous-board-layout {
       flex: 1;
       width: 100%;
@@ -512,7 +508,6 @@
       cursor: pointer;
     }
 
-    /* LEFT SIDE: Infinite Continuous Notebook Stream */
     .left-notebook-scroll {
       height: 100%;
       overflow-y: auto;
@@ -535,7 +530,6 @@
       margin-bottom: 18px;
     }
 
-    /* Hand-Written Block Entry */
     .handwritten-block {
       margin-bottom: 20px;
       padding: 10px 14px;
@@ -543,7 +537,6 @@
       transition: background 0.45s ease, box-shadow 0.45s ease;
     }
 
-    /* Reference Highlight when Teacher scrolls back to show an earlier equation */
     .handwritten-block.ref-glow {
       background: #fef08a !important;
       color: #0f172a !important;
@@ -593,7 +586,6 @@
       to { transform: translateY(-3px) rotate(5deg); }
     }
 
-    /* Red Pen Underline & Circle drawn AFTER speaking */
     .red-under {
       position: relative;
       display: inline-block;
@@ -655,8 +647,10 @@
     }
 
     .diagram-card-box svg {
-      max-width: 100%;
-      max-height: 195px;
+      width: 100%;
+      height: auto;
+      min-height: 175px;
+      max-height: 210px;
     }
     .diagram-card-box svg line,
     .diagram-card-box svg path,
@@ -676,7 +670,6 @@
       text-align: center;
     }
 
-    /* Inline Quiz Inside the Scrolling Notebook */
     .inline-quiz-card {
       background: #fff7ed;
       border: 2px dashed #ea580c;
@@ -707,7 +700,6 @@
     .quiz-opt-btn.right { background: #dcfce7; border-color: #16a34a; color: #15803d; }
     .quiz-opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #b91c1c; }
 
-    /* Floating Bottom Dock */
     .jeet-center-dock {
       position: fixed;
       bottom: 14px;
@@ -738,7 +730,6 @@
     }
     .dock-divider { width: 1px; height: 18px; background: #cbd5e1; }
 
-    /* Modals */
     .app-modal-mask {
       display: none;
       position: fixed;
@@ -785,7 +776,7 @@
   <div class="lesson-preloader" id="lessonPreloader">
     <div class="loader-ring"></div>
     <h3 id="preloadHeading" style="font-size: 18px; font-weight: 900;">मास्टर जी की क्लास लोड हो रही है...</h3>
-    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">पूरी क्लास की आवाज़ पहले से तैयार हो रही है ताकि बिना रुके चले...</p>
+    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">क्लाउड सर्वर से आवाज़ तैयार हो रही है...</p>
     <div class="preload-bar-wrap"><div class="preload-bar-fill" id="preloadBarFill"></div></div>
     <div id="preloadPercentText" style="font-size: 12.5px; font-weight: 800; color: #2563eb;">0% तैयार</div>
   </div>
@@ -806,7 +797,6 @@
       </button>
     </header>
 
-    <!-- Hero Classroom Card -->
     <div class="hero-dash-banner">
       <div class="hero-dash-card">
         <div>
@@ -818,7 +808,6 @@
       </div>
     </div>
 
-    <!-- Resume Saved Session Banner -->
     <div class="resume-banner-wrap" id="resumeBannerWrap">
       <div class="resume-card" onclick="resumeSavedSession()">
         <div>
@@ -886,7 +875,7 @@
   </div>
 
   <!-- =========================================================
-       4. CONTINUOUS SCROLLING WHITEBOARD (NO PAGE FLIP!)
+       4. CONTINUOUS SCROLLING WHITEBOARD
        ========================================================= -->
   <div class="wb-fullscreen controls-hidden" id="wbScreen">
     <div class="wb-top-bar wb-chrome">
@@ -897,7 +886,6 @@
       <span id="wbStepStatus" style="font-size:12px;font-weight:800;color:#2563eb;">भाग 1</span>
     </div>
 
-    <!-- Left: Continuous Hand-Written Scroll | Right: Sticky Live Diagram -->
     <div class="continuous-board-layout" onclick="handleBoardSurfaceTap(event)">
       <div class="left-notebook-scroll" id="notebookScrollContainer">
         <div class="notebook-topic-banner" id="notebookTopicBanner">TOPIC</div>
@@ -911,7 +899,6 @@
       </div>
     </div>
 
-    <!-- Tap-to-Reveal Control Dock -->
     <div class="jeet-center-dock wb-chrome">
       <button class="dock-ctrl-btn" id="btnMuteToggle" onclick="toggleAudioMute()">🔊</button>
       <div class="dock-divider"></div>
@@ -951,6 +938,14 @@
   </div>
 
   <script>
+    // =========================================================
+    // LIVE RENDER VOICE SERVER URL
+    // =========================================================
+    const VOICE_SERVER_BASE = "https://nischaydesk.onrender.com";
+
+    // Wake up Render server in the background immediately on page load
+    fetch(`${VOICE_SERVER_BASE}/`).catch(() => {});
+
     function getDecodedKey() {
       const _s = [70, 86, 51, 70, 103, 61, 87, 83, 59, 79, 94, 125, 110, 110, 110, 104, 95, 110, 121, 121, 122, 95, 83, 59, 80, 56, 112, 120, 111, 92, 111, 71, 119, 122, 115, 91, 79, 95, 60, 55, 115, 70, 113, 77, 75, 62, 50, 90, 108, 76, 53, 124, 86];
       return _s.map(c => String.fromCharCode(c - 5)).join('');
@@ -981,12 +976,16 @@
     };
 
     // =========================================================
-    // REAL STACKED FRACTION FORMATTER ([[A/B]] -> Real Fraction)
+    // REAL STACKED FRACTION & STRAY BRACKET CLEANER
     // =========================================================
     function renderMathFractions(htmlStr) {
-      return (htmlStr || "").replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (match, num, den) => {
+      let out = htmlStr || "";
+      out = out.replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (match, num, den) => {
         return `<span class="math-frac"><span class="num">${num.trim()}</span><span class="den">${den.trim()}</span></span>`;
       });
+      out = out.replace(/\[\[([^\]]+)\]\]/g, "<b>$1</b>");
+      out = out.replace(/\btau\b/gi, "τ");
+      return out;
     }
 
     window.toggleSoftBoardTint = function() {
@@ -1020,6 +1019,7 @@
     let lessonBlocks = [];
     let currentBlockIndex = 0;
     let currentLineIndex = 0;
+    let currentBlockElement = null;
     let currentLessonMeta = { subject: "", topic: "" };
 
     let globalAudioPlayer = new Audio();
@@ -1034,7 +1034,6 @@
       if (sp) sp.classList.add("hide");
     }, 600);
 
-    // Check Saved Progress for Resume Card
     function checkSavedProgress() {
       try {
         const raw = localStorage.getItem("nd_wb_resume_data");
@@ -1215,11 +1214,13 @@
     };
 
     // =========================================================
-    // AUDIO PRELOADER (EXACT TEXT TO NATURAL HINDI SPEECH)
+    // AUDIO PRELOADER (WITH RENDER WAKE-UP & TIMEOUT PROTECTION)
     // =========================================================
     function cleanSpeechString(raw) {
       return (raw || "")
         .replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, "$1 बटे $2")
+        .replace(/\[\[([^\]]+)\]\]/g, "$1")
+        .replace(/\btau\b/gi, "टाऊ")
         .replace(/<[^>]*>/g, "")
         .replace(/[*#_`$~]/g, "")
         .replace(/∠/g, "कोण ")
@@ -1230,16 +1231,21 @@
         .trim();
     }
 
-    async function fetchSingleAudioBlob(cleanText) {
+    async function fetchSingleAudioBlob(cleanText, timeoutMs = 12000) {
       if (!cleanText || voiceCache.has(cleanText)) return;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
       try {
-        const url = `http://127.0.0.1:5000/speak?text=${encodeURIComponent(cleanText)}&voice=hi-IN-MadhurNeural`;
-        const res = await fetch(url);
+        const url = `${VOICE_SERVER_BASE}/speak?text=${encodeURIComponent(cleanText)}&voice=hi-IN-MadhurNeural`;
+        const res = await fetch(url, { signal: controller.signal });
         if (res.ok) {
           const blob = await res.blob();
           voiceCache.set(cleanText, URL.createObjectURL(blob));
         }
-      } catch (e) {}
+      } catch (e) {
+      } finally {
+        clearTimeout(timer);
+      }
     }
 
     async function preDownloadAllVoices(blocks) {
@@ -1258,16 +1264,29 @@
       if (!unique.length) return;
 
       loader.classList.add("open");
+      bar.style.width = "10%";
+      pctTxt.textContent = "सर्वर से जुड़ रहा है...";
+
+      // Pre-warm first 4 lines so class starts fast even if Render was sleeping
+      const initialSlice = unique.slice(0, 4);
       let done = 0;
-      for (let i = 0; i < unique.length; i += 4) {
-        const batch = unique.slice(i, i + 4);
-        await Promise.all(batch.map(t => fetchSingleAudioBlob(t)));
-        done += batch.length;
-        const pct = Math.min(100, Math.round((done / unique.length) * 100));
+      for (const line of initialSlice) {
+        await fetchSingleAudioBlob(line, 15000);
+        done++;
+        const pct = Math.min(100, Math.round((done / initialSlice.length) * 100));
         bar.style.width = pct + "%";
-        pctTxt.textContent = `${pct}% आवाज़ तैयार...`;
+        pctTxt.textContent = `${pct}% तैयार...`;
       }
-      setTimeout(() => loader.classList.remove("open"), 200);
+
+      setTimeout(() => loader.classList.remove("open"), 150);
+
+      // Download remaining lines quietly in background while teacher speaks
+      const remaining = unique.slice(4);
+      (async () => {
+        for (let i = 0; i < remaining.length; i += 3) {
+          await Promise.all(remaining.slice(i, i + 3).map(t => fetchSingleAudioBlob(t, 12000)));
+        }
+      })();
     }
 
     async function callGeminiWithFallbackChain(promptText) {
@@ -1319,7 +1338,7 @@
       }
 
       const prompt = `तुम एक अनुभवी शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में हाथ से लिख-लिखकर पढ़ा रहे हो।
-      महत्वपूर्ण: जहाँ भी बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो (जैसे [[1/v]] + [[1/u]] = [[1/f]]) ताकि वह असली बटा दिखे! केवल शुद्ध देवनागरी हिंदी लिखो।
+      महत्वपूर्ण: जहाँ भी बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो (जैसे [[1/v]] + [[1/u]] = [[1/f]])। साधारण अक्षरों में [[A]] जैसे ब्रैकेट मत लगाओ। केवल शुद्ध देवनागरी हिंदी लिखो।
       कुल 6 विस्तृत खंड (blocks) बनाओ (अंत में 2 क्विज़ प्रश्न):
       {
         "blocks": [
@@ -1378,7 +1397,7 @@
     }
 
     // =========================================================
-    // ZERO-GAP AUDIO PLAYER
+    // ZERO-GAP AUDIO PLAYER (CLOUD RENDER + BROWSER FALLBACK)
     // =========================================================
     function stopAllVoices() {
       if (globalAudioPlayer) { globalAudioPlayer.pause(); globalAudioPlayer.currentTime = 0; }
@@ -1417,9 +1436,9 @@
       }
 
       try {
-        const url = `http://127.0.0.1:5000/speak?text=${encodeURIComponent(clean)}&voice=hi-IN-MadhurNeural`;
+        const url = `${VOICE_SERVER_BASE}/speak?text=${encodeURIComponent(clean)}&voice=hi-IN-MadhurNeural`;
         const res = await fetch(url);
-        if (!res.ok) throw new Error("Local 5000 error");
+        if (!res.ok) throw new Error("Render voice error");
         const audioUrl = URL.createObjectURL(await res.blob());
         voiceCache.set(clean, audioUrl);
         globalAudioPlayer.src = audioUrl;
@@ -1460,6 +1479,7 @@
 
       currentBlockIndex = startBlockIdx;
       currentLineIndex = 0;
+      currentBlockElement = null;
       isWbPlaying = true;
       document.getElementById("btnPlayPause").textContent = "⏸️";
       processNextBlock();
@@ -1527,10 +1547,17 @@
       const block = lessonBlocks[currentBlockIndex];
       document.getElementById("wbStepStatus").textContent = `भाग ${currentBlockIndex + 1} / ${lessonBlocks.length}`;
       const streamBody = document.getElementById("notebookStreamBody");
+      const diagCard = document.getElementById("stickyDiagramCard");
 
-      // Prepare right diagram board (starts blank if svgBase is empty, builds line-by-line!)
-      if (block.svgBase !== undefined || block.svg) {
-        document.getElementById("stickyDiagramCard").innerHTML = `
+      if (block.image) {
+        diagCard.innerHTML = `
+          <img src="${block.image}" alt="${block.diagramCaption || "Diagram"}"
+               style="width:100%;max-height:205px;object-fit:contain;border-radius:12px;background:#ffffff;"
+               onerror="this.outerHTML='<svg id=\\'liveStepSvg\\' viewBox=\\'0 0 340 195\\' width=\\'100%\\' height=\\'190\\'>${(block.svgBase || block.svg || "").replace(/'/g, "\\'")}</svg>'">
+          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
+        `;
+      } else if (block.svgBase !== undefined || block.svg) {
+        diagCard.innerHTML = `
           <svg id="liveStepSvg" viewBox="0 0 340 195" width="100%" height="190">
             ${block.svgBase || block.svg || ""}
           </svg>
@@ -1538,7 +1565,6 @@
         `;
       }
 
-      // Inline Quiz Block
       if (block.type === "quiz") {
         const qId = `inlineQuiz-${currentBlockIndex}`;
         const labels = ["A", "B", "C", "D"];
@@ -1562,12 +1588,12 @@
         return;
       }
 
-      // Handwritten Section Block
       const blkEl = document.createElement("div");
       blkEl.className = "handwritten-block";
       if (block.id) blkEl.id = block.id;
       blkEl.innerHTML = `<div class="hw-section-title">📌 ${renderMathFractions(block.title || "")}</div>`;
       streamBody.appendChild(blkEl);
+      currentBlockElement = blkEl;
       autoScrollNotebookBottom();
 
       const startWritingBlock = () => {
@@ -1594,6 +1620,7 @@
       const lines = block.lines || [];
       if (currentLineIndex >= lines.length) {
         currentBlockIndex++;
+        currentBlockElement = null;
         setTimeout(() => { if (isWbPlaying) processNextBlock(); }, 500);
         return;
       }
@@ -1604,7 +1631,6 @@
       blkEl.appendChild(lineDiv);
       autoScrollNotebookBottom();
 
-      // Draw this step's diagram stroke live on the right board
       if (lineObj.drawSvg) {
         const liveSvg = document.getElementById("liveStepSvg");
         if (liveSvg) {
@@ -1658,7 +1684,11 @@
       } else {
         isWbPlaying = true;
         document.getElementById("btnPlayPause").textContent = "⏸️";
-        processNextBlock();
+        if (currentBlockElement && lessonBlocks[currentBlockIndex]) {
+          writeNextLineInBlock(currentBlockElement, lessonBlocks[currentBlockIndex]);
+        } else {
+          processNextBlock();
+        }
       }
     };
 
@@ -1696,7 +1726,11 @@
         speakExactText(resObj.answer, () => {
           isWbPlaying = true;
           document.getElementById("btnPlayPause").textContent = "⏸️";
-          processNextBlock();
+          if (currentBlockElement && lessonBlocks[currentBlockIndex]) {
+            writeNextLineInBlock(currentBlockElement, lessonBlocks[currentBlockIndex]);
+          } else {
+            processNextBlock();
+          }
         });
       } catch (e) {
         ansLine.textContent = "त्रुटि: " + e.message;
