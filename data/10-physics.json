@@ -4,117 +4,129 @@
       "slides": [
         {
           "type": "goals",
-          "header": "आज हम क्या सीखेंगे? • प्रकाश और किरण पुंज",
+          "header": "30-MIN MASTERCLASS • प्रकाश और किरण पुंज",
           "goals": [
             {
-              "text": "नमस्ते {{STUDENT}}! सबसे पहले हम जानेंगे कि <span class='red-under'>प्रकाश (Light)</span> क्या है और हम किसी वस्तु को कैसे देख पाते हैं।"
+              "text": "नमस्ते {{STUDENT}}! इस 30 मिनट की मास्टर क्लास में हम सबसे पहले <span class='red-under'>प्रकाश (Light)</span> की प्रकृति और निर्वात में इसकी चाल <span class='red-oval'>3 × 10⁸ m/s</span> को गहराई से समझेंगे।"
             },
             {
-              "text": "दूसरा लक्ष्य: प्रकाश हमेशा <span class='red-under'>सीधी रेखा</span> में चलता है और निर्वात में इसकी चाल <span class='red-oval'>3 × 10⁸ m/s</span> होती है।"
+              "text": "दूसरा चरण: <span class='red-under'>प्रदीप्त एवं अप्रदीप्त</span> वस्तुओं (सूर्य, तारे, जुगनू बनाम चंद्रमा और ग्रह) में अंतर उदाहरण सहित सीखेंगे।"
             },
             {
-              "text": "तीसरा लक्ष्य: <span class='red-under'>प्रदीप्त एवं अप्रदीप्त</span> वस्तुओं (जैसे सूर्य और चंद्रमा) में अंतर समझना।"
+              "text": "तीसरा चरण: <span class='red-under'>किरण और किरण पुंज</span> के तीनों प्रकार (समांतर, अभिसारी, अपसारी) को किरण आरेख से बनाना सीखेंगे।"
             },
             {
-              "text": "चौथा लक्ष्य: <span class='red-under'>किरण पुंज</span> के तीनों प्रकार (समांतर, अभिसारी और अपसारी) को चित्र से समझना।"
-            },
-            {
-              "text": "पाँचवाँ लक्ष्य: <span class='red-under'>पारदर्शी, पारभासी और अपारदर्शी</span> पदार्थों की पहचान करना।"
+              "text": "चौथा चरण: <span class='red-under'>पारदर्शी, पारभासी और अपारदर्शी</span> पदार्थ तथा छाया (Shadow) बनने का वैज्ञानिक कारण समझेंगे।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "1. हम किसी वस्तु को कैसे देखते हैं?",
-          "svg": "<svg viewBox='0 0 340 190'><circle cx='60' cy='50' r='24' fill='#facc15' stroke='#ea580c' stroke-width='3'/><text x='40' y='90' font-size='12' font-weight='bold' fill='#ea580c'>सूर्य / बल्ब</text><line x1='85' y1='65' x2='175' y2='130' stroke='#f59e0b' stroke-width='3'/><polygon points='175,130 163,128 170,119' fill='#f59e0b'/><rect x='175' y='115' width='50' height='48' rx='8' fill='#dcfce7' stroke='#16a34a' stroke-width='2.5'/><text x='187' y='144' font-size='12' font-weight='bold' fill='#15803d'>वस्तु</text><line x1='225' y1='130' x2='290' y2='65' stroke='#2563eb' stroke-width='3'/><polygon points='290,65 278,68 286,76' fill='#2563eb'/><circle cx='302' cy='55' r='16' fill='#eff6ff' stroke='#2563eb' stroke-width='2.5'/><text x='286' y='88' font-size='12' font-weight='bold' fill='#1d4ed8'>आँख</text></svg>",
-          "diagramCaption": "प्रकाश → वस्तु से टकराया → आँख में पहुँचा ✓",
-          "diagramVoice": "इस चित्र को ध्यान से देखो {{STUDENT}}। बाईं तरफ सूरज या बल्ब से पीली किरण निकलकर नीचे हरी वस्तु पर पड़ती है, और वहाँ से टकराकर नीली किरण बनकर हमारी आँख तक पहुँचती है, तभी हमें कोई वस्तु दिखाई देती है।",
+          "header": "1. प्रकाश क्या है और हम वस्तुओं को कैसे देखते हैं?",
+          "svg": "<svg viewBox='0 0 340 190'><circle cx='55' cy='48' r='24' fill='#facc15' stroke='#ea580c' stroke-width='3'/><text x='35' y='88' font-size='12' font-weight='bold' fill='#ea580c'>प्रकाश स्रोत</text><line x1='80' y1='64' x2='172' y2='132' stroke='#f59e0b' stroke-width='3'/><polygon points='172,132 160,129 167,120' fill='#f59e0b'/><rect x='172' y='116' width='52' height='48' rx='8' fill='#dcfce7' stroke='#16a34a' stroke-width='2.5'/><text x='184' y='145' font-size='12' font-weight='bold' fill='#15803d'>वस्तु</text><line x1='224' y1='132' x2='290' y2='64' stroke='#2563eb' stroke-width='3'/><polygon points='290,64 278,67 286,75' fill='#2563eb'/><circle cx='302' cy='54' r='16' fill='#eff6ff' stroke='#2563eb' stroke-width='2.5'/><text x='286' y='88' font-size='12' font-weight='bold' fill='#1d4ed8'>आँख</text></svg>",
+          "diagramCaption": "स्रोत → वस्तु से परावर्तन → आँख का रेटिना ✓",
+          "diagramVoice": "इस चित्र को ध्यान से देखो {{STUDENT}}। जब किसी प्रकाश स्रोत जैसे सूर्य या बल्ब से पीली किरण निकलकर किसी वस्तु से टकराती है और परावर्तित होकर नीली किरण के रूप में हमारी आँखों के रेटिना पर पड़ती है, तभी हमारा मस्तिष्क उस वस्तु को देख पाता है।",
           "steps": [
             {
-              "text": "<span class='red-under'>परिभाषा:</span> प्रकाश ऊर्जा का वह भौतिक रूप है जिसकी सहायता से हम किसी वस्तु को देखते हैं।"
+              "text": "<span class='red-under'>वैज्ञानिक परिभाषा:</span> प्रकाश ऊर्जा का वह रूप है जिसकी सहायता से हमारी आँखों को वस्तुओं को देखने की संवेदना प्राप्त होती है।"
             },
             {
-              "text": "<span class='red-under'>गमन पथ:</span> प्रकाश हमेशा <span class='red-oval'>सरल (सीधी) रेखा</span> में गमन करता है और यह एक विद्युत-चुंबकीय तरंग है।"
+              "text": "<span class='red-under'>तरंग प्रकृति:</span> प्रकाश एक <span class='red-oval'>विद्युत-चुंबकीय तरंग (Electromagnetic Wave)</span> है, जिसे चलने के लिए किसी माध्यम की आवश्यकता नहीं होती।"
             },
             {
-              "text": "<span class='red-under'>प्रकाश की चाल:</span> निर्वात या हवा में प्रकाश की चाल <span class='red-oval'>3 × 10⁸ m/s</span> (तीन लाख किलोमीटर प्रति सेकंड) होती है।"
+              "text": "<span class='red-under'>प्रकाश की चाल:</span> निर्वात (Vacuum) में प्रकाश की चाल सबसे अधिक <span class='red-oval'>3 × 10⁸ m/s</span> (तीन लाख किलोमीटर प्रति सेकंड) होती है।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "2. प्रदीप्त एवं अप्रदीप्त वस्तुएँ",
+          "header": "2. विभिन्न माध्यमों में प्रकाश की चाल (VVI सारणी)",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='20' y='22' width='300' height='36' rx='8' fill='#eff6ff' stroke='#2563eb' stroke-width='2'/><text x='36' y='45' font-size='13' font-weight='bold' fill='#1d4ed8'>1. निर्वात / हवा :  3 × 10⁸ m/s (सबसे तेज़)</text><rect x='20' y='72' width='300' height='36' rx='8' fill='#f0fdf4' stroke='#16a34a' stroke-width='2'/><text x='36' y='95' font-size='13' font-weight='bold' fill='#15803d'>2. जल (Water) :  2.25 × 10⁸ m/s</text><rect x='20' y='122' width='300' height='36' rx='8' fill='#fff7ed' stroke='#ea580c' stroke-width='2'/><text x='36' y='145' font-size='13' font-weight='bold' fill='#c2410c'>3. काँच (Glass) :  2 × 10⁸ m/s (सबसे धीमा)</text></svg>",
+          "diagramCaption": "निर्वात > जल > काँच (सघन माध्यम में चाल घटती है)",
+          "diagramVoice": "बोर्ड पर तीनों माध्यमों में प्रकाश की चाल का क्रम देखो {{STUDENT}}। हवा या निर्वात में प्रकाश तीन गुना दस की घात आठ मीटर प्रति सेकंड से चलता है, पानी में यह घटकर दो दशमलव दो पाँच गुना दस की घात आठ हो जाता है, और काँच में दो गुना दस की घात आठ मीटर प्रति सेकंड रह जाता है।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>निर्वात में चाल:</span> 3 × 10⁸ m/s (यह ब्रह्मांड की अधिकतम संभव गति है)।"
+            },
+            {
+              "text": "<span class='red-under'>जल में चाल:</span> पानी का अपवर्तनांक 1.33 होने के कारण चाल घटकर <span class='red-oval'>2.25 × 10⁸ m/s</span> रह जाती है।"
+            },
+            {
+              "text": "<span class='red-under'>काँच में चाल:</span> काँच अधिक सघन माध्यम है, इसलिए इसमें प्रकाश की चाल <span class='red-oval'>2 × 10⁸ m/s</span> होती है।"
+            }
+          ]
+        },
+        {
+          "type": "diagram_lesson",
+          "header": "3. प्रदीप्त एवं अप्रदीप्त वस्तुएँ (सूर्य बनाम चंद्रमा)",
           "svg": "<svg viewBox='0 0 340 190'><circle cx='85' cy='85' r='34' fill='#fef08a' stroke='#eab308' stroke-width='3'/><text x='52' y='142' font-size='12' font-weight='bold' fill='#ca8a04'>सूर्य (प्रदीप्त)</text><line x1='125' y1='85' x2='210' y2='85' stroke='#f59e0b' stroke-width='2.5' stroke-dasharray='5,4'/><polygon points='210,85 200,80 200,90' fill='#f59e0b'/><circle cx='252' cy='85' r='30' fill='#e2e8f0' stroke='#475569' stroke-width='2.5'/><text x='212' y='142' font-size='12' font-weight='bold' fill='#334155'>चंद्रमा (अप्रदीप्त)</text></svg>",
-          "diagramCaption": "चंद्रमा सूर्य के प्रकाश से चमकता है ✓",
-          "diagramVoice": "इस चित्र में बाईं तरफ सूर्य है जिसके पास अपना प्रकाश है, इसलिए यह प्रदीप्त है। दाईं तरफ चंद्रमा है जो सूर्य के प्रकाश से चमकता है, इसलिए चंद्रमा एक अप्रदीप्त पिंड है।",
+          "diagramCaption": "चंद्रमा का अपना प्रकाश नहीं होता ✓",
+          "diagramVoice": "चित्र में बाईं तरफ सूर्य है जो नाभिकीय संलयन से अपना खुद का प्रकाश पैदा करता है, इसलिए यह प्रदीप्त है। दाईं तरफ चंद्रमा है जो केवल सूर्य के प्रकाश को परावर्तित करके चमकता है, इसलिए चंद्रमा एक अप्रदीप्त पिंड है।",
           "steps": [
             {
-              "text": "<span class='red-under'>प्रदीप्त वस्तुएँ:</span> वे वस्तुएँ जो स्वयं प्रकाश उत्सर्जित करती हैं। जैसे—सूर्य, जलता हुआ बल्ब, मोमबत्ती, जुगनू।"
+              "text": "<span class='red-under'>प्रदीप्त वस्तुएँ:</span> वे वस्तुएँ जो स्वयं प्रकाश उत्सर्जित करती हैं। जैसे—सूर्य, जलता हुआ बल्ब, मोमबत्ती, तारे और जुगनू।"
             },
             {
-              "text": "<span class='red-under'>अप्रदीप्त वस्तुएँ:</span> जिनका अपना प्रकाश नहीं होता, लेकिन दूसरों के प्रकाश से दिखाई देती हैं। जैसे—मेज़, कुर्सी और <span class='red-oval'>चंद्रमा</span>।"
+              "text": "<span class='red-under'>अप्रदीप्त वस्तुएँ:</span> जिनका अपना प्रकाश नहीं होता, लेकिन प्रदीप्त वस्तुओं के प्रकाश से चमकती हैं। जैसे—पृथ्वी, मेज़, किताब और <span class='red-oval'>चंद्रमा</span>।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "3. किरण पुंज (Beam of Light) के 3 प्रकार",
+          "header": "4. किरण (Ray) और किरण पुंज (Beam) के 3 प्रकार",
           "svg": "<svg viewBox='0 0 340 190'><text x='15' y='24' font-size='12' font-weight='bold' fill='#2563eb'>1. समांतर किरण पुंज</text><line x1='15' y1='38' x2='135' y2='38' stroke='#2563eb' stroke-width='2.5'/><line x1='15' y1='52' x2='135' y2='52' stroke='#2563eb' stroke-width='2.5'/><text x='180' y='24' font-size='12' font-weight='bold' fill='#16a34a'>2. अभिसारी (एक बिंदु पर मिलना)</text><line x1='180' y1='34' x2='295' y2='48' stroke='#16a34a' stroke-width='2.5'/><line x1='180' y1='62' x2='295' y2='48' stroke='#16a34a' stroke-width='2.5'/><circle cx='295' cy='48' r='4' fill='#ef4444'/><text x='65' y='110' font-size='12' font-weight='bold' fill='#ea580c'>3. अपसारी (एक बिंदु से चारों ओर फैलना)</text><circle cx='115' cy='145' r='5' fill='#ea580c'/><line x1='115' y1='145' x2='240' y2='122' stroke='#ea580c' stroke-width='2.5'/><line x1='115' y1='145' x2='240' y2='145' stroke='#ea580c' stroke-width='2.5'/><line x1='115' y1='145' x2='240' y2='168' stroke='#ea580c' stroke-width='2.5'/></svg>",
           "diagramCaption": "समांतर (||) • अभिसारी (→•) • अपसारी (•→)",
-          "diagramVoice": "इस चित्र को देखो। ऊपर बाईं तरफ नीली किरणें बराबर दूरी पर चल रही हैं, यह समांतर किरण पुंज है। दाईं तरफ हरी किरणें एक बिंदु पर मिल रही हैं, यह अभिसारी है। नीचे एक बिंदु से किरणें फैल रही हैं, यह अपसारी है।",
+          "diagramVoice": "इस चित्र को ध्यान से समझो। एक सरल रेखा पर चलने वाले प्रकाश को किरण कहते हैं, और किरणों के समूह को किरण पुंज कहते हैं। ऊपर बाईं तरफ नीली रेखाएँ समांतर किरण पुंज हैं, दाईं तरफ हरी रेखाएँ एक लाल बिंदु पर मिल रही हैं यह अभिसारी है, और नीचे एक बिंदु से किरणें बाहर फैल रही हैं यह अपसारी है।",
           "steps": [
             {
-              "text": "<span class='red-under'>1. समांतर किरण पुंज:</span> जिसमें सभी किरणें एक-दूसरे के समांतर चलती हैं (जैसे सूर्य की किरणें)।"
+              "text": "<span class='red-under'>1. समांतर किरण पुंज:</span> जिस किरण पुंज की सभी किरणें एक-दूसरे के समांतर होती हैं (जैसे बहुत दूर स्थित सूर्य से आने वाली किरणें)।"
             },
             {
-              "text": "<span class='red-under'>2. अभिसारी किरण पुंज:</span> जिसमें प्रकाश की किरणें एक बिंदु पर आकर मिलती हैं।"
+              "text": "<span class='red-under'>2. अभिसारी किरण पुंज:</span> जिसमें प्रकाश की किरणें एक बिंदु पर आकर मिलती हैं (जैसे उत्तल लेंस द्वारा किरणों को केंद्रित करना)।"
             },
             {
-              "text": "<span class='red-under'>3. अपसारी किरण पुंज:</span> जिसमें एक बिंदु स्रोत (जैसे टॉर्च या बल्ब) से किरणें निकलकर चारों ओर <span class='red-oval'>फैलती चली जाती हैं</span>।"
+              "text": "<span class='red-under'>3. अपसारी किरण पुंज:</span> जिसमें एक बिंदु स्रोत (जैसे टॉर्च या जलता बल्ब) से किरणें निकलकर चारों ओर <span class='red-oval'>फैलती चली जाती हैं</span>।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "4. पारदर्शी, पारभासी और अपारदर्शी पदार्थ",
+          "header": "5. पारदर्शी, पारभासी और अपारदर्शी पदार्थ",
           "svg": "<svg viewBox='0 0 340 190'><rect x='25' y='45' width='75' height='85' rx='8' fill='#dbeafe' stroke='#2563eb' stroke-width='2.5'/><text x='38' y='92' font-size='12' font-weight='bold' fill='#1d4ed8'>पारदर्शी</text><text x='42' y='150' font-size='11' fill='#334155'>काँच, जल</text><rect x='132' y='45' width='75' height='85' rx='8' fill='#fef3c7' stroke='#d97706' stroke-width='2.5'/><text x='145' y='92' font-size='12' font-weight='bold' fill='#b45309'>पारभासी</text><text x='130' y='150' font-size='11' fill='#334155'>तेल लगा कागज़</text><rect x='240' y='45' width='75' height='85' rx='8' fill='#cbd5e1' stroke='#334155' stroke-width='2.5'/><text x='247' y='92' font-size='12' font-weight='bold' fill='#0f172a'>अपारदर्शी</text><text x='245' y='150' font-size='11' fill='#334155'>लकड़ी, दीवार</text></svg>",
-          "diagramCaption": "आर-पार = पारदर्शी • धुंधला = पारभासी • बंद = अपारदर्शी",
-          "diagramVoice": "चित्र में तीनों प्रकार के पदार्थ दिखाए गए हैं। नीले बॉक्स में पारदर्शी पदार्थ हैं जिनसे प्रकाश पूरा निकल जाता है। पीले बॉक्स में पारभासी हैं जिनसे थोड़ा प्रकाश निकलता है। और स्लेटी बॉक्स में अपारदर्शी पदार्थ हैं जो प्रकाश को पूरी तरह रोक लेते हैं।",
+          "diagramCaption": "छाया (Shadow) हमेशा अपारदर्शी वस्तु की बनती है ✓",
+          "diagramVoice": "चित्र में तीनों प्रकार के पदार्थ दिखाए गए हैं। नीले बॉक्स में पारदर्शी पदार्थ हैं जिनसे प्रकाश पूरा निकल जाता है। पीले बॉक्स में पारभासी पदार्थ हैं जिनसे प्रकाश का थोड़ा भाग निकलता है। और स्लेटी बॉक्स में अपारदर्शी पदार्थ हैं जो प्रकाश को पूरी तरह रोककर छाया बनाते हैं।",
           "steps": [
             {
               "text": "<span class='red-under'>पारदर्शी पदार्थ:</span> जिनसे होकर प्रकाश आसानी से आर-पार निकल जाता है। जैसे—काँच, पानी, हवा।"
             },
             {
-              "text": "<span class='red-under'>पारभासी पदार्थ:</span> जो प्रकाश के एक छोटे से भाग को ही जाने देते हैं। जैसे—<span class='red-oval'>तेल लगा कागज़</span>, घिसा हुआ काँच, कुहासा।"
+              "text": "<span class='red-under'>पारभासी पदार्थ:</span> जो प्रकाश के एक छोटे से भाग को ही जाने देते हैं। जैसे—<span class='red-oval'>तेल लगा कागज़</span>, घिसा हुआ काँच, कुहासा, आँख की पलक।"
             },
             {
-              "text": "<span class='red-under'>अपारदर्शी पदार्थ:</span> जिनसे होकर प्रकाश बिल्कुल बाहर नहीं निकल पाता। जैसे—लकड़ी, लोहा, पत्थर, दीवार।"
+              "text": "<span class='red-under'>अपारदर्शी पदार्थ:</span> जिनसे होकर प्रकाश बिल्कुल बाहर नहीं निकल पाता, इसी कारण इनकी <span class='red-oval'>छाया (Shadow)</span> बनती है। जैसे—लकड़ी, लोहा, दीवार।"
             }
           ]
         },
         {
           "type": "quiz",
-          "question": "निम्नलिखित में से कौन-सा पदार्थ 'पारभासी' (Translucent) का उदाहरण है?",
-          "options": [
-            "साफ़ काँच",
-            "तेल लगा हुआ कागज़",
-            "लकड़ी का तख्ता",
-            "शुद्ध जल"
-          ],
-          "correctIndex": 1,
-          "explanation": "तेल लगा हुआ कागज़ प्रकाश के केवल आंशिक भाग को ही आर-पार जाने देता है, इसलिए यह पारभासी है।"
+          "question": "निम्नलिखित में से किस माध्यम में प्रकाश की चाल सबसे अधिक होती है?",
+          "options": ["काँच में", "जल में", "निर्वात में", "तारपीन के तेल में"],
+          "correctIndex": 2,
+          "explanation": "निर्वात में प्रकाश की चाल सर्वाधिक 3 × 10⁸ m/s होती है।"
         },
         {
           "type": "quiz",
-          "question": "निर्वात (Vacuum) में प्रकाश की चाल कितनी होती है?",
-          "options": [
-            "3 × 10⁸ cm/s",
-            "3 × 10⁸ m/s",
-            "3 × 10⁵ m/s",
-            "3 × 10¹⁰ m/s"
-          ],
+          "question": "निम्नलिखित में से कौन-सा पदार्थ 'पारभासी' (Translucent) का उदाहरण है?",
+          "options": ["साफ़ काँच", "तेल लगा हुआ कागज़", "लकड़ी का तख्ता", "शुद्ध जल"],
           "correctIndex": 1,
-          "explanation": "निर्वात में प्रकाश की चाल 3 × 10⁸ मीटर प्रति सेकंड (m/s) होती है।"
+          "explanation": "तेल लगा हुआ कागज़ प्रकाश के केवल आंशिक भाग को ही आर-पार जाने देता है।"
+        },
+        {
+          "type": "quiz",
+          "question": "जलते हुए टॉर्च या बल्ब से निकलने वाली किरणें किस किरण पुंज का उदाहरण हैं?",
+          "options": ["समांतर किरण पुंज", "अभिसारी किरण पुंज", "अपसारी किरण पुंज", "इनमें से कोई नहीं"],
+          "correctIndex": 2,
+          "explanation": "टॉर्च या बल्ब से प्रकाश की किरणें एक बिंदु से निकलकर चारों ओर फैलती हैं।"
         }
       ]
     },
@@ -122,16 +134,16 @@
       "slides": [
         {
           "type": "goals",
-          "header": "आज हम क्या सीखेंगे? • परावर्तन के नियम",
+          "header": "30-MIN MASTERCLASS • परावर्तन के नियम",
           "goals": [
             {
-              "text": "नमस्ते {{STUDENT}}! आज हम समझेंगे कि समतल दर्पण से टकराकर <span class='red-under'>प्रकाश का परावर्तन</span> कैसे होता है।"
+              "text": "नमस्ते {{STUDENT}}! आज हम समतल दर्पण से <span class='red-under'>प्रकाश के परावर्तन</span> तथा नियमित व अनियमित परावर्तन में अंतर सीखेंगे।"
             },
             {
-              "text": "आपतित किरण, परावर्तित किरण, अभिलंब एवं <span class='red-under'>आपतन-परावर्तन कोण</span> को चित्र से पहचानना।"
+              "text": "आपतित किरण, परावर्तित किरण, अभिलंब, <span class='red-under'>आपतन कोण (∠i)</span> तथा <span class='red-under'>परावर्तन कोण (∠r)</span> की सटीक परिभाषा समझना।"
             },
             {
-              "text": "<span class='red-under'>परावर्तन के दोनों नियमों</span> और सूत्र <span class='red-oval'>∠i = ∠r</span> पर आधारित सवाल हल करना।"
+              "text": "<span class='red-under'>परावर्तन के दोनों नियमों</span> को सिद्ध करना और विचलन कोण (<span class='red-oval'>δ = 180° - 2i</span>) के सवाल हल करना।"
             }
           ]
         },
@@ -146,7 +158,7 @@
               "text": "<span class='red-under'>परावर्तन की परिभाषा:</span> जब प्रकाश की किरण किसी चिकनी सतह से टकराकर वापस उसी माध्यम में लौट जाती है, तो इसे <span class='red-oval'>प्रकाश का परावर्तन</span> कहते हैं।"
             },
             {
-              "text": "<span class='red-under'>सर्वोत्तम परावर्तक:</span> <span class='red-oval'>चाँदी (Silver)</span> प्रकाश का सबसे अच्छा परावर्तक है, इसलिए दर्पण के पीछे चाँदी की पतली परत चढ़ाई जाती है।"
+              "text": "<span class='red-under'>सर्वोत्तम परावर्तक:</span> <span class='red-oval'>चाँदी (Silver)</span> प्रकाश का सबसे अच्छा परावर्तक है, इसलिए समतल दर्पण बनाने में काँच के पीछे चाँदी की पतली परत चढ़ाई जाती है।"
             },
             {
               "text": "<span class='red-under'>कोण की पहचान:</span> अभिलंब और आपतित किरण के बीच <span class='red-oval'>आपतन कोण (∠i)</span> तथा अभिलंब और परावर्तित किरण के बीच <span class='red-oval'>परावर्तन कोण (∠r)</span> बनता है।"
@@ -172,28 +184,36 @@
           ]
         },
         {
-          "type": "quiz",
-          "question": "यदि किसी समतल दर्पण पर प्रकाश की किरण अभिलंब से 35° का कोण बनाती हुई आपतित होती है, तो परावर्तन कोण का मान क्या होगा?",
-          "options": [
-            "55°",
-            "35°",
-            "90°",
-            "70°"
-          ],
-          "correctIndex": 1,
-          "explanation": "परावर्तन के दूसरे नियम के अनुसार आपतन कोण (∠i) = परावर्तन कोण (∠r), इसलिए ∠r = 35° होगा।"
+          "type": "diagram_lesson",
+          "header": "3. दर्पण सतह से कोण दिया हो तो ∠i कैसे निकालें?",
+          "svg": "<svg viewBox='0 0 340 190'><line x1='30' y1='155' x2='310' y2='155' stroke='#0f172a' stroke-width='4'/><line x1='170' y1='35' x2='170' y2='155' stroke='#64748b' stroke-width='2' stroke-dasharray='5,5'/><line x1='60' y1='100' x2='170' y2='155' stroke='#2563eb' stroke-width='3'/><text x='62' y='146' font-size='12' font-weight='bold' fill='#16a34a'>30° (सतह से)</text><text x='128' y='112' font-size='13' font-weight='bold' fill='#dc2626'>∠i = 60°</text></svg>",
+          "diagramCaption": "∠i = 90° - (दर्पण की सतह से बना कोण) ✓",
+          "diagramVoice": "इस ट्रिकी सवाल को चित्र से समझो {{STUDENT}}। यदि आपतित किरण दर्पण की सतह से 30 डिग्री का कोण बनाती है, तो आपतन कोण 30 डिग्री नहीं होगा! चूँकि अभिलंब सतह से 90 डिग्री पर होता है, इसलिए आपतन कोण 90 माइनस 30 बराबर 60 डिग्री होगा।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>प्रश्न:</span> यदि प्रकाश की किरण समतल दर्पण की सतह से 30° का कोण बनाती हुई आपतित होती है, तो परावर्तन कोण क्या होगा?"
+            },
+            {
+              "text": "<span class='red-under'>हल:</span> अभिलंब सतह पर 90° का कोण बनाता है, अतः आपतन कोण <span class='red-oval'>∠i = 90° - 30° = 60°</span>।"
+            },
+            {
+              "text": "<span class='red-under'>उत्तर:</span> परावर्तन के दूसरे नियम से परावर्तन कोण भी <span class='red-oval'>∠r = 60°</span> होगा।"
+            }
+          ]
         },
         {
           "type": "quiz",
-          "question": "समतल दर्पण पर लंबवत (90°) पड़ने वाली प्रकाश की किरण के लिए आपतन कोण (∠i) का मान कितना होता है?",
-          "options": [
-            "90°",
-            "45°",
-            "0°",
-            "180°"
-          ],
+          "question": "यदि प्रकाश की किरण समतल दर्पण की सतह से 30° का कोण बनाती हुई आपतित होती है, तो परावर्तन कोण का मान क्या होगा?",
+          "options": ["30°", "60°", "90°", "45°"],
+          "correctIndex": 1,
+          "explanation": "अभिलंब से बना आपतन कोण ∠i = 90° - 30° = 60° होगा, अतः ∠r = 60° होगा।"
+        },
+        {
+          "type": "quiz",
+          "question": "प्रकाश का सबसे अच्छा परावर्तक (Best Reflector) कौन-सा पदार्थ है?",
+          "options": ["लोहा", "ताँबा", "चाँदी (Silver)", "एल्युमिनियम"],
           "correctIndex": 2,
-          "explanation": "लंबवत आपतित किरण अभिलंब के संपाती होती है, इसलिए अभिलंब के साथ बना कोण 0° होता है।"
+          "explanation": "चाँदी प्रकाश की लगभग 95% से अधिक किरणों को परावर्तित कर देती है।"
         }
       ]
     },
@@ -201,48 +221,68 @@
       "slides": [
         {
           "type": "goals",
-          "header": "आज हम क्या सीखेंगे? • समतल दर्पण के प्रतिबिंब",
+          "header": "30-MIN MASTERCLASS • समतल दर्पण के प्रतिबिंब",
           "goals": [
             {
-              "text": "नमस्ते {{STUDENT}}! आज हम जानेंगे कि हमारे घर के <span class='red-under'>समतल दर्पण (Plane Mirror)</span> में प्रतिबिंब कैसा बनता है।"
+              "text": "नमस्ते {{STUDENT}}! आज हम <span class='red-under'>समतल दर्पण</span> में प्रतिबिंब बनने का किरण आरेख और इसकी सभी 5 विशेषताएँ सीखेंगे।"
             },
             {
-              "text": "वस्तु दूरी और प्रतिबिंब दूरी बराबर होना तथा <span class='red-under'>पार्श्व परिवर्तन (Lateral Inversion)</span> को समझना।"
+              "text": "<span class='red-under'>पार्श्व परिवर्तन (Lateral Inversion)</span> क्या है और एम्बुलेंस (AMBULANCE) पर अक्षर उल्टे क्यों लिखे जाते हैं।"
             },
             {
-              "text": "समतल दर्पण की <span class='red-oval'>फोकस दूरी अनंत (∞)</span> होती है, इसे याद रखना।"
+              "text": "समतल दर्पण की <span class='red-oval'>फोकस दूरी अनंत (∞)</span> तथा आवर्धन <span class='red-oval'>+1</span> क्यों होता है, इसे समझना।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "समतल दर्पण द्वारा बने प्रतिबिंब की विशेषताएँ",
+          "header": "1. समतल दर्पण द्वारा बने प्रतिबिंब की 5 विशेषताएँ",
           "svg": "<svg viewBox='0 0 340 190'><line x1='170' y1='25' x2='170' y2='165' stroke='#0f172a' stroke-width='4'/><line x1='85' y1='75' x2='85' y2='135' stroke='#2563eb' stroke-width='4'/><polygon points='85,68 79,78 91,78' fill='#2563eb'/><text x='65' y='152' font-size='11' font-weight='bold' fill='#2563eb'>वस्तु (u)</text><line x1='255' y1='75' x2='255' y2='135' stroke='#ea580c' stroke-width='4' stroke-dasharray='5,4'/><polygon points='255,68 249,78 261,78' fill='#ea580c'/><text x='225' y='152' font-size='11' font-weight='bold' fill='#ea580c'>काल्पनिक प्रतिबिंब (v)</text><text x='115' y='110' font-size='12' font-weight='bold' fill='#16a34a'>u = v ✓</text></svg>",
           "diagramCaption": "काल्पनिक, सीधा एवं वस्तु के बराबर प्रतिबिंब ✓",
-          "diagramVoice": "इस चित्र को देखो {{STUDENT}}। बीच में समतल दर्पण है। दर्पण से जितनी दूरी पर बाईं तरफ नीली वस्तु रखी है, ठीक उतनी ही दूरी पर दर्पण के पीछे नारंगी काल्पनिक और सीधा प्रतिबिंब बनता है।",
+          "diagramVoice": "इस चित्र को देखो {{STUDENT}}। बीच में समतल दर्पण है। दर्पण से जितनी दूरी पर बाईं तरफ नीली वस्तु रखी है, ठीक उतनी ही दूरी पर दर्पण के पीछे नारंगी काल्पनिक और सीधा प्रतिबिंब बनता है। दोनों की ऊँचाई बिल्कुल बराबर है।",
           "steps": [
             {
-              "text": "<span class='red-under'>प्रकृति व आकार:</span> समतल दर्पण द्वारा बना प्रतिबिंब हमेशा <span class='red-oval'>काल्पनिक (आभासी), सीधा</span> और वस्तु के आकार के बराबर होता है।"
+              "text": "<span class='red-under'>1. प्रकृति:</span> प्रतिबिंब हमेशा <span class='red-oval'>काल्पनिक (आभासी)</span> होता है, जिसे पर्दे पर प्राप्त नहीं किया जा सकता।"
             },
             {
-              "text": "<span class='red-under'>समान दूरी एवं पार्श्व परिवर्तन:</span> प्रतिबिंब दर्पण के उतना ही पीछे बनता है जितनी आगे वस्तु होती है, तथा दायाँ भाग बायाँ दिखाई देता है।"
+              "text": "<span class='red-under'>2. विन्यास व आकार:</span> प्रतिबिंब हमेशा वस्तु के सापेक्ष <span class='red-oval'>सीधा</span> और वस्तु के आकार के बिल्कुल बराबर बनता है।"
             },
             {
-              "text": "<span class='red-under'>महत्वपूर्ण परीक्षा तथ्य:</span> समतल दर्पण की फोकस दूरी <span class='red-oval'>अनंत (Infinity)</span> और आवर्धन <span class='red-oval'>+1</span> होता है।"
+              "text": "<span class='red-under'>3. समान दूरी:</span> प्रतिबिंब दर्पण के उतना ही पीछे बनता है जितनी दूरी पर वस्तु दर्पण के सामने रखी होती है (u = v)।"
+            }
+          ]
+        },
+        {
+          "type": "diagram_lesson",
+          "header": "2. पार्श्व परिवर्तन एवं महत्वपूर्ण परीक्षा तथ्य",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='25' y='35' width='125' height='110' rx='12' fill='#eff6ff' stroke='#2563eb' stroke-width='2.5'/><text x='72' y='105' font-size='48' font-weight='bold' fill='#1d4ed8'>P</text><line x1='170' y1='25' x2='170' y2='165' stroke='#0f172a' stroke-width='3'/><rect x='190' y='35' width='125' height='110' rx='12' fill='#fff7ed' stroke='#ea580c' stroke-width='2.5'/><text x='238' y='105' font-size='48' font-weight='bold' fill='#ea580c' transform='scale(-1,1) translate(-505,0)'>P</text></svg>",
+          "diagramCaption": "दायाँ भाग बायाँ दिखना = पार्श्व परिवर्तन ✓",
+          "diagramVoice": "चित्र में देखो जब हम समतल दर्पण के सामने अक्षर P रखते हैं, तो दर्पण में उसका दायाँ हिस्सा बाईं तरफ मुड़ा हुआ दिखता है। इसी घटना को पार्श्व परिवर्तन या लैटरल इन्वर्जन कहते हैं।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>पार्श्व परिवर्तन:</span> समतल दर्पण में किसी वस्तु का दायाँ भाग बायाँ तथा बायाँ भाग दायाँ दिखाई देता है। इसी कारण एम्बुलेंस पर अक्षर उल्टे लिखे जाते हैं।"
+            },
+            {
+              "text": "<span class='red-under'>फोकस दूरी व आवर्धन:</span> समतल दर्पण की फोकस दूरी <span class='red-oval'>अनंत (∞)</span> होती है और इसका आवर्धन हमेशा <span class='red-oval'>m = +1</span> होता है।"
+            },
+            {
+              "text": "<span class='red-under'>पूर्ण प्रतिबिंब हेतु ऊँचाई:</span> किसी व्यक्ति को अपना पूरा प्रतिबिंब देखने के लिए कम से कम अपनी ऊँचाई के <span class='red-oval'>आधे (H/2)</span> लंबे समतल दर्पण की आवश्यकता होती है।"
             }
           ]
         },
         {
           "type": "quiz",
-          "question": "समतल दर्पण द्वारा बना प्रतिबिंब हमेशा कैसा होता है?",
-          "options": [
-            "वास्तविक और उल्टा",
-            "काल्पनिक और सीधा",
-            "वास्तविक और सीधा",
-            "वस्तु से बहुत छोटा"
-          ],
+          "question": "समतल दर्पण की फोकस दूरी कितनी होती है?",
+          "options": ["शून्य (0)", "अनंत (∞)", "+1 cm", "-1 cm"],
           "correctIndex": 1,
-          "explanation": "समतल दर्पण हमेशा काल्पनिक (आभासी), सीधा और वस्तु के बराबर आकार का प्रतिबिंब बनाता है।"
+          "explanation": "समतल दर्पण एक अनंत त्रिज्या वाले गोले का भाग माना जाता है, इसलिए इसकी फोकस दूरी अनंत होती है।"
+        },
+        {
+          "type": "quiz",
+          "question": "समतल दर्पण का आवर्धन (Magnification) कितना होता है?",
+          "options": ["+1", "-1", "0", "अनंत"],
+          "correctIndex": 0,
+          "explanation": "समतल दर्पण हमेशा सीधा (+ चिह्न) और वस्तु के बराबर (1 गुना) प्रतिबिंब बनाता है, इसलिए m = +1 होता है।"
         }
       ]
     },
@@ -250,75 +290,107 @@
       "slides": [
         {
           "type": "goals",
-          "header": "आज हम क्या सीखेंगे? • गोलीय दर्पण",
+          "header": "30-MIN MASTERCLASS • गोलीय दर्पण एवं f = R/2 का निगमन",
           "goals": [
             {
-              "text": "नमस्ते {{STUDENT}}! आज हम <span class='red-under'>अवतल दर्पण (Concave)</span> और <span class='red-under'>उत्तल दर्पण (Convex)</span> की बनावट समझेंगे।"
+              "text": "नमस्ते {{STUDENT}}! इस 30 मिनट की क्लास में हम पहले <span class='red-under'>अवतल और उत्तल दर्पण</span> की बनावट (P, F, C, मुख्य अक्ष) समझेंगे।"
             },
             {
-              "text": "फोकस दूरी (f) और वक्रता त्रिज्या (R) के बीच संबंध <span class='red-oval'>f = R / 2</span> को सिद्ध करना और सवाल हल करना।"
+              "text": "दूसरा सबसे महत्वपूर्ण चरण: किरण आरेख खींचकर <span class='red-oval'>f = R / 2</span> को <span class='red-under'>चरणबद्ध तरीके से सिद्ध (Prove)</span> करना।"
             },
             {
-              "text": "दैनिक जीवन में हजामती दर्पण और गाड़ियों के साइड मिरर में दर्पण के उपयोग याद करना।"
+              "text": "तीसरा चरण: <span class='red-under'>अवतल दर्पण की सभी 6 स्थितियों</span> (वस्तु कहाँ हो तो प्रतिबिंब कहाँ और कैसा बनेगा) को चित्र से समझना।"
+            },
+            {
+              "text": "चौथा चरण: दैनिक जीवन में अवतल और उत्तल दर्पण के सभी बोर्ड परीक्षा वाले उपयोग याद करना।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "1. अवतल और उत्तल दर्पण तथा सूत्र f = R / 2",
+          "header": "1. गोलीय दर्पण की संरचना (P, F, C एवं मुख्य अक्ष)",
           "svg": "<svg viewBox='0 0 340 190'><path d='M 90,35 Q 55,95 90,155' fill='none' stroke='#2563eb' stroke-width='4'/><line x1='35' y1='95' x2='155' y2='95' stroke='#64748b' stroke-width='2'/><circle cx='72' cy='95' r='3.5' fill='#0f172a'/><text x='62' y='112' font-size='11' font-weight='bold'>P</text><circle cx='105' cy='95' r='3.5' fill='#ef4444'/><text x='100' y='112' font-size='11' font-weight='bold' fill='#ef4444'>F</text><circle cx='138' cy='95' r='3.5' fill='#2563eb'/><text x='133' y='112' font-size='11' font-weight='bold' fill='#2563eb'>C</text><text x='48' y='175' font-size='12' font-weight='bold' fill='#2563eb'>अवतल (अभिसारी)</text><path d='M 230,35 Q 265,95 230,155' fill='none' stroke='#ea580c' stroke-width='4'/><line x1='195' y1='95' x2='315' y2='95' stroke='#64748b' stroke-width='2'/><text x='215' y='175' font-size='12' font-weight='bold' fill='#ea580c'>उत्तल (अपसारी)</text></svg>",
-          "diagramCaption": "फोकस दूरी (f) = वक्रता त्रिज्या (R) / 2 ✓",
-          "diagramVoice": "चित्र में बाईं तरफ धँसा हुआ नीला दर्पण अवतल है, जिसके मुख्य अक्ष पर ध्रुव P, मुख्य फोकस F और वक्रता केंद्र C दिखाए गए हैं। दाईं तरफ बाहर उभरा हुआ नारंगी दर्पण उत्तल दर्पण है।",
+          "diagramCaption": "P = ध्रुव • F = मुख्य फोकस • C = वक्रता केंद्र",
+          "diagramVoice": "चित्र में बाईं तरफ धँसा हुआ नीला दर्पण अवतल है, जिसके मुख्य अक्ष पर मध्य बिंदु P ध्रुव है, लाल बिंदु F मुख्य फोकस है, और नीला बिंदु C वक्रता केंद्र है। दाईं तरफ बाहर उभरा हुआ नारंगी दर्पण उत्तल दर्पण है।",
           "steps": [
             {
-              "text": "<span class='red-under'>अवतल दर्पण (अभिसारी):</span> जिसका परावर्तक सतह अंदर धँसा होता है और यह किरणों को मुख्य फोकस (F) पर इकट्ठा करता है।"
+              "text": "<span class='red-under'>ध्रुव (P):</span> गोलीय दर्पण के परावर्तक सतह के मध्य बिंदु को ध्रुव (Pole) कहते हैं।"
             },
             {
-              "text": "<span class='red-under'>उत्तल दर्पण (अपसारी):</span> जिसका परावर्तक सतह बाहर उभरा होता है और यह किरणों को फैलाता है।"
+              "text": "<span class='red-under'>वक्रता केंद्र (C) और त्रिज्या (R):</span> दर्पण जिस खोखले गोले का भाग होता है, उसके केंद्र को C और त्रिज्या (PC) को वक्रता त्रिज्या (R) कहते हैं।"
             },
             {
-              "text": "<span class='red-under'>मुख्य सूत्र:</span> गोलीय दर्पण की फोकस दूरी (f) उसकी वक्रता त्रिज्या (R) की आधी होती है: <span class='red-oval'>f = R / 2</span>।"
+              "text": "<span class='red-under'>मुख्य फोकस (F):</span> मुख्य अक्ष के समांतर आने वाली किरणें दर्पण से परावर्तन के बाद जिस बिंदु पर मिलती हैं, उसे <span class='red-oval'>मुख्य फोकस (F)</span> कहते हैं।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "2. अवतल एवं उत्तल दर्पण के प्रमुख उपयोग",
-          "svg": "<svg viewBox='0 0 340 190'><rect x='20' y='35' width='135' height='115' rx='12' fill='#eff6ff' stroke='#2563eb' stroke-width='2.5'/><text x='42' y='62' font-size='13' font-weight='bold' fill='#1d4ed8'>अवतल दर्पण</text><text x='32' y='88' font-size='11' fill='#0f172a'>• हजामती दर्पण</text><text x='32' y='108' font-size='11' fill='#0f172a'>• गाड़ी की हेडलाइट</text><text x='32' y='128' font-size='11' fill='#0f172a'>• सौर भट्ठी व डॉक्टर</text><rect x='185' y='35' width='135' height='115' rx='12' fill='#fff7ed' stroke='#ea580c' stroke-width='2.5'/><text x='212' y='62' font-size='13' font-weight='bold' fill='#c2410c'>उत्तल दर्पण</text><text x='197' y='92' font-size='11' fill='#0f172a'>• साइड मिरर (वाहन)</text><text x='197' y='114' font-size='11' fill='#0f172a'>• बड़ा दृष्टि-क्षेत्र</text><text x='197' y='134' font-size='11' fill='#0f172a'>• सीधा व छोटा चित्र</text></svg>",
-          "diagramCaption": "हजामती = अवतल • साइड मिरर = उत्तल ✓",
-          "diagramVoice": "इस चार्ट को ध्यान से याद कर लो {{STUDENT}}। बाईं तरफ अवतल दर्पण के तीन उपयोग लिखे हैं: हजामती दर्पण, हेडलाइट और सौर भट्ठी। दाईं तरफ उत्तल दर्पण का सबसे प्रमुख उपयोग है मोटरगाड़ियों के साइड मिरर में।",
+          "header": "2. सूत्र f = R / 2 का निगमन (Proof - चरण 1)",
+          "svg": "<svg viewBox='0 0 340 195'><path d='M 265,30 Q 305,95 265,160' fill='none' stroke='#0f172a' stroke-width='4'/><line x1='35' y1='135' x2='290' y2='135' stroke='#64748b' stroke-width='2'/><text x='286' y='150' font-size='11' font-weight='bold'>P</text><circle cx='215' cy='135' r='3.5' fill='#ef4444'/><text x='211' y='152' font-size='11' font-weight='bold' fill='#ef4444'>F</text><circle cx='145' cy='135' r='3.5' fill='#2563eb'/><text x='141' y='152' font-size='11' font-weight='bold' fill='#2563eb'>C</text><line x1='55' y1='65' x2='276' y2='65' stroke='#2563eb' stroke-width='2.5'/><text x='50' y='58' font-size='11' font-weight='bold' fill='#2563eb'>A</text><text x='282' y='65' font-size='11' font-weight='bold'>B</text><line x1='276' y1='65' x2='195' y2='155' stroke='#ea580c' stroke-width='2.5'/><line x1='145' y1='135' x2='276' y2='65' stroke='#16a34a' stroke-width='2' stroke-dasharray='4,4'/><text x='228' y='77' font-size='11' font-weight='bold' fill='#dc2626'>i</text><text x='232' y='94' font-size='11' font-weight='bold' fill='#dc2626'>r</text></svg>",
+          "diagramCaption": "△BCF एक समद्विबाहु त्रिभुज सिद्ध होता है ✓",
+          "diagramVoice": "अब हम बोर्ड परीक्षा का बहुत ही महत्वपूर्ण प्रमेय f बराबर R बटे दो सिद्ध करेंगे। चित्र में देखो: AB किरण मुख्य अक्ष के समांतर आकर अवतल दर्पण के बिंदु B पर टकराती है और मुख्य फोकस F से होकर गुजरती है। वक्रता केंद्र C को B से मिलाने वाली हरी डॉट-डॉट रेखा अभिलंब है।",
           "steps": [
             {
-              "text": "<span class='red-under'>अवतल दर्पण के उपयोग:</span> हजामती दर्पण में (सीधा व बड़ा प्रतिबिंब), टॉर्च व गाड़ियों की हेडलाइट में तथा सौर भट्ठियों में।"
+              "text": "<span class='red-under'>परावर्तन के नियम से:</span> आपतन कोण और परावर्तन कोण बराबर होते हैं, इसलिए <span class='red-oval'>∠ABC = ∠CBF</span> (समीकरण 1)।"
             },
             {
-              "text": "<span class='red-under'>उत्तल दर्पण के उपयोग:</span> मोटरगाड़ियों के <span class='red-oval'>साइड मिरर (Side Mirror)</span> में, क्योंकि यह बड़े क्षेत्र का सीधा और छोटा प्रतिबिंब दिखाता है।"
+              "text": "<span class='red-under'>एकांतर कोण से:</span> चूँकि किरण AB मुख्य अक्ष CP के समांतर है, इसलिए <span class='red-oval'>∠ABC = ∠BCF</span> (समीकरण 2)।"
+            },
+            {
+              "text": "<span class='red-under'>समद्विबाहु त्रिभुज:</span> समीकरण 1 और 2 से ∠CBF = ∠BCF, अतः त्रिभुज BCF की दो भुजाएँ बराबर होंगी: <span class='red-oval'>BF = CF</span>।"
+            }
+          ]
+        },
+        {
+          "type": "diagram_lesson",
+          "header": "3. सूत्र f = R / 2 का निगमन (Proof - अंतिम चरण)",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='25' y='25' width='290' height='140' rx='12' fill='#f8fafc' stroke='#2563eb' stroke-width='2.5'/><text x='42' y='54' font-size='13' font-weight='bold' fill='#0f172a'>1. यदि दर्पण का द्वारक बहुत छोटा हो, तो B ≈ P</text><text x='42' y='82' font-size='13' font-weight='bold' fill='#2563eb'>2. तब BF = PF  ⇒  अतः PF = CF</text><text x='42' y='110' font-size='13' font-weight='bold' fill='#16a34a'>3. चित्र से: PC = PF + CF = PF + PF = 2PF</text><text x='42' y='142' font-size='15' font-weight='bold' fill='#dc2626'>4. चूँकि PC = R और PF = f  ⇒  R = 2f या f = R / 2 ✓</text></svg>",
+          "diagramCaption": "इति सिद्धम् (Proved) • Board Exam 5 Marks ✓",
+          "diagramVoice": "अब इसका अंतिम चरण देखो {{STUDENT}}। यदि दर्पण का द्वारक छोटा हो, तो बिंदु B ध्रुव P के बहुत निकट होगा, जिससे BF बराबर PF हो जाएगा। अब चित्र से कुल दूरी PC बराबर PF प्लस CF यानी दो PF हो जाएगी। चूँकि PC वक्रता त्रिज्या R है और PF फोकस दूरी f है, इसलिए R बराबर 2f यानी f बराबर R बटे दो सिद्ध हो गया।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>सन्निकटन (Approximation):</span> यदि दर्पण का द्वारक छोटा हो, तो बिंदु B ध्रुव P के बहुत निकट होगा, इसलिए <span class='red-oval'>BF ≈ PF</span>।"
+            },
+            {
+              "text": "<span class='red-under'>दूरी जोड़ने पर:</span> चूँकि PF = CF है, इसलिए कुल वक्रता त्रिज्या <span class='red-oval'>PC = PF + CF = 2PF</span>।"
+            },
+            {
+              "text": "<span class='red-under'>सिद्ध सूत्र:</span> PC = R तथा PF = f रखने पर <span class='red-oval'>R = 2f या f = R / 2</span> (इति सिद्धम्)।"
+            }
+          ]
+        },
+        {
+          "type": "diagram_lesson",
+          "header": "4. अवतल दर्पण में प्रतिबिंब की सभी 6 स्थितियाँ (VVI चार्ट)",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='15' y='15' width='310' height='160' rx='10' fill='#eff6ff' stroke='#2563eb' stroke-width='2'/><text x='28' y='38' font-size='11' font-weight='bold' fill='#1d4ed8'>1. अनंत पर → फोकस (F) पर (वास्तविक, उल्टा, बिंदु आकार)</text><text x='28' y='62' font-size='11' font-weight='bold' fill='#0f172a'>2. C से परे → F और C के बीच (वास्तविक, उल्टा, छोटा)</text><text x='28' y='86' font-size='11' font-weight='bold' fill='#16a34a'>3. वक्रता केंद्र (C) पर → C पर ही (वास्तविक, उल्टा, बराबर)</text><text x='28' y='110' font-size='11' font-weight='bold' fill='#0f172a'>4. C और F के बीच → C से परे (वास्तविक, उल्टा, बड़ा)</text><text x='28' y='134' font-size='11' font-weight='bold' fill='#0f172a'>5. फोकस (F) पर → अनंत पर (वास्तविक, उल्टा, बहुत बड़ा)</text><text x='28' y='158' font-size='11' font-weight='bold' fill='#dc2626'>6. P और F के बीच → दर्पण के पीछे (काल्पनिक, सीधा, बड़ा)</text></svg>",
+          "diagramCaption": "केवल 6वीं स्थिति (P और F के बीच) में सीधा व काल्पनिक बनता है ✓",
+          "diagramVoice": "इस चार्ट को कंठस्थ कर लो {{STUDENT}}! अवतल दर्पण में पहली पाँच स्थितियों में प्रतिबिंब हमेशा वास्तविक और उल्टा बनता है। जब वस्तु C पर होती है तो प्रतिबिंब C पर ही बराबर बनता है। लेकिन छठी स्थिति यानी जब वस्तु ध्रुव P और फोकस F के बीच होती है, तो प्रतिबिंब दर्पण के पीछे काल्पनिक, सीधा और वस्तु से बड़ा बनता है—इसी का उपयोग हजामती दर्पण में होता है।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>समान आकार की स्थिति:</span> जब वस्तु को <span class='red-oval'>वक्रता केंद्र (C)</span> पर रखा जाता है, तो प्रतिबिंब C पर ही वास्तविक, उल्टा और वस्तु के बराबर बनता है।"
+            },
+            {
+              "text": "<span class='red-under'>सीधा और बड़ा प्रतिबिंब (अपवाद):</span> जब वस्तु <span class='red-oval'>ध्रुव (P) और फोकस (F)</span> के बीच होती है, तो प्रतिबिंब दर्पण के पीछे काल्पनिक, सीधा और बड़ा बनता है।"
+            },
+            {
+              "text": "<span class='red-under'>उत्तल दर्पण की स्थिति:</span> उत्तल दर्पण में वस्तु को कहीं भी रखें, प्रतिबिंब हमेशा ध्रुव (P) और फोकस (F) के बीच <span class='red-oval'>काल्पनिक, सीधा और छोटा</span> बनता है।"
             }
           ]
         },
         {
           "type": "quiz",
-          "question": "मोटरगाड़ी के चालक के सामने (Side Mirror) कौन-सा दर्पण लगा रहता है?",
-          "options": [
-            "समतल दर्पण",
-            "अवतल दर्पण",
-            "उत्तल दर्पण",
-            "परवलयिक दर्पण"
-          ],
+          "question": "अवतल दर्पण के सामने वस्तु को कहाँ रखने पर उसका प्रतिबिंब सीधा, काल्पनिक और वस्तु से बड़ा बनता है?",
+          "options": ["वक्रता केंद्र (C) पर", "अनंत पर", "ध्रुव (P) और फोकस (F) के बीच", "C और F के बीच"],
           "correctIndex": 2,
-          "explanation": "उत्तल दर्पण का दृष्टि-क्षेत्र विस्तृत होता है और यह हमेशा सीधा व छोटा प्रतिबिंब बनाता है।"
+          "explanation": "जब वस्तु P और F के बीच होती है, तभी अवतल दर्पण काल्पनिक, सीधा और बड़ा प्रतिबिंब बनाता है।"
         },
         {
           "type": "quiz",
-          "question": "एक गोलीय दर्पण की वक्रता त्रिज्या 24 cm है, तो उसकी फोकस दूरी क्या होगी?",
-          "options": [
-            "48 cm",
-            "12 cm",
-            "24 cm",
-            "6 cm"
-          ],
+          "question": "अवतल दर्पण में वस्तु को किस स्थान पर रखने से प्रतिबिंब उसी स्थान पर और समान आकार का बनता है?",
+          "options": ["फोकस (F) पर", "वक्रता केंद्र (C) पर", "ध्रुव (P) पर", "अनंत पर"],
           "correctIndex": 1,
-          "explanation": "सूत्र f = R / 2 के अनुसार, f = 24 / 2 = 12 cm होगी।"
+          "explanation": "वक्रता केंद्र (C) पर रखी वस्तु का प्रतिबिंब C पर ही वास्तविक, उल्टा और बराबर आकार का बनता है।"
         }
       ]
     },
@@ -326,66 +398,104 @@
       "slides": [
         {
           "type": "goals",
-          "header": "आज हम क्या सीखेंगे? • दर्पण सूत्र एवं न्यूमेरिकल्स",
+          "header": "30-MIN MASTERCLASS • दर्पण सूत्र एवं आवर्धन का पूरा निगमन",
           "goals": [
             {
-              "text": "नमस्ते {{STUDENT}}! आज हम बोर्ड परीक्षा में 5 अंकों में आने वाले <span class='red-under'>दर्पण सूत्र</span> और <span class='red-under'>आवर्धन</span> को सीखेंगे।"
+              "text": "नमस्ते {{STUDENT}}! आज हम किरण आरेख बनाकर समरूप त्रिभुजों की सहायता से <span class='red-under'>दर्पण सूत्र (1/v + 1/u = 1/f)</span> को पूरा सिद्ध करेंगे।"
             },
             {
-              "text": "चिह्न परिपाटी (Sign Convention): अवतल दर्पण की फोकस दूरी <span class='red-oval'>ऋणात्मक (-f)</span> और उत्तल की <span class='red-oval'>धनात्मक (+f)</span> होती है।"
+              "text": "दूसरा चरण: आवर्धन का सूत्र <span class='red-oval'>m = h' / h = -v / u</span> को भी चित्र से सिद्ध करना।"
             },
             {
-              "text": "दर्पण सूत्र <span class='red-oval'>1/v + 1/u = 1/f</span> पर आधारित एक पूरा संख्यात्मक प्रश्न हल करना।"
+              "text": "तीसरा चरण: अवतल और उत्तल दर्पण के लिए <span class='red-under'>नई कार्तीय चिह्न परिपाटी</span> समझना और 2 बड़े न्यूमेरिकल्स हल करना।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "1. दर्पण सूत्र एवं आवर्धन का सूत्र",
-          "svg": "<svg viewBox='0 0 340 190'><rect x='25' y='28' width='290' height='60' rx='12' fill='#eff6ff' stroke='#2563eb' stroke-width='2.5'/><text x='65' y='65' font-size='18' font-weight='bold' fill='#1d4ed8'>दर्पण सूत्र :  1/v + 1/u = 1/f</text><rect x='25' y='105' width='290' height='60' rx='12' fill='#fef2f2' stroke='#dc2626' stroke-width='2.5'/><text x='60' y='142' font-size='17' font-weight='bold' fill='#b91c1c'>आवर्धन (m) = h' / h = -v / u</text></svg>",
-          "diagramCaption": "u = वस्तु दूरी • v = प्रतिबिंब दूरी • f = फोकस दूरी",
-          "diagramVoice": "बोर्ड पर दोनों महासूत्र देखो {{STUDENT}}। ऊपर नीले बॉक्स में दर्पण सूत्र लिखा है: एक बटे v प्लस एक बटे u बराबर एक बटे f। नीचे लाल बॉक्स में आवर्धन m बराबर h डैश बटे h बराबर माइनस v बटे u लिखा है।",
+          "header": "1. दर्पण सूत्र (1/v + 1/u = 1/f) का निगमन — चित्र व समरूप त्रिभुज",
+          "svg": "<svg viewBox='0 0 340 195'><path d='M 275,25 Q 312,95 275,165' fill='none' stroke='#0f172a' stroke-width='4'/><line x1='20' y1='115' x2='295' y2='115' stroke='#64748b' stroke-width='2'/><text x='294' y='128' font-size='11' font-weight='bold'>P</text><circle cx='225' cy='115' r='3' fill='#ef4444'/><text x='221' y='130' font-size='11' font-weight='bold' fill='#ef4444'>F</text><circle cx='160' cy='115' r='3' fill='#2563eb'/><text x='156' y='130' font-size='11' font-weight='bold' fill='#2563eb'>C</text><line x1='85' y1='60' x2='85' y2='115' stroke='#2563eb' stroke-width='3.5'/><text x='78' y='54' font-size='11' font-weight='bold' fill='#2563eb'>A</text><text x='78' y='130' font-size='11' font-weight='bold' fill='#2563eb'>B</text><line x1='195' y1='115' x2='195' y2='152' stroke='#ea580c' stroke-width='3.5'/><text x='188' y='165' font-size='11' font-weight='bold' fill='#ea580c'>A'</text><text x='188' y='108' font-size='11' font-weight='bold' fill='#ea580c'>B'</text><line x1='85' y1='60' x2='285' y2='60' stroke='#16a34a' stroke-width='2'/><line x1='285' y1='60' x2='195' y2='152' stroke='#16a34a' stroke-width='2'/><line x1='85' y1='60' x2='195' y2='152' stroke='#9333ea' stroke-width='1.8' stroke-dasharray='4,4'/></svg>",
+          "diagramCaption": "△ABC ~ △A'B'C तथा △MPF ~ △A'B'F से सिद्ध होगा ✓",
+          "diagramVoice": "बोर्ड पर दर्पण सूत्र सिद्ध करने का किरण आरेख देखो {{STUDENT}}। अवतल दर्पण के सामने वक्रता केंद्र C से परे वस्तु AB रखी है, जिसका वास्तविक और उल्टा प्रतिबिंब A डैश B डैश बिंदु C और F के बीच बन रहा है। यहाँ दो जोड़े समरूप त्रिभुज बनते हैं।",
           "steps": [
             {
-              "text": "<span class='red-under'>दर्पण सूत्र:</span> वस्तु दूरी (u), प्रतिबिंब दूरी (v) और फोकस दूरी (f) में संबंध बताने वाला सूत्र <span class='red-oval'>1/v + 1/u = 1/f</span> है।"
+              "text": "<span class='red-under'>पहला समरूप जोड़ा:</span> चित्र में त्रिभुज ABC और त्रिभुज A'B'C समरूप हैं, इसलिए <span class='red-oval'>AB / A'B' = BC / B'C</span> (समीकरण 1)।"
             },
             {
-              "text": "<span class='red-under'>आवर्धन (Magnification):</span> प्रतिबिंब की ऊँचाई (h') और वस्तु की ऊँचाई (h) के अनुपात को आवर्धन कहते हैं: <span class='red-oval'>m = -v / u</span>।"
+              "text": "<span class='red-under'>दूसरा समरूप जोड़ा:</span> इसी प्रकार त्रिभुज MPF और त्रिभुज A'B'F समरूप हैं (जहाँ MP = AB), इसलिए <span class='red-oval'>AB / A'B' = PF / B'F</span> (समीकरण 2)।"
             },
             {
-              "text": "<span class='red-under'>चिह्न परिपाटी:</span> वस्तु दूरी (u) हमेशा <span class='red-oval'>ऋणात्मक (-)</span> ली जाती है; अवतल दर्पण में f ऋणात्मक और उत्तल दर्पण में f धनात्मक होता है।"
+              "text": "<span class='red-under'>तुलना करने पर:</span> समीकरण 1 और 2 से <span class='red-oval'>BC / B'C = PF / B'F</span> प्राप्त होता है।"
             }
           ]
         },
         {
           "type": "diagram_lesson",
-          "header": "2. हल किया हुआ प्रश्न (Board Exam Special)",
-          "svg": "<svg viewBox='0 0 340 190'><rect x='20' y='25' width='300' height='140' rx='12' fill='#f8fafc' stroke='#16a34a' stroke-width='2.5'/><text x='38' y='55' font-size='13' font-weight='bold' fill='#0f172a'>दिया है: u = -15 cm,  f = -10 cm</text><text x='38' y='85' font-size='13' font-weight='bold' fill='#2563eb'>1/v = 1/f - 1/u = 1/(-10) - 1/(-15)</text><text x='38' y='115' font-size='13' font-weight='bold' fill='#2563eb'>1/v = -1/10 + 1/15 = (-3 + 2)/30 = -1/30</text><text x='38' y='148' font-size='15' font-weight='bold' fill='#dc2626'>उत्तर :  v = -30 cm (वास्तविक व उल्टा)</text></svg>",
-          "diagramCaption": "चरणबद्ध हल → पूरे 5 अंक पक्के ✓",
-          "diagramVoice": "इस हल किए हुए प्रश्न को ध्यान से देखो {{STUDENT}}। अवतल दर्पण की फोकस दूरी f माइनस 10 सेंटीमीटर और वस्तु दूरी u माइनस 15 सेंटीमीटर दी है। दर्पण सूत्र में मान रखने पर 1 बटे v बराबर माइनस 1 बटे 30 आता है, यानी प्रतिबिंब दर्पण के सामने 30 सेंटीमीटर दूर बनेगा।",
+          "header": "2. दर्पण सूत्र (1/v + 1/u = 1/f) का निगमन — अंतिम चरण",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='20' y='20' width='300' height='150' rx='12' fill='#f8fafc' stroke='#2563eb' stroke-width='2.5'/><text x='35' y='46' font-size='12' font-weight='bold' fill='#0f172a'>सभी दूरियाँ ध्रुव P से नापने पर:</text><text x='35' y='70' font-size='12' font-weight='bold' fill='#2563eb'>(PB - PC) / (PC - PB') = PF / (PB' - PF)</text><text x='35' y='96' font-size='12' font-weight='bold' fill='#16a34a'>PB = -u,  PB' = -v,  PF = -f,  PC = -2f रखने पर:</text><text x='35' y='122' font-size='12' font-weight='bold' fill='#0f172a'>(-u + 2f) / (-2f + v) = -f / (-v + f)  ⇒  uv = vf + uf</text><text x='35' y='152' font-size='14.5' font-weight='bold' fill='#dc2626'>uvf से भाग देने पर :  1/v + 1/u = 1/f  (इति सिद्धम् ✓)</text></svg>",
+          "diagramCaption": "बोर्ड परीक्षा 5 अंकों का सबसे महत्वपूर्ण निगमन ✓",
+          "diagramVoice": "अब अंतिम गणितीय चरण देखो {{STUDENT}}। सभी दूरियों को ध्रुव P से लिखने पर और चिह्न परिपाटी से PB बराबर माइनस u, PB डैश बराबर माइनस v, PF बराबर माइनस f तथा PC बराबर माइनस दो f रखकर तिर्यक गुणा करने पर uv बराबर vf प्लस uf आता है। दोनों तरफ uvf से भाग देने पर 1 बटे v प्लस 1 बटे u बराबर 1 बटे f सिद्ध हो जाता है।",
           "steps": [
             {
-              "text": "<span class='red-under'>प्रश्न:</span> 10 cm फोकस दूरी वाले अवतल दर्पण के सामने 15 cm की दूरी पर रखी वस्तु का प्रतिबिंब कहाँ बनेगा?"
+              "text": "<span class='red-under'>चिह्न परिपाटी रखने पर:</span> PB = -u (वस्तु दूरी), PB' = -v (प्रतिबिंब दूरी), PF = -f तथा PC = -2f रखने पर <span class='red-oval'>(-u + 2f) / (-2f + v) = -f / (-v + f)</span>।"
             },
             {
-              "text": "<span class='red-under'>हल चरण 1:</span> दिया गया है: u = -15 cm तथा f = -10 cm। सूत्र 1/v = 1/f - 1/u में मान रखने पर 1/v = -1/10 + 1/15।"
+              "text": "<span class='red-under'>तिर्यक गुणा करने पर:</span> सरल करने पर हमें <span class='red-oval'>uv = vf + uf</span> प्राप्त होता है।"
             },
             {
-              "text": "<span class='red-under'>अंतिम उत्तर:</span> 1/v = -1/30, अर्थात् <span class='red-oval'>v = -30 cm</span> (दर्पण के सामने 30 cm की दूरी पर वास्तविक प्रतिबिंब)।"
+              "text": "<span class='red-under'>सिद्ध सूत्र:</span> दोनों पक्षों में uvf से भाग देने पर <span class='red-oval'>1/v + 1/u = 1/f</span> सिद्ध हो जाता है।"
+            }
+          ]
+        },
+        {
+          "type": "diagram_lesson",
+          "header": "3. आवर्धन (m = -v / u) का निगमन एवं महत्व",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='25' y='24' width='290' height='142' rx='12' fill='#fef2f2' stroke='#dc2626' stroke-width='2.5'/><text x='42' y='52' font-size='13' font-weight='bold' fill='#0f172a'>समकोण त्रिभुज ABP और A'B'P समरूप हैं:</text><text x='42' y='80' font-size='13' font-weight='bold' fill='#2563eb'>A'B' / AB = PB' / PB</text><text x='42' y='108' font-size='13' font-weight='bold' fill='#16a34a'>चिह्न सहित: (-h') / (+h) = (-v) / (-u) = v / u</text><text x='42' y='140' font-size='15' font-weight='bold' fill='#dc2626'>अतः आवर्धन (m) = h' / h = -v / u  (सिद्ध ✓)</text></svg>",
+          "diagramCaption": "m ऋणात्मक = वास्तविक व उल्टा • m धनात्मक = काल्पनिक व सीधा",
+          "diagramVoice": "इसी तरह समरूप त्रिभुज ABP और A डैश B डैश P में A डैश B डैश बटे AB बराबर PB डैश बटे PB होता है। उल्टे प्रतिबिंब के लिए माइनस h डैश बटे h रखने पर आवर्धन m बराबर h डैश बटे h बराबर माइनस v बटे u सिद्ध हो जाता है।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>आवर्धन की परिभाषा:</span> प्रतिबिंब की ऊँचाई (h') और वस्तु की ऊँचाई (h) के अनुपात को आवर्धन (m) कहते हैं: <span class='red-oval'>m = h' / h = -v / u</span>।"
+            },
+            {
+              "text": "<span class='red-under'>आवर्धन का ऋणात्मक (-) मान:</span> यह बताता है कि प्रतिबिंब <span class='red-oval'>वास्तविक और उल्टा</span> है।"
+            },
+            {
+              "text": "<span class='red-under'>आवर्धन का धनात्मक (+) मान:</span> यह बताता है कि प्रतिबिंब <span class='red-oval'>काल्पनिक और सीधा</span> है।"
+            }
+          ]
+        },
+        {
+          "type": "diagram_lesson",
+          "header": "4. बोर्ड परीक्षा न्यूमेरिकल हल (Solved Numerical)",
+          "svg": "<svg viewBox='0 0 340 190'><rect x='20' y='22' width='300' height='146' rx='12' fill='#f8fafc' stroke='#16a34a' stroke-width='2.5'/><text x='36' y='50' font-size='13' font-weight='bold' fill='#0f172a'>दिया है: u = -15 cm,  f = -10 cm</text><text x='36' y='78' font-size='13' font-weight='bold' fill='#2563eb'>1/v = 1/f - 1/u = 1/(-10) - 1/(-15)</text><text x='36' y='106' font-size='13' font-weight='bold' fill='#2563eb'>1/v = -1/10 + 1/15 = (-3 + 2)/30 = -1/30</text><text x='36' y='136' font-size='14' font-weight='bold' fill='#dc2626'>v = -30 cm  तथा  m = -(-30)/(-15) = -2 ✓</text></svg>",
+          "diagramCaption": "m = -2 का अर्थ: 2 गुना बड़ा, वास्तविक व उल्टा प्रतिबिंब ✓",
+          "diagramVoice": "इस हल किए हुए प्रश्न को देखो {{STUDENT}}। अवतल दर्पण की फोकस दूरी f माइनस 10 सेंटीमीटर और वस्तु दूरी u माइनस 15 सेंटीमीटर दी है। दर्पण सूत्र से प्रतिबिंब की दूरी v माइनस 30 सेंटीमीटर आती है, और आवर्धन m बराबर माइनस 2 आता है, जिसका अर्थ है कि प्रतिबिंब वस्तु से दोगुना बड़ा, वास्तविक और उल्टा बनेगा।",
+          "steps": [
+            {
+              "text": "<span class='red-under'>प्रश्न:</span> 10 cm फोकस दूरी वाले अवतल दर्पण के सामने 15 cm पर रखी वस्तु का प्रतिबिंब कहाँ और कैसा बनेगा?"
+            },
+            {
+              "text": "<span class='red-under'>प्रतिबिंब दूरी:</span> सूत्र 1/v = 1/f - 1/u में u = -15 cm व f = -10 cm रखने पर <span class='red-oval'>v = -30 cm</span> प्राप्त होता है।"
+            },
+            {
+              "text": "<span class='red-under'>आवर्धन व प्रकृति:</span> m = -v/u = -(-30)/(-15) = <span class='red-oval'>-2</span>, अर्थात् प्रतिबिंब दोगुना बड़ा, वास्तविक और उल्टा बनेगा।"
             }
           ]
         },
         {
           "type": "quiz",
-          "question": "अवतल दर्पण की फोकस दूरी (f) चिह्न परिपाटी के अनुसार कैसी होती है?",
-          "options": [
-            "धनात्मक (+)",
-            "ऋणात्मक (-)",
-            "शून्य (0)",
-            "अनंत (∞)"
-          ],
+          "question": "यदि किसी गोलीय दर्पण का आवर्धन m = -2 है, तो प्रतिबिंब की प्रकृति कैसी होगी?",
+          "options": ["काल्पनिक और सीधा", "वास्तविक और उल्टा", "काल्पनिक और उल्टा", "वास्तविक और सीधा"],
           "correctIndex": 1,
-          "explanation": "अवतल दर्पण का मुख्य फोकस बाईं ओर होता है, इसलिए इसकी फोकस दूरी हमेशा ऋणात्मक (-) होती है।"
+          "explanation": "आवर्धन का ऋणात्मक (-) चिह्न हमेशा वास्तविक और उल्टे प्रतिबिंब को दर्शाता है।"
+        },
+        {
+          "type": "quiz",
+          "question": "गोलीय दर्पण के लिए सही दर्पण सूत्र कौन-सा है?",
+          "options": ["1/v - 1/u = 1/f", "1/v + 1/u = 1/f", "1/u - 1/v = 1/f", "v + u = f"],
+          "correctIndex": 1,
+          "explanation": "गोलीय दर्पण का सही सूत्र 1/v + 1/u = 1/f होता है।"
         }
       ]
     }
