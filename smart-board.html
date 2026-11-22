@@ -426,7 +426,6 @@
       color: #f1f5f9;
     }
 
-    /* Strict Portrait Gate Overlay */
     .portrait-lock-screen {
       display: none;
       position: fixed;
@@ -487,7 +486,6 @@
       cursor: pointer;
     }
 
-    /* Dynamic Board Layout: Full-Width by default, 2-Column ONLY when diagram is active! */
     .continuous-board-layout {
       flex: 1;
       width: 100%;
@@ -527,7 +525,6 @@
       margin-bottom: 18px;
     }
 
-    /* Topic & Line Entrance Animations */
     @keyframes topicSlideIn {
       0% { opacity: 0; transform: translateY(18px) scale(0.985); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -647,7 +644,7 @@
       font-weight: 700;
     }
 
-    /* RIGHT SIDE: Auto-Show & Auto-Hide Diagram Panel with Watermark Cropper */
+    /* RIGHT SIDE: Auto-Show & Auto-Hide Diagram Panel (Code SVG + Real Uploaded Images) */
     .right-diagram-sticky {
       display: none;
       height: 100%;
@@ -682,26 +679,41 @@
       border-color: #334155;
     }
 
+    .diag-svg-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 6px;
+    }
+    .diag-svg-wrap svg {
+      width: 100%;
+      max-height: 205px;
+    }
+    .diag-svg-wrap svg line,
+    .diag-svg-wrap svg path,
+    .diag-svg-wrap svg circle,
+    .diag-svg-wrap svg polygon {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: drawPenStroke 1.4s ease forwards;
+    }
+    @keyframes drawPenStroke { to { stroke-dashoffset: 0; } }
+
     .diag-img-crop-wrap {
       width: 100%;
       height: 205px;
       overflow: hidden;
       border-radius: 12px;
       background: #ffffff;
-      position: relative;
     }
     .diag-img-crop-wrap img {
       width: 100%;
-      height: calc(100% + 28px);
-      margin-bottom: -28px;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-    }
-    .diag-img-crop-wrap.local-repo img {
       height: 100%;
-      margin-bottom: 0;
       object-fit: contain;
+      display: block;
     }
 
     .diag-hand-note {
@@ -1052,40 +1064,175 @@
       sanskrit: "data/10-sanskrit.json"
     };
 
-    const TOPIC_IMAGE_LIBRARY = [
+    // 1. REAL UPLOADED IMAGES ONLY (जो तू image/ फोल्डर में अपलोड करेगा)
+    const REAL_UPLOADED_IMAGES = [
       { keys: ["फ्लेमिंग", "वाम", "fleming", "left hand"], file: "image/Fleming left hand rule .png" },
-      { keys: ["किरण पुंज", "beam"], file: "image/beam-types.png" },
-      { keys: ["परावर्तन", "reflection"], file: "image/reflection-law.png" },
-      { keys: ["समतल दर्पण", "plane mirror"], file: "image/plane-mirror.png" },
-      { keys: ["r/2", "वक्रता त्रिज्या"], file: "image/f-equals-r2.png" },
-      { keys: ["दर्पण सूत्र", "mirror formula", "1/v"], file: "image/mirror-formula.png" },
-      { keys: ["गोलीय दर्पण", "अवतल", "उत्तल"], file: "image/spherical-mirror.png" },
-      { keys: ["प्रिज्म", "अपवर्तन", "refraction", "लेंस", "lens"], file: "image/refraction-prism.png" },
-      { keys: ["नेत्र", "eye", "दृष्टि", "इंद्रधनुष"], file: "image/human-eye.png" },
-      { keys: ["ओम", "ohm", "विद्युत", "प्रतिरोध", "परिपथ"], file: "image/ohms-law-circuit.png" },
-      { keys: ["प्रकाश", "स्रोत", "वस्तु"], file: "image/light-vision.png" }
+      { keys: ["नेत्र", "eye", "दृष्टि", "रेटिना", "कॉर्निया"], file: "image/human-eye.png" }
     ];
 
-    function findMatchingRepoImage(textHint) {
+    // 2. BUILT-IN CODE RAY DIAGRAMS (0ms में बिना इंटरनेट के खुद बनने वाले रेखाचित्र)
+    const CODE_RAY_DIAGRAMS = [
+      {
+        keys: ["कैसे देखते", "प्रकाश स्रोत", "light-vision"],
+        svg: `<svg viewBox="0 0 340 190">
+          <circle cx="52" cy="46" r="22" fill="#facc15" stroke="#ea580c" stroke-width="3"/>
+          <text x="24" y="84" font-size="11" font-weight="bold" fill="#ea580c">1. सूर्य / बल्ब</text>
+          <line x1="76" y1="60" x2="152" y2="128" stroke="#f59e0b" stroke-width="3"/>
+          <rect x="150" y="118" width="52" height="44" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+          <text x="160" y="144" font-size="11" font-weight="bold" fill="#15803d">2. वस्तु</text>
+          <line x1="202" y1="128" x2="282" y2="60" stroke="#2563eb" stroke-width="3"/>
+          <circle cx="296" cy="50" r="16" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+          <text x="278" y="84" font-size="11" font-weight="bold" fill="#1d4ed8">3. आँख</text>
+        </svg>`
+      },
+      {
+        keys: ["किरण पुंज", "समांतर", "अभिसारी", "अपसारी", "beam"],
+        svg: `<svg viewBox="0 0 340 190">
+          <text x="15" y="24" font-size="11" font-weight="bold" fill="#2563eb">1. समांतर (||)</text>
+          <line x1="15" y1="38" x2="135" y2="38" stroke="#2563eb" stroke-width="2.5"/>
+          <line x1="15" y1="54" x2="135" y2="54" stroke="#2563eb" stroke-width="2.5"/>
+          <text x="175" y="24" font-size="11" font-weight="bold" fill="#16a34a">2. अभिसारी (→•)</text>
+          <line x1="180" y1="32" x2="295" y2="48" stroke="#16a34a" stroke-width="2.5"/>
+          <line x1="180" y1="64" x2="295" y2="48" stroke="#16a34a" stroke-width="2.5"/>
+          <circle cx="295" cy="48" r="4" fill="#ef4444"/>
+          <text x="75" y="108" font-size="11" font-weight="bold" fill="#ea580c">3. अपसारी (•→ फैलाना)</text>
+          <circle cx="115" cy="145" r="5" fill="#ea580c"/>
+          <line x1="115" y1="145" x2="245" y2="120" stroke="#ea580c" stroke-width="2.5"/>
+          <line x1="115" y1="145" x2="245" y2="145" stroke="#ea580c" stroke-width="2.5"/>
+          <line x1="115" y1="145" x2="245" y2="170" stroke="#ea580c" stroke-width="2.5"/>
+        </svg>`
+      },
+      {
+        keys: ["परावर्तन", "आपतित", "अभिलंब", "reflection"],
+        svg: `<svg viewBox="0 0 340 190">
+          <line x1="30" y1="158" x2="310" y2="158" stroke="#0f172a" stroke-width="4"/>
+          <text x="128" y="178" font-size="11" font-weight="bold" fill="#0f172a">समतल दर्पण</text>
+          <line x1="65" y1="52" x2="170" y2="158" stroke="#2563eb" stroke-width="3"/>
+          <text x="36" y="45" font-size="11" font-weight="bold" fill="#2563eb">आपतित किरण</text>
+          <line x1="170" y1="158" x2="275" y2="52" stroke="#ea580c" stroke-width="3"/>
+          <text x="225" y="45" font-size="11" font-weight="bold" fill="#ea580c">परावर्तित किरण</text>
+          <line x1="170" y1="32" x2="170" y2="158" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
+          <text x="142" y="24" font-size="11" font-weight="bold" fill="#475569">अभिलंब (N)</text>
+          <text x="138" y="116" font-size="13" font-weight="bold" fill="#dc2626">∠i</text>
+          <text x="184" y="116" font-size="13" font-weight="bold" fill="#dc2626">∠r</text>
+        </svg>`
+      },
+      {
+        keys: ["समतल दर्पण", "पार्श्व", "plane mirror"],
+        svg: `<svg viewBox="0 0 340 190">
+          <line x1="170" y1="22" x2="170" y2="165" stroke="#0f172a" stroke-width="4"/>
+          <line x1="85" y1="70" x2="85" y2="135" stroke="#2563eb" stroke-width="4"/>
+          <polygon points="85,62 79,74 91,74" fill="#2563eb"/>
+          <text x="64" y="154" font-size="11" font-weight="bold" fill="#2563eb">वस्तु (u)</text>
+          <line x1="255" y1="70" x2="255" y2="135" stroke="#ea580c" stroke-width="4" stroke-dasharray="5,4"/>
+          <polygon points="255,62 249,74 261,74" fill="#ea580c"/>
+          <text x="224" y="154" font-size="11" font-weight="bold" fill="#ea580c">प्रतिबिंब (v)</text>
+        </svg>`
+      },
+      {
+        keys: ["r/2", "वक्रता त्रिज्या", "f = r"],
+        svg: `<svg viewBox="0 0 340 190">
+          <path d="M 265,28 Q 305,95 265,162" fill="none" stroke="#0f172a" stroke-width="4"/>
+          <line x1="35" y1="132" x2="290" y2="132" stroke="#64748b" stroke-width="2"/>
+          <text x="288" y="148" font-size="11" font-weight="bold">P</text>
+          <circle cx="215" cy="132" r="3.5" fill="#ef4444"/><text x="211" y="150" font-size="11" font-weight="bold" fill="#ef4444">F</text>
+          <circle cx="145" cy="132" r="3.5" fill="#2563eb"/><text x="141" y="150" font-size="11" font-weight="bold" fill="#2563eb">C</text>
+          <line x1="55" y1="62" x2="276" y2="62" stroke="#2563eb" stroke-width="2.5"/>
+          <text x="48" y="55" font-size="11" font-weight="bold" fill="#2563eb">A</text><text x="282" y="62" font-size="11" font-weight="bold">B</text>
+          <line x1="276" y1="62" x2="195" y2="155" stroke="#ea580c" stroke-width="2.5"/>
+          <line x1="145" y1="132" x2="276" y2="62" stroke="#16a34a" stroke-width="2" stroke-dasharray="4,4"/>
+        </svg>`
+      },
+      {
+        keys: ["दर्पण सूत्र", "1/v", "आवर्धन", "mirror formula"],
+        svg: `<svg viewBox="0 0 340 190">
+          <path d="M 275,24 Q 312,95 275,166" fill="none" stroke="#0f172a" stroke-width="4"/>
+          <line x1="20" y1="115" x2="295" y2="115" stroke="#64748b" stroke-width="2"/>
+          <text x="294" y="128" font-size="11" font-weight="bold">P</text>
+          <circle cx="225" cy="115" r="3" fill="#ef4444"/><text x="221" y="130" font-size="11" font-weight="bold" fill="#ef4444">F</text>
+          <circle cx="160" cy="115" r="3" fill="#2563eb"/><text x="156" y="130" font-size="11" font-weight="bold" fill="#2563eb">C</text>
+          <line x1="85" y1="58" x2="85" y2="115" stroke="#2563eb" stroke-width="3.5"/>
+          <text x="78" y="52" font-size="11" font-weight="bold" fill="#2563eb">A</text><text x="78" y="130" font-size="11" font-weight="bold" fill="#2563eb">B</text>
+          <line x1="85" y1="58" x2="285" y2="58" stroke="#16a34a" stroke-width="2"/>
+          <line x1="285" y1="58" x2="195" y2="152" stroke="#16a34a" stroke-width="2"/>
+          <line x1="85" y1="58" x2="195" y2="152" stroke="#9333ea" stroke-width="1.8" stroke-dasharray="4,4"/>
+          <line x1="195" y1="115" x2="195" y2="152" stroke="#ea580c" stroke-width="3.5"/>
+          <text x="188" y="166" font-size="11" font-weight="bold" fill="#ea580c">A'</text>
+        </svg>`
+      },
+      {
+        keys: ["गोलीय दर्पण", "अवतल", "उत्तल", "6 स्थितियाँ"],
+        svg: `<svg viewBox="0 0 340 190">
+          <path d="M 92,32 Q 55,95 92,158" fill="none" stroke="#2563eb" stroke-width="4"/>
+          <line x1="35" y1="95" x2="155" y2="95" stroke="#64748b" stroke-width="2"/>
+          <circle cx="73" cy="95" r="3" fill="#0f172a"/><text x="64" y="112" font-size="11" font-weight="bold">P</text>
+          <circle cx="106" cy="95" r="3" fill="#ef4444"/><text x="101" y="112" font-size="11" font-weight="bold" fill="#ef4444">F</text>
+          <circle cx="138" cy="95" r="3" fill="#2563eb"/><text x="133" y="112" font-size="11" font-weight="bold" fill="#2563eb">C</text>
+          <text x="48" y="176" font-size="12" font-weight="bold" fill="#2563eb">अवतल (अभिसारी)</text>
+          <path d="M 228,32 Q 265,95 228,158" fill="none" stroke="#ea580c" stroke-width="4"/>
+          <line x1="195" y1="95" x2="315" y2="95" stroke="#64748b" stroke-width="2"/>
+          <text x="215" y="176" font-size="12" font-weight="bold" fill="#ea580c">उत्तल (अपसारी)</text>
+        </svg>`
+      },
+      {
+        keys: ["अपवर्तन", "स्नेल", "प्रिज्म", "लेंस", "refraction"],
+        svg: `<svg viewBox="0 0 340 190">
+          <line x1="20" y1="95" x2="320" y2="95" stroke="#2563eb" stroke-width="2.5"/>
+          <text x="28" y="84" font-size="11" font-weight="bold" fill="#2563eb">विरल माध्यम (हवा)</text>
+          <text x="28" y="114" font-size="11" font-weight="bold" fill="#ea580c">सघन माध्यम (काँच)</text>
+          <line x1="170" y1="22" x2="170" y2="168" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
+          <line x1="92" y1="28" x2="170" y2="95" stroke="#f59e0b" stroke-width="3"/>
+          <line x1="170" y1="95" x2="212" y2="168" stroke="#ea580c" stroke-width="3"/>
+        </svg>`
+      },
+      {
+        keys: ["ओम", "विद्युत धारा", "परिपथ", "v = ir", "ohm"],
+        svg: `<svg viewBox="0 0 340 190">
+          <rect x="48" y="38" width="244" height="114" rx="8" fill="none" stroke="#0f172a" stroke-width="2.5"/>
+          <rect x="130" y="25" width="80" height="26" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="142" y="42" font-size="11" font-weight="bold" fill="#1d4ed8">प्रतिरोध (R)</text>
+          <circle cx="292" cy="95" r="16" fill="#dcfce7" stroke="#16a34a" stroke-width="2.5"/>
+          <text x="287" y="99" font-size="12" font-weight="bold" fill="#15803d">A</text>
+          <rect x="135" y="139" width="70" height="24" rx="6" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+          <text x="150" y="155" font-size="11" font-weight="bold" fill="#c2410c">बैटरी (V)</text>
+        </svg>`
+      }
+    ];
+
+    function findCodeSvgDiagram(textHint) {
       const low = (textHint || "").toLowerCase();
-      for (const item of TOPIC_IMAGE_LIBRARY) {
-        if (item.keys.some(k => low.includes(k))) {
-          return encodeURI(item.file);
-        }
+      for (const item of CODE_RAY_DIAGRAMS) {
+        if (item.keys.some(k => low.includes(k))) return item.svg;
       }
       return null;
     }
 
-    function buildAiTextbookDiagramUrl(diagramPrompt) {
-      if (!diagramPrompt || !diagramPrompt.trim()) return null;
-      const cleanPrompt = `${diagramPrompt.trim()}, clean NCERT science textbook diagram, pure white background, sharp clear educational illustration, high clarity`;
-      return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=640&height=420&nologo=true&seed=42`;
+    function findRealUploadedImage(textHint) {
+      const low = (textHint || "").toLowerCase();
+      for (const item of REAL_UPLOADED_IMAGES) {
+        if (item.keys.some(k => low.includes(k))) return encodeURI(item.file);
+      }
+      return null;
     }
 
+    // Check if an image file actually exists before showing or talking about it
+    const verifiedImagesCache = new Map();
+    function checkImageExists(url) {
+      if (!url) return Promise.resolve(false);
+      if (verifiedImagesCache.has(url)) return Promise.resolve(verifiedImagesCache.get(url));
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => { verifiedImagesCache.set(url, true); resolve(true); };
+        img.onerror = () => { verifiedImagesCache.set(url, false); resolve(false); };
+        img.src = url;
+      });
+    }
+
+    // UNIVERSAL CLEAN FORMATTER (Fixes multiline [[PB / P B']], \frac, \rightarrow, O_2, x^2, \sqrt)
     function renderMathFractions(htmlStr) {
       let out = htmlStr || "";
       out = out.replace(/\$/g, "");
-      out = out.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, (m, num, den) => {
+      out = out.replace(/\\frac\{([\s\S]+?)\}\{([\s\S]+?)\}/g, (m, num, den) => {
         return `<span class="math-frac"><span class="num">${num.trim()}</span><span class="den">${den.trim()}</span></span>`;
       });
       out = out.replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (m, num, den) => {
@@ -1377,7 +1524,7 @@
 
     function cleanSpeechString(raw) {
       return (raw || "")
-        .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, "$1 बटे $2")
+        .replace(/\\frac\{([\s\S]+?)\}\{([\s\S]+?)\}/g, "$1 बटे $2")
         .replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, "$1 बटे $2")
         .replace(/\[\[([^\]]+)\]\]/g, "$1")
         .replace(/\\rightarrow|->|-->/g, " से बनता है ")
@@ -1538,16 +1685,15 @@
       कठोर नियम:
       1. कोई भी चीज़ आधा-अधूरा मत छोड़ो—कम से कम 7 से 9 विस्तृत भाग (blocks) बनाओ (परिभाषा, सिद्धांत, हर सूत्र का पूरा स्टेप-बाय-स्टेप निगमन, 2 हल किए हुए उदाहरण, बीच में क्विज़, और अंत में "आज हमने क्या सीखा" का सार)।
       2. जहाँ बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो, तीर के लिए → लिखो, और रासायनिक सूत्र सीधे O₂ या H₂O जैसे साफ रूप में लिखो (LaTeX बैकस्लैश मत लगाओ)।
-      3. केवल उसी भाग में "diagramPrompt" (अंग्रेजी में साफ NCERT चित्र विवरण) और "diagramVoice" दो जहाँ सच में चित्र की ज़रूरत हो; बाकी भागों में diagramPrompt को "" (खाली) रखो।
+      3. किसी भी बाहरी चित्र URL का उपयोग मत करो; केवल सरल रेखाचित्र हो तो "svg" में छोटा साफ़ SVG कोड दो, अन्यथा खाली छोड़ो।
       4. केवल शुद्ध JSON दो:
       {
         "blocks": [
           {
             "id": "step1",
             "title": "1. मुख्य अवधारणा",
-            "diagramPrompt": "Clean NCERT science diagram of ... on white background",
-            "diagramCaption": "चित्र का नाम",
-            "diagramVoice": "पहले दाईं तरफ बने इस चित्र को ध्यान से देखो...",
+            "svg": "",
+            "diagramCaption": "",
             "lines": [
               {
                 "text": "विस्तृत हिंदी व्याख्या <span class='red-under'>मुख्य शब्द</span>।"
@@ -1674,7 +1820,8 @@
           startWhiteboardLessonNow(pendingStartBlockIndex);
         }
       } else {
-        document.getElementById("portraitLockScreen").classList.add("show");
+        document.getElementBy
+        Id("portraitLockScreen").classList.add("show");
         if (hasClassStartedInLandscape && isWbPlaying) {
           isWbPlaying = false;
           stopAllVoices();
@@ -1779,44 +1926,44 @@
       }, speedMs);
     }
 
-    function updateRightDiagramStage(block) {
+    async function updateRightDiagramStage(block) {
       const layout = document.getElementById("continuousBoardLayout");
       const diagCard = document.getElementById("stickyDiagramCard");
 
       if (!block || block.type === "quiz") {
         layout.classList.remove("has-diagram");
-        return false;
+        return "none";
       }
 
-      let imgUrl = null;
-      let isLocalRepoImg = false;
-      if (block.image) {
-        imgUrl = encodeURI(block.image);
-        isLocalRepoImg = true;
-      } else if (block.diagramPrompt) {
-        const localMatch = findMatchingRepoImage(`${currentLessonMeta.topic} ${block.title || ""} ${block.diagramPrompt}`);
-        if (localMatch) {
-          imgUrl = localMatch;
-          isLocalRepoImg = true;
-        } else {
-          imgUrl = buildAiTextbookDiagramUrl(block.diagramPrompt);
+      const searchHint = `${currentLessonMeta.topic} ${block.title || ""}`;
+
+      const codeSvg = block.svg || findCodeSvgDiagram(searchHint);
+      if (codeSvg) {
+        layout.classList.add("has-diagram");
+        diagCard.innerHTML = `
+          <div class="diag-svg-wrap">${codeSvg}</div>
+          <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
+        `;
+        return "svg";
+      }
+
+      const realImg = block.image ? encodeURI(block.image) : findRealUploadedImage(searchHint);
+      if (realImg) {
+        const exists = await checkImageExists(realImg);
+        if (exists) {
+          layout.classList.add("has-diagram");
+          diagCard.innerHTML = `
+            <div class="diag-img-crop-wrap">
+              <img src="${realImg}" alt="${block.diagramCaption || "Diagram"}">
+            </div>
+            <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
+          `;
+          return "image";
         }
       }
 
-      if (!imgUrl) {
-        layout.classList.remove("has-diagram");
-        return false;
-      }
-
-      layout.classList.add("has-diagram");
-      diagCard.innerHTML = `
-        <div class="diag-img-crop-wrap ${isLocalRepoImg ? "local-repo" : ""}">
-          <img src="${imgUrl}" alt="${block.diagramCaption || "Diagram"}"
-               onerror="document.getElementById('continuousBoardLayout').classList.remove('has-diagram')">
-        </div>
-        <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
-      `;
-      return true;
+      layout.classList.remove("has-diagram");
+      return "none";
     }
 
     function finishLessonWithFarewell() {
@@ -1845,7 +1992,7 @@
       });
     }
 
-    function processNextBlock() {
+    async function processNextBlock() {
       if (!isWbPlaying) return;
       if (currentBlockIndex >= lessonBlocks.length) {
         finishLessonWithFarewell();
@@ -1858,7 +2005,8 @@
       const streamBody = document.getElementById("notebookStreamBody");
       const firstName = getFirstStudentName();
 
-      const hasDiagramShown = updateRightDiagramStage(block);
+      const diagramMode = await updateRightDiagramStage(block);
+      if (!isWbPlaying) return;
 
       if (block.type === "quiz") {
         clearActiveQuizTimer();
@@ -1916,7 +2064,7 @@
       autoScrollNotebookBottom();
 
       const startWritingBlock = () => {
-        if (hasDiagramShown && block.diagramVoice) {
+        if (diagramMode !== "none" && block.diagramVoice) {
           speakExactText(block.diagramVoice, () => {
             currentLineIndex = 0;
             if (isWbPlaying) writeNextLineInBlock(blkEl, block);
