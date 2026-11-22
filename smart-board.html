@@ -54,7 +54,7 @@
       text-align: center;
     }
 
-    /* 1. SPLASH & AUDIO PRELOADER */
+    /* 1. SPLASH & 100% AUDIO PRELOADER */
     #appSplash {
       position: fixed;
       inset: 0;
@@ -110,8 +110,8 @@
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
     .preload-bar-wrap {
-      width: 260px;
-      height: 8px;
+      width: 270px;
+      height: 10px;
       background: #e2e8f0;
       border-radius: 99px;
       overflow: hidden;
@@ -426,6 +426,7 @@
       color: #f1f5f9;
     }
 
+    /* Strict Portrait Gate Overlay */
     .portrait-lock-screen {
       display: none;
       position: fixed;
@@ -439,9 +440,7 @@
       text-align: center;
       padding: 24px;
     }
-    @media screen and (orientation: portrait) and (max-width: 768px) {
-      .wb-fullscreen.open ~ .portrait-lock-screen { display: flex; }
-    }
+    .portrait-lock-screen.show { display: flex; }
 
     .wb-chrome {
       transition: opacity 0.25s ease, transform 0.25s ease;
@@ -488,24 +487,32 @@
       cursor: pointer;
     }
 
+    /* Dynamic Board Layout: Full-Width by default, 2-Column ONLY when diagram is active! */
     .continuous-board-layout {
       flex: 1;
       width: 100%;
       height: 100%;
       display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-columns: 1fr;
       overflow: hidden;
       cursor: pointer;
+      transition: all 0.35s ease;
+    }
+    .continuous-board-layout.has-diagram {
+      grid-template-columns: 1.22fr 0.78fr;
     }
 
     .left-notebook-scroll {
       height: 100%;
       overflow-y: auto;
-      padding: 28px 26px 140px 34px;
+      padding: 28px 36px 145px 38px;
       scroll-behavior: smooth;
+    }
+    .continuous-board-layout.has-diagram .left-notebook-scroll {
+      padding: 28px 24px 145px 32px;
       border-right: 1.5px dashed #cbd5e1;
     }
-    html[data-board-theme="soft-dark"] .left-notebook-scroll {
+    html[data-board-theme="soft-dark"] .continuous-board-layout.has-diagram .left-notebook-scroll {
       border-color: #334155;
     }
 
@@ -520,13 +527,24 @@
       margin-bottom: 18px;
     }
 
+    /* Topic & Line Entrance Animations */
+    @keyframes topicSlideIn {
+      0% { opacity: 0; transform: translateY(18px) scale(0.985); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes diagramPopIn {
+      0% { opacity: 0; transform: translateX(24px) scale(0.95); }
+      100% { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
     .roadmap-card {
       background: #f0f9ff;
       border: 1.5px solid #bae6fd;
       border-radius: 14px;
-      padding: 12px 15px;
+      padding: 13px 16px;
       margin-bottom: 22px;
       color: #0c4a6e;
+      animation: topicSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     html[data-board-theme="soft-dark"] .roadmap-card {
       background: #1e293b;
@@ -544,9 +562,10 @@
     }
 
     .handwritten-block {
-      margin-bottom: 22px;
-      padding: 10px 14px;
-      border-radius: 12px;
+      margin-bottom: 24px;
+      padding: 12px 15px;
+      border-radius: 14px;
+      animation: topicSlideIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       transition: background 0.45s ease, box-shadow 0.45s ease;
     }
 
@@ -557,10 +576,10 @@
     }
 
     .hw-section-title {
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 900;
       color: #2563eb;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -578,7 +597,7 @@
     .hw-line.formula-box {
       background: #eff6ff;
       border-left: 4px solid #2563eb;
-      padding: 8px 14px;
+      padding: 9px 15px;
       border-radius: 0 10px 10px 0;
       font-weight: 700;
       color: #1e3a8a;
@@ -628,15 +647,19 @@
       font-weight: 700;
     }
 
-    /* RIGHT SIDE: Sticky Pinned Live Diagram Panel */
+    /* RIGHT SIDE: Auto-Show & Auto-Hide Diagram Panel */
     .right-diagram-sticky {
+      display: none;
       height: 100%;
       padding: 24px 18px 80px;
-      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(248, 250, 252, 0.7);
+      background: rgba(248, 250, 252, 0.72);
+    }
+    .continuous-board-layout.has-diagram .right-diagram-sticky {
+      display: flex;
+      animation: diagramPopIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     html[data-board-theme="soft-dark"] .right-diagram-sticky {
       background: rgba(15, 23, 42, 0.6);
@@ -648,7 +671,7 @@
       border: 2px solid #e2e8f0;
       border-radius: 18px;
       padding: 12px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -659,21 +682,13 @@
       border-color: #334155;
     }
 
-    .diagram-card-box svg {
+    .diagram-card-box img {
       width: 100%;
-      height: auto;
-      min-height: 175px;
-      max-height: 210px;
+      max-height: 215px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #ffffff;
     }
-    .diagram-card-box svg line,
-    .diagram-card-box svg path,
-    .diagram-card-box svg circle,
-    .diagram-card-box svg polygon {
-      stroke-dasharray: 600;
-      stroke-dashoffset: 600;
-      animation: drawPenStroke 1.5s ease forwards;
-    }
-    @keyframes drawPenStroke { to { stroke-dashoffset: 0; } }
 
     .diag-hand-note {
       font-family: 'Caveat', cursive;
@@ -683,16 +698,45 @@
       text-align: center;
     }
 
+    /* Inline Quiz + 2-Minute Tick-Tock Timer */
     .inline-quiz-card {
       background: #fff7ed;
       border: 2px dashed #ea580c;
       border-radius: 16px;
-      padding: 14px 16px;
-      margin-top: 10px;
+      padding: 15px 17px;
+      margin-top: 12px;
     }
     html[data-board-theme="soft-dark"] .inline-quiz-card {
       background: #1e293b;
     }
+    .quiz-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .quiz-timer-badge {
+      background: #0f172a;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 13.5px;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .quiz-timer-badge.urgent {
+      background: #dc2626;
+      color: #ffffff;
+      animation: pulseUrgent 0.7s infinite alternate;
+    }
+    @keyframes pulseUrgent {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
     .quiz-opts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -703,7 +747,7 @@
       background: #ffffff;
       border: 1.5px solid #cbd5e1;
       border-radius: 10px;
-      padding: 9px 12px;
+      padding: 10px 12px;
       font-size: 14px;
       font-weight: 700;
       color: #0f172a;
@@ -712,6 +756,18 @@
     }
     .quiz-opt-btn.right { background: #dcfce7; border-color: #16a34a; color: #15803d; }
     .quiz-opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #b91c1c; }
+
+    /* Class Complete Farewell Card */
+    .farewell-card {
+      background: linear-gradient(135deg, #dcfce7 0%, #eff6ff 100%);
+      border: 2px solid #16a34a;
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      color: #0f172a;
+      margin-top: 16px;
+      animation: topicSlideIn 0.5s ease forwards;
+    }
 
     .jeet-center-dock {
       position: fixed;
@@ -785,13 +841,13 @@
     <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">असली हैंड-रिटन स्मार्ट व्हाइटबोर्ड ⚡</p>
   </div>
 
-  <!-- 2. AUDIO PRELOADER -->
+  <!-- 2. 100% ALL-LINES AUDIO PRELOADER -->
   <div class="lesson-preloader" id="lessonPreloader">
     <div class="loader-ring"></div>
-    <h3 id="preloadHeading" style="font-size: 18px; font-weight: 900;">मास्टर जी की क्लास लोड हो रही है...</h3>
-    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">क्लाउड सर्वर से आवाज़ तैयार हो रही है...</p>
+    <h3 id="preloadHeading" style="font-size: 18px; font-weight: 900;">मास्टर जी की क्लास तैयार हो रही है...</h3>
+    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">सारी स्लाइड्स की असली आवाज़ डाउनलोड हो रही है ताकि क्लास बिना रुके चले...</p>
     <div class="preload-bar-wrap"><div class="preload-bar-fill" id="preloadBarFill"></div></div>
-    <div id="preloadPercentText" style="font-size: 12.5px; font-weight: 800; color: #2563eb;">0% तैयार</div>
+    <div id="preloadPercentText" style="font-size: 13px; font-weight: 800; color: #2563eb;">0% तैयार</div>
   </div>
 
   <!-- 3. LOBBY -->
@@ -815,7 +871,7 @@
         <div>
           <span class="hero-badge">⚡ BIHAR BOARD • NCERT LIVE WHITEBOARD</span>
           <h2 style="font-size: 17.5px; font-weight: 900; line-height: 1.3;">मास्टर जी की लाइव कॉपी क्लास</h2>
-          <p style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">हर सूत्र सिद्ध • बिना रुके प्राकृतिक पढ़ाई • लाइव चित्र बोर्ड</p>
+          <p style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">हर सूत्र सिद्ध • एनीमेशन से लिखावट • 2-मिनट लाइव क्विज़</p>
         </div>
         <div style="font-size: 36px;">📐</div>
       </div>
@@ -897,16 +953,14 @@
       <span id="wbStepStatus" style="font-size:12px;font-weight:800;color:#2563eb;">भाग 1</span>
     </div>
 
-    <div class="continuous-board-layout" onclick="handleBoardSurfaceTap(event)">
+    <div class="continuous-board-layout" id="continuousBoardLayout" onclick="handleBoardSurfaceTap(event)">
       <div class="left-notebook-scroll" id="notebookScrollContainer">
         <div class="notebook-topic-banner" id="notebookTopicBanner">TOPIC</div>
         <div id="notebookStreamBody"></div>
       </div>
 
-      <div class="right-diagram-sticky">
-        <div class="diagram-card-box" id="stickyDiagramCard">
-          <div style="font-size:12px;font-weight:800;color:#64748b;">लाइव चित्र बोर्ड</div>
-        </div>
+      <div class="right-diagram-sticky" id="rightDiagramPanel">
+        <div class="diagram-card-box" id="stickyDiagramCard"></div>
       </div>
     </div>
 
@@ -923,12 +977,15 @@
     </div>
   </div>
 
-  <!-- Portrait Notice -->
-  <div class="portrait-lock-screen">
-    <div style="font-size: 52px; margin-bottom: 12px;">📱</div>
-    <h2 style="font-size: 20px; margin-bottom: 6px;">मोबाइल आड़ा (Landscape) करें!</h2>
-    <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">असली स्मार्ट व्हाइटबोर्ड देखने के लिए फोन घुमाएं।</p>
-    <button style="background:#2563eb;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:800;" onclick="forceFullLandscape()">⛶ फुल-स्क्रीन करें</button>
+  <!-- STRICT LANDSCAPE GATE SCREEN -->
+  <div class="portrait-lock-screen" id="portraitLockScreen">
+    <div style="font-size: 56px; margin-bottom: 12px;">📱</div>
+    <h2 style="font-size: 20px; font-weight: 900; margin-bottom: 6px;">मोबाइल आड़ा (Landscape) करें!</h2>
+    <p style="font-size: 14px; color: #64748b; max-width: 310px; margin-bottom: 18px;">आपकी क्लास 100% तैयार है! जैसे ही आप फोन आड़ा करेंगे, मास्टर जी पढ़ाना शुरू कर देंगे।</p>
+    <div style="display:flex;gap:10px;">
+      <button style="background:#f1f5f9;color:#0f172a;border:none;padding:12px 18px;border-radius:12px;font-weight:800;" onclick="exitWhiteboard()">← वापस</button>
+      <button style="background:#2563eb;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:800;" onclick="forceFullLandscape()">⛶ फुल-स्क्रीन आड़ा करें</button>
+    </div>
   </div>
 
   <!-- Modals -->
@@ -962,8 +1019,7 @@
       "gemini-3.8-flash",
       "gemini-3.5-flash-lite",
       "gemini-3.5-flash",
-      "gemini-3.0-flash",
-      "gemini-3.0-pro"
+      "gemini-3.0-flash"
     ];
 
     const SYLLABUS_MASTER_FILE = "data/lession-syllabus.json";
@@ -983,6 +1039,7 @@
       sanskrit: "data/10-sanskrit.json"
     };
 
+    // Local GitHub image/ library
     const TOPIC_IMAGE_LIBRARY = [
       { keys: ["फ्लेमिंग", "वाम", "fleming", "left hand"], file: "image/Fleming left hand rule .png" },
       { keys: ["किरण पुंज", "beam"], file: "image/beam-types.png" },
@@ -1007,6 +1064,12 @@
       return null;
     }
 
+    function buildAiTextbookDiagramUrl(diagramPrompt) {
+      if (!diagramPrompt || !diagramPrompt.trim()) return null;
+      const cleanPrompt = `${diagramPrompt.trim()}, clean NCERT science textbook diagram, pure white background, sharp clear educational illustration, high clarity`;
+      return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=640&height=420&nologo=true&seed=42`;
+    }
+
     function renderMathFractions(htmlStr) {
       let out = htmlStr || "";
       out = out.replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (match, num, den) => {
@@ -1017,7 +1080,6 @@
       return out;
     }
 
-    // Bulletproof JSON Extractor so AI responses never fail with SyntaxError
     function safeParseAiJson(rawText) {
       let cleaned = (rawText || "").replace(/```json|```/gi, "").trim();
       const firstBrace = cleaned.indexOf("{");
@@ -1048,10 +1110,15 @@
       }
     };
 
+    // Gmail / Profile Student Name
     let studentName = localStorage.getItem("nd_virtual_student_name") || "";
     let externalSyllabus = null;
     const loadedSubjectLessons = {};
     let activeSubjectKey = null;
+
+    let isWbSessionOpen = false;
+    let hasClassStartedInLandscape = false;
+    let pendingStartBlockIndex = 0;
 
     let isWbPlaying = false;
     let isMuted = false;
@@ -1062,11 +1129,39 @@
     let currentBlockElement = null;
     let currentLessonMeta = { subject: "", topic: "" };
 
+    let activeQuizTimerInterval = null;
+    let audioCtx = null;
+
     let globalAudioPlayer = new Audio();
     const voiceCache = new Map();
 
     function getDisplayStudentName() {
-      return studentName && studentName.trim() !== "" ? studentName.trim() : "प्यारे छात्र";
+      return studentName && studentName.trim() !== "" ? studentName.trim() : "विद्यार्थी";
+    }
+
+    // Subtle Tick-Tock Sound using Web Audio API (no external audio file needed)
+    function playTickSound(isUrgent = false) {
+      if (isMuted) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = isUrgent ? 980 : 720;
+        gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.045);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch (e) {}
+    }
+
+    function clearActiveQuizTimer() {
+      if (activeQuizTimerInterval) {
+        clearInterval(activeQuizTimerInterval);
+        activeQuizTimerInterval = null;
+      }
     }
 
     setTimeout(() => {
@@ -1077,7 +1172,10 @@
     function checkSavedProgress() {
       try {
         const raw = localStorage.getItem("nd_wb_resume_data");
-        if (!raw) return;
+        if (!raw) {
+          document.getElementById("resumeBannerWrap").classList.remove("show");
+          return;
+        }
         const saved = JSON.parse(raw);
         if (saved && saved.blocks && saved.blocks.length > 0) {
           document.getElementById("resumeBannerWrap").classList.add("show");
@@ -1105,18 +1203,19 @@
         currentLessonMeta = { subject: saved.subject, topic: saved.topic };
         lessonBlocks = saved.blocks;
         await preDownloadAllVoices(lessonBlocks);
-        openContinuousWhiteboard(saved.blockIndex || 0);
+        prepareWhiteboardGate(saved.blockIndex || 0);
       } catch (e) {}
     };
 
+    // Sync Gmail Display Name from Firebase Auth
     if (window.firebase && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          const first = (user.displayName || user.email.split("@")[0]).split(" ")[0];
-          studentName = first;
+          const gmailFullName = (user.displayName || user.email.split("@")[0]).trim();
+          studentName = gmailFullName;
           localStorage.setItem("nd_virtual_student_name", studentName);
-          document.getElementById("topUserName").textContent = first;
-          document.getElementById("topUserAvatar").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(first)}&background=2563eb&color=fff`;
+          document.getElementById("topUserName").textContent = gmailFullName;
+          document.getElementById("topUserAvatar").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(gmailFullName)}&background=2563eb&color=fff`;
         } else if (studentName) {
           document.getElementById("topUserName").textContent = studentName;
           document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=2563eb&color=fff`;
@@ -1225,7 +1324,7 @@
           <div>
             <div style="font-size:11px;font-weight:800;color:#2563eb;">TOPIC ${i + 1}</div>
             <div style="font-size:14.5px;font-weight:800;margin:2px 0;">${topicTitle}</div>
-            <div style="font-size:11px;font-weight:700;color:#ea580c;">✍️ ~30 मिनट • निरंतर हैंड-रिटन क्लास</div>
+            <div style="font-size:11px;font-weight:700;color:#ea580c;">✍️ ~30 मिनट • विस्तृत हैंड-रिटन क्लास</div>
           </div>
           <span style="background:#2563eb;color:#fff;padding:7px 13px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
         `;
@@ -1253,6 +1352,9 @@
       prepareAndLaunchMasterClass(null, "MASTER CLASS", val, null);
     };
 
+    // =========================================================
+    // 100% ALL-LINES AUDIO PRE-DOWNLOADER (ZERO ROBOTIC FALLBACK)
+    // =========================================================
     function cleanSpeechString(raw) {
       return (raw || "")
         .replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, "$1 बटे $2")
@@ -1268,20 +1370,24 @@
         .trim();
     }
 
-    async function fetchSingleAudioBlob(cleanText, timeoutMs = 12000) {
+    async function fetchSingleAudioBlob(cleanText, retries = 2) {
       if (!cleanText || voiceCache.has(cleanText)) return;
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
-      try {
-        const url = `${VOICE_SERVER_BASE}/speak?text=${encodeURIComponent(cleanText)}&voice=hi-IN-MadhurNeural`;
-        const res = await fetch(url, { signal: controller.signal });
-        if (res.ok) {
-          const blob = await res.blob();
-          voiceCache.set(cleanText, URL.createObjectURL(blob));
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 16000);
+        try {
+          const url = `${VOICE_SERVER_BASE}/speak?text=${encodeURIComponent(cleanText)}&voice=hi-IN-MadhurNeural`;
+          const res = await fetch(url, { signal: controller.signal });
+          if (res.ok) {
+            const blob = await res.blob();
+            voiceCache.set(cleanText, URL.createObjectURL(blob));
+            clearTimeout(timer);
+            return;
+          }
+        } catch (e) {
+        } finally {
+          clearTimeout(timer);
         }
-      } catch (e) {
-      } finally {
-        clearTimeout(timer);
       }
     }
 
@@ -1289,39 +1395,41 @@
       const loader = document.getElementById("lessonPreloader");
       const bar = document.getElementById("preloadBarFill");
       const pctTxt = document.getElementById("preloadPercentText");
+      const activeStudent = getDisplayStudentName();
 
       const allLines = [];
+      allLines.push(cleanSpeechString(`चलो ${activeStudent}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`));
+
       blocks.forEach(b => {
         if (b.diagramVoice) allLines.push(cleanSpeechString(b.diagramVoice));
         if (b.lines) b.lines.forEach(l => allLines.push(cleanSpeechString(l.text)));
-        if (b.type === "quiz" && b.question) allLines.push(cleanSpeechString(`चलो एक प्रश्न हल करते हैं: ${b.question}`));
+        if (b.type === "quiz" && b.question) {
+          allLines.push(cleanSpeechString(`चलो ${activeStudent}, एक प्रश्न हल करते हैं: ${b.question}`));
+          allLines.push(cleanSpeechString(`शाबाश ${activeStudent}, बिल्कुल सही जवाब! ${b.explanation} चलो अब आगे बढ़ते हैं।`));
+          allLines.push(cleanSpeechString(`कोई बात नहीं ${activeStudent}, इसका सही उत्तर है ${b.options[b.correctIndex]}। ${b.explanation} चलो अब आगे बढ़ते हैं।`));
+          allLines.push(cleanSpeechString(`दो मिनट पूरे हो गए ${activeStudent}, इसका सही उत्तर है ${b.options[b.correctIndex]}। चलो अब आगे बढ़ते हैं।`));
+        }
       });
 
+      allLines.push(cleanSpeechString(`${activeStudent}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`));
+
       const unique = [...new Set(allLines.filter(Boolean))];
-      if (!unique.length) return;
-
       loader.classList.add("open");
-      bar.style.width = "10%";
-      pctTxt.textContent = "सर्वर से जुड़ रहा है...";
+      bar.style.width = "2%";
+      pctTxt.textContent = `0 / ${unique.length} आवाज़ें तैयार (0%)`;
 
-      const initialSlice = unique.slice(0, 3);
       let done = 0;
-      for (const line of initialSlice) {
-        await fetchSingleAudioBlob(line, 15000);
-        done++;
-        const pct = Math.min(100, Math.round((done / initialSlice.length) * 100));
+      const batchSize = 4;
+      for (let i = 0; i < unique.length; i += batchSize) {
+        const batch = unique.slice(i, i + batchSize);
+        await Promise.all(batch.map(t => fetchSingleAudioBlob(t, 2)));
+        done += batch.length;
+        const pct = Math.min(100, Math.round((done / unique.length) * 100));
         bar.style.width = pct + "%";
-        pctTxt.textContent = `${pct}% तैयार...`;
+        pctTxt.textContent = `${Math.min(done, unique.length)} / ${unique.length} आवाज़ें तैयार (${pct}%)`;
       }
 
-      setTimeout(() => loader.classList.remove("open"), 150);
-
-      const remaining = unique.slice(3);
-      (async () => {
-        for (let i = 0; i < remaining.length; i += 3) {
-          await Promise.all(remaining.slice(i, i + 3).map(t => fetchSingleAudioBlob(t, 12000)));
-        }
-      })();
+      setTimeout(() => loader.classList.remove("open"), 200);
     }
 
     async function callGeminiWithFallbackChain(promptText) {
@@ -1359,7 +1467,6 @@
       if (pack[chapterId] && pack[chapterId][fullTopicTitle]) {
         return pack[chapterId][fullTopicTitle];
       }
-      // Fallback fuzzy search across chapters in case syllabus title slightly differs
       for (const chKey of Object.keys(pack)) {
         const chObj = pack[chKey];
         if (chObj[fullTopicTitle]) return chObj[fullTopicTitle];
@@ -1376,7 +1483,8 @@
       const activeStudent = getDisplayStudentName();
       const loader = document.getElementById("lessonPreloader");
       document.getElementById("preloadHeading").textContent = `"${fullTopicTitle}" तैयार हो रहा है...`;
-      document.getElementById("preloadBarFill").style.width = "15%";
+      document.getElementById("preloadBarFill").style.width = "5%";
+      document.getElementById("preloadPercentText").textContent = "पाठ्यक्रम लोड हो रहा है...";
       loader.classList.add("open");
 
       currentLessonMeta = { subject: subjectLabel, topic: fullTopicTitle };
@@ -1394,27 +1502,28 @@
             return b;
           });
           await preDownloadAllVoices(lessonBlocks);
-          openContinuousWhiteboard(0);
+          prepareWhiteboardGate(0);
           return;
         }
       }
 
-      const prompt = `तुम एक अनुभवी भारतीय शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में लिख-लिखकर बिना रुके कहानी की तरह पढ़ा रहे हो।
-      नियम:
-      1. जहाँ बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो। साधारण अक्षरों में [[A]] जैसे ब्रैकेट मत लगाओ।
-      2. बार-बार "क्या समझ आ गया" या "नमस्ते" मत दोहराओ—एक बात को अगली बात से स्वाभाविक रूप से जोड़ो।
-      3. केवल शुद्ध JSON दो (कोई अतिरिक्त टेक्स्ट नहीं):
+      const prompt = `तुम एक अनुभवी भारतीय शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में लिख-लिखकर अत्यंत विस्तार से पढ़ा रहे हो।
+      कठोर नियम:
+      1. कोई भी चीज़ आधा-अधूरा मत छोड़ो—कम से कम 7 से 9 विस्तृत भाग (blocks) बनाओ (परिभाषा, सिद्धांत, हर सूत्र का पूरा स्टेप-बाय-स्टेप निगमन, 2 हल किए हुए उदाहरण, बीच में क्विज़, और अंत में "आज हमने क्या सीखा" का सार)।
+      2. जहाँ बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो। साधारण अक्षरों में [[A]] जैसे ब्रैकेट मत लगाओ।
+      3. केवल उसी भाग में "diagramPrompt" (अंग्रेजी में साफ NCERT चित्र विवरण) और "diagramVoice" दो जहाँ सच में चित्र की ज़रूरत हो; बाकी भागों में diagramPrompt को "" (खाली) रखो।
+      4. केवल शुद्ध JSON दो:
       {
         "blocks": [
           {
             "id": "step1",
-            "title": "1. मुख्य अवधारणा एवं चित्र",
-            "svgBase": "",
+            "title": "1. मुख्य अवधारणा",
+            "diagramPrompt": "Clean NCERT science diagram of ... on white background",
             "diagramCaption": "चित्र का नाम",
+            "diagramVoice": "पहले दाईं तरफ बने इस चित्र को ध्यान से देखो...",
             "lines": [
               {
-                "text": "सरल हिंदी व्याख्या <span class='red-under'>मुख्य शब्द</span>।",
-                "drawSvg": "<circle cx='170' cy='95' r='35' fill='#eff6ff' stroke='#2563eb' stroke-width='3'/>"
+                "text": "विस्तृत हिंदी व्याख्या <span class='red-under'>मुख्य शब्द</span>।"
               }
             ]
           },
@@ -1432,7 +1541,7 @@
         const res = await callGeminiWithFallbackChain(prompt);
         lessonBlocks = res.blocks || [];
         await preDownloadAllVoices(lessonBlocks);
-        openContinuousWhiteboard(0);
+        prepareWhiteboardGate(0);
       } catch (err) {
         loader.classList.remove("open");
         alert("त्रुटि: " + err.message);
@@ -1461,8 +1570,10 @@
     }
 
     function stopAllVoices() {
-      if (globalAudioPlayer) { globalAudioPlayer.pause(); globalAudioPlayer.currentTime = 0; }
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      if (globalAudioPlayer) {
+        globalAudioPlayer.pause();
+        globalAudioPlayer.currentTime = 0;
+      }
     }
 
     window.toggleAudioMute = function() {
@@ -1479,6 +1590,7 @@
       if (globalAudioPlayer) globalAudioPlayer.playbackRate = playbackSpeed;
     };
 
+    // PURE SERVER VOICE PLAYER (NEVER PLAYS ROBOTIC BROWSER VOICE)
     async function speakExactText(rawText, onDone) {
       stopAllVoices();
       const clean = cleanSpeechString(rawText);
@@ -1487,55 +1599,82 @@
         return;
       }
 
+      if (!voiceCache.has(clean)) {
+        await fetchSingleAudioBlob(clean, 2);
+      }
+
       if (voiceCache.has(clean)) {
         globalAudioPlayer.src = voiceCache.get(clean);
         globalAudioPlayer.playbackRate = playbackSpeed;
         globalAudioPlayer.onended = () => { if (onDone) onDone(); };
-        globalAudioPlayer.onerror = () => speakFallbackSystem(clean, onDone);
-        await globalAudioPlayer.play();
-        return;
-      }
-
-      try {
-        const url = `${VOICE_SERVER_BASE}/speak?text=${encodeURIComponent(clean)}&voice=hi-IN-MadhurNeural`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("Render voice error");
-        const audioUrl = URL.createObjectURL(await res.blob());
-        voiceCache.set(clean, audioUrl);
-        globalAudioPlayer.src = audioUrl;
-        globalAudioPlayer.playbackRate = playbackSpeed;
-        globalAudioPlayer.onended = () => { if (onDone) onDone(); };
-        await globalAudioPlayer.play();
-      } catch (e) {
-        speakFallbackSystem(clean, onDone);
-      }
-    }
-
-    function speakFallbackSystem(clean, onDone) {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-        const utt = new SpeechSynthesisUtterance(clean);
-        utt.lang = "hi-IN";
-        utt.rate = playbackSpeed;
-        utt.onend = utt.onerror = () => { if (onDone) onDone(); };
-        window.speechSynthesis.speak(utt);
+        globalAudioPlayer.onerror = () => {
+          setTimeout(() => { if (onDone) onDone(); }, 2400 / playbackSpeed);
+        };
+        globalAudioPlayer.play().catch(() => {
+          setTimeout(() => { if (onDone) onDone(); }, 2400 / playbackSpeed);
+        });
       } else {
         setTimeout(() => { if (onDone) onDone(); }, 2400 / playbackSpeed);
       }
     }
 
     // =========================================================
-    // SEAMLESS NATURAL TEACHER FLOW (NO ROBOTIC INTERRUPTIONS)
+    // STRICT LANDSCAPE GATE (NEVER SPEAKS WHILE PORTRAIT!)
     // =========================================================
-    function openContinuousWhiteboard(startBlockIdx = 0) {
+    function isDeviceLandscape() {
+      return window.innerWidth > window.innerHeight;
+    }
+
+    function prepareWhiteboardGate(startBlockIdx = 0) {
+      isWbSessionOpen = true;
+      hasClassStartedInLandscape = false;
+      pendingStartBlockIndex = startBlockIdx;
+
       document.getElementById("mainAppShell").classList.add("hidden");
       const wb = document.getElementById("wbScreen");
       wb.classList.add("open");
       wb.classList.add("controls-hidden");
-      forceFullLandscape();
+
+      if (isDeviceLandscape()) {
+        document.getElementById("portraitLockScreen").classList.remove("show");
+        startWhiteboardLessonNow(pendingStartBlockIndex);
+      } else {
+        document.getElementById("portraitLockScreen").classList.add("show");
+      }
+    }
+
+    function handleViewportOrientationChange() {
+      if (!isWbSessionOpen) return;
+      if (isDeviceLandscape()) {
+        document.getElementById("portraitLockScreen").classList.remove("show");
+        if (!hasClassStartedInLandscape) {
+          startWhiteboardLessonNow(pendingStartBlockIndex);
+        }
+      } else {
+        document.getElementById("portraitLockScreen").classList.add("show");
+        if (hasClassStartedInLandscape && isWbPlaying) {
+          isWbPlaying = false;
+          stopAllVoices();
+          clearActiveQuizTimer();
+          document.getElementById("btnPlayPause").textContent = "▶️";
+        }
+      }
+    }
+
+    window.addEventListener("resize", handleViewportOrientationChange);
+    window.addEventListener("orientationchange", () => {
+      setTimeout(handleViewportOrientationChange, 250);
+    });
+
+    function startWhiteboardLessonNow(startBlockIdx = 0) {
+      hasClassStartedInLandscape = true;
+      const activeStudent = getDisplayStudentName();
 
       document.getElementById("wbCrumbTitle").textContent = currentLessonMeta.topic;
       document.getElementById("notebookTopicBanner").textContent = `${currentLessonMeta.subject} • ${currentLessonMeta.topic}`;
+
+      const layout = document.getElementById("continuousBoardLayout");
+      layout.classList.remove("has-diagram");
 
       const streamBody = document.getElementById("notebookStreamBody");
       streamBody.innerHTML = "";
@@ -1548,7 +1687,7 @@
         const roadmapDiv = document.createElement("div");
         roadmapDiv.className = "roadmap-card";
         roadmapDiv.innerHTML = `
-          <div style="font-size:13.5px;font-weight:900;color:#0369a1;">📋 आज की क्लास का क्रम:</div>
+          <div style="font-size:13.5px;font-weight:900;color:#0369a1;">📋 आज हम इस क्लास में क्या-क्या सीखेंगे:</div>
           <ul class="roadmap-list">
             ${sectionTitles.map(t => `<li>• ${renderMathFractions(t)}</li>`).join("")}
           </ul>
@@ -1562,7 +1701,7 @@
       isWbPlaying = true;
       document.getElementById("btnPlayPause").textContent = "⏸️";
 
-      const introSpeech = `चलो ${getDisplayStudentName()}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`;
+      const introSpeech = `चलो ${activeStudent}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`;
       speakExactText(introSpeech, () => {
         if (isWbPlaying) processNextBlock();
       });
@@ -1617,32 +1756,69 @@
       }, speedMs);
     }
 
-    function renderDiagramOnRightBoard(block) {
+    // =========================================================
+    // 3-LAYER SMART DIAGRAM ENGINE (SHOWS ONLY WHEN NEEDED & AUTO-HIDES)
+    // =========================================================
+    function updateRightDiagramStage(block) {
+      const layout = document.getElementById("continuousBoardLayout");
       const diagCard = document.getElementById("stickyDiagramCard");
-      const matchedImage = block.image ? encodeURI(block.image) : findMatchingRepoImage(`${currentLessonMeta.topic} ${block.title || ""}`);
-      const fallbackSvg = `<svg id="liveStepSvg" viewBox="0 0 340 195" width="100%" height="190">${block.svgBase || block.svg || ""}</svg>`;
 
-      if (matchedImage) {
-        diagCard.innerHTML = `
-          <img src="${matchedImage}" alt="${block.diagramCaption || "Diagram"}"
-               style="width:100%;max-height:205px;object-fit:contain;border-radius:12px;background:#ffffff;"
-               onerror="this.parentElement.innerHTML='${fallbackSvg.replace(/"/g, "&quot;")}<div class=\\'diag-hand-note\\'>${renderMathFractions(block.diagramCaption || "").replace(/'/g, "\\'")}</div>'">
-          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
-        `;
-      } else {
-        diagCard.innerHTML = `
-          ${fallbackSvg}
-          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
-        `;
+      if (!block || block.type === "quiz") {
+        layout.classList.remove("has-diagram");
+        return false;
       }
+
+      let imgUrl = null;
+      if (block.image) {
+        imgUrl = encodeURI(block.image);
+      } else if (block.diagramPrompt) {
+        imgUrl = findMatchingRepoImage(`${currentLessonMeta.topic} ${block.title || ""} ${block.diagramPrompt}`) || buildAiTextbookDiagramUrl(block.diagramPrompt);
+      }
+
+      if (!imgUrl) {
+        layout.classList.remove("has-diagram");
+        return false;
+      }
+
+      layout.classList.add("has-diagram");
+      diagCard.innerHTML = `
+        <img src="${imgUrl}" alt="${block.diagramCaption || "Diagram"}"
+             onerror="document.getElementById('continuousBoardLayout').classList.remove('has-diagram')">
+        <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
+      `;
+      return true;
+    }
+
+    function finishLessonWithFarewell() {
+      const activeStudent = getDisplayStudentName();
+      isWbPlaying = false;
+      clearActiveQuizTimer();
+      localStorage.removeItem("nd_wb_resume_data");
+      document.getElementById("continuousBoardLayout").classList.remove("has-diagram");
+
+      const streamBody = document.getElementById("notebookStreamBody");
+      const byeCard = document.createElement("div");
+      byeCard.className = "farewell-card";
+      byeCard.innerHTML = `
+        <div style="font-size:36px;margin-bottom:6px;">🎉</div>
+        <h3 style="font-size:18px;font-weight:900;color:#15803d;">${activeStudent}, आज की क्लास पूरी हुई!</h3>
+        <p style="font-size:13.5px;font-weight:700;color:#334155;margin-top:4px;">कल फिर मिलते हैं नई क्लास में। वापस होम स्क्रीन पर लौट रहे हैं...</p>
+      `;
+      streamBody.appendChild(byeCard);
+      autoScrollNotebookBottom();
+
+      const farewellSpeech = `${activeStudent}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`;
+      speakExactText(farewellSpeech, () => {
+        setTimeout(() => {
+          exitWhiteboard();
+        }, 1800);
+      });
     }
 
     function processNextBlock() {
       if (!isWbPlaying) return;
       if (currentBlockIndex >= lessonBlocks.length) {
-        isWbPlaying = false;
-        document.getElementById("btnPlayPause").textContent = "🔄";
-        localStorage.removeItem("nd_wb_resume_data");
+        finishLessonWithFarewell();
         return;
       }
 
@@ -1650,10 +1826,13 @@
       const block = lessonBlocks[currentBlockIndex];
       document.getElementById("wbStepStatus").textContent = `भाग ${currentBlockIndex + 1} / ${lessonBlocks.length}`;
       const streamBody = document.getElementById("notebookStreamBody");
+      const activeStudent = getDisplayStudentName();
 
-      renderDiagramOnRightBoard(block);
+      const hasDiagramShown = updateRightDiagramStage(block);
 
+      // INLINE QUIZ WITH 2-MINUTE (120s) TICK-TOCK TIMER
       if (block.type === "quiz") {
+        clearActiveQuizTimer();
         const qId = `inlineQuiz-${currentBlockIndex}`;
         const labels = ["A", "B", "C", "D"];
         let optsHtml = "";
@@ -1664,18 +1843,42 @@
         const qCard = document.createElement("div");
         qCard.className = "handwritten-block inline-quiz-card";
         qCard.innerHTML = `
-          <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">🎯 अभ्यास प्रश्न</div>
+          <div class="quiz-header-row">
+            <span style="font-size:12px;font-weight:800;color:#ea580c;">🎯 अभ्यास प्रश्न</span>
+            <span class="quiz-timer-badge" id="${qId}-timer">⏳ 02:00</span>
+          </div>
           <div style="font-size:16px;font-weight:800;">${renderMathFractions(block.question)}</div>
           <div class="quiz-opts-grid">${optsHtml}</div>
-          <div id="${qId}-note" style="margin-top:8px;font-size:13.5px;font-weight:800;"></div>
+          <div id="${qId}-note" style="margin-top:9px;font-size:13.5px;font-weight:800;"></div>
         `;
         streamBody.appendChild(qCard);
         autoScrollNotebookBottom();
 
-        speakExactText(`चलो एक प्रश्न हल करते हैं: ${block.question}`);
+        let secondsLeft = 120;
+        activeQuizTimerInterval = setInterval(() => {
+          secondsLeft--;
+          const timerEl = document.getElementById(`${qId}-timer`);
+          if (!timerEl) {
+            clearActiveQuizTimer();
+            return;
+          }
+          const mins = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
+          const secs = String(secondsLeft % 60).padStart(2, "0");
+          timerEl.textContent = `⏳ ${mins}:${secs}`;
+          if (secondsLeft <= 15) timerEl.classList.add("urgent");
+          playTickSound(secondsLeft <= 15);
+
+          if (secondsLeft <= 0) {
+            clearActiveQuizTimer();
+            handleQuizTimeout(currentBlockIndex);
+          }
+        }, 1000);
+
+        speakExactText(`चलो ${activeStudent}, एक प्रश्न हल करते हैं: ${block.question}`);
         return;
       }
 
+      // HANDWRITTEN TOPIC BLOCK
       const blkEl = document.createElement("div");
       blkEl.className = "handwritten-block";
       if (block.id) blkEl.id = block.id;
@@ -1685,7 +1888,7 @@
       autoScrollNotebookBottom();
 
       const startWritingBlock = () => {
-        if (block.diagramVoice) {
+        if (hasDiagramShown && block.diagramVoice) {
           speakExactText(block.diagramVoice, () => {
             currentLineIndex = 0;
             if (isWbPlaying) writeNextLineInBlock(blkEl, block);
@@ -1722,15 +1925,6 @@
       blkEl.appendChild(lineDiv);
       autoScrollNotebookBottom();
 
-      if (lineObj.drawSvg) {
-        const liveSvg = document.getElementById("liveStepSvg");
-        if (liveSvg) {
-          const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-          g.innerHTML = lineObj.drawSvg;
-          liveSvg.appendChild(g);
-        }
-      }
-
       typeLineWithHandPen(lineDiv, lineObj.text, 24);
       currentLineIndex++;
 
@@ -1740,7 +1934,27 @@
       });
     }
 
+    function handleQuizTimeout(blkIdx) {
+      const block = lessonBlocks[blkIdx];
+      const qId = `inlineQuiz-${blkIdx}`;
+      const activeStudent = getDisplayStudentName();
+      document.querySelectorAll(`[id^="${qId}-opt-"]`).forEach(b => b.disabled = true);
+      const rightBtn = document.getElementById(`${qId}-opt-${block.correctIndex}`);
+      if (rightBtn) rightBtn.classList.add("right");
+      const note = document.getElementById(`${qId}-note`);
+      if (note) {
+        note.style.color = "#ea580c";
+        note.innerHTML = `⏰ समय समाप्त! सही उत्तर: ${renderMathFractions(block.options[block.correctIndex])}`;
+      }
+      speakExactText(`दो मिनट पूरे हो गए ${activeStudent}, इसका सही उत्तर है ${block.options[block.correctIndex]}। चलो अब आगे बढ़ते हैं।`, () => {
+        currentBlockIndex++;
+        isWbPlaying = true;
+        setTimeout(() => processNextBlock(), 900);
+      });
+    }
+
     window.answerInlineQuiz = function(blkIdx, chosenIdx) {
+      clearActiveQuizTimer();
       const block = lessonBlocks[blkIdx];
       const qId = `inlineQuiz-${blkIdx}`;
       const activeStudent = getDisplayStudentName();
@@ -1750,8 +1964,8 @@
       if (chosenIdx === block.correctIndex) {
         document.getElementById(`${qId}-opt-${chosenIdx}`).classList.add("right");
         note.style.color = "#15803d";
-        note.innerHTML = `🎉 बिल्कुल सही! ${renderMathFractions(block.explanation)}`;
-        speakExactText(`शाबाश ${activeStudent}, बिल्कुल सही! ${block.explanation}`, () => {
+        note.innerHTML = `🎉 शाबाश ${activeStudent}! ${renderMathFractions(block.explanation)}`;
+        speakExactText(`शाबाश ${activeStudent}, बिल्कुल सही जवाब! ${block.explanation} चलो अब आगे बढ़ते हैं।`, () => {
           currentBlockIndex++;
           isWbPlaying = true;
           setTimeout(() => processNextBlock(), 900);
@@ -1761,10 +1975,10 @@
         document.getElementById(`${qId}-opt-${block.correctIndex}`).classList.add("right");
         note.style.color = "#dc2626";
         note.innerHTML = `❌ सही उत्तर: ${renderMathFractions(block.options[block.correctIndex])} (${renderMathFractions(block.explanation)})`;
-        speakExactText(`सही उत्तर है ${block.options[block.correctIndex]}। ${block.explanation}`, () => {
+        speakExactText(`कोई बात नहीं ${activeStudent}, इसका सही उत्तर है ${block.options[block.correctIndex]}। ${block.explanation} चलो अब आगे बढ़ते हैं।`, () => {
           currentBlockIndex++;
           isWbPlaying = true;
-          setTimeout(() => processNextBlock(), 1100);
+          setTimeout(() => processNextBlock(), 1000);
         });
       }
     };
@@ -1773,6 +1987,7 @@
       if (isWbPlaying) {
         isWbPlaying = false;
         stopAllVoices();
+        clearActiveQuizTimer();
         document.getElementById("btnPlayPause").textContent = "▶️";
       } else {
         isWbPlaying = true;
@@ -1788,6 +2003,7 @@
     window.openDoubtPrompt = function() {
       isWbPlaying = false;
       stopAllVoices();
+      clearActiveQuizTimer();
       document.getElementById("btnPlayPause").textContent = "▶️";
       document.getElementById("userDoubtField").value = "";
       document.getElementById("doubtModalMask").classList.add("open");
@@ -1831,9 +2047,13 @@
     };
 
     window.exitWhiteboard = function() {
+      isWbSessionOpen = false;
+      hasClassStartedInLandscape = false;
       isWbPlaying = false;
       stopAllVoices();
+      clearActiveQuizTimer();
       checkSavedProgress();
+      document.getElementById("portraitLockScreen").classList.remove("show");
       document.getElementById("wbScreen").classList.remove("open");
       document.getElementById("mainAppShell").classList.remove("hidden");
     };
@@ -1841,7 +2061,11 @@
     window.forceFullLandscape = function() {
       const el = document.documentElement;
       if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
-      if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(() => {});
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").then(() => {
+          setTimeout(handleViewportOrientationChange, 250);
+        }).catch(() => {});
+      }
     };
 
     window.openProfileOrLoginModal = function() {
