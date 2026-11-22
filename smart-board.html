@@ -1681,10 +1681,12 @@
     // INSTANT ZERO-GAP AUDIO PLAYER (PLAYS FROM PRELOADED CACHE)
     // =========================================================
     function stopAllVoices() {
-      if (activeTypingTimer) {
+      
+            if (activeTypingTimer) {
         clearInterval(activeTypingTimer);
         activeTypingTimer = null;
       }
+
       if (globalAudioPlayer) {
         globalAudioPlayer.pause();
         globalAudioPlayer.currentTime = 0;
@@ -1811,11 +1813,13 @@
     // =========================================================
     // LIVE PEN TEACHING ENGINE (WRITE FIRST -> EXPLAIN -> DRAW RED LINE/CIRCLE)
     // =========================================================
-    function typeHtmlProgressively(element, fullHtml, speedMs, onComplete) {
-      if (activeTypingTimer) clearInterval(activeTypingTimer);
+    
+        function typeHtmlProgressively(element, fullHtml, speedMs, onComplete) {
+      if (!element) return;
+      if (element._typingTimer) clearInterval(element._typingTimer);
       element.innerHTML = "";
       let idx = 0;
-      activeTypingTimer = setInterval(() => {
+      element._typingTimer = setInterval(() => {
         if (fullHtml[idx] === "<") {
           const closeTag = fullHtml.indexOf(">", idx);
           if (closeTag !== -1) idx = closeTag + 1;
@@ -1825,8 +1829,8 @@
         }
         element.innerHTML = fullHtml.slice(0, idx);
         if (idx >= fullHtml.length) {
-          clearInterval(activeTypingTimer);
-          activeTypingTimer = null;
+          clearInterval(element._typingTimer);
+          element._typingTimer = null;
           if (onComplete) onComplete();
         }
       }, speedMs);
