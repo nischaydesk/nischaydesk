@@ -1081,24 +1081,94 @@
       color: #dc2626;
     }
 
-    /* LIVE OBJECTIVE TEST STAGE ON BOARD */
+    /* =========================================================
+       LIVE OBJECTIVE TEST STAGE + 2-MINUTE TIMER + CLICKABLE DOUBT
+       ========================================================= */
     .quiz-board-box {
       width: 100%;
-      max-width: 720px;
-      padding: 16px 24px;
+      max-width: 760px;
+      padding: 12px 20px;
+      position: relative;
+      z-index: 40;
+    }
+
+    .quiz-header-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-timer-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      border: 2px solid #2563eb;
+      color: #1d4ed8;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
+      transition: all 0.3s ease;
+    }
+
+    html[data-theme="dark"] .quiz-timer-pill {
+      background: rgba(37, 99, 235, 0.2);
+      color: #60a5fa;
+    }
+
+    .quiz-timer-pill.warning {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #dc2626;
+      animation: timerPulse 0.8s infinite alternate;
+    }
+
+    @keyframes timerPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
+    .quiz-q-card {
+      background: var(--bg-app);
+      border: 1.5px dashed var(--accent-blue);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.2s;
+    }
+
+    .quiz-q-card:active {
+      transform: scale(0.99);
     }
 
     .quiz-q-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--text-primary);
-      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .quiz-doubt-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #ea580c;
     }
 
     .quiz-opts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 11px;
     }
 
     .quiz-opt-card {
@@ -1194,7 +1264,7 @@
 
     .app-modal-card {
       width: 100%;
-      max-width: 390px;
+      max-width: 410px;
       background: var(--bg-surface);
       color: var(--text-primary);
       border: 1.5px solid var(--border-subtle);
@@ -1280,25 +1350,37 @@
 
     <!-- TWO CORE MODES -->
     <div class="mode-switcher-wrap">
-      <div class="mode-card active" id="cardModeAI" onclick="switchAppMode('ai')">
+      <div class="mode-card active" id="cardModeSyllabus" onclick="switchAppMode('syllabus')">
+        <div class="mode-card-icon">📚</div>
+        <h3>चैप्टर सिलेबस</h3>
+        <p>हर विषय व टॉपिक की डिटेल स्मार्ट क्लास</p>
+      </div>
+
+      <div class="mode-card" id="cardModeAI" onclick="switchAppMode('ai')">
         <div class="mode-card-icon">✨</div>
         <h3>AI लाइव सेशन</h3>
         <p>कोई भी टॉपिक लिखो, लाइव वीडियो क्लास बनेगी</p>
       </div>
-
-      <div class="mode-card" id="cardModeSyllabus" onclick="switchAppMode('syllabus')">
-        <div class="mode-card-icon">📚</div>
-        <h3>चैप्टर सिलेबस</h3>
-        <p>विषय व टॉपिक-वाइज स्मार्ट क्लास</p>
-      </div>
     </div>
 
-    <!-- MODE A: AI LIVE SESSION GENERATOR -->
-    <section class="ai-studio-section active" id="viewAIStudio">
+    <!-- MODE A: SYLLABUS VIEW (ALL SUBJECTS FROM data/lession-syllabus.json) -->
+    <section class="syllabus-section active" id="viewSyllabus">
+      <div class="subject-scroller" id="subjectScroller"></div>
+
+      <div class="chapter-list-header">
+        <h3 id="activeSubjectHeading">अध्ययन विषय</h3>
+        <span class="count-badge" id="activeChapterCount">सिलेबस</span>
+      </div>
+
+      <div id="chapterCardsContainer"></div>
+    </section>
+
+    <!-- MODE B: AI LIVE SESSION GENERATOR -->
+    <section class="ai-studio-section" id="viewAIStudio">
       <div class="studio-box">
         <div class="studio-live-badge">⚡ INTERACTIVE SMART CLASSROOM</div>
         <h2>✨ किसी भी टॉपिक पर लाइव स्मार्ट क्लास शुरू करें</h2>
-        <p>अपना टॉपिक टाइप करें—टीचर पहले आपका नाम लेकर परिचय देगा, फिर हर स्लाइड पर नया चित्र बनाकर समझाएगा और अंत में टेस्ट भी लेगा!</p>
+        <p>अपना टॉपिक टाइप करें—टीचर पहले आपका नाम लेकर परिचय देगा, फिर हर स्लाइड पर नया चित्र बनाकर समझाएगा और अंत में 2 मिनट के टाइमर वाला टेस्ट भी लेगा!</p>
         <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: ओम का नियम, प्रकाश संश्लेषण, या त्रिकोणमिति...">
         <div class="studio-chips">
           <span class="topic-suggestion" onclick="fillTopic('ओम का नियम (Ohm\'s Law)')">⚡ ओम का नियम</span>
@@ -1313,27 +1395,15 @@
       </div>
     </section>
 
-    <!-- MODE B: SYLLABUS VIEW -->
-    <section class="syllabus-section" id="viewSyllabus">
-      <div class="subject-scroller" id="subjectScroller"></div>
-
-      <div class="chapter-list-header">
-        <h3 id="activeSubjectHeading">अध्ययन विषय</h3>
-        <span class="count-badge" id="activeChapterCount">सिलेबस</span>
-      </div>
-
-      <div id="chapterCardsContainer"></div>
-    </section>
-
     <!-- NATIVE APP BOTTOM DOCK -->
     <nav class="native-bottom-dock">
-      <div class="dock-tab active" id="dockAI" onclick="switchAppMode('ai')">
-        <span class="ico">✨</span>
-        <span>लाइव सेशन</span>
-      </div>
-      <div class="dock-tab" id="dockSyllabus" onclick="switchAppMode('syllabus')">
+      <div class="dock-tab active" id="dockSyllabus" onclick="switchAppMode('syllabus')">
         <span class="ico">📚</span>
         <span>सभी विषय</span>
+      </div>
+      <div class="dock-tab" id="dockAI" onclick="switchAppMode('ai')">
+        <span class="ico">✨</span>
+        <span>लाइव सेशन</span>
       </div>
       <div class="dock-tab" onclick="openProfileOrLoginModal()">
         <span class="ico">👤</span>
@@ -1368,8 +1438,8 @@
     <h3 id="prepTitle" style="font-size: 19px; font-weight: 900;">स्मार्ट बोर्ड तैयार हो रहा है...</h3>
     <div class="prep-steps-box">
       <div class="prep-step" id="pStep1">⏳ 1. छात्र के नाम से परिचय (Intro) सेट हो रहा है...</div>
-      <div class="prep-step" id="pStep2">⏳ 2. हर स्लाइड के लिए कस्टम चित्र बन रहे हैं...</div>
-      <div class="prep-step" id="pStep3">⏳ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...</div>
+      <div class="prep-step" id="pStep2">⏳ 2. हर स्लाइड के लिए कस्टम चित्र लोड हो रहे हैं...</div>
+      <div class="prep-step" id="pStep3">⏳ 3. 2 मिनट का लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...</div>
     </div>
   </div>
 
@@ -1429,8 +1499,8 @@
   <div class="app-modal-mask" id="doubtModalMask" onclick="closeAllMasks(event)">
     <div class="app-modal-card">
       <h3 style="font-size: 17px; font-weight: 900;">🤔 क्या चीज़ समझ नहीं आई?</h3>
-      <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
-      <input type="text" id="userDoubtField" placeholder="जैसे: यह सूत्र कैसे आया? या परिभाषा फिर से बताइए...">
+      <p id="doubtContextLabel" style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
+      <input type="text" id="userDoubtField" placeholder="जैसे: यह उत्तर कैसे आया? या परिभाषा फिर से बताइए...">
       <div style="display: flex; gap: 8px; justify-content: flex-end;">
         <button class="c-btn" onclick="document.getElementById('doubtModalMask').classList.remove('open')">बंद करें</button>
         <button class="c-btn blue" onclick="submitDoubtExplanation()">समझाएं 🧠</button>
@@ -1440,7 +1510,7 @@
 
   <script>
     // =========================================================
-    // 🔒 ENCODED API KEY & 3-TIER VOICE CONFIG (SAME AS AI STUDIO)
+    // 🔒 ENCODED API KEY & 3-TIER VOICE CONFIG
     // =========================================================
     function getDecodedKey() {
       const _s = [70, 86, 51, 70, 103, 61, 87, 83, 59, 79, 94, 125, 110, 110, 110, 104, 95, 110, 121, 121, 122, 95, 83, 59, 80, 56, 112, 120, 111, 92, 111, 71, 119, 122, 115, 91, 79, 95, 60, 55, 115, 70, 113, 77, 75, 62, 50, 90, 108, 76, 53, 124, 86];
@@ -1450,12 +1520,31 @@
     const MODEL_NAME = "gemini-3.5-flash-lite";
     const FALLBACK_MODEL = "gemini-2.5-flash";
 
-    // 3-Tier Human Voice Setup (1. ElevenLabs -> 2. Edge-TTS -> 3. Default)
     const ELEVEN_KEY = "sk_db06af05bfb315577f97a9fba3d24b673ecdbc025b54bd55";
     const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
 
     // =========================================================
-    // THEME ENGINE (LIGHT / DARK SYNCED WITH INDEX.HTML)
+    // 📂 SUBJECT-WISE JSON FILES MAPPING (ALL INSIDE data/ FOLDER)
+    // =========================================================
+    const SYLLABUS_MASTER_FILE = "data/lession-syllabus.json";
+    const SUBJECT_LESSON_FILES = {
+      physics: "data/lessons/physics.json",
+      chemistry: "data/lessons/chemistry.json",
+      biology: "data/lessons/biology.json",
+      math: "data/lessons/math.json",
+      history: "data/lessons/history.json",
+      geography: "data/lessons/geography.json",
+      disaster: "data/lessons/disaster.json",
+      civics: "data/lessons/civics.json",
+      economics: "data/lessons/economics.json",
+      hindi_gadya: "data/lessons/hindi_gadya.json",
+      hindi_kavya: "data/lessons/hindi_kavya.json",
+      hindi_varnika: "data/lessons/hindi_varnika.json",
+      sanskrit: "data/lessons/sanskrit.json"
+    };
+
+    // =========================================================
+    // THEME ENGINE (LIGHT / DARK SYNCED)
     // =========================================================
     function applyThemeUI(theme) {
       document.documentElement.setAttribute("data-theme", theme);
@@ -1475,12 +1564,12 @@
     applyThemeUI(localStorage.getItem("nd_app_theme") || "light");
 
     // =========================================================
-    // STATE MANAGEMENT (NO HARDCODED USER NAME)
+    // STATE MANAGEMENT
     // =========================================================
     let studentName = localStorage.getItem("nd_virtual_student_name") || "";
     let firebaseUser = null;
     let externalSyllabus = null;
-    let externalLessonsPack = {};
+    const loadedSubjectLessons = {};
     let activeSubjectKey = null;
 
     let isWbPlaying = false;
@@ -1490,6 +1579,11 @@
     let globalAudioPlayer = new Audio();
     let currentAudioUrl = null;
     const voiceCache = new Map();
+
+    // ⏱️ 2-Minute Quiz Countdown Timer State
+    let quizTimerInterval = null;
+    let quizRemainingSeconds = 120;
+    let activeDoubtQuestionContext = "";
 
     function getDisplayStudentName() {
       return studentName && studentName.trim() !== "" ? studentName.trim() : "प्यारे छात्र";
@@ -1524,11 +1618,11 @@
     }
 
     // =========================================================
-    // LOAD EXTERNAL CONTENT DATA
+    // LOAD MASTER SYLLABUS & SUBJECT LESSON JSONs FROM data/
     // =========================================================
     async function loadExternalContent() {
       try {
-        const res = await fetch("data/syllabus-10th.json");
+        const res = await fetch(SYLLABUS_MASTER_FILE);
         if (res.ok) {
           externalSyllabus = await res.json();
           const keys = Object.keys(externalSyllabus);
@@ -1543,15 +1637,21 @@
       } catch (e) {
         renderSyllabusPendingNotice();
       }
+    }
 
+    async function fetchSubjectLessonPack(subjKey) {
+      if (loadedSubjectLessons[subjKey]) return loadedSubjectLessons[subjKey];
+      const filePath = SUBJECT_LESSON_FILES[subjKey];
+      if (!filePath) return null;
       try {
-        const lRes = await fetch("data/lessons-pack.json");
-        if (lRes.ok) {
-          externalLessonsPack = await lRes.json();
+        const res = await fetch(filePath);
+        if (res.ok) {
+          const jsonData = await res.json();
+          loadedSubjectLessons[subjKey] = jsonData;
+          return jsonData;
         }
-      } catch (e) {
-        externalLessonsPack = {};
-      }
+      } catch (e) {}
+      return null;
     }
 
     function renderSyllabusPendingNotice() {
@@ -1560,9 +1660,9 @@
       document.getElementById("chapterCardsContainer").innerHTML = `
         <div class="pending-library-card">
           <div style="font-size: 40px; margin-bottom: 8px;">📚</div>
-          <h4 style="font-size: 16px; font-weight: 900; margin-bottom: 6px;">सभी विषयों के चैप्टर जल्द जुड़ रहे हैं</h4>
+          <h4 style="font-size: 16px; font-weight: 900; margin-bottom: 6px;">सिलेबस फाइल लोड नहीं हुई</h4>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 420px; margin: 0 auto 14px;">
-            तब तक आप <b>लाइव सेशन</b> में जाकर किसी भी टॉपिक का नाम लिखकर तुरंत वीडियो क्लास शुरू कर सकते हैं।
+            कृपया सुनिश्चित करें कि <b>data/lession-syllabus.json</b> उपलब्ध है, या अभी <b>लाइव सेशन</b> चलाएं।
           </p>
           <button class="generate-video-btn" style="max-width: 280px; margin: 0 auto; padding: 12px; background: linear-gradient(135deg,#2563eb,#0284c7); color:#fff;" onclick="switchAppMode('ai')">
             ✨ अभी लाइव सेशन चलाएं
@@ -1698,12 +1798,12 @@
           </div>
           <div class="ch-arrow">›</div>
         `;
-        card.onclick = () => openChapterTopicsSheet(subj.title, ch);
+        card.onclick = () => openChapterTopicsSheet(subjKey, subj.title, ch);
         grid.appendChild(card);
       });
     }
 
-    function openChapterTopicsSheet(subjectName, chapterObj) {
+    function openChapterTopicsSheet(subjKey, subjectName, chapterObj) {
       document.getElementById("sheetSubjectTag").textContent = subjectName;
       document.getElementById("sheetChapterTitle").textContent = chapterObj.name;
 
@@ -1723,7 +1823,7 @@
         `;
         btn.onclick = () => {
           document.getElementById("topicSheetMask").classList.remove("open");
-          prepareAndLaunchLesson(subjectName, topicTitle, chapterObj.id);
+          prepareAndLaunchLesson(subjKey, subjectName, topicTitle, chapterObj.id);
         };
         list.appendChild(btn);
       });
@@ -1747,11 +1847,11 @@
         alert("कृपया पहले कोई टॉपिक लिखें!");
         return;
       }
-      prepareAndLaunchLesson("LIVE CLASS", val, null);
+      prepareAndLaunchLesson(null, "LIVE CLASS", val, null);
     };
 
     // =========================================================
-    // AI FREEFORM LESSON GENERATOR (SAME HEADER & KEY AS STUDIO)
+    // AI & SUBJECT JSON LESSON LOADER
     // =========================================================
     async function requestDynamicSlidesFromAI(modelToUse, promptText) {
       const activeKey = getDecodedKey();
@@ -1782,7 +1882,7 @@
       return JSON.parse(rawText);
     }
 
-    async function prepareAndLaunchLesson(subjectLabel, fullTopicTitle, lessonId) {
+    async function prepareAndLaunchLesson(subjKey, subjectLabel, fullTopicTitle, chapterId) {
       const activeStudent = getDisplayStudentName();
       const prep = document.getElementById("prepOverlay");
       const s1 = document.getElementById("pStep1");
@@ -1790,29 +1890,40 @@
       const s3 = document.getElementById("pStep3");
 
       s1.className = "prep-step"; s1.textContent = `⏳ 1. "${activeStudent}" के नाम से परिचय (Intro) सेट हो रहा है...`;
-      s2.className = "prep-step"; s2.textContent = "⏳ 2. हर स्लाइड के लिए कस्टम चित्र बन रहे हैं...";
-      s3.className = "prep-step"; s3.textContent = "⏳ 3. लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...";
+      s2.className = "prep-step"; s2.textContent = "⏳ 2. हर स्लाइड के लिए कस्टम चित्र लोड हो रहे हैं...";
+      s3.className = "prep-step"; s3.textContent = "⏳ 3. 2 मिनट का लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...";
       prep.classList.add("open");
 
-      setTimeout(() => { s1.classList.add("done"); s1.textContent = `✅ 1. "${activeStudent}" के नाम से परिचय तैयार!`; }, 450);
-      setTimeout(() => { s2.classList.add("done"); s2.textContent = "✅ 2. कस्टम चित्र और स्लाइड्स तैयार हो रहे हैं!"; }, 900);
+      setTimeout(() => { s1.classList.add("done"); s1.textContent = `✅ 1. "${activeStudent}" के नाम से परिचय तैयार!`; }, 400);
+      setTimeout(() => { s2.classList.add("done"); s2.textContent = "✅ 2. कस्टम चित्र और स्लाइड्स तैयार हो रहे हैं!"; }, 800);
 
-      if (lessonId && externalLessonsPack[lessonId]) {
-        const packData = JSON.parse(JSON.stringify(externalLessonsPack[lessonId]));
-        currentLessonSlides = packData.slides.map(sl => {
+      let foundPrebuiltSlides = null;
+
+      // 1. Check data/lessons/<subject>.json first
+      if (subjKey && chapterId) {
+        const subjectPack = await fetchSubjectLessonPack(subjKey);
+        if (subjectPack && subjectPack[chapterId] && subjectPack[chapterId][fullTopicTitle]) {
+          foundPrebuiltSlides = JSON.parse(JSON.stringify(subjectPack[chapterId][fullTopicTitle].slides));
+        }
+      }
+
+      if (foundPrebuiltSlides && foundPrebuiltSlides.length > 0) {
+        currentLessonSlides = foundPrebuiltSlides.map(sl => {
           if (sl.voice) sl.voice = sl.voice.replace(/{{STUDENT}}/g, activeStudent);
+          if (sl.hook) sl.hook = sl.hook.replace(/{{STUDENT}}/g, activeStudent);
           return sl;
         });
       } else {
+        // 2. Otherwise generate dynamically via AI
         const prompt = `तुम एक रचनात्मक, विश्वस्तरीय भारतीय शिक्षक हो जो छात्र "${activeStudent}" को विषय "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर लाइव स्मार्ट बोर्ड क्लास दे रहे हो।
         तुम्हें पूरी छूट है! टॉपिक की गहराई के अनुसार अपने मन से 4 से 5 अलग-अलग स्लाइड्स बनाओ ताकि छात्र को असली वीडियो लेक्चर जैसा अनुभव मिले।
 
         सख्त नियम:
         1. पहली स्लाइड ("type": "intro") होनी चाहिए: सीधे परिभाषा मत रटाना! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी की एक मज़ेदार घटना या सवाल (hook) से परिचय दो, और दाईं तरफ के लिए उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 340 200' width='100%' height='190'>...</svg> चित्र बनाओ।
-        2. बीच की 2 से 3 स्लाइड्स ("type": "lesson") होनी चाहिए: हर स्लाइड में टॉपिक का अगला भाग समझाओ, 2-3 मुख्य बिंदु (<span class='red-under'>मुख्य शब्द</span> + छोटा नीला sideNote) लिखो, और **हर स्लाइड के लिए बिल्कुल अलग और नया वास्तविक SVG चित्र** बनाओ (जैसे पाचन तंत्र का अंग, विद्युत परिपथ, प्रिज्म, ग्राफ़ या फ्लोचार्ट)।
+        2. बीच की 2 से 3 स्लाइड्स ("type": "lesson") होनी चाहिए: हर स्लाइड में टॉपिक का अगला भाग समझाओ, 2-3 मुख्य बिंदु (<span class='red-under'>मुख्य शब्द</span> + छोटा नीला sideNote) लिखो, और हर स्लाइड के लिए बिल्कुल अलग और नया वास्तविक SVG चित्र बनाओ।
         3. आखिरी स्लाइड ("type": "quiz") होनी चाहिए: बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव प्रश्न (4 विकल्पों और व्याख्या सहित)।
 
-        केवल शुद्ध वैध संरचना में उत्तर दो (बिना किसी अतिरिक्त टेक्स्ट के):
+        केवल शुद्ध वैध संरचना में उत्तर दो:
         {
           "subject": "${subjectLabel}",
           "topic": "${fullTopicTitle}",
@@ -1870,12 +1981,12 @@
       }
 
       s3.classList.add("done");
-      s3.textContent = `✅ 3. कुल ${currentLessonSlides.length} कस्टम स्लाइड्स व टेस्ट तैयार!`;
+      s3.textContent = `✅ 3. कुल ${currentLessonSlides.length} स्लाइड्स व 2-मिनट टेस्ट तैयार!`;
 
       setTimeout(() => {
         prep.classList.remove("open");
         openWhiteboardStage(subjectLabel, fullTopicTitle);
-      }, 550);
+      }, 500);
     }
 
     // =========================================================
@@ -1909,7 +2020,6 @@
         return;
       }
 
-      // Check Cache first
       if (voiceCache.has(clean)) {
         const cachedUrl = voiceCache.get(clean);
         globalAudioPlayer.src = cachedUrl;
@@ -1983,6 +2093,68 @@
     }
 
     // =========================================================
+    // ⏱️ 2-MINUTE QUIZ COUNTDOWN TIMER ENGINE
+    // =========================================================
+    function clearQuizCountdown() {
+      if (quizTimerInterval) {
+        clearInterval(quizTimerInterval);
+        quizTimerInterval = null;
+      }
+    }
+
+    function startTwoMinuteQuizTimer() {
+      clearQuizCountdown();
+      quizRemainingSeconds = 120; // 2 Minutes = 120 Seconds
+      updateQuizTimerDisplay();
+
+      quizTimerInterval = setInterval(() => {
+        quizRemainingSeconds--;
+        updateQuizTimerDisplay();
+
+        if (quizRemainingSeconds <= 0) {
+          clearQuizCountdown();
+          handleQuizTimeUp();
+        }
+      }, 1000);
+    }
+
+    function updateQuizTimerDisplay() {
+      const pill = document.getElementById("quizTimerPill");
+      const textSpan = document.getElementById("quizTimerText");
+      if (!pill || !textSpan) return;
+
+      const mins = Math.floor(quizRemainingSeconds / 60);
+      const secs = quizRemainingSeconds % 60;
+      textSpan.textContent = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+      if (quizRemainingSeconds <= 30) {
+        pill.classList.add("warning");
+      } else {
+        pill.classList.remove("warning");
+      }
+    }
+
+    function handleQuizTimeUp() {
+      const activeStudent = getDisplayStudentName();
+      const qObj = currentLessonSlides[currentSlideIndex];
+      if (!qObj || qObj.type !== "quiz") return;
+
+      const allBtns = document.querySelectorAll(".quiz-opt-card");
+      if (allBtns.length > 0 && allBtns[0].disabled) return; // Already answered
+
+      allBtns.forEach(b => b.disabled = true);
+      const rightBtn = document.getElementById(`qOpt-${qObj.correctIndex}`);
+      if (rightBtn) rightBtn.classList.add("right");
+
+      const note = document.getElementById("quizResultNote");
+      if (note) {
+        note.style.color = "#ef4444";
+        note.textContent = `⏰ 2 मिनट का समय समाप्त! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation})`;
+      }
+      speakThreeTier(`समय समाप्त हो गया ${activeStudent}! इसका सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
+    }
+
+    // =========================================================
     // DYNAMIC MULTI-SLIDE WHITEBOARD PLAYER
     // =========================================================
     function openWhiteboardStage(subjectLabel, topicTitle) {
@@ -2000,6 +2172,9 @@
     }
 
     function renderCurrentSlide() {
+      clearQuizCountdown();
+      activeDoubtQuestionContext = "";
+
       const activeStudent = getDisplayStudentName();
       const total = currentLessonSlides.length;
       const slide = currentLessonSlides[currentSlideIndex];
@@ -2081,14 +2256,29 @@
 
         canvas.innerHTML = `
           <div class="quiz-board-box">
-            <div style="font-size:12px;font-weight:800;color:var(--accent-blue);margin-bottom:6px;">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</div>
-            <div class="quiz-q-title">${slide.question}</div>
+            <div class="quiz-header-strip">
+              <span style="font-size:12px;font-weight:800;color:var(--accent-blue);">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</span>
+              <div class="quiz-timer-pill" id="quizTimerPill">
+                <span>⏱️</span>
+                <span id="quizTimerText">02:00</span>
+              </div>
+            </div>
+
+            <!-- प्रश्न पर टैप करते ही डाउट पूछने वाला बॉक्स खुलेगा -->
+            <div class="quiz-q-card" onclick="openDoubtForCurrentQuestion()" title="इस प्रश्न पर डाउट पूछने के लिए टैप करें">
+              <div class="quiz-q-title">${slide.question}</div>
+              <div class="quiz-doubt-hint">🤔 प्रश्न पर डाउट है? यहाँ टैप करके सीधे समझें</div>
+            </div>
+
             <div class="quiz-opts-grid">${optsHtml}</div>
-            <div id="quizResultNote" style="margin-top:16px;font-size:14px;font-weight:800;"></div>
+            <div id="quizResultNote" style="margin-top:14px;font-size:14px;font-weight:800;"></div>
           </div>
         `;
 
-        speakThreeTier(`शाबाश ${activeStudent}! अब बोर्ड पर एक ऑब्जेक्टिव टेस्ट है। सवाल पढ़ो और सही विकल्प पर टैप करो: ${slide.question}`);
+        // 2 मिनट का टाइमर शुरू करें
+        startTwoMinuteQuizTimer();
+
+        speakThreeTier(`शाबाश ${activeStudent}! अब बोर्ड पर एक ऑब्जेक्टिव टेस्ट है और इसके लिए दो मिनट का समय है। सवाल पढ़ो और सही विकल्प पर टैप करो: ${slide.question}`);
       }
     }
 
@@ -2098,7 +2288,6 @@
       const pts = slide.points || [];
 
       if (currentPointIndex >= pts.length) {
-        // Check if the next slide is a quiz -> ask 👍/👎 before starting quiz
         const nextSlide = currentLessonSlides[currentSlideIndex + 1];
         if (nextSlide && nextSlide.type === "quiz") {
           const activeStudent = getDisplayStudentName();
@@ -2137,6 +2326,7 @@
 
     window.nextBoardSlide = function() {
       stopAllVoices();
+      clearQuizCountdown();
       if (currentSlideIndex < currentLessonSlides.length - 1) {
         currentSlideIndex++;
         isWbPlaying = true;
@@ -2147,6 +2337,7 @@
 
     window.prevBoardSlide = function() {
       stopAllVoices();
+      clearQuizCountdown();
       if (currentSlideIndex > 0) {
         currentSlideIndex--;
         isWbPlaying = true;
@@ -2167,11 +2358,22 @@
       stopAllVoices();
       document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
       speakThreeTier(`कोई बात नहीं ${activeStudent}! बताओ इसमें कौन सी चीज़ समझ नहीं आई, मैं अभी आसान उदाहरण से समझाता हूँ।`);
-      document.getElementById("doubtModalMask").classList.add("open");
-      document.getElementById("userDoubtField").focus();
+      openDoubtPrompt();
+    };
+
+    // प्रश्न पर टैप करने पर सीधे उस प्रश्न के लिए डाउट बॉक्स खुलेगा
+    window.openDoubtForCurrentQuestion = function() {
+      const slide = currentLessonSlides[currentSlideIndex];
+      if (slide && slide.type === "quiz") {
+        activeDoubtQuestionContext = slide.question;
+        document.getElementById("doubtContextLabel").innerHTML = `<b>प्रश्न:</b> "${slide.question}" — इस पर अपना सवाल पूछें:`;
+        document.getElementById("userDoubtField").value = "इस प्रश्न का सही उत्तर कैसे होगा, विस्तार से समझाइए?";
+      }
+      openDoubtPrompt(true);
     };
 
     window.checkBoardQuiz = function(chosenIdx) {
+      clearQuizCountdown(); // उत्तर चुनते ही 2 मिनट का टाइमर रोक दें
       const activeStudent = getDisplayStudentName();
       const qObj = currentLessonSlides[currentSlideIndex];
       document.querySelectorAll(".quiz-opt-card").forEach(b => b.disabled = true);
@@ -2180,21 +2382,26 @@
       if (chosenIdx === qObj.correctIndex) {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("right");
         note.style.color = "#16a34a";
-        note.textContent = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation})`;
+        note.innerHTML = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation}) <br><span style="font-size:12px;color:#ea580c;cursor:pointer;text-decoration:underline;" onclick="openDoubtForCurrentQuestion()">🤔 फिर भी डाउट है? यहाँ टैप करें</span>`;
         speakThreeTier(`वाह ${activeStudent}, बिल्कुल सही जवाब! ${qObj.explanation}। अब तुम वापस जाकर अगला टॉपिक चुन सकते हो।`);
       } else {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("wrong");
         document.getElementById(`qOpt-${qObj.correctIndex}`).classList.add("right");
         note.style.color = "#ef4444";
-        note.textContent = `❌ कोई बात नहीं! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation})`;
+        note.innerHTML = `❌ कोई बात नहीं! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation}) <br><span style="font-size:12px;color:#2563eb;cursor:pointer;text-decoration:underline;" onclick="openDoubtForCurrentQuestion()">🤔 क्यों? विस्तार से समझने के लिए यहाँ टैप करें</span>`;
         speakThreeTier(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
       }
     };
 
-    window.openDoubtPrompt = function() {
+    window.openDoubtPrompt = function(keepPrefill = false) {
       isWbPlaying = false;
       stopAllVoices();
       document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
+      if (!keepPrefill) {
+        activeDoubtQuestionContext = "";
+        document.getElementById("doubtContextLabel").textContent = "लिखकर पूछें—टीचर आसान उदाहरण से दोबारा समझाएगा!";
+        document.getElementById("userDoubtField").value = "";
+      }
       document.getElementById("doubtModalMask").classList.add("open");
       document.getElementById("userDoubtField").focus();
     };
@@ -2209,14 +2416,18 @@
       const canvas = document.getElementById("wbMainCanvas");
       canvas.innerHTML = `<div style="text-align:center;"><div style="font-size:46px;margin-bottom:8px;">🧠</div><h3 style="font-weight:900;">टीचर "${activeStudent}" के सवाल पर विचार कर रहे हैं...</h3></div>`;
 
+      const fullPrompt = activeDoubtQuestionContext
+        ? `छात्र "${activeStudent}" को बोर्ड परीक्षा के इस प्रश्न में डाउट है: "${activeDoubtQuestionContext}"। छात्र का सवाल: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण", "svg": "<svg viewBox='0 0 320 180' width='100%' height='175'>समझाने के लिए एक साफ़ चित्र</svg>"}`
+        : `छात्र "${activeStudent}" को यह बात समझ नहीं आई: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण", "svg": "<svg viewBox='0 0 320 180' width='100%' height='175'>समझाने के लिए एक साफ़ चित्र</svg>"}`;
+
       try {
-        const resObj = await requestDynamicSlidesFromAI(MODEL_NAME, `छात्र "${activeStudent}" को यह बात समझ नहीं आई: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण", "svg": "<svg viewBox='0 0 320 180' width='100%' height='175'>समझाने के लिए एक साफ़ चित्र</svg>"}`);
+        const resObj = await requestDynamicSlidesFromAI(MODEL_NAME, fullPrompt);
         canvas.innerHTML = `
           <div class="slide-split-grid">
             <div>
               <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
               <div style="font-size:16.5px;font-weight:700;line-height:1.55;margin-bottom:18px;">${resObj.answer}</div>
-              <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="handleUnderstandLike()">👍 अब समझ आ गया — टेस्ट दें ➔</button>
+              <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="renderCurrentSlide()">🔙 वापस प्रश्न / स्लाइड पर जाएं</button>
             </div>
             <div class="diagram-card-clean">${resObj.svg || ""}</div>
           </div>
@@ -2242,6 +2453,7 @@
     window.exitWhiteboard = function() {
       isWbPlaying = false;
       stopAllVoices();
+      clearQuizCountdown();
       document.getElementById("wbScreen").classList.remove("open");
       document.getElementById("mainAppShell").classList.remove("hidden");
     };
@@ -2270,7 +2482,12 @@
     };
 
     fCanvas.addEventListener("pointerdown", (e) => {
-      if (e.target.closest(".wb-corner-dock") || e.target.closest(".understanding-check-bar") || e.target.closest(".quiz-opt-card")) return;
+      if (
+        e.target.closest(".wb-corner-dock") ||
+        e.target.closest(".understanding-check-bar") ||
+        e.target.closest(".quiz-opt-card") ||
+        e.target.closest(".quiz-q-card")
+      ) return;
       isDrawing = true;
       fCtx.beginPath();
       fCtx.moveTo(e.clientX, e.clientY);
