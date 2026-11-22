@@ -11,7 +11,7 @@ CORS(app)
 DEFAULT_VOICE = "hi-IN-MadhurNeural"
 
 async def generate_tts_bytes(text: str, voice: str) -> bytes:
-    communicate = edge_tts.Communicate(text, voice)
+    communicate = edge_tts.Communicate(text, voice, rate="-5%", pitch="-2Hz")
     audio_stream = io.BytesIO()
     async for chunk in communicate.stream():
         if chunk["type"] == "audio":
