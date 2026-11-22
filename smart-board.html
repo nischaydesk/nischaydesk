@@ -54,7 +54,7 @@
       text-align: center;
     }
 
-    /* 1. SPLASH & 100% AUDIO PRELOADER */
+    /* 1. SPLASH & FAST AUDIO PRELOADER */
     #appSplash {
       position: fixed;
       inset: 0;
@@ -647,7 +647,7 @@
       font-weight: 700;
     }
 
-    /* RIGHT SIDE: Auto-Show & Auto-Hide Diagram Panel */
+    /* RIGHT SIDE: Auto-Show & Auto-Hide Diagram Panel with Watermark Cropper */
     .right-diagram-sticky {
       display: none;
       height: 100%;
@@ -682,12 +682,26 @@
       border-color: #334155;
     }
 
-    .diagram-card-box img {
+    .diag-img-crop-wrap {
       width: 100%;
-      max-height: 215px;
-      object-fit: contain;
+      height: 205px;
+      overflow: hidden;
       border-radius: 12px;
       background: #ffffff;
+      position: relative;
+    }
+    .diag-img-crop-wrap img {
+      width: 100%;
+      height: calc(100% + 28px);
+      margin-bottom: -28px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .diag-img-crop-wrap.local-repo img {
+      height: 100%;
+      margin-bottom: 0;
+      object-fit: contain;
     }
 
     .diag-hand-note {
@@ -841,11 +855,11 @@
     <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">असली हैंड-रिटन स्मार्ट व्हाइटबोर्ड ⚡</p>
   </div>
 
-  <!-- 2. 100% ALL-LINES AUDIO PRELOADER -->
+  <!-- 2. FAST AUDIO PRELOADER -->
   <div class="lesson-preloader" id="lessonPreloader">
     <div class="loader-ring"></div>
     <h3 id="preloadHeading" style="font-size: 18px; font-weight: 900;">मास्टर जी की क्लास तैयार हो रही है...</h3>
-    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">सारी स्लाइड्स की असली आवाज़ डाउनलोड हो रही है ताकि क्लास बिना रुके चले...</p>
+    <p style="font-size: 13px; color: #64748b; margin-top: 6px;">क्लाउड सर्वर से आवाज़ तैयार हो रही है...</p>
     <div class="preload-bar-wrap"><div class="preload-bar-fill" id="preloadBarFill"></div></div>
     <div id="preloadPercentText" style="font-size: 13px; font-weight: 800; color: #2563eb;">0% तैयार</div>
   </div>
@@ -981,7 +995,7 @@
   <div class="portrait-lock-screen" id="portraitLockScreen">
     <div style="font-size: 56px; margin-bottom: 12px;">📱</div>
     <h2 style="font-size: 20px; font-weight: 900; margin-bottom: 6px;">मोबाइल आड़ा (Landscape) करें!</h2>
-    <p style="font-size: 14px; color: #64748b; max-width: 310px; margin-bottom: 18px;">आपकी क्लास 100% तैयार है! जैसे ही आप फोन आड़ा करेंगे, मास्टर जी पढ़ाना शुरू कर देंगे।</p>
+    <p style="font-size: 14px; color: #64748b; max-width: 310px; margin-bottom: 18px;">आपकी क्लास तैयार है! जैसे ही आप फोन आड़ा करेंगे, मास्टर जी पढ़ाना शुरू कर देंगे।</p>
     <div style="display:flex;gap:10px;">
       <button style="background:#f1f5f9;color:#0f172a;border:none;padding:12px 18px;border-radius:12px;font-weight:800;" onclick="exitWhiteboard()">← वापस</button>
       <button style="background:#2563eb;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:800;" onclick="forceFullLandscape()">⛶ फुल-स्क्रीन आड़ा करें</button>
@@ -1039,7 +1053,6 @@
       sanskrit: "data/10-sanskrit.json"
     };
 
-    // Local GitHub image/ library
     const TOPIC_IMAGE_LIBRARY = [
       { keys: ["फ्लेमिंग", "वाम", "fleming", "left hand"], file: "image/Fleming left hand rule .png" },
       { keys: ["किरण पुंज", "beam"], file: "image/beam-types.png" },
@@ -1070,11 +1083,22 @@
       return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=640&height=420&nologo=true&seed=42`;
     }
 
+    // UNIVERSAL CLEAN FORMATTER (Fixes \frac, [[a/b]], \rightarrow, O_2, x^2, \sqrt, etc.)
     function renderMathFractions(htmlStr) {
       let out = htmlStr || "";
-      out = out.replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (match, num, den) => {
+      out = out.replace(/\$/g, "");
+      out = out.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, (m, num, den) => {
         return `<span class="math-frac"><span class="num">${num.trim()}</span><span class="den">${den.trim()}</span></span>`;
       });
+      out = out.replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (m, num, den) => {
+        return `<span class="math-frac"><span class="num">${num.trim()}</span><span class="den">${den.trim()}</span></span>`;
+      });
+      out = out.replace(/\\rightarrow|->|-->/g, " → ");
+      out = out.replace(/\\leftarrow|<-/g, " ← ");
+      out = out.replace(/\\sqrt\{([^}]+)\}/g, "√$1");
+      out = out.replace(/\\times/g, "×");
+      out = out.replace(/([A-Za-z0-9\)\]])_\{?(\d+)\}?/g, "$1<sub>$2</sub>");
+      out = out.replace(/([A-Za-z0-9\)\]])\^\{?([0-9+\-n]+)\}?/g, "$1<sup>$2</sup>");
       out = out.replace(/\[\[([^\]]+)\]\]/g, "<b>$1</b>");
       out = out.replace(/\btau\b/gi, "τ");
       return out;
@@ -1110,7 +1134,6 @@
       }
     };
 
-    // Gmail / Profile Student Name
     let studentName = localStorage.getItem("nd_virtual_student_name") || "";
     let externalSyllabus = null;
     const loadedSubjectLessons = {};
@@ -1139,7 +1162,6 @@
       return studentName && studentName.trim() !== "" ? studentName.trim() : "विद्यार्थी";
     }
 
-    // Subtle Tick-Tock Sound using Web Audio API (no external audio file needed)
     function playTickSound(isUrgent = false) {
       if (isMuted) return;
       try {
@@ -1207,7 +1229,6 @@
       } catch (e) {}
     };
 
-    // Sync Gmail Display Name from Firebase Auth
     if (window.firebase && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -1353,19 +1374,21 @@
     };
 
     // =========================================================
-    // 100% ALL-LINES AUDIO PRE-DOWNLOADER (ZERO ROBOTIC FALLBACK)
+    // 5-SECOND FAST VOICE PRELOADER + BACKGROUND ALL-LINES CACHE
     // =========================================================
     function cleanSpeechString(raw) {
       return (raw || "")
+        .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, "$1 बटे $2")
         .replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, "$1 बटे $2")
         .replace(/\[\[([^\]]+)\]\]/g, "$1")
+        .replace(/\\rightarrow|->|-->/g, " से बनता है ")
+        .replace(/\\sqrt\{([^}]+)\}/g, "वर्गमूल $1")
         .replace(/\btau\b/gi, "टाऊ")
         .replace(/<[^>]*>/g, "")
-        .replace(/[*#_`$~]/g, "")
+        .replace(/[*#_`$~\\]/g, "")
         .replace(/∠/g, "कोण ")
         .replace(/=/g, " बराबर ")
         .replace(/△/g, "त्रिभुज ")
-        .replace(/~/g, " समरूप ")
         .replace(/\s+/g, " ")
         .trim();
     }
@@ -1414,22 +1437,27 @@
       allLines.push(cleanSpeechString(`${activeStudent}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`));
 
       const unique = [...new Set(allLines.filter(Boolean))];
+      const initialFastBatch = unique.slice(0, 6);
+      const backgroundRest = unique.slice(6);
+
       loader.classList.add("open");
-      bar.style.width = "2%";
-      pctTxt.textContent = `0 / ${unique.length} आवाज़ें तैयार (0%)`;
+      bar.style.width = "10%";
+      pctTxt.textContent = `क्लास तैयार हो रही है (0%)...`;
 
-      let done = 0;
-      const batchSize = 4;
-      for (let i = 0; i < unique.length; i += batchSize) {
-        const batch = unique.slice(i, i + batchSize);
-        await Promise.all(batch.map(t => fetchSingleAudioBlob(t, 2)));
-        done += batch.length;
-        const pct = Math.min(100, Math.round((done / unique.length) * 100));
+      await Promise.all(initialFastBatch.map(async (t, idx) => {
+        await fetchSingleAudioBlob(t, 2);
+        const pct = Math.min(100, Math.round(((idx + 1) / initialFastBatch.length) * 100));
         bar.style.width = pct + "%";
-        pctTxt.textContent = `${Math.min(done, unique.length)} / ${unique.length} आवाज़ें तैयार (${pct}%)`;
-      }
+        pctTxt.textContent = `क्लास तैयार हो रही है (${pct}%)...`;
+      }));
 
-      setTimeout(() => loader.classList.remove("open"), 200);
+      setTimeout(() => loader.classList.remove("open"), 150);
+
+      (async () => {
+        for (let i = 0; i < backgroundRest.length; i += 4) {
+          await Promise.all(backgroundRest.slice(i, i + 4).map(t => fetchSingleAudioBlob(t, 2)));
+        }
+      })();
     }
 
     async function callGeminiWithFallbackChain(promptText) {
@@ -1510,7 +1538,7 @@
       const prompt = `तुम एक अनुभवी भारतीय शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में लिख-लिखकर अत्यंत विस्तार से पढ़ा रहे हो।
       कठोर नियम:
       1. कोई भी चीज़ आधा-अधूरा मत छोड़ो—कम से कम 7 से 9 विस्तृत भाग (blocks) बनाओ (परिभाषा, सिद्धांत, हर सूत्र का पूरा स्टेप-बाय-स्टेप निगमन, 2 हल किए हुए उदाहरण, बीच में क्विज़, और अंत में "आज हमने क्या सीखा" का सार)।
-      2. जहाँ बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो। साधारण अक्षरों में [[A]] जैसे ब्रैकेट मत लगाओ।
+      2. जहाँ बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो, तीर के लिए → लिखो, और रासायनिक सूत्र सीधे O₂ या H₂O जैसे साफ रूप में लिखो (LaTeX बैकस्लैश मत लगाओ)।
       3. केवल उसी भाग में "diagramPrompt" (अंग्रेजी में साफ NCERT चित्र विवरण) और "diagramVoice" दो जहाँ सच में चित्र की ज़रूरत हो; बाकी भागों में diagramPrompt को "" (खाली) रखो।
       4. केवल शुद्ध JSON दो:
       {
@@ -1757,11 +1785,12 @@
     }
 
     // =========================================================
-    // 3-LAYER SMART DIAGRAM ENGINE (SHOWS ONLY WHEN NEEDED & AUTO-HIDES)
+    // 3-LAYER SMART DIAGRAM ENGINE (WITH WATERMARK CROPPER)
     // =========================================================
     function updateRightDiagramStage(block) {
       const layout = document.getElementById("continuousBoardLayout");
-      const diagCard = document.getElementById("stickyDiagramCard");
+      const diagCard = document.getElementById("stickyDiagram
+Card");
 
       if (!block || block.type === "quiz") {
         layout.classList.remove("has-diagram");
@@ -1769,10 +1798,18 @@
       }
 
       let imgUrl = null;
+      let isLocalRepoImg = false;
       if (block.image) {
         imgUrl = encodeURI(block.image);
+        isLocalRepoImg = true;
       } else if (block.diagramPrompt) {
-        imgUrl = findMatchingRepoImage(`${currentLessonMeta.topic} ${block.title || ""} ${block.diagramPrompt}`) || buildAiTextbookDiagramUrl(block.diagramPrompt);
+        const localMatch = findMatchingRepoImage(`${currentLessonMeta.topic} ${block.title || ""} ${block.diagramPrompt}`);
+        if (localMatch) {
+          imgUrl = localMatch;
+          isLocalRepoImg = true;
+        } else {
+          imgUrl = buildAiTextbookDiagramUrl(block.diagramPrompt);
+        }
       }
 
       if (!imgUrl) {
@@ -1782,15 +1819,24 @@
 
       layout.classList.add("has-diagram");
       diagCard.innerHTML = `
-        <img src="${imgUrl}" alt="${block.diagramCaption || "Diagram"}"
-             onerror="document.getElementById('continuousBoardLayout').classList.remove('has-diagram')">
+        <div class="diag-img-crop-wrap ${isLocalRepoImg ? "local-repo" : ""}">
+          <img src="${imgUrl}" alt="${block.diagramCaption || "Diagram"}"
+               onerror="document.getElementById('continuousBoardLayout').classList.remove('has-diagram')">
+        </div>
         <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
       `;
       return true;
     }
 
+    // First-name only helper ("छात्र" if not logged in)
+    function getFirstStudentName() {
+      const raw = (studentName || "").trim();
+      if (!raw) return "छात्र";
+      return raw.split(/\s+/)[0];
+    }
+
     function finishLessonWithFarewell() {
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
       isWbPlaying = false;
       clearActiveQuizTimer();
       localStorage.removeItem("nd_wb_resume_data");
@@ -1801,13 +1847,13 @@
       byeCard.className = "farewell-card";
       byeCard.innerHTML = `
         <div style="font-size:36px;margin-bottom:6px;">🎉</div>
-        <h3 style="font-size:18px;font-weight:900;color:#15803d;">${activeStudent}, आज की क्लास पूरी हुई!</h3>
+        <h3 style="font-size:18px;font-weight:900;color:#15803d;">${firstName}, आज की क्लास पूरी हुई!</h3>
         <p style="font-size:13.5px;font-weight:700;color:#334155;margin-top:4px;">कल फिर मिलते हैं नई क्लास में। वापस होम स्क्रीन पर लौट रहे हैं...</p>
       `;
       streamBody.appendChild(byeCard);
       autoScrollNotebookBottom();
 
-      const farewellSpeech = `${activeStudent}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`;
+      const farewellSpeech = `${firstName}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`;
       speakExactText(farewellSpeech, () => {
         setTimeout(() => {
           exitWhiteboard();
@@ -1826,11 +1872,10 @@
       const block = lessonBlocks[currentBlockIndex];
       document.getElementById("wbStepStatus").textContent = `भाग ${currentBlockIndex + 1} / ${lessonBlocks.length}`;
       const streamBody = document.getElementById("notebookStreamBody");
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
 
       const hasDiagramShown = updateRightDiagramStage(block);
 
-      // INLINE QUIZ WITH 2-MINUTE (120s) TICK-TOCK TIMER
       if (block.type === "quiz") {
         clearActiveQuizTimer();
         const qId = `inlineQuiz-${currentBlockIndex}`;
@@ -1874,11 +1919,10 @@
           }
         }, 1000);
 
-        speakExactText(`चलो ${activeStudent}, एक प्रश्न हल करते हैं: ${block.question}`);
+        speakExactText(`चलो ${firstName}, एक प्रश्न हल करते हैं: ${block.question}`);
         return;
       }
 
-      // HANDWRITTEN TOPIC BLOCK
       const blkEl = document.createElement("div");
       blkEl.className = "handwritten-block";
       if (block.id) blkEl.id = block.id;
@@ -1937,7 +1981,7 @@
     function handleQuizTimeout(blkIdx) {
       const block = lessonBlocks[blkIdx];
       const qId = `inlineQuiz-${blkIdx}`;
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
       document.querySelectorAll(`[id^="${qId}-opt-"]`).forEach(b => b.disabled = true);
       const rightBtn = document.getElementById(`${qId}-opt-${block.correctIndex}`);
       if (rightBtn) rightBtn.classList.add("right");
@@ -1946,7 +1990,7 @@
         note.style.color = "#ea580c";
         note.innerHTML = `⏰ समय समाप्त! सही उत्तर: ${renderMathFractions(block.options[block.correctIndex])}`;
       }
-      speakExactText(`दो मिनट पूरे हो गए ${activeStudent}, इसका सही उत्तर है ${block.options[block.correctIndex]}। चलो अब आगे बढ़ते हैं।`, () => {
+      speakExactText(`दो मिनट पूरे हो गए ${firstName}, इसका सही उत्तर है ${block.options[block.correctIndex]}। चलो अब आगे बढ़ते हैं।`, () => {
         currentBlockIndex++;
         isWbPlaying = true;
         setTimeout(() => processNextBlock(), 900);
@@ -1957,15 +2001,15 @@
       clearActiveQuizTimer();
       const block = lessonBlocks[blkIdx];
       const qId = `inlineQuiz-${blkIdx}`;
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
       document.querySelectorAll(`[id^="${qId}-opt-"]`).forEach(b => b.disabled = true);
       const note = document.getElementById(`${qId}-note`);
 
       if (chosenIdx === block.correctIndex) {
         document.getElementById(`${qId}-opt-${chosenIdx}`).classList.add("right");
         note.style.color = "#15803d";
-        note.innerHTML = `🎉 शाबाश ${activeStudent}! ${renderMathFractions(block.explanation)}`;
-        speakExactText(`शाबाश ${activeStudent}, बिल्कुल सही जवाब! ${block.explanation} चलो अब आगे बढ़ते हैं।`, () => {
+        note.innerHTML = `🎉 शाबाश ${firstName}! ${renderMathFractions(block.explanation)}`;
+        speakExactText(`शाबाश ${firstName}, बिल्कुल सही जवाब! ${block.explanation} चलो अब आगे बढ़ते हैं।`, () => {
           currentBlockIndex++;
           isWbPlaying = true;
           setTimeout(() => processNextBlock(), 900);
@@ -1975,7 +2019,7 @@
         document.getElementById(`${qId}-opt-${block.correctIndex}`).classList.add("right");
         note.style.color = "#dc2626";
         note.innerHTML = `❌ सही उत्तर: ${renderMathFractions(block.options[block.correctIndex])} (${renderMathFractions(block.explanation)})`;
-        speakExactText(`कोई बात नहीं ${activeStudent}, इसका सही उत्तर है ${block.options[block.correctIndex]}। ${block.explanation} चलो अब आगे बढ़ते हैं।`, () => {
+        speakExactText(`कोई बात नहीं ${firstName}, इसका सही उत्तर है ${block.options[block.correctIndex]}। ${block.explanation} चलो अब आगे बढ़ते हैं।`, () => {
           currentBlockIndex++;
           isWbPlaying = true;
           setTimeout(() => processNextBlock(), 1000);
@@ -2015,12 +2059,12 @@
       if (!doubtText) return;
       document.getElementById("doubtModalMask").classList.remove("open");
 
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
       const streamBody = document.getElementById("notebookStreamBody");
       const doubtBlk = document.createElement("div");
       doubtBlk.className = "handwritten-block";
       doubtBlk.style.background = "#eff6ff";
-      doubtBlk.innerHTML = `<div class="hw-section-title">💡 ${activeStudent} के डाउट का हल:</div>`;
+      doubtBlk.innerHTML = `<div class="hw-section-title">💡 ${firstName} के डाउट का हल:</div>`;
       streamBody.appendChild(doubtBlk);
       autoScrollNotebookBottom();
 
@@ -2030,7 +2074,7 @@
       doubtBlk.appendChild(ansLine);
 
       try {
-        const resObj = await callGeminiWithFallbackChain(`छात्र "${activeStudent}" का डाउट: "${doubtText}" (टॉपिक: ${currentLessonMeta.topic})। सरल देवनागरी हिंदी में बच्चों की तरह समझाओ, और बटा हो तो [[अंश/हर]] लिखो। शुद्ध JSON दो: {"answer": "सरल हिंदी स्पष्टीकरण"}`);
+        const resObj = await callGeminiWithFallbackChain(`छात्र "${firstName}" का डाउट: "${doubtText}" (टॉपिक: ${currentLessonMeta.topic})। सरल देवनागरी हिंदी में बच्चों की तरह समझाओ, और बटा हो तो [[अंश/हर]] लिखो। शुद्ध JSON दो: {"answer": "सरल हिंदी स्पष्टीकरण"}`);
         typeLineWithHandPen(ansLine, resObj.answer, 22);
         speakExactText(resObj.answer, () => {
           isWbPlaying = true;
@@ -2086,7 +2130,7 @@
       if (!val) return;
       studentName = val;
       localStorage.setItem("nd_virtual_student_name", studentName);
-      document.getElementById("topUserName").textContent = val;
+      document.getElementById("topUserName").textContent = val.split(/\s+/)[0];
       document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(val)}&background=2563eb&color=fff`;
       document.getElementById("profileModalMask").classList.remove("open");
     };
