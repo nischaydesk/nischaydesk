@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>NischayBoard AI | स्मार्ट क्लास ऐप</title>
+  <title>NischayBoard AI | 30-Min Smart Classroom</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,11 +23,12 @@
     :root {
       --bg-app: #f4f7fb;
       --bg-surface: #ffffff;
-      --bg-glass: rgba(255, 255, 255, 0.92);
+      --bg-glass: rgba(255, 255, 255, 0.94);
       --border-subtle: #e2e8f0;
       --text-primary: #0f172a;
       --text-secondary: #64748b;
       --accent-blue: #2563eb;
+      --accent-orange: #ea580c;
       --accent-cyan: #0284c7;
       --chip-bg: #eff6ff;
       --chip-text: #1d4ed8;
@@ -37,11 +38,12 @@
     html[data-theme="dark"] {
       --bg-app: #040914;
       --bg-surface: #0b162c;
-      --bg-glass: rgba(11, 22, 44, 0.92);
+      --bg-glass: rgba(11, 22, 44, 0.94);
       --border-subtle: rgba(56, 189, 248, 0.22);
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --accent-blue: #3b82f6;
+      --accent-orange: #fb923c;
       --accent-cyan: #38bdf8;
       --chip-bg: rgba(56, 189, 248, 0.14);
       --chip-text: #38bdf8;
@@ -62,12 +64,12 @@
       color: var(--text-primary);
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
       overflow-x: hidden;
-      transition: background 0.35s ease, color 0.35s ease;
+      transition: background 0.3s ease, color 0.3s ease;
       user-select: none;
     }
 
     /* =========================================================
-       1. PREMIUM 3D APP SPLASH SCREEN
+       1. NATIVE APP SPLASH SCREEN
        ========================================================= */
     #appSplash {
       position: fixed;
@@ -79,70 +81,42 @@
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     #appSplash.hide {
       opacity: 0;
-      transform: scale(1.12);
+      transform: scale(1.1);
       pointer-events: none;
     }
 
     .splash-orb {
-      width: 92px;
-      height: 92px;
-      border-radius: 28px;
+      width: 88px;
+      height: 88px;
+      border-radius: 26px;
       background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 46px;
-      box-shadow: 0 0 45px rgba(56, 189, 248, 0.55);
-      margin-bottom: 18px;
-      animation: orbFloat 1.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      font-size: 44px;
+      box-shadow: 0 0 40px rgba(56, 189, 248, 0.5);
+      margin-bottom: 16px;
+      animation: orbPop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @keyframes orbFloat {
-      0% { transform: translateY(30px) scale(0.5) rotate(-12deg); opacity: 0; }
-      100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-    }
-
-    .splash-loader-bar {
-      width: 140px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 99px;
-      margin-top: 18px;
-      overflow: hidden;
-    }
-
-    .splash-loader-fill {
-      width: 45%;
-      height: 100%;
-      background: #38bdf8;
-      border-radius: 99px;
-      animation: barSlide 0.9s infinite ease-in-out;
-    }
-
-    @keyframes barSlide {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(260%); }
+    @keyframes orbPop {
+      from { transform: scale(0.4); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     /* =========================================================
-       2. APP SHELL & GLASS TOP BAR
+       2. PROFESSIONAL STUDENT DASHBOARD (LOBBY)
        ========================================================= */
     .app-container {
       min-height: 100vh;
-      padding-bottom: 88px;
+      padding-bottom: 84px;
       display: flex;
       flex-direction: column;
-      animation: appReveal 0.5s ease;
-    }
-
-    @keyframes appReveal {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .app-container.hidden {
@@ -155,7 +129,6 @@
       z-index: 100;
       background: var(--bg-glass);
       backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1.5px solid var(--border-subtle);
       padding: 11px 16px;
       display: flex;
@@ -182,17 +155,11 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      transition: transform 0.15s ease;
-    }
-
-    .app-back-pill:active {
-      transform: scale(0.93);
     }
 
     .app-title-block h1 {
       font-size: 16px;
       font-weight: 900;
-      color: var(--text-primary);
       line-height: 1.15;
     }
 
@@ -226,11 +193,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .theme-toggle-btn:active {
-      transform: rotate(35deg) scale(0.9);
     }
 
     .profile-pill-btn {
@@ -242,11 +204,6 @@
       padding: 4px 11px 4px 5px;
       border-radius: 999px;
       cursor: pointer;
-      transition: transform 0.15s ease;
-    }
-
-    .profile-pill-btn:active {
-      transform: scale(0.94);
     }
 
     .profile-pill-btn img {
@@ -260,19 +217,43 @@
       font-size: 12px;
       font-weight: 800;
       color: var(--chip-text);
-      max-width: 84px;
+      max-width: 86px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* =========================================================
-       3. TWO CORE APP MODES
-       ========================================================= */
+    /* Continue Learning Resume Banner */
+    .resume-banner-wrap {
+      max-width: 980px;
+      width: 100%;
+      margin: 14px auto 0;
+      padding: 0 16px;
+      display: none;
+    }
+
+    .resume-banner-wrap.show {
+      display: block;
+    }
+
+    .resume-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.28);
+      cursor: pointer;
+    }
+
+    /* Two Core Modes */
     .mode-switcher-wrap {
       max-width: 980px;
       width: 100%;
-      margin: 16px auto 10px;
+      margin: 14px auto 8px;
       padding: 0 16px;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -283,175 +264,36 @@
       background: var(--bg-surface);
       border: 2px solid var(--border-subtle);
       border-radius: 20px;
-      padding: 15px;
+      padding: 14px;
       cursor: pointer;
       box-shadow: var(--shadow-card);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.25s ease;
     }
 
     .mode-card.active {
       border-color: var(--accent-blue);
-      transform: translateY(-3px);
-      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.18);
-    }
-
-    .mode-card-icon {
-      font-size: 28px;
-      margin-bottom: 6px;
-      display: inline-block;
+      transform: translateY(-2px);
     }
 
     .mode-card h3 {
       font-size: 14.5px;
       font-weight: 900;
-      color: var(--text-primary);
-      margin-bottom: 3px;
+      margin: 4px 0 2px;
     }
 
     .mode-card p {
       font-size: 11.5px;
       font-weight: 600;
       color: var(--text-secondary);
-      line-height: 1.35;
     }
 
-    /* =========================================================
-       4. MODE A: AI LIVE SESSION GENERATOR
-       ========================================================= */
-    .ai-studio-section {
-      max-width: 980px;
-      width: 100%;
-      margin: 8px auto;
-      padding: 0 16px;
-      display: none;
-      animation: panelSpring 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .ai-studio-section.active {
-      display: block;
-    }
-
-    @keyframes panelSpring {
-      from { opacity: 0; transform: translateY(16px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .studio-box {
-      background: linear-gradient(135deg, #091326 0%, #172e6e 55%, #0284c7 100%);
-      border-radius: 24px;
-      padding: 24px 20px;
-      color: #ffffff;
-      box-shadow: 0 18px 40px rgba(2, 132, 199, 0.25);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .studio-live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #7dd3fc;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .studio-box h2 {
-      font-size: 20px;
-      font-weight: 900;
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-
-    .studio-box p {
-      font-size: 13px;
-      color: #e2e8f0;
-      margin-bottom: 16px;
-      line-height: 1.5;
-    }
-
-    .studio-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1.5px solid rgba(255, 255, 255, 0.32);
-      border-radius: 14px;
-      padding: 14px 16px;
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 600;
-      outline: none;
-      margin-bottom: 12px;
-    }
-
-    .studio-input:focus {
-      border-color: #38bdf8;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .studio-input::placeholder {
-      color: #cbd5e1;
-    }
-
-    .studio-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .topic-suggestion {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #ffffff;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .topic-suggestion:active {
-      transform: scale(0.94);
-    }
-
-    .generate-video-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-      color: #0f172a;
-      border: none;
-      padding: 15px;
-      border-radius: 14px;
-      font-size: 15.5px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .generate-video-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* =========================================================
-       5. MODE B: SYLLABUS VIEW
-       ========================================================= */
+    /* Syllabus Section */
     .syllabus-section {
       max-width: 980px;
       width: 100%;
-      margin: 8px auto;
+      margin: 6px auto;
       padding: 0 16px;
       display: none;
-      animation: panelSpring 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .syllabus-section.active {
@@ -498,7 +340,6 @@
     .chapter-list-header h3 {
       font-size: 16.5px;
       font-weight: 900;
-      color: var(--text-primary);
     }
 
     .count-badge {
@@ -512,7 +353,7 @@
 
     .chapter-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
       gap: 11px;
     }
 
@@ -530,8 +371,8 @@
     }
 
     .ch-index {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
       background: var(--chip-bg);
       color: var(--chip-text);
@@ -551,42 +392,100 @@
     .ch-body h4 {
       font-size: 14px;
       font-weight: 800;
-      color: var(--text-primary);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
-    .ch-body p {
-      font-size: 11.5px;
+    .ch-meta-sub {
+      font-size: 11px;
       font-weight: 700;
       color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .ch-arrow {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--chip-bg);
-      color: var(--chip-text);
+    .duration-mini-tag {
+      background: rgba(234, 88, 12, 0.12);
+      color: var(--accent-orange);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+
+    /* AI Studio Section */
+    .ai-studio-section {
+      max-width: 980px;
+      width: 100%;
+      margin: 8px auto;
+      padding: 0 16px;
+      display: none;
+    }
+
+    .ai-studio-section.active {
+      display: block;
+    }
+
+    .studio-box {
+      background: linear-gradient(135deg, #091326 0%, #172e6e 55%, #0284c7 100%);
+      border-radius: 24px;
+      padding: 22px 20px;
+      color: #ffffff;
+      box-shadow: 0 18px 40px rgba(2, 132, 199, 0.25);
+    }
+
+    .studio-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1.5px solid rgba(255, 255, 255, 0.32);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      margin: 12px 0;
+    }
+
+    .studio-input::placeholder {
+      color: #cbd5e1;
+    }
+
+    .studio-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .topic-suggestion {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .generate-video-btn {
+      width: 100%;
+      background: #ffffff;
+      color: #0f172a;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 15.5px;
+      font-weight: 900;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 900;
-      font-size: 16px;
+      gap: 8px;
     }
 
-    .pending-library-card {
-      background: var(--bg-surface);
-      border: 2px dashed var(--border-subtle);
-      border-radius: 20px;
-      padding: 28px 20px;
-      text-align: center;
-      margin-top: 8px;
-      box-shadow: var(--shadow-card);
-    }
-
-    /* =========================================================
-       6. BOTTOM NATIVE APP DOCK
-       ========================================================= */
+    /* Bottom Dock */
     .native-bottom-dock {
       position: fixed;
       bottom: 0;
@@ -595,7 +494,6 @@
       height: 64px;
       background: var(--bg-glass);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border-top: 1.5px solid var(--border-subtle);
       display: flex;
       justify-content: space-around;
@@ -621,13 +519,7 @@
       color: var(--accent-blue);
     }
 
-    .dock-tab span.ico {
-      font-size: 20px;
-    }
-
-    /* =========================================================
-       7. TOPIC-WISE SLIDE-UP SHEET
-       ========================================================= */
+    /* Topic Slide-Up Sheet */
     .sheet-backdrop {
       display: none;
       position: fixed;
@@ -651,9 +543,9 @@
       border-top: 1.5px solid var(--border-subtle);
       border-radius: 26px 26px 0 0;
       padding: 20px 18px 28px;
-      max-height: 82vh;
+      max-height: 84vh;
       overflow-y: auto;
-      animation: slideUpSheet 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: slideUpSheet 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes slideUpSheet {
@@ -661,79 +553,73 @@
       to { transform: translateY(0); }
     }
 
-    .sheet-drag-bar {
-      width: 42px;
-      height: 5px;
-      background: var(--border-subtle);
-      border-radius: 99px;
-      margin: 0 auto 14px;
-    }
-
     .topic-row-btn {
       width: 100%;
       background: var(--bg-app);
       border: 1.5px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 13px 15px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
       text-align: left;
       cursor: pointer;
     }
 
     /* =========================================================
-       8. STEP-BY-STEP BOARD PREPARATION LOADER
+       3. JEET AI STYLE "PICKING UP WHERE YOU LEFT OFF" OVERLAY
        ========================================================= */
-    .prep-overlay {
+    .resume-toast-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, #0f172a 0%, #040914 100%);
-      color: #ffffff;
-      z-index: 6000;
-      flex-direction: column;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 8500;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 24px;
+      padding: 20px;
     }
 
-    .prep-overlay.open {
+    .resume-toast-overlay.open {
       display: flex;
     }
 
-    .prep-ring {
-      width: 78px;
-      height: 78px;
-      border-radius: 50%;
-      border: 4px solid rgba(56, 189, 248, 0.2);
-      border-top-color: #38bdf8;
-      animation: spinRing 0.85s linear infinite;
-      margin-bottom: 20px;
+    .resume-toast-card {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 20px;
+      padding: 24px 32px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      animation: popCard 0.3s ease;
     }
 
-    @keyframes spinRing {
+    @keyframes popCard {
+      from { transform: scale(0.88); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .orange-spinner {
+      width: 22px;
+      height: 22px;
+      border: 3px solid #fed7aa;
+      border-top-color: #ea580c;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
       100% { transform: rotate(360deg); }
     }
 
-    .prep-steps-box {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      font-size: 13.5px;
-      color: #94a3b8;
-    }
-
-    .prep-step.done {
-      color: #4ade80;
-      font-weight: 800;
-    }
-
     /* =========================================================
-       9. HD LANDSCAPE SMART WHITEBOARD STAGE (MULTI-SLIDE)
+       4. HD LANDSCAPE SMART WHITEBOARD (JEET AI CLASSROOM)
        ========================================================= */
     .wb-fullscreen {
       display: none;
@@ -746,18 +632,12 @@
       z-index: 7000;
       flex-direction: column;
       justify-content: space-between;
-      padding: 12px 32px 16px 32px;
+      padding: 12px 34px 16px 34px;
       overflow: hidden;
-      animation: boardFadeZoom 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .wb-fullscreen.open {
       display: flex;
-    }
-
-    @keyframes boardFadeZoom {
-      from { opacity: 0; transform: scale(1.06); }
-      to { opacity: 1; transform: scale(1); }
     }
 
     .portrait-lock-screen {
@@ -780,10 +660,11 @@
       }
     }
 
+    /* Top Header matching JEET AI Screenshot */
     .wb-top-bar {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
       flex-shrink: 0;
     }
 
@@ -796,48 +677,67 @@
     .wb-left-nav {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .wb-exit-pill {
-      background: rgba(239, 68, 68, 0.14);
-      color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 800;
+    .wb-back-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #94a3b8;
+      color: #ffffff;
+      border: none;
+      font-size: 16px;
+      font-weight: 900;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .wb-crumb {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 800;
-      color: var(--accent-blue);
+      color: #ea580c;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
 
-    .wb-stage-tag {
+    .wb-slide-counter {
       font-size: 12.5px;
       font-weight: 800;
-      color: #f97316;
+      color: #ea580c;
+    }
+
+    .wb-rec-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+      animation: recBlink 1.2s infinite;
+    }
+
+    @keyframes recBlink {
+      50% { opacity: 0.3; }
     }
 
     .wb-prog-track {
       width: 76%;
       height: 2px;
-      background: var(--border-subtle);
-      margin-left: 72px;
+      background: #fed7aa;
+      margin-left: 46px;
+      position: relative;
     }
 
     .wb-prog-bar {
       height: 100%;
-      width: 20%;
-      background: var(--accent-blue);
+      width: 10%;
+      background: #ea580c;
       transition: width 0.5s ease;
     }
 
+    /* Main Board Workspace */
     .wb-main-canvas {
       flex: 1;
       display: flex;
@@ -848,150 +748,112 @@
       position: relative;
     }
 
-    /* Intro & Visual Lesson Split Grid */
-    .slide-split-grid {
+    /* Slide Layout: Split Left Visual Boxes / Right Step-by-Step Notes */
+    .lesson-split-stage {
       width: 100%;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 24px;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 28px;
       align-items: center;
-      padding: 0 12px;
-      animation: slideEnterRight 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 0 14px;
+      animation: stageFade 0.4s ease;
     }
 
-    @keyframes slideEnterRight {
-      from { opacity: 0; transform: translateX(24px); }
-      to { opacity: 1; transform: translateX(0); }
+    @keyframes stageFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .intro-badge {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--accent-cyan);
-      letter-spacing: 1px;
-      margin-bottom: 6px;
+    /* Interactive Vector Box Diagram (Like 0 0 0 0 4 5 Screenshot) */
+    .visual-board-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--bg-app);
+      border: 1.5px solid var(--border-subtle);
+      min-height: 215px;
     }
 
-    .slide-main-heading {
-      font-size: 25px;
-      font-weight: 800;
-      color: var(--accent-blue);
-      line-height: 1.25;
-      display: inline-block;
-      margin-bottom: 8px;
+    .digit-boxes-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .red-line-anim {
-      width: 0;
-      height: 3px;
-      background: #ef4444;
-      border-radius: 2px;
-      margin-top: 4px;
-      transition: width 0.8s ease;
+    .digit-box {
+      min-width: 36px;
+      height: 40px;
+      padding: 0 8px;
+      border: 2px solid var(--text-primary);
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-surface);
+      position: relative;
+      transition: all 0.3s ease;
     }
 
-    .drawn .red-line-anim {
-      width: 95%;
+    .digit-box.circled {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+      transform: scale(1.08);
     }
 
-    .hand-cursive {
+    .hand-formula-tag {
       font-family: 'Caveat', cursive;
-      font-size: 23px;
+      font-size: 24px;
       font-weight: 700;
-      color: var(--accent-cyan);
-      margin-top: 4px;
+      color: #2563eb;
+      text-align: center;
       opacity: 0;
-      transform: translateY(5px);
+      transform: translateY(6px);
       transition: all 0.5s ease;
     }
 
-    .hand-cursive.show {
+    .hand-formula-tag.show {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .hook-question {
-      margin-top: 14px;
-      font-size: 15px;
-      font-weight: 700;
-      font-style: italic;
-      color: var(--text-primary);
-      line-height: 1.48;
+    .hand-formula-tag.green {
+      color: #16a34a;
     }
 
-    .diagram-card-clean {
-      border: 1.5px solid var(--border-subtle);
-      border-radius: 20px;
-      padding: 12px;
+    .real-photo-frame {
+      max-width: 100%;
+      max-height: 195px;
+      border-radius: 12px;
+      object-fit: contain;
       background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 205px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-      animation: diagramPop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding: 6px;
     }
 
-    @keyframes diagramPop {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    /* Teaching Points inside Slide */
-    .teach-stack {
+    /* Right Side Step-by-Step Teacher Explanations */
+    .teacher-notes-col {
       display: flex;
       flex-direction: column;
-      gap: 13px;
-      margin-top: 8px;
+      gap: 14px;
     }
 
-    .teach-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 11px;
-      font-size: 14.5px;
+    .note-step-block {
+      font-size: 15px;
+      line-height: 1.5;
       color: var(--text-primary);
-      opacity: 0.45;
-      transition: opacity 0.35s ease;
+      opacity: 0.35;
+      transition: opacity 0.4s ease;
     }
 
-    .teach-row.drawn {
+    .note-step-block.active {
       opacity: 1;
-    }
-
-    .sq-wrap {
-      position: relative;
-      width: 22px;
-      height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .sq-blue {
-      width: 11px;
-      height: 11px;
-      border-radius: 3px;
-      background: var(--accent-blue);
-    }
-
-    .sq-ring {
-      position: absolute;
-      inset: -4px;
-      width: 30px;
-      height: 30px;
-      stroke: #ef4444;
-      stroke-width: 2.3;
-      fill: none;
-      stroke-dasharray: 120;
-      stroke-dashoffset: 120;
-      transition: stroke-dashoffset 0.7s ease;
-    }
-
-    .teach-row.circled .sq-ring {
-      stroke-dashoffset: 0;
     }
 
     .red-under {
@@ -1011,52 +873,68 @@
       transition: width 0.7s ease;
     }
 
-    .drawn .red-under::after {
+    .active .red-under::after {
       width: 100%;
     }
 
-    .side-hand {
-      font-family: 'Caveat', cursive;
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      display: block;
-      margin-top: 2px;
-      opacity: 0;
-      transform: translateX(-6px);
-      transition: all 0.5s ease;
+    .red-oval {
+      border: 2px solid #ef4444;
+      border-radius: 999px;
+      padding: 1px 8px;
+      color: #dc2626;
+      font-weight: 800;
     }
 
-    .teach-row.drawn .side-hand {
+    /* Learning Goals Full List Layout (Like Slide 2 of 26 Screenshot) */
+    .goals-full-list {
+      width: 100%;
+      max-width: 880px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 0 18px;
+    }
+
+    .goal-line-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 15.5px;
+      opacity: 0.4;
+      transition: opacity 0.4s ease;
+    }
+
+    .goal-line-item.active {
       opacity: 1;
-      transform: translateX(0);
     }
 
-    /* 👍 LIKE / 👎 DISLIKE UNDERSTANDING CHECK BAR */
+    .blue-bullet-sq {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      background: #2563eb;
+      flex-shrink: 0;
+    }
+
+    /* 👍 / 👎 Understanding Bar */
     .understanding-check-bar {
       display: none;
       position: fixed;
-      top: 46px;
+      top: 48px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--bg-surface);
-      border: 2px solid var(--accent-blue);
+      border: 2px solid #ea580c;
       border-radius: 999px;
       padding: 6px 14px;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.28);
+      box-shadow: 0 12px 30px rgba(234, 88, 12, 0.25);
       z-index: 7500;
       align-items: center;
       gap: 10px;
-      animation: popDownCheck 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .understanding-check-bar.show {
       display: flex;
-    }
-
-    @keyframes popDownCheck {
-      from { opacity: 0; transform: translate(-50%, -15px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
     }
 
     .check-btn {
@@ -1066,28 +944,13 @@
       font-size: 12.5px;
       font-weight: 800;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
 
-    .check-btn.like {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-    .check-btn.dislike {
-      background: #fee2e2;
-      color: #dc2626;
-    }
-
-    /* =========================================================
-       LIVE OBJECTIVE TEST STAGE + 2-MINUTE TIMER + CLICKABLE DOUBT
-       ========================================================= */
+    /* Quiz Stage + 2-Minute Timer + Clickable Doubt */
     .quiz-board-box {
       width: 100%;
       max-width: 760px;
-      padding: 12px 20px;
+      padding: 10px 20px;
       position: relative;
       z-index: 40;
     }
@@ -1096,92 +959,58 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
       margin-bottom: 10px;
-      flex-wrap: wrap;
     }
 
     .quiz-timer-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #eff6ff;
-      border: 2px solid #2563eb;
-      color: #1d4ed8;
+      background: #fff7ed;
+      border: 2px solid #ea580c;
+      color: #ea580c;
       padding: 5px 14px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 900;
-      font-variant-numeric: tabular-nums;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
-      transition: all 0.3s ease;
-    }
-
-    html[data-theme="dark"] .quiz-timer-pill {
-      background: rgba(37, 99, 235, 0.2);
-      color: #60a5fa;
     }
 
     .quiz-timer-pill.warning {
       background: #fee2e2;
       border-color: #dc2626;
       color: #dc2626;
-      animation: timerPulse 0.8s infinite alternate;
+      animation: pulseWarn 0.7s infinite alternate;
     }
 
-    @keyframes timerPulse {
-      from { transform: scale(1); }
+    @keyframes pulseWarn {
       to { transform: scale(1.06); }
     }
 
     .quiz-q-card {
       background: var(--bg-app);
-      border: 1.5px dashed var(--accent-blue);
+      border: 1.5px dashed #ea580c;
       border-radius: 14px;
       padding: 12px 16px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       cursor: pointer;
-      transition: transform 0.15s, border-color 0.2s;
-    }
-
-    .quiz-q-card:active {
-      transform: scale(0.99);
-    }
-
-    .quiz-q-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--text-primary);
-      line-height: 1.4;
-    }
-
-    .quiz-doubt-hint {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 6px;
-      font-size: 11.5px;
-      font-weight: 800;
-      color: #ea580c;
     }
 
     .quiz-opts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 11px;
+      gap: 10px;
     }
 
     .quiz-opt-card {
       background: var(--bg-app);
       border: 2px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 14.5px;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-primary);
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
     .quiz-opt-card.right {
@@ -1196,7 +1025,56 @@
       color: #ef4444;
     }
 
-    /* Finger Sketch Canvas */
+    /* JEET AI Style Bottom Center Control Dock */
+    .jeet-center-dock {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-surface);
+      border: 1.5px solid #fed7aa;
+      border-radius: 16px;
+      padding: 7px 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      z-index: 7300;
+    }
+
+    .dock-ctrl-btn {
+      background: transparent;
+      border: none;
+      color: #ea580c;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .dock-ctrl-btn:active {
+      background: #fff7ed;
+    }
+
+    .dock-divider {
+      width: 1px;
+      height: 20px;
+      background: #e2e8f0;
+    }
+
+    .slide-num-corner {
+      position: fixed;
+      bottom: 12px;
+      right: 18px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+
     #boardFingerCanvas {
       position: absolute;
       inset: 0;
@@ -1205,44 +1083,6 @@
       z-index: 20;
       touch-action: none;
       cursor: crosshair;
-    }
-
-    /* Corner Floating Controls */
-    .wb-corner-dock {
-      position: fixed;
-      bottom: 12px;
-      right: 16px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      z-index: 7200;
-      background: var(--bg-glass);
-      backdrop-filter: blur(10px);
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1.5px solid var(--border-subtle);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    }
-
-    .c-btn {
-      border: none;
-      background: transparent;
-      padding: 6px 11px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--text-primary);
-      cursor: pointer;
-    }
-
-    .c-btn.blue {
-      background: var(--accent-blue);
-      color: #ffffff;
-    }
-
-    .c-btn.amber {
-      background: rgba(245, 158, 11, 0.2);
-      color: #f59e0b;
     }
 
     /* Modals */
@@ -1273,12 +1113,6 @@
       text-align: center;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
       position: relative;
-      animation: modalScaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes modalScaleIn {
-      from { transform: scale(0.82); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
     }
 
     .app-modal-card input {
@@ -1292,55 +1126,31 @@
       margin: 12px 0;
       outline: none;
     }
-
-    .logout-anim-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      color: #ffffff;
-      border: none;
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-top: 12px;
-      box-shadow: 0 6px 18px rgba(239, 68, 68, 0.3);
-      transition: transform 0.2s;
-    }
-
-    .logout-anim-btn:active {
-      transform: scale(0.95);
-    }
   </style>
 </head>
 <body>
 
-  <!-- =========================================================
-       1. PREMIUM 3D APP SPLASH SCREEN
-       ========================================================= -->
+  <!-- 1. SPLASH SCREEN -->
   <div id="appSplash">
     <div class="splash-orb">📺</div>
-    <div style="font-size: 11px; font-weight: 900; color: #38bdf8; letter-spacing: 3px; margin-bottom: 4px;">NISCHAYDESK SMART APP</div>
-    <h1 style="font-size: 27px; font-weight: 900; color: #ffffff;">Nischay<span style="color: #38bdf8;">Board</span> AI</h1>
-    <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">बिहार बोर्ड लाइव स्मार्ट क्लास ऐप ⚡</p>
-    <div class="splash-loader-bar"><div class="splash-loader-fill"></div></div>
+    <div style="font-size: 11px; font-weight: 900; color: #38bdf8; letter-spacing: 3px; margin-bottom: 4px;">NISCHAYDESK SMART CLASS</div>
+    <h1 style="font-size: 27px; font-weight: 900;">Nischay<span style="color: #38bdf8;">Board</span> AI</h1>
+    <p style="font-size: 13px; color: #94a3b8; font-weight: 700; margin-top: 4px;">30-मिनट की गहरी लाइव मास्टर क्लास ⚡</p>
   </div>
 
-  <!-- =========================================================
-       2. MAIN APP SHELL
-       ========================================================= -->
+  <!-- 2. MAIN DASHBOARD LOBBY -->
   <div class="app-container" id="mainAppShell">
     <header class="app-top-bar">
       <div class="top-left-group">
         <a href="index.html" class="app-back-pill">← होम</a>
         <div class="app-title-block">
           <h1>Nischay<span>Board</span></h1>
-          <p>स्मार्ट व्हाइटबोर्ड क्लास</p>
+          <p>30-Min Master Classroom</p>
         </div>
       </div>
 
       <div class="top-right-actions">
-        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppTheme()" title="Light / Dark Mode">🌙</button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleAppTheme()">🌙</button>
         <button class="profile-pill-btn" onclick="openProfileOrLoginModal()">
           <img id="topUserAvatar" src="https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff" alt="User">
           <span id="topUserName">अपना नाम लिखें</span>
@@ -1348,150 +1158,158 @@
       </div>
     </header>
 
-    <!-- TWO CORE MODES -->
-    <div class="mode-switcher-wrap">
-      <div class="mode-card active" id="cardModeSyllabus" onclick="switchAppMode('syllabus')">
-        <div class="mode-card-icon">📚</div>
-        <h3>चैप्टर सिलेबस</h3>
-        <p>हर विषय व टॉपिक की डिटेल स्मार्ट क्लास</p>
-      </div>
-
-      <div class="mode-card" id="cardModeAI" onclick="switchAppMode('ai')">
-        <div class="mode-card-icon">✨</div>
-        <h3>AI लाइव सेशन</h3>
-        <p>कोई भी टॉपिक लिखो, लाइव वीडियो क्लास बनेगी</p>
+    <!-- Auto-Saved Progress Resume Card -->
+    <div class="resume-banner-wrap" id="resumeBannerWrap">
+      <div class="resume-card" onclick="resumeLastSavedClass()">
+        <div>
+          <div style="font-size: 11px; font-weight: 800; opacity: 0.85;">⏮️ पिछली क्लास वहीं से शुरू करें</div>
+          <h4 id="resumeTopicTitle" style="font-size: 14.5px; font-weight: 900; margin-top: 2px;">टॉपिक का नाम</h4>
+          <p id="resumeSlideInfo" style="font-size: 11.5px; opacity: 0.9; margin-top: 2px;">Slide 4 पर रुके थे</p>
+        </div>
+        <span style="background: #ffffff; color: #1d4ed8; padding: 8px 14px; border-radius: 12px; font-size: 12.5px; font-weight: 900;">जारी रखें ▶</span>
       </div>
     </div>
 
-    <!-- MODE A: SYLLABUS VIEW (ALL SUBJECTS FROM data/lession-syllabus.json) -->
+    <!-- Two Modes -->
+    <div class="mode-switcher-wrap">
+      <div class="mode-card active" id="cardModeSyllabus" onclick="switchAppMode('syllabus')">
+        <div style="font-size: 26px;">📚</div>
+        <h3>10th सभी विषय</h3>
+        <p>हर चैप्टर • 30 मिनट मास्टर क्लास</p>
+      </div>
+
+      <div class="mode-card" id="cardModeAI" onclick="switchAppMode('ai')">
+        <div style="font-size: 26px;">✨</div>
+        <h3>AI लाइव सेशन</h3>
+        <p>किसी भी टॉपिक पर 20+ स्लाइड क्लास</p>
+      </div>
+    </div>
+
+    <!-- Mode A: Syllabus -->
     <section class="syllabus-section active" id="viewSyllabus">
       <div class="subject-scroller" id="subjectScroller"></div>
-
       <div class="chapter-list-header">
         <h3 id="activeSubjectHeading">अध्ययन विषय</h3>
         <span class="count-badge" id="activeChapterCount">सिलेबस</span>
       </div>
-
       <div id="chapterCardsContainer"></div>
     </section>
 
-    <!-- MODE B: AI LIVE SESSION GENERATOR -->
+    <!-- Mode B: Custom Topic Master Class -->
     <section class="ai-studio-section" id="viewAIStudio">
       <div class="studio-box">
-        <div class="studio-live-badge">⚡ INTERACTIVE SMART CLASSROOM</div>
-        <h2>✨ किसी भी टॉपिक पर लाइव स्मार्ट क्लास शुरू करें</h2>
-        <p>अपना टॉपिक टाइप करें—टीचर पहले आपका नाम लेकर परिचय देगा, फिर हर स्लाइड पर नया चित्र बनाकर समझाएगा और अंत में 2 मिनट के टाइमर वाला टेस्ट भी लेगा!</p>
-        <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: ओम का नियम, प्रकाश संश्लेषण, या त्रिकोणमिति...">
+        <div style="font-size: 11px; font-weight: 800; color: #7dd3fc; margin-bottom: 6px;">⚡ DEEP STEP-BY-STEP MASTERCLASS (20+ SLIDES)</div>
+        <h2 style="font-size: 19px; font-weight: 900;">किसी भी टॉपिक पर 30 मिनट की पूरी क्लास शुरू करें</h2>
+        <p style="font-size: 12.5px; color: #e2e8f0; margin-top: 4px;">मास्टर जी की तरह एक-एक स्टेप बॉक्स, लाल घेरे, उदाहरण और अंत में 5 प्रश्नों का प्रैक्टिस टेस्ट!</p>
+        <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: त्रिकोणमितीय अनुपात, ओम का नियम, या दशमलव का वैज्ञानिक रूप...">
         <div class="studio-chips">
-          <span class="topic-suggestion" onclick="fillTopic('ओम का नियम (Ohm\'s Law)')">⚡ ओम का नियम</span>
-          <span class="topic-suggestion" onclick="fillTopic('प्रकाश का परावर्तन और इसके नियम')">🔦 प्रकाश का परावर्तन</span>
-          <span class="topic-suggestion" onclick="fillTopic('मानव पाचन तंत्र')">🧬 मानव पाचन तंत्र</span>
-          <span class="topic-suggestion" onclick="fillTopic('द्विघात समीकरण के मूल')">📐 द्विघात समीकरण</span>
+          <span class="topic-suggestion" onclick="fillTopic('त्रिकोणमितीय अनुपात एवं सर्वसमिकाएँ')">📐 त्रिकोणमितीय अनुपात</span>
+          <span class="topic-suggestion" onclick="fillTopic('ओम का नियम (Ohm\'s Law) एवं प्रतिरोध')">⚡ ओम का नियम</span>
+          <span class="topic-suggestion" onclick="fillTopic('मानव पाचन तंत्र की क्रियाविधि')">🧬 मानव पाचन तंत्र</span>
         </div>
-        <button class="generate-video-btn" onclick="startCustomAISession()">
+        <button class="generate-video-btn" onclick="startCustomMasterClass()">
           <span>🎬</span>
-          <span>स्मार्ट क्लास तैयार करें और चलाएं</span>
+          <span>30-मिनट मास्टर क्लास शुरू करें</span>
         </button>
       </div>
     </section>
 
-    <!-- NATIVE APP BOTTOM DOCK -->
+    <!-- Bottom App Dock -->
     <nav class="native-bottom-dock">
       <div class="dock-tab active" id="dockSyllabus" onclick="switchAppMode('syllabus')">
-        <span class="ico">📚</span>
+        <span style="font-size: 20px;">📚</span>
         <span>सभी विषय</span>
       </div>
       <div class="dock-tab" id="dockAI" onclick="switchAppMode('ai')">
-        <span class="ico">✨</span>
-        <span>लाइव सेशन</span>
+        <span style="font-size: 20px;">✨</span>
+        <span>मास्टर क्लास</span>
       </div>
       <div class="dock-tab" onclick="openProfileOrLoginModal()">
-        <span class="ico">👤</span>
-        <span>प्रोफ़ाइल / लॉगआउट</span>
+        <span style="font-size: 20px;">👤</span>
+        <span>प्रोफ़ाइल</span>
       </div>
     </nav>
   </div>
 
-  <!-- =========================================================
-       TOPIC-WISE SLIDE-UP SHEET
-       ========================================================= -->
+  <!-- Topic Slide-Up Sheet -->
   <div class="sheet-backdrop" id="topicSheetMask" onclick="closeTopicSheet(event)">
     <div class="topic-sheet">
-      <div class="sheet-drag-bar"></div>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+      <div style="width: 42px; height: 5px; background: var(--border-subtle); border-radius: 99px; margin: 0 auto 14px;"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <div>
-          <span id="sheetSubjectTag" style="font-size: 11px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase;">SUBJECT</span>
+          <span id="sheetSubjectTag" style="font-size: 11px; font-weight: 800; color: var(--accent-blue);">SUBJECT</span>
           <h3 id="sheetChapterTitle" style="font-size: 17px; font-weight: 900;">अध्याय का नाम</h3>
         </div>
         <button onclick="document.getElementById('topicSheetMask').classList.remove('open')" style="border: none; background: var(--bg-app); color: var(--text-primary); width: 32px; height: 32px; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
       </div>
-      <p style="font-size: 12.5px; color: var(--text-secondary); font-weight: 700; margin-bottom: 12px;">पढ़ने के लिए नीचे से कोई भी टॉपिक चुनें:</p>
       <div id="topicListContainer"></div>
     </div>
   </div>
 
-  <!-- =========================================================
-       STEP-BY-STEP BOARD PREPARATION LOADER
-       ========================================================= -->
-  <div class="prep-overlay" id="prepOverlay">
-    <div class="prep-ring"></div>
-    <h3 id="prepTitle" style="font-size: 19px; font-weight: 900;">स्मार्ट बोर्ड तैयार हो रहा है...</h3>
-    <div class="prep-steps-box">
-      <div class="prep-step" id="pStep1">⏳ 1. छात्र के नाम से परिचय (Intro) सेट हो रहा है...</div>
-      <div class="prep-step" id="pStep2">⏳ 2. हर स्लाइड के लिए कस्टम चित्र लोड हो रहे हैं...</div>
-      <div class="prep-step" id="pStep3">⏳ 3. 2 मिनट का लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...</div>
+  <!-- JEET AI Style "Picking up where you left off" Overlay -->
+  <div class="resume-toast-overlay" id="resumeToastOverlay">
+    <div class="resume-toast-card">
+      <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 4px;">Picking up where you left off</h3>
+      <p id="loadingSubText" style="font-size: 13px; color: #64748b; margin-bottom: 14px;">Getting your lesson ready...</p>
+      <div style="font-size: 14px; font-weight: 800; color: #ea580c;">
+        <span class="orange-spinner"></span> Working on it
+      </div>
     </div>
   </div>
 
   <!-- =========================================================
-       HD LANDSCAPE SMART WHITEBOARD STAGE
+       HD LANDSCAPE SMART WHITEBOARD (JEET AI CLASSROOM)
        ========================================================= -->
   <div class="wb-fullscreen" id="wbScreen">
     <div class="wb-top-bar">
       <div class="wb-meta-line">
         <div class="wb-left-nav">
-          <button class="wb-exit-pill" onclick="exitWhiteboard()">← वापस</button>
-          <span class="wb-crumb" id="wbCrumbTitle">LIVE CLASS</span>
+          <button class="wb-back-circle" onclick="exitWhiteboard()">←</button>
+          <span class="wb-crumb" id="wbCrumbTitle">LEARNING GOAL(S)</span>
         </div>
-        <span class="wb-stage-tag" id="wbStageIndicator">Slide 1</span>
+        <span class="wb-slide-counter" id="wbSlideCounter">Slide 1 of 20</span>
+        <div class="wb-rec-dot"></div>
       </div>
       <div class="wb-prog-track">
         <div class="wb-prog-bar" id="wbProgBar"></div>
       </div>
     </div>
 
-    <!-- 👍 LIKE / 👎 DISLIKE UNDERSTANDING CHECK -->
+    <!-- 👍 / 👎 Understanding Bar -->
     <div class="understanding-check-bar" id="understandingBar">
-      <span style="font-size: 12.5px; font-weight: 800; color: var(--text-primary);">क्या यह समझ आ गया?</span>
-      <button class="check-btn like" onclick="handleUnderstandLike()">👍 हाँ, समझ गया</button>
-      <button class="check-btn dislike" onclick="handleUnderstandDislike()">👎 नहीं आया</button>
+      <span style="font-size: 12.5px; font-weight: 800;">क्या यहाँ तक सब समझ आ गया?</span>
+      <button class="check-btn" style="background:#dcfce7;color:#15803d;" onclick="handleUnderstandLike()">👍 हाँ, आगे बढ़ें</button>
+      <button class="check-btn" style="background:#fee2e2;color:#dc2626;" onclick="handleUnderstandDislike()">👎 डाउट है</button>
     </div>
 
     <div class="wb-main-canvas" id="wbMainCanvas"></div>
     <canvas id="boardFingerCanvas"></canvas>
 
-    <div class="wb-corner-dock">
-      <button class="c-btn" onclick="toggleAppTheme()" id="wbThemeBtn">🌙</button>
-      <button class="c-btn" onclick="prevBoardSlide()">⏮️</button>
-      <button class="c-btn blue" id="wbPlayPauseBtn" onclick="toggleWbPlay()">⏸️ Pause</button>
-      <button class="c-btn amber" onclick="openDoubtPrompt()">✋ डाउट पूछें</button>
-      <button class="c-btn" onclick="clearFingerSketch()">🧹</button>
-      <button class="c-btn" onclick="nextBoardSlide()">⏭️</button>
-      <button class="c-btn" onclick="forceFullLandscape()">⛶</button>
+    <!-- JEET AI Centered Floating Dock -->
+    <div class="jeet-center-dock">
+      <button class="dock-ctrl-btn" id="btnMuteToggle" onclick="toggleAudioMute()" title="Mute/Unmute">🔊</button>
+      <div class="dock-divider"></div>
+      <button class="dock-ctrl-btn" onclick="openDoubtPrompt()" title="Ask Doubt">✋ पूछें</button>
+      <div class="dock-divider"></div>
+      <button class="dock-ctrl-btn" id="btnSpeedToggle" onclick="cyclePlaybackSpeed()">1x</button>
+      <div class="dock-divider"></div>
+      <button class="dock-ctrl-btn" id="btnPlayPause" onclick="toggleWbPlay()">⏸️</button>
+      <div class="dock-divider"></div>
+      <button class="dock-ctrl-btn" onclick="nextBoardSlide()" title="Next Slide">➔</button>
     </div>
+
+    <div class="slide-num-corner" id="bottomRightSlideNum">01</div>
   </div>
 
-  <!-- Portrait Orientation Notice -->
+  <!-- Portrait Notice -->
   <div class="portrait-lock-screen">
     <div style="font-size: 52px; margin-bottom: 12px;">📱</div>
     <h2 style="font-size: 20px; margin-bottom: 6px;">मोबाइल आड़ा (Landscape) करें!</h2>
-    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">असली स्मार्ट बोर्ड और टेस्ट देखने के लिए फोन घुमाएं।</p>
-    <button class="c-btn blue" style="padding: 12px 22px; font-size: 14px;" onclick="forceFullLandscape()">⛶ फुल-स्क्रीन करें</button>
+    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">असली स्मार्ट बोर्ड देखने के लिए फोन घुमाएं।</p>
+    <button style="background:#2563eb;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:800;" onclick="forceFullLandscape()">⛶ फुल-स्क्रीन करें</button>
   </div>
 
-  <!-- =========================================================
-       MODALS: VIRTUAL/GOOGLE PROFILE + LOGOUT + DOUBT
-       ========================================================= -->
+  <!-- Modals -->
   <div class="app-modal-mask" id="profileModalMask" onclick="closeAllMasks(event)">
     <div class="app-modal-card" id="profileModalContent"></div>
   </div>
@@ -1499,33 +1317,35 @@
   <div class="app-modal-mask" id="doubtModalMask" onclick="closeAllMasks(event)">
     <div class="app-modal-card">
       <h3 style="font-size: 17px; font-weight: 900;">🤔 क्या चीज़ समझ नहीं आई?</h3>
-      <p id="doubtContextLabel" style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—टीचर आसान उदाहरण से दोबारा समझाएगा!</p>
-      <input type="text" id="userDoubtField" placeholder="जैसे: यह उत्तर कैसे आया? या परिभाषा फिर से बताइए...">
+      <p id="doubtContextLabel" style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">लिखकर पूछें—मास्टर जी आसान उदाहरण से समझाएंगे!</p>
+      <input type="text" id="userDoubtField" placeholder="अपना सवाल यहाँ लिखें...">
       <div style="display: flex; gap: 8px; justify-content: flex-end;">
-        <button class="c-btn" onclick="document.getElementById('doubtModalMask').classList.remove('open')">बंद करें</button>
-        <button class="c-btn blue" onclick="submitDoubtExplanation()">समझाएं 🧠</button>
+        <button style="border:none;background:transparent;padding:8px 14px;font-weight:800;color:var(--text-secondary);" onclick="document.getElementById('doubtModalMask').classList.remove('open')">बंद करें</button>
+        <button style="border:none;background:#2563eb;color:#fff;padding:9px 16px;border-radius:10px;font-weight:800;" onclick="submitDoubtExplanation()">समझाएं 🧠</button>
       </div>
     </div>
   </div>
 
   <script>
     // =========================================================
-    // 🔒 ENCODED API KEY & 3-TIER VOICE CONFIG
+    // 🔒 API KEY & MODEL FALLBACK CHAIN (NO 2.5 MODELS)
     // =========================================================
     function getDecodedKey() {
       const _s = [70, 86, 51, 70, 103, 61, 87, 83, 59, 79, 94, 125, 110, 110, 110, 104, 95, 110, 121, 121, 122, 95, 83, 59, 80, 56, 112, 120, 111, 92, 111, 71, 119, 122, 115, 91, 79, 95, 60, 55, 115, 70, 113, 77, 75, 62, 50, 90, 108, 76, 53, 124, 86];
       return _s.map(c => String.fromCharCode(c - 5)).join('');
     }
 
-    const MODEL_NAME = "gemini-3.5-flash-lite";
-    const FALLBACK_MODEL = "gemini-2.5-flash";
+    // Primary: Gemini Flash 3.8 -> Backup 1: Gemini Flash 3.5 Lite -> Backup 2: Gemini Flash 3.5 -> Backup 3: Gemini 3.0 Flash
+    const MODEL_FALLBACK_CHAIN = [
+      "gemini-3.8-flash",
+      "gemini-3.5-flash-lite",
+      "gemini-3.5-flash",
+      "gemini-3.0-flash"
+    ];
 
     const ELEVEN_KEY = "sk_db06af05bfb315577f97a9fba3d24b673ecdbc025b54bd55";
     const VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
 
-    // =========================================================
-    // 📂 SUBJECT-WISE JSON FILES MAPPING (ALL INSIDE data/ FOLDER)
-    // =========================================================
     const SYLLABUS_MASTER_FILE = "data/lession-syllabus.json";
     const SUBJECT_LESSON_FILES = {
       physics: "data/lessons/physics.json",
@@ -1544,28 +1364,21 @@
     };
 
     // =========================================================
-    // THEME ENGINE (LIGHT / DARK SYNCED)
+    // THEME & PROGRESS STORAGE
     // =========================================================
     function applyThemeUI(theme) {
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("nd_app_theme", theme);
-      const icon = theme === "dark" ? "☀️" : "🌙";
-      const btn1 = document.getElementById("themeToggleBtn");
-      const btn2 = document.getElementById("wbThemeBtn");
-      if (btn1) btn1.textContent = icon;
-      if (btn2) btn2.textContent = icon;
+      const btn = document.getElementById("themeToggleBtn");
+      if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
     }
 
     window.toggleAppTheme = function() {
       const current = document.documentElement.getAttribute("data-theme") || "light";
       applyThemeUI(current === "dark" ? "light" : "dark");
     };
-
     applyThemeUI(localStorage.getItem("nd_app_theme") || "light");
 
-    // =========================================================
-    // STATE MANAGEMENT
-    // =========================================================
     let studentName = localStorage.getItem("nd_virtual_student_name") || "";
     let firebaseUser = null;
     let externalSyllabus = null;
@@ -1573,14 +1386,18 @@
     let activeSubjectKey = null;
 
     let isWbPlaying = false;
+    let isMuted = false;
+    let playbackSpeed = 1.0;
     let currentLessonSlides = [];
     let currentSlideIndex = 0;
-    let currentPointIndex = 0;
+    let currentStepIndex = 0;
+    let currentLessonMeta = { subject: "", topic: "" };
+    let isBackgroundFetchingMore = false;
+
     let globalAudioPlayer = new Audio();
     let currentAudioUrl = null;
     const voiceCache = new Map();
 
-    // ⏱️ 2-Minute Quiz Countdown Timer State
     let quizTimerInterval = null;
     let quizRemainingSeconds = 120;
     let activeDoubtQuestionContext = "";
@@ -1591,9 +1408,52 @@
 
     setTimeout(() => {
       document.getElementById("appSplash").classList.add("hide");
-    }, 950);
+    }, 900);
 
-    // Sync Firebase Auth
+    // Check Saved Progress on Boot
+    function checkSavedClassProgress() {
+      try {
+        const raw = localStorage.getItem("nd_saved_classroom_state");
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (saved && saved.slides && saved.slides.length > 0) {
+          document.getElementById("resumeBannerWrap").classList.add("show");
+          document.getElementById("resumeTopicTitle").textContent = saved.topic;
+          document.getElementById("resumeSlideInfo").textContent = `Slide ${saved.slideIndex + 1} of ${saved.slides.length} पर रुके थे • ~30 मिनट मास्टर क्लास`;
+        }
+      } catch (e) {}
+    }
+
+    function saveClassProgress() {
+      if (!currentLessonSlides.length) return;
+      localStorage.setItem("nd_saved_classroom_state", JSON.stringify({
+        subject: currentLessonMeta.subject,
+        topic: currentLessonMeta.topic,
+        slideIndex: currentSlideIndex,
+        slides: currentLessonSlides
+      }));
+    }
+
+    window.resumeLastSavedClass = function() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("nd_saved_classroom_state"));
+        if (!saved) return;
+        currentLessonMeta = { subject: saved.subject, topic: saved.topic };
+        currentLessonSlides = saved.slides;
+        currentSlideIndex = saved.slideIndex || 0;
+
+        const toast = document.getElementById("resumeToastOverlay");
+        document.getElementById("loadingSubText").textContent = "Getting your lesson back...";
+        toast.classList.add("open");
+
+        setTimeout(() => {
+          toast.classList.remove("open");
+          openWhiteboardStage(saved.subject, saved.topic, currentSlideIndex);
+        }, 900);
+      } catch (e) {}
+    };
+
+    // Firebase Auth Sync
     if (window.firebase && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
         firebaseUser = user;
@@ -1603,24 +1463,18 @@
           localStorage.setItem("nd_virtual_student_name", studentName);
           document.getElementById("topUserName").textContent = first;
           document.getElementById("topUserAvatar").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(first)}&background=2563eb&color=fff`;
-        } else {
-          const saved = localStorage.getItem("nd_virtual_student_name");
-          if (saved) {
-            studentName = saved;
-            document.getElementById("topUserName").textContent = saved;
-            document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(saved)}&background=2563eb&color=fff`;
-          } else {
-            document.getElementById("topUserName").textContent = "अपना नाम लिखें";
-            document.getElementById("topUserAvatar").src = "https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff";
-          }
+        } else if (studentName) {
+          document.getElementById("topUserName").textContent = studentName;
+          document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=2563eb&color=fff`;
         }
       });
     }
 
     // =========================================================
-    // LOAD MASTER SYLLABUS & SUBJECT LESSON JSONs FROM data/
+    // LOAD SYLLABUS & SUBJECT PACKS
     // =========================================================
     async function loadExternalContent() {
+      checkSavedClassProgress();
       try {
         const res = await fetch(SYLLABUS_MASTER_FILE);
         if (res.ok) {
@@ -1631,12 +1485,8 @@
             renderSubjectBar();
             renderChapterCards(activeSubjectKey);
           }
-        } else {
-          renderSyllabusPendingNotice();
         }
-      } catch (e) {
-        renderSyllabusPendingNotice();
-      }
+      } catch (e) {}
     }
 
     async function fetchSubjectLessonPack(subjKey) {
@@ -1654,103 +1504,6 @@
       return null;
     }
 
-    function renderSyllabusPendingNotice() {
-      document.getElementById("activeSubjectHeading").textContent = "अध्ययन विषय एवं अध्याय";
-      document.getElementById("activeChapterCount").textContent = "जल्द उपलब्ध";
-      document.getElementById("chapterCardsContainer").innerHTML = `
-        <div class="pending-library-card">
-          <div style="font-size: 40px; margin-bottom: 8px;">📚</div>
-          <h4 style="font-size: 16px; font-weight: 900; margin-bottom: 6px;">सिलेबस फाइल लोड नहीं हुई</h4>
-          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 420px; margin: 0 auto 14px;">
-            कृपया सुनिश्चित करें कि <b>data/lession-syllabus.json</b> उपलब्ध है, या अभी <b>लाइव सेशन</b> चलाएं।
-          </p>
-          <button class="generate-video-btn" style="max-width: 280px; margin: 0 auto; padding: 12px; background: linear-gradient(135deg,#2563eb,#0284c7); color:#fff;" onclick="switchAppMode('ai')">
-            ✨ अभी लाइव सेशन चलाएं
-          </button>
-        </div>
-      `;
-    }
-
-    // =========================================================
-    // VIRTUAL LOGIN / PROFILE / ANIMATED LOGOUT
-    // =========================================================
-    window.openProfileOrLoginModal = function() {
-      const mask = document.getElementById("profileModalMask");
-      const card = document.getElementById("profileModalContent");
-
-      if (firebaseUser) {
-        card.innerHTML = `
-          <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:var(--bg-app);color:var(--text-primary);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
-          <img src="${firebaseUser.photoURL || 'https://ui-avatars.com/api/?name=Student'}" style="width:68px;height:68px;border-radius:50%;border:3px solid #2563eb;margin-bottom:10px;">
-          <h3 style="font-size:18px;font-weight:900;">${firebaseUser.displayName || studentName}</h3>
-          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">${firebaseUser.email}</p>
-          <div style="background:var(--chip-bg);padding:10px;border-radius:12px;font-size:12.5px;font-weight:700;color:var(--chip-text);">
-            🎙️ टीचर क्लास में तुम्हें <b>"${getDisplayStudentName()}"</b> बोलकर पढ़ाएंगे!
-          </div>
-          <button class="logout-anim-btn" onclick="performAnimatedLogout()">🚪 सुरक्षित लॉगआउट करें</button>
-        `;
-      } else {
-        card.innerHTML = `
-          <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:var(--bg-app);color:var(--text-primary);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
-          <div style="font-size:40px;margin-bottom:8px;">🎓</div>
-          <h3 style="font-size:18px;font-weight:900;">अपना नाम सेट करें (वर्चुअल लॉगिन)</h3>
-          <p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px;">टीचर लाइव बोर्ड पर तुम्हारा यही नाम लेकर पढ़ाएगा!</p>
-          <input type="text" id="virtualNameInput" value="${studentName}" placeholder="अपना नाम लिखें (जैसे: अमन, पूजा, राहुल)...">
-          <button class="generate-video-btn" style="padding:12px;font-size:14px;background:linear-gradient(135deg,#2563eb,#0284c7);color:#fff;" onclick="saveVirtualStudentName()">✅ नाम सेव करें</button>
-          ${studentName ? `<button class="logout-anim-btn" onclick="performAnimatedLogout()">🚪 नाम हटाएं (लॉगआउट)</button>` : ""}
-          <div style="margin:12px 0;font-size:11px;color:var(--text-secondary);font-weight:700;">— या —</div>
-          <button onclick="triggerGoogleSignIn()" style="width:100%;padding:11px;border-radius:12px;border:1.5px solid var(--border-subtle);background:var(--bg-app);color:var(--text-primary);font-weight:800;font-size:13.5px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18">
-            <span>Google से लॉगिन करें</span>
-          </button>
-        `;
-      }
-      mask.classList.add("open");
-    };
-
-    window.saveVirtualStudentName = function() {
-      const val = document.getElementById("virtualNameInput").value.trim();
-      if (!val) return;
-      studentName = val;
-      localStorage.setItem("nd_virtual_student_name", studentName);
-      document.getElementById("topUserName").textContent = val;
-      document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(val)}&background=2563eb&color=fff`;
-      document.getElementById("profileModalMask").classList.remove("open");
-    };
-
-    window.triggerGoogleSignIn = function() {
-      if (window.firebase && firebase.auth) {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(() => {
-          document.getElementById("profileModalMask").classList.remove("open");
-        });
-      }
-    };
-
-    window.performAnimatedLogout = function() {
-      const card = document.getElementById("profileModalContent");
-      card.innerHTML = `<div style="padding:20px;"><div style="font-size:36px;margin-bottom:8px;">⏳</div><h4 style="font-weight:800;">लॉगआउट हो रहा है...</h4></div>`;
-      setTimeout(() => {
-        if (window.firebase && firebase.auth) {
-          firebase.auth().signOut();
-        }
-        localStorage.removeItem("nd_virtual_student_name");
-        studentName = "";
-        document.getElementById("topUserName").textContent = "अपना नाम लिखें";
-        document.getElementById("topUserAvatar").src = "https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff";
-        document.getElementById("profileModalMask").classList.remove("open");
-      }, 750);
-    };
-
-    window.closeAllMasks = function(e) {
-      if (e.target.classList.contains("app-modal-mask")) {
-        e.target.classList.remove("open");
-      }
-    };
-
-    // =========================================================
-    // APP MODE SWITCHING & CHAPTER RENDERER
-    // =========================================================
     window.switchAppMode = function(mode) {
       document.getElementById("cardModeSyllabus").classList.toggle("active", mode === "syllabus");
       document.getElementById("cardModeAI").classList.toggle("active", mode === "ai");
@@ -1794,9 +1547,12 @@
           <div class="ch-index">${idx + 1}</div>
           <div class="ch-body">
             <h4>${ch.name}</h4>
-            <p>${ch.topics ? ch.topics.length : 1} मुख्य टॉपिक्स • टॉपिक-वाइज क्लास</p>
+            <div class="ch-meta-sub">
+              <span>${ch.topics ? ch.topics.length : 1} टॉपिक्स</span>
+              <span class="duration-mini-tag">⏱️ ~30 मिनट क्लास</span>
+            </div>
           </div>
-          <div class="ch-arrow">›</div>
+          <span style="color:var(--accent-blue);font-weight:900;font-size:18px;">›</span>
         `;
         card.onclick = () => openChapterTopicsSheet(subjKey, subj.title, ch);
         grid.appendChild(card);
@@ -1817,13 +1573,14 @@
         btn.innerHTML = `
           <div>
             <div style="font-size:11px;font-weight:800;color:var(--accent-blue);">TOPIC ${i + 1}</div>
-            <div style="font-size:14.5px;font-weight:800;color:var(--text-primary);margin-top:2px;">${topicTitle}</div>
+            <div style="font-size:14.5px;font-weight:800;color:var(--text-primary);margin:2px 0;">${topicTitle}</div>
+            <div style="font-size:11px;font-weight:700;color:var(--accent-orange);">⏱️ ~30 मिनट • 20+ स्लाइड्स • लाइव टेस्ट</div>
           </div>
-          <span style="background:var(--accent-blue);color:#fff;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
+          <span style="background:var(--accent-blue);color:#fff;padding:7px 13px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
         `;
         btn.onclick = () => {
           document.getElementById("topicSheetMask").classList.remove("open");
-          prepareAndLaunchLesson(subjKey, subjectName, topicTitle, chapterObj.id);
+          prepareAndLaunchMasterClass(subjKey, subjectName, topicTitle, chapterObj.id);
         };
         list.appendChild(btn);
       });
@@ -1841,156 +1598,182 @@
       document.getElementById("customTopicInput").value = txt;
     };
 
-    window.startCustomAISession = function() {
+    window.startCustomMasterClass = function() {
       const val = document.getElementById("customTopicInput").value.trim();
       if (!val) {
         alert("कृपया पहले कोई टॉपिक लिखें!");
         return;
       }
-      prepareAndLaunchLesson(null, "LIVE CLASS", val, null);
+      prepareAndLaunchMasterClass(null, "MASTER CLASS", val, null);
     };
 
     // =========================================================
-    // AI & SUBJECT JSON LESSON LOADER
+    // MULTI-MODEL FALLBACK CALLER (3.8 Flash -> 3.5 Flash Lite -> 3.5 Flash -> 3.0 Flash)
     // =========================================================
-    async function requestDynamicSlidesFromAI(modelToUse, promptText) {
+    async function callGeminiWithFallbackChain(promptText) {
       const activeKey = getDecodedKey();
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${activeKey}`;
+      let lastErr = null;
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": activeKey
-        },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: promptText }] }],
-          generationConfig: {
-            temperature: 0.85,
-            maxOutputTokens: 8192
+      for (const modelName of MODEL_FALLBACK_CHAIN) {
+        try {
+          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${activeKey}`;
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": activeKey
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }],
+              generationConfig: {
+                temperature: 0.75,
+                maxOutputTokens: 8192
+              }
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error?.message || `HTTP ${res.status}`);
           }
-        })
-      });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error?.message || `HTTP ${response.status}`);
+          let raw = data.candidates[0].content.parts[0].text;
+          raw = raw.replace(/```json|```/g, "").trim();
+          return JSON.parse(raw);
+        } catch (err) {
+          console.warn(`Model ${modelName} switched due to:`, err.message);
+          lastErr = err;
+        }
       }
-
-      let rawText = data.candidates[0].content.parts[0].text;
-      rawText = rawText.replace(/```json|```/g, "").trim();
-      return JSON.parse(rawText);
+      throw lastErr || new Error("All models busy");
     }
 
-    async function prepareAndLaunchLesson(subjKey, subjectLabel, fullTopicTitle, chapterId) {
+    // =========================================================
+    // 30-MINUTE CHUNKED DEEP CLASS GENERATOR (18-22 SLIDES)
+    // =========================================================
+    async function prepareAndLaunchMasterClass(subjKey, subjectLabel, fullTopicTitle, chapterId) {
       const activeStudent = getDisplayStudentName();
-      const prep = document.getElementById("prepOverlay");
-      const s1 = document.getElementById("pStep1");
-      const s2 = document.getElementById("pStep2");
-      const s3 = document.getElementById("pStep3");
+      const toast = document.getElementById("resumeToastOverlay");
+      document.getElementById("loadingSubText").textContent = `"${fullTopicTitle}" की 30-मिनट की मास्टर क्लास तैयार हो रही है...`;
+      toast.classList.add("open");
 
-      s1.className = "prep-step"; s1.textContent = `⏳ 1. "${activeStudent}" के नाम से परिचय (Intro) सेट हो रहा है...`;
-      s2.className = "prep-step"; s2.textContent = "⏳ 2. हर स्लाइड के लिए कस्टम चित्र लोड हो रहे हैं...";
-      s3.className = "prep-step"; s3.textContent = "⏳ 3. 2 मिनट का लाइव ऑब्जेक्टिव टेस्ट तैयार हो रहा है...";
-      prep.classList.add("open");
+      currentLessonMeta = { subject: subjectLabel, topic: fullTopicTitle };
 
-      setTimeout(() => { s1.classList.add("done"); s1.textContent = `✅ 1. "${activeStudent}" के नाम से परिचय तैयार!`; }, 400);
-      setTimeout(() => { s2.classList.add("done"); s2.textContent = "✅ 2. कस्टम चित्र और स्लाइड्स तैयार हो रहे हैं!"; }, 800);
-
-      let foundPrebuiltSlides = null;
-
-      // 1. Check data/lessons/<subject>.json first
+      // 1. Check Pre-built Subject JSON first
       if (subjKey && chapterId) {
         const subjectPack = await fetchSubjectLessonPack(subjKey);
         if (subjectPack && subjectPack[chapterId] && subjectPack[chapterId][fullTopicTitle]) {
-          foundPrebuiltSlides = JSON.parse(JSON.stringify(subjectPack[chapterId][fullTopicTitle].slides));
+          const prebuilt = JSON.parse(JSON.stringify(subjectPack[chapterId][fullTopicTitle].slides));
+          currentLessonSlides = prebuilt.map(sl => {
+            if (sl.voice) sl.voice = sl.voice.replace(/{{STUDENT}}/g, activeStudent);
+            return sl;
+          });
+          toast.classList.remove("open");
+          openWhiteboardStage(subjectLabel, fullTopicTitle, 0);
+          return;
         }
       }
 
-      if (foundPrebuiltSlides && foundPrebuiltSlides.length > 0) {
-        currentLessonSlides = foundPrebuiltSlides.map(sl => {
-          if (sl.voice) sl.voice = sl.voice.replace(/{{STUDENT}}/g, activeStudent);
-          if (sl.hook) sl.hook = sl.hook.replace(/{{STUDENT}}/g, activeStudent);
-          return sl;
-        });
-      } else {
-        // 2. Otherwise generate dynamically via AI
-        const prompt = `तुम एक रचनात्मक, विश्वस्तरीय भारतीय शिक्षक हो जो छात्र "${activeStudent}" को विषय "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर लाइव स्मार्ट बोर्ड क्लास दे रहे हो।
-        तुम्हें पूरी छूट है! टॉपिक की गहराई के अनुसार अपने मन से 4 से 5 अलग-अलग स्लाइड्स बनाओ ताकि छात्र को असली वीडियो लेक्चर जैसा अनुभव मिले।
+      // 2. Chunk 1: Generate Part 1 (Slides 1 to 7: Learning Goals + Core Concepts + Step-by-Step Visual Boxes)
+      const part1Prompt = `तुम एक अनुभवी भारतीय शिक्षक (मास्टर जी) हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर 30 मिनट की गहरी मास्टर क्लास दे रहे हो।
+      यह क्लास का भाग-1 है (कुल 7 विस्तृत स्लाइड्स बनाओ):
+      - Slide 1 ("type": "goals"): "LEARNING GOAL(S)" शीर्षक के साथ 4 स्पष्ट शिक्षण लक्ष्य दो।
+      - Slides 2 से 7 ("type": "step_board"): हर स्लाइड पर एक छोटा कॉन्सेप्ट/उदाहरण चरणबद्ध तरीके से समझाओ। बाईं तरफ visualBox (चौकोर डिजिटल बॉक्सेस, संख्याएँ, या सूत्र) और दाईं तरफ 2-3 कदमों में व्याख्या दो (<span class='red-under'>महत्वपूर्ण शब्द</span> और <span class='red-oval'>मुख्य मान</span> के साथ)।
 
-        सख्त नियम:
-        1. पहली स्लाइड ("type": "intro") होनी चाहिए: सीधे परिभाषा मत रटाना! पहले "${activeStudent}" का नाम लेकर रोज़मर्रा की ज़िंदगी की एक मज़ेदार घटना या सवाल (hook) से परिचय दो, और दाईं तरफ के लिए उस टॉपिक का एक असली, रंगीन और साफ़ <svg viewBox='0 0 340 200' width='100%' height='190'>...</svg> चित्र बनाओ।
-        2. बीच की 2 से 3 स्लाइड्स ("type": "lesson") होनी चाहिए: हर स्लाइड में टॉपिक का अगला भाग समझाओ, 2-3 मुख्य बिंदु (<span class='red-under'>मुख्य शब्द</span> + छोटा नीला sideNote) लिखो, और हर स्लाइड के लिए बिल्कुल अलग और नया वास्तविक SVG चित्र बनाओ।
-        3. आखिरी स्लाइड ("type": "quiz") होनी चाहिए: बोर्ड परीक्षा के लिए 1 VVI ऑब्जेक्टिव प्रश्न (4 विकल्पों और व्याख्या सहित)।
+      केवल शुद्ध JSON दो:
+      {
+        "slides": [
+          {
+            "type": "goals",
+            "header": "LEARNING GOAL(S)",
+            "goals": [
+              { "text": "पहला लक्ष्य <span class='red-under'>मुख्य शब्द</span> के साथ", "sideNote": "short formula -> note", "voice": "नमस्ते ${activeStudent}! आज हम..." }
+            ]
+          },
+          {
+            "type": "step_board",
+            "header": "STEP-BY-STEP CONCEPT",
+            "visual": {
+              "topLabel": "उदाहरण / सूत्र",
+              "boxes": ["0", "0", "4", "5"],
+              "circleIndex": 2,
+              "blueNote": "right -> -4",
+              "greenNote": "+4 x : 45000 > 1"
+            },
+            "steps": [
+              { "text": "पहला चरण <span class='red-under'>व्याख्या</span> के साथ।", "voice": "मास्टर जी की स्पष्ट हिंदी आवाज़" },
+              { "text": "दूसरा चरण <span class='red-oval'>मुख्य परिणाम</span> के साथ।", "voice": "अगले चरण की व्याख्या" }
+            ]
+          }
+        ]
+      }`;
 
-        केवल शुद्ध वैध संरचना में उत्तर दो:
+      try {
+        const chunk1 = await callGeminiWithFallbackChain(part1Prompt);
+        currentLessonSlides = chunk1.slides || [];
+        toast.classList.remove("open");
+        openWhiteboardStage(subjectLabel, fullTopicTitle, 0);
+
+        // Background Chunk 2 & 3: Silently append 10+ more slides & 5-Question Exam Test while student learns!
+        fetchRemainingMasterClassChunks(subjectLabel, fullTopicTitle, activeStudent);
+      } catch (err) {
+        toast.classList.remove("open");
+        alert("कृपया इंटरनेट जांचें और पुनः प्रयास करें: " + err.message);
+      }
+    }
+
+    async function fetchRemainingMasterClassChunks(subjectLabel, fullTopicTitle, activeStudent) {
+      if (isBackgroundFetchingMore) return;
+      isBackgroundFetchingMore = true;
+
+      try {
+        // Chunk 2: Deep Numericals / Examples + 4 Practice Exam Questions (Total ~14-16 Slides)
+        const part2Prompt = `"${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर मास्टर क्लास का भाग-2 बनाओ (छात्र: "${activeStudent}"):
+        - पहले 5 स्लाइड्स ("type": "step_board") कठिन उदाहरण, बोर्ड परीक्षा में पूछे जाने वाले दीर्घ उत्तरीय प्रश्न और सूत्र निगमन पर दो।
+        - उसके बाद 4 अलग-अलग स्लाइड्स ("type": "quiz") दो जिनमें बोर्ड परीक्षा के 4 VVI ऑब्जेक्टिव प्रश्न हों (हर प्रश्न के 4 विकल्प और व्याख्या सहित)।
+        केवल शुद्ध JSON दो:
         {
-          "subject": "${subjectLabel}",
-          "topic": "${fullTopicTitle}",
           "slides": [
             {
-              "type": "intro",
-              "title": "टॉपिक का मुख्य शीर्षक",
-              "handSub": "short cursive note -> starts",
-              "hook": "दैनिक जीवन से जुड़ा दिलचस्प सवाल या उदाहरण?",
-              "svg": "<svg viewBox='0 0 340 200' width='100%' height='190'>...</svg>",
-              "voice": "नमस्ते ${activeStudent}! ... (4 वाक्यों का शानदार इंट्रो)"
-            },
-            {
-              "type": "lesson",
-              "title": "स्लाइड का शीर्षक",
-              "svg": "<svg viewBox='0 0 340 200' width='100%' height='190'>...</svg>",
-              "points": [
-                {
-                  "text": "शिक्षण बिंदु <span class='red-under'>मुख्य शब्द</span> के साथ।",
-                  "sideNote": "नीला हैंड-रिटन नोट!",
-                  "circle": true,
-                  "voice": "टीचर की बोलने वाली आसान हिंदी व्याख्या"
-                }
+              "type": "step_board",
+              "header": "BOARD EXAM SOLVED EXAMPLE",
+              "visual": {
+                "topLabel": "हल (Solution)",
+                "boxes": ["Step 1", "Step 2", "उत्तर"],
+                "circleIndex": 2,
+                "blueNote": "सूत्र प्रयोग -> सही मान",
+                "greenNote": "5 अंक पक्के ✓"
+              },
+              "steps": [
+                { "text": "हल का पहला चरण <span class='red-under'>दिया गया मान</span>।", "voice": "अब एक बोर्ड परीक्षा का सवाल हल करते हैं।" },
+                { "text": "अंतिम उत्तर <span class='red-oval'>सही मात्रक</span> के साथ।", "voice": "इस तरह तुम्हें पूरे पाँच अंक मिलेंगे।" }
               ]
             },
             {
               "type": "quiz",
-              "question": "बोर्ड परीक्षा VVI ऑब्जेक्टिव प्रश्न?",
-              "options": ["विकल्प A", "विकल्प B", "विकल्प C", "विकल्प D"],
+              "question": "बोर्ड परीक्षा प्रश्न?",
+              "options": ["A", "B", "C", "D"],
               "correctIndex": 0,
-              "explanation": "सही उत्तर क्यों है, इसका संक्षिप्त कारण"
+              "explanation": "सही उत्तर का कारण"
             }
           ]
         }`;
 
-        try {
-          const parsed = await requestDynamicSlidesFromAI(MODEL_NAME, prompt);
-          currentLessonSlides = parsed.slides || [];
-        } catch (e1) {
-          try {
-            const parsed2 = await requestDynamicSlidesFromAI(FALLBACK_MODEL, prompt);
-            currentLessonSlides = parsed2.slides || [];
-          } catch (e2) {
-            prep.classList.remove("open");
-            alert("त्रुटि: " + e2.message);
-            return;
-          }
+        const chunk2 = await callGeminiWithFallbackChain(part2Prompt);
+        if (chunk2 && Array.isArray(chunk2.slides)) {
+          currentLessonSlides = currentLessonSlides.concat(chunk2.slides);
+          updateSlideCounterHeader();
+          saveClassProgress();
         }
+      } catch (e) {
+        console.warn("Background chunk skipped:", e.message);
+      } finally {
+        isBackgroundFetchingMore = false;
       }
-
-      if (!currentLessonSlides || currentLessonSlides.length === 0) {
-        prep.classList.remove("open");
-        alert("स्लाइड्स तैयार नहीं हो पाईं, कृपया पुनः प्रयास करें।");
-        return;
-      }
-
-      s3.classList.add("done");
-      s3.textContent = `✅ 3. कुल ${currentLessonSlides.length} स्लाइड्स व 2-मिनट टेस्ट तैयार!`;
-
-      setTimeout(() => {
-        prep.classList.remove("open");
-        openWhiteboardStage(subjectLabel, fullTopicTitle);
-      }, 500);
     }
 
     // =========================================================
-    // 3-TIER HUMAN VOICE ENGINE (ELEVENLABS -> EDGE-TTS -> DEFAULT)
+    // 3-TIER VOICE ENGINE + SPEED CONTROL (1x, 1.25x, 1.5x)
     // =========================================================
     function stopAllVoices() {
       if (globalAudioPlayer) {
@@ -2006,48 +1789,54 @@
       }
     }
 
-    async function speakThreeTier(rawText, onDone) {
+    window.toggleAudioMute = function() {
+      isMuted = !isMuted;
+      document.getElementById("btnMuteToggle").textContent = isMuted ? "🔇" : "🔊";
+      if (isMuted) stopAllVoices();
+    };
+
+    window.cyclePlaybackSpeed = function() {
+      if (playbackSpeed === 1.0) playbackSpeed = 1.25;
+      else if (playbackSpeed === 1.25) playbackSpeed = 1.5;
+      else playbackSpeed = 1.0;
+
+      document.getElementById("btnSpeedToggle").textContent = playbackSpeed + "x";
+      if (globalAudioPlayer) globalAudioPlayer.playbackRate = playbackSpeed;
+    };
+
+    async function speakMasterVoice(rawText, onDone) {
       stopAllVoices();
+      const clean = (rawText || "").replace(/<[^>]*>/g, "").replace(/[*#_`$~]/g, "").replace(/\s+/g, " ").trim();
 
-      const clean = rawText
-        .replace(/<[^>]*>/g, "")
-        .replace(/[*#_`$~]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
-
-      if (!clean) {
-        if (onDone) onDone();
+      if (!clean || isMuted) {
+        setTimeout(() => { if (onDone) onDone(); }, 2600 / playbackSpeed);
         return;
       }
 
       if (voiceCache.has(clean)) {
-        const cachedUrl = voiceCache.get(clean);
-        globalAudioPlayer.src = cachedUrl;
+        globalAudioPlayer.src = voiceCache.get(clean);
+        globalAudioPlayer.playbackRate = playbackSpeed;
         globalAudioPlayer.onended = () => { if (onDone) onDone(); };
         await globalAudioPlayer.play();
         return;
       }
 
-      // [Tier 1]: ElevenLabs
+      // Tier 1: ElevenLabs
       try {
         const res1 = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_22050_32`, {
           method: "POST",
-          headers: {
-            "xi-api-key": ELEVEN_KEY,
-            "Content-Type": "application/json"
-          },
+          headers: { "xi-api-key": ELEVEN_KEY, "Content-Type": "application/json" },
           body: JSON.stringify({
             text: clean,
             model_id: "eleven_multilingual_v2",
             voice_settings: { stability: 0.5, similarity_boost: 0.8 }
           })
         });
-
-        if (!res1.ok) throw new Error("ElevenLabs limit");
-        const blob1 = await res1.blob();
-        const url1 = URL.createObjectURL(blob1);
+        if (!res1.ok) throw new Error("Tier 1 limit");
+        const url1 = URL.createObjectURL(await res1.blob());
         voiceCache.set(clean, url1);
         globalAudioPlayer.src = url1;
+        globalAudioPlayer.playbackRate = playbackSpeed;
         globalAudioPlayer.onended = () => { if (onDone) onDone(); };
         globalAudioPlayer.onerror = () => speakEdgeTier2(clean, onDone);
         await globalAudioPlayer.play();
@@ -2057,19 +1846,18 @@
       }
     }
 
-    // [Tier 2]: Edge-TTS
     async function speakEdgeTier2(clean, onDone) {
       try {
         const res2 = await fetch("http://localhost:3000/api/tts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: clean, voice: "hi-IN-SwaraNeural", rate: "+6%" })
+          body: JSON.stringify({ text: clean, voice: "hi-IN-SwaraNeural", rate: "+5%" })
         });
-        if (!res2.ok) throw new Error("Edge-TTS offline");
-        const blob2 = await res2.blob();
-        const url2 = URL.createObjectURL(blob2);
+        if (!res2.ok) throw new Error("Tier 2 offline");
+        const url2 = URL.createObjectURL(await res2.blob());
         voiceCache.set(clean, url2);
         globalAudioPlayer.src = url2;
+        globalAudioPlayer.playbackRate = playbackSpeed;
         globalAudioPlayer.onended = () => { if (onDone) onDone(); };
         globalAudioPlayer.onerror = () => speakDefaultTier3(clean, onDone);
         await globalAudioPlayer.play();
@@ -2078,22 +1866,21 @@
       }
     }
 
-    // [Tier 3]: Default System Speech
     function speakDefaultTier3(clean, onDone) {
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
         const utt = new SpeechSynthesisUtterance(clean);
         utt.lang = "hi-IN";
-        utt.rate = 1.05;
+        utt.rate = playbackSpeed;
         utt.onend = utt.onerror = () => { if (onDone) onDone(); };
         window.speechSynthesis.speak(utt);
       } else {
-        setTimeout(() => { if (onDone) onDone(); }, 3000);
+        setTimeout(() => { if (onDone) onDone(); }, 3000 / playbackSpeed);
       }
     }
 
     // =========================================================
-    // ⏱️ 2-MINUTE QUIZ COUNTDOWN TIMER ENGINE
+    // 2-MINUTE QUIZ COUNTDOWN TIMER
     // =========================================================
     function clearQuizCountdown() {
       if (quizTimerInterval) {
@@ -2104,13 +1891,11 @@
 
     function startTwoMinuteQuizTimer() {
       clearQuizCountdown();
-      quizRemainingSeconds = 120; // 2 Minutes = 120 Seconds
+      quizRemainingSeconds = 120;
       updateQuizTimerDisplay();
-
       quizTimerInterval = setInterval(() => {
         quizRemainingSeconds--;
         updateQuizTimerDisplay();
-
         if (quizRemainingSeconds <= 0) {
           clearQuizCountdown();
           handleQuizTimeUp();
@@ -2120,134 +1905,123 @@
 
     function updateQuizTimerDisplay() {
       const pill = document.getElementById("quizTimerPill");
-      const textSpan = document.getElementById("quizTimerText");
-      if (!pill || !textSpan) return;
-
-      const mins = Math.floor(quizRemainingSeconds / 60);
-      const secs = quizRemainingSeconds % 60;
-      textSpan.textContent = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-
-      if (quizRemainingSeconds <= 30) {
-        pill.classList.add("warning");
-      } else {
-        pill.classList.remove("warning");
-      }
+      const txt = document.getElementById("quizTimerText");
+      if (!pill || !txt) return;
+      const m = Math.floor(quizRemainingSeconds / 60);
+      const s = quizRemainingSeconds % 60;
+      txt.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      pill.classList.toggle("warning", quizRemainingSeconds <= 30);
     }
 
     function handleQuizTimeUp() {
       const activeStudent = getDisplayStudentName();
       const qObj = currentLessonSlides[currentSlideIndex];
       if (!qObj || qObj.type !== "quiz") return;
-
-      const allBtns = document.querySelectorAll(".quiz-opt-card");
-      if (allBtns.length > 0 && allBtns[0].disabled) return; // Already answered
-
-      allBtns.forEach(b => b.disabled = true);
-      const rightBtn = document.getElementById(`qOpt-${qObj.correctIndex}`);
-      if (rightBtn) rightBtn.classList.add("right");
-
+      const btns = document.querySelectorAll(".quiz-opt-card");
+      if (btns.length && btns[0].disabled) return;
+      btns.forEach(b => b.disabled = true);
+      const rBtn = document.getElementById(`qOpt-${qObj.correctIndex}`);
+      if (rBtn) rBtn.classList.add("right");
       const note = document.getElementById("quizResultNote");
       if (note) {
         note.style.color = "#ef4444";
-        note.textContent = `⏰ 2 मिनट का समय समाप्त! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation})`;
+        note.textContent = `⏰ 2 मिनट समाप्त! सही उत्तर: ${qObj.options[qObj.correctIndex]} (${qObj.explanation})`;
       }
-      speakThreeTier(`समय समाप्त हो गया ${activeStudent}! इसका सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
+      speakMasterVoice(`समय समाप्त हो गया ${activeStudent}! सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
     }
 
     // =========================================================
-    // DYNAMIC MULTI-SLIDE WHITEBOARD PLAYER
+    // CLASSROOM STAGE RENDERER (JEET AI STYLE)
     // =========================================================
-    function openWhiteboardStage(subjectLabel, topicTitle) {
+    function updateSlideCounterHeader() {
+      const total = currentLessonSlides.length;
+      document.getElementById("wbSlideCounter").textContent = `Slide ${currentSlideIndex + 1} of ${total}`;
+      document.getElementById("bottomRightSlideNum").textContent = String(currentSlideIndex + 1).padStart(2, "0");
+      document.getElementById("wbProgBar").style.width = `${((currentSlideIndex + 1) / total) * 100}%`;
+    }
+
+    function openWhiteboardStage(subjectLabel, topicTitle, startIndex = 0) {
       document.getElementById("mainAppShell").classList.add("hidden");
-      const wb = document.getElementById("wbScreen");
-      wb.classList.add("open");
-      document.getElementById("wbCrumbTitle").textContent = `${subjectLabel} • ${topicTitle}`;
+      document.getElementById("wbScreen").classList.add("open");
       forceFullLandscape();
 
-      currentSlideIndex = 0;
-      currentPointIndex = 0;
+      currentSlideIndex = startIndex;
+      currentStepIndex = 0;
       isWbPlaying = true;
-      document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
+      document.getElementById("btnPlayPause").textContent = "⏸️";
       renderCurrentSlide();
     }
 
     function renderCurrentSlide() {
       clearQuizCountdown();
+      saveClassProgress();
       activeDoubtQuestionContext = "";
 
       const activeStudent = getDisplayStudentName();
-      const total = currentLessonSlides.length;
       const slide = currentLessonSlides[currentSlideIndex];
+      if (!slide) return;
 
-      document.getElementById("wbStageIndicator").textContent = `Slide ${currentSlideIndex + 1} of ${total}`;
-      document.getElementById("wbProgBar").style.width = `${((currentSlideIndex + 1) / total) * 100}%`;
+      updateSlideCounterHeader();
+      document.getElementById("wbCrumbTitle").textContent = slide.header || currentLessonMeta.topic;
       document.getElementById("understandingBar").classList.remove("show");
       clearFingerSketch();
 
       const canvas = document.getElementById("wbMainCanvas");
 
-      if (slide.type === "intro") {
-        canvas.innerHTML = `
-          <div class="slide-split-grid">
-            <div>
-              <div class="intro-badge">INTRODUCTION • ${activeStudent}</div>
-              <div class="slide-main-heading" id="introHero">
-                ${slide.title}
-                <div class="red-line-anim"></div>
-              </div>
-              <div class="hand-cursive" id="introHand">${slide.handSub || ""}</div>
-              <div class="hook-question">${slide.hook || ""}</div>
-            </div>
-            <div class="diagram-card-clean">${slide.svg || ""}</div>
-          </div>
-        `;
-
-        setTimeout(() => {
-          const h = document.getElementById("introHero");
-          const c = document.getElementById("introHand");
-          if (h) h.classList.add("drawn");
-          if (c) c.classList.add("show");
-        }, 250);
-
-        speakThreeTier(slide.voice || slide.hook, () => {
-          if (!isWbPlaying) return;
-          advanceToNextSlide();
-        });
-      } else if (slide.type === "lesson") {
-        let pointsHtml = "";
-        (slide.points || []).forEach((pt, idx) => {
-          pointsHtml += `
-            <div class="teach-row" id="tRow-${idx}">
-              <div class="sq-wrap">
-                <div class="sq-blue"></div>
-                <svg class="sq-ring" viewBox="0 0 36 36">
-                  <path d="M 18,3 C 28,3 33,10 33,18 C 33,27 26,33 17,33 C 8,33 3,26 3,18 C 3,10 9,4 18,3" />
-                </svg>
-              </div>
-              <div style="flex:1;line-height:1.45;">
-                ${pt.text}
-                ${pt.sideNote ? `<span class="side-hand">${pt.sideNote}</span>` : ""}
-              </div>
+      // 1. LEARNING GOALS SLIDE
+      if (slide.type === "goals") {
+        let html = `<div class="goals-full-list">`;
+        (slide.goals || []).forEach((g, idx) => {
+          html += `
+            <div class="goal-line-item" id="goalRow-${idx}">
+              <div class="blue-bullet-sq"></div>
+              <div style="flex:1;">${g.text}</div>
+              <span class="hand-formula-tag" id="goalHand-${idx}" style="font-size:21px;">${g.sideNote || ""}</span>
             </div>
           `;
         });
+        html += `</div>`;
+        canvas.innerHTML = html;
+        currentStepIndex = 0;
+        playGoalSteps();
+      }
+      // 2. STEP-BY-STEP VISUAL BOARD SLIDE (Boxes, Circles, Real Photos & Notes)
+      else if (slide.type === "step_board") {
+        const vis = slide.visual || {};
+        let visualHtml = "";
+
+        if (slide.image) {
+          visualHtml = `<img src="${slide.image}" class="real-photo-frame" alt="Diagram">`;
+        } else {
+          let boxesHtml = "";
+          (vis.boxes || []).forEach((val, bIdx) => {
+            boxesHtml += `<div class="digit-box" id="vBox-${bIdx}">${val}</div>`;
+          });
+          visualHtml = `
+            <div style="font-size:12px;font-weight:800;color:var(--text-secondary);">${vis.topLabel || currentLessonMeta.topic}</div>
+            <div class="digit-boxes-row">${boxesHtml}</div>
+            <div class="hand-formula-tag" id="visBlueHand">${vis.blueNote || ""}</div>
+            <div class="hand-formula-tag green" id="visGreenHand">${vis.greenNote || ""}</div>
+          `;
+        }
+
+        let stepsHtml = "";
+        (slide.steps || []).forEach((st, sIdx) => {
+          stepsHtml += `<div class="note-step-block" id="nStep-${sIdx}">${st.text}</div>`;
+        });
 
         canvas.innerHTML = `
-          <div class="slide-split-grid">
-            <div>
-              <div class="slide-main-heading drawn">
-                ${slide.title}
-                <div class="red-line-anim"></div>
-              </div>
-              <div class="teach-stack">${pointsHtml}</div>
-            </div>
-            <div class="diagram-card-clean">${slide.svg || ""}</div>
+          <div class="lesson-split-stage">
+            <div class="visual-board-panel">${visualHtml}</div>
+            <div class="teacher-notes-col">${stepsHtml}</div>
           </div>
         `;
 
-        currentPointIndex = 0;
-        playLessonSlidePoints();
-      } else if (slide.type === "quiz") {
+        currentStepIndex = 0;
+        playBoardSteps();
+      }
+      // 3. OBJECTIVE QUIZ SLIDE (2-MIN TIMER + CLICKABLE DOUBT)
+      else if (slide.type === "quiz") {
         const labels = ["A", "B", "C", "D"];
         let optsHtml = "";
         (slide.options || []).forEach((opt, idx) => {
@@ -2257,71 +2031,85 @@
         canvas.innerHTML = `
           <div class="quiz-board-box">
             <div class="quiz-header-strip">
-              <span style="font-size:12px;font-weight:800;color:var(--accent-blue);">🎯 BOARD EXAM LIVE TEST • ${activeStudent}</span>
+              <span style="font-size:12px;font-weight:800;color:#ea580c;">🎯 BOARD EXAM TEST • ${activeStudent}</span>
               <div class="quiz-timer-pill" id="quizTimerPill">
                 <span>⏱️</span>
                 <span id="quizTimerText">02:00</span>
               </div>
             </div>
-
-            <!-- प्रश्न पर टैप करते ही डाउट पूछने वाला बॉक्स खुलेगा -->
-            <div class="quiz-q-card" onclick="openDoubtForCurrentQuestion()" title="इस प्रश्न पर डाउट पूछने के लिए टैप करें">
-              <div class="quiz-q-title">${slide.question}</div>
-              <div class="quiz-doubt-hint">🤔 प्रश्न पर डाउट है? यहाँ टैप करके सीधे समझें</div>
+            <div class="quiz-q-card" onclick="openDoubtForCurrentQuestion()">
+              <div style="font-size:17.5px;font-weight:800;line-height:1.4;">${slide.question}</div>
+              <div style="font-size:11.5px;font-weight:800;color:#2563eb;margin-top:6px;">🤔 प्रश्न समझ नहीं आया? यहाँ टैप करके सीधे डाउट पूछें</div>
             </div>
-
             <div class="quiz-opts-grid">${optsHtml}</div>
-            <div id="quizResultNote" style="margin-top:14px;font-size:14px;font-weight:800;"></div>
+            <div id="quizResultNote" style="margin-top:12px;font-size:13.5px;font-weight:800;"></div>
           </div>
         `;
 
-        // 2 मिनट का टाइमर शुरू करें
         startTwoMinuteQuizTimer();
-
-        speakThreeTier(`शाबाश ${activeStudent}! अब बोर्ड पर एक ऑब्जेक्टिव टेस्ट है और इसके लिए दो मिनट का समय है। सवाल पढ़ो और सही विकल्प पर टैप करो: ${slide.question}`);
+        speakMasterVoice(`अब बोर्ड पर परीक्षा का प्रश्न है ${activeStudent}, तुम्हारे पास दो मिनट का समय है: ${slide.question}`);
       }
     }
 
-    function playLessonSlidePoints() {
+    function playGoalSteps() {
       if (!isWbPlaying) return;
       const slide = currentLessonSlides[currentSlideIndex];
-      const pts = slide.points || [];
+      const list = slide.goals || [];
+      if (currentStepIndex >= list.length) {
+        setTimeout(() => { if (isWbPlaying) nextBoardSlide(); }, 400);
+        return;
+      }
 
-      if (currentPointIndex >= pts.length) {
-        const nextSlide = currentLessonSlides[currentSlideIndex + 1];
-        if (nextSlide && nextSlide.type === "quiz") {
-          const activeStudent = getDisplayStudentName();
+      const row = document.getElementById(`goalRow-${currentStepIndex}`);
+      const hand = document.getElementById(`goalHand-${currentStepIndex}`);
+      if (row) row.classList.add("active");
+      if (hand) hand.classList.add("show");
+
+      const voice = list[currentStepIndex].voice || list[currentStepIndex].text;
+      currentStepIndex++;
+      speakMasterVoice(voice, () => {
+        if (isWbPlaying) setTimeout(playGoalSteps, 150);
+      });
+    }
+
+    function playBoardSteps() {
+      if (!isWbPlaying) return;
+      const slide = currentLessonSlides[currentSlideIndex];
+      const steps = slide.steps || [];
+      const vis = slide.visual || {};
+
+      if (currentStepIndex >= steps.length) {
+        // Every 5 slides, ask 👍/👎 if student understood
+        if ((currentSlideIndex + 1) % 5 === 0) {
           document.getElementById("understandingBar").classList.add("show");
-          speakThreeTier(`${activeStudent}, क्या यह पूरा टॉपिक तुम्हें अच्छे से समझ आ गया? ऊपर लाइक या डिसलाइक दबाकर बताओ!`);
+          speakMasterVoice(`${getDisplayStudentName()}, क्या यहाँ तक सब अच्छे से समझ आ गया?`);
         } else {
-          setTimeout(() => {
-            if (isWbPlaying) advanceToNextSlide();
-          }, 400);
+          setTimeout(() => { if (isWbPlaying) nextBoardSlide(); }, 350);
         }
         return;
       }
 
-      const row = document.getElementById(`tRow-${currentPointIndex}`);
-      if (row) {
-        row.classList.add("drawn");
-        if (pts[currentPointIndex].circle) row.classList.add("circled");
-      }
+      const stepEl = document.getElementById(`nStep-${currentStepIndex}`);
+      if (stepEl) stepEl.classList.add("active");
 
-      const voiceLine = pts[currentPointIndex].voice || pts[currentPointIndex].text;
-      currentPointIndex++;
-      speakThreeTier(voiceLine, () => {
-        if (isWbPlaying) setTimeout(playLessonSlidePoints, 150);
-      });
-    }
-
-    function advanceToNextSlide() {
-      if (currentSlideIndex < currentLessonSlides.length - 1) {
-        currentSlideIndex++;
-        renderCurrentSlide();
+      // Animate visual boxes & handwriting in sync with teacher's voice
+      if (currentStepIndex === 0) {
+        const bHand = document.getElementById("visBlueHand");
+        if (bHand) bHand.classList.add("show");
+        if (typeof vis.circleIndex === "number") {
+          const box = document.getElementById(`vBox-${vis.circleIndex}`);
+          if (box) box.classList.add("circled");
+        }
       } else {
-        isWbPlaying = false;
-        document.getElementById("wbPlayPauseBtn").textContent = "🔄 फिर से";
+        const gHand = document.getElementById("visGreenHand");
+        if (gHand) gHand.classList.add("show");
       }
+
+      const voice = steps[currentStepIndex].voice || steps[currentStepIndex].text;
+      currentStepIndex++;
+      speakMasterVoice(voice, () => {
+        if (isWbPlaying) setTimeout(playBoardSteps, 150);
+      });
     }
 
     window.nextBoardSlide = function() {
@@ -2330,50 +2118,49 @@
       if (currentSlideIndex < currentLessonSlides.length - 1) {
         currentSlideIndex++;
         isWbPlaying = true;
-        document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
+        document.getElementById("btnPlayPause").textContent = "⏸️";
         renderCurrentSlide();
+      } else {
+        isWbPlaying = false;
+        document.getElementById("btnPlayPause").textContent = "🔄";
+        localStorage.removeItem("nd_saved_classroom_state");
       }
     };
 
-    window.prevBoardSlide = function() {
-      stopAllVoices();
-      clearQuizCountdown();
-      if (currentSlideIndex > 0) {
-        currentSlideIndex--;
+    window.toggleWbPlay = function() {
+      if (isWbPlaying) {
+        isWbPlaying = false;
+        stopAllVoices();
+        document.getElementById("btnPlayPause").textContent = "▶️";
+      } else {
         isWbPlaying = true;
-        document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
+        document.getElementById("btnPlayPause").textContent = "⏸️";
         renderCurrentSlide();
       }
     };
 
     window.handleUnderstandLike = function() {
       document.getElementById("understandingBar").classList.remove("show");
-      advanceToNextSlide();
+      nextBoardSlide();
     };
 
     window.handleUnderstandDislike = function() {
-      const activeStudent = getDisplayStudentName();
       document.getElementById("understandingBar").classList.remove("show");
-      isWbPlaying = false;
-      stopAllVoices();
-      document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
-      speakThreeTier(`कोई बात नहीं ${activeStudent}! बताओ इसमें कौन सी चीज़ समझ नहीं आई, मैं अभी आसान उदाहरण से समझाता हूँ।`);
       openDoubtPrompt();
     };
 
-    // प्रश्न पर टैप करने पर सीधे उस प्रश्न के लिए डाउट बॉक्स खुलेगा
     window.openDoubtForCurrentQuestion = function() {
       const slide = currentLessonSlides[currentSlideIndex];
       if (slide && slide.type === "quiz") {
         activeDoubtQuestionContext = slide.question;
         document.getElementById("doubtContextLabel").innerHTML = `<b>प्रश्न:</b> "${slide.question}" — इस पर अपना सवाल पूछें:`;
-        document.getElementById("userDoubtField").value = "इस प्रश्न का सही उत्तर कैसे होगा, विस्तार से समझाइए?";
+        document.getElementById("userDoubtField").value = "इस प्रश्न का सही हल कैसे होगा, समझाइए?";
       }
       openDoubtPrompt(true);
     };
 
     window.checkBoardQuiz = function(chosenIdx) {
-      clearQuizCountdown(); // उत्तर चुनते ही 2 मिनट का टाइमर रोक दें
+      clearQuizCountdown();
       const activeStudent = getDisplayStudentName();
       const qObj = currentLessonSlides[currentSlideIndex];
       document.querySelectorAll(".quiz-opt-card").forEach(b => b.disabled = true);
@@ -2382,24 +2169,24 @@
       if (chosenIdx === qObj.correctIndex) {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("right");
         note.style.color = "#16a34a";
-        note.innerHTML = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation}) <br><span style="font-size:12px;color:#ea580c;cursor:pointer;text-decoration:underline;" onclick="openDoubtForCurrentQuestion()">🤔 फिर भी डाउट है? यहाँ टैप करें</span>`;
-        speakThreeTier(`वाह ${activeStudent}, बिल्कुल सही जवाब! ${qObj.explanation}। अब तुम वापस जाकर अगला टॉपिक चुन सकते हो।`);
+        note.innerHTML = `🎉 बिल्कुल सही जवाब ${activeStudent}! (${qObj.explanation}) <span style="color:#2563eb;text-decoration:underline;cursor:pointer;" onclick="nextBoardSlide()">अगला सवाल ➔</span>`;
+        speakMasterVoice(`शाबाश ${activeStudent}, बिल्कुल सही जवाब! ${qObj.explanation}`);
       } else {
         document.getElementById(`qOpt-${chosenIdx}`).classList.add("wrong");
         document.getElementById(`qOpt-${qObj.correctIndex}`).classList.add("right");
         note.style.color = "#ef4444";
-        note.innerHTML = `❌ कोई बात नहीं! सही उत्तर है: ${qObj.options[qObj.correctIndex]} (${qObj.explanation}) <br><span style="font-size:12px;color:#2563eb;cursor:pointer;text-decoration:underline;" onclick="openDoubtForCurrentQuestion()">🤔 क्यों? विस्तार से समझने के लिए यहाँ टैप करें</span>`;
-        speakThreeTier(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
+        note.innerHTML = `❌ सही उत्तर: ${qObj.options[qObj.correctIndex]} (${qObj.explanation}) <span style="color:#2563eb;text-decoration:underline;cursor:pointer;" onclick="openDoubtForCurrentQuestion()">🤔 डाउट पूछें</span>`;
+        speakMasterVoice(`कोई बात नहीं ${activeStudent}, सही उत्तर है ${qObj.options[qObj.correctIndex]}। ${qObj.explanation}`);
       }
     };
 
     window.openDoubtPrompt = function(keepPrefill = false) {
       isWbPlaying = false;
       stopAllVoices();
-      document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
+      document.getElementById("btnPlayPause").textContent = "▶️";
       if (!keepPrefill) {
         activeDoubtQuestionContext = "";
-        document.getElementById("doubtContextLabel").textContent = "लिखकर पूछें—टीचर आसान उदाहरण से दोबारा समझाएगा!";
+        document.getElementById("doubtContextLabel").textContent = "लिखकर पूछें—मास्टर जी आसान उदाहरण से समझाएंगे!";
         document.getElementById("userDoubtField").value = "";
       }
       document.getElementById("doubtModalMask").classList.add("open");
@@ -2410,42 +2197,24 @@
       const doubtText = document.getElementById("userDoubtField").value.trim();
       if (!doubtText) return;
       document.getElementById("doubtModalMask").classList.remove("open");
-      document.getElementById("userDoubtField").value = "";
 
       const activeStudent = getDisplayStudentName();
       const canvas = document.getElementById("wbMainCanvas");
-      canvas.innerHTML = `<div style="text-align:center;"><div style="font-size:46px;margin-bottom:8px;">🧠</div><h3 style="font-weight:900;">टीचर "${activeStudent}" के सवाल पर विचार कर रहे हैं...</h3></div>`;
-
-      const fullPrompt = activeDoubtQuestionContext
-        ? `छात्र "${activeStudent}" को बोर्ड परीक्षा के इस प्रश्न में डाउट है: "${activeDoubtQuestionContext}"। छात्र का सवाल: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण", "svg": "<svg viewBox='0 0 320 180' width='100%' height='175'>समझाने के लिए एक साफ़ चित्र</svg>"}`
-        : `छात्र "${activeStudent}" को यह बात समझ नहीं आई: "${doubtText}"। इस format में जवाब दो: {"answer": "3 वाक्यों में बहुत ही सरल, देसी उदाहरण देकर हिंदी में स्पष्टीकरण", "svg": "<svg viewBox='0 0 320 180' width='100%' height='175'>समझाने के लिए एक साफ़ चित्र</svg>"}`;
+      canvas.innerHTML = `<div style="text-align:center;"><div class="orange-spinner"></div><h3 style="margin-top:10px;">मास्टर जी "${activeStudent}" के सवाल का हल लिख रहे हैं...</h3></div>`;
 
       try {
-        const resObj = await requestDynamicSlidesFromAI(MODEL_NAME, fullPrompt);
+        const resObj = await callGeminiWithFallbackChain(`छात्र "${activeStudent}" का सवाल: "${doubtText}" (संदर्भ: ${activeDoubtQuestionContext || currentLessonMeta.topic})। शुद्ध JSON दो: {"answer": "3 वाक्यों में सरल हिंदी में स्पष्टीकरण", "formula": "मुख्य सूत्र या ट्रिक"}`);
         canvas.innerHTML = `
-          <div class="slide-split-grid">
-            <div>
-              <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
-              <div style="font-size:16.5px;font-weight:700;line-height:1.55;margin-bottom:18px;">${resObj.answer}</div>
-              <button class="c-btn blue" style="padding:10px 18px;font-size:13px;" onclick="renderCurrentSlide()">🔙 वापस प्रश्न / स्लाइड पर जाएं</button>
-            </div>
-            <div class="diagram-card-clean">${resObj.svg || ""}</div>
+          <div style="max-width:740px;padding:20px;text-align:left;">
+            <div style="font-size:12px;font-weight:800;color:#ea580c;margin-bottom:6px;">💡 विशेष स्पष्टीकरण (${activeStudent} के लिए)</div>
+            <div style="font-size:17px;font-weight:700;line-height:1.55;margin-bottom:12px;">${resObj.answer}</div>
+            <div class="hand-formula-tag show" style="text-align:left;margin-bottom:16px;">${resObj.formula || ""}</div>
+            <button style="background:#2563eb;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:800;cursor:pointer;" onclick="renderCurrentSlide()">🔙 वापस क्लास में जाएं</button>
           </div>
         `;
-        speakThreeTier(resObj.answer);
+        speakMasterVoice(resObj.answer);
       } catch (e) {
         alert("त्रुटि: " + e.message);
-      }
-    };
-
-    window.toggleWbPlay = function() {
-      if (isWbPlaying) {
-        isWbPlaying = false;
-        stopAllVoices();
-        document.getElementById("wbPlayPauseBtn").textContent = "▶️ Resume";
-      } else {
-        isWbPlaying = true;
-        document.getElementById("wbPlayPauseBtn").textContent = "⏸️ Pause";
         renderCurrentSlide();
       }
     };
@@ -2454,6 +2223,8 @@
       isWbPlaying = false;
       stopAllVoices();
       clearQuizCountdown();
+      saveClassProgress();
+      checkSavedClassProgress();
       document.getElementById("wbScreen").classList.remove("open");
       document.getElementById("mainAppShell").classList.remove("hidden");
     };
@@ -2466,6 +2237,45 @@
       }
     };
 
+    // Profile & Virtual Login
+    window.openProfileOrLoginModal = function() {
+      const mask = document.getElementById("profileModalMask");
+      const card = document.getElementById("profileModalContent");
+      card.innerHTML = `
+        <button onclick="document.getElementById('profileModalMask').classList.remove('open')" style="position:absolute;top:12px;right:14px;border:none;background:var(--bg-app);color:var(--text-primary);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;">&times;</button>
+        <div style="font-size:40px;margin-bottom:8px;">🎓</div>
+        <h3 style="font-size:18px;font-weight:900;">अपना नाम सेट करें</h3>
+        <p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px;">मास्टर जी क्लास में तुम्हारा यही नाम लेकर पढ़ाएंगे!</p>
+        <input type="text" id="virtualNameInput" value="${studentName}" placeholder="अपना नाम लिखें...">
+        <button style="width:100%;background:#2563eb;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;" onclick="saveVirtualStudentName()">✅ नाम सेव करें</button>
+        ${studentName ? `<button style="width:100%;background:#ef4444;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:800;margin-top:10px;cursor:pointer;" onclick="performAnimatedLogout()">🚪 लॉगआउट करें</button>` : ""}
+      `;
+      mask.classList.add("open");
+    };
+
+    window.saveVirtualStudentName = function() {
+      const val = document.getElementById("virtualNameInput").value.trim();
+      if (!val) return;
+      studentName = val;
+      localStorage.setItem("nd_virtual_student_name", studentName);
+      document.getElementById("topUserName").textContent = val;
+      document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(val)}&background=2563eb&color=fff`;
+      document.getElementById("profileModalMask").classList.remove("open");
+    };
+
+    window.performAnimatedLogout = function() {
+      if (window.firebase && firebase.auth) firebase.auth().signOut();
+      localStorage.removeItem("nd_virtual_student_name");
+      studentName = "";
+      document.getElementById("topUserName").textContent = "अपना नाम लिखें";
+      document.getElementById("profileModalMask").classList.remove("open");
+    };
+
+    window.closeAllMasks = function(e) {
+      if (e.target.classList.contains("app-modal-mask")) e.target.classList.remove("open");
+    };
+
+    // Finger Drawing
     const fCanvas = document.getElementById("boardFingerCanvas");
     const fCtx = fCanvas.getContext("2d");
     let isDrawing = false;
@@ -2482,12 +2292,7 @@
     };
 
     fCanvas.addEventListener("pointerdown", (e) => {
-      if (
-        e.target.closest(".wb-corner-dock") ||
-        e.target.closest(".understanding-check-bar") ||
-        e.target.closest(".quiz-opt-card") ||
-        e.target.closest(".quiz-q-card")
-      ) return;
+      if (e.target.closest(".jeet-center-dock") || e.target.closest(".understanding-check-bar") || e.target.closest(".quiz-opt-card") || e.target.closest(".quiz-q-card")) return;
       isDrawing = true;
       fCtx.beginPath();
       fCtx.moveTo(e.clientX, e.clientY);
