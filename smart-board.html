@@ -1028,7 +1028,6 @@
       return _s.map(c => String.fromCharCode(c - 5)).join('');
     }
 
-    // ONLY Gemini 3.x Models (Gemini 3.8 Flash Primary + 3.5 Flash Lite Backup)
     const MODEL_FALLBACK_CHAIN = [
       "gemini-3.8-flash",
       "gemini-3.5-flash-lite",
@@ -1083,7 +1082,6 @@
       return `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt)}?width=640&height=420&nologo=true&seed=42`;
     }
 
-    // UNIVERSAL CLEAN FORMATTER (Fixes \frac, [[a/b]], \rightarrow, O_2, x^2, \sqrt, etc.)
     function renderMathFractions(htmlStr) {
       let out = htmlStr || "";
       out = out.replace(/\$/g, "");
@@ -1158,8 +1156,11 @@
     let globalAudioPlayer = new Audio();
     const voiceCache = new Map();
 
-    function getDisplayStudentName() {
-      return studentName && studentName.trim() !== "" ? studentName.trim() : "विद्यार्थी";
+    // First-name only helper ("छात्र" if not logged in)
+    function getFirstStudentName() {
+      const raw = (studentName || "").trim();
+      if (!raw) return "छात्र";
+      return raw.split(/\s+/)[0];
     }
 
     function playTickSound(isUrgent = false) {
@@ -1232,14 +1233,15 @@
     if (window.firebase && firebase.auth) {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          const gmailFullName = (user.displayName || user.email.split("@")[0]).trim();
-          studentName = gmailFullName;
+          const firstNameOnly = (user.displayName || user.email.split("@")[0]).trim().split(/\s+/)[0];
+          studentName = firstNameOnly;
           localStorage.setItem("nd_virtual_student_name", studentName);
-          document.getElementById("topUserName").textContent = gmailFullName;
-          document.getElementById("topUserAvatar").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(gmailFullName)}&background=2563eb&color=fff`;
+          document.getElementById("topUserName").textContent = firstNameOnly;
+          document.getElementById("topUserAvatar").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(firstNameOnly)}&background=2563eb&color=fff`;
         } else if (studentName) {
-          document.getElementById("topUserName").textContent = studentName;
-          document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=2563eb&color=fff`;
+          const first = studentName.trim().split(/\s+/)[0];
+          document.getElementById("topUserName").textContent = first;
+          document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(first)}&background=2563eb&color=fff`;
         }
       });
     }
@@ -1373,9 +1375,6 @@
       prepareAndLaunchMasterClass(null, "MASTER CLASS", val, null);
     };
 
-    // =========================================================
-    // 5-SECOND FAST VOICE PRELOADER + BACKGROUND ALL-LINES CACHE
-    // =========================================================
     function cleanSpeechString(raw) {
       return (raw || "")
         .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, "$1 बटे $2")
@@ -1418,23 +1417,23 @@
       const loader = document.getElementById("lessonPreloader");
       const bar = document.getElementById("preloadBarFill");
       const pctTxt = document.getElementById("preloadPercentText");
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
 
       const allLines = [];
-      allLines.push(cleanSpeechString(`चलो ${activeStudent}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`));
+      allLines.push(cleanSpeechString(`चलो ${firstName}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`));
 
       blocks.forEach(b => {
         if (b.diagramVoice) allLines.push(cleanSpeechString(b.diagramVoice));
         if (b.lines) b.lines.forEach(l => allLines.push(cleanSpeechString(l.text)));
         if (b.type === "quiz" && b.question) {
-          allLines.push(cleanSpeechString(`चलो ${activeStudent}, एक प्रश्न हल करते हैं: ${b.question}`));
-          allLines.push(cleanSpeechString(`शाबाश ${activeStudent}, बिल्कुल सही जवाब! ${b.explanation} चलो अब आगे बढ़ते हैं।`));
-          allLines.push(cleanSpeechString(`कोई बात नहीं ${activeStudent}, इसका सही उत्तर है ${b.options[b.correctIndex]}। ${b.explanation} चलो अब आगे बढ़ते हैं।`));
-          allLines.push(cleanSpeechString(`दो मिनट पूरे हो गए ${activeStudent}, इसका सही उत्तर है ${b.options[b.correctIndex]}। चलो अब आगे बढ़ते हैं।`));
+          allLines.push(cleanSpeechString(`चलो ${firstName}, एक प्रश्न हल करते हैं: ${b.question}`));
+          allLines.push(cleanSpeechString(`शाबाश ${firstName}, बिल्कुल सही जवाब! ${b.explanation} चलो अब आगे बढ़ते हैं।`));
+          allLines.push(cleanSpeechString(`कोई बात नहीं ${firstName}, इसका सही उत्तर है ${b.options[b.correctIndex]}। ${b.explanation} चलो अब आगे बढ़ते हैं।`));
+          allLines.push(cleanSpeechString(`दो मिनट पूरे हो गए ${firstName}, इसका सही उत्तर है ${b.options[b.correctIndex]}। चलो अब आगे बढ़ते हैं।`));
         }
       });
 
-      allLines.push(cleanSpeechString(`${activeStudent}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`));
+      allLines.push(cleanSpeechString(`${firstName}, आज की क्लास पूरी हुई! बहुत बढ़िया पढ़ाई की तुमने। कल फिर मिलते हैं नई क्लास में।`));
 
       const unique = [...new Set(allLines.filter(Boolean))];
       const initialFastBatch = unique.slice(0, 6);
@@ -1508,7 +1507,7 @@
     }
 
     async function prepareAndLaunchMasterClass(subjKey, subjectLabel, fullTopicTitle, chapterId) {
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
       const loader = document.getElementById("lessonPreloader");
       document.getElementById("preloadHeading").textContent = `"${fullTopicTitle}" तैयार हो रहा है...`;
       document.getElementById("preloadBarFill").style.width = "5%";
@@ -1524,9 +1523,9 @@
           const data = JSON.parse(JSON.stringify(matchedTopic));
           const rawBlocks = data.blocks || convertSlidesToContinuousBlocks(data.slides);
           lessonBlocks = rawBlocks.map(b => {
-            if (b.diagramVoice) b.diagramVoice = b.diagramVoice.replace(/{{STUDENT}}/g, activeStudent);
-            if (b.lines) b.lines.forEach(l => { l.text = l.text.replace(/{{STUDENT}}/g, activeStudent); });
-            if (b.question) b.question = b.question.replace(/{{STUDENT}}/g, activeStudent);
+            if (b.diagramVoice) b.diagramVoice = b.diagramVoice.replace(/{{STUDENT}}/g, firstName);
+            if (b.lines) b.lines.forEach(l => { l.text = l.text.replace(/{{STUDENT}}/g, firstName); });
+            if (b.question) b.question = b.question.replace(/{{STUDENT}}/g, firstName);
             return b;
           });
           await preDownloadAllVoices(lessonBlocks);
@@ -1535,7 +1534,7 @@
         }
       }
 
-      const prompt = `तुम एक अनुभवी भारतीय शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में लिख-लिखकर अत्यंत विस्तार से पढ़ा रहे हो।
+      const prompt = `तुम एक अनुभवी भारतीय शिक्षक हो जो छात्र "${firstName}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में लिख-लिखकर अत्यंत विस्तार से पढ़ा रहे हो।
       कठोर नियम:
       1. कोई भी चीज़ आधा-अधूरा मत छोड़ो—कम से कम 7 से 9 विस्तृत भाग (blocks) बनाओ (परिभाषा, सिद्धांत, हर सूत्र का पूरा स्टेप-बाय-स्टेप निगमन, 2 हल किए हुए उदाहरण, बीच में क्विज़, और अंत में "आज हमने क्या सीखा" का सार)।
       2. जहाँ बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो, तीर के लिए → लिखो, और रासायनिक सूत्र सीधे O₂ या H₂O जैसे साफ रूप में लिखो (LaTeX बैकस्लैश मत लगाओ)।
@@ -1618,7 +1617,6 @@
       if (globalAudioPlayer) globalAudioPlayer.playbackRate = playbackSpeed;
     };
 
-    // PURE SERVER VOICE PLAYER (NEVER PLAYS ROBOTIC BROWSER VOICE)
     async function speakExactText(rawText, onDone) {
       stopAllVoices();
       const clean = cleanSpeechString(rawText);
@@ -1646,9 +1644,6 @@
       }
     }
 
-    // =========================================================
-    // STRICT LANDSCAPE GATE (NEVER SPEAKS WHILE PORTRAIT!)
-    // =========================================================
     function isDeviceLandscape() {
       return window.innerWidth > window.innerHeight;
     }
@@ -1696,7 +1691,7 @@
 
     function startWhiteboardLessonNow(startBlockIdx = 0) {
       hasClassStartedInLandscape = true;
-      const activeStudent = getDisplayStudentName();
+      const firstName = getFirstStudentName();
 
       document.getElementById("wbCrumbTitle").textContent = currentLessonMeta.topic;
       document.getElementById("notebookTopicBanner").textContent = `${currentLessonMeta.subject} • ${currentLessonMeta.topic}`;
@@ -1729,7 +1724,7 @@
       isWbPlaying = true;
       document.getElementById("btnPlayPause").textContent = "⏸️";
 
-      const introSpeech = `चलो ${activeStudent}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`;
+      const introSpeech = `चलो ${firstName}, कॉपी निकालो—आज ${currentLessonMeta.topic} को एक-एक स्टेप लिखकर समझते हैं।`;
       speakExactText(introSpeech, () => {
         if (isWbPlaying) processNextBlock();
       });
@@ -1784,13 +1779,9 @@
       }, speedMs);
     }
 
-    // =========================================================
-    // 3-LAYER SMART DIAGRAM ENGINE (WITH WATERMARK CROPPER)
-    // =========================================================
     function updateRightDiagramStage(block) {
       const layout = document.getElementById("continuousBoardLayout");
-      const diagCard = document.getElementById("stickyDiagram
-Card");
+      const diagCard = document.getElementById("stickyDiagramCard");
 
       if (!block || block.type === "quiz") {
         layout.classList.remove("has-diagram");
@@ -1826,13 +1817,6 @@ Card");
         <div class="diag-hand-note">${renderMathFractions(block.diagramCaption || "")}</div>
       `;
       return true;
-    }
-
-    // First-name only helper ("छात्र" if not logged in)
-    function getFirstStudentName() {
-      const raw = (studentName || "").trim();
-      if (!raw) return "छात्र";
-      return raw.split(/\s+/)[0];
     }
 
     function finishLessonWithFarewell() {
@@ -2128,10 +2112,11 @@ Card");
     window.saveVirtualStudentName = function() {
       const val = document.getElementById("virtualNameInput").value.trim();
       if (!val) return;
-      studentName = val;
+      const firstOnly = val.split(/\s+/)[0];
+      studentName = firstOnly;
       localStorage.setItem("nd_virtual_student_name", studentName);
-      document.getElementById("topUserName").textContent = val.split(/\s+/)[0];
-      document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(val)}&background=2563eb&color=fff`;
+      document.getElementById("topUserName").textContent = firstOnly;
+      document.getElementById("topUserAvatar").src = `https://ui-avatars.com/api/?name=${encodeURIComponent(firstOnly)}&background=2563eb&color=fff`;
       document.getElementById("profileModalMask").classList.remove("open");
     };
 
