@@ -32,9 +32,7 @@
       user-select: none;
     }
 
-    /* =========================================================
-       REAL STACKED FRACTION (असली गणितीय बटा)
-       ========================================================= */
+    /* REAL STACKED FRACTION (असली गणितीय बटा) */
     .math-frac {
       display: inline-flex;
       flex-direction: column;
@@ -56,9 +54,7 @@
       text-align: center;
     }
 
-    /* =========================================================
-       1. SPLASH & AUDIO PRELOADER
-       ========================================================= */
+    /* 1. SPLASH & AUDIO PRELOADER */
     #appSplash {
       position: fixed;
       inset: 0;
@@ -128,9 +124,7 @@
       transition: width 0.25s ease;
     }
 
-    /* =========================================================
-       2. PROFESSIONAL STUDENT DASHBOARD (LOBBY)
-       ========================================================= */
+    /* 2. LOBBY */
     .app-container {
       min-height: 100vh;
       padding-bottom: 88px;
@@ -288,9 +282,7 @@
       justify-content: space-between;
       gap: 12px;
       cursor: pointer;
-      transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .ch-card:active { transform: scale(0.98); border-color: #2563eb; }
     .ch-index {
       width: 42px;
       height: 42px;
@@ -411,9 +403,7 @@
       cursor: pointer;
     }
 
-    /* =========================================================
-       3. CONTINUOUS HAND-WRITTEN SCROLLING WHITEBOARD
-       ========================================================= */
+    /* 3. CONTINUOUS HAND-WRITTEN SCROLLING WHITEBOARD */
     .wb-fullscreen {
       display: none;
       position: fixed;
@@ -530,8 +520,32 @@
       margin-bottom: 18px;
     }
 
+    /* Syllabus Roadmap Box at the Top of Notebook */
+    .roadmap-card {
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+      border-radius: 14px;
+      padding: 12px 15px;
+      margin-bottom: 22px;
+      color: #0c4a6e;
+    }
+    html[data-board-theme="soft-dark"] .roadmap-card {
+      background: #1e293b;
+      border-color: #334155;
+      color: #e0f2fe;
+    }
+    .roadmap-list {
+      list-style: none;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
     .handwritten-block {
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       padding: 10px 14px;
       border-radius: 12px;
       transition: background 0.45s ease, box-shadow 0.45s ease;
@@ -573,6 +587,44 @@
     html[data-board-theme="soft-dark"] .hw-line.formula-box {
       background: #1e293b;
       color: #93c5fd;
+    }
+
+    /* Checkpoint Bar after each Section so Teacher doesn't rush endlessly */
+    .section-checkpoint-bar {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    html[data-board-theme="soft-dark"] .section-checkpoint-bar {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .chk-btn-next {
+      background: #16a34a;
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .chk-btn-doubt {
+      background: #fff7ed;
+      color: #ea580c;
+      border: 1px solid #fdba74;
+      padding: 7px 12px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
     }
 
     .pen-nib {
@@ -802,7 +854,7 @@
         <div>
           <span class="hero-badge">⚡ BIHAR BOARD • NCERT LIVE WHITEBOARD</span>
           <h2 style="font-size: 17.5px; font-weight: 900; line-height: 1.3;">मास्टर जी की लाइव कॉपी क्लास</h2>
-          <p style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">हर सूत्र सिद्ध • एक-एक लाइन हाथ से लिखावट • लाइव चित्र बोर्ड</p>
+          <p style="font-size: 12px; color: #cbd5e1; margin-top: 4px;">पहले पूरा प्लान • हर भाग के बाद पूछकर आगे बढ़ना • असली चित्र</p>
         </div>
         <div style="font-size: 36px;">📐</div>
       </div>
@@ -843,11 +895,11 @@
     <section class="ai-studio-section" id="viewAIStudio">
       <div class="studio-box">
         <h2 style="font-size: 19px; font-weight: 900;">किसी भी टॉपिक पर लाइव हैंड-रिटन क्लास शुरू करें</h2>
-        <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: दर्पण सूत्र सिद्ध करें, ओम का नियम...">
+        <input type="text" class="studio-input" id="customTopicInput" placeholder="जैसे: फ्लेमिंग का वाम हस्त नियम, दर्पण सूत्र सिद्ध करें...">
         <div class="quick-topic-chips">
+          <span class="quick-chip" onclick="quickFillTopic('फ्लेमिंग का वाम-हस्त नियम (Fleming Left Hand Rule)')">✋ फ्लेमिंग वाम-हस्त नियम</span>
           <span class="quick-chip" onclick="quickFillTopic('दर्पण सूत्र 1/v + 1/u = 1/f सिद्ध करें')">📐 दर्पण सूत्र सिद्ध करें</span>
           <span class="quick-chip" onclick="quickFillTopic('ओम का नियम (Ohm\'s Law) एवं सत्यापन')">⚡ ओम का नियम</span>
-          <span class="quick-chip" onclick="quickFillTopic('त्रिकोणमितीय सर्वसमिका sin²θ + cos²θ = 1')">📊 त्रिकोणमिति</span>
         </div>
         <button style="width:100%;background:#fff;color:#0f172a;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;" onclick="startCustomMasterClass()">✍️ क्लास शुरू करें</button>
       </div>
@@ -874,9 +926,7 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       4. CONTINUOUS SCROLLING WHITEBOARD
-       ========================================================= -->
+  <!-- 4. CONTINUOUS SCROLLING WHITEBOARD -->
   <div class="wb-fullscreen controls-hidden" id="wbScreen">
     <div class="wb-top-bar wb-chrome">
       <div style="display:flex;align-items:center;gap:10px;">
@@ -938,12 +988,7 @@
   </div>
 
   <script>
-    // =========================================================
-    // LIVE RENDER VOICE SERVER URL
-    // =========================================================
     const VOICE_SERVER_BASE = "https://nischaydesk.onrender.com";
-
-    // Wake up Render server in the background immediately on page load
     fetch(`${VOICE_SERVER_BASE}/`).catch(() => {});
 
     function getDecodedKey() {
@@ -952,10 +997,8 @@
     }
 
     const MODEL_FALLBACK_CHAIN = [
-      "gemini-3.8-flash",
-      "gemini-3.5-flash-lite",
-      "gemini-3.5-flash",
-      "gemini-3.0-flash"
+      "gemini-2.5-flash",
+      "gemini-2.0-flash"
     ];
 
     const SYLLABUS_MASTER_FILE = "data/lession-syllabus.json";
@@ -975,9 +1018,31 @@
       sanskrit: "data/10-sanskrit.json"
     };
 
-    // =========================================================
-    // REAL STACKED FRACTION & STRAY BRACKET CLEANER
-    // =========================================================
+    // Auto-map topics to your GitHub image/ folder!
+    const TOPIC_IMAGE_LIBRARY = [
+      { keys: ["फ्लेमिंग", "वाम", "fleming", "left hand"], file: "image/Fleming left hand rule .png" },
+      { keys: ["किरण पुंज", "beam"], file: "image/beam-types.png" },
+      { keys: ["परावर्तन", "reflection"], file: "image/reflection-law.png" },
+      { keys: ["समतल दर्पण", "plane mirror"], file: "image/plane-mirror.png" },
+      { keys: ["r/2", "वक्रता त्रिज्या"], file: "image/f-equals-r2.png" },
+      { keys: ["दर्पण सूत्र", "mirror formula", "1/v"], file: "image/mirror-formula.png" },
+      { keys: ["गोलीय दर्पण", "अवतल", "उत्तल"], file: "image/spherical-mirror.png" },
+      { keys: ["प्रिज्म", "अपवर्तन", "refraction"], file: "image/refraction-prism.png" },
+      { keys: ["नेत्र", "eye"], file: "image/human-eye.png" },
+      { keys: ["ओम", "ohm"], file: "image/ohms-law-circuit.png" },
+      { keys: ["प्रकाश", "स्रोत", "वस्तु"], file: "image/light-vision.png" }
+    ];
+
+    function findMatchingRepoImage(textHint) {
+      const low = (textHint || "").toLowerCase();
+      for (const item of TOPIC_IMAGE_LIBRARY) {
+        if (item.keys.some(k => low.includes(k))) {
+          return encodeURI(item.file);
+        }
+      }
+      return null;
+    }
+
     function renderMathFractions(htmlStr) {
       let out = htmlStr || "";
       out = out.replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, (match, num, den) => {
@@ -1185,7 +1250,7 @@
           <div>
             <div style="font-size:11px;font-weight:800;color:#2563eb;">TOPIC ${i + 1}</div>
             <div style="font-size:14.5px;font-weight:800;margin:2px 0;">${topicTitle}</div>
-            <div style="font-size:11px;font-weight:700;color:#ea580c;">✍️ ~30 मिनट • निरंतर हैंड-रिटन क्लास</div>
+            <div style="font-size:11px;font-weight:700;color:#ea580c;">✍️ ~30 मिनट • पहले प्लान फिर स्टेप-बाय-स्टेप पढ़ाई</div>
           </div>
           <span style="background:#2563eb;color:#fff;padding:7px 13px;border-radius:10px;font-size:12px;font-weight:800;">▶ पढ़ें</span>
         `;
@@ -1213,9 +1278,6 @@
       prepareAndLaunchMasterClass(null, "MASTER CLASS", val, null);
     };
 
-    // =========================================================
-    // AUDIO PRELOADER (WITH RENDER WAKE-UP & TIMEOUT PROTECTION)
-    // =========================================================
     function cleanSpeechString(raw) {
       return (raw || "")
         .replace(/\[\[([^\/\]]+)\/([^\]]+)\]\]/g, "$1 बटे $2")
@@ -1267,8 +1329,7 @@
       bar.style.width = "10%";
       pctTxt.textContent = "सर्वर से जुड़ रहा है...";
 
-      // Pre-warm first 4 lines so class starts fast even if Render was sleeping
-      const initialSlice = unique.slice(0, 4);
+      const initialSlice = unique.slice(0, 3);
       let done = 0;
       for (const line of initialSlice) {
         await fetchSingleAudioBlob(line, 15000);
@@ -1280,8 +1341,7 @@
 
       setTimeout(() => loader.classList.remove("open"), 150);
 
-      // Download remaining lines quietly in background while teacher speaks
-      const remaining = unique.slice(4);
+      const remaining = unique.slice(3);
       (async () => {
         for (let i = 0; i < remaining.length; i += 3) {
           await Promise.all(remaining.slice(i, i + 3).map(t => fetchSingleAudioBlob(t, 12000)));
@@ -1339,7 +1399,7 @@
 
       const prompt = `तुम एक अनुभवी शिक्षक हो जो छात्र "${activeStudent}" को "${subjectLabel}" के टॉपिक "${fullTopicTitle}" पर कॉपी में हाथ से लिख-लिखकर पढ़ा रहे हो।
       महत्वपूर्ण: जहाँ भी बटा (Fraction) आए वहाँ [[अंश/हर]] लिखो (जैसे [[1/v]] + [[1/u]] = [[1/f]])। साधारण अक्षरों में [[A]] जैसे ब्रैकेट मत लगाओ। केवल शुद्ध देवनागरी हिंदी लिखो।
-      कुल 6 विस्तृत खंड (blocks) बनाओ (अंत में 2 क्विज़ प्रश्न):
+      कुल 5 विस्तृत खंड (blocks) बनाओ (अंत में 2 क्विज़ प्रश्न):
       {
         "blocks": [
           {
@@ -1396,9 +1456,6 @@
       });
     }
 
-    // =========================================================
-    // ZERO-GAP AUDIO PLAYER (CLOUD RENDER + BROWSER FALLBACK)
-    // =========================================================
     function stopAllVoices() {
       if (globalAudioPlayer) { globalAudioPlayer.pause(); globalAudioPlayer.currentTime = 0; }
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -1464,7 +1521,7 @@
     }
 
     // =========================================================
-    // CONTINUOUS SCROLLING NOTEBOOK & STEP-BY-STEP LIVE DIAGRAM
+    // ROADMAP OVERVIEW + STEP-BY-STEP PACED TEACHING
     // =========================================================
     function openContinuousWhiteboard(startBlockIdx = 0) {
       document.getElementById("mainAppShell").classList.add("hidden");
@@ -1475,14 +1532,39 @@
 
       document.getElementById("wbCrumbTitle").textContent = currentLessonMeta.topic;
       document.getElementById("notebookTopicBanner").textContent = `${currentLessonMeta.subject} • ${currentLessonMeta.topic}`;
-      document.getElementById("notebookStreamBody").innerHTML = "";
+
+      const streamBody = document.getElementById("notebookStreamBody");
+      streamBody.innerHTML = "";
+
+      // 1. Show Complete Syllabus Roadmap First!
+      const sectionTitles = lessonBlocks
+        .filter(b => b.type !== "quiz" && b.title)
+        .map(b => b.title);
+
+      if (sectionTitles.length > 0) {
+        const roadmapDiv = document.createElement("div");
+        roadmapDiv.className = "roadmap-card";
+        roadmapDiv.innerHTML = `
+          <div style="font-size:13.5px;font-weight:900;color:#0369a1;">📋 आज हम इस क्लास में क्या-क्या सीखेंगे (पूरा रोडमैप):</div>
+          <ul class="roadmap-list">
+            ${sectionTitles.map(t => `<li>✅ ${renderMathFractions(t)}</li>`).join("")}
+            <li>🎯 अंत में बोर्ड परीक्षा अभ्यास टेस्ट</li>
+          </ul>
+        `;
+        streamBody.appendChild(roadmapDiv);
+      }
 
       currentBlockIndex = startBlockIdx;
       currentLineIndex = 0;
       currentBlockElement = null;
       isWbPlaying = true;
       document.getElementById("btnPlayPause").textContent = "⏸️";
-      processNextBlock();
+
+      // Speak brief roadmap intro before starting Step 1
+      const introSpeech = `नमस्ते ${getDisplayStudentName()}! आज हम ${currentLessonMeta.topic} को कुल ${sectionTitles.length} आसान भागों में कॉपी पर लिख-लिखकर समझेंगे। चलिए पहले भाग से शुरू करते हैं।`;
+      speakExactText(introSpeech, () => {
+        if (isWbPlaying) processNextBlock();
+      });
     }
 
     function autoScrollNotebookBottom() {
@@ -1534,6 +1616,26 @@
       }, speedMs);
     }
 
+    function renderDiagramOnRightBoard(block) {
+      const diagCard = document.getElementById("stickyDiagramCard");
+      const matchedImage = block.image ? encodeURI(block.image) : findMatchingRepoImage(`${currentLessonMeta.topic} ${block.title || ""}`);
+      const fallbackSvg = `<svg id="liveStepSvg" viewBox="0 0 340 195" width="100%" height="190">${block.svgBase || block.svg || ""}</svg>`;
+
+      if (matchedImage) {
+        diagCard.innerHTML = `
+          <img src="${matchedImage}" alt="${block.diagramCaption || "Diagram"}"
+               style="width:100%;max-height:205px;object-fit:contain;border-radius:12px;background:#ffffff;"
+               onerror="this.parentElement.innerHTML='${fallbackSvg.replace(/"/g, "&quot;")}<div class=\\'diag-hand-note\\'>${renderMathFractions(block.diagramCaption || "").replace(/'/g, "\\'")}</div>'">
+          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
+        `;
+      } else {
+        diagCard.innerHTML = `
+          ${fallbackSvg}
+          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
+        `;
+      }
+    }
+
     function processNextBlock() {
       if (!isWbPlaying) return;
       if (currentBlockIndex >= lessonBlocks.length) {
@@ -1547,23 +1649,8 @@
       const block = lessonBlocks[currentBlockIndex];
       document.getElementById("wbStepStatus").textContent = `भाग ${currentBlockIndex + 1} / ${lessonBlocks.length}`;
       const streamBody = document.getElementById("notebookStreamBody");
-      const diagCard = document.getElementById("stickyDiagramCard");
 
-      if (block.image) {
-        diagCard.innerHTML = `
-          <img src="${block.image}" alt="${block.diagramCaption || "Diagram"}"
-               style="width:100%;max-height:205px;object-fit:contain;border-radius:12px;background:#ffffff;"
-               onerror="this.outerHTML='<svg id=\\'liveStepSvg\\' viewBox=\\'0 0 340 195\\' width=\\'100%\\' height=\\'190\\'>${(block.svgBase || block.svg || "").replace(/'/g, "\\'")}</svg>'">
-          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
-        `;
-      } else if (block.svgBase !== undefined || block.svg) {
-        diagCard.innerHTML = `
-          <svg id="liveStepSvg" viewBox="0 0 340 195" width="100%" height="190">
-            ${block.svgBase || block.svg || ""}
-          </svg>
-          <div class="diag-hand-note" id="liveDiagCaption">${renderMathFractions(block.diagramCaption || "")}</div>
-        `;
-      }
+      renderDiagramOnRightBoard(block);
 
       if (block.type === "quiz") {
         const qId = `inlineQuiz-${currentBlockIndex}`;
@@ -1618,10 +1705,24 @@
     function writeNextLineInBlock(blkEl, block) {
       if (!isWbPlaying) return;
       const lines = block.lines || [];
+
+      // When a section finishes, pause and show interactive Checkpoint instead of rushing!
       if (currentLineIndex >= lines.length) {
-        currentBlockIndex++;
-        currentBlockElement = null;
-        setTimeout(() => { if (isWbPlaying) processNextBlock(); }, 500);
+        isWbPlaying = false;
+        document.getElementById("btnPlayPause").textContent = "▶️";
+
+        const chkDiv = document.createElement("div");
+        chkDiv.className = "section-checkpoint-bar";
+        chkDiv.innerHTML = `
+          <span style="font-size:12.5px;font-weight:800;color:#475569;">यह भाग पूरा हुआ — क्या आगे बढ़ें?</span>
+          <div style="display:flex;gap:8px;">
+            <button class="chk-btn-doubt" onclick="openDoubtPrompt()">🤔 डाउट पूछें</button>
+            <button class="chk-btn-next" onclick="continueAfterCheckpoint(this)">✅ समझ आया, आगे बढ़ें ➔</button>
+          </div>
+        `;
+        blkEl.appendChild(chkDiv);
+        autoScrollNotebookBottom();
+        speakExactText(`क्या यह भाग समझ में आ गया ${getDisplayStudentName()}? अगर कोई सवाल हो तो पूछो, वरना आगे बढ़ें दबाओ।`);
         return;
       }
 
@@ -1640,14 +1741,24 @@
         }
       }
 
-      typeLineWithHandPen(lineDiv, lineObj.text, 22);
+      typeLineWithHandPen(lineDiv, lineObj.text, 24);
       currentLineIndex++;
 
       speakExactText(lineObj.text, () => {
         lineDiv.classList.add("pen-marked");
-        if (isWbPlaying) setTimeout(() => writeNextLineInBlock(blkEl, block), 400);
+        if (isWbPlaying) setTimeout(() => writeNextLineInBlock(blkEl, block), 450);
       });
     }
+
+    window.continueAfterCheckpoint = function(btnEl) {
+      const bar = btnEl.closest(".section-checkpoint-bar");
+      if (bar) bar.remove();
+      currentBlockIndex++;
+      currentBlockElement = null;
+      isWbPlaying = true;
+      document.getElementById("btnPlayPause").textContent = "⏸️";
+      processNextBlock();
+    };
 
     window.answerInlineQuiz = function(blkIdx, chosenIdx) {
       const block = lessonBlocks[blkIdx];
@@ -1662,6 +1773,7 @@
         note.innerHTML = `🎉 बिल्कुल सही ${activeStudent}! ${renderMathFractions(block.explanation)}`;
         speakExactText(`शाबाश ${activeStudent}, बिल्कुल सही उत्तर! ${block.explanation}`, () => {
           currentBlockIndex++;
+          isWbPlaying = true;
           setTimeout(() => processNextBlock(), 1000);
         });
       } else {
@@ -1671,6 +1783,7 @@
         note.innerHTML = `❌ सही उत्तर: ${renderMathFractions(block.options[block.correctIndex])} (${renderMathFractions(block.explanation)})`;
         speakExactText(`सही उत्तर है ${block.options[block.correctIndex]}। ${block.explanation}`, () => {
           currentBlockIndex++;
+          isWbPlaying = true;
           setTimeout(() => processNextBlock(), 1200);
         });
       }
@@ -1723,15 +1836,7 @@
       try {
         const resObj = await callGeminiWithFallbackChain(`छात्र "${activeStudent}" का डाउट: "${doubtText}" (टॉपिक: ${currentLessonMeta.topic})। केवल शुद्ध देवनागरी हिंदी में बच्चों की तरह सरल भाषा में समझाओ, और बटा हो तो [[अंश/हर]] लिखो। शुद्ध JSON दो: {"answer": "सरल हिंदी स्पष्टीकरण"}`);
         typeLineWithHandPen(ansLine, resObj.answer, 22);
-        speakExactText(resObj.answer, () => {
-          isWbPlaying = true;
-          document.getElementById("btnPlayPause").textContent = "⏸️";
-          if (currentBlockElement && lessonBlocks[currentBlockIndex]) {
-            writeNextLineInBlock(currentBlockElement, lessonBlocks[currentBlockIndex]);
-          } else {
-            processNextBlock();
-          }
-        });
+        speakExactText(resObj.answer);
       } catch (e) {
         ansLine.textContent = "त्रुटि: " + e.message;
       }
